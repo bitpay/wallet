@@ -50,11 +50,6 @@ const HISTORY_SHOW_LIMIT = 10;
 const MIN_UPDATE_TIME = 2000;
 const TIMEOUT_FOR_REFRESHER = 1000;
 
-interface UpdateWalletOptsI {
-  walletId: string;
-  force?: boolean;
-  alsoUpdateHistory?: boolean;
-}
 @Component({
   selector: 'page-wallet-details',
   templateUrl: 'wallet-details.html'
@@ -140,21 +135,25 @@ export class WalletDetailsPage {
       (this.wallet.network == 'livenet' ||
         (this.wallet.network == 'testnet' && env.name == 'development'));
     this.showExchangeCrypto =
-      _.includes(
+      (_.includes(
         this.exchangeCryptoProvider.exchangeCoinsSupported,
         this.wallet.coin
-      ) && this.wallet.network == 'livenet';
+      ) ||
+        this.currencyProvider.isERCToken(this.wallet.coin)) &&
+      this.wallet.network == 'livenet';
 
     // Getting info from cache
     if (this.navParams.data.clearCache) {
       this.clearHistoryCache();
     } else {
       if (this.wallet.completeHistory) this.showHistory();
-      else
-        this.fetchTxHistory({
+      else {
+        this.events.publish('Local/WalletFocus', {
           walletId: this.wallet.credentials.walletId,
-          force: true
+          force: true,
+          alsoUpdateHistory: true
         });
+      }
     }
 
     this.requiresMultipleSignatures = this.wallet.credentials.m > 1;
@@ -179,15 +178,17 @@ export class WalletDetailsPage {
     this.events.subscribe('Local/WalletHistoryUpdate', this.updateHistory);
   }
 
-  ionViewWillEnter() {
-    this.backgroundColor = this.themeProvider.getThemeInfo().walletDetailsBackgroundStart;
+  ionViewDidLoad() {
     this.onResumeSubscription = this.platform.resume.subscribe(() => {
       this.profileProvider.setFastRefresh(this.wallet);
       this.subscribeEvents();
     });
+    this.backgroundColor = this.themeProvider.getThemeInfo().walletDetailsBackgroundStart;
     this.profileProvider.setFastRefresh(this.wallet);
     this.events.publish('Local/WalletFocus', {
-      walletId: this.wallet.credentials.walletId
+      walletId: this.wallet.credentials.walletId,
+      force: true,
+      alsoUpdateHistory: true
     });
     this.subscribeEvents();
     this.checkIfEthMultisigPendingInstantiation();
@@ -195,8 +196,11 @@ export class WalletDetailsPage {
 
   ionViewWillLeave() {
     this.profileProvider.setSlowRefresh(this.wallet);
-    this.events.unsubscribe('Local/WalletUpdate', this.updateStatus);
-    this.events.unsubscribe('Local/WalletHistoryUpdate', this.updateHistory);
+  }
+
+  ngOnDestroy() {
+    this.events.unsubscribe('Local/WalletUpdate');
+    this.events.unsubscribe('Local/WalletHistoryUpdate');
     this.onResumeSubscription.unsubscribe();
   }
 
@@ -211,47 +215,6 @@ export class WalletDetailsPage {
       !this.updateStatusError &&
       !this.updateTxHistoryError
     );
-  }
-
-  private fetchTxHistory(opts: UpdateWalletOptsI) {
-    if (!opts.walletId) {
-      this.logger.error('Error no walletId in update History');
-      return;
-    }
-
-    const progressFn = ((_, newTxs) => {
-      let args = {
-        walletId: opts.walletId,
-        finished: false,
-        progress: newTxs
-      };
-      this.events.publish('Local/WalletHistoryUpdate', args);
-    }).bind(this);
-
-    // Fire a startup event, to allow UI to show the spinner
-    this.events.publish('Local/WalletHistoryUpdate', {
-      walletId: opts.walletId,
-      finished: false
-    });
-    this.walletProvider
-      .fetchTxHistory(this.wallet, progressFn, opts)
-      .then(txHistory => {
-        this.wallet.completeHistory = txHistory;
-        this.events.publish('Local/WalletHistoryUpdate', {
-          walletId: opts.walletId,
-          finished: true
-        });
-      })
-      .catch(err => {
-        if (err != 'HISTORY_IN_PROGRESS') {
-          this.logger.warn('WalletHistoryUpdate ERROR', err);
-          this.events.publish('Local/WalletHistoryUpdate', {
-            walletId: opts.walletId,
-            finished: false,
-            error: err
-          });
-        }
-      });
   }
 
   public isUtxoCoin(): boolean {
@@ -318,11 +281,11 @@ export class WalletDetailsPage {
   }
 
   private updateAll = _.debounce(
-    (opts?) => {
-      opts = opts || {};
+    () => {
       this.events.publish('Local/WalletFocus', {
         walletId: this.wallet.credentials.walletId,
-        force: true
+        force: true,
+        alsoUpdateHistory: true
       });
     },
     MIN_UPDATE_TIME,
@@ -384,6 +347,11 @@ export class WalletDetailsPage {
 
       if (this.wallet.needsBackup && hasTx && this.showBackupNeededMsg)
         this.openBackupModal();
+
+      this.events.publish('Local/WalletFocus', {
+        walletId: this.wallet.credentials.walletId,
+        force: true
+      });
 
       this.showHistory();
     } else {
@@ -641,7 +609,7 @@ export class WalletDetailsPage {
   }
 
   public doRefresh(refresher) {
-    this.updateAll({ force: true });
+    this.updateAll();
 
     setTimeout(() => {
       refresher.complete();

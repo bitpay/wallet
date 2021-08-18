@@ -1,12 +1,19 @@
+import { DecimalPipe } from '@angular/common';
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { ModalController, NavController, NavParams } from 'ionic-angular';
 import * as _ from 'lodash';
+import * as moment from 'moment';
 
 // Pages
+import { CoinAndWalletSelectorPage } from '../../pages/coin-and-wallet-selector/coin-and-wallet-selector';
 import { ExchangeCheckoutPage } from '../../pages/exchange-crypto/exchange-checkout/exchange-checkout';
+import { ExchangeCryptoSettingsPage } from '../../pages/exchange-crypto/exchange-crypto-settings/exchange-crypto-settings';
 import { ChangellyPage } from '../../pages/integrations/changelly/changelly';
+import { OneInchPage } from '../../pages/integrations/one-inch/one-inch';
 import { AmountPage } from '../../pages/send/amount/amount';
+import { TokenSwapApprovePage } from '../../pages/token-swap/token-swap-approve/token-swap-approve';
+import { TokenSwapCheckoutPage } from '../../pages/token-swap/token-swap-checkout/token-swap-checkout';
 
 // Providers
 import { ActionSheetProvider } from '../../providers/action-sheet/action-sheet';
@@ -21,6 +28,10 @@ import { ThemeProvider } from '../../providers/theme/theme';
 import { TxFormatProvider } from '../../providers/tx-format/tx-format';
 import { WalletProvider } from '../../providers/wallet/wallet';
 
+import { ConfigProvider } from '../../providers/config/config';
+import { ExternalLinkProvider } from '../../providers/external-link/external-link';
+import { OneInchProvider } from '../../providers/one-inch/one-inch';
+import { ReplaceParametersProvider } from '../../providers/replace-parameters/replace-parameters';
 @Component({
   selector: 'page-exchange-crypto',
   templateUrl: 'exchange-crypto.html'
@@ -35,11 +46,13 @@ export class ExchangeCryptoPage {
   public changellySwapTxs: any[];
   public useSendMax: boolean;
   public sendMaxInfo;
+  public exchangeToUse: string;
 
   public fromWalletSelectorTitle: string;
   public toWalletSelectorTitle: string;
   public fromWalletSelected;
   public toWalletSelected;
+  public toWalletSelectedByDefault;
 
   public amountFrom: number;
   public amountTo: number;
@@ -48,8 +61,32 @@ export class ExchangeCryptoPage {
   public fixedRateId: string;
   public rate: number;
   public estimatedFee: number;
+  private exchangeCryptoSupportedCoins: any[];
 
-  private supportedCoins: string[];
+  private changellySupportedCoins: string[]; // Supported by Changelly and Bitpay
+
+  // One Inch
+  public oneInchSwapTxs: any[];
+  public showApproveButton: boolean;
+  public showPendingApprove: boolean;
+  public approveButtonText: string;
+  private fromWalletAllowanceOk: boolean;
+  private approveTxId: string;
+  private approveSpenderAddress: string;
+  private timeout: NodeJS.Timeout;
+
+  public oneInchSupportedCoins: any[]; // Supported by oneInch and Bitpay
+  public oneInchAllSupportedCoins: any[];
+  public oneInchAllSupportedCoinsSymbols: string[];
+  public oneInchSupportedCoinsFull;
+  public slippageValues: any[];
+  public selectedSlippage: number;
+  private referrerFee: number;
+
+  public fromToken;
+  public toToken;
+  public swapData;
+  // public isCustomToken: boolean;
 
   constructor(
     private actionSheetProvider: ActionSheetProvider,
@@ -66,217 +103,496 @@ export class ExchangeCryptoPage {
     private exchangeCryptoProvider: ExchangeCryptoProvider,
     private feeProvider: FeeProvider,
     private walletProvider: WalletProvider,
-    public themeProvider: ThemeProvider
+    public themeProvider: ThemeProvider,
+    private oneInchProvider: OneInchProvider,
+    private configProvider: ConfigProvider,
+    private externalLinkProvider: ExternalLinkProvider,
+    private replaceParametersProvider: ReplaceParametersProvider,
+    public decimalPipe: DecimalPipe
   ) {
     this.allWallets = [];
     this.toWallets = [];
     this.fromWallets = [];
     this.loading = false;
+
+    this.exchangeCryptoSupportedCoins = [];
+    this.oneInchSupportedCoins = []; // Supported by oneInch and Bitpay
+    this.oneInchAllSupportedCoins = [];
+    this.oneInchAllSupportedCoinsSymbols = [];
+    this.showApproveButton = false;
+    this.fromWalletAllowanceOk = false;
+
     this.fromWalletSelectorTitle = this.translate.instant(
       'Select Source Wallet'
     );
     this.toWalletSelectorTitle = this.translate.instant(
       'Select Destination Wallet'
     );
-    this.onGoingProcessProvider.set('connectingChangelly');
+
+    this.onGoingProcessProvider.set('exchangeCryptoInit');
+
+    this.slippageValues = [
+      {
+        value: 0.1,
+        selected: false
+      },
+      {
+        value: 0.5,
+        selected: false
+      },
+      {
+        value: 1,
+        selected: true
+      },
+      {
+        value: 5,
+        selected: false
+      }
+    ];
+    this.setSlippage(1);
 
     this.exchangeCryptoProvider.getSwapTxs().then(res => {
+      // TODO: unify getSwapTxs and review the html
       this.changellySwapTxs = res.changellySwapTxs;
     });
 
-    this.changellyProvider
-      .getCurrencies()
-      .then(data => {
-        if (data.error) {
-          this.logger.error(
-            'Changelly getCurrencies Error: ' + data.error.message
-          );
-          this.showErrorAndBack(
-            null,
-            this.translate.instant(
-              'Changelly is not available at this moment. Please, try again later.'
-            )
-          );
-          return;
-        }
+    this.exchangeCryptoProvider.getSwapTxs().then(res => {
+      this.oneInchSwapTxs = res.oneInchSwapTxs;
+    });
+  }
 
-        if (
-          data &&
-          data.result &&
-          _.isArray(data.result) &&
-          data.result.length > 0
-        ) {
-          this.supportedCoins = _.intersection(
-            this.currencyProvider.getAvailableCoins(),
-            data.result
-          );
-          const coinsToRemove = ['xrp', 'busd'];
-          coinsToRemove.forEach((coin: string) => {
-            const index = this.supportedCoins.indexOf(coin);
-            if (index > -1) {
-              this.logger.debug(
-                `Removing ${coin.toUpperCase()} from supported coins`
-              );
-              this.supportedCoins.splice(index, 1);
-            }
-          });
-        }
-
-        this.logger.debug('Changelly supportedCoins: ' + this.supportedCoins);
-
-        this.allWallets = this.profileProvider.getWallets({
-          network: 'livenet',
-          onlyComplete: true,
-          coin: this.supportedCoins,
-          backedUp: true
-        });
-
-        this.onGoingProcessProvider.clear();
-
-        if (_.isEmpty(this.allWallets)) {
-          this.showErrorAndBack(
-            null,
-            this.translate.instant('No wallets available to use this exchange')
-          );
-          return;
-        }
-
-        this.fromWallets = this.allWallets.filter(w => {
-          return w.cachedStatus && w.cachedStatus.availableBalanceSat > 0;
-        });
-
-        if (_.isEmpty(this.fromWallets)) {
-          this.showErrorAndBack(
-            null,
-            this.translate.instant('No wallets with funds')
-          );
-          return;
-        }
-
-        if (this.navParams.data.walletId) {
-          const wallet = this.profileProvider.getWallet(
-            this.navParams.data.walletId
-          );
-          if (wallet.network != 'livenet') {
-            this.showErrorAndBack(
-              null,
-              this.translate.instant('Unsupported network')
-            );
-            return;
-          }
-          if (!wallet.coin || !this.supportedCoins.includes(wallet.coin)) {
-            this.showErrorAndBack(
-              null,
-              this.translate.instant(
-                'Currently our partner does not support exchanges with the selected coin'
-              )
-            );
-            return;
-          } else {
-            if (
-              wallet.cachedStatus &&
-              wallet.cachedStatus.spendableAmount &&
-              wallet.cachedStatus.spendableAmount > 0
-            ) {
-              this.onWalletSelect(wallet, 'from');
-            } else {
-              this.onWalletSelect(wallet, 'to');
-            }
-          }
-        }
-      })
-      .catch(err => {
-        this.logger.error('Changelly getCurrencies Error: ', err);
-        this.showErrorAndBack(
-          null,
-          this.translate.instant(
-            'Changelly is not available at this moment. Please, try again later.'
-          )
-        );
-      });
+  ngOnDestroy() {
+    if (this.timeout) clearTimeout(this.timeout);
   }
 
   ionViewDidLoad() {
     this.logger.info('Loaded: ExchangeCryptoPage');
+
+    this.getExchangesCurrencies();
   }
 
-  public showWallets(selector: string): void {
+  private async getExchangesCurrencies() {
+    const reflect = promiseObj => {
+      return promiseObj.promise.then(
+        v => {
+          return { exchange: promiseObj.exchange, status: 'ok', data: v };
+        },
+        error => {
+          return {
+            exchange: promiseObj.exchange,
+            status: 'failed',
+            reason: error
+          };
+        }
+      );
+    };
+
+    const promises = [
+      {
+        exchange: 'changelly',
+        promise: this.changellyProvider.getCurrencies()
+      },
+      { exchange: '1inch', promise: this.oneInchProvider.getCurrencies1inch() }
+    ];
+    const results = await Promise.all(promises.map(reflect));
+    const successfulPromises = results.filter(p => p.status === 'ok');
+    const failedPromises = results.filter(p => p.status === 'failed');
+
+    failedPromises.forEach(promise => {
+      switch (promise.exchange) {
+        case '1inch':
+          this.logger.error('1Inch getCurrencies Error');
+          if (promise.reason && promise.reason.message)
+            this.logger.error(promise.reason.message);
+          break;
+
+        case 'changelly':
+          this.logger.error('Changelly getCurrencies Error');
+          if (promise.reason && promise.reason.message)
+            this.logger.error(promise.reason.message);
+          break;
+
+        default:
+          break;
+      }
+    });
+
+    successfulPromises.forEach(promise => {
+      switch (promise.exchange) {
+        case '1inch':
+          if (!promise.data || !promise.data.tokens) {
+            this.logger.error('1Inch getCurrencies Error');
+            return;
+          }
+
+          this.oneInchSupportedCoins;
+          this.oneInchAllSupportedCoins = [];
+          this.oneInchAllSupportedCoinsSymbols = [];
+
+          _.forEach(Object.keys(promise.data.tokens), key => {
+            this.oneInchAllSupportedCoins.push(promise.data.tokens[key]);
+            this.oneInchAllSupportedCoinsSymbols.push(
+              promise.data.tokens[key].symbol.toLowerCase()
+            );
+          });
+
+          if (
+            _.isArray(this.oneInchAllSupportedCoins) &&
+            this.oneInchAllSupportedCoins.length > 0
+          ) {
+            this.oneInchSupportedCoins = _.intersection(
+              this.currencyProvider.getAvailableCoins(),
+              this.oneInchAllSupportedCoinsSymbols
+            );
+          }
+
+          this.oneInchSupportedCoinsFull = this.oneInchAllSupportedCoins.filter(
+            token => {
+              return this.oneInchSupportedCoins.includes(
+                token.symbol.toLowerCase()
+              );
+            }
+          );
+
+          this.logger.debug(
+            '1Inch supportedCoins: ' + this.oneInchSupportedCoins
+          );
+          break;
+
+        case 'changelly':
+          if (promise.data.error) {
+            this.logger.error(
+              'Changelly getCurrencies Error: ' + promise.data.error.message
+            );
+            return;
+          }
+
+          if (
+            promise.data &&
+            promise.data.result &&
+            _.isArray(promise.data.result) &&
+            promise.data.result.length > 0
+          ) {
+            this.changellySupportedCoins = _.intersection(
+              this.currencyProvider.getAvailableCoins(),
+              promise.data.result
+            );
+            const coinsToRemove = ['xrp', 'busd'];
+            coinsToRemove.forEach((coin: string) => {
+              const index = this.changellySupportedCoins.indexOf(coin);
+              if (index > -1) {
+                this.logger.debug(
+                  `Removing ${coin.toUpperCase()} from Changelly supported coins`
+                );
+                this.changellySupportedCoins.splice(index, 1);
+              }
+            });
+          }
+
+          this.logger.debug(
+            'Changelly supportedCoins: ' + this.changellySupportedCoins
+          );
+          break;
+
+        default:
+          break;
+      }
+    });
+
+    this.exchangeCryptoSupportedCoins = [
+      ...new Set([
+        ...this.changellySupportedCoins,
+        ...this.oneInchSupportedCoins
+      ])
+    ]; // Union between all arrays
+
+    this.allWallets = this.profileProvider.getWallets({
+      network: 'livenet',
+      onlyComplete: true,
+      coin: this.exchangeCryptoSupportedCoins,
+      backedUp: true
+    });
+
+    this.onGoingProcessProvider.clear();
+
+    if (_.isEmpty(this.allWallets)) {
+      this.showErrorAndBack(
+        null,
+        this.translate.instant(
+          'There are no wallets available that meet the requirements to operate with our supported exchanges'
+        )
+      );
+      return;
+    }
+
+    this.fromWallets = this.allWallets.filter(w => {
+      return w.cachedStatus && w.cachedStatus.availableBalanceSat > 0;
+    });
+
+    if (_.isEmpty(this.fromWallets)) {
+      this.showErrorAndBack(
+        null,
+        this.translate.instant('No wallets with funds')
+      );
+      return;
+    }
+
+    if (this.navParams.data.walletId) {
+      const wallet = this.profileProvider.getWallet(
+        this.navParams.data.walletId
+      );
+      if (wallet.network != 'livenet') {
+        this.showErrorAndBack(
+          null,
+          this.translate.instant('Unsupported network')
+        );
+        return;
+      }
+      if (
+        !wallet.coin ||
+        !this.exchangeCryptoSupportedCoins.includes(wallet.coin)
+      ) {
+        this.showErrorAndBack(
+          null,
+          this.translate.instant(
+            'Currently our partners does not support exchanges with the selected coin'
+          )
+        );
+        return;
+      } else {
+        if (
+          wallet.cachedStatus &&
+          wallet.cachedStatus.spendableAmount &&
+          wallet.cachedStatus.spendableAmount > 0
+        ) {
+          this.onFromWalletSelect(wallet);
+        } else {
+          this.toWalletSelectedByDefault = wallet; // Use navParams wallet as default
+
+          let supportedCoins = [];
+
+          if (this.oneInchSupportedCoins.includes(wallet.coin))
+            supportedCoins = supportedCoins.concat(this.oneInchSupportedCoins);
+          if (this.changellySupportedCoins.includes(wallet.coin))
+            supportedCoins = _.uniq(
+              supportedCoins.concat(this.changellySupportedCoins)
+            );
+
+          this.allWallets = this.profileProvider.getWallets({
+            network: 'livenet',
+            onlyComplete: true,
+            coin: supportedCoins,
+            backedUp: true
+          });
+
+          if (_.isEmpty(this.allWallets)) {
+            this.showErrorAndBack(
+              null,
+              this.translate.instant(
+                'There are no wallets available that meet the requirements to operate with our supported exchanges'
+              )
+            );
+            return;
+          }
+
+          this.fromWallets = this.allWallets.filter(w => {
+            return w.cachedStatus && w.cachedStatus.availableBalanceSat > 0;
+          });
+
+          if (_.isEmpty(this.fromWallets)) {
+            this.showErrorAndBack(
+              null,
+              this.translate.instant('No wallets with funds')
+            );
+            return;
+          }
+
+          this.onToWalletSelect(wallet);
+        }
+      }
+    }
+  }
+
+  public showFromWallets(): void {
     let walletsForActionSheet = [];
     let selectedWalletId: string;
-    let title: string =
-      selector == 'from'
-        ? this.fromWalletSelectorTitle
-        : this.toWalletSelectorTitle;
-    if (selector == 'from') {
-      this.isOpenSelectorFrom = true;
-      walletsForActionSheet = this.fromWallets;
-      selectedWalletId = this.fromWalletSelected
-        ? this.fromWalletSelected.id
-        : null;
-    } else if (selector == 'to') {
-      this.isOpenSelectorTo = true;
-      walletsForActionSheet = this.toWallets;
-      selectedWalletId = this.toWalletSelected
-        ? this.toWalletSelected.id
-        : null;
-    }
-    const params = {
+
+    this.isOpenSelectorFrom = true;
+    walletsForActionSheet = this.fromWallets;
+    selectedWalletId = this.fromWalletSelected
+      ? this.fromWalletSelected.id
+      : null;
+
+    const walletSelector = this.actionSheetProvider.createWalletSelector({
       wallets: walletsForActionSheet,
       selectedWalletId,
-      title
-    };
-    const walletSelector = this.actionSheetProvider.createWalletSelector(
-      params
-    );
+      title: this.fromWalletSelectorTitle
+    });
     walletSelector.present();
     walletSelector.onDidDismiss(wallet => {
       this.isOpenSelectorFrom = false;
       this.isOpenSelectorTo = false;
 
-      if (!_.isEmpty(wallet)) this.onWalletSelect(wallet, selector);
+      setTimeout(() => {
+        if (!_.isEmpty(wallet)) this.onFromWalletSelect(wallet);
+      }, 100);
     });
   }
 
-  private showToWallets(): void {
-    this.toWallets = this.allWallets.filter(
-      w =>
-        !w.needsBackup &&
-        w.id != this.fromWalletSelected.id &&
-        w.coin != this.fromWalletSelected.coin
+  public showToWallets(): void {
+    if (this.toWalletSelectedByDefault || !this.fromWalletSelected) return;
+    this.isOpenSelectorTo = true;
+
+    let supportedCoins: any[];
+    let showOneInchTokensSearchBtn: boolean = false;
+
+    if (
+      this.oneInchSupportedCoins.includes(this.fromWalletSelected.coin) &&
+      this.changellySupportedCoins.includes(this.fromWalletSelected.coin)
+    ) {
+      supportedCoins = _.clone(this.exchangeCryptoSupportedCoins);
+      showOneInchTokensSearchBtn = true;
+    } else if (
+      this.oneInchSupportedCoins.includes(this.fromWalletSelected.coin)
+    ) {
+      supportedCoins = _.clone(this.oneInchSupportedCoins);
+      showOneInchTokensSearchBtn = true;
+    } else if (
+      this.changellySupportedCoins.includes(this.fromWalletSelected.coin)
+    ) {
+      supportedCoins = _.clone(this.changellySupportedCoins);
+      showOneInchTokensSearchBtn = false;
+    }
+
+    const index = supportedCoins.indexOf(this.fromWalletSelected.coin);
+    if (index > -1) {
+      supportedCoins.splice(index, 1);
+    }
+
+    const oneInchAllSupportedCoins = this.oneInchAllSupportedCoins.filter(
+      token => {
+        return (
+          token.symbol.toLowerCase() != this.fromWalletSelected.coin &&
+          token.symbol.toLowerCase() != 'eth'
+        );
+      }
     );
 
-    if (_.isEmpty(this.toWallets)) {
-      let msg = this.translate.instant(
-        'Destination wallet needs to be backed up'
-      );
-      this.showErrorAndBack(null, msg);
-      return;
-    }
+    let modal = this.modalCtrl.create(
+      CoinAndWalletSelectorPage,
+      {
+        walletSelectorTitle: this.toWalletSelectorTitle,
+        coinSelectorTitle: this.translate.instant('Select Destination Coin'),
+        useAsModal: true,
+        supportedCoins,
+        removeSpecificWalletId: this.fromWalletSelected.id,
+        onlyLivenet: true,
+        oneInchAllSupportedCoins,
+        showOneInchTokensSearchBtn
+      },
+      {
+        showBackdrop: true,
+        enableBackdropDismiss: true
+      }
+    );
+    modal.present();
+    modal.onDidDismiss(data => {
+      this.isOpenSelectorFrom = false;
+      this.isOpenSelectorTo = false;
+
+      if (data) {
+        setTimeout(() => {
+          if (!_.isEmpty(data.wallet)) {
+            if (data.selectedToken) {
+              this.onToWalletSelect(data.wallet, data.selectedToken);
+            } else {
+              this.onToWalletSelect(data.wallet);
+            }
+          }
+        }, 400);
+      }
+    });
   }
 
-  public onWalletSelect(wallet, selector: string): void {
-    if (selector == 'from') {
-      this.onFromWalletSelect(wallet);
-    } else if (selector == 'to') {
-      this.onToWalletSelect(wallet);
+  private setExchangeToUse() {
+    if (!this.fromWalletSelected || !this.toWalletSelected) return;
+
+    const fromCoin = this.fromWalletSelected.coin;
+    const toCoin = this.toToken
+      ? this.toToken.symbol.toLowerCase()
+      : this.toWalletSelected.coin;
+
+    // 1inch has priority over Changelly
+    if (
+      this.oneInchAllSupportedCoinsSymbols.length > 0 &&
+      this.oneInchAllSupportedCoinsSymbols.includes(fromCoin) &&
+      this.oneInchAllSupportedCoinsSymbols.includes(toCoin)
+    ) {
+      this.exchangeToUse = '1inch';
+    } else if (
+      this.changellySupportedCoins.length > 0 &&
+      this.changellySupportedCoins.includes(fromCoin) &&
+      this.changellySupportedCoins.includes(toCoin)
+    ) {
+      this.exchangeToUse = 'changelly';
+    } else {
+      let msg = this.translate.instant(
+        `Currently none of our partners accept the exchange of the selected pair: ${fromCoin}_${toCoin}`
+      );
+      this.showErrorAndBack(null, msg, true);
+      return;
+    }
+
+    this.logger.debug('Exchange to use: ' + this.exchangeToUse);
+
+    switch (this.exchangeToUse) {
+      case '1inch':
+        this.onGoingProcessProvider.set('Verifiyng allowances and balances...');
+        if (this.timeout) clearTimeout(this.timeout);
+
+        this.fromToken = this.oneInchSupportedCoinsFull.filter(token => {
+          return (
+            token.symbol.toLowerCase() ==
+            this.fromWalletSelected.coin.toLowerCase()
+          );
+        })[0];
+
+        this.verifyAllowances(); // this.oneInchGetRates() is inside this function
+
+        break;
+      case 'changelly':
+        this.changellyGetRates();
+        break;
     }
   }
 
   public onFromWalletSelect(wallet): void {
     this.fromWalletSelected = wallet;
-    this.toWalletSelected = null; // Clear variable to select wallet again
+    if (!this.toWalletSelectedByDefault) {
+      this.toWalletSelected = null; // Clear variable to select destination wallet again
+      this.toToken = null;
+    }
     this.amountFrom = null; // Clear amount and rate to avoid mistakes
     this.rate = null;
     this.fixedRateId = null;
-    this.showToWallets();
+    this.exchangeToUse = null;
+    this.showPendingApprove = false;
+    this.setExchangeToUse();
   }
 
-  public onToWalletSelect(wallet): void {
+  public onToWalletSelect(wallet, selectedToken?): void {
+    // selectedToken: token from 1inch
     this.toWalletSelected = wallet;
-    this.updateMaxAndMin();
+    if (selectedToken) {
+      this.toToken = selectedToken;
+      this.toToken.isCustomToken = true;
+    } else {
+      this.toToken = null;
+    }
+    this.setExchangeToUse();
   }
 
-  private updateMaxAndMin() {
+  private changellyGetRates() {
     this.amountTo = null;
     this.rate = null;
     if (!this.fromWalletSelected || !this.toWalletSelected || !this.amountFrom)
@@ -356,6 +672,7 @@ export class ExchangeCryptoPage {
           );
           errorActionSheet.present();
           errorActionSheet.onDidDismiss(option => {
+            this.loading = false;
             if (option) {
               this.amountFrom = this.maxAmount;
               this.useSendMax = null;
@@ -387,6 +704,7 @@ export class ExchangeCryptoPage {
             );
             errorActionSheet.present();
             errorActionSheet.onDidDismiss(() => {
+              this.loading = false;
               this.useSendMax = null;
               this.amountFrom = null;
               this.estimatedFee = null;
@@ -405,6 +723,7 @@ export class ExchangeCryptoPage {
             );
             errorActionSheet.present();
             errorActionSheet.onDidDismiss(option => {
+              this.loading = false;
               if (option) {
                 this.amountFrom = this.minAmount;
                 this.useSendMax = null;
@@ -423,6 +742,106 @@ export class ExchangeCryptoPage {
           null,
           this.translate.instant(
             'Changelly is not available at this moment. Please, try again later.'
+          )
+        );
+      });
+  }
+
+  private async oneInchGetRates() {
+    this.amountTo = null;
+    this.rate = null;
+    if (!this.fromWalletSelected || !this.toWalletSelected || !this.amountFrom)
+      return;
+
+    if (this.useSendMax && this.fromWalletSelected.coin == 'eth') {
+      this.useSendMax = null;
+      this.amountFrom = null;
+      this.showErrorAndBack(
+        null,
+        this.translate.instant(
+          'Currently the "Send Max" feature is not supported for ETH swaps on the 1Inch exchange. Try entering the amount manually.'
+        ),
+        true
+      );
+      return;
+    }
+
+    this.loading = true;
+    let pair = this.fromWalletSelected.coin + '_' + this.toWalletSelected.coin;
+    this.logger.debug('Updating max and min with pair: ' + pair);
+
+    try {
+      this.referrerFee = await this.oneInchProvider.getReferrerFee();
+    } catch (err) {
+      if (err.error)
+        this.logger.error('Could not get referrer fee: ', err.error);
+    }
+
+    this.logger.debug(`referrerFee setted to: ${this.referrerFee}%`);
+
+    this.toToken =
+      this.toToken && this.toToken.isCustomToken
+        ? this.toToken
+        : this.oneInchSupportedCoinsFull.filter(token => {
+            return (
+              token.symbol.toLowerCase() ==
+              this.toWalletSelected.coin.toLowerCase()
+            );
+          })[0];
+
+    const data: any = {
+      fromTokenAddress: this.fromToken.address,
+      toTokenAddress: this.toToken.address,
+      amount: this.amountFrom * 10 ** this.fromToken.decimals // amount in minimum unit
+    };
+
+    if (this.referrerFee) {
+      data.fee = this.referrerFee; // taking this fee from BWS. This percentage of fromTokenAddress token amount  will be sent to referrerAddress, the rest will be used as input for a swap | min: 0; max: 3; default: 0;
+    }
+
+    this.oneInchProvider
+      .getQuote1inch(data)
+      .then(data => {
+        if (
+          this.fromWalletSelected.cachedStatus &&
+          this.fromWalletSelected.cachedStatus.spendableAmount
+        ) {
+          const spendableAmount = this.txFormatProvider.satToUnit(
+            this.fromWalletSelected.cachedStatus.spendableAmount,
+            this.fromWalletSelected.coin
+          );
+
+          if (spendableAmount < this.amountFrom) {
+            this.loading = false;
+            this.showErrorAndBack(
+              null,
+              this.translate.instant(
+                'You are trying to send more funds than you have available. Make sure you do not have funds locked by pending transaction proposals or enter a valid amount.'
+              ),
+              true
+            );
+            return;
+          }
+        }
+
+        const pair =
+          this.fromWalletSelected.coin + '_' + this.toWalletSelected.coin;
+        this.logger.debug('Updating receiving amount with pair: ' + pair);
+
+        this.amountTo =
+          Number(data.toTokenAmount) / 10 ** this.toToken.decimals;
+        this.rate = this.amountTo / this.amountFrom;
+        this.loading = false;
+      })
+      .catch(err => {
+        this.logger.error(
+          '1Inch getQuote1inch Error: ',
+          err.error && err.error.message ? err.error.message : err
+        );
+        this.showErrorAndBack(
+          null,
+          this.translate.instant(
+            '1Inch is not available at this moment. Please, try again later.'
           )
         );
       });
@@ -483,7 +902,15 @@ export class ExchangeCryptoPage {
           data.coin
         );
         this.useSendMax = data.useSendMax;
-        this.updateMaxAndMin();
+
+        switch (this.exchangeToUse) {
+          case '1inch':
+            this.oneInchGetRates();
+            break;
+          case 'changelly':
+            this.changellyGetRates();
+            break;
+        }
       }
     });
   }
@@ -594,35 +1021,350 @@ export class ExchangeCryptoPage {
     });
   }
 
+  public getAmountConteinerClass(length: number): string {
+    if (length > 14) return 'fix-font-size-14';
+    if (length > 12) return 'fix-font-size-12';
+    if (length > 10) return 'fix-font-size-10';
+    if (length > 8) return 'fix-font-size-8';
+    return '';
+  }
+
   public canContinue(): boolean {
-    return (
-      this.toWalletSelected &&
-      this.fromWalletSelected &&
-      this.amountTo &&
-      this.minAmount &&
-      this.maxAmount &&
-      this.amountFrom >= this.minAmount &&
-      this.amountFrom <= this.maxAmount
-    );
+    switch (this.exchangeToUse) {
+      case '1inch':
+        return (
+          this.toWalletSelected &&
+          this.fromWalletSelected &&
+          this.fromWalletAllowanceOk &&
+          this.amountTo &&
+          this.amountFrom > 0
+        );
+
+      case 'changelly':
+        return (
+          this.toWalletSelected &&
+          this.fromWalletSelected &&
+          this.amountTo &&
+          this.minAmount &&
+          this.maxAmount &&
+          this.amountFrom >= this.minAmount &&
+          this.amountFrom <= this.maxAmount
+        );
+
+      default:
+        return false;
+    }
   }
 
   public goToExchangeCheckoutPage() {
-    const data = {
-      fromWalletSelectedId: this.fromWalletSelected.id,
-      toWalletSelectedId: this.toWalletSelected.id,
-      fixedRateId: this.fixedRateId,
-      amountFrom: this.amountFrom,
-      coinFrom: this.fromWalletSelected.coin,
-      coinTo: this.toWalletSelected.coin,
-      rate: this.rate,
-      useSendMax: this.useSendMax,
-      sendMaxInfo: this.sendMaxInfo
-    };
+    let data, checkoutPage;
+    switch (this.exchangeToUse) {
+      case '1inch':
+        data = {
+          fromWalletSelectedId: this.fromWalletSelected.id,
+          toWalletSelectedId: this.toWalletSelected.id,
+          fromTokenSelected: this.fromToken,
+          toTokenSelected: this.toToken,
+          amountFrom: this.amountFrom,
+          coinFrom: this.fromWalletSelected.coin,
+          coinTo: this.toWalletSelected.coin,
+          rate: this.rate,
+          useSendMax: this.useSendMax,
+          sendMaxInfo: this.sendMaxInfo,
+          slippage: this.selectedSlippage,
+          referrerFee: this.referrerFee
+        };
 
-    this.navCtrl.push(ExchangeCheckoutPage, data);
+        checkoutPage = TokenSwapCheckoutPage;
+        break;
+      case 'changelly':
+        data = {
+          fromWalletSelectedId: this.fromWalletSelected.id,
+          toWalletSelectedId: this.toWalletSelected.id,
+          fixedRateId: this.fixedRateId,
+          amountFrom: this.amountFrom,
+          coinFrom: this.fromWalletSelected.coin,
+          coinTo: this.toWalletSelected.coin,
+          rate: this.rate,
+          useSendMax: this.useSendMax,
+          sendMaxInfo: this.sendMaxInfo
+        };
+
+        checkoutPage = ExchangeCheckoutPage;
+        break;
+
+      default:
+        this.logger.error(
+          'No exchanges matching. Exchange: ' + this.exchangeToUse
+        );
+        break;
+    }
+
+    this.navCtrl.push(checkoutPage, data);
   }
 
   public goToExchangeHistory() {
-    this.navCtrl.push(ChangellyPage);
+    switch (this.exchangeToUse) {
+      case '1inch':
+        this.navCtrl.push(OneInchPage);
+        break;
+
+      case 'changelly':
+        this.navCtrl.push(ChangellyPage);
+        break;
+
+      default:
+        this.navCtrl.push(ExchangeCryptoSettingsPage, {
+          // TODO: review this pages when checking 1inch allowances - use only this page?
+          fromExchangeCryptoPage: true
+        });
+        break;
+    }
+  }
+
+  // *******************************************************
+  // 1Inch Exchange
+
+  public setSlippage(value: number) {
+    if (value == this.selectedSlippage) return;
+
+    this.selectedSlippage = value;
+    this.slippageValues.forEach(element => {
+      element.selected = element.value == value ? true : false;
+    });
+  }
+
+  public showExchangeApproveModal() {
+    let modal = this.modalCtrl.create(
+      TokenSwapApprovePage,
+      {
+        fromWalletSelectedId: this.fromWalletSelected.id,
+        fromTokenSelected: this.fromToken,
+        toTokenSelected: this.toToken
+      },
+      {
+        showBackdrop: true,
+        enableBackdropDismiss: true
+      }
+    );
+    modal.present();
+    modal.onDidDismiss(data => {
+      if (data && data.txid) {
+        this.approveTxId = data.txid;
+        this.saveApproveData(this.approveTxId);
+        this.checkConfirmation(15000);
+        this.showPendingApprove = true;
+        this.showApproveButton = false;
+      }
+    });
+  }
+
+  private saveApproveData(txId: string): void {
+    const now = moment().unix() * 1000;
+
+    let newData = {
+      walletId: this.fromWalletSelected.id,
+      txId,
+      date: now
+    };
+
+    const opts = {
+      isApprove: true
+    };
+
+    this.oneInchProvider.saveOneInch(newData, opts).then(() => {
+      this.logger.debug(
+        'Saved spender approve with walletId: ' + this.fromWalletSelected.id
+      );
+      this.onGoingProcessProvider.clear();
+    });
+  }
+
+  private checkConfirmation(ms: number) {
+    const currentIndex = this.navCtrl.getActive().index;
+    const currentView = this.navCtrl.getViews();
+
+    if (
+      this.fromWalletSelected &&
+      [
+        'ExchangeCryptoPage',
+        'ExchangeCryptoSettingsPage',
+        'OneInchPage'
+      ].includes(currentView[currentIndex].name)
+    ) {
+      this.timeout = setTimeout(
+        () => {
+          this.verifyAllowances();
+        },
+        ms ? ms : 15000
+      );
+    }
+  }
+
+  private verifyAllowances() {
+    if (
+      !this.fromWalletSelected ||
+      !this.toWalletSelected ||
+      this.exchangeToUse != '1inch'
+    )
+      return;
+    this.logger.debug('Verifiying allowances...');
+    this.walletProvider
+      .getAddress(this.fromWalletSelected, false)
+      .then(async fromAddress => {
+        if (!this.approveSpenderAddress) {
+          const approveSpenderData: any = await this.oneInchProvider.approveSpender1inch();
+          if (!approveSpenderData || !approveSpenderData.address) {
+            this.logger.error('1Inch approveSpender1inch Error');
+            this.showErrorAndBack(
+              null,
+              this.translate.instant(
+                '1Inch is not available at this moment. Please, try again later.'
+              )
+            );
+            return;
+          }
+
+          this.approveSpenderAddress = approveSpenderData.address;
+          this.logger.debug(
+            '1inch spender address: ' + this.approveSpenderAddress
+          );
+        }
+
+        const data = {
+          spenderAddress: this.approveSpenderAddress,
+          addressToCheck: fromAddress
+        };
+        this.oneInchProvider
+          .verifyAllowancesAndBalances(data)
+          .then(allowancesData => {
+            this.logger.debug(allowancesData[this.fromToken.address]);
+            if (
+              allowancesData[this.fromToken.address] &&
+              allowancesData[this.fromToken.address].allowance > 0
+            ) {
+              this.logger.debug(
+                'This wallet has the necessary allowances to continue with the token swap'
+              );
+              this.showApproveButton = false;
+              this.showPendingApprove = false;
+              this.approveButtonText = '';
+              this.fromWalletAllowanceOk = true;
+            } else {
+              // check if an approve transaction was already sent for this wallet
+              this.oneInchProvider
+                .getOneInchApproveData()
+                .then(oneInchApproveData => {
+                  const approveTxs: any = {};
+                  Object.assign(approveTxs, oneInchApproveData);
+                  if (
+                    approveTxs &&
+                    approveTxs[this.fromWalletSelected.id] &&
+                    approveTxs[this.fromWalletSelected.id].txId
+                  ) {
+                    this.logger.debug(
+                      'There is a pending transaction waiting for confirmation'
+                    );
+                    this.showPendingApprove = true;
+                    this.fromWalletAllowanceOk = false;
+                    this.approveTxId =
+                      approveTxs[this.fromWalletSelected.id].txId;
+                    this.checkConfirmation(15000);
+                  } else {
+                    this.showPendingApprove = false;
+                    this.fromWalletAllowanceOk = false;
+                    this.showApproveButton = true;
+                    this.approveButtonText = this.replaceParametersProvider.replace(
+                      this.translate.instant(`Approve {{fromWalletCoin}}`),
+                      {
+                        fromWalletCoin: this.fromWalletSelected.coin.toUpperCase()
+                      }
+                    );
+
+                    const fromCoin = this.fromWalletSelected.coin;
+                    const toCoin = this.toToken
+                      ? this.toToken.symbol.toLowerCase()
+                      : this.toWalletSelected.coin;
+                    let canUseChangelly: boolean = false;
+                    if (
+                      this.changellySupportedCoins.length > 0 &&
+                      this.changellySupportedCoins.includes(fromCoin) &&
+                      this.changellySupportedCoins.includes(toCoin)
+                    ) {
+                      canUseChangelly = true;
+                    }
+
+                    const switchExchangeSheet = this.actionSheetProvider.createInfoSheet(
+                      'switch-exchange-crypto',
+                      {
+                        canUseChangelly,
+                        coin: this.fromWalletSelected.coin.toUpperCase()
+                      }
+                    );
+                    switchExchangeSheet.present();
+                    switchExchangeSheet.onDidDismiss(option => {
+                      if (option) {
+                        this.logger.debug('Switching to Changelly');
+                        this.exchangeToUse = 'changelly';
+                        this.showApproveButton = false;
+                        this.changellyGetRates();
+                      }
+                    });
+                  }
+                })
+                .catch(err => {
+                  this.logger.error('1Inch getOneInchApproveData Error: ', err);
+                  this.showErrorAndBack(
+                    null,
+                    this.translate.instant(
+                      '1Inch is not available at this moment. Please, try again later.'
+                    )
+                  );
+                  return;
+                });
+            }
+
+            this.onGoingProcessProvider.clear();
+            this.oneInchGetRates();
+          })
+          .catch(err => {
+            this.logger.error('1Inch verifyAllowancesAndBalances Error: ', err);
+            this.showErrorAndBack(
+              null,
+              this.translate.instant(
+                '1Inch is not available at this moment. Please, try again later.'
+              )
+            );
+            return;
+          });
+      })
+      .catch(err => {
+        this.logger.error('Could not get fromAddress address', err);
+        this.showErrorAndBack(
+          null,
+          this.translate.instant(
+            'There was a problem retrieving the fromAddress. Please, try again later.'
+          )
+        );
+        return;
+      });
+  }
+
+  public showSlippageInfo(): void {
+    const infoSheet = this.actionSheetProvider.createInfoSheet('slippage-info');
+    infoSheet.present();
+    infoSheet.onDidDismiss(option => {
+      if (option) {
+      }
+    });
+  }
+
+  public viewOnBlockchain(): void {
+    let defaults = this.configProvider.getDefaults();
+    const blockexplorerUrl =
+      defaults.blockExplorerUrl[this.fromWalletSelected.coin];
+
+    let url = `https://${blockexplorerUrl}tx/${this.approveTxId}`;
+    this.externalLinkProvider.open(url);
   }
 }

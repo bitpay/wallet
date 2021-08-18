@@ -1,0 +1,155 @@
+<wide-header-page title="{{'Token Swap Spender Approval' | translate}}" hideBackButton="true" [hasSlideButton]="isCordova">
+  <ion-buttons right>
+    <button clear wide-header-bar-button (click)="cancelExchange()" ion-button>
+      <span translate>Reject</span>
+    </button>
+  </ion-buttons>
+  <div page-content>
+    <ion-spinner name="crescent" *ngIf="loading"></ion-spinner>
+
+    <label-tip type="info" class="no-arrowhead">
+      <span label-tip-title translate>Give this site permission to access your token?</span>
+      <div label-tip-body>
+        <span translate>By granting this permission you authorize this site to access your funds in {{ fromToken.symbol }}.</span>
+        <br>
+        <span translate>This action implies a transaction in which you will only pay the contract fee. This transaction must be confirmed to allow you to do a token swap.</span>
+      </div>
+    </label-tip>
+
+    <ion-list class="bp-list" *ngIf="!loading">
+      <ion-item class="sub-title">
+        <ion-label>
+          <div class="main-label">Details of the transaction</div>
+        </ion-label>
+      </ion-item>
+
+      <div class="line-divider"></div>
+
+      <ion-item ion-item>
+        <ion-label>
+          <div class="summary-item">
+            <span translate>Token</span>
+          </div>
+        </ion-label>
+
+        <ion-note item-end text-left>
+          <ion-row align-items-center class="wallet" *ngIf="fromWalletSelected">
+            <ion-col>
+              <coin-icon [coin]="fromWalletSelected.coin" [network]="fromWalletSelected.network"></coin-icon>
+            </ion-col>
+            <ion-col>
+              <span class="note-container ellipsis">{{fromWalletSelected.name}}</span>
+            </ion-col>
+          </ion-row>
+        </ion-note>
+      </ion-item>
+
+      <div class="line-divider"></div>
+
+      <ion-item>
+        <ion-label>
+          <div class="summary-item">
+            <span>{{"Site URL" | translate}}</span>
+          </div>
+        </ion-label>
+        <ion-note item-end>
+          <div class="summary-item-detail">
+            <span>
+              app.1inch.io
+            </span>
+          </div>
+        </ion-note>
+      </ion-item>
+
+      <div class="line-divider"></div>
+
+      <ion-item>
+        <ion-label>
+          <div class="summary-item">
+            <span>{{"Assignment" | translate}}</span>
+          </div>
+        </ion-label>
+        <ion-note item-end>
+          <div class="summary-item-detail">
+            <span>
+              {{"Unlimited" | translate}} {{ fromToken.symbol }}
+            </span>
+          </div>
+        </ion-note>
+      </ion-item>
+
+      <div class="line-divider"></div>
+
+      <ion-item>
+        <ion-label>
+          <div class="summary-item">
+            <span>{{"Miner Fee" | translate}}</span>
+          </div>
+        </ion-label>
+        <ion-note item-end>
+          <div class="summary-item-detail">
+            <span *ngIf="ctxp">
+              {{ ctxp.fee | satToUnit: getChain(fromWalletSelected.coin) }}
+            </span>
+          </div>
+        </ion-note>
+      </ion-item>
+
+      <div class="line-divider"></div>
+
+      <ion-item>
+        <ion-label>
+          <div class="summary-item">
+            <span>{{"Token Contract Address" | translate}}</span>
+          </div>
+        </ion-label>
+      </ion-item>
+
+      <ion-item *ngIf="calldata">
+        <div>{{ calldata.to }}</div>
+      </ion-item>
+
+      <div class="line-divider"></div>
+
+      <ion-item>
+        <ion-label>
+          <div class="summary-item">
+            <span>{{"Spender Contract Address" | translate}}</span>
+          </div>
+        </ion-label>
+      </ion-item>
+
+      <ion-item>
+        <div>{{ approveSpenderAddress }}</div>
+      </ion-item>
+
+      <div class="line-divider"></div>
+
+      <ion-item>
+        <ion-label>
+          <div class="summary-item">
+            <span>{{"Function" | translate}}</span>
+          </div>
+        </ion-label>
+        <ion-note item-end>
+          <div class="summary-item-detail">
+            <span>
+              Approve
+            </span>
+          </div>
+        </ion-note>
+      </ion-item>
+
+      <ion-item *ngIf="calldata">
+        <div>{{ calldata.data }}</div>
+      </ion-item>
+    </ion-list>
+  </div>
+  <div footer-content>
+    <page-slide-to-accept #slideButton *ngIf="isCordova && canContinue()" [disabled]="!canContinue()" buttonText="{{'Slide to Approve' | translate}}" [isDogecoin]="fromWalletSelected && fromWalletSelected.coin == 'doge'"  (slideDone)="makePayment()">
+    </page-slide-to-accept>
+    <ion-toolbar *ngIf="!isCordova">
+      <button ion-button full class="button-footer" (click)="makePayment()" [disabled]="!canContinue()">{{'Approve' | translate}}</button>
+    </ion-toolbar>
+  </div>
+</wide-header-page>

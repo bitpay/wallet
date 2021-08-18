@@ -34,6 +34,7 @@ import { ExchangeCryptoSettingsPage } from '../exchange-crypto/exchange-crypto-s
 import { BitPaySettingsPage } from '../integrations/bitpay-card/bitpay-settings/bitpay-settings';
 import { CoinbaseSettingsPage } from '../integrations/coinbase/coinbase-settings/coinbase-settings';
 import { GiftCardsSettingsPage } from '../integrations/gift-cards/gift-cards-settings/gift-cards-settings';
+import { WalletConnectPage } from '../integrations/wallet-connect/wallet-connect';
 import { WalletConnectSettingsPage } from '../integrations/wallet-connect/wallet-connect-settings/wallet-connect-settings';
 import { NewFeaturePage } from '../new-feature/new-feature';
 import { PinModalPage } from '../pin/pin-modal/pin-modal';
@@ -396,7 +397,12 @@ export class SettingsPage {
         this.navCtrl.push(GiftCardsSettingsPage);
         break;
       case 'newWalletConnect':
-        this.navCtrl.push(WalletConnectSettingsPage);
+        this.persistenceProvider.getWalletConnect().then(session => {
+          this.navCtrl.push(
+            session ? WalletConnectPage : WalletConnectSettingsPage
+          );
+        });
+
         break;
     }
   }

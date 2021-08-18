@@ -132,22 +132,15 @@ export class TxpDetailsPage {
     this.events.unsubscribe('bwsEvent', this.bwsEventHandler);
   }
 
-  private bwsEventHandler: any = (walletId: string, type: string) => {
-    _.each(
-      [
-        'TxProposalRejectedBy',
-        'TxProposalAcceptedBy',
-        'transactionProposalRemoved',
-        'TxProposalRemoved',
-        'NewOutgoingTx',
-        'UpdateTx'
-      ],
-      (eventName: string) => {
-        if (walletId == this.wallet.id && type == eventName) {
-          this.updateTxInfo(eventName);
-        }
+  private bwsEventHandler: any = data => {
+    _.each(['TxProposalRejectedBy', 'UpdateTx'], (eventName: string) => {
+      if (
+        data.walletId == this.wallet.id &&
+        data.notification_type == eventName
+      ) {
+        this.updateTxInfo(eventName);
       }
-    );
+    });
   };
 
   private displayFeeValues(): void {

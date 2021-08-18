@@ -13,11 +13,9 @@
       <a class="pointer" (click)="openExternalLink('https://walletconnect.org/')" translate>Read more</a>
     </div>
   </label-tip>
-
-  <ion-list class="bp-list">
-    <ion-item>
-      <ion-label>{{'Show in Home tab' | translate}}</ion-label>
-      <ion-toggle [(ngModel)]="showInHome" (ionChange)="showInHomeSwitch()"></ion-toggle>
-    </ion-item>
-  </ion-list>
+  <div class="btn-container">
+    <button (click)="showWallets()" ion-button class="button-standard connect-button" color="primary">
+      {{ 'Connect' | translate }}
+    </button>
+  </div>
 </ion-content>

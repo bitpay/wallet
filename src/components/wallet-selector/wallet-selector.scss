@@ -3,20 +3,30 @@ wallet-selector {
   .error {
     color: color($colors, danger);
   }
-  .title {
-    font-weight: 500;
-    > img {
-      vertical-align: sub;
-      margin-right: 5px;
-    }
-  }
+
   .no-wallets {
     text-align: center;
     padding: 20px;
     color: color($colors, danger);
   }
   .bp-header {
-    margin: 32px 0 20px 3px;
+    padding: 0 25px;
+
+    &__title {
+      font-weight: 500;
+      font-size: 20px;
+      margin: 32px 0 20px 0;
+      color: #000000;
+      > img {
+        vertical-align: sub;
+        margin-right: 5px;
+      }
+    }
+
+    &__subtitle {
+      font-size: 16px;
+      color: #000000;
+    }
   }
   .key-divider {
     display: flex;

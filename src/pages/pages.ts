@@ -11,12 +11,12 @@ import { SelectCurrencyPage } from '../pages/add/select-currency/select-currency
 import { BackupGamePage } from '../pages/backup/backup-game/backup-game';
 import { BackupKeyPage } from '../pages/backup/backup-key/backup-key';
 import { CountrySelectorPage } from '../pages/buy-crypto/country-selector/country-selector';
-import { CryptoCoinSelectorPage } from '../pages/buy-crypto/crypto-coin-selector/crypto-coin-selector';
 import { CryptoOffersPage } from '../pages/buy-crypto/crypto-offers/crypto-offers';
 import { CryptoOrderSummaryPage } from '../pages/buy-crypto/crypto-order-summary/crypto-order-summary';
 import { CryptoPaymentMethodPage } from '../pages/buy-crypto/crypto-payment-method/crypto-payment-method';
 import { CryptoSettingsPage } from '../pages/buy-crypto/crypto-settings/crypto-settings';
 import { ChooseFeeLevelModal } from '../pages/choose-fee-level/choose-fee-level';
+import { CoinAndWalletSelectorPage } from '../pages/coin-and-wallet-selector/coin-and-wallet-selector';
 import { ExchangeCheckoutPage } from '../pages/exchange-crypto/exchange-checkout/exchange-checkout';
 import { ExchangeCryptoPage } from '../pages/exchange-crypto/exchange-crypto';
 import { ExchangeCryptoSettingsPage } from '../pages/exchange-crypto/exchange-crypto-settings/exchange-crypto-settings';
@@ -32,6 +32,8 @@ import { RecoveryKeyPage } from '../pages/onboarding/recovery-key/recovery-key';
 import { PaperWalletPage } from '../pages/paper-wallet/paper-wallet';
 import { SlideToAcceptPage } from '../pages/slide-to-accept/slide-to-accept';
 import { TabsPage } from '../pages/tabs/tabs';
+import { TokenSwapApprovePage } from '../pages/token-swap/token-swap-approve/token-swap-approve';
+import { TokenSwapCheckoutPage } from '../pages/token-swap/token-swap-checkout/token-swap-checkout';
 import { TxDetailsModal } from '../pages/tx-details/tx-details';
 import { TxpDetailsPage } from '../pages/txp-details/txp-details';
 import { SearchTxModalPage } from '../pages/wallet-details/search-tx-modal/search-tx-modal';
@@ -53,6 +55,10 @@ import { CoinbaseSettingsPage } from '../pages/integrations/coinbase/coinbase-se
 import { CoinbaseTxDetailsPage } from '../pages/integrations/coinbase/coinbase-tx-details/coinbase-tx-details';
 import { CoinbaseWithdrawPage } from '../pages/integrations/coinbase/coinbase-withdraw/coinbase-withdraw';
 
+// Integrations: OneInch
+import { OneInchPage } from '../pages/integrations/one-inch/one-inch';
+import { OneInchDetailsPage } from '../pages/integrations/one-inch/one-inch-details/one-inch-details';
+
 // Integrations: Simplex
 import { SimplexPage } from '../pages/integrations/simplex/simplex';
 import { SimplexDetailsPage } from '../pages/integrations/simplex/simplex-details/simplex-details';
@@ -63,6 +69,7 @@ import { WyreDetailsPage } from '../pages/integrations/wyre/wyre-details/wyre-de
 
 // Integrations: Wallet Connect
 import { WalletConnectPage } from '../pages/integrations/wallet-connect/wallet-connect';
+import { WalletConnectRequestDetailsPage } from '../pages/integrations/wallet-connect/wallet-connect-request-details/wallet-connect-request-details';
 import { WalletConnectSettingsPage } from '../pages/integrations/wallet-connect/wallet-connect-settings/wallet-connect-settings';
 
 // Integrations: BitPayCard
@@ -187,12 +194,14 @@ export const PAGES = [
   CoinbasePage,
   CoinbaseTxDetailsPage,
   CoinbaseWithdrawPage,
+  OneInchPage,
+  OneInchDetailsPage,
+  CoinAndWalletSelectorPage,
   CopayersPage,
   CountrySelectorPage,
   CryptoPaymentMethodPage,
   CryptoOrderSummaryPage,
   CryptoOffersPage,
-  CryptoCoinSelectorPage,
   CryptoSettingsPage,
   ExchangeCheckoutPage,
   ExchangeCryptoPage,
@@ -248,6 +257,8 @@ export const PAGES = [
   SendFeedbackPage,
   FinishModalPage,
   TabsPage,
+  TokenSwapApprovePage,
+  TokenSwapCheckoutPage,
   TxpDetailsPage,
   TxDetailsModal,
   TxpPage,
@@ -269,6 +280,7 @@ export const PAGES = [
   KeyOnboardingPage,
   WalletConnectPage,
   WalletConnectSettingsPage,
+  WalletConnectRequestDetailsPage,
   WalletDetailsPage,
   WalletRecoverPage,
   WalletMnemonicRecoverPage,

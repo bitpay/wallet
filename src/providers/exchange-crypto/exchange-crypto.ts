@@ -8,6 +8,7 @@ import { ConfigProvider } from '../config/config';
 import { CurrencyProvider } from '../currency/currency';
 import { HomeIntegrationsProvider } from '../home-integrations/home-integrations';
 import { Logger } from '../logger/logger';
+import { OneInchProvider } from '../one-inch/one-inch';
 import { ReplaceParametersProvider } from '../replace-parameters/replace-parameters';
 
 @Injectable()
@@ -21,6 +22,7 @@ export class ExchangeCryptoProvider {
     private currencyProvider: CurrencyProvider,
     private homeIntegrationsProvider: HomeIntegrationsProvider,
     private logger: Logger,
+    private oneInchProvider: OneInchProvider,
     private replaceParametersProvider: ReplaceParametersProvider,
     private translate: TranslateService
   ) {
@@ -33,7 +35,7 @@ export class ExchangeCryptoProvider {
   public register(): void {
     this.homeIntegrationsProvider.register({
       name: 'exchangecrypto',
-      title: this.translate.instant('Exchange Crypto'),
+      title: this.translate.instant('Swap Crypto'),
       icon: 'assets/img/exchange-crypto/exchange-settings.svg',
       showIcon: true,
       logo: null,
@@ -47,11 +49,13 @@ export class ExchangeCryptoProvider {
   }
 
   public async getSwapTxs(): Promise<any> {
-    const [changellySwapTxs]: any = await Promise.all([
-      this.changellyProvider.getChangelly()
+    const [changellySwapTxs, oneInchSwapTxs]: any = await Promise.all([
+      this.changellyProvider.getChangelly(),
+      this.oneInchProvider.getOneInch()
     ]);
     return {
-      changellySwapTxs: _.values(changellySwapTxs)
+      changellySwapTxs: _.values(changellySwapTxs),
+      oneInchSwapTxs: _.values(oneInchSwapTxs)
     };
   }
 

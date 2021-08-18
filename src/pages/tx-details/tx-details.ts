@@ -99,16 +99,15 @@ export class TxDetailsModal {
     this.events.unsubscribe('bwsEvent', this.bwsEventHandler);
   }
 
-  private bwsEventHandler: any = (_, type: string, n) => {
+  private bwsEventHandler: any = data => {
     let match = false;
     if (
-      type == 'NewBlock' &&
-      n &&
-      n.data &&
       this.wallet &&
-      n.data &&
-      n.data.network == this.wallet.network &&
-      n.data.coin == this.wallet.coin
+      data &&
+      data.notification_type == 'NewBlock' &&
+      data.notification &&
+      data.notification.network == this.wallet.network &&
+      data.notification.coin == this.wallet.coin
     ) {
       match = true;
       this.updateTxDebounced({ hideLoading: true });

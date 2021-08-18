@@ -11,6 +11,7 @@ describe('WalletDetailsPage', () => {
 
   beforeEach(async(() => {
     const mockWallet = {
+      coin: 'btc',
       name: 'Test Wallet',
       cachedStatus: null,
       credentials: { m: 1 },
@@ -30,14 +31,15 @@ describe('WalletDetailsPage', () => {
     );
   }));
   afterEach(() => {
+    spyOn(instance, 'ngOnDestroy');
     fixture.destroy();
   });
   describe('Lifecycle Hooks', () => {
-    describe('ionViewWillEnter', () => {
+    describe('ionViewDidLoad', () => {
       it('should subscribe to events', () => {
         const subscribeSpy = spyOn(instance.events, 'subscribe');
         const publishSpy = spyOn(instance.events, 'publish');
-        instance.ionViewWillEnter();
+        instance.ionViewDidLoad();
         expect(subscribeSpy).toHaveBeenCalledWith(
           'Local/WalletUpdate',
           instance.updateStatus
@@ -79,7 +81,7 @@ describe('WalletDetailsPage', () => {
     });
     describe('showHistory', () => {
       it('should add the next page of transactions to the list', () => {
-        instance.ionViewWillEnter();
+        instance.ionViewDidLoad();
         instance.currentPage = 0;
         instance.wallet.completeHistory = new Array(11).map(() => {});
         const spy = spyOn(instance, 'groupHistory');
