@@ -28,8 +28,8 @@
   "pushSenderId": "1036948132229",
   "description": "A Secure Bitcoin Wallet",
   "version": "12.8.1",
-  "androidVersion": "91208011",
-  "iOSBuildVersion": "1",
+  "androidVersion": "91208012",
+  "iOSBuildVersion": "2",
   "_extraCSS": null,
   "_enabledExtensions": {
     "buycrypto": false,
