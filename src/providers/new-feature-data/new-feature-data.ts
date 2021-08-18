@@ -72,6 +72,15 @@ export class NewFeatureData {
             image: {
               path: 'assets/img/new-feature/12.8/12.8-1-swap-crypto.svg'
             }
+          },
+          {
+            title: this.translate.instant('Add Any ERC-20 Token'),
+            details: this.translate.instant(
+              'Now you can add ERC-20 tokens to keep track of all your digital assets in one place. In your wallet, tap + and ‘Add Token’ to add.'
+            ),
+            image: {
+              path: 'assets/img/new-feature/12.8/12.8-1-erc20.svg'
+            }
           }
         ]
       }
