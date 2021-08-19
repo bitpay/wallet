@@ -278,8 +278,6 @@ export class TabsPage {
         this.fetchAllWalletsStatus(opts);
         break;
       case 'TxProposalAcceptedBy':
-      case 'TxProposalFinallyAccepted':
-      case 'TxProposalFinallyRejected':
       case 'TxProposalRejectedBy':
       case 'TxProposalRemoved':
         this.updateTxps();
