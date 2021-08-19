@@ -18,15 +18,11 @@ import env from '../../environments';
 // providers
 import { AddressBookProvider } from '../../providers/address-book/address-book';
 import { AnalyticsProvider } from '../../providers/analytics/analytics';
-import { BuyCryptoProvider } from '../../providers/buy-crypto/buy-crypto';
 import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
 import { ConfigProvider } from '../../providers/config/config';
 import { CurrencyProvider } from '../../providers/currency/currency';
 import { ErrorsProvider } from '../../providers/errors/errors';
-import { ExchangeCryptoProvider } from '../../providers/exchange-crypto/exchange-crypto';
 import { ExternalLinkProvider } from '../../providers/external-link/external-link';
-import { GiftCardProvider } from '../../providers/gift-card/gift-card';
-import { CardConfigMap } from '../../providers/gift-card/gift-card.types';
 import { ActionSheetProvider, AppProvider } from '../../providers/index';
 import { Logger } from '../../providers/logger/logger';
 import { PlatformProvider } from '../../providers/platform/platform';
@@ -37,7 +33,6 @@ import { WalletProvider } from '../../providers/wallet/wallet';
 
 // pages
 import { BackupKeyPage } from '../../pages/backup/backup-key/backup-key';
-import { ExchangeCryptoPage } from '../../pages/exchange-crypto/exchange-crypto';
 import { SendPage } from '../../pages/send/send';
 import { WalletAddressesPage } from '../../pages/settings/wallet-settings/wallet-settings-advanced/wallet-addresses/wallet-addresses';
 import { TxDetailsModal } from '../../pages/tx-details/tx-details';
@@ -93,8 +88,8 @@ export class WalletDetailsPage {
   public showBuyCrypto: boolean;
   public showExchangeCrypto: boolean;
   public isShowDonationBtn: boolean;
+  public selectedTheme;
 
-  public supportedCards: Promise<CardConfigMap>;
   constructor(
     public http: HttpClient,
     private currencyProvider: CurrencyProvider,
@@ -103,7 +98,6 @@ export class WalletDetailsPage {
     private walletProvider: WalletProvider,
     private addressbookProvider: AddressBookProvider,
     private events: Events,
-    public giftCardProvider: GiftCardProvider,
     private logger: Logger,
     private timeProvider: TimeProvider,
     private translate: TranslateService,
@@ -120,29 +114,19 @@ export class WalletDetailsPage {
     private themeProvider: ThemeProvider,
     private configProvider: ConfigProvider,
     private analyticsProvider: AnalyticsProvider,
-    private buyCryptoProvider: BuyCryptoProvider,
-    private exchangeCryptoProvider: ExchangeCryptoProvider,
     private appProvider: AppProvider
   ) {
+    this.selectedTheme = this.themeProvider.getSelectedTheme();
     this.zone = new NgZone({ enableLongStackTrace: false });
     this.isCordova = this.platformProvider.isCordova;
 
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
-    this.supportedCards = this.giftCardProvider.getSupportedCardMap();
     this.useLegacyQrCode = this.configProvider.get().legacyQrCode.show;
     this.isDarkModeEnabled = this.themeProvider.isDarkModeEnabled();
     this.showBuyCrypto =
-      _.includes(
-        this.buyCryptoProvider.exchangeCoinsSupported,
-        this.wallet.coin
-      ) &&
       (this.wallet.network == 'livenet' ||
         (this.wallet.network == 'testnet' && env.name == 'development'));
-    this.showExchangeCrypto =
-      _.includes(
-        this.exchangeCryptoProvider.exchangeCoinsSupported,
-        this.wallet.coin
-      ) && this.wallet.network == 'livenet';
+    this.showExchangeCrypto = this.wallet.network == 'livenet';
 
     // Check is show btn Donate
     this.walletProvider.getDonationInfo().then((data: any) =>{
@@ -680,24 +664,6 @@ export class WalletDetailsPage {
     });
   }
 
-  public goToExchangeCryptoPage() {
-    if (this.wallet && this.wallet.isComplete() && this.wallet.needsBackup) {
-      const needsBackup = this.actionSheetProvider.createNeedsBackup();
-      needsBackup.present();
-      needsBackup.onDidDismiss(data => {
-        if (data === 'goToBackup') this.goToBackup();
-      });
-    } else {
-      this.analyticsProvider.logEvent('exchange_crypto_button_clicked', {
-        from: 'walletDetails',
-        coin: this.wallet.coin
-      });
-      this.navCtrl.push(ExchangeCryptoPage, {
-        walletId: this.wallet.id
-      });
-    }
-  }
-
   public goToBuyCryptoPage() {
     if (this.wallet && this.wallet.isComplete() && this.wallet.needsBackup) {
       const needsBackup = this.actionSheetProvider.createNeedsBackup();
@@ -738,7 +704,7 @@ export class WalletDetailsPage {
 
   public handleDonation() {
     this.walletProvider.getDonationInfo().then((data:any) => {
-      if(_.isEmpty(data))  throw 'No data Remaning'
+      if(_.isEmpty(data)) throw new Error("No data Remaning");
       this.navCtrl.push(AmountPage, {
         toAddress: _.get(_.find(data.donationToAddresses, item => item.coin == this.wallet.coin), 'address', ''),
         donationSupportCoins : data.donationSupportCoins,

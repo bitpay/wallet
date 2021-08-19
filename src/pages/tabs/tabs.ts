@@ -7,7 +7,6 @@ import { AnalyticsProvider } from '../../providers/analytics/analytics';
 import { AppProvider } from '../../providers/app/app';
 import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
 import { ClipboardProvider } from '../../providers/clipboard/clipboard';
-import { LocationProvider } from '../../providers/location/location';
 import { Logger } from '../../providers/logger/logger';
 import {
   Network,
@@ -16,15 +15,10 @@ import {
 import { PlatformProvider } from '../../providers/platform/platform';
 import { ProfileProvider } from '../../providers/profile/profile';
 import { RateProvider } from '../../providers/rate/rate';
-import { TabProvider } from '../../providers/tab/tab';
 import { ThemeProvider } from '../../providers/theme/theme';
 import { WalletProvider } from '../../providers/wallet/wallet';
 
-import { CryptoCoinSelectorPage } from '../buy-crypto/crypto-coin-selector/crypto-coin-selector';
-import { CardsPage } from '../cards/cards';
-import { ExchangeCryptoPage } from '../exchange-crypto/exchange-crypto';
 import { HomePage } from '../home/home';
-import { CardCatalogPage } from '../integrations/gift-cards/card-catalog/card-catalog';
 import { ScanPage } from '../scan/scan';
 import { AmountPage } from '../send/amount/amount';
 import { SettingsPage } from '../settings/settings';
@@ -55,9 +49,6 @@ export class TabsPage {
   private onPauseSubscription: Subscription;
   private pageMap = {
     AmountPage,
-    ExchangeCryptoPage,
-    CryptoCoinSelectorPage,
-    CardCatalogPage,
     ScanPage
   };
 
@@ -71,10 +62,8 @@ export class TabsPage {
     private persistenceProvider: PersistenceProvider,
     private translate: TranslateService,
     private bwcErrorProvider: BwcErrorProvider,
-    private tabProvider: TabProvider,
     private rateProvider: RateProvider,
     private platformProvider: PlatformProvider,
-    private locationProvider: LocationProvider,
     private actionSheetProvider: ActionSheetProvider,
     private navCtrl: NavController,
     private analyticsProvider: AnalyticsProvider,
@@ -152,7 +141,6 @@ export class TabsPage {
 
     this.checkCardEnabled();
     this.checkClipboardData();
-    this.tabProvider.prefetchGiftCards();
   }
 
   ngOnDestroy() {
@@ -172,12 +160,6 @@ export class TabsPage {
     if (!cardExperimentEnabled) {
       try {
         this.logger.debug('BitPay: setting country');
-        const country = await this.locationProvider.getCountry();
-        if (country === 'US') {
-          this.logger.debug('If US: Set Card Experiment Flag Enabled');
-          await this.persistenceProvider.setCardExperimentFlag('enabled');
-          cardExperimentEnabled = true;
-        }
       } catch (err) {
         this.logger.error('Error setting country: ', err);
       }
@@ -402,7 +384,6 @@ export class TabsPage {
   homeRoot = HomePage;
   walletsRoot = WalletsPage;
   scanRoot = ScanPage;
-  cardsRoot = CardsPage;
   settingsRoot = SettingsPage;
   addressBookRoot = AddressbookPage;
 }

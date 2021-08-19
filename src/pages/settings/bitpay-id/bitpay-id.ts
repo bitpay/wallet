@@ -5,7 +5,6 @@ import { TranslateService } from '@ngx-translate/core';
 import { Events, NavController, NavParams } from 'ionic-angular';
 import {
   ActionSheetProvider,
-  BitPayIdProvider,
   Logger,
   PersistenceProvider,
   PopupProvider
@@ -26,7 +25,6 @@ export class BitPayIdPage {
     private events: Events,
     private logger: Logger,
     private navParams: NavParams,
-    private bitPayIdProvider: BitPayIdProvider,
     private navCtrl: NavController,
     private popupProvider: PopupProvider,
     private persistenceProvider: PersistenceProvider,
@@ -41,7 +39,6 @@ export class BitPayIdPage {
       this.accountInitials = this.getBitPayIdInitials(this.userBasicInfo);
     }
     this.changeDetectorRef.detectChanges();
-    this.network = this.bitPayIdProvider.getEnvironment().network;
     this.bitpayIdSettings =
       (await this.persistenceProvider.getBitPayIdSettings(this.network)) ||
       this.getDefaultBitPayIdSettings();
@@ -79,13 +76,6 @@ export class BitPayIdPage {
         )
       )
       .then(async () => {
-        await this.bitPayIdProvider.disconnectBitPayID(
-          () => null,
-          err => {
-            this.logger.log(err);
-          }
-        );
-
         const infoSheet = this.actionSheetProvider.createInfoSheet(
           'in-app-notification',
           {

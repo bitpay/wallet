@@ -16,7 +16,6 @@ import { Subscription } from 'rxjs';
 import { AddPage } from '../add/add';
 import { CopayersPage } from '../add/copayers/copayers';
 import { BackupKeyPage } from '../backup/backup-key/backup-key';
-import { CoinbaseAccountPage } from '../integrations/coinbase/coinbase-account/coinbase-account';
 import { SettingsPage } from '../settings/settings';
 import { WalletDetailsPage } from '../wallet-details/wallet-details';
 import { ProposalsNotificationsPage } from './proposals-notifications/proposals-notifications';
@@ -25,8 +24,6 @@ import { ProposalsNotificationsPage } from './proposals-notifications/proposals-
 import { ActionSheetProvider } from '../../providers/action-sheet/action-sheet';
 import { AnalyticsProvider } from '../../providers/analytics/analytics';
 import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
-import { CoinbaseProvider } from '../../providers/coinbase/coinbase';
-import { HomeIntegrationsProvider } from '../../providers/home-integrations/home-integrations';
 import { Logger } from '../../providers/logger/logger';
 import { PersistenceProvider } from '../../providers/persistence/persistence';
 import { PlatformProvider } from '../../providers/platform/platform';
@@ -74,12 +71,10 @@ export class WalletsPage {
     private analyticsProvider: AnalyticsProvider,
     private logger: Logger,
     private events: Events,
-    private homeIntegrationsProvider: HomeIntegrationsProvider,
     private persistenceProvider: PersistenceProvider,
     private translate: TranslateService,
     private modalCtrl: ModalController,
     private actionSheetProvider: ActionSheetProvider,
-    private coinbaseProvider: CoinbaseProvider,
     private navParams: NavParams,
     private loadingCtr: LoadingController
   ) {
@@ -94,7 +89,6 @@ export class WalletsPage {
 
   ionViewWillEnter() {
     this.getWalletsGroups();
-    this.setCoinbase();
   }
 
   private getWalletsGroups(){
@@ -121,21 +115,6 @@ export class WalletsPage {
 
   isEmptyWalletDonation(walletGroups: any){
     return walletGroups.length <= 1 && _.isEmpty(walletGroups[0]);
-  }
-
-  private setCoinbase(force?) {
-    this.showCoinbase = this.homeIntegrationsProvider.shouldShowInHome(
-      'coinbase'
-    );
-    if (!this.showCoinbase) return;
-    this.coinbaseLinked = this.coinbaseProvider.isLinked();
-    if (this.coinbaseLinked) {
-      if (force || _.isEmpty(this.coinbaseData)) {
-        this.zone.run(() => {
-          this.coinbaseProvider.preFetchAllData(this.coinbaseData);
-        });
-      } else this.coinbaseData = this.coinbaseProvider.coinbaseData;
-    }
   }
 
   private async walletAudienceEvents() {
@@ -290,17 +269,6 @@ export class WalletsPage {
         
       });
       
-    },
-    5000,
-    {
-      leading: true
-    }
-  );
-
-  private debounceSetCoinbase = _.debounce(
-    async () => {
-      this.coinbaseProvider.updateExchangeRates();
-      this.setCoinbase(true);
     },
     5000,
     {
@@ -514,7 +482,6 @@ export class WalletsPage {
     if (!this.isDonation) {
       this.debounceSetWallets();
     }
-    this.debounceSetCoinbase();
     setTimeout(() => {
       refresher.complete();
     }, 2000);
@@ -556,16 +523,6 @@ export class WalletsPage {
           : this.navCtrl.push(AddPage, {
               isZeroState: true
             });
-    });
-  }
-
-  public getNativeBalance(amount, currency): string {
-    return this.coinbaseProvider.getNativeCurrencyBalance(amount, currency);
-  }
-
-  public goToCoinbaseAccount(id): void {
-    this.navCtrl.push(CoinbaseAccountPage, {
-      id
     });
   }
 }

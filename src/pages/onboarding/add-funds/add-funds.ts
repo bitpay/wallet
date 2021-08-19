@@ -11,7 +11,6 @@ import { ProfileProvider } from '../../../providers/profile/profile';
 
 // Pages
 import { ImportWalletPage } from '../../../pages/add/import-wallet/import-wallet';
-import { CoinbasePage } from '../../../pages/integrations/coinbase/coinbase';
 import { RecoveryKeyPage } from '../../../pages/onboarding/recovery-key/recovery-key';
 import { AmountPage } from '../../../pages/send/amount/amount';
 
@@ -50,10 +49,6 @@ export class AddFundsPage {
   private checkIfNeedsBackup(): boolean {
     const walletsGroup = this.profileProvider.getWalletGroup(this.keyId);
     return walletsGroup.needsBackup;
-  }
-
-  public goToCoinbase(): void {
-    this.navCtrl.push(CoinbasePage, { isOnboardingFlow: true });
   }
 
   public goToAmountPage() {

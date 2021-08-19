@@ -16,7 +16,6 @@ import {
   AnalyticsProvider,
   ConfigProvider,
   Logger,
-  SimplexProvider,
   WalletProvider
 } from '../../../providers';
 import { DateRanges, RateProvider } from '../../../providers/rate/rate';
@@ -50,7 +49,6 @@ export class PricePage {
     private configProvider: ConfigProvider,
     private logger: Logger,
     private walletProvider: WalletProvider,
-    private simplexProvider: SimplexProvider,
     private analyticsProvider: AnalyticsProvider
   ) {
     this.getCoinDonate();
@@ -197,7 +195,6 @@ export class PricePage {
   }
 
   private setFiatIsoCode() {
-    this.fiatCodes = this.simplexProvider.getSupportedFiatAltCurrencies();
     const { alternativeIsoCode } = this.configProvider.get().wallet.settings;
     this.fiatIsoCode = this.rateProvider.isAltCurrencyAvailable(
       alternativeIsoCode

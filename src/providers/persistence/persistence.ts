@@ -3,7 +3,6 @@ import { File } from '@ionic-native/file';
 import * as _ from 'lodash';
 import { Logger } from '../../providers/logger/logger';
 
-import { GiftCard } from '../gift-card/gift-card.types';
 import { PlatformProvider } from '../platform/platform';
 import { FileStorage } from './storage/file-storage';
 import { LocalStorage } from './storage/local-storage';
@@ -18,10 +17,6 @@ export interface FeedbackValues {
   time: number;
   version: string;
   sent: boolean;
-}
-
-export interface GiftCardMap {
-  [invoiceId: string]: GiftCard;
 }
 
 const Keys = {
@@ -703,14 +698,6 @@ export class PersistenceProvider {
 
   removeAllBitPayAccounts(network: string) {
     return this.storage.set(Keys.BITPAY_ACCOUNTS_V2(network), {});
-  }
-
-  setGiftCards(cardName: string, network: Network, gcs: string) {
-    return this.storage.set(Keys.GIFT_CARDS(cardName, network), gcs);
-  }
-
-  getGiftCards(cardName: string, network: Network): Promise<GiftCardMap> {
-    return this.storage.get(Keys.GIFT_CARDS(cardName, network));
   }
 
   setServerMessageDismissed(id) {

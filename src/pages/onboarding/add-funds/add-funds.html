@@ -1,19 +1,6 @@
 <wide-header-page title="{{ 'Let’s add some funds' | translate }}" hideBackButton="true">
   <div page-content>
     <ion-list no-lines>
-      <div class="option-container" (click)="goToCoinbase()" *ngIf="showCoinbase">
-        <ion-item>
-          <img src="assets/img/coinbase/coinbase-icon.png" class="coinbase-icon" />
-        </ion-item>
-        <div class="info">
-          <div class="title">
-            {{'Connect with Coinbase' | translate}}
-          </div>
-          <div class="note">
-            {{'Easily deposit and withdraw funds.' | translate}}
-          </div>
-        </div>
-      </div>
       <div class="option-container" (click)="goToAmountPage()">
         <ion-item>
           <img src="assets/img/onboarding/all-coins.svg" />
