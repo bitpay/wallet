@@ -88,6 +88,7 @@ export class WalletDetailsPage {
   public showBuyCrypto: boolean;
   public showExchangeCrypto: boolean;
   public isShowDonationBtn: boolean;
+  public selectedTheme;
 
   constructor(
     public http: HttpClient,
@@ -115,6 +116,7 @@ export class WalletDetailsPage {
     private analyticsProvider: AnalyticsProvider,
     private appProvider: AppProvider
   ) {
+    this.selectedTheme = this.themeProvider.getSelectedTheme();
     this.zone = new NgZone({ enableLongStackTrace: false });
     this.isCordova = this.platformProvider.isCordova;
 
