@@ -104,13 +104,14 @@ export class TxDetailsModal {
     if (
       this.wallet &&
       data &&
-      data.notification_type == 'NewBlock' &&
+      (data.notification_type == 'NewBlock' ||
+        data.notification_type == 'TxConfirmation') &&
       data.notification &&
       data.notification.network == this.wallet.network &&
       data.notification.coin == this.wallet.coin
     ) {
       match = true;
-      this.updateTxDebounced({ hideLoading: true });
+      this.updateTxDebounced({ hideLoading: true, force: true });
     }
     this.logger.debug('bwsEvent handler @tx-details. Matched: ' + match);
   };
@@ -190,8 +191,8 @@ export class TxDetailsModal {
   }
 
   private updateTxDebounced = _.debounce(
-    async hideLoading => {
-      this.updateTx({ hideLoading });
+    async ({ hideLoading, force }) => {
+      this.updateTx({ hideLoading, force });
     },
     1000,
     {
@@ -203,7 +204,7 @@ export class TxDetailsModal {
     opts = opts ? opts : {};
     if (!opts.hideLoading) this.onGoingProcess.set('loadingTxInfo');
     this.walletProvider
-      .getTx(this.wallet, this.txId)
+      .getTx(this.wallet, this.txId, { force: opts.force })
       .then(tx => {
         this.retryGetTx = 0;
         if (!opts.hideLoading) this.onGoingProcess.clear();
