@@ -559,7 +559,7 @@ export class AmountPage {
     this.navCtrl.push(nextPage, data);
   }
 
-  public finish(skipActivationFeeAlert: boolean = false): void {
+  public finish(_skipActivationFeeAlert: boolean = false): void {
     if (!this.allowSend) return;
     let unit = this.availableUnits[this.unitIndex];
     let _amount = this.evaluate(this.format(this.expression));
@@ -627,10 +627,6 @@ export class AmountPage {
 
     if (this.navParams.data.fromWalletDetails) {
       data.fromWalletDetails = true;
-    }
-
-    if (this.cardName && !skipActivationFeeAlert) {
-      return;
     }
 
     if (this.navParams.get('card') === 'v2') {

@@ -118,9 +118,6 @@ export class HomePage {
     this.persistenceProvider
       .getCardExperimentFlag()
       .then(status => (this.cardExperimentEnabled = status === 'enabled'));
-    this.persistenceProvider
-      .getTestingAdvertisments()
-      .then(testing => (this.testingAdsEnabled = testing === 'enabled'));
     this.isCordova = this.platformProvider.isCordova;
   }
 
@@ -274,7 +271,7 @@ export class HomePage {
     const slideIndex = this.slides && this.slides.getActiveIndex();
     const activeAd = this.advertisements[slideIndex] || { linkParams: {} };
     const cardConfig = activeAd.linkParams && activeAd.linkParams.cardConfig;
-    cardConfig;
+    cardConfig && null;
   }
 
   public doRefresh(refresher): void {
@@ -379,12 +376,6 @@ export class HomePage {
         const now = moment().unix();
         const timeExceeded = now - feedbackInfo.time >= 24 * 7 * 60 * 60;
         this.showRateCard = timeExceeded && !feedbackInfo.sent;
-
-        //// Uncaught ////
-        // this.showCard.setShowRateCard(this.showRateCard);
-        // this.showCard.setShowSurveyCard(
-        //   timeExceeded && !feedbackInfo.surveyTaken
-        // );
       }
     });
   }

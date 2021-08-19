@@ -1695,10 +1695,7 @@ export class ConfirmPage {
     this.navigateBack(redir, walletId);
   }
 
-  private navigateBack(redir?: string, walletId?: string) {
-    this.logger.debug(
-      'Redir:' + redir
-    );
+  private navigateBack(_redir?: string, walletId?: string) {
     this.navCtrl.popToRoot().then(_ => {
       if (this.wallet) {
         this.navCtrl.push(WalletDetailsPage, {
