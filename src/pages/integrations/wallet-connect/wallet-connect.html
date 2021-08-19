@@ -211,7 +211,7 @@
 
   <ion-footer no-border>
     <ion-toolbar>
-      <button *ngIf="connected && !exiting" (click)="killSession()" ion-button class="button-standard" color="primary" outline margin-top @fadeOut>
+      <button *ngIf="connected && !exitingAnimationPatch" (click)="killSession()" ion-button class="button-standard" color="primary" outline margin-top @fadeOut>
         {{'Disconnect' | translate }}
       </button>
     </ion-toolbar>

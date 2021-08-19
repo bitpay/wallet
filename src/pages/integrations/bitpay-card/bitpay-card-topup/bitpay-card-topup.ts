@@ -27,7 +27,10 @@ import { PayproProvider } from '../../../../providers/paypro/paypro';
 import { PlatformProvider } from '../../../../providers/platform/platform';
 import { PopupProvider } from '../../../../providers/popup/popup';
 import { ProfileProvider } from '../../../../providers/profile/profile';
-import { TxFormatProvider } from '../../../../providers/tx-format/tx-format';
+import {
+  Coin,
+  TxFormatProvider
+} from '../../../../providers/tx-format/tx-format';
 import {
   TransactionProposal,
   WalletProvider
@@ -135,7 +138,7 @@ export class BitPayCardTopUpPage {
     this.currency = this.navParams.data.currency;
     this.amount = this.navParams.data.amount;
 
-    let coin = this.currency ? this.currency.toLowerCase() : null;
+    let coin = Coin[this.currency] ? Coin[this.currency] : null;
 
     this.bitPayCardProvider
       .get({
@@ -169,7 +172,7 @@ export class BitPayCardTopUpPage {
           hasFunds: true
         };
 
-        if (this.currency.toLowerCase()) {
+        if (Coin[this.currency]) {
           const { amountSat } = this.txFormatProvider.parseAmount(
             this.currency.toLowerCase(),
             this.amount,
