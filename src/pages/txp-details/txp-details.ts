@@ -133,14 +133,17 @@ export class TxpDetailsPage {
   }
 
   private bwsEventHandler: any = data => {
-    _.each(['TxProposalRejectedBy', 'UpdateTx'], (eventName: string) => {
-      if (
-        data.walletId == this.wallet.id &&
-        data.notification_type == eventName
-      ) {
-        this.updateTxInfo(eventName);
+    _.each(
+      ['TxProposalRejectedBy', 'TxProposalAcceptedBy', 'TxProposalRemoved'],
+      (eventName: string) => {
+        if (
+          data.walletId == this.wallet.id &&
+          data.notification_type == eventName
+        ) {
+          this.updateTxInfo(eventName);
+        }
       }
-    });
+    );
   };
 
   private displayFeeValues(): void {
