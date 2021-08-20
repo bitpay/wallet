@@ -49,10 +49,10 @@ export class DynamicLinksProvider {
           if (ready && !this.locked) {
             this.locked = true;
             setTimeout(() => {
+              this.onGoingProcessProvider.clear();
               this.incomingDataProvider.redir(decodeURIComponent(dynLink), {
                 force: true
               });
-              this.onGoingProcessProvider.clear();
             }, timeout);
             setTimeout(() => (this.locked = false), LOCK_TIMEOUT);
             subscription && subscription.unsubscribe();
