@@ -2,7 +2,7 @@
   "name": "abcpay",
   "description": "Secure Bitcoin Wallet",
   "author": "Abcpay",
-  "version": "12.0.2",
+  "version": "1.0.0",
   "keywords": [
     "bitcoin",
     "wallet",
@@ -21,7 +21,7 @@
   },
   "dom_storage_quota": 200,
   "id": "jid1-x7bV5evAaI1P9Q",
-  "homepage": "https://bitpay.com",
+  "homepage": "https://t.me/AbcPay",
   "license": "MIT",
   "repository": {
     "url": "git://github.com/bitpay/copay.git",
@@ -276,7 +276,8 @@
         "EIGHTH_URL_SCHEME": "dogecoin",
         "ANDROID_SCHEME": "",
         "ANDROID_HOST": "",
-        "ANDROID_PATHPREFIX": ""
+        "ANDROID_PATHPREFIX": "",
+        "NINTH_URL_SCHEME": "litecoin"
       },
       "cordova-plugin-fcm-ng": {
         "PAGE_LINK_DOMAIN": "bitpayapp.page.link"
