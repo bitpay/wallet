@@ -351,7 +351,7 @@ class AssetGroup {
         this.patterns = [];
         this.name = config.name;
         // Patterns in the config are regular expressions disguised as strings. Breathe life into them.
-        this.patterns = this.config.patterns.map(pattern => new RegExp(pattern));
+        this.patterns = this.config.patterns ? this.config.patterns.map(pattern => new RegExp(pattern)) : [];
         // This is the primary cache, which holds all of the cached requests for this group. If a
         // resource
         // isn't in this cache, it hasn't been fetched yet.
@@ -970,7 +970,7 @@ class DataGroup {
          * Tracks the LRU state of resources in this cache.
          */
         this._lru = null;
-        this.patterns = this.config.patterns.map(pattern => new RegExp(pattern));
+        this.patterns = this.config.patterns ? this.config.patterns.map(pattern => new RegExp(pattern)) : [];
         this.cache = this.scope.caches.open(`${this.prefix}:dynamic:${this.config.name}:cache`);
         this.lruTable = this.db.open(`${this.prefix}:dynamic:${this.config.name}:lru`);
         this.ageTable = this.db.open(`${this.prefix}:dynamic:${this.config.name}:age`);
