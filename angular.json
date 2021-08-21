@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "copay": {
+    "abcpay": {
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
@@ -12,11 +12,15 @@
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
             "outputPath": "dist",
-            "index": "index.html",
-            "main": "app/main.ts",
+            "index": "src/index.html",
+            "main": "src/app/main.ts",
             "tsConfig": "./tsconfig.json",
             "polyfills": "polyfills.ts",
-            "assets": ["assets", "favicon.ico"],
+            "assets": [
+              "assets",
+              "favicon.ico",
+              "src/manifest.json"
+            ],
             "styles": [],
             "scripts": []
           },
@@ -38,28 +42,29 @@
               "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
-              "buildOptimizer": true
+              "buildOptimizer": true,
+              "serviceWorker": true
             }
           }
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "copay:build"
+            "browserTarget": "abcpay:build"
           },
           "configurations": {
             "prod": {
-              "browserTarget": "copay:build:prod"
+              "browserTarget": "abcpay:build:prod"
             },
             "production": {
-              "browserTarget": "copay:build:production"
+              "browserTarget": "abcpay:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "copay:build"
+            "browserTarget": "abcpay:build"
           }
         },
         "test": {
@@ -78,14 +83,22 @@
             ],
             "scripts": [],
             "styles": [],
-            "assets": ["src/assets", "src/favicon.ico"]
+            "assets": [
+              "src/assets",
+              "src/favicon.ico",
+              "src/manifest.json"
+            ]
           }
         },
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
-            "tsConfig": ["tsconfig.spec.json"],
-            "exclude": ["**/node_modules/**"]
+            "tsConfig": [
+              "tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
           }
         }
       }
@@ -105,14 +118,18 @@
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
-            "tsConfig": ["test/e2e/tsconfig.e2e.json"],
-            "exclude": ["**/node_modules/**"]
+            "tsConfig": [
+              "test/e2e/tsconfig.e2e.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
           }
         }
       }
     }
   },
-  "defaultProject": "copay",
+  "defaultProject": "abcpay",
   "schematics": {
     "@schematics/angular:component": {
       "prefix": "app",
