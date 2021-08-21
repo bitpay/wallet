@@ -85,6 +85,7 @@
     "open:android": "open -a open -a /Applications/Android\\ Studio.app platforms/android",
     "final:ios": "NODE_OPTIONS=--max_old_space_size=4096 npm run build:ios-release; npm run open:ios",
     "final:android": "NODE_OPTIONS=--max_old_space_size=4096 npm run build:android-release && npm run align:android && npm run signv2:android",
+    "final:android-apk": "NODE_OPTIONS=--max_old_space_size=4096 npm run build:android-release && npm run align:android",
     "final:android-bundle": "NODE_OPTIONS=--max_old_space_size=4096 npm run build:android-bundle-release && npm run signv2:android-bundle",
     "final:desktop": "npm run build:desktop-release && npm run build:electron",
     "run:android": "npm run env:dev && ionic cordova run android --device --debug",
