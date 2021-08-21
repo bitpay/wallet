@@ -2,7 +2,7 @@
   "name": "abcpay",
   "description": "Secure Bitcoin Wallet",
   "author": "Abcpay",
-  "version": "1.0.0",
+  "version": "12.0.2",
   "keywords": [
     "bitcoin",
     "wallet",
@@ -21,7 +21,7 @@
   },
   "dom_storage_quota": 200,
   "id": "jid1-x7bV5evAaI1P9Q",
-  "homepage": "https://t.me/AbcPay",
+  "homepage": "https://bitpay.com",
   "license": "MIT",
   "repository": {
     "url": "git://github.com/bitpay/copay.git",
@@ -96,6 +96,7 @@
     "apply:bitpay-dev": "cd app-template && NODE_ENV=dev node apply.js bitpay",
     "apply:abcpay": "cd app-template && node apply.js abcpay",
     "fix:fcm": "echo platforms/ios/Copay/Resources platforms/ios/Copay/Resources/Resources platforms/ios/Bitpay/Resources platforms/ios/Bitpay/Resources/Resources | xargs -n 1 cp GoogleService-Info.plist 2>/dev/null; mkdir -p platforms/android/app/src/debug platforms/android/app/src/release; echo platforms/android/app/src/debug platforms/android/app/src/release platforms/android/app | xargs -n 1 cp google-services.json",
+    "fcm:android": "mkdir -p platforms/android/app/src/debug platforms/android/app/src/release; echo platforms/android/app/src/debug platforms/android/app/src/release platforms/android/app | xargs -n 1 cp google-services.json",
     "sign:copay-desktop": "npm run sign:copay-linux && npm run sign:copay-windows && npm run sign:copay-macos",
     "sign:copay-macos": "gpg -u 1112CFA1 --output dist/Copay.dmg.sig --detach-sig dist/Copay.dmg",
     "sign:copay-linux": "gpg -u 1112CFA1 --output dist/Copay-linux.zip.sig --detach-sig dist/Copay-linux.zip",
