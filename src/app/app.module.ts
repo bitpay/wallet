@@ -65,6 +65,7 @@ import { ProvidersModule } from '../providers/providers.module';
 /* Modal Transitions */
 import { ModalTranslateEnterTransition } from '../components/notification-component/transitions/on-enter-translate.transition';
 import { ModalTranslateLeaveTransition } from '../components/notification-component/transitions/on-leave-translate.transition';
+import { ServiceWorkerModule } from '@angular/service-worker';
 
 export function translateParserFactory() {
   return new InterpolatedTranslateParser();
@@ -137,7 +138,8 @@ export class MyMissingTranslationHandler implements MissingTranslationHandler {
         provide: TranslateLoader,
         useClass: LanguageLoader
       }
-    })
+    }),
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: env.name === 'production' })
   ],
   bootstrap: [IonicApp],
   entryComponents: [CopayApp, ...PAGES, ...COMPONENTS],
