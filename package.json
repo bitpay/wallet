@@ -57,7 +57,7 @@
     "fix": "npm run fix:tslint && npm run fix:prettier",
     "fix:iab": "node ./utils/iab-patch.js",
     "env:desktop": "npm run config -- --environment=desktop \n\n# Environment set to: desktop\n\n",
-    "env:prod": "npm run config -- --environment=production && mkdir -p www; echo www | xargs -n 1 cp ngsw-worker.js \n\n# Environment set to: prod\n\n",
+    "env:prod": "npm run config -- --environment=production && mkdir -p www; echo www | xargs -n 1 cp ngsw-worker.js ngsw.json;  \n\n# Environment set to: prod\n\n",
     "env:dev": "npm run config -- --environment=development \n\n# Environment set to: dev\n\n",
     "env:custom": "npm run config -- --environment=development --awsUrl=https://aws.abcpay.cash/bws/api \n\n# Environment set to: dev\n\n",
     "translation:extract": "ngx-translate-extract --input ./src --output ./i18n/template.pot --clean --sort --format pot",
