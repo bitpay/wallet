@@ -3,6 +3,7 @@ import { AddWalletPage } from '../pages/add-wallet/add-wallet';
 import { AddPage } from '../pages/add/add';
 import { CopayersPage } from '../pages/add/copayers/copayers';
 import { CreateWalletPage } from '../pages/add/create-wallet/create-wallet';
+import { ConfirmAddTokenModalPage } from '../pages/add/custom-token/confirm-add-token-modal/confirm-add-token-modal';
 import { CustomTokenPage } from '../pages/add/custom-token/custom-token';
 import { SearchTokenModalPage } from '../pages/add/custom-token/search-token-modal/search-token-modal';
 import { ImportWalletPage } from '../pages/add/import-wallet/import-wallet';
@@ -252,6 +253,7 @@ export const PAGES = [
   WyreDetailsPage,
   NotificationsPage,
   SearchTxModalPage,
+  ConfirmAddTokenModalPage,
   SearchTokenModalPage,
   SessionLogPage,
   SendFeedbackPage,

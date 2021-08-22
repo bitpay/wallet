@@ -5,19 +5,32 @@ import {
   Events,
   ModalController,
   NavController,
-  NavParams
+  NavParams,
+  ViewController
 } from 'ionic-angular';
 import * as _ from 'lodash';
 
 // Providers
+import { animate, style, transition, trigger } from '@angular/animations';
+import { CurrencyProvider, OnGoingProcessProvider } from '../../../providers';
 import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
 import { AddressProvider } from '../../../providers/address/address';
 import { ProfileProvider } from '../../../providers/profile/profile';
 import { WalletProvider } from '../../../providers/wallet/wallet';
-import { SearchTokenModalPage } from './search-token-modal/search-token-modal';
+import { ConfirmAddTokenModalPage } from './confirm-add-token-modal/confirm-add-token-modal';
 @Component({
   selector: 'page-custom-token',
-  templateUrl: 'custom-token.html'
+  templateUrl: 'custom-token.html',
+  animations: [
+    trigger('fadeIn', [
+      transition(':enter', [
+        style({
+          opacity: 0
+        }),
+        animate('300ms')
+      ])
+    ])
+  ]
 })
 export class CustomTokenPage {
   public pairedWallet: any;
@@ -25,6 +38,16 @@ export class CustomTokenPage {
   public isOpenSelector: boolean;
   public customTokenForm: FormGroup;
   public isValid: boolean;
+
+  private currentTokenListPage: number;
+  private TOKEN_SHOW_LIMIT: number;
+  public tokenListShowMore: boolean;
+
+  public tokenSearchResults;
+  public filteredTokens;
+  public searchQuery;
+  public availableCustomTokens;
+  public invoiceWarning;
 
   constructor(
     private profileProvider: ProfileProvider,
@@ -36,7 +59,10 @@ export class CustomTokenPage {
     private events: Events,
     private addressProvider: AddressProvider,
     private translate: TranslateService,
-    private modalCtrl: ModalController
+    private modalCtrl: ModalController,
+    private currencyProvider: CurrencyProvider,
+    private viewCtrl: ViewController,
+    private onGoingProcessProvider: OnGoingProcessProvider
   ) {
     this.keyId = this.navParams.get('keyId');
     this.customTokenForm = this.fb.group({
@@ -45,7 +71,13 @@ export class CustomTokenPage {
       tokenSymbol: [null, Validators.required],
       tokenDecimals: [null, Validators.required]
     });
+    this.tokenSearchResults = this.filteredTokens;
+    this.TOKEN_SHOW_LIMIT = 10;
+    this.currentTokenListPage = 0;
+    this.availableCustomTokens = this.currencyProvider.getAvailableCustomTokens();
+    this.throttleSearch(' ');
     this.showInvoiceWarning();
+    this.showPairedWalletSelector();
   }
 
   public showPairedWalletSelector() {
@@ -74,31 +106,31 @@ export class CustomTokenPage {
         this.isOpenSelector = false;
         if (!_.isEmpty(pairedWallet)) {
           this.pairedWallet = pairedWallet;
+        } else {
+          this.invoiceWarning.dismiss();
+          this.close();
         }
       });
     }
   }
 
-  public createAndBindTokenWallet() {
-    const customToken = {
-      keyId: this.keyId,
-      name: this.customTokenForm.value.tokenName,
-      address: this.customTokenForm.value.tokenAddress,
-      symbol: this.customTokenForm.value.tokenSymbol.toLowerCase(),
-      decimals: this.customTokenForm.value.tokenDecimals
-    };
-
-    if (!_.isEmpty(this.pairedWallet)) {
-      this.profileProvider
-        .createCustomTokenWallet(this.pairedWallet, customToken)
-        .then(() => {
-          // store preferences for the paired eth wallet
-          this.walletProvider.updateRemotePreferences(this.pairedWallet);
-          this.navCtrl.popToRoot().then(() => {
-            this.events.publish('Local/FetchWallets');
-          });
+  public createAndBindTokenWallet(customToken) {
+    this.onGoingProcessProvider.set('Adding token');
+    this.profileProvider
+      .createCustomTokenWallet(this.pairedWallet, customToken)
+      .then(() => {
+        // store preferences for the paired eth wallet
+        this.walletProvider.updateRemotePreferences(this.pairedWallet);
+        this.navCtrl.popToRoot().then(() => {
+          this.events.publish('Local/FetchWallets');
+          this.onGoingProcessProvider.clear();
+          const infoSheet = this.actionSheetProvider.createInfoSheet(
+            'token-added',
+            { name: customToken.name }
+          );
+          infoSheet.present();
         });
-    }
+      });
   }
 
   public async setTokenInfo() {
@@ -124,10 +156,10 @@ export class CustomTokenPage {
         opts
       );
     } catch (error) {
-      this.actionSheetProvider
+      await this.actionSheetProvider
         .createInfoSheet('default-error', {
           msg: this.translate.instant(
-            'Could not find any ERC20 contract attach to the provided address'
+            'Could not find any ERC20 contract attached to the provided address.'
           ),
           title: this.translate.instant('Error')
         })
@@ -168,24 +200,95 @@ export class CustomTokenPage {
   }
 
   public showInvoiceWarning() {
-    const warningActionSheet = this.actionSheetProvider.createInfoSheet(
+    this.invoiceWarning = this.actionSheetProvider.createInfoSheet(
       'custom-tokens-warning'
     );
-    warningActionSheet.present();
-    warningActionSheet.onDidDismiss(_ => {
-      this.showPairedWalletSelector();
-    });
+    this.invoiceWarning.present();
   }
 
-  public openSearchModal(): void {
+  public openConfirmModal(token): void {
     const modal = this.modalCtrl.create(
-      SearchTokenModalPage,
-      {},
+      ConfirmAddTokenModalPage,
+      { token },
       { showBackdrop: false, enableBackdropDismiss: true }
     );
     modal.present();
-    modal.onDidDismiss(data => {
-      if (data && data.tokenInfo) this.setCustomToken(data.tokenInfo);
+    modal.onWillDismiss(data => {
+      if (data && data.token) {
+        const { name, address, symbol, decimals } = data.token;
+
+        this.createAndBindTokenWallet({
+          keyId: this.keyId,
+          name,
+          address,
+          symbol: symbol.toLowerCase(),
+          decimals
+        });
+      }
     });
+  }
+
+  public updateSearchInput(search: string): void {
+    this.currentTokenListPage = 0;
+    this.throttleSearch(search);
+  }
+
+  private throttleSearch = _.throttle((search: string) => {
+    search = search === '' ? ' ' : search;
+
+    this.tokenSearchResults = this.filter(search).slice(
+      0,
+      this.TOKEN_SHOW_LIMIT
+    );
+  }, 1000);
+
+  private filter(search: string) {
+    this.filteredTokens = [];
+
+    if (_.isEmpty(search)) {
+      this.tokenListShowMore = false;
+      return [];
+    }
+
+    this.filteredTokens = this.availableCustomTokens.filter(token => {
+      return (
+        token.name.toLowerCase().includes(search.toLowerCase()) ||
+        token.symbol.toLowerCase().includes(search.toLowerCase()) ||
+        token.address.toLowerCase().includes(search.toLowerCase())
+      );
+    });
+
+    this.tokenListShowMore = this.filteredTokens.length > this.TOKEN_SHOW_LIMIT;
+
+    return this.filteredTokens.sort((a, b) => {
+      return a.name.toLowerCase().localeCompare(b.name.toLowerCase());
+    });
+  }
+
+  public close(): void {
+    this.viewCtrl.dismiss();
+  }
+
+  public moreSearchResults(loading): void {
+    setTimeout(() => {
+      this.currentTokenListPage++;
+      this.showTokens();
+      loading.complete();
+    }, 100);
+  }
+
+  public showTokens(): void {
+    this.tokenSearchResults = this.filteredTokens
+      ? this.filteredTokens.slice(
+          0,
+          (this.currentTokenListPage + 1) * this.TOKEN_SHOW_LIMIT
+        )
+      : [];
+    this.tokenListShowMore =
+      this.filteredTokens.length > this.tokenSearchResults.length;
+  }
+
+  public cleanSearch() {
+    this.searchQuery = '';
   }
 }
