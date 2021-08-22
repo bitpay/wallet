@@ -1,0 +1,12 @@
+build-tools;29.0.3
+extras;android;m2repository
+extras;google;m2repository
+extras;google;google_play_services
+extras;m2repository;com;android;support;constraint;constraint-layout;2.0.4
+extras;m2repository;com;android;support;constraint;constraint-layout-solver;2.0.4
+platform-tools
+platforms;android-26
+platforms;android-27
+platforms;android-28
+platforms;android-29
+ndk-bundle
