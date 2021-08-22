@@ -615,7 +615,7 @@
     <info-sheet-template *ngSwitchCase="'custom-tokens-warning'" type="warning">
       <span sheet-title-text translate>Adding Tokens</span>
       <span sheet-text>
-        <span translate>Tokens added from this list or manually cannot be used for payments on BitPay.</span>
+        <span translate>Tokens added from this list cannot be used for payments on BitPay.</span>
       </span>
       <span sheet-button-text translate>GOT IT</span>
     </info-sheet-template>
@@ -664,6 +664,12 @@
       </span>
       <span sheet-button-text translate>READ MORE</span>
       <span sheet-second-button-text translate>GOT IT</span>
+    </info-sheet-template>
+
+    <info-sheet-template *ngSwitchCase="'token-added'" type="success">
+      <span sheet-title-text translate>Token Added</span>
+      <span sheet-text translate>Successfully added {{params.name}}.</span>
+      <span sheet-button-text translate>OK</span>
     </info-sheet-template>
   </div>
 </action-sheet>
