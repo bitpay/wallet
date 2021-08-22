@@ -1,4 +1,4 @@
-FROM tarampampam/node:10-alpine
+FROM node:10
 LABEL maintainer="VanT"
 
 ENV VERSION_SDK_TOOLS "4333796"
