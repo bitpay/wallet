@@ -1,4 +1,4 @@
-FROM node:10
+FROM ubuntu:18.04
 LABEL maintainer="VanT"
 
 ENV VERSION_SDK_TOOLS "4333796"
@@ -12,6 +12,9 @@ RUN apt-get -qq update
 RUN apt-get install -y locales
 RUN locale-gen en_US.UTF-8
 ENV LANG='en_US.UTF-8' LANGUAGE='en_US:en' LC_ALL='en_US.UTF-8'
+
+RUN curl -sL https://deb.nodesource.com/setup_10.x | bash -
+RUN apt-get install -y nodejs
 
 RUN apt-get install -qqy --no-install-recommends \
       bzip2 \
