@@ -2464,7 +2464,7 @@ msgstr ""
 msgid "Order Summary"
 msgstr ""
 
-msgid "Other supported tokens"
+msgid "Other Supported Tokens"
 msgstr ""
 
 msgid "Ouch!"
