@@ -59,20 +59,24 @@ export class CustomTokenPage {
         })
       : [];
 
-    const walletSelector = this.actionSheetProvider.createInfoSheet(
-      'linkEthWallet',
-      {
-        wallets: eligibleWallets,
-        customToken: true
-      }
-    );
-    walletSelector.present();
-    walletSelector.onDidDismiss(pairedWallet => {
-      this.isOpenSelector = false;
-      if (!_.isEmpty(pairedWallet)) {
-        this.pairedWallet = pairedWallet;
-      }
-    });
+    if (eligibleWallets.length === 1) {
+      this.pairedWallet = eligibleWallets[0];
+    } else {
+      const walletSelector = this.actionSheetProvider.createInfoSheet(
+        'linkEthWallet',
+        {
+          wallets: eligibleWallets,
+          customToken: true
+        }
+      );
+      walletSelector.present();
+      walletSelector.onDidDismiss(pairedWallet => {
+        this.isOpenSelector = false;
+        if (!_.isEmpty(pairedWallet)) {
+          this.pairedWallet = pairedWallet;
+        }
+      });
+    }
   }
 
   public createAndBindTokenWallet() {
