@@ -7,12 +7,12 @@ ENV ANDROID_HOME "/sdk"
 ENV PATH "$PATH:${ANDROID_HOME}/tools"
 ENV DEBIAN_FRONTEND noninteractive
 
-RUN apt-get -qq update
-RUN apt-get install -y locales
+RUN apk update
+RUN apk add locales
 RUN locale-gen en_US.UTF-8
 ENV LANG='en_US.UTF-8' LANGUAGE='en_US:en' LC_ALL='en_US.UTF-8'
 
-RUN apt-get install -qqy --no-install-recommends \
+RUN apk --no-install-recommends \
       bzip2 \
       curl \
       git-core \
