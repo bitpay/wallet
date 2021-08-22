@@ -84,9 +84,9 @@ export class ExchangeCryptoPage {
   private referrerFee: number;
 
   public fromToken;
+  public fromTokenBalance;
   public toToken;
   public swapData;
-  // public isCustomToken: boolean;
 
   constructor(
     private actionSheetProvider: ActionSheetProvider,
@@ -509,7 +509,7 @@ export class ExchangeCryptoPage {
               this.onToWalletSelect(data.wallet);
             }
           }
-        }, 400);
+        }, 100);
       }
     });
   }
@@ -573,6 +573,8 @@ export class ExchangeCryptoPage {
       this.toToken = null;
     }
     this.amountFrom = null; // Clear amount and rate to avoid mistakes
+    this.amountTo = null;
+    this.useSendMax = null;
     this.rate = null;
     this.fixedRateId = null;
     this.exchangeToUse = null;
@@ -707,6 +709,7 @@ export class ExchangeCryptoPage {
               this.loading = false;
               this.useSendMax = null;
               this.amountFrom = null;
+              this.amountTo = null;
               this.estimatedFee = null;
               this.sendMaxInfo = null;
               this.rate = null;
@@ -756,6 +759,7 @@ export class ExchangeCryptoPage {
     if (this.useSendMax && this.fromWalletSelected.coin == 'eth') {
       this.useSendMax = null;
       this.amountFrom = null;
+      this.amountTo = null;
       this.showErrorAndBack(
         null,
         this.translate.instant(
@@ -766,9 +770,32 @@ export class ExchangeCryptoPage {
       return;
     }
 
+    if (
+      this.fromWalletSelected.cachedStatus &&
+      this.fromWalletSelected.cachedStatus.spendableAmount
+    ) {
+      const spendableAmount = this.txFormatProvider.satToUnit(
+        this.fromWalletSelected.cachedStatus.spendableAmount,
+        this.fromWalletSelected.coin
+      );
+
+      if (spendableAmount < this.amountFrom && !this.useSendMax) {
+        this.loading = false;
+        this.amountFrom = null;
+        this.amountTo = null;
+        this.useSendMax = null;
+        this.showErrorAndBack(
+          null,
+          this.translate.instant(
+            'You are trying to send more funds than you have available. Make sure you do not have funds locked by pending transaction proposals or enter a valid amount.'
+          ),
+          true
+        );
+        return;
+      }
+    }
+
     this.loading = true;
-    let pair = this.fromWalletSelected.coin + '_' + this.toWalletSelected.coin;
-    this.logger.debug('Updating max and min with pair: ' + pair);
 
     try {
       this.referrerFee = await this.oneInchProvider.getReferrerFee();
@@ -802,30 +829,11 @@ export class ExchangeCryptoPage {
     this.oneInchProvider
       .getQuote1inch(data)
       .then(data => {
-        if (
-          this.fromWalletSelected.cachedStatus &&
-          this.fromWalletSelected.cachedStatus.spendableAmount
-        ) {
-          const spendableAmount = this.txFormatProvider.satToUnit(
-            this.fromWalletSelected.cachedStatus.spendableAmount,
-            this.fromWalletSelected.coin
-          );
-
-          if (spendableAmount < this.amountFrom) {
-            this.loading = false;
-            this.showErrorAndBack(
-              null,
-              this.translate.instant(
-                'You are trying to send more funds than you have available. Make sure you do not have funds locked by pending transaction proposals or enter a valid amount.'
-              ),
-              true
-            );
-            return;
-          }
-        }
-
-        const pair =
-          this.fromWalletSelected.coin + '_' + this.toWalletSelected.coin;
+        const fromCoin = this.fromWalletSelected.coin;
+        const toCoin = this.toToken
+          ? this.toToken.symbol.toLowerCase()
+          : this.toWalletSelected.coin;
+        const pair = fromCoin + '_' + toCoin;
         this.logger.debug('Updating receiving amount with pair: ' + pair);
 
         this.amountTo =
@@ -834,22 +842,39 @@ export class ExchangeCryptoPage {
         this.loading = false;
       })
       .catch(err => {
-        this.logger.error(
-          '1Inch getQuote1inch Error: ',
-          err.error && err.error.message ? err.error.message : err
-        );
-        this.showErrorAndBack(
-          null,
-          this.translate.instant(
-            '1Inch is not available at this moment. Please, try again later.'
-          )
-        );
+        this.processError1Inch(err);
       });
   }
 
   private shouldUseSendMax() {
     const chain = this.currencyProvider.getAvailableChains();
     return chain.includes(this.fromWalletSelected.coin);
+  }
+
+  private processError1Inch(err) {
+    let msg = this.translate.instant(
+      '1Inch is not available at this moment. Please, try again later.'
+    );
+
+    this.logger.error(
+      '1Inch getQuote1inch Error: ',
+      err.error && err.error.message ? err.error.message : err
+    );
+
+    if (err.error && err.error.message && _.isString(err.error.message)) {
+      if (err.error.message.includes('cannot find path for')) {
+        const fromCoin = this.fromWalletSelected.coin;
+        const toCoin = this.toToken
+          ? this.toToken.symbol.toLowerCase()
+          : this.toWalletSelected.coin;
+
+        msg = this.translate.instant(
+          `Currently it has not been possible to find a path that allows the transaction between the selected pair of tokens: ${fromCoin}_${toCoin}`
+        );
+      }
+    }
+
+    this.showErrorAndBack(null, msg);
   }
 
   private showErrorAndBack(
@@ -1060,6 +1085,14 @@ export class ExchangeCryptoPage {
     let data, checkoutPage;
     switch (this.exchangeToUse) {
       case '1inch':
+        if (this.useSendMax && this.fromTokenBalance) {
+          // Use fromTokenBalance for send max to prevent bigint issues
+          this.amountFrom = this.txFormatProvider.satToUnit(
+            this.fromTokenBalance,
+            this.fromToken.symbol.toLowerCase()
+          );
+        }
+
         data = {
           fromWalletSelectedId: this.fromWalletSelected.id,
           toWalletSelectedId: this.toWalletSelected.id,
@@ -1070,6 +1103,7 @@ export class ExchangeCryptoPage {
           coinTo: this.toWalletSelected.coin,
           rate: this.rate,
           useSendMax: this.useSendMax,
+          fromTokenBalance: this.fromTokenBalance,
           sendMaxInfo: this.sendMaxInfo,
           slippage: this.selectedSlippage,
           referrerFee: this.referrerFee
@@ -1239,6 +1273,13 @@ export class ExchangeCryptoPage {
           .verifyAllowancesAndBalances(data)
           .then(allowancesData => {
             this.logger.debug(allowancesData[this.fromToken.address]);
+            if (
+              allowancesData[this.fromToken.address] &&
+              allowancesData[this.fromToken.address].balance
+            ) {
+              this.fromTokenBalance =
+                allowancesData[this.fromToken.address].balance;
+            }
             if (
               allowancesData[this.fromToken.address] &&
               allowancesData[this.fromToken.address].allowance > 0

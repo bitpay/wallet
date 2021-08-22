@@ -225,10 +225,13 @@ export class TokenSwapApprovePage {
       })
       .catch(err => {
         this.logger.error(this.bwcErrorProvider.msg(err));
-        this.showErrorAndBack(
-          null,
-          this.translate.instant('Could not send transaction')
-        );
+        this.showErrorAndBack(null, err);
+        this.logger.warn('Error on publishAndSign: removing payment proposal');
+        this.walletProvider
+          .removeTx(this.fromWalletSelected, this.ctxp)
+          .catch(() => {
+            this.logger.warn('Could not delete payment proposal');
+          });
         return;
       });
   }
