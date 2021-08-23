@@ -148,8 +148,8 @@ export class AppProvider {
 
     return (
       version.major === targetVersion.major &&
-      version.minor === targetVersion.minor &&
-      version.patch === targetVersion.patch
+      version.minor <= targetVersion.minor &&
+      version.patch <= targetVersion.patch
     );
   }
 }
