@@ -133,10 +133,10 @@ msgstr ""
 msgid "Add"
 msgstr ""
 
-msgid "Add Any ERC-20 Token"
+msgid "Add BitPay Account?"
 msgstr ""
 
-msgid "Add BitPay Account?"
+msgid "Add ERC-20 Tokens"
 msgstr ""
 
 msgid "Add Encryption"
