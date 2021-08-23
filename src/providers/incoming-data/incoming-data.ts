@@ -12,6 +12,7 @@ import { BwcProvider } from '../bwc/bwc';
 import { CurrencyProvider } from '../currency/currency';
 import { ExternalLinkProvider } from '../external-link/external-link';
 import { IABCardProvider } from '../in-app-browser/card';
+import { InvoiceProvider } from '../invoice/invoice';
 import { Logger } from '../logger/logger';
 import { OnGoingProcessProvider } from '../on-going-process/on-going-process';
 import { PayproProvider } from '../paypro/paypro';
@@ -51,7 +52,8 @@ export class IncomingDataProvider {
     private onGoingProcessProvider: OnGoingProcessProvider,
     private iabCardProvider: IABCardProvider,
     private persistenceProvider: PersistenceProvider,
-    private bitPayIdProvider: BitPayIdProvider
+    private bitPayIdProvider: BitPayIdProvider,
+    private invoiceProvider: InvoiceProvider
   ) {
     this.logger.debug('IncomingDataProvider initialized');
     this.events.subscribe('unlockInvoice', paymentUrl =>
@@ -917,9 +919,6 @@ export class IncomingDataProvider {
 
     //  Handling of a bitpay invoice url
     if (this.isValidBitPayInvoice(data)) {
-      this.handleBitPayInvoice(data);
-      return true;
-    } else if (data.includes('unlock')) {
       this.handleUnlock(data);
       return true;
 
@@ -1529,16 +1528,19 @@ export class IncomingDataProvider {
 
   private async handleUnlock(data) {
     try {
-      const url = data.split('?r=')[1];
-      const invoiceId = url.split('i/')[1];
+      const host = data.includes('test') ? 'testnet' : 'livenet';
+      const invoiceId = data.split('i/')[1];
 
+      await this.invoiceProvider.setNetwork(host);
+      const fetchData = await this.invoiceProvider.canGetInvoiceData(invoiceId);
       const result = await this.bitPayIdProvider.unlockInvoice(invoiceId);
 
-      switch (result) {
-        case 'unlockSuccess':
-          await this.handleBitPayInvoice(`unlock:?${url}`);
-          break;
+      if (result === 'unlockSuccess' || fetchData) {
+        await this.handleBitPayInvoice(data);
+        return;
+      }
 
+      switch (result) {
         // call IAB and attempt pairing
         case 'pairingRequired':
           const authRequiredInfoSheet = this.actionSheetProvider.createInfoSheet(
@@ -1567,9 +1569,6 @@ export class IncomingDataProvider {
           );
           await verificationRequiredInfoSheet.present();
           verificationRequiredInfoSheet.onDidDismiss(async () => {
-            const host = url.includes('test')
-              ? 'test.bitpay.com'
-              : 'bitpay.com';
             await this.externalLinkProvider.open(
               `https://${host}/id/verify?context=unlockv&id=${invoiceId}`
             );

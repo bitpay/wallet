@@ -4,6 +4,8 @@ import { EmailNotificationsProvider } from '../email-notifications/email-notific
 import { Logger } from '../logger/logger';
 import { Network, PersistenceProvider } from '../persistence/persistence';
 
+declare var cordova: any;
+
 @Injectable()
 export class InvoiceProvider {
   credentials: {
@@ -65,5 +67,24 @@ export class InvoiceProvider {
 
   private setUserInfo(data: any): void {
     this.persistenceProvider.setGiftCardUserInfo(JSON.stringify(data));
+  }
+
+  public async canGetInvoiceData(id: string) {
+    return new Promise<boolean>((res) => {
+      cordova.plugin.http.sendRequest(
+        `${this.credentials.BITPAY_API_URL}/invoiceData/${id}`,
+        {
+          method: 'get',
+        },
+        () => {
+          this.logger.debug('Get InvoiceData: Success');
+          return res(true);
+        },
+        ({ error }) => {
+          this.logger.error('Get InvoiceData: ERROR ' + error);
+          return res(false);
+        }
+      )
+    });
   }
 }
