@@ -70,11 +70,11 @@ export class InvoiceProvider {
   }
 
   public async canGetInvoiceData(id: string) {
-    return new Promise<boolean>((res) => {
+    return new Promise<boolean>(res => {
       cordova.plugin.http.sendRequest(
         `${this.credentials.BITPAY_API_URL}/invoiceData/${id}`,
         {
-          method: 'get',
+          method: 'get'
         },
         () => {
           this.logger.debug('Get InvoiceData: Success');
@@ -84,7 +84,7 @@ export class InvoiceProvider {
           this.logger.error('Get InvoiceData: ERROR ' + error);
           return res(false);
         }
-      )
+      );
     });
   }
 }
