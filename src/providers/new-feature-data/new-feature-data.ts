@@ -74,7 +74,7 @@ export class NewFeatureData {
             }
           },
           {
-            title: this.translate.instant('Add Any ERC-20 Token'),
+            title: this.translate.instant('Add ERC-20 Tokens'),
             details: this.translate.instant(
               'Now you can add ERC-20 tokens to keep track of all your digital assets in one place. In your wallet, tap + and ‘Add Token’ to add.'
             ),
