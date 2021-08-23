@@ -236,6 +236,17 @@
       <span sheet-second-button-text translate>GOT IT</span>
     </info-sheet-template>
 
+    <info-sheet-template *ngSwitchCase="'slippage-info'" type="info">
+      <span sheet-title-text>{{'Slippage Tolerance' | translate }}</span>
+      <span sheet-text>
+        {{'Slippage happens when traders have to settle for a different price than what they initially requested due to a movement in price between the time the order enters the market and the execution of a trade.' | translate }}
+        <br>
+        <br>
+        {{'Low values increase chances that transaction will fail, high values increase chances of front running.' | translate }}
+      </span>
+      <span sheet-second-button-text translate>GOT IT</span>
+    </info-sheet-template>
+
     <info-sheet-template *ngSwitchCase="'appreciate-review'" type="love">
       <span sheet-title-text translate>We appreciate your review</span>
       <span sheet-text translate>
@@ -602,9 +613,9 @@
     </info-sheet-template>
 
     <info-sheet-template *ngSwitchCase="'custom-tokens-warning'" type="warning">
-      <span sheet-title-text translate>Custom Tokens</span>
+      <span sheet-title-text translate>Adding Tokens</span>
       <span sheet-text>
-        <span translate>Custom tokens cannot be used for payments on BitPay</span>
+        <span translate>Tokens added from this list cannot be used for payments on BitPay.</span>
       </span>
       <span sheet-button-text translate>GOT IT</span>
     </info-sheet-template>
@@ -621,6 +632,43 @@
     <info-sheet-template *ngSwitchCase="'multisig-instantiation'" type="success">
       <span sheet-title-text translate>The transaction is taking longer than usual to confirm</span>
       <span sheet-text translate>When your transaction is confirmed, the multisig wallet will show up in the wallet list. You can check the transaction status in the wallet history.</span>
+      <span sheet-button-text translate>OK</span>
+    </info-sheet-template>
+
+    <info-sheet-template *ngSwitchCase="'exchange-crypto-disclaimer'" type="info">
+      <span sheet-title-text translate>Swap Crypto</span>
+      <span sheet-text>
+        The Swap Crypto function is provided by Changelly and 1Inch, and subject to the service providers' terms and conditions, which you accept by using the service. Use of the Swap Crypto function is solely between you and the service providers.
+      </span>
+      <span sheet-button-text translate>I UNDERSTAND</span>
+      <span sheet-second-button-text translate>NO THANKS</span>
+    </info-sheet-template>
+
+    <info-sheet-template *ngSwitchCase="'switch-exchange-crypto'" type="info">
+      <span sheet-title-text translate>Approve required</span>
+      <span sheet-text>
+        <span translate>To proceed with this swap you must complete a single "Approve" transaction to authorize the exchange ("1Inch") to access to the {{params.coin}} funds.</span>
+        <span *ngIf="params.canUseChangelly">
+          <br>
+          <br>
+          <span translate>This pair is also enabled through another of our partners ("Changelly"). Would you like to try this one?</span>
+        </span>
+      </span>
+      <span *ngIf="params.canUseChangelly" sheet-button-text translate>Try Changelly</span>
+      <span sheet-second-button-text translate>GOT IT</span>
+    </info-sheet-template>
+
+    <info-sheet-template *ngSwitchCase="'join-wallet-warning'" type="warning">
+      <span sheet-title-text translate>Someone asked you to join a multisig wallet?</span>
+      <span sheet-text translate>You are about to join a shared wallet. This is an advanced feature, make sure you understand how multisig wallets work before putting funds in it. If a third party invited you to join, make sure you trust them, if you have purchased cryptocurrency they may be scamming you.
+      </span>
+      <span sheet-button-text translate>READ MORE</span>
+      <span sheet-second-button-text translate>GOT IT</span>
+    </info-sheet-template>
+
+    <info-sheet-template *ngSwitchCase="'token-added'" type="success">
+      <span sheet-title-text translate>Token Added</span>
+      <span sheet-text translate>Successfully added {{params.name}}.</span>
       <span sheet-button-text translate>OK</span>
     </info-sheet-template>
   </div>

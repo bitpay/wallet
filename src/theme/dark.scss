@@ -27,11 +27,13 @@
 
 7 - Buy Crypto
 
-8 - Exchange Crypto
+8 - Swap Crypto
 
 9 - Onboarding
 
 10 - New Features Slides
+
+11 - WalletConnect
 */
 
 .dark {
@@ -267,8 +269,8 @@
   }
 
   .search-wrapper {
-    background-color: $bg-color-dark-theme-2;
-    color: $text-color-dark-theme-2;
+    background-color: $bg-color-dark-theme-2 !important;
+    color: $text-color-dark-theme-2 !important;
   }
 
   search-bar {
@@ -687,6 +689,12 @@
     .item-divider-ios {
       background-color: $bg-color-dark-theme-2;
       border-bottom: 1px solid $bg-color-dark-theme-2;
+    }
+    .bp-header {
+      &__title,
+      &__subtitle {
+        color: $text-color-dark-theme;
+      }
     }
   }
 
@@ -1808,21 +1816,54 @@
     }
   }
 
+  page-coin-and-wallet-selector {
+    .search-wrapper {
+      background-color: $bg-color-dark-theme-2;
+      color: $text-color-dark-theme-2;
+      &.invalid {
+        border: 1px solid color($colors, error);
+        color: color($colors, error);
+      }
+    }
+    .bp-list {
+      .available-wallets {
+        &-container {
+          background-color: $bg-color-dark-theme-2;
+        }
+        &-label {
+          color: $text-color-dark-theme-2;
+        }
+      }
+    }
+  }
+
   // 7 - Buy Crypto
   page-crypto-order-summary {
     .bp-list {
-      .card {
-        background: $bg-color-dark-theme;
-        .item {
-          &.item-ios,
-          &.item-md {
-            background-color: $bg-color-dark-theme-2;
-            ion-note {
-              img {
-                filter: brightness(0.5);
-              }
-            }
+      .exchange-container {
+        background: $bg-color-dark-theme-2;
+        border: 1px solid $bg-color-dark-theme-2;
+        ion-item.item.item-block {
+          background: $bg-color-dark-theme-2;
+          ion-note {
+            color: $text-color-dark-theme;
           }
+        }
+        .amount {
+          color: $text-color-dark-theme;
+        }
+        .select-wallet-button {
+          &.selected {
+            background: $bg-color-dark-theme;
+            color: $text-color-dark-theme;
+          }
+          .ion-ios-arrow-down-outline,
+          .ion-ios-arrow-up-outline {
+            color: $text-color-dark-theme;
+          }
+        }
+        .card-title {
+          color: $text-color-dark-theme;
         }
       }
     }
@@ -1838,15 +1879,16 @@
         color: $text-color-dark-theme;
       }
     }
-  }
-  page-crypto-coin-selector {
-    .bp-list {
-      .available-wallets {
-        &-container {
-          background-color: $bg-color-dark-theme-2;
-        }
-        &-label {
-          color: $text-color-dark-theme-2;
+    .offer-card {
+      border: 1px solid $bg-color-dark-theme-2;
+      .secondary-label {
+        color: #9ba3ae;
+      }
+      .extended-info .bp-list {
+        .summary-item,
+        .summary-item-detail,
+        .summary-item-detail-sec {
+          color: #9ba3ae;
         }
       }
     }
@@ -1857,18 +1899,30 @@
     }
   }
 
-  // 8 - Exchange Crypto
+  // 8 - Swap Crypto
 
   page-exchange-crypto {
+    .bp-list {
+      .exchange-container {
+        background: $bg-color-dark-theme-2;
+        border: 1px solid $bg-color-dark-theme-2;
+        .select-wallet-button {
+          &.selected {
+            background: $bg-color-dark-theme;
+          }
+          .ion-ios-arrow-down-outline,
+          .ion-ios-arrow-up-outline {
+            color: $text-color-dark-theme;
+          }
+        }
+        .card-title {
+          color: $text-color-dark-theme;
+        }
+      }
+    }
     .amount .amount-container {
       background-color: $bg-color-dark-theme-2;
-      color: $text-color-dark-theme-2;
-    }
-    .divider {
-      border-bottom: 1px solid $border-color-dark-theme;
-      .arrow img {
-        filter: brightness(0.6);
-      }
+      color: $text-color-dark-theme;
     }
     .partner {
       color: $text-color-dark-theme-2;
@@ -1963,6 +2017,69 @@
         }
         .text {
           color: #ffffff;
+        }
+      }
+    }
+  }
+
+  // 11 - WalletConnect
+  page-wallet-connect,
+  page-wallet-connect-request-details {
+    .wc-container {
+      .wc-label {
+        color: $text-color-dark-theme-2;
+        opacity: 1;
+      }
+      .wc-wrapper {
+        background-color: $bg-color-dark-theme;
+        .scan-icon {
+          border-left: 1px solid #9ba3ae;
+        }
+        &.item {
+          &.item-ios,
+          &.item-md {
+            .item-inner {
+              border-bottom: 0px;
+            }
+          }
+        }
+        .text-input {
+          color: $text-color-dark-theme;
+          opacity: 1;
+        }
+      }
+      .bp-list {
+        ion-note {
+          color: $text-color-dark-theme;
+        }
+        .summary-item {
+          color: $text-color-dark-theme;
+        }
+        .background-content {
+          background-color: $bg-color-dark-theme-3;
+          .linked-wallet {
+            color: $text-color-dark-theme;
+          }
+        }
+      }
+      .dapp-info {
+        ion-item {
+          background-color: $bg-color-dark-theme;
+          color: $text-color-dark-theme;
+        }
+      }
+      .url-container {
+        background-color: $bg-color-dark-theme-3;
+        .url-wrapper {
+          color: $text-color-dark-theme;
+        }
+      }
+      .wc-permission {
+        background-color: $bg-color-dark-theme;
+        ion-row {
+          .wc-permission-label {
+            color: $text-color-dark-theme;
+          }
         }
       }
     }

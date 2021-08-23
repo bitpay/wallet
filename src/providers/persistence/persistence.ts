@@ -97,6 +97,7 @@ const Keys = {
   CUSTOMTOKENSOPTS: 'customTokensOpts',
   BITPAY_CARD_ORDER_STARTED: `bitPayCardOrderStarted`,
   BITPAY_SURVEY_CARD_DISMISSED: `bitPaySurveyCardDismissed`,
+  ACCEPTED_SWAP_CRYPTO_DISCLAIMER: 'acceptedSwapCryptoDisclaimer',
   CUSTOM_VIRTUAL_CARD_DESIGN: `customVirtualCardDesign`
 };
 
@@ -762,6 +763,30 @@ export class PersistenceProvider {
     return this.storage.remove('changelly-' + env);
   }
 
+  setOneInch(env: string, tx) {
+    return this.storage.set('oneinch-' + env, tx);
+  }
+
+  getOneInch(env: string) {
+    return this.storage.get('oneinch-' + env);
+  }
+
+  removeOneInch(env: string) {
+    return this.storage.remove('oneinch-' + env);
+  }
+
+  setOneInchApprove(env: string, tx) {
+    return this.storage.set('oneinch-approve-' + env, tx);
+  }
+
+  getOneInchApprove(env: string) {
+    return this.storage.get('oneinch-approve-' + env);
+  }
+
+  removeOneInchApprove(env: string) {
+    return this.storage.remove('oneinch-approve-' + env);
+  }
+
   setSimplex(env: string, paymentRequests) {
     return this.storage.set('simplex-' + env, paymentRequests);
   }
@@ -1075,6 +1100,14 @@ export class PersistenceProvider {
 
   getEthMultisigPendingInstantiation(walletId) {
     return this.storage.get(`eth-multisig-instantiation-${walletId}`);
+  }
+
+  setSwapCryptoDisclaimer(option: 'accepted') {
+    return this.storage.set(Keys.ACCEPTED_SWAP_CRYPTO_DISCLAIMER, option);
+  }
+
+  getSwapCryptoDisclaimer() {
+    return this.storage.get(Keys.ACCEPTED_SWAP_CRYPTO_DISCLAIMER);
   }
 
   setBitPayCardOrderStarted(ts: number) {

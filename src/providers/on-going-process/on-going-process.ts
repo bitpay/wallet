@@ -25,7 +25,7 @@ export class OnGoingProcessProvider {
       broadcastingTx: this.translate.instant('Broadcasting transaction...'),
       calculatingFee: this.translate.instant('Calculating fee...'),
       calculatingSendMax: this.translate.instant('Calculating send max...'),
-      connectingChangelly: this.translate.instant('Connecting to Changelly...'),
+      connectingOneInch: this.translate.instant('Connecting to 1Inch...'),
       connectingCoinbase: this.translate.instant('Connecting to Coinbase...'),
       creatingTx: this.translate.instant('Creating transaction...'),
       creatingWallet: this.translate.instant('Creating Wallet...'),
@@ -33,6 +33,7 @@ export class OnGoingProcessProvider {
         'Creating ETH multisig wallet. Please wait...'
       ),
       deletingWallet: this.translate.instant('Deleting Wallet...'),
+      exchangeCryptoInit: this.translate.instant('Initializing Swap Crypto...'),
       extractingWalletInfo: this.translate.instant(
         'Extracting Wallet information...'
       ),

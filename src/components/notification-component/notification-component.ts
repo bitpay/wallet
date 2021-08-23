@@ -20,10 +20,10 @@ export class NotificationComponent {
     if (this.notificationSlide) this.notificationSlide.lockSwipeToPrev(true);
     setTimeout(() => {
       this.dismiss({});
-    }, 10000);
+    }, 12000);
   }
 
   dismiss(data) {
-    this.viewCtrl.dismiss(data);
+    this.viewCtrl.dismiss(data || {});
   }
 }

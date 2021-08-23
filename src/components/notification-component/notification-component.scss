@@ -4,11 +4,8 @@
   transition: opacity 300ms ease;
   background-color: transparent;
   text-align: center;
-  .swiper-container-vertical {
-    padding: calc(env(safe-area-inset-top) + 10px)
-      calc(env(safe-area-inset-left) + 5px) env(safe-area-inset-bottom, 0px)
-      calc(env(safe-area-inset-right) + 5px);
-  }
+  bottom: 0px;
+  padding: 0px 5px;
   .notification-content {
     .slide-zoom {
       background-color: color($colors, primary);
@@ -18,6 +15,10 @@
       justify-items: start;
       .notification-info {
         padding: 19px 16px 17px 16px;
+        img {
+          width: 1.5rem;
+          filter: brightness(0) invert(1);
+        }
         .notification-title {
           font-size: 1.5rem;
           text-align: left;

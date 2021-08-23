@@ -132,18 +132,14 @@ export class TxpDetailsPage {
     this.events.unsubscribe('bwsEvent', this.bwsEventHandler);
   }
 
-  private bwsEventHandler: any = (walletId: string, type: string) => {
+  private bwsEventHandler: any = data => {
     _.each(
-      [
-        'TxProposalRejectedBy',
-        'TxProposalAcceptedBy',
-        'transactionProposalRemoved',
-        'TxProposalRemoved',
-        'NewOutgoingTx',
-        'UpdateTx'
-      ],
+      ['TxProposalRejectedBy', 'TxProposalAcceptedBy', 'TxProposalRemoved'],
       (eventName: string) => {
-        if (walletId == this.wallet.id && type == eventName) {
+        if (
+          data.walletId == this.wallet.id &&
+          data.notification_type == eventName
+        ) {
           this.updateTxInfo(eventName);
         }
       }

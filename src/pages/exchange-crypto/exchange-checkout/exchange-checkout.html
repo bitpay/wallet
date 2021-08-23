@@ -1,4 +1,4 @@
-<wide-header-page title="{{'Exchange Crypto' | translate}}" hideBackButton="true" [hasSlideButton]="isCordova">
+<wide-header-page title="{{'Swap Crypto' | translate}}" hideBackButton="true" [hasSlideButton]="isCordova">
   <ion-buttons right>
     <button clear wide-header-bar-button (click)="cancelExchange()" ion-button>
       <span translate>Cancel</span>
@@ -17,27 +17,6 @@
       <ion-item ion-item>
         <ion-label>
           <div class="summary-item">
-            <span translate>Receiving</span>
-          </div>
-        </ion-label>
-
-        <ion-note item-end text-left>
-          <ion-row align-items-center class="wallet" *ngIf="toWalletSelected">
-            <ion-col>
-              <coin-icon [coin]="toWalletSelected.coin" [network]="toWalletSelected.network"></coin-icon>
-            </ion-col>
-            <ion-col>
-              <span class="note-container ellipsis">{{toWalletSelected.name}}</span>
-            </ion-col>
-          </ion-row>
-        </ion-note>
-      </ion-item>
-
-      <div class="line-divider"></div>
-
-      <ion-item ion-item>
-        <ion-label>
-          <div class="summary-item">
             <span translate>Selling</span>
           </div>
         </ion-label>
@@ -49,6 +28,27 @@
             </ion-col>
             <ion-col>
               <span class="note-container ellipsis">{{fromWalletSelected.name}}</span>
+            </ion-col>
+          </ion-row>
+        </ion-note>
+      </ion-item>
+
+      <div class="line-divider"></div>
+
+      <ion-item ion-item>
+        <ion-label>
+          <div class="summary-item">
+            <span translate>Receiving</span>
+          </div>
+        </ion-label>
+
+        <ion-note item-end text-left>
+          <ion-row align-items-center class="wallet" *ngIf="toWalletSelected">
+            <ion-col>
+              <coin-icon [coin]="toWalletSelected.coin" [network]="toWalletSelected.network"></coin-icon>
+            </ion-col>
+            <ion-col>
+              <span class="note-container ellipsis">{{toWalletSelected.name}}</span>
             </ion-col>
           </ion-row>
         </ion-note>
@@ -166,10 +166,10 @@
     </ion-list>
   </div>
   <div footer-content>
-    <page-slide-to-accept #slideButton *ngIf="isCordova && canContinue()" [disabled]="!canContinue()" buttonText="{{'Slide to Make Payment' | translate}}" [isDogecoin]="fromWalletSelected && fromWalletSelected.coin == 'doge'"  (slideDone)="makePayment()">
+    <page-slide-to-accept #slideButton *ngIf="isCordova && canContinue()" [disabled]="!canContinue()" buttonText="{{'Slide to Complete Swap' | translate}}" [isDogecoin]="fromWalletSelected && fromWalletSelected.coin == 'doge'"  (slideDone)="makePayment()">
     </page-slide-to-accept>
     <ion-toolbar *ngIf="!isCordova">
-      <button ion-button full class="button-footer" (click)="makePayment()" [disabled]="!canContinue()">{{'Continue & Make Payment' | translate}}</button>
+      <button ion-button full class="button-footer" (click)="makePayment()" [disabled]="!canContinue()">{{'Complete Swap' | translate}}</button>
     </ion-toolbar>
   </div>
 </wide-header-page>

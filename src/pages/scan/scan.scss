@@ -121,7 +121,7 @@ page-scan {
         background-size: 100%;
         display: inline-block;
         margin: 2em 1em;
-        margin-bottom: calc(1em + env(safe-area-inset-bottom));
+        margin-bottom: calc(4em + env(safe-area-inset-bottom));
         cursor: pointer;
 
         // hover for desktop only
@@ -132,6 +132,9 @@ page-scan {
         &:active {
           background-color: rgba(100, 124, 232, 0.79);
         }
+      }
+      .url-btn {
+        margin-bottom: calc(1em + env(safe-area-inset-bottom));
       }
 
       .icon-flash {

@@ -21,10 +21,11 @@
     <access origin="https://api.coinbase.com" />
     <access origin="https://coinbase.com" />
     <access origin="https://www.coinbase.com" />
+    <access origin="https://bitpay.api.enterprise.1inch.exchange" />
+    <access origin="https://balances.1inch.exchange" />
+    <access origin="https://tokens.1inch.exchange" />
     <access origin="https://api.testwyre.com" />
     <access origin="https://api.sendwyre.com" />
-    <access origin="https://tokens.1inch.exchange/" />
-    <access origin="https://bitpay.api.enterprise.1inch.exchange/" />
     <allow-navigation href="gap://ready" />
     <preference name="AndroidPersistentFileLocation" value="Internal" />
     <preference name="iosPersistentFileLocation" value="Library" />
@@ -110,7 +111,7 @@
       <variable name="UL_PREFIX_1" value="/i/" />
       <variable name="UL_PREFIX_2" value="/wallet/wc" />
     </plugin>
-    <plugin name="cordova-plugin-fcm-ng" spec="8.3.0">
+    <plugin name="cordova-plugin-fcm-ng" spec="8.5.0">
       <variable name="PAGE_LINK_DOMAIN" value="*DYNAMICLINK*" />
     </plugin>
 
