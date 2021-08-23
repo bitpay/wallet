@@ -5,6 +5,7 @@ export interface CoinOpts {
   name: string;
   chain: string;
   coin: string;
+  logoURI?: string;
   unitInfo?: {
     // Config/Precision
     unitName: string;

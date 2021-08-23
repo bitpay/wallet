@@ -267,6 +267,7 @@ export class CoinAndWalletSelectorPage {
       keyId: pairedWallet.keyId,
       name: token.name,
       address: token.address,
+      logoURI: token.logoURI,
       symbol: token.symbol.toLowerCase(),
       decimals: token.decimals
     };

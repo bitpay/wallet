@@ -243,6 +243,7 @@ export class TokenSwapCheckoutPage {
         keyId: this.toWalletSelected.keyId,
         name: this.toToken.name,
         address: this.toToken.address,
+        logoURI: this.toToken.logoURI,
         symbol: this.toToken.symbol.toLowerCase(),
         decimals: this.toToken.decimals
       };

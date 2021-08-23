@@ -83,6 +83,7 @@ export class CurrencyProvider {
       name: customToken.name,
       chain: 'ETH',
       coin: customToken.symbol,
+      logoURI: customToken.logoURI,
       unitInfo: {
         unitName: customToken.symbol.toUpperCase(),
         unitToSatoshi: 10 ** customToken.decimals,
@@ -142,6 +143,10 @@ export class CurrencyProvider {
     this.http.get(TokensListAPIUrl).subscribe((data: any) => {
       this.availableCustomTokens = Object.values(data.tokens) as Token[];
     });
+  }
+
+  getLogoURI(coin: string): string {
+    return this.coinOpts[coin].logoURI || 'assets/img/default-erc20.svg';
   }
 
   isUtxoCoin(coin: string): boolean {

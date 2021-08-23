@@ -19,7 +19,7 @@
             <img src="assets/img/currencies/{{token.symbol.toLowerCase()}}.svg" />
           </ion-icon>
           <ion-icon *ngIf="!currencyProvider.COIN[token.symbol | uppercase]" item-start>
-            <img src="https://tokens.1inch.exchange/{{currencyProvider.getTokenAddress(token.symbol.toLowerCase())}}.png" onerror="this.onerror=null;this.src='assets/img/icon-swap.svg'"/>
+            <img [src]="currencyProvider.getLogoURI(token.symbol.toLowerCase())"/>
           </ion-icon>
           <div class="item-title">{{ token.name }} ({{ token.symbol }})</div>
         </button>
