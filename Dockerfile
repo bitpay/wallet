@@ -11,3 +11,14 @@ RUN . "$NVM_DIR/nvm.sh" && nvm alias default v${NODE_VERSION}
 ENV PATH="/root/.nvm/versions/node/v${NODE_VERSION}/bin/:${PATH}"
 RUN node --version
 RUN npm --version
+
+# Download and install Gradle
+RUN \
+    cd /usr/local && \
+    curl -L https://services.gradle.org/distributions/gradle-6.5-bin.zip -o gradle-6.5-bin.zip && \
+    unzip gradle-6.5-bin.zip && \
+    rm gradle-6.5-bin.zip
+
+# Export some environment variables
+ENV GRADLE_HOME=/usr/local/gradle-6.5
+ENV PATH=$PATH:$GRADLE_HOME/bin
