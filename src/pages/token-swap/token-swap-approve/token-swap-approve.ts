@@ -14,6 +14,7 @@ import { FinishModalPage } from '../../finish/finish';
 import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
 import { BwcErrorProvider } from '../../../providers/bwc-error/bwc-error';
 import { BwcProvider } from '../../../providers/bwc/bwc';
+import { ConfigProvider } from '../../../providers/config/config';
 import { CurrencyProvider } from '../../../providers/currency/currency';
 import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
 import { Logger } from '../../../providers/logger/logger';
@@ -21,6 +22,7 @@ import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-g
 import { OneInchProvider } from '../../../providers/one-inch/one-inch';
 import { PlatformProvider } from '../../../providers/platform/platform';
 import { ProfileProvider } from '../../../providers/profile/profile';
+import { RateProvider } from '../../../providers/rate/rate';
 import { TxFormatProvider } from '../../../providers/tx-format/tx-format';
 import {
   TransactionProposal,
@@ -38,26 +40,9 @@ export class TokenSwapApprovePage {
   public toToken;
   public calldata;
   public approveSpenderAddress: string;
-  public amountFrom: number;
-  public amountTo: number;
   public alternativeIsoCode: string;
-  public useSendMax: boolean;
-  public sendMaxInfo;
-  public fixedRateId: string;
-  public rate: number;
-  public fee: number;
-  public gasPrice: number;
-  public gasLimit: number;
-  public fiatAmountTo;
-  private ctxp;
-
-  public totalExchangeFee: number;
-  public payinAddress: string;
-  public payinExtraId: string;
-
-  public paymentExpired: boolean;
-  public remainingTimeStr: string;
-
+  public ctxp;
+  public fiatFee: number;
   public errors;
 
   constructor(
@@ -73,6 +58,8 @@ export class TokenSwapApprovePage {
     private externalLinkProvider: ExternalLinkProvider,
     private txFormatProvider: TxFormatProvider,
     private translate: TranslateService,
+    private configProvider: ConfigProvider,
+    private rateProvider: RateProvider,
     private currencyProvider: CurrencyProvider,
     private walletProvider: WalletProvider,
     private bwcErrorProvider: BwcErrorProvider,
@@ -89,6 +76,8 @@ export class TokenSwapApprovePage {
     );
     this.fromToken = this.navParams.data.fromTokenSelected;
     this.toToken = this.navParams.data.toTokenSelected;
+    this.alternativeIsoCode =
+      this.configProvider.get().wallet.settings.alternativeIsoCode || 'USD';
 
     this.getApproveCalldata();
   }
@@ -119,6 +108,13 @@ export class TokenSwapApprovePage {
             this.createTx(this.fromWalletSelected)
               .then(ctxp => {
                 this.ctxp = ctxp;
+                if (this.ctxp.fee) {
+                  this.fiatFee = this.rateProvider.toFiat(
+                    this.ctxp.fee,
+                    this.alternativeIsoCode,
+                    'eth'
+                  );
+                }
               })
               .catch(err => {
                 const isInsufficientLinkedEthFundsForFeeErr =
@@ -332,11 +328,7 @@ export class TokenSwapApprovePage {
     });
   }
 
-  public canContinue(): boolean {
-    return !this.paymentExpired;
-  }
-
-  public cancelExchange() {
+  public rejectApprove() {
     this.viewCtrl.dismiss();
   }
 }

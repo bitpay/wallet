@@ -1329,36 +1329,6 @@ export class ExchangeCryptoPage {
                         fromWalletCoin: this.fromWalletSelected.coin.toUpperCase()
                       }
                     );
-
-                    const fromCoin = this.fromWalletSelected.coin;
-                    const toCoin = this.toToken
-                      ? this.toToken.symbol.toLowerCase()
-                      : this.toWalletSelected.coin;
-                    let canUseChangelly: boolean = false;
-                    if (
-                      this.changellySupportedCoins.length > 0 &&
-                      this.changellySupportedCoins.includes(fromCoin) &&
-                      this.changellySupportedCoins.includes(toCoin)
-                    ) {
-                      canUseChangelly = true;
-                    }
-
-                    const switchExchangeSheet = this.actionSheetProvider.createInfoSheet(
-                      'switch-exchange-crypto',
-                      {
-                        canUseChangelly,
-                        coin: this.fromWalletSelected.coin.toUpperCase()
-                      }
-                    );
-                    switchExchangeSheet.present();
-                    switchExchangeSheet.onDidDismiss(option => {
-                      if (option) {
-                        this.logger.debug('Switching to Changelly');
-                        this.exchangeToUse = 'changelly';
-                        this.showApproveButton = false;
-                        this.changellyGetRates();
-                      }
-                    });
                   }
                 })
                 .catch(err => {
