@@ -33,11 +33,9 @@ msgstr "*Currently available in the USA. More countries coming soon."
 msgid ", please provide your phone number."
 msgstr ", please provide your phone number."
 
-#| msgid "Create a new wallet"
 msgid ". Added a new wallet."
 msgstr ". Added a new wallet."
 
-#| msgid "{{newWalletsCount}} wallets found"
 msgid ". Added {{newWallets}} new wallets."
 msgstr ". Added {{newWallets}} new wallets."
 
@@ -47,7 +45,6 @@ msgstr "1.5% of the amount."
 msgid "1D"
 msgstr "1D"
 
-#| msgid "Changelly is not available at this moment. Please, try again later."
 msgid "1Inch is not available at this moment. Please, try again later."
 msgstr "1Inch is not available at this moment. Please, try again later."
 
@@ -164,11 +161,12 @@ msgstr "Activity"
 msgid "Add"
 msgstr "Add"
 
-msgid "Add Any ERC-20 Token"
-msgstr "Add Any ERC-20 Token"
-
 msgid "Add BitPay Account?"
 msgstr "Add BitPay Account?"
+
+#| msgid "Add Any ERC-20 Token"
+msgid "Add ERC-20 Tokens"
+msgstr "Add ERC-20 Tokens"
 
 msgid "Add Encryption"
 msgstr "Add Encryption"
@@ -179,7 +177,6 @@ msgstr "Add Encryption?"
 msgid "Add Me"
 msgstr "Add Me"
 
-#| msgid "Add Me"
 msgid "Add Token"
 msgstr "Add Token"
 
@@ -219,7 +216,6 @@ msgstr "Address"
 msgid "Address Book"
 msgstr "Address Book"
 
-#| msgid "Address Book"
 msgid "Address From"
 msgstr "Address From"
 
@@ -303,11 +299,9 @@ msgstr "Apply"
 msgid "Approve"
 msgstr "Approve"
 
-#| msgid "Deposit pending"
 msgid "Approve is Pending"
 msgstr "Approve is Pending"
 
-#| msgid "Approve"
 msgid "Approve required"
 msgstr "Approve required"
 
@@ -755,7 +749,6 @@ msgstr "Coins were successfully sent to the recipient address."
 msgid "Coming soon"
 msgstr "Coming soon"
 
-#| msgid "Completed"
 msgid "Complete Swap"
 msgstr "Complete Swap"
 
@@ -825,7 +818,6 @@ msgstr "Connect Coinbase Account"
 msgid "Connect Your BitPay ID"
 msgstr "Connect Your BitPay ID"
 
-#| msgid "Connected to"
 msgid "Connect to Defi"
 msgstr "Connect to Defi"
 
@@ -841,7 +833,6 @@ msgstr "Connected to"
 msgid "Connecting BitPay ID..."
 msgstr "Connecting BitPay ID..."
 
-#| msgid "Connecting to Coinbase..."
 msgid "Connecting to 1Inch..."
 msgstr "Connecting to 1Inch..."
 
@@ -965,7 +956,6 @@ msgstr "Could not delete payment proposal"
 msgid "Could not encrypt wallet"
 msgstr "Could not encrypt wallet"
 
-#| msgid "Could not find any ERC20 contract attach to the provided address"
 msgid "Could not find any ERC20 contract attached to the provided address."
 msgstr "Could not find any ERC20 contract attached to the provided address."
 
@@ -1081,15 +1071,11 @@ msgstr ""
 "Currently it has not been possible to find a path that allows the "
 "transaction between the selected pair of tokens: "
 
-#| msgid ""
-#| "Currently our partner does not support exchanges with the selected coin"
 msgid ""
 "Currently none of our partners accept the exchange of the selected pair: "
 msgstr ""
 "Currently none of our partners accept the exchange of the selected pair: "
 
-#| msgid ""
-#| "Currently our partner does not support exchanges with the selected coin"
 msgid ""
 "Currently our partners does not support exchanges with the selected coin"
 msgstr ""
@@ -1610,7 +1596,6 @@ msgstr "From"
 msgid "From BitPay account"
 msgstr "From BitPay account"
 
-#| msgid "Transaction"
 msgid "Function"
 msgstr "Function"
 
@@ -1653,11 +1638,9 @@ msgstr "Gas Limit"
 msgid "Gas Price"
 msgstr "Gas Price"
 
-#| msgid "Gas Limit"
 msgid "Gas limit"
 msgstr "Gas limit"
 
-#| msgid "Gas Price"
 msgid "Gas price"
 msgstr "Gas price"
 
@@ -1748,7 +1731,6 @@ msgstr ""
 msgid "Have you redeemed the entire balance of this gift card?"
 msgstr "Have you redeemed the entire balance of this gift card?"
 
-#| msgid "Having problems with Wyre?"
 msgid "Having problems with 1Inch?"
 msgstr "Having problems with 1Inch?"
 
@@ -1767,7 +1749,6 @@ msgstr "Help & Support"
 msgid "Help & support"
 msgstr "Help & support"
 
-#| msgid "Help BitPay improve"
 msgid "Help BitPay Improve"
 msgstr "Help BitPay Improve"
 
@@ -1980,10 +1961,6 @@ msgstr ""
 "In order to begin purchasing and receiving cryptocurrencies you will need to "
 "verify your key. This could take up to 3 minutes long to complete."
 
-#| msgid ""
-#| "In order to create a token wallet, an Ethereum (ETH) wallet is required. "
-#| "Please create an ETH wallet first. Only one {{ params.token.name }} "
-#| "wallet is allowed per ETH wallet."
 msgid ""
 "In order to create a token wallet, an Ethereum (ETH) wallet is required. "
 "Please create an ETH wallet first."
@@ -2000,10 +1977,6 @@ msgstr ""
 "Please create an ETH wallet first. Only one {{ params.token.name }} wallet "
 "is allowed per ETH wallet."
 
-#| msgid ""
-#| "In order to create a token wallet, an Ethereum (ETH) wallet is required. "
-#| "Please create an ETH wallet first. Only one {{ params.token.name }} "
-#| "wallet is allowed per ETH wallet."
 msgid ""
 "In order to create a token wallet, an Ethereum (ETH) wallet is required. "
 "Please create an ETH wallet first. Only one {{ token.name }} wallet is "
@@ -2198,10 +2171,6 @@ msgstr ""
 "wallet, to move them you will need to have enough funds in your Ethereum "
 "linked wallet ("
 
-#| msgid ""
-#| "Keep in mind that once the tokens funds are received, to move them you "
-#| "will need to have enough funds in your Ethereum linked wallet to pay the "
-#| "ETH miner fees."
 msgid ""
 "Keep in mind that once the funds are received in your {{token.name}} wallet, "
 "to move them you will need to have enough funds in your Ethereum linked "
@@ -2285,7 +2254,6 @@ msgstr "Linked"
 msgid "Linked Ethereum Wallet"
 msgstr "Linked Ethereum Wallet"
 
-#| msgid "Linked wallet"
 msgid "Linked Wallet"
 msgstr "Linked Wallet"
 
@@ -2378,7 +2346,6 @@ msgstr "Merchant Message"
 msgid "Message"
 msgstr "Message"
 
-#| msgid "Country not supported: "
 msgid "Method not supported"
 msgstr "Method not supported"
 
@@ -2604,7 +2571,6 @@ msgstr "Not valid bitcoin address"
 msgid "Notes"
 msgstr "Notes"
 
-#| msgid "Notify Me"
 msgid "Notice"
 msgstr "Notice"
 
@@ -2654,7 +2620,6 @@ msgstr "Ok"
 msgid "On"
 msgstr "On"
 
-#| msgid "Changelly is not available at this moment. Please, try again later."
 msgid "OneInch is not available at this moment. Please, try again later."
 msgstr "OneInch is not available at this moment. Please, try again later."
 
@@ -2847,7 +2812,6 @@ msgstr "Payment was confirmed and is being exchanged."
 msgid "Pending"
 msgstr "Pending"
 
-#| msgid "Pending Call Requests"
 msgid "Pending Call Request"
 msgstr "Pending Call Request"
 
@@ -3009,7 +2973,6 @@ msgstr "Random"
 msgid "Re-Import Wallets"
 msgstr "Re-Import Wallets"
 
-#| msgid "Read more"
 msgid "Read More"
 msgstr "Read More"
 
@@ -3169,7 +3132,6 @@ msgstr "Request a Feature"
 msgid "Request a new feature"
 msgstr "Request a new feature"
 
-#| msgid "Select inputs for transaction"
 msgid "Request approval for transactions"
 msgstr "Request approval for transactions"
 
@@ -3277,7 +3239,6 @@ msgstr "Select Currencies"
 msgid "Select Currency"
 msgstr "Select Currency"
 
-#| msgid "Select Destination Wallet"
 msgid "Select Destination Coin"
 msgstr "Select Destination Coin"
 
@@ -3296,29 +3257,24 @@ msgstr "Select Payment Method"
 msgid "Select Source Wallet"
 msgstr "Select Source Wallet"
 
-#| msgid "Select a wallet"
 msgid "Select Wallet"
 msgstr "Select Wallet"
 
 msgid "Select Your Country"
 msgstr "Select Your Country"
 
-#| msgid "Select Your Country"
 msgid "Select a Country"
 msgstr "Select a Country"
 
-#| msgid "Select Destination Wallet"
 msgid "Select a Destination"
 msgstr "Select a Destination"
 
-#| msgid "Select Payment Method"
 msgid "Select a Payment Method"
 msgstr "Select a Payment Method"
 
 msgid "Select a wallet"
 msgstr "Select a wallet"
 
-#| msgid "Select an Ethereum Wallet"
 msgid "Select an Ethereum Linked Wallet"
 msgstr "Select an Ethereum Linked Wallet"
 
@@ -3491,7 +3447,6 @@ msgstr "Show"
 msgid "Show \"Buy Crypto\""
 msgstr "Show \"Buy Crypto\""
 
-#| msgid "Show \"Buy Crypto\""
 msgid "Show \"Swap Crypto\""
 msgstr "Show \"Swap Crypto\""
 
@@ -3531,18 +3486,15 @@ msgstr "Simple Wallet"
 msgid "Single address"
 msgstr "Single address"
 
-#| msgid "Invoice URL"
 msgid "Site URL"
 msgstr "Site URL"
 
 msgid "Skip"
 msgstr "Skip"
 
-#| msgid "Slide to pay"
 msgid "Slide to Approve"
 msgstr "Slide to Approve"
 
-#| msgid "Slide to speed up"
 msgid "Slide to Complete Swap"
 msgstr "Slide to Complete Swap"
 
@@ -3589,7 +3541,6 @@ msgstr ""
 msgid "Someone asked you to create this wallet?"
 msgstr "Someone asked you to create this wallet?"
 
-#| msgid "Someone asked you to create this wallet?"
 msgid "Someone asked you to join a multisig wallet?"
 msgstr "Someone asked you to join a multisig wallet?"
 
@@ -3637,7 +3588,6 @@ msgstr "Spend proposal not found"
 msgid "Spendable balance"
 msgstr "Spendable balance"
 
-#| msgid "Contract Address"
 msgid "Spender Contract Address"
 msgstr "Spender Contract Address"
 
@@ -3671,24 +3621,17 @@ msgstr "Supported by"
 msgid "Swap"
 msgstr "Swap"
 
-#| msgid "Crypto"
 msgid "Swap Crypto"
 msgstr "Swap Crypto"
 
-#| msgid "Buy Crypto Settings"
 msgid "Swap Crypto Settings"
 msgstr "Swap Crypto Settings"
 
-#| msgid "Search tokens"
 msgid "Swap Tokens"
 msgstr "Swap Tokens"
 
 msgid "Swap crypto for another"
 msgstr "Swap crypto for another"
-
-#| msgid "Search tokens"
-msgid "Swap tokens"
-msgstr "Swap tokens"
 
 msgid "Sweep"
 msgstr "Sweep"
@@ -4069,21 +4012,14 @@ msgid "There is an error in the form"
 msgstr "There is an error in the form"
 
 #| msgid ""
-#| "There was a problem retrieving the returnAddress. Please, try again later."
-msgid ""
-"There was a problem retrieving the fromAddress. Please, try again later."
-msgstr ""
-"There was a problem retrieving the fromAddress. Please, try again later."
+#| "There was a problem retrieving the toAddress. Please, try again later."
+msgid "There was a problem retrieving the address. Please, try again later."
+msgstr "There was a problem retrieving the address. Please, try again later."
 
 msgid ""
 "There was a problem retrieving the returnAddress. Please, try again later."
 msgstr ""
 "There was a problem retrieving the returnAddress. Please, try again later."
-
-#| msgid ""
-#| "There was a problem retrieving the returnAddress. Please, try again later."
-msgid "There was a problem retrieving the toAddress. Please, try again later."
-msgstr "There was a problem retrieving the toAddress. Please, try again later."
 
 msgid ""
 "There was a problem retrieving the withdrawalAddress. Please, try again "
@@ -4265,19 +4201,15 @@ msgstr ""
 msgid "To {{reason}} you must first add your BitPay account - {{email}}"
 msgstr "To {{reason}} you must first add your BitPay account - {{email}}"
 
-#| msgid "Token name"
 msgid "Token"
 msgstr "Token"
 
-#| msgid "Token address"
 msgid "Token Added"
 msgstr "Token Added"
 
-#| msgid "Contract Address"
 msgid "Token Contract Address"
 msgstr "Token Contract Address"
 
-#| msgid "Token name"
 msgid "Token Swap"
 msgstr "Token Swap"
 
@@ -4296,11 +4228,9 @@ msgstr "Token precision"
 msgid "Token symbol"
 msgstr "Token symbol"
 
-#| msgid "Token symbol"
 msgid "Tokens"
 msgstr "Tokens"
 
-#| msgid "Custom tokens cannot be used for payments on BitPay"
 msgid "Tokens added from this list cannot be used for payments on BitPay."
 msgstr "Tokens added from this list cannot be used for payments on BitPay."
 
@@ -4600,7 +4530,6 @@ msgstr "View your wallet balance and activity"
 msgid "Virtual"
 msgstr "Virtual"
 
-#| msgid "Visit Help Center"
 msgid "Visit 1Inch Help Center."
 msgstr "Visit 1Inch Help Center."
 
@@ -4845,9 +4774,6 @@ msgid ""
 msgstr ""
 "Which Ethereum wallet would you like this token to use for transaction costs?"
 
-#| msgid ""
-#| "Which Ethereum wallet would you like this token to use for transaction "
-#| "costs?"
 msgid "Which Ethereum wallet would you like to use with WalletConnect?"
 msgstr "Which Ethereum wallet would you like to use with WalletConnect?"
 
@@ -5234,7 +5160,6 @@ msgstr "preparing..."
 msgid "using your 12 words recovery phrase"
 msgstr "using your 12 words recovery phrase"
 
-#| msgid "Add an existent contact or wallet"
 msgid "wants to connect to your wallet"
 msgstr "wants to connect to your wallet"
 
@@ -5304,7 +5229,6 @@ msgid ""
 msgstr ""
 "{{appName}} only supports Bitcoin Cash using new version numbers addresses."
 
-#| msgid "{{countInArray}} of your wallets already exist in {{nameCase}}"
 msgid "{{existentWallets}} of your wallets already exist in {{nameCase}}"
 msgstr "{{existentWallets}} of your wallets already exist in {{nameCase}}"
 
@@ -5323,8 +5247,6 @@ msgstr ""
 "{{params.name}} ({{params.isoCode}}) is no longer supported. Please select "
 "another alternative currency."
 
-#| msgid ""
-#| "{{peerMetaName}} ({{peerMetaUrl}}) is trying to connect to {{walletName}}"
 msgid ""
 "{{peerMetaName}} ({{peerMetaUrl}}) is requesting to connect. This will "
 "disconnect your current session."
@@ -5340,6 +5262,18 @@ msgstr "{{txpsSuccess}} proposals signed"
 
 msgid "{{updatingTxHistoryProgress}} transactions downloaded"
 msgstr "{{updatingTxHistoryProgress}} transactions downloaded"
+
+#~| msgid "Search tokens"
+#~ msgid "Swap tokens"
+#~ msgstr "Swap tokens"
+
+#~| msgid ""
+#~| "There was a problem retrieving the returnAddress. Please, try again "
+#~| "later."
+#~ msgid ""
+#~ "There was a problem retrieving the fromAddress. Please, try again later."
+#~ msgstr ""
+#~ "There was a problem retrieving the fromAddress. Please, try again later."
 
 #~ msgid "Add custom token"
 #~ msgstr "Add custom token"
