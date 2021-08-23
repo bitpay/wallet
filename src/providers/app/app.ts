@@ -146,10 +146,8 @@ export class AppProvider {
       return false;
     }
 
-    return (
-      version.major === targetVersion.major &&
-      version.minor <= targetVersion.minor &&
-      version.patch <= targetVersion.patch
-    );
+    const previousVersion = parseInt(version.major, 10) + parseInt(version.minor, 10) + parseInt(version.patch, 10);
+    const currentVersion = parseInt(targetVersion.major, 10) + parseInt(targetVersion.minor, 10) + parseInt(targetVersion.patch, 10);
+    return previousVersion < currentVersion;
   }
 }
