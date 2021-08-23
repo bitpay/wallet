@@ -708,7 +708,7 @@ export class HomePage {
     !alreadyVisible &&
       this.advertisements.unshift({
         name: 'swapTokens',
-        title: this.translate.instant('Swap tokens'),
+        title: this.translate.instant('Swap Tokens'),
         body: this.translate.instant('Choose from hundreds of ERC-20 tokens.'),
         app: 'bitpay',
         linkText: this.translate.instant('Get Started'),

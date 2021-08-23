@@ -213,7 +213,7 @@ export class TokenSwapCheckoutPage {
             this.showErrorAndBack(
               null,
               this.translate.instant(
-                'There was a problem retrieving the toAddress. Please, try again later.'
+                'There was a problem retrieving the address. Please, try again later.'
               )
             );
             return;
@@ -224,7 +224,7 @@ export class TokenSwapCheckoutPage {
         this.showErrorAndBack(
           null,
           this.translate.instant(
-            'There was a problem retrieving the fromAddress. Please, try again later.'
+            'There was a problem retrieving the address. Please, try again later.'
           )
         );
         return;

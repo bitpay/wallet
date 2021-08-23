@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: copay\n"
 "Language-Team: Japanese\n"
 "Language: ja\n"
-"PO-Revision-Date: 2021-08-22 22:13\n"
+"PO-Revision-Date: 2021-08-23 12:54\n"
 
 msgid "(possible double spend)"
 msgstr "(二重払い可能性あり)"
@@ -119,11 +119,11 @@ msgstr "履歴"
 msgid "Add"
 msgstr "Viêt nam"
 
-msgid "Add Any ERC-20 Token"
-msgstr ""
-
 msgid "Add BitPay Account?"
 msgstr "BitPay アカウントを追加しますか。"
+
+msgid "Add ERC-20 Tokens"
+msgstr ""
 
 msgid "Add Encryption"
 msgstr ""
@@ -3175,9 +3175,6 @@ msgstr ""
 msgid "Swap crypto for another"
 msgstr ""
 
-msgid "Swap tokens"
-msgstr ""
-
 msgid "Sweep"
 msgstr "全残高インポート"
 
@@ -3406,13 +3403,10 @@ msgstr ""
 msgid "There is an error in the form"
 msgstr "フォームにエラーがありました"
 
-msgid "There was a problem retrieving the fromAddress. Please, try again later."
+msgid "There was a problem retrieving the address. Please, try again later."
 msgstr ""
 
 msgid "There was a problem retrieving the returnAddress. Please, try again later."
-msgstr ""
-
-msgid "There was a problem retrieving the toAddress. Please, try again later."
 msgstr ""
 
 msgid "There was a problem retrieving the withdrawalAddress. Please, try again later."
