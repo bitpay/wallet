@@ -1043,7 +1043,7 @@ export class IABCardProvider {
 
   async setCustomVirtualCardDesign() {
     let message = 'customVirtualCardDesign';
-    const currency = await this.getCustomVirtualCardDesign()
+    const currency = await this.getCustomVirtualCardDesign();
     this.sendMessage({
       message,
       payload: currency
