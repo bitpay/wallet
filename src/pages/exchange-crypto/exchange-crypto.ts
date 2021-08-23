@@ -536,9 +536,13 @@ export class ExchangeCryptoPage {
     ) {
       this.exchangeToUse = 'changelly';
     } else {
-      let msg = this.translate.instant(
-        'Currently none of our partners accept the exchange of the selected pair: '
-      ) +  fromCoin + '_' + toCoin;
+      let msg =
+        this.translate.instant(
+          'Currently none of our partners accept the exchange of the selected pair: '
+        ) +
+        fromCoin +
+        '_' +
+        toCoin;
       this.showErrorAndBack(null, msg, true);
       return;
     }
@@ -868,9 +872,13 @@ export class ExchangeCryptoPage {
           ? this.toToken.symbol.toLowerCase()
           : this.toWalletSelected.coin;
 
-        msg = this.translate.instant(
-          'Currently it has not been possible to find a path that allows the transaction between the selected pair of tokens: '
-        ) + fromCoin + '_' + toCoin;
+        msg =
+          this.translate.instant(
+            'Currently it has not been possible to find a path that allows the transaction between the selected pair of tokens: '
+          ) +
+          fromCoin +
+          '_' +
+          toCoin;
       }
     }
 
