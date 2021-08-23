@@ -90,3 +90,4 @@ export { NewFeatureData } from '../providers/new-feature-data/new-feature-data';
 
 export { CardPhasesProvider } from '../providers/card-phases/card-phases';
 export { AbiDecoderProvider } from '../providers/abi-decoder/abi-decoder';
+export { ZceProvider } from '../providers/zce/zce';

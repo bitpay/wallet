@@ -24,6 +24,7 @@ import { PopupProvider } from '../popup/popup';
 import { RateProvider } from '../rate/rate';
 import { TouchIdProvider } from '../touchid/touchid';
 import { TxFormatProvider } from '../tx-format/tx-format';
+import { ZceProvider } from '../zce/zce';
 
 export interface HistoryOptionsI {
   limitTx?: string;
@@ -89,6 +90,7 @@ export interface TransactionProposal {
   invoiceID?: string;
   multisigGnosisContractAddress?: string;
   multisigContractAddress?: string;
+  instantAcceptanceEscrow?: number;
   isTokenSwap?: boolean;
 }
 
@@ -135,7 +137,8 @@ export class WalletProvider {
     private keyProvider: KeyProvider,
     private platformProvider: PlatformProvider,
     private logsProvider: LogsProvider,
-    private appProvider: AppProvider
+    private appProvider: AppProvider,
+    private zceProvider: ZceProvider
   ) {
     this.logger.debug('WalletProvider initialized');
     this.isPopupOpen = false;
@@ -1267,13 +1270,10 @@ export class WalletProvider {
     return new Promise((resolve, reject) => {
       if (_.isEmpty(txp) || _.isEmpty(wallet))
         return reject('MISSING_PARAMETER');
-
       wallet.createTxProposal(txp, (err, createdTxp) => {
         if (err) return reject(err);
-        else {
-          this.logger.debug('Transaction created');
-          return resolve(createdTxp);
-        }
+        this.logger.debug('Transaction created');
+        return resolve(createdTxp);
       });
     });
   }
@@ -1297,7 +1297,12 @@ export class WalletProvider {
     });
   }
 
-  public signTx(wallet, txp, password: string): Promise<any> {
+  public signTx(
+    wallet,
+    txp,
+    password: string,
+    localOnly = false
+  ): Promise<any> {
     return new Promise((resolve, reject) => {
       if (!wallet || !txp) return reject('MISSING_PARAMETER');
 
@@ -1331,7 +1336,9 @@ export class WalletProvider {
           this.logsProvider.get(this.appProvider.info.nameCase, platform);
         });
       }
-
+      if (localOnly) {
+        return resolve({ ...txp, signatures });
+      }
       try {
         wallet.pushSignatures(txp, signatures, (err, signedTxp) => {
           if (err) {
@@ -1676,6 +1683,25 @@ export class WalletProvider {
     });
   }
 
+  private async generateEscrowReclaimTx(wallet, signedTxp, password) {
+    const reclaimTxp = this.zceProvider.generateEscrowReclaimTxp(
+      wallet,
+      signedTxp
+    );
+    const signedReclaimTxp = await this.signTx(
+      wallet,
+      reclaimTxp,
+      password,
+      true
+    );
+    const reclaimSignatureString = signedReclaimTxp.signatures[0];
+    return this.zceProvider.generateEscrowReclaimRawTx(
+      signedTxp,
+      reclaimTxp,
+      reclaimSignatureString
+    );
+  }
+
   private signAndBroadcast(wallet, publishedTxp, password): Promise<any> {
     return new Promise((resolve, reject) => {
       this.onGoingProcessProvider.set('signingTx');
@@ -1685,8 +1711,16 @@ export class WalletProvider {
         publishedTxp.amount -
         publishedTxp.fee;
       this.signTx(wallet, publishedTxp, password)
-        .then(signedTxp => {
+        .then(async signedTxp => {
           this.invalidateCache(wallet);
+          if (signedTxp.escrowAddress) {
+            const escrowReclaimTx = await this.generateEscrowReclaimTx(
+              wallet,
+              signedTxp,
+              password
+            );
+            signedTxp.escrowReclaimTx = escrowReclaimTx;
+          }
           if (signedTxp.status == 'accepted') {
             this.onGoingProcessProvider.set('broadcastingTx');
             this.broadcastTx(wallet, signedTxp)
