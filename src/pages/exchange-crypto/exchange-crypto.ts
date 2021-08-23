@@ -1392,7 +1392,7 @@ export class ExchangeCryptoPage {
         this.showErrorAndBack(
           null,
           this.translate.instant(
-            'There was a problem retrieving the fromAddress. Please, try again later.'
+            'There was a problem retrieving the address. Please, try again later.'
           )
         );
         return;
