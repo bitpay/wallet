@@ -51,6 +51,7 @@ export class TokenSwapCheckoutPage {
   public fixedRateId: string;
   public rate: number;
   public fee: number;
+  public fiatFee: number;
   public gasPrice: number;
   public gasLimit: number;
   public fiatAmountTo;
@@ -181,6 +182,11 @@ export class TokenSwapCheckoutPage {
                 this.gasLimit = Math.ceil(Number(this.swapData.tx.gas) * 1.25); // Estimated amount of the gas limit, increase this value by 25%
                 this.gasPrice = Number(this.swapData.tx.gasPrice);
                 this.fee = this.gasLimit * this.gasPrice;
+                this.fiatFee = this.rateProvider.toFiat(
+                  this.fee,
+                  this.alternativeIsoCode,
+                  'eth'
+                );
                 this.amountTo =
                   Number(this.swapData.toTokenAmount) /
                   10 ** this.toToken.decimals; // amount in minimum unit
