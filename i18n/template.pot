@@ -3390,9 +3390,6 @@ msgstr ""
 msgid "Swap crypto for another"
 msgstr ""
 
-msgid "Swap tokens"
-msgstr ""
-
 msgid "Sweep"
 msgstr ""
 
@@ -3698,13 +3695,10 @@ msgstr ""
 msgid "There is an error in the form"
 msgstr ""
 
-msgid "There was a problem retrieving the fromAddress. Please, try again later."
+msgid "There was a problem retrieving the address. Please, try again later."
 msgstr ""
 
 msgid "There was a problem retrieving the returnAddress. Please, try again later."
-msgstr ""
-
-msgid "There was a problem retrieving the toAddress. Please, try again later."
 msgstr ""
 
 msgid ""
