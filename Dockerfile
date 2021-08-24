@@ -12,6 +12,8 @@ ENV PATH="/root/.nvm/versions/node/v${NODE_VERSION}/bin/:${PATH}"
 RUN node --version
 RUN npm --version
 
+RUN npm install -g firebase-tools
+
 # Download and install Gradle
 RUN \
     cd /usr/local && \
