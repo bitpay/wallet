@@ -215,7 +215,7 @@ export class HomePage {
               }
             });
           } else {
-            this.persistenceProvider.setNewFeatureSlidesFlag(currentVs);
+            this.persistenceProvider.setNewFeatureSlidesFlag(dismissFlag);
           }
         });
       }
