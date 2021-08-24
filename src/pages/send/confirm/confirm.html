@@ -30,7 +30,7 @@
             <div class="background-content" *ngIf="!tx.paypro && !fromCoinbase" copy-to-clipboard="{{ tx.origToAddress }}">
               <img *ngIf="coin && currencyProvider.COIN[coin | uppercase]" class="coin-img" src="assets/img/currencies/{{tx.coin}}.svg" [ngClass]="{'testnet': tx.network === 'testnet'}" alt="Coin" />
               <ion-icon *ngIf="coin && !currencyProvider.COIN[coin | uppercase]" class="coin-img" [ngClass]="{'testnet': tx.network === 'testnet'}" item-start>
-                <img src="https://tokens.1inch.exchange/{{currencyProvider.getTokenAddress(coin)}}.png" onerror="this.onerror=null;this.src='assets/img/icon-swap.svg'" />
+                <img [src]="currencyProvider.getLogoURI(coin)"/>
               </ion-icon>
               <span *ngIf="!tx.name">{{toAddressName || (tx.origToAddress | shortenedAddress)}}</span>
               <span class="ellipsis" *ngIf="tx.name">{{tx.name}}</span>

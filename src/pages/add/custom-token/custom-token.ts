@@ -215,12 +215,13 @@ export class CustomTokenPage {
     modal.present();
     modal.onWillDismiss(data => {
       if (data && data.token) {
-        const { name, address, symbol, decimals } = data.token;
+        const { name, address, symbol, decimals, logoURI } = data.token;
 
         this.createAndBindTokenWallet({
           keyId: this.keyId,
           name,
           address,
+          logoURI,
           symbol: symbol.toLowerCase(),
           decimals
         });

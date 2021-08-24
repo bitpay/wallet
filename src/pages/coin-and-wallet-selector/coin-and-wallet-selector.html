@@ -21,7 +21,7 @@
           <img src="assets/img/currencies/{{coin.unitCode.toLowerCase()}}.svg" />
         </ion-icon>
         <ion-icon *ngIf="!currencyProvider.COIN[coin.unitCode | uppercase]" class="item-img" item-start>
-          <img src="https://tokens.1inch.exchange/{{currencyProvider.getTokenAddress(coin.unitCode.toLowerCase())}}.png" onerror="this.onerror=null;this.src='assets/img/icon-swap.svg'"/>
+          <img [src]="currencyProvider.getLogoURI(coin.unitCode.toLowerCase())"/>
         </ion-icon>
         <ion-label>
           <div class="main-label">{{coin.name}}</div>
@@ -41,7 +41,7 @@
           <img src="assets/img/currencies/{{coin.unitCode.toLowerCase()}}.svg" />
         </ion-icon>
         <ion-icon *ngIf="!currencyProvider.COIN[coin.unitCode | uppercase]" class="item-img" item-start>
-          <img src="https://tokens.1inch.exchange/{{currencyProvider.getTokenAddress(coin.unitCode.toLowerCase())}}.png" onerror="this.onerror=null;this.src='assets/img/icon-swap.svg'"/>
+          <img [src]="currencyProvider.getLogoURI(coin.unitCode.toLowerCase())"/>
         </ion-icon>
         <ion-label>
           <div class="main-label">{{coin.name}}</div>
