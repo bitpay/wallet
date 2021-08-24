@@ -117,10 +117,13 @@ export class TokenSwapApprovePage {
                 }
               })
               .catch(err => {
-                const isInsufficientLinkedEthFundsForFeeErr =
-                  err instanceof this.errors.INSUFFICIENT_ETH_FEE;
+                this.onGoingProcessProvider.clear();
+                const isInsufficientFundsErr =
+                  err instanceof this.errors.INSUFFICIENT_FUNDS;
+                const isInsufficientFundsForFeeErr =
+                  err instanceof this.errors.INSUFFICIENT_FUNDS_FOR_FEE;
 
-                if (isInsufficientLinkedEthFundsForFeeErr) {
+                if (isInsufficientFundsErr || isInsufficientFundsForFeeErr) {
                   let { requiredFee } = err.messageData;
 
                   const coin = this.fromWalletSelected.coin.toLowerCase();
@@ -152,7 +155,7 @@ export class TokenSwapApprovePage {
                         'https://support.bitpay.com/hc/en-us/articles/115003393863-What-are-bitcoin-miner-fees-'
                       );
                     }
-                    this.navCtrl.popToRoot();
+                    this.rejectApprove();
                   });
                 } else {
                   this.showErrorAndBack(err.title, err.message);
@@ -323,7 +326,7 @@ export class TokenSwapApprovePage {
     errorActionSheet.onDidDismiss(_option => {
       if (!noExit) {
         this.onGoingProcessProvider.clear();
-        this.navCtrl.pop();
+        this.rejectApprove();
       }
     });
   }
