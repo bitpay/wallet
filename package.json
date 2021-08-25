@@ -31,6 +31,8 @@
     "url": "https://github.com/bitpay/copay/issues"
   },
   "scripts": {
+    "ngsw-config": "npx ngsw-config www /ngsw.json",
+    "ngsw-copy": "cp node_modules/@angular/service-worker/ngsw-worker.js www/",
     "config": "ts-node ./scripts/setenv.ts",
     "postinstall": "npm run env:dev && npm run prompt && npm run patch:bwc && npm run patch:walletconnect",
     "electron:patch": "(! grep -q 'com.apple.security.app-sandbox' ./node_modules/app-builder-lib/templates/entitlements.mac.plist && sed -i -e \"/<dict>/ a\\ \n<key>com.apple.security.app-sandbox</key><true/>\" ./node_modules/app-builder-lib/templates/entitlements.mac.plist) | echo 'electron patched.'",
@@ -57,7 +59,7 @@
     "fix": "npm run fix:tslint && npm run fix:prettier",
     "fix:iab": "node ./utils/iab-patch.js",
     "env:desktop": "npm run config -- --environment=desktop \n\n# Environment set to: desktop\n\n",
-    "env:prod": "npm run config -- --environment=production && mkdir -p www; echo www | xargs -n 1 cp ngsw-worker.js ngsw.json;  \n\n# Environment set to: prod\n\n",
+    "env:prod": "npm run config -- --environment=production && mkdir -p www && npm run ngsw-config && npm run ngsw-copy\n\n# Environment set to: prod\n\n",
     "env:dev": "npm run config -- --environment=development \n\n# Environment set to: dev\n\n",
     "env:custom": "npm run config -- --environment=development --awsUrl=https://aws.abcpay.cash/bws/api \n\n# Environment set to: dev\n\n",
     "translation:extract": "ngx-translate-extract --input ./src --output ./i18n/template.pot --clean --sort --format pot",
