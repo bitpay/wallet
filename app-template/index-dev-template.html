@@ -10,6 +10,7 @@
 
   <link rel="shortcut icon" href="assets/img/app/favicon.ico">
   <link rel="manifest" href="manifest.json">
+  <script async src="https://unpkg.com/pwacompat" crossorigin="anonymous"></script>
   <meta name="theme-color" content="*THEMECOLOR*">
 
   <link href="build/main.css" rel="stylesheet">
@@ -39,6 +40,13 @@
 
   <!-- The main bundle js is generated during the build process -->
   <script src="build/main.js"></script>
+  
+  <script type="module">
+    // detect iOS Safari
+    if (('standalone' in navigator) && (!navigator.standalone)) {
+      import('https://unpkg.com/pwacompat');
+    }
+  </script>
 
 </body>
 
