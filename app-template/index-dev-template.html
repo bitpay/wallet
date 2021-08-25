@@ -38,14 +38,15 @@
        It contains all of the dependencies in node_modules -->
   <script src="build/vendor.js"></script>
 
+  <!-- The main bundle js is generated during the build process -->
+  <script src="build/main.js"></script>
+  
   <script type="module">
     // detect iOS Safari
     if (('standalone' in navigator) && (!navigator.standalone)) {
       import('https://unpkg.com/pwacompat');
     }
   </script>
-  <!-- The main bundle js is generated during the build process -->
-  <script src="build/main.js"></script>
 
 </body>
 
