@@ -31,7 +31,7 @@
     "url": "https://github.com/bitpay/copay/issues"
   },
   "scripts": {
-    "ngsw-config": "node_modules/.bin/ngsw-config www /ngsw.json",
+    "ngsw-config": "npx ngsw-config www /ngsw.json",
     "ngsw-copy": "cp node_modules/@angular/service-worker/ngsw-worker.js www/",
     "config": "ts-node ./scripts/setenv.ts",
     "postinstall": "npm run env:dev && npm run prompt && npm run patch:bwc && npm run patch:walletconnect",
