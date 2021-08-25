@@ -37,6 +37,7 @@ interface UpdateWalletOptsI {
   walletId: string;
   force?: boolean;
   alsoUpdateHistory?: boolean;
+  checkTxsConfirmations?: boolean;
 }
 @Component({
   templateUrl: 'tabs.html'
@@ -273,8 +274,9 @@ export class TabsPage {
             coin: data.notification.coin,
             network: data.notification.network,
             showHidden: false,
-            alsoUpdateHistory: true,
-            force: true
+            alsoUpdateHistory: false,
+            force: true,
+            checkTxsConfirmations: true
           };
           this.fetchAllWalletsStatus(opts);
         }
@@ -376,7 +378,8 @@ export class TabsPage {
         this.fetchWalletStatus({
           walletId: wallet.credentials.walletId,
           alsoUpdateHistory: opts.alsoUpdateHistory,
-          force: opts.force
+          force: opts.force,
+          checkTxsConfirmations: opts.checkTxsConfirmations
         })
       );
     });
@@ -450,6 +453,16 @@ export class TabsPage {
             walletId: opts.walletId,
             finished: true
           });
+
+          // Update only wallets that have unconfirmed txs when NewBlock push notification is received
+          if (opts.checkTxsConfirmations && wallet.completeHistory) {
+            for (let tx of wallet.completeHistory.slice(0, 5)) {
+              if (tx.confirmations === 0) {
+                opts.alsoUpdateHistory = true;
+                break;
+              }
+            }
+          }
 
           if (opts.alsoUpdateHistory) {
             this.fetchTxHistory(opts);
