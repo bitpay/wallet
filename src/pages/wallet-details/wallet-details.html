@@ -48,8 +48,11 @@
               <balance-to-show [balance]="getBalance()"></balance-to-show>
               <img *ngIf="wallet.coin === 'xrp'" width="21" (click)="openBalanceDetails()" src="assets/img/icon-info-blue.svg">
             </div>
-            <div class="balance-alt-str" *ngIf="wallet?.cachedStatus && wallet?.cachedStatus.totalBalanceAlternative && !currencyProvider.isCustomERCToken(wallet?.coin)">
+            <div class="balance-alt-str" *ngIf="wallet?.cachedStatus && wallet?.cachedStatus.totalBalanceAlternative && !currencyProvider.isCustomERCToken(wallet?.coin) && wallet?.network !== 'testnet'">
               {{getAlternativeBalance()}} {{wallet?.cachedStatus.alternativeIsoCode}}
+            </div>
+            <div class="balance-alt-str" *ngIf="wallet?.network === 'testnet'">
+              {{ 'WORTHLESS' | translate }}
             </div>
           </div>
 
