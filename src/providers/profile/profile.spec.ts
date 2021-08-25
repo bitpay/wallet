@@ -35,22 +35,22 @@ describe('Profile Provider', () => {
   const walletMock = {
     id1: {
       id: 'id1',
-      coin: 'btc',
+      coin: 'bch',
       copayerId: 'copayerId1',
-      lastKnownBalance: '10.00 BTC',
+      lastKnownBalance: '10.00 BCH',
       lastKnownBalanceUpdatedOn: null,
       credentials: {
-        coin: 'btc',
+        coin: 'bch',
         network: 'livenet',
         n: 1,
         m: 1,
         walletId: 'id1',
-        rootPath: "m/44'/0'/0'",
+        rootPath: "m/44'/156'/0'",
         addressType: 'P2PKH',
         keyId: 'keyId1'
       },
       cachedStatus: {
-        availableBalanceSat: 1000000000 // 10 BTC
+        availableBalanceSat: 1000000000 // 10 BCH
       },
       needsBackup: false,
       order: '',
@@ -71,7 +71,7 @@ describe('Profile Provider', () => {
     },
     id2: {
       id: 'id2',
-      coin: 'btc',
+      coin: 'bch',
       copayerId: 'copayerId2',
       lastKnownBalance: '5.00 BCH',
       lastKnownBalanceUpdatedOn: null,
@@ -81,7 +81,7 @@ describe('Profile Provider', () => {
         n: 1,
         m: 1,
         walletId: 'id2',
-        rootPath: "m/44'/0'/0'",
+        rootPath: "m/44'/145'/0'",
         addressType: 'P2PKH',
         keyId: 'keyId2'
       },
@@ -102,22 +102,22 @@ describe('Profile Provider', () => {
     },
     id3: {
       id: 'id3',
-      coin: 'btc',
+      coin: 'bch',
       copayerId: 'copayerId3',
-      lastKnownBalance: '1.50 BTC',
+      lastKnownBalance: '1.50 BCH',
       lastKnownBalanceUpdatedOn: null,
       credentials: {
-        coin: 'btc',
+        coin: 'bch',
         network: 'testnet',
         n: 2,
         m: 2,
         walletId: 'id3',
-        rootPath: "m/44'/0'/0'",
+        rootPath: "m/44'/145'/0'",
         addressType: 'P2PKH',
         keyId: 'keyId1'
       },
       cachedStatus: {
-        availableBalanceSat: 150000000 // 1.50 BTC
+        availableBalanceSat: 150000000 // 1.50 BCH
       },
       needsBackup: true,
       order: 3,
@@ -144,13 +144,13 @@ describe('Profile Provider', () => {
     n: 1,
     m: 1,
     credentials: {
-      coin: 'btc',
+      coin: 'bch',
       network: 'livenet',
       n: 1,
       m: 1,
       walletId: 'id1',
       keyId: 'keyId',
-      rootPath: "m/44'/0'/0'",
+      rootPath: "m/44'/145'/0'",
       addressType: 'P2PKH',
       walletName: 'walletName'
     },
@@ -836,9 +836,9 @@ describe('Profile Provider', () => {
         n: 1,
         myName: null,
         networkName: 'livenet',
-        bwsurl: 'https://bws.bitpay.com/bws/api',
+        bwsurl: 'https://aws.abcpay.cash/bws/api',
         singleAddress: false,
-        coin: 'btc',
+        coin: 'bch',
         mnemonic: 'mom mom mom mom mom mom mom mom mom mom mom mom'
       };
 
@@ -860,9 +860,9 @@ describe('Profile Provider', () => {
         n: 1,
         myName: null,
         networkName: 'livenet',
-        bwsurl: 'https://bws.bitpay.com/bws/api',
+        bwsurl: 'https://aws.abcpay.cash/bws/api',
         singleAddress: false,
-        coin: 'btc',
+        coin: 'bch',
         extendedPrivateKey: 'extendedPrivateKey1'
       };
 
@@ -884,9 +884,9 @@ describe('Profile Provider', () => {
         n: 1,
         myName: null,
         networkName: 'livenet',
-        bwsurl: 'https://bws.bitpay.com/bws/api',
+        bwsurl: 'https://aws.abcpay.cash/bws/api',
         singleAddress: false,
-        coin: 'btc',
+        coin: 'bch',
         extendedPublicKey: 'extendedPublicKey1'
       };
 
@@ -908,9 +908,9 @@ describe('Profile Provider', () => {
         n: 1,
         myName: null,
         networkName: 'livenet',
-        bwsurl: 'https://bws.bitpay.com/bws/api',
+        bwsurl: 'https://aws.abcpay.cash/bws/api',
         singleAddress: false,
-        coin: 'btc'
+        coin: 'bch'
       };
 
       profileProvider
@@ -942,7 +942,7 @@ describe('Profile Provider', () => {
     it('should join wallet and publish "Local/WalletUpdate" event', async () => {
       const opts = {
         secret: 'secret5',
-        coin: 'btc',
+        coin: 'bch',
         myName: 'Gabriel M'
       };
 
@@ -962,7 +962,7 @@ describe('Profile Provider', () => {
     it('should fails to join wallet if you already joined that wallet', async () => {
       const opts = {
         secret: 'secret1',
-        coin: 'btc',
+        coin: 'bch',
         myName: 'Gabriel M'
       };
 
@@ -1063,7 +1063,7 @@ describe('Profile Provider', () => {
           switch (_id) {
             case 'id1':
               lastKnownBalance = {
-                balance: '10.00 BTC',
+                balance: '10.00 BCH',
                 updatedOn: 1558382053803
               };
               break;
@@ -1076,7 +1076,7 @@ describe('Profile Provider', () => {
               break;
             default:
               lastKnownBalance = {
-                balance: '0.00 BTC',
+                balance: '0.00 BCH',
                 updatedOn: Date.now()
               };
               break;
@@ -1087,7 +1087,7 @@ describe('Profile Provider', () => {
     });
     it('should set the last known balance', () => {
       profileProvider.setLastKnownBalance();
-      expect(profileProvider.wallet.id1.lastKnownBalance).toEqual('10.00 BTC');
+      expect(profileProvider.wallet.id1.lastKnownBalance).toEqual('10.00 BCH');
       expect(profileProvider.wallet.id2.lastKnownBalance).toEqual('5.00 BCH');
     });
   });
@@ -1118,7 +1118,7 @@ describe('Profile Provider', () => {
 
     it('should get successfully all wallets when opts are provided', () => {
       const opts = {
-        coin: 'btc',
+        coin: 'bch',
         network: 'testnet',
         n: 2,
         m: 2,
@@ -1132,7 +1132,7 @@ describe('Profile Provider', () => {
 
     it('should get all the wallets that match the array of coins', () => {
       const opts = {
-        coin: ['btc', 'bch'],
+        coin: ['bch', 'bch'],
         network: 'livenet'
       };
       const wallets = profileProvider.getWallets(opts);
@@ -1262,9 +1262,9 @@ describe('Profile Provider', () => {
         n: 1,
         myName: null,
         networkName: 'livenet',
-        bwsurl: 'https://bws.bitpay.com/bws/api',
+        bwsurl: 'https://aws.abcpay.cash/bws/api',
         singleAddress: false,
-        coin: 'btc',
+        coin: 'bch',
         mnemonic: 'mom mom mom mom mom mom mom mom mom mom mom mom'
       };
     });
@@ -1353,7 +1353,7 @@ describe('Profile Provider', () => {
         'replace'
       ).and.returnValue('body1');
 
-      spyOn(txFormatProvider, 'formatAmountStr').and.returnValue('5.00 BTC');
+      spyOn(txFormatProvider, 'formatAmountStr').and.returnValue('5.00 BCH');
 
       // Using createWallet just to test showDesktopNotifications private function
       await profileProvider.createWallet(opts).catch(err => {
@@ -1407,7 +1407,7 @@ describe('Profile Provider', () => {
 
     it('should return true with multiple wallets', () => {
       rateProvider.updateRates().then(() => {
-        // The all wallets have more than 10 BOB worth of btc.
+        // The all wallets have more than 10 BOB worth of bch.
         const res = profileProvider.hasWalletWithFunds(10, 'BOB');
         expect(res).toEqual(true);
       });
@@ -1415,7 +1415,7 @@ describe('Profile Provider', () => {
 
     it('should return true just barely', () => {
       rateProvider.updateRates().then(() => {
-        // The wallet w/ 10 btc should equate to 123 * 10 bob, which would result in this returning true
+        // The wallet w/ 10 bch should equate to 123 * 10 bob, which would result in this returning true
         const res = profileProvider.hasWalletWithFunds(1230, 'BOB');
         expect(res).toEqual(true);
       });
@@ -1423,7 +1423,7 @@ describe('Profile Provider', () => {
 
     it('should return false', () => {
       rateProvider.updateRates().then(() => {
-        // The wallet w/ 10 btc is the biggest wallet. So no wallets are able to pay 1231 BOB.
+        // The wallet w/ 10 bch is the biggest wallet. So no wallets are able to pay 1231 BOB.
         const res = profileProvider.hasWalletWithFunds(1231, 'BOB');
         expect(res).toEqual(false);
       });

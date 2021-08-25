@@ -49,6 +49,7 @@ describe('SendPage', () => {
       };
       instance.wallet = wallet;
       fixture.detectChanges();
+      fixture.componentInstance.wallet.donationCoin = null;
     });
   }));
   afterEach(() => {
@@ -82,8 +83,8 @@ describe('SendPage', () => {
       expect(instance.validDataFromClipboard).toBeUndefined();
     });
     it('should set data from the clipboard', async () => {
-      const data = 'mq8Hc2XwYqXw4sPTc8i7wPx9iJzTFTBWbQ';
-      instance.wallet.coin = 'btc';
+      const data = 'qpfqlkt4y7v533qfrqu7lg8fwp4evqunegzsngaqae';
+      instance.wallet.coin = 'xec';
       spyOn(clipboardProvider, 'getValidData').and.returnValue(
         Promise.resolve(data)
       );
@@ -93,78 +94,37 @@ describe('SendPage', () => {
   });
 
   describe('processInput', () => {
-    describe('for wallets btc livenet', () => {
+    describe('for wallets xec livenet', () => {
       beforeEach(() => {
-        instance.wallet.coin = 'btc';
+        instance.wallet.coin = 'xec';
         instance.wallet.network = 'livenet';
         instance.navParams.data = {
           amount: 11111111,
-          coin: 'btc'
+          coin: 'xec'
         };
 
         const checkIfContact = Promise.resolve(false);
         spyOn(instance, 'checkIfContact').and.returnValue(checkIfContact);
       });
 
-      it('should handle addresses btc livenet and call to redir function', async () => {
+      it('should handle addresses xec livenet and call to redir function', async () => {
         const redirSpy = spyOn(instance.incomingDataProvider, 'redir');
-        instance.search = '3BzniD7NsTgWL5shRWPt1DRxmPtBuSccnG';
+        instance.search = 'qpfqlkt4y7v533qfrqu7lg8fwp4evqunegzsngaqae';
         await instance.processInput();
         expect(instance.invalidAddress).toBeFalsy();
         expect(redirSpy).toHaveBeenCalledWith(
-          '3BzniD7NsTgWL5shRWPt1DRxmPtBuSccnG',
+          'qpfqlkt4y7v533qfrqu7lg8fwp4evqunegzsngaqae',
           {
             activePage: 'SendPage',
             amount: 11111111,
-            coin: 'btc'
+            coin: 'xec'
           }
         );
       });
 
-      it('should handle btc livenet paypro and call to redir function', fakeAsync(() => {
-        const redirSpy = spyOn(instance.incomingDataProvider, 'goToPayPro');
-        const mockPayPro = Promise.resolve({
-          expires: '2019-11-05T16:29:31.754Z',
-          memo:
-            'Payment request for AbcPay invoice MB6kXuVY9frBW1DyoZkE5e for merchant Johnco',
-          payProUrl: 'https://bitpay.com/i/MB6kXuVY9frBW1DyoZkE5e',
-          paymentOptions: [
-            {
-              chain: 'BTC',
-              currency: 'BTC',
-              decimals: 8,
-              estimatedAmount: 10800,
-              minerFee: 100,
-              network: 'livenet',
-              requiredFeeRate: 1,
-              selected: true
-            }
-          ],
-          verified: true
-        });
-        spyOn(instance.payproProvider, 'getPayProOptions').and.returnValue(
-          mockPayPro
-        );
-
-        instance.navParams.data.amount = undefined;
-        instance.navParams.data.coin = undefined;
-        instance.search =
-          'bitcoin:?r=https://bitpay.com/i/MB6kXuVY9frBW1DyoZkE5e';
-        instance.processInput();
-        tick();
-        expect(instance.invalidAddress).toBeFalsy();
-        expect(redirSpy).toHaveBeenCalledWith(
-          'https://bitpay.com/i/MB6kXuVY9frBW1DyoZkE5e',
-          'btc',
-          undefined,
-          true,
-          'SendPage'
-        );
-      }));
-
-      it('should handle addresses btc testnet and call to error modal', async () => {
+      it('should handle addresses bch testnet and call to error modal', async () => {
         const errorModalSpy = spyOn(instance, 'showErrorMessage');
-        instance.search = 'mpX44VAhEsUkfpBUFDADtEk9gDFV17G1vT';
+        instance.search = 'qp7j7pdealmxfv7755vgvh05v7hf34sme5phep2xvs';
         await instance.processInput();
         expect(instance.invalidAddress).toBeTruthy();
         expect(errorModalSpy).toHaveBeenCalled();
@@ -260,39 +220,6 @@ describe('SendPage', () => {
 
         instance.search =
           'bitcoincash:?r=https://test.bitpay.com/i/JTfRobeRFmiCjBivDnzV1Q';
-        instance.processInput();
-        tick();
-        expect(instance.invalidAddress).toBeTruthy();
-        expect(errorModalSpy).toHaveBeenCalled();
-      }));
-
-      it('should handle paypro btc testnet and call error modal', fakeAsync(() => {
-        const errorModalSpy = spyOn(instance, 'showErrorMessage');
-        const mockPayPro = Promise.resolve({
-          expires: '2019-11-05T16:29:31.754Z',
-          memo:
-            'Payment request for AbcPay invoice S5jbsUtrHVuvYQN6XHPuvJ for merchant Johnco',
-          payProUrl: 'https://test.bitpay.com/i/S5jbsUtrHVuvYQN6XHPuvJ',
-          paymentOptions: [
-            {
-              chain: 'BTC',
-              currency: 'BTC',
-              decimals: 8,
-              estimatedAmount: 10800,
-              minerFee: 100,
-              network: 'testnet',
-              requiredFeeRate: 1,
-              selected: true
-            }
-          ],
-          verified: true
-        });
-        spyOn(instance.payproProvider, 'getPayProOptions').and.returnValue(
-          mockPayPro
-        );
-
-        instance.search =
-          'bitcoin:?r=https://test.bitpay.com/i/S5jbsUtrHVuvYQN6XHPuvJ';
         instance.processInput();
         tick();
         expect(instance.invalidAddress).toBeTruthy();
@@ -300,76 +227,35 @@ describe('SendPage', () => {
       }));
     });
 
-    describe('for wallets btc testnet', () => {
+    describe('for wallets bch testnet', () => {
       beforeEach(() => {
-        instance.wallet.coin = 'btc';
+        instance.wallet.coin = 'bch';
         instance.wallet.network = 'testnet';
         instance.navParams.data.amount = 11111111;
-        instance.navParams.data.coin = 'btc';
+        instance.navParams.data.coin = 'bch';
 
         const checkIfContact = Promise.resolve(false);
         spyOn(instance, 'checkIfContact').and.returnValue(checkIfContact);
       });
 
-      it('should handle addresses btc testnet and call to redir function', async () => {
+      it('should handle addresses bch testnet and call to redir function', async () => {
         const redirSpy = spyOn(instance.incomingDataProvider, 'redir');
-        instance.search = 'mpX44VAhEsUkfpBUFDADtEk9gDFV17G1vT';
+        instance.search = 'qp7j7pdealmxfv7755vgvh05v7hf34sme5phep2xvs';
         await instance.processInput();
         expect(instance.invalidAddress).toBeFalsy();
         expect(redirSpy).toHaveBeenCalledWith(
-          'mpX44VAhEsUkfpBUFDADtEk9gDFV17G1vT',
+          'qp7j7pdealmxfv7755vgvh05v7hf34sme5phep2xvs',
           {
             activePage: 'SendPage',
             amount: 11111111,
-            coin: 'btc'
+            coin: 'bch'
           }
         );
       });
 
-      it('should handle btc testnet paypro and call to redir function', fakeAsync(() => {
-        const redirSpy = spyOn(instance.incomingDataProvider, 'goToPayPro');
-        const mockPayPro = Promise.resolve({
-          expires: '2019-11-05T16:29:31.754Z',
-          memo:
-            'Payment request for AbcPay invoice S5jbsUtrHVuvYQN6XHPuvJ for merchant Johnco',
-          payProUrl: 'https://test.bitpay.com/i/S5jbsUtrHVuvYQN6XHPuvJ',
-          paymentOptions: [
-            {
-              chain: 'BTC',
-              currency: 'BTC',
-              decimals: 8,
-              estimatedAmount: 10800,
-              minerFee: 100,
-              network: 'testnet',
-              requiredFeeRate: 1,
-              selected: true
-            }
-          ],
-          verified: true
-        });
-        spyOn(instance.payproProvider, 'getPayProOptions').and.returnValue(
-          mockPayPro
-        );
-
-        instance.navParams.data.amount = undefined;
-        instance.navParams.data.coin = undefined;
-        instance.search =
-          'bitcoin:?r=https://test.bitpay.com/i/S5jbsUtrHVuvYQN6XHPuvJ';
-        instance.processInput();
-        tick();
-        expect(instance.invalidAddress).toBeFalsy();
-        expect(redirSpy).toHaveBeenCalledWith(
-          'https://test.bitpay.com/i/S5jbsUtrHVuvYQN6XHPuvJ',
-          'btc',
-          undefined,
-          true,
-          'SendPage'
-        );
-      }));
-
-      it('should handle addresses btc livenet and call to error modal', async () => {
+      it('should handle addresses xec livenet and call to error modal', async () => {
         const errorModalSpy = spyOn(instance, 'showErrorMessage');
-        instance.search = '3BzniD7NsTgWL5shRWPt1DRxmPtBuSccnG';
+        instance.search = 'qpfqlkt4y7v533qfrqu7lg8fwp4evqunegzsngaqae';
         await instance.processInput();
         expect(instance.invalidAddress).toBeTruthy();
         expect(errorModalSpy).toHaveBeenCalled();
@@ -390,125 +276,6 @@ describe('SendPage', () => {
         expect(instance.invalidAddress).toBeTruthy();
         expect(errorModalSpy).toHaveBeenCalled();
       });
-
-      it('should handle paypro bch livenet and call error modal', fakeAsync(() => {
-        instance.wallet = {
-          coin: 'bch',
-          network: 'testnet',
-          status: {
-            totalBalanceStr: '1.000000'
-          }
-        };
-        const errorModalSpy = spyOn(instance, 'showErrorMessage');
-        const mockPayPro = Promise.resolve({
-          expires: '2019-11-05T16:29:31.754Z',
-          memo:
-            'Payment request for AbcPay invoice 3dZDvRXdxpkL4FoWtkB6ZZ for merchant Johnco',
-          payProUrl: 'https://bitpay.com/i/3dZDvRXdxpkL4FoWtkB6ZZ',
-          paymentOptions: [
-            {
-              chain: 'BCH',
-              currency: 'BCH',
-              decimals: 8,
-              estimatedAmount: 10800,
-              minerFee: 100,
-              network: 'livenet',
-              requiredFeeRate: 1,
-              selected: true
-            }
-          ],
-          verified: true
-        });
-        spyOn(instance.payproProvider, 'getPayProOptions').and.returnValue(
-          mockPayPro
-        );
-        instance.search =
-          'bitcoincash:?r=https://bitpay.com/i/3dZDvRXdxpkL4FoWtkB6ZZ';
-        instance.processInput();
-        tick();
-        expect(instance.invalidAddress).toBeTruthy();
-        expect(errorModalSpy).toHaveBeenCalled();
-      }));
-
-      it('should handle paypro bch testnet and call error modal', fakeAsync(() => {
-        instance.wallet = {
-          coin: 'bch',
-          network: 'livenet',
-          status: {
-            totalBalanceStr: '1.000000'
-          }
-        };
-        const errorModalSpy = spyOn(instance, 'showErrorMessage');
-        const mockPayPro = Promise.resolve({
-          expires: '2019-11-05T16:29:31.754Z',
-          memo:
-            'Payment request for AbcPay invoice JTfRobeRFmiCjBivDnzV1Q for merchant Johnco',
-          payProUrl: 'https://test.bitpay.com/i/JTfRobeRFmiCjBivDnzV1Q',
-          paymentOptions: [
-            {
-              chain: 'BCH',
-              currency: 'BCH',
-              decimals: 8,
-              estimatedAmount: 10800,
-              minerFee: 100,
-              network: 'testnet',
-              requiredFeeRate: 1,
-              selected: true
-            }
-          ],
-          verified: true
-        });
-        spyOn(instance.payproProvider, 'getPayProOptions').and.returnValue(
-          mockPayPro
-        );
-
-        instance.search =
-          'bitcoincash:?r=https://test.bitpay.com/i/JTfRobeRFmiCjBivDnzV1Q';
-        instance.processInput();
-        tick();
-        expect(instance.invalidAddress).toBeTruthy();
-        expect(errorModalSpy).toHaveBeenCalled();
-      }));
-
-      it('should handle paypro btc livenet and call error modal', fakeAsync(() => {
-        instance.wallet = {
-          coin: 'btc',
-          network: 'testnet',
-          status: {
-            totalBalanceStr: '1.000000'
-          }
-        };
-        const errorModalSpy = spyOn(instance, 'showErrorMessage');
-        const mockPayPro = Promise.resolve({
-          expires: '2019-11-05T16:29:31.754Z',
-          memo:
-            'Payment request for AbcPay invoice MB6kXuVY9frBW1DyoZkE5e for merchant Johnco',
-          payProUrl: 'https://bitpay.com/i/MB6kXuVY9frBW1DyoZkE5e',
-          paymentOptions: [
-            {
-              chain: 'BTC',
-              currency: 'BTC',
-              decimals: 8,
-              estimatedAmount: 10800,
-              minerFee: 100,
-              network: 'livenet',
-              requiredFeeRate: 1,
-              selected: true
-            }
-          ],
-          verified: true
-        });
-        spyOn(instance.payproProvider, 'getPayProOptions').and.returnValue(
-          mockPayPro
-        );
-
-        instance.search =
-          'bitcoin:?r=https://bitpay.com/i/MB6kXuVY9frBW1DyoZkE5e';
-        instance.processInput();
-        tick();
-        expect(instance.invalidAddress).toBeTruthy();
-        expect(errorModalSpy).toHaveBeenCalled();
-      }));
     });
 
     describe('for wallets bch livenet', () => {
@@ -537,50 +304,9 @@ describe('SendPage', () => {
         );
       });
 
-      it('should handle bch livenet paypro and call to redir function', fakeAsync(() => {
-        const redirSpy = spyOn(instance.incomingDataProvider, 'goToPayPro');
-        const mockPayPro = Promise.resolve({
-          expires: '2019-11-05T16:29:31.754Z',
-          memo:
-            'Payment request for AbcPay invoice 3dZDvRXdxpkL4FoWtkB6ZZ for merchant Johnco',
-          payProUrl: 'https://bitpay.com/i/3dZDvRXdxpkL4FoWtkB6ZZ',
-          paymentOptions: [
-            {
-              chain: 'BCH',
-              currency: 'BCH',
-              decimals: 8,
-              estimatedAmount: 10800,
-              minerFee: 100,
-              network: 'livenet',
-              requiredFeeRate: 1,
-              selected: true
-            }
-          ],
-          verified: true
-        });
-        spyOn(instance.payproProvider, 'getPayProOptions').and.returnValue(
-          mockPayPro
-        );
-
-        instance.navParams.data.amount = undefined;
-        instance.navParams.data.coin = undefined;
-        instance.search =
-          'bitcoincash:?r=https://bitpay.com/i/3dZDvRXdxpkL4FoWtkB6ZZ';
-        instance.processInput();
-        tick();
-        expect(instance.invalidAddress).toBeFalsy();
-        expect(redirSpy).toHaveBeenCalledWith(
-          'https://bitpay.com/i/3dZDvRXdxpkL4FoWtkB6ZZ',
-          'bch',
-          undefined,
-          true,
-          'SendPage'
-        );
-      }));
-
-      it('should handle addresses btc livenet and call to legacy address info modal', async () => {
+      it('should handle addresses xec livenet and call to legacy address info modal', async () => {
         const legacyAddrModalSpy = spyOn(instance, 'showLegacyAddrMessage');
-        instance.search = '3BzniD7NsTgWL5shRWPt1DRxmPtBuSccnG';
+        instance.search = 'qpfqlkt4y7v533qfrqu7lg8fwp4evqunegzsngaqae';
         await instance.processInput();
         expect(instance.invalidAddress).toBeTruthy();
         expect(legacyAddrModalSpy).toHaveBeenCalled();
@@ -593,127 +319,6 @@ describe('SendPage', () => {
         expect(instance.invalidAddress).toBeTruthy();
         expect(errorModalSpy).toHaveBeenCalled();
       });
-
-      it('should handle address btc testnet and call error modal', async () => {
-        const errorModalSpy = spyOn(instance, 'showErrorMessage');
-        instance.search = 'mpX44VAhEsUkfpBUFDADtEk9gDFV17G1vT';
-        await instance.processInput();
-        expect(instance.invalidAddress).toBeTruthy();
-        expect(errorModalSpy).toHaveBeenCalled();
-      });
-
-      it('should handle paypro btc livenet and call error modal', fakeAsync(() => {
-        instance.wallet = {
-          coin: 'btc',
-          network: 'testnet',
-          status: {
-            totalBalanceStr: '1.000000'
-          }
-        };
-        const errorModalSpy = spyOn(instance, 'showErrorMessage');
-        const mockPayPro = Promise.resolve({
-          expires: '2019-11-05T16:29:31.754Z',
-          memo:
-            'Payment request for AbcPay invoice MB6kXuVY9frBW1DyoZkE5e for merchant Johnco',
-          payProUrl: 'https://bitpay.com/i/MB6kXuVY9frBW1DyoZkE5e',
-          paymentOptions: [
-            {
-              chain: 'BTC',
-              currency: 'BTC',
-              decimals: 8,
-              estimatedAmount: 10800,
-              minerFee: 100,
-              network: 'livenet',
-              requiredFeeRate: 1,
-              selected: true
-            }
-          ],
-          verified: true
-        });
-        spyOn(instance.payproProvider, 'getPayProOptions').and.returnValue(
-          mockPayPro
-        );
-
-        instance.search =
-          'bitcoin:?r=https://bitpay.com/i/MB6kXuVY9frBW1DyoZkE5e';
-        instance.processInput();
-        tick();
-        expect(instance.invalidAddress).toBeTruthy();
-        expect(errorModalSpy).toHaveBeenCalled();
-      }));
-
-      it('should handle paypro bch testnet and call error modal', fakeAsync(() => {
-        const errorModalSpy = spyOn(instance, 'showErrorMessage');
-        const mockPayPro = Promise.resolve({
-          expires: '2019-11-05T16:29:31.754Z',
-          memo:
-            'Payment request for AbcPay invoice JTfRobeRFmiCjBivDnzV1Q for merchant Johnco',
-          payProUrl: 'https://test.bitpay.com/i/JTfRobeRFmiCjBivDnzV1Q',
-          paymentOptions: [
-            {
-              chain: 'BCH',
-              currency: 'BCH',
-              decimals: 8,
-              estimatedAmount: 10800,
-              minerFee: 100,
-              network: 'testnet',
-              requiredFeeRate: 1,
-              selected: true
-            }
-          ],
-          verified: true
-        });
-        spyOn(instance.payproProvider, 'getPayProOptions').and.returnValue(
-          mockPayPro
-        );
-
-        instance.search =
-          'bitcoincash:?r=https://test.bitpay.com/i/JTfRobeRFmiCjBivDnzV1Q';
-        instance.processInput();
-        tick();
-        expect(instance.invalidAddress).toBeTruthy();
-        expect(errorModalSpy).toHaveBeenCalled();
-      }));
-
-      it('should handle paypro btc testnet and call error modal', fakeAsync(() => {
-        instance.wallet = {
-          coin: 'btc',
-          network: 'livenet',
-          status: {
-            totalBalanceStr: '1.000000'
-          }
-        };
-        const errorModalSpy = spyOn(instance, 'showErrorMessage');
-        const mockPayPro = Promise.resolve({
-          expires: '2019-11-05T16:29:31.754Z',
-          memo:
-            'Payment request for AbcPay invoice S5jbsUtrHVuvYQN6XHPuvJ for merchant Johnco',
-          payProUrl: 'https://test.bitpay.com/i/S5jbsUtrHVuvYQN6XHPuvJ',
-          paymentOptions: [
-            {
-              chain: 'BTC',
-              currency: 'BTC',
-              decimals: 8,
-              estimatedAmount: 10800,
-              minerFee: 100,
-              network: 'testnet',
-              requiredFeeRate: 1,
-              selected: true
-            }
-          ],
-          verified: true
-        });
-        spyOn(instance.payproProvider, 'getPayProOptions').and.returnValue(
-          mockPayPro
-        );
-
-        instance.search =
-          'bitcoin:?r=https://test.bitpay.com/i/S5jbsUtrHVuvYQN6XHPuvJ';
-        instance.processInput();
-        tick();
-        expect(instance.invalidAddress).toBeTruthy();
-        expect(errorModalSpy).toHaveBeenCalled();
-      }));
     });
 
     describe('for wallets bch testnet', () => {
@@ -742,47 +347,6 @@ describe('SendPage', () => {
         );
       });
 
-      it('should handle bch testnet paypro and call to redir function', fakeAsync(() => {
-        const redirSpy = spyOn(instance.incomingDataProvider, 'goToPayPro');
-        const mockPayPro = Promise.resolve({
-          expires: '2019-11-05T16:29:31.754Z',
-          memo:
-            'Payment request for AbcPay invoice 3dZDvRXdxpkL4FoWtkB6ZZ for merchant Johnco',
-          payProUrl: 'https://bitpay.com/i/3dZDvRXdxpkL4FoWtkB6ZZ',
-          paymentOptions: [
-            {
-              chain: 'BCH',
-              currency: 'BCH',
-              decimals: 8,
-              estimatedAmount: 10800,
-              minerFee: 100,
-              network: 'testnet',
-              requiredFeeRate: 1,
-              selected: true
-            }
-          ],
-          verified: true
-        });
-        spyOn(instance.payproProvider, 'getPayProOptions').and.returnValue(
-          mockPayPro
-        );
-
-        instance.navParams.data.amount = undefined;
-        instance.navParams.data.coin = undefined;
-        instance.search =
-          'bitcoincash:?r=https://bitpay.com/i/3dZDvRXdxpkL4FoWtkB6ZZ';
-        instance.processInput();
-        tick();
-        expect(instance.invalidAddress).toBeFalsy();
-        expect(redirSpy).toHaveBeenCalledWith(
-          'https://bitpay.com/i/3dZDvRXdxpkL4FoWtkB6ZZ',
-          'bch',
-          undefined,
-          true,
-          'SendPage'
-        );
-      }));
-
       it('should handle addresses bch livenet and call to error modal', async () => {
         const errorModalSpy = spyOn(instance, 'showErrorMessage');
         instance.search =
@@ -792,137 +356,24 @@ describe('SendPage', () => {
         expect(errorModalSpy).toHaveBeenCalled();
       });
 
-      it('should handle address btc livenet and call to error modal', async () => {
+      it('should handle address xec livenet and call to error modal', async () => {
         const errorModalSpy = spyOn(instance, 'showErrorMessage');
-        instance.search = '1CVuVALD6Zo7ms24n3iUXv162kvUzsHr69';
+        instance.search = 'qpfqlkt4y7v533qfrqu7lg8fwp4evqunegzsngaqae';
         await instance.processInput();
         expect(instance.invalidAddress).toBeTruthy();
         expect(errorModalSpy).toHaveBeenCalled();
       });
 
-      it('should handle address btc testnet and call showLegacyAddrMessage', async () => {
+      it('should handle address doge testnet and call showLegacyAddrMessage', async () => {
         const showLegacyAddrMessageSpy = spyOn(
           instance,
           'showLegacyAddrMessage'
         );
-        instance.search = 'n3LHh1WTFSpSVKXNFQo4U5eLAqowCadFHY';
+        instance.search = 'nXFngUrBNpvAYHbFrJ7hphQe8sEC9CjKYb';
         await instance.processInput();
         expect(instance.invalidAddress).toBeTruthy();
         expect(showLegacyAddrMessageSpy).toHaveBeenCalled();
       });
-
-      it('should handle paypro BTC livenet and call error modal', fakeAsync(() => {
-        instance.wallet = {
-          coin: 'btc',
-          network: 'testnet',
-          status: {
-            totalBalanceStr: '1.000000'
-          }
-        };
-        const errorModalSpy = spyOn(instance, 'showErrorMessage');
-        const mockPayPro = Promise.resolve({
-          expires: '2019-11-05T16:29:31.754Z',
-          memo:
-            'Payment request for AbcPay invoice MB6kXuVY9frBW1DyoZkE5e for merchant Johnco',
-          payProUrl: 'https://bitpay.com/i/MB6kXuVY9frBW1DyoZkE5e',
-          paymentOptions: [
-            {
-              chain: 'BTC',
-              currency: 'BTC',
-              decimals: 8,
-              estimatedAmount: 10800,
-              minerFee: 100,
-              network: 'livenet',
-              requiredFeeRate: 1,
-              selected: true
-            }
-          ],
-          verified: true
-        });
-        spyOn(instance.payproProvider, 'getPayProOptions').and.returnValue(
-          mockPayPro
-        );
-
-        instance.search =
-          'bitcoin:?r=https://bitpay.com/i/MB6kXuVY9frBW1DyoZkE5e';
-        instance.processInput();
-        tick();
-        expect(instance.invalidAddress).toBeTruthy();
-        expect(errorModalSpy).toHaveBeenCalled();
-      }));
-
-      it('should handle paypro BTC testnet and call error modal', fakeAsync(() => {
-        instance.wallet = {
-          coin: 'btc',
-          network: 'livenet',
-          status: {
-            totalBalanceStr: '1.000000'
-          }
-        };
-        const errorModalSpy = spyOn(instance, 'showErrorMessage');
-        const mockPayPro = Promise.resolve({
-          expires: '2019-11-05T16:29:31.754Z',
-          memo:
-            'Payment request for AbcPay invoice MB6kXuVY9frBW1DyoZkE5e for merchant Johnco',
-          payProUrl: 'https://bitpay.com/i/MB6kXuVY9frBW1DyoZkE5e',
-          paymentOptions: [
-            {
-              chain: 'BTC',
-              currency: 'BTC',
-              decimals: 8,
-              estimatedAmount: 10800,
-              minerFee: 100,
-              network: 'testnet',
-              requiredFeeRate: 1,
-              selected: true
-            }
-          ],
-          verified: true
-        });
-        spyOn(instance.payproProvider, 'getPayProOptions').and.returnValue(
-          mockPayPro
-        );
-
-        instance.search =
-          'bitcoin:?r=https://bitpay.com/i/MB6kXuVY9frBW1DyoZkE5e';
-        instance.processInput();
-        tick();
-        expect(instance.invalidAddress).toBeTruthy();
-        expect(errorModalSpy).toHaveBeenCalled();
-      }));
-
-      it('should handle paypro bch livenet and call error modal', fakeAsync(() => {
-        const errorModalSpy = spyOn(instance, 'showErrorMessage');
-        const mockPayPro = Promise.resolve({
-          expires: '2019-11-05T16:29:31.754Z',
-          memo:
-            'Payment request for AbcPay invoice 3dZDvRXdxpkL4FoWtkB6ZZ for merchant Johnco',
-          payProUrl: 'https://bitpay.com/i/3dZDvRXdxpkL4FoWtkB6ZZ',
-          paymentOptions: [
-            {
-              chain: 'BCH',
-              currency: 'BCH',
-              decimals: 8,
-              estimatedAmount: 10800,
-              minerFee: 100,
-              network: 'livenet',
-              requiredFeeRate: 1,
-              selected: true
-            }
-          ],
-          verified: true
-        });
-        spyOn(instance.payproProvider, 'getPayProOptions').and.returnValue(
-          mockPayPro
-        );
-
-        instance.search =
-          'bitcoincash:?r=https://bitpay.com/i/3dZDvRXdxpkL4FoWtkB6ZZ';
-        instance.processInput();
-        tick();
-        expect(instance.invalidAddress).toBeTruthy();
-        expect(errorModalSpy).toHaveBeenCalled();
-      }));
     });
 
     it('should set input as valid if hasContacts', async () => {
@@ -932,30 +383,5 @@ describe('SendPage', () => {
       await instance.processInput();
       expect(instance.invalidAddress).toBeFalsy();
     });
-  });
-
-  describe('openScanner', () => {
-    /*  it('should pass the pre-selected amount, coin, and sendMax values to the scanner', () => {
-       const walletTabsProvider: WalletTabsProvider = testBed.get(
-         WalletTabsProvider
-       );
-       const events: Events = testBed.get(Events);
-       instance.navParams = {
-         data: {
-           amount: '1.00000',
-           coin: Coin.BCH
-         }
-       };
-       const amount = '1.00000';
-       const coin = Coin.BCH;
-       const sendParamsSpy = spyOn(walletTabsProvider, 'setSendParams');
-       const publishSpy = spyOn(events, 'publish');
-       instance.openScanner();
-       expect(sendParamsSpy).toHaveBeenCalledWith({
-         amount,
-         coin
-       });
-       expect(publishSpy).toHaveBeenCalledWith('ScanFromWallet');
-     }); TODO*/
   });
 });

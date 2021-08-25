@@ -9,7 +9,7 @@ describe('TransferToPage', () => {
   let instance;
 
   const wallet = {
-    coin: 'btc',
+    coin: 'bch',
     network: 'livenet',
     status: {
       totalBalanceStr: '1.000000'
@@ -30,15 +30,15 @@ describe('TransferToPage', () => {
 
   describe('searchWallets', () => {
     beforeEach(() => {
-      instance.walletList.btc = [
+      instance.walletList.xec = [
         {
           name: 'test1',
-          coin: 'btc',
+          coin: 'xec',
           network: 'livenet'
         },
         {
           name: 'test2',
-          coin: 'btc'
+          coin: 'xec'
         }
       ];
 
@@ -53,30 +53,30 @@ describe('TransferToPage', () => {
         }
       ];
 
-      instance.walletList.eth = [
+      instance.walletList.xpi = [
         {
           name: 'test5',
-          coin: 'eth'
+          coin: 'xpi'
         },
         {
           name: 'test6',
-          coin: 'eth'
+          coin: 'xpi'
         }
       ];
     });
 
-    it('should filter BTC wallets when search by wallet name', () => {
-      instance.hasWallets.btc = true;
-      instance.wallet.coin = 'btc';
+    it('should filter XEC wallets when search by wallet name', () => {
+      instance.hasWallets.bch = true;
+      instance.wallet.coin = 'xec';
       instance.wallet.network = 'livenet';
 
       instance.search = 'test';
       instance.searchWallets();
-      expect(instance.filteredWallets).toEqual(instance.walletList.btc);
+      expect(instance.filteredWallets).toEqual(instance.walletList.xec);
 
       instance.search = 'TEST1';
       instance.searchWallets();
-      expect(instance.filteredWallets).toEqual([instance.walletList.btc[0]]);
+      expect(instance.filteredWallets).toEqual([instance.walletList.xec[0]]);
 
       instance.search = 'test3';
       instance.searchWallets();
@@ -100,17 +100,17 @@ describe('TransferToPage', () => {
       expect(instance.filteredWallets).toEqual([]);
     });
 
-    it('should filter ETH wallets when search by wallet name', () => {
-      instance.hasWallets.eth = true;
-      instance.wallet.coin = 'eth';
+    it('should filter XPI wallets when search by wallet name', () => {
+      instance.hasWallets.xpi = true;
+      instance.wallet.coin = 'xpi';
 
       instance.search = 'test';
       instance.searchWallets();
-      expect(instance.filteredWallets).toEqual(instance.walletList.eth);
+      expect(instance.filteredWallets).toEqual(instance.walletList.xpi);
 
       instance.search = 'TEST5';
       instance.searchWallets();
-      expect(instance.filteredWallets).toEqual([instance.walletList.eth[0]]);
+      expect(instance.filteredWallets).toEqual([instance.walletList.xpi[0]]);
 
       instance.search = 'test1';
       instance.searchWallets();
@@ -120,18 +120,18 @@ describe('TransferToPage', () => {
 
   describe('processInput', () => {
     beforeEach(() => {
-      instance.walletList.btc = [
+      instance.walletList.xec = [
         {
           name: 'test1',
-          coin: 'btc'
+          coin: 'xec'
         },
         {
           name: 'test2',
-          coin: 'btc'
+          coin: 'xec'
         },
         {
           name: 'differentWalletName',
-          coin: 'btc'
+          coin: 'xec'
         }
       ];
 
@@ -146,14 +146,14 @@ describe('TransferToPage', () => {
         }
       ];
 
-      instance.walletList.eth = [
+      instance.walletList.xpi = [
         {
           name: 'test5',
-          coin: 'eth'
+          coin: 'xpi'
         },
         {
           name: 'test6',
-          coin: 'eth'
+          coin: 'xpi'
         }
       ];
 
@@ -166,9 +166,9 @@ describe('TransferToPage', () => {
         }
       ];
     });
-    it('should filter BTC wallets and Contacts when search something', () => {
-      instance.hasWallets.btc = true;
-      instance.wallet.coin = 'btc';
+    it('should filter XEC wallets and Contacts when search something', () => {
+      instance.hasWallets.xec = true;
+      instance.wallet.coin = 'xec';
       instance.search = 'test';
       instance.processInput();
       expect(instance.filteredWallets.length).toEqual(2);
@@ -176,9 +176,9 @@ describe('TransferToPage', () => {
       expect(instance.invalidAddress).toBeFalsy();
     });
 
-    it('should filter ETH wallets and Contacts when search something', () => {
-      instance.hasWallets.eth = true;
-      instance.wallet.coin = 'eth';
+    it('should filter XPI wallets and Contacts when search something', () => {
+      instance.hasWallets.xpi = true;
+      instance.wallet.coin = 'xpi';
       instance.search = 'test';
       instance.processInput();
       expect(instance.filteredWallets.length).toEqual(2);

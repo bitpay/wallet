@@ -106,7 +106,7 @@ describe('Provider: Wallet Provider', () => {
       const newOpts = {
         wallet: {
           settings: {
-            unitCode: 'btc',
+            unitCode: 'bch',
             alternativeIsoCode: 'USD',
             unitToSatoshi: 100000000
           }
@@ -128,9 +128,6 @@ describe('Provider: Wallet Provider', () => {
         .fetchStatus(wallet, opts)
         .then(status => {
           expect(status).toEqual(expectedStatus);
-        })
-        .catch(err => {
-          expect(err).toBeUndefined();
         });
     });
 
@@ -145,9 +142,6 @@ describe('Provider: Wallet Provider', () => {
         .fetchStatus(wallet, opts)
         .then(status => {
           expect(status).toEqual(expectedStatus);
-        })
-        .catch(err => {
-          expect(err).toBeUndefined();
         });
     });
 
@@ -162,9 +156,6 @@ describe('Provider: Wallet Provider', () => {
         .fetchStatus(wallet, opts)
         .then(status => {
           expect(status.pendingTxps[0].pendingForUs).toBeTruthy();
-        })
-        .catch(err => {
-          expect(err).toBeUndefined();
         });
     });
 
@@ -196,9 +187,6 @@ describe('Provider: Wallet Provider', () => {
         .then(status => {
           expect(status.pendingTxps[0].statusForUs).toEqual('accepted');
           expect(status.pendingTxps[1].statusForUs).toEqual('rejected');
-        })
-        .catch(err => {
-          expect(err).toBeUndefined();
         });
     });
 
@@ -221,11 +209,11 @@ describe('Provider: Wallet Provider', () => {
         spendableAmount: 400000000,
         unitToSatoshi: 100000000,
         satToUnit: 1e-8,
-        totalBalanceStr: '5.00 BTC',
-        lockedBalanceStr: '1.00 BTC',
-        availableBalanceStr: '4.00 BTC',
-        spendableBalanceStr: '4.00 BTC',
-        pendingBalanceStr: '0.00 BTC',
+        totalBalanceStr: '5.00 BCH',
+        lockedBalanceStr: '1.00 BCH',
+        availableBalanceStr: '4.00 BCH',
+        spendableBalanceStr: '4.00 BCH',
+        pendingBalanceStr: '0.00 BCH',
         alternativeName: 'US Dollar',
         alternativeIsoCode: 'USD',
         totalBalanceAlternative: '1,000,000',
@@ -277,10 +265,10 @@ describe('Provider: Wallet Provider', () => {
         spendableAmount: 400000000,
         unitToSatoshi: 100000000,
         satToUnit: 1e-8,
-        totalBalanceStr: '5.00 BTC',
-        lockedBalanceStr: '1.00 BTC',
-        availableBalanceStr: '4.00 BTC',
-        spendableBalanceStr: '4.00 BTC',
+        totalBalanceStr: '5.00 BCH',
+        lockedBalanceStr: '1.00 BCH',
+        availableBalanceStr: '4.00 BCH',
+        spendableBalanceStr: '4.00 BCH',
         pendingBalanceStr: '0.00 BTC',
         alternativeName: 'US Dollar',
         alternativeIsoCode: 'USD',
@@ -339,11 +327,11 @@ describe('Provider: Wallet Provider', () => {
 
     it("should return the same address if it isn't BCH", () => {
       const address = walletProvider.getAddressView(
-        Coin.BTC,
+        Coin.XEC,
         'livenet',
-        '3DTdZeycDBaimjuuknVGrG8fxdLbjsAjXN'
+        'qq2gyzhvfujgfx25ldzyel9gtvd72ddvhc8eqscg4e'
       );
-      expect(address).toEqual('3DTdZeycDBaimjuuknVGrG8fxdLbjsAjXN');
+      expect(address).toEqual('ecash:qq2gyzhvfujgfx25ldzyel9gtvd72ddvhc8eqscg4e');
     });
   });
 
@@ -623,9 +611,6 @@ describe('Provider: Wallet Provider', () => {
         .then(txHistory => {
           expect(wallet.completeHistoryIsValid).toBeTruthy();
           expect(txHistory).toEqual(expectedTxHistory);
-        })
-        .catch(err => {
-          expect(err).toBeUndefined();
         });
     });
   });
@@ -674,7 +659,7 @@ describe('Provider: Wallet Provider', () => {
       const wallet: WalletMock = new WalletMock();
       const txp = {
         txid: 'txid1',
-        coin: 'btc',
+        coin: 'xec',
         amount: 10000
       };
       const pass = 'password';
@@ -692,12 +677,12 @@ describe('Provider: Wallet Provider', () => {
         });
     });
 
-    it('Should return an ethereum txp with signed rawTx', async () => {
+    it('Should return an bch txp with signed rawTx', async () => {
       await keyProvider.load();
       const wallet: WalletMock = new WalletMock();
       const txp = {
         txid: 'txid1',
-        coin: 'eth',
+        coin: 'bch',
         amount: 10000
       };
       const pass = 'password';
@@ -722,7 +707,7 @@ describe('Provider: Wallet Provider', () => {
       const txp = {
         txid: 'txid1',
         amount: 10000,
-        coin: 'btc',
+        coin: 'bch',
         status: 'accepted'
       };
 
@@ -736,12 +721,12 @@ describe('Provider: Wallet Provider', () => {
         });
     });
 
-    it('Should return the broadcasted ethereum txid', () => {
+    it('Should return the broadcasted xec txid', () => {
       const wallet: WalletMock = new WalletMock();
       const txp = {
         txid: 'txid1',
         amount: 10000,
-        coin: 'eth',
+        coin: 'xec',
         status: 'accepted'
       };
 
@@ -984,7 +969,7 @@ describe('Provider: Wallet Provider', () => {
       await keyProvider.load();
       txp = {
         txid: 'txid1',
-        coin: 'btc',
+        coin: 'doge',
         status: 'pending'
       };
       spyOn(keyProvider, 'handleEncryptedWallet').and.returnValue(
@@ -1003,11 +988,11 @@ describe('Provider: Wallet Provider', () => {
         });
     });
 
-    it('Should prepare, sign and broadcast ethereum txp if the status is pending', async () => {
+    it('Should prepare, sign and broadcast bch txp if the status is pending', async () => {
       await keyProvider.load();
       txp = {
         txid: 'txid1',
-        coin: 'eth',
+        coin: 'xpi',
         status: 'pending'
       };
       spyOn(keyProvider, 'handleEncryptedWallet').and.returnValue(
@@ -1031,7 +1016,7 @@ describe('Provider: Wallet Provider', () => {
 
       txp = {
         txid: 'txid1',
-        coin: 'btc',
+        coin: 'xec',
         status: 'accepted'
       };
       spyOn(keyProvider, 'handleEncryptedWallet').and.returnValue(
@@ -1050,12 +1035,12 @@ describe('Provider: Wallet Provider', () => {
         });
     });
 
-    it('Should prepare, publish, sign and broadcast ethereum txp if the status is accepted', async () => {
+    it('Should prepare, publish, sign and broadcast lotus txp if the status is accepted', async () => {
       await keyProvider.load();
 
       txp = {
         txid: 'txid1',
-        coin: 'eth',
+        coin: 'xpi',
         status: 'accepted'
       };
       spyOn(keyProvider, 'handleEncryptedWallet').and.returnValue(
@@ -1091,7 +1076,7 @@ describe('Provider: Wallet Provider', () => {
         .getEncodedWalletInfo(wallet, pass)
         .then(walletInfo => {
           expect(walletInfo).toEqual(
-            "1|mom mom mom mom mom mom mom mom mom mom mom mom|livenet|m/44'/0'/0'|false|btc"
+            "1|mom mom mom mom mom mom mom mom mom mom mom mom|livenet|m/44'/145'/0'|false|bch"
           );
         })
         .catch(err => {
@@ -1103,7 +1088,7 @@ describe('Provider: Wallet Provider', () => {
       await keyProvider.load();
       pass = 'password2';
       spyOn<any>(keyProvider, 'getBaseAddressDerivationPath').and.returnValue(
-        "m/44'/0'/0'"
+        "m/44'/145'/0'"
       );
       wallet.credentials.keyId = 'keyId2';
 
@@ -1111,7 +1096,7 @@ describe('Provider: Wallet Provider', () => {
         .getEncodedWalletInfo(wallet, pass)
         .then(walletInfo => {
           expect(walletInfo).toEqual(
-            "2|xPrivKey2|livenet|m/44'/0'/0'|false|btc"
+            "2|xPrivKey2|livenet|m/44'/145'/0'|false|bch"
           );
         })
         .catch(err => {
@@ -1122,7 +1107,7 @@ describe('Provider: Wallet Provider', () => {
     it('Should be reject for a BIP45 wallet', () => {
       pass = 'password1';
       spyOn<any>(keyProvider, 'getBaseAddressDerivationPath').and.returnValue(
-        "m/44'/0'/0'"
+        "m/44'/145'/0'"
       );
 
       walletProvider.getEncodedWalletInfo(wallet, pass).catch(err => {
