@@ -33,6 +33,7 @@
   "scripts": {
     "ngsw-config": "npx ngsw-config www /ngsw.json",
     "ngsw-copy": "cp node_modules/@angular/service-worker/ngsw-worker.js www/",
+    "build:pwa": "npm run apply:abcpay && npm run env:prod && npm run ionic:build",
     "config": "ts-node ./scripts/setenv.ts",
     "postinstall": "npm run env:dev && npm run prompt && npm run patch:bwc && npm run patch:walletconnect",
     "electron:patch": "(! grep -q 'com.apple.security.app-sandbox' ./node_modules/app-builder-lib/templates/entitlements.mac.plist && sed -i -e \"/<dict>/ a\\ \n<key>com.apple.security.app-sandbox</key><true/>\" ./node_modules/app-builder-lib/templates/entitlements.mac.plist) | echo 'electron patched.'",

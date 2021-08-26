@@ -548,6 +548,10 @@ ion-app,
   background: transparent !important;
 }
 
+ion-app {
+  margin-top: env(safe-area-inset-top);
+}
+
 .button-standard {
   width: 85%;
   max-width: 300px;
