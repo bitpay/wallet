@@ -1,6 +1,7 @@
-require('dotenv').config();
-var fs = require('fs');
-const yargs = require('yargs');
+import dotenv from 'dotenv';
+dotenv.config();
+import * as fs from 'fs'
+const yargs = require('yargs')
 const environments = ["development", "production", "desktop"]
 const argv =   yargs.alias('v', 'version')
                     .alias('h', 'help')
@@ -47,7 +48,7 @@ export const env = {
     awsUrl: '${awsUrl}' 
 };
     export default env;`
-fs.writeFile(targetPath, envConfigFile, function (err) {
+fs.writeFile(targetPath, envConfigFile, (err) => {
     if (err) {
         console.log(err);
     }
