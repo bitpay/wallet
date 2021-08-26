@@ -14,7 +14,7 @@
             </div>
             <div *ngIf="!currencyProvider.isCustomERCToken(wallet.coin)" class="alternative">
               <span *ngIf="!btx.fiatRateStr">...</span>
-              <span *ngIf="btx.fiatRateStr">{{ wallet?.network !== 'testnet' ? btx.fiatRateStr : ('WORTHLESS' | translate)}}</span>
+              <span *ngIf="btx.fiatRateStr">{{ wallet?.network !== 'testnet' ? btx.fiatRateStr : ('Test Only - No Value' | translate)}}</span>
             </div>
           </div>
           <div class="sending-label" *ngIf="btx.amount === 0 && wallet.coin === 'eth'">
@@ -60,7 +60,7 @@
             </span>
           </div>
           <div class="secondary-note fee-details" *ngIf="wallet?.network === 'testnet'">
-            {{ 'WORTHLESS' | translate }}
+            {{ 'Test Only - No Value' | translate }}
           </div>
         </ion-note>
       </ion-item>

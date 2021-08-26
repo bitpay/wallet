@@ -18,7 +18,7 @@
           {{ wallet?.cachedStatus.alternativeIsoCode }}
         </div>
         <div class="secondary-note" *ngIf="wallet?.network == 'testnet' && getBalance(wallet, wallet?.coin.toUpperCase())">
-          {{ 'WORTHLESS' | translate }}
+          {{ 'Test Only - No Value' | translate }}
         </div>
       </div>
     </div>

@@ -15,7 +15,7 @@
               {{tx.amountValueStr}} {{tx.amountUnitStr | uppercase}}
             </div>
             <div class="alternative" *ngIf="tx.alternativeAmountStr && wallet?.network !== 'testnet'">{{tx.alternativeAmountStr}}</div>
-            <div class="alternative" *ngIf="wallet?.network === 'testnet'">{{ 'WORTHLESS' | translate }}</div>
+            <div class="alternative" *ngIf="wallet?.network === 'testnet'">{{ 'Test Only - No Value' | translate }}</div>
           </div>
         </div>
       </ion-item>
