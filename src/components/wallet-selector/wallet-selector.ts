@@ -13,6 +13,7 @@ export class WalletSelectorComponent extends ActionSheetParent {
   public fromWalletConnect: boolean;
   public linkEthTokens: boolean;
   public token;
+  public context: string;
 
   constructor() {
     super();
@@ -25,6 +26,7 @@ export class WalletSelectorComponent extends ActionSheetParent {
     this.fromWalletConnect = this.params.fromWalletConnect;
     this.linkEthTokens = this.params.linkEthTokens;
     this.token = this.params.token;
+    this.context = this.params.context;
     this.separateWallets();
   }
 
@@ -34,6 +36,9 @@ export class WalletSelectorComponent extends ActionSheetParent {
   }
 
   public optionClicked(option, isCoinbaseAccount?: boolean): void {
+    if (this.context === 'topup' && ['xrp'].includes(option.coin)) {
+      return;
+    }
     if (!isCoinbaseAccount) this.dismiss(option);
     else {
       const optionClicked = {

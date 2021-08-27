@@ -1,7 +1,10 @@
-<ion-item [ngClass]="{'wallet-disabled': !wallet?.isComplete() || wallet?.needsBackup}">
+<ion-item [ngClass]="{'wallet-disabled': !wallet?.isComplete() || wallet?.needsBackup || notSupported}">
   <coin-icon [coin]="wallet.coin" [network]="wallet.network" item-left></coin-icon>
   <ion-label>
     <div class="main-label">{{ wallet?.name }}</div>
+    <ion-note *ngIf="notSupported">
+      <span translate>Not Supported</span>
+    </ion-note>
     <div *ngIf="wallet?.credentials?.n > 1 || (!wallet?.credentials?.n && wallet?.n > 1) || !wallet?.isComplete() || (wallet?.isComplete() && wallet?.needsBackup)" class="secondary-label">
       <span *ngIf="wallet?.credentials?.n > 1">({{ wallet?.credentials?.m }}/{{ wallet?.credentials?.n }})</span>
       <span *ngIf="!wallet?.credentials?.n && wallet?.n > 1">({{ wallet?.m }}/{{ wallet?.n }})</span>
@@ -9,7 +12,7 @@
       <span *ngIf="wallet?.isComplete() && wallet?.needsBackup" class="wallet-warning backup-msg"> {{'Needs Backup' | translate}}</span>
     </div>
   </ion-label>
-  <ion-note item-end>
+  <ion-note item-end *ngIf="!notSupported">
     <div>
       <div *ngIf="!wallet?.balanceHidden">
         <div class="main-note">{{ getBalance(wallet, wallet?.coin.toUpperCase()) }}</div>
