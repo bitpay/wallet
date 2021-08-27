@@ -1,6 +1,5 @@
-import dotenv from 'dotenv';
-dotenv.config();
-import * as fs from 'fs'
+require('dotenv').config();
+var fs = require('fs');
 const yargs = require('yargs')
 const environments = ["development", "production", "desktop"]
 const argv =   yargs.alias('v', 'version')
