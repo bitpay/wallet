@@ -8,13 +8,13 @@ import { Logger } from '../../../../../providers/logger/logger';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
 // providers
+import env from '../../../../../environments';
 import { AppProvider } from '../../../../../providers/app/app';
 import { ConfigProvider } from '../../../../../providers/config/config';
 import { PersistenceProvider } from '../../../../../providers/persistence/persistence';
 import { PlatformProvider } from '../../../../../providers/platform/platform';
 import { ProfileProvider } from '../../../../../providers/profile/profile';
 import { ReplaceParametersProvider } from '../../../../../providers/replace-parameters/replace-parameters';
-import env from '../../../../../environments';
 
 @Component({
   selector: 'page-wallet-service-url',

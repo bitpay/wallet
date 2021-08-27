@@ -1,5 +1,6 @@
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ServiceWorkerModule } from '@angular/service-worker';
 import { IonicImageLoader } from 'ionic-image-loader';
 import { MarkdownModule } from 'ngx-markdown';
 import { NgxTextOverflowClampModule } from 'ngx-text-overflow-clamp';
@@ -65,7 +66,6 @@ import { ProvidersModule } from '../providers/providers.module';
 /* Modal Transitions */
 import { ModalTranslateEnterTransition } from '../components/notification-component/transitions/on-enter-translate.transition';
 import { ModalTranslateLeaveTransition } from '../components/notification-component/transitions/on-leave-translate.transition';
-import { ServiceWorkerModule } from '@angular/service-worker';
 
 export function translateParserFactory() {
   return new InterpolatedTranslateParser();
