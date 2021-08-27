@@ -16,9 +16,12 @@
     <div>
       <div *ngIf="!wallet?.balanceHidden">
         <div class="main-note">{{ getBalance(wallet, wallet?.coin.toUpperCase()) }}</div>
-        <div class="secondary-note" *ngIf="wallet?.cachedStatus && !currencyProvider.isCustomERCToken(wallet?.coin)">
+        <div class="secondary-note" *ngIf="wallet?.cachedStatus && !currencyProvider.isCustomERCToken(wallet?.coin) && wallet?.network !== 'testnet'">
           {{ getAlternativeBalance(wallet, wallet?.coin.toUpperCase()) }}
           {{ wallet?.cachedStatus.alternativeIsoCode }}
+        </div>
+        <div class="secondary-note" *ngIf="wallet?.network == 'testnet' && getBalance(wallet, wallet?.coin.toUpperCase())">
+          {{ 'Test Only - No Value' | translate }}
         </div>
       </div>
     </div>
