@@ -2,7 +2,7 @@
   "name": "abcpay",
   "description": "Secure Bitcoin Wallet",
   "author": "Abcpay",
-  "version": "12.0.2",
+  "version": "1.0.0",
   "keywords": [
     "bitcoin",
     "wallet",
@@ -21,7 +21,7 @@
   },
   "dom_storage_quota": 200,
   "id": "jid1-x7bV5evAaI1P9Q",
-  "homepage": "https://bitpay.com",
+  "homepage": "https://t.me/AbcPay",
   "license": "MIT",
   "repository": {
     "url": "git://github.com/bitpay/copay.git",
@@ -266,7 +266,8 @@
       "cordova-plugin-x-toast": {},
       "cordova-plugin-x-socialsharing": {
         "PHOTO_LIBRARY_ADD_USAGE_DESCRIPTION": "This app requires photo library access to function properly.",
-        "PHOTO_LIBRARY_USAGE_DESCRIPTION": "This app requires photo library access to function properly."
+        "PHOTO_LIBRARY_USAGE_DESCRIPTION": "This app requires photo library access to function properly.",
+        "ANDROID_SUPPORT_V4_VERSION": "24.1.1+"
       },
       "cordova-plugin-qrscanner": {},
       "cordova-plugin-dialogs": {},
@@ -297,7 +298,9 @@
       "im.ltdev.cordova.UserAgent": {},
       "cordova-launch-review": {},
       "cordova-plugin-wkwebview-engine": {},
-      "cordova-plugin-advanced-http": {},
+      "cordova-plugin-advanced-http": {
+        "OKHTTP_VERSION": "3.10.0"
+      },
       "cordova-plugin-theme-detection": {},
       "cordova-apple-wallet-ng": {},
       "cordova-plugin-add-swift-support": {},
