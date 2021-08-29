@@ -29,6 +29,7 @@
     <preference name="iosPersistentFileLocation" value="Library" />
     <preference name="DisallowOverscroll" value="true"/>
 
+
     <preference name="KeyboardResize" value="true" />
     <preference name="HideKeyboardFormAccessoryBar" value="false"/>
     <preference name="KeyboardResizeMode" value="ionic" />
