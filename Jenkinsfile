@@ -37,27 +37,27 @@ pipeline {
                 sh 'echo $(pwd)'
                 sh 'echo $(ls)'
                 sh 'npm ci'
-//                sh 'mkdir src/environments'
-//                sh 'echo > src/environments/index.ts'
-//                sh 'chmod 777 src/environments/index.ts'
-//
-//
-//                sh 'npm run prepare:android'
-//                sh 'chmod -R 777 platforms/'
-//                sh 'cp $FIREBASE_SERVICES google-services.json'
-//                sh 'cp build-extras.gradle platforms/android/'
-//
-//                sh 'npm run fcm:android'
-//                sh 'npm run patch:bwc'
-//                sh 'npm run final:android-apk'
-//                sh 'echo $(ls platforms/android/app/build/outputs/apk/release)'
-//
-//                sh 'chmod -R 777 ${ANDROID_HOME}'
-//                sh 'echo ${ANDROID_HOME}'
-//
-//                sh '${ANDROID_HOME}/build-tools/28.0.3/apksigner sign -v --ks ${SIGNING_KEYSTORE} --ks-key-alias $SIGNING_KEY_ALIAS --ks-pass pass:"${KEY_PASSWORD}" --key-pass pass:"${KEY_PASSWORD}" --out app-stg-release.apk abcpay/platforms/android/app/build/outputs/apk/release/android-release-aligned-unsigned.apk'
-//                //   sh 'sudo npm install -g firebase-tools'
-//                sh 'firebase appdistribution:distribute app-stg-release.apk --app 1:894530348918:android:f06a7ad98b06427074bc57 --groups "AbcPayCore" --token "$FIREBASE_CI_TOKEN"'
+                sh 'mkdir src/environments'
+                sh 'echo > src/environments/index.ts'
+                sh 'chmod 777 src/environments/index.ts'
+
+
+                sh 'npm run prepare:android'
+                sh 'chmod -R 777 platforms/'
+                sh 'cp $FIREBASE_SERVICES google-services.json'
+                sh 'cp build-extras.gradle platforms/android/'
+
+                sh 'npm run fcm:android'
+                sh 'npm run patch:bwc'
+                sh 'npm run final:android-apk'
+                sh 'echo $(ls platforms/android/app/build/outputs/apk/release)'
+
+                sh 'chmod -R 777 ${ANDROID_HOME}'
+                sh 'echo ${ANDROID_HOME}'
+
+                sh '${ANDROID_HOME}/build-tools/28.0.3/apksigner sign -v --ks ${SIGNING_KEYSTORE} --ks-key-alias $SIGNING_KEY_ALIAS --ks-pass pass:"${KEY_PASSWORD}" --key-pass pass:"${KEY_PASSWORD}" --out app-stg-release.apk abcpay/platforms/android/app/build/outputs/apk/release/android-release-aligned-unsigned.apk'
+                //   sh 'sudo npm install -g firebase-tools'
+                sh 'firebase appdistribution:distribute app-stg-release.apk --app 1:894530348918:android:578df2699d46141474bc57 --groups "AbcPayCore" --token "$FIREBASE_CI_TOKEN"'
 
             }
         }
