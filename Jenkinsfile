@@ -37,7 +37,6 @@ pipeline {
                 sh 'echo $(pwd)'
                 sh 'echo $(ls)'
                 sh 'npm ci'
-
 //                sh 'mkdir src/environments'
 //                sh 'echo > src/environments/index.ts'
 //                sh 'chmod 777 src/environments/index.ts'
