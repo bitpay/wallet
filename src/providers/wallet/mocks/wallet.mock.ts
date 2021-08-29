@@ -85,12 +85,12 @@ export const txsFromLocal = [
 
 export const statusMock: StatusMock = {
   balance: {
-    totalAmount: 500000000,
-    lockedAmount: 100000000,
-    totalConfirmedAmount: 500000000,
-    lockedConfirmedAmount: 100000000,
-    availableAmount: 400000000,
-    availableConfirmedAmount: 400000000,
+    totalAmount: 5000000,
+    lockedAmount: 1000000,
+    totalConfirmedAmount: 5000000,
+    lockedConfirmedAmount: 1000000,
+    availableAmount: 4000000,
+    availableConfirmedAmount: 4000000,
     byAddress: [
       {
         address: 'address1',
@@ -146,16 +146,16 @@ export class WalletMock {
       walletId: 'walletid1',
       walletName: 'Test wallet',
       keyId: 'keyId1',
-      coin: 'btc'
+      coin: 'xpi'
     };
-    this.coin = 'btc';
+    this.coin = 'xpi';
     this.id = 'walletid1';
     this.needsBackup = false;
     this.network = 'livenet';
     this.pendingTxps = [];
     this.scanning = null;
     this.status = statusMock;
-    this.totalBalanceSat = '0.01 BTC';
+    this.totalBalanceSat = '0.01 XPI';
   }
   isComplete() {
     return true;
@@ -212,7 +212,7 @@ export class WalletMock {
   }
   createTxProposal(_txp, cb) {
     const txp: TransactionProposal = {
-      coin: 'btc',
+      coin: 'xpi',
       amount: 1000,
       from: 'address1',
       toAddress: 'address1',
@@ -319,7 +319,7 @@ export class WalletMock {
   }
   createAddress(_opts, cb) {
     const addr = {
-      address: '1CVuVALD6Zo7ms24n3iUXv162kvUzsHr69' // Use a valid address to get a resolved promise
+      address: 'lotus_16PSJLR4Xpf5YYj8UpWE9LHVyATnwpPRiEAv6XkcY' // Use a valid address to get a resolved promise
     };
     return cb(null, addr);
   }

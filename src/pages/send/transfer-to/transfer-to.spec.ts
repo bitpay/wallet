@@ -9,7 +9,7 @@ describe('TransferToPage', () => {
   let instance;
 
   const wallet = {
-    coin: 'bch',
+    coin: 'xpi',
     network: 'livenet',
     status: {
       totalBalanceStr: '1.000000'
@@ -30,17 +30,6 @@ describe('TransferToPage', () => {
 
   describe('searchWallets', () => {
     beforeEach(() => {
-      instance.walletList.xec = [
-        {
-          name: 'test1',
-          coin: 'xec',
-          network: 'livenet'
-        },
-        {
-          name: 'test2',
-          coin: 'xec'
-        }
-      ];
 
       instance.walletList.bch = [
         {
@@ -63,24 +52,6 @@ describe('TransferToPage', () => {
           coin: 'xpi'
         }
       ];
-    });
-
-    it('should filter XEC wallets when search by wallet name', () => {
-      instance.hasWallets.bch = true;
-      instance.wallet.coin = 'xec';
-      instance.wallet.network = 'livenet';
-
-      instance.search = 'test';
-      instance.searchWallets();
-      expect(instance.filteredWallets).toEqual(instance.walletList.xec);
-
-      instance.search = 'TEST1';
-      instance.searchWallets();
-      expect(instance.filteredWallets).toEqual([instance.walletList.xec[0]]);
-
-      instance.search = 'test3';
-      instance.searchWallets();
-      expect(instance.filteredWallets).toEqual([]);
     });
 
     it('should filter BCH wallets when search by wallet name', () => {

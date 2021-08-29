@@ -16,12 +16,12 @@ describe('ConfirmPage', () => {
       instance = testEnv.instance;
       instance.navParams = {
         data: {
-          toAddress: 'qz49wrnh7d9p7ejrg55lqr6zdpu4x2kh7uckpdhth3',
-          coin: 'bch'
+          toAddress: 'lotus_16PSJPYxmBxaJYAd1GGRcVn2nD1vooHJCozd5Dw91',
+          coin: 'xpi'
         }
       };
-      instance.coin = 'bch';
-      instance.tx = { coin: 'bch' };
+      instance.coin = 'xpi';
+      instance.tx = { coin: 'xpi' };
       spyOn(instance.onGoingProcessProvider, 'set');
       testBed = testEnv.testBed;
       errorsProvider = testBed.get(ErrorsProvider);
@@ -89,7 +89,7 @@ describe('ConfirmPage', () => {
     });
     describe('confirmTx', () => {
       it('should display a confirm popup', () => {
-        const txp = { coin: 'bch' };
+        const txp = { coin: 'xpi' };
         const wallet = {};
         spyOn(instance.txFormatProvider, 'formatToUSD').and.returnValue(
           Promise.resolve('100.50')
@@ -99,7 +99,7 @@ describe('ConfirmPage', () => {
     });
     describe('approve', () => {
       const tx = {};
-      const txp = { coin: 'bch' };
+      const txp = { coin: 'xpi' };
       const wallet = {};
       it('should clear the ongoing process loader if user declines', async () => {
         spyOn(instance, 'getTxp').and.returnValue(Promise.resolve(txp));

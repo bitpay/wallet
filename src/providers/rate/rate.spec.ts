@@ -49,9 +49,6 @@ describe('RateProvider', () => {
     { code: 'LTC', name: 'Litecoin', rate: 0.5 },
     { code: 'DOGE', name: 'Dogecoin', rate: 1 }
   ];
-  // const daiResponse = [{ code: 'DAI', name: 'Dai Coin', rate: 9371.93 }];
-  // const wbtcResponse = [
-  //   { code: 'WBTC', name: 'WBTC', rate: 9371.93 } // TODO update tests after beta and market monintor implemented
 
   const fiatResponse = {
     ts: 1559315523000,
@@ -75,8 +72,8 @@ describe('RateProvider', () => {
 
   it('should see if rates are available', () => {
     service.updateRates().then(() => {
-      service.updateRates('bch').then(() => {
-        expect(service.isCoinAvailable('bch')).toBe(true);
+      service.updateRates('xpi').then(() => {
+        expect(service.isCoinAvailable('xpi')).toBe(true);
       });
 
       httpMock.match(bchUrl)[0].flush(bchResponse);
@@ -108,7 +105,7 @@ describe('RateProvider', () => {
 
   it('should get XEC rates', () => {
     service.updateRates().then(() => {
-      service.updateRates('eth').then(() => {
+      service.updateRates('xec').then(() => {
         expect(service.isCoinAvailable('xec')).toBe(true);
         expect(service.getRate('USD', 'eth')).toEqual(1503.3);
         expect(service.getRate('BCH', 'eth')).toEqual(0.899);
@@ -163,14 +160,14 @@ describe('RateProvider', () => {
     });
   });
 
-  it('should covert BCH satoshis to fiat', () => {
+  it('should covert XPI satoshis to fiat', () => {
     // before we have rates
-    expect(service.toFiat(0.25 * 1e8, 'USD', 'bch')).toBeNull();
+    expect(service.toFiat(0.25 * 1e6, 'USD', 'xpi')).toBeNull();
 
     // after we have rates
     service.updateRates().then(() => {
       service.updateRates('bch').then(() => {
-        expect(service.isCoinAvailable('bch')).toBe(true);
+        expect(service.isCoinAvailable('xpi')).toBe(true);
         expect(service.toFiat(1 * 1e8, 'USD', 'bch')).toEqual(1503.3);
         expect(service.toFiat(0.5 * 1e8, 'USD', 'bch')).toEqual(751.65);
         expect(service.toFiat(0.25 * 1e8, 'USD', 'bch')).toEqual(375.825);
@@ -185,9 +182,9 @@ describe('RateProvider', () => {
     });
   });
 
-  it('should covert fiat to BCH satoshis', () => {
+  it('should covert fiat to XPI satoshis', () => {
     // before we have rates
-    expect(service.fromFiat(0.25 * 1e8, 'USD', 'bch')).toBeNull();
+    expect(service.fromFiat(0.25 * 1e8, 'USD', 'xpi')).toBeNull();
 
     service.updateRates().then(() => {
       // after we have rates

@@ -31,7 +31,7 @@ export class IncomingDataProvider {
     private actionSheetProvider: ActionSheetProvider,
     private events: Events,
     private bwcProvider: BwcProvider,
-    private currencyProvider: CurrencyProvider,
+    public currencyProvider: CurrencyProvider,
     private externalLinkProvider: ExternalLinkProvider,
     private logger: Logger,
     private analyticsProvider: AnalyticsProvider,
@@ -70,7 +70,7 @@ export class IncomingDataProvider {
 
   private isValidPayPro(data: string): boolean {
     data = this.sanitizeUri(data);
-    return !!/^(bitcoin|bitcoincash|bchtest|ethereum|ripple|dogecoin|litecoin|ecash)?:\?r=[\w+]/.exec(
+    return !!/^(bitcoin|bitcoincash|bchtest|ethereum|ripple|dogecoin|litecoin|ecash|lotus)?:\?r=[\w+]/.exec(
       data
     );
   }
@@ -524,6 +524,44 @@ export class IncomingDataProvider {
     }
   }
 
+  private handlePlainLotusAddress(
+    data: string,
+    redirParams?: RedirParams
+  ): void {
+    this.logger.debug('Incoming-data: Lotus plain address');
+    const coin = Coin.XPI;
+    if (redirParams && redirParams.activePage === 'ScanPage') {
+      this.showMenu({
+        data,
+        type: 'lotusAddress',
+        coin
+      });
+    } else if (redirParams && redirParams.amount) {
+      this.goSend(data, redirParams.amount, '', coin);
+    } else {
+      this.goToAmountPage(data, coin);
+    }
+  }
+
+  private handlePlainEcashAddress(
+    data: string,
+    redirParams?: RedirParams
+  ): void {
+    this.logger.debug('Incoming-data: ECash plain address');
+    const coin = Coin.XEC;
+    if (redirParams && redirParams.activePage === 'ScanPage') {
+      this.showMenu({
+        data,
+        type: 'ecashAddress',
+        coin
+      });
+    } else if (redirParams && redirParams.amount) {
+      this.goSend(data, redirParams.amount, '', coin);
+    } else {
+      this.goToAmountPage(data, coin);
+    }
+  }
+
   private goToImportByPrivateKey(data: string): void {
     this.logger.debug('Incoming-data (redirect): QR code export feature');
 
@@ -818,6 +856,16 @@ export class IncomingDataProvider {
       // Plain Address (Litecoin)
     } else if (this.isValidLitecoinAddress(data)) {
       this.handlePlainLitecoinAddress(data, redirParams);
+      return true;
+
+      // Plain Address (Lotuscoin)
+    } else if (this.isValidLotusAddress(data)) {
+      this.handlePlainLotusAddress(data, redirParams);
+      return true;
+
+      // Plain Address (Ecashcoin)
+    } else if (this.isValidECashAddress(data)) {
+      this.handlePlainEcashAddress(data, redirParams);
       return true;
 
       // Coinbase

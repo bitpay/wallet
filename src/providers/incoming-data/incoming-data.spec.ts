@@ -148,41 +148,21 @@ describe('Provider: Incoming Data Provider', () => {
         expect(eventsSpy).toHaveBeenCalledWith('IncomingDataRedir', nextView);
       });
     });
-    it('Should handle Bitcoin cash Copay/BitPay format and CashAddr format plain Address', () => {
-      let data = [
-        'qr00upv8qjgkym8zng3f663n9qte9ljuqqcs8eep5w',
-        'CcnxtMfvBHGTwoKGPSuezEuYNpGPJH6tjN'
-      ];
-      data.forEach(element => {
-        expect(
-          incomingDataProvider.redir(element, { activePage: 'ScanPage' })
-        ).toBe(true);
-        expect(loggerSpy).toHaveBeenCalledWith(
-          'Incoming-data: Bitcoin Cash plain address'
-        );
-        expect(actionSheetSpy).toHaveBeenCalledWith({
-          data: {
-            data: element,
-            type: 'bitcoinCashAddress',
-            coin: 'bch'
-          }
-        });
-      });
-    });
+
     it('Should handle XEC plain Address', () => {
-      let data = ['qpfqlkt4y7v533qfrqu7lg8fwp4evqunegzsngaqae'];
+      let data = ['ecash:qpfqlkt4y7v533qfrqu7lg8fwp4evqunegzsngaqae'];
       data.forEach(element => {
         expect(
           incomingDataProvider.redir(element, { activePage: 'ScanPage' })
         ).toBe(true);
         expect(loggerSpy).toHaveBeenCalledWith(
-          'Incoming-data: eCash address'
+          'Incoming-data: ECash URI'
         );
 
         expect(actionSheetSpy).toHaveBeenCalledWith({
           data: {
             data: element,
-            type: 'eCashAddress',
+            type: 'ecashAddress',
             coin: 'xec'
           }
         });
@@ -194,7 +174,7 @@ describe('Provider: Incoming Data Provider', () => {
         expect(
           incomingDataProvider.redir(element, { activePage: 'ScanPage' })
         ).toBe(true);
-        expect(loggerSpy).toHaveBeenCalledWith('Incoming-data: Lotus address');
+        expect(loggerSpy).toHaveBeenCalledWith('Incoming-data: Lotus URI');
 
         expect(actionSheetSpy).toHaveBeenCalledWith({
           data: {
@@ -247,13 +227,13 @@ describe('Provider: Incoming Data Provider', () => {
           incomingDataProvider.redir(element, { activePage: 'ScanPage' })
         ).toBe(true);
         expect(loggerSpy).toHaveBeenCalledWith(
-          'Incoming-data: Ethereum address'
+          'Incoming-data: ECash URI'
         );
 
         expect(actionSheetSpy).toHaveBeenCalledWith({
           data: {
             data: 'qqm0wxg52pzxu292yhgfx0wxwctrupcvgyw6z6ytay',
-            type: 'eCashAddress',
+            type: 'ecashAddress',
             coin: 'xec'
           }
         });
@@ -266,28 +246,28 @@ describe('Provider: Incoming Data Provider', () => {
         expect(
           incomingDataProvider.redir(element, { activePage: 'ScanPage' })
         ).toBe(true);
-        expect(loggerSpy).toHaveBeenCalledWith('Incoming-data: Ripple address');
+        expect(loggerSpy).toHaveBeenCalledWith('Incoming-data: Lotus URI');
 
         expect(actionSheetSpy).toHaveBeenCalledWith({
           data: {
-            data: '16PSJQvoMKjCt78jpCqTLut9iRuiV2vJBH7Rmuwbq',
-            type: 'lotusAddress',
+            data: 'lotus_16PSJQvoMKjCt78jpCqTLut9iRuiV2vJBH7Rmuwbq',
+            type: 'LotusAddress',
             coin: 'xpi'
           }
         });
       });
     });
 
-    it('Should handle XEC URI with amount (value)', () => {
+    it('Should handle XPI URI with amount (value)', () => {
       let data = [
         {
           uri:
-            'ecash:qpfqlkt4y7v533qfrqu7lg8fwp4evqunegzsngaqae?value=1543000000000000000',
+            'lotus_16PSJPYxmBxaJYAd1GGRcVn2nD1vooHJCozd5Dw91?value=1543000000000000000',
           stateParams: {
             amount: '1543000000000000000',
-            toAddress: 'qpfqlkt4y7v533qfrqu7lg8fwp4evqunegzsngaqae',
+            toAddress: 'lotus_16PSJPYxmBxaJYAd1GGRcVn2nD1vooHJCozd5Dw91',
             description: '',
-            coin: 'xec',
+            coin: 'xpi',
             requiredFeeRate: undefined,
             destinationTag: undefined
           },
@@ -295,12 +275,12 @@ describe('Provider: Incoming Data Provider', () => {
         },
         {
           uri:
-            'ecash:qpfqlkt4y7v533qfrqu7lg8fwp4evqunegzsngaqae?value=1543000000000000000?gasPrice=0000400000000000000',
+            'lotus_16PSJPYxmBxaJYAd1GGRcVn2nD1vooHJCozd5Dw91?value=1543000000000000000?gasPrice=0000400000000000000',
           stateParams: {
             amount: '1543000000000000000',
-            toAddress: 'qpfqlkt4y7v533qfrqu7lg8fwp4evqunegzsngaqae',
+            toAddress: 'lotus_16PSJPYxmBxaJYAd1GGRcVn2nD1vooHJCozd5Dw91',
             description: '',
-            coin: 'xec',
+            coin: 'xpi',
             requiredFeeRate: '0000400000000000000',
             destinationTag: undefined
           },
@@ -315,32 +295,32 @@ describe('Provider: Incoming Data Provider', () => {
         expect(
           incomingDataProvider.redir(element.uri, { activePage: 'ScanPage' })
         ).toBe(true);
-        expect(loggerSpy).toHaveBeenCalledWith('Incoming-data: Ethereum URI');
+        expect(loggerSpy).toHaveBeenCalledWith('Incoming-data: Lotus URI');
         expect(eventsSpy).toHaveBeenCalledWith('IncomingDataRedir', nextView);
       });
     });
 
-    it('Should handle XEC URI with amount', () => {
+    it('Should handle XPI URI with amount', () => {
       let data = [
         {
-          uri: 'ecash:qpfqlkt4y7v533qfrqu7lg8fwp4evqunegzsngaqae?amount=15',
+          uri: 'lotus_16PSJPYxmBxaJYAd1GGRcVn2nD1vooHJCozd5Dw91',
           stateParams: {
             amount: '1500',
-            toAddress: 'qpfqlkt4y7v533qfrqu7lg8fwp4evqunegzsngaqae',
+            toAddress: 'lotus_16PSJPYxmBxaJYAd1GGRcVn2nD1vooHJCozd5Dw91',
             description: '',
-            coin: 'xec',
+            coin: 'xpi',
             requiredFeeRate: undefined,
             destinationTag: undefined
           },
           nextpage: 'ConfirmPage'
         },
         {
-          uri: 'ecash:qpfqlkt4y7v533qfrqu7lg8fwp4evqunegzsngaqae?amount=15&dt=12',
+          uri: 'lotus_16PSJPYxmBxaJYAd1GGRcVn2nD1vooHJCozd5Dw91?amount=15&dt=12',
           stateParams: {
             amount: '1500',
-            toAddress: 'qpfqlkt4y7v533qfrqu7lg8fwp4evqunegzsngaqae',
+            toAddress: 'lotus_16PSJPYxmBxaJYAd1GGRcVn2nD1vooHJCozd5Dw91',
             description: '',
-            coin: 'xec',
+            coin: 'xpi',
             requiredFeeRate: undefined,
             destinationTag: '12'
           },
@@ -355,7 +335,7 @@ describe('Provider: Incoming Data Provider', () => {
         expect(
           incomingDataProvider.redir(element.uri, { activePage: 'ScanPage' })
         ).toBe(true);
-        expect(loggerSpy).toHaveBeenCalledWith('Incoming-data: Ripple URI');
+        expect(loggerSpy).toHaveBeenCalledWith('Incoming-data: Lotus URI');
         expect(eventsSpy).toHaveBeenCalledWith('IncomingDataRedir', nextView);
       });
     });
@@ -473,7 +453,7 @@ describe('Provider: Incoming Data Provider', () => {
         expect(actionSheetSpy).toHaveBeenCalledWith({
           data: {
             data: element,
-            type: 'bitcoinCashAddress',
+            type: 'bitcoinAddress',
             coin: 'bch'
           }
         });
@@ -506,7 +486,7 @@ describe('Provider: Incoming Data Provider', () => {
       const stateParams = {
         privateKey: '123',
         toAddress: null,
-        coin: 'bch',
+        coin: 'xpi',
         addressbookEntry: null,
         fromFooterMenu: undefined
       };
@@ -521,7 +501,7 @@ describe('Provider: Incoming Data Provider', () => {
     it('Should handle if there is data and redirTo is AmountPage', () => {
       const stateParams = {
         toAddress: 'xxx',
-        coin: 'bch',
+        coin: 'xpi',
         privateKey: null,
         addressbookEntry: null,
         fromFooterMenu: undefined
@@ -530,14 +510,14 @@ describe('Provider: Incoming Data Provider', () => {
         name: 'AmountPage',
         params: stateParams
       };
-      const data = { redirTo: 'AmountPage', value: 'xxx', coin: 'bch' };
+      const data = { redirTo: 'AmountPage', value: 'xxx', coin: 'xpi' };
       incomingDataProvider.finishIncomingData(data);
       expect(eventsSpy).toHaveBeenCalledWith('IncomingDataRedir', nextView);
     });
     it('Should handle if there is data and redirTo is AddressbookAddPage', () => {
       const stateParams = {
         toAddress: null,
-        coin: 'bch',
+        coin: 'xpi',
         privateKey: null,
         addressbookEntry: 'xxx',
         fromFooterMenu: undefined

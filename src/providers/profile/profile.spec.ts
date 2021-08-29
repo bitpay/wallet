@@ -35,22 +35,22 @@ describe('Profile Provider', () => {
   const walletMock = {
     id1: {
       id: 'id1',
-      coin: 'bch',
+      coin: 'xpi',
       copayerId: 'copayerId1',
-      lastKnownBalance: '10.00 BCH',
+      lastKnownBalance: '10.00 XPI',
       lastKnownBalanceUpdatedOn: null,
       credentials: {
-        coin: 'bch',
+        coin: 'xpi',
         network: 'livenet',
         n: 1,
         m: 1,
         walletId: 'id1',
-        rootPath: "m/44'/156'/0'",
+        rootPath: "m/44'/10605'/0'",
         addressType: 'P2PKH',
         keyId: 'keyId1'
       },
       cachedStatus: {
-        availableBalanceSat: 1000000000 // 10 BCH
+        availableBalanceSat: 10000000 // 10 XPI
       },
       needsBackup: false,
       order: '',
@@ -71,22 +71,22 @@ describe('Profile Provider', () => {
     },
     id2: {
       id: 'id2',
-      coin: 'bch',
+      coin: 'xpi',
       copayerId: 'copayerId2',
-      lastKnownBalance: '5.00 BCH',
+      lastKnownBalance: '5.00 XPI',
       lastKnownBalanceUpdatedOn: null,
       credentials: {
-        coin: 'bch',
+        coin: 'xpi',
         network: 'livenet',
         n: 1,
         m: 1,
         walletId: 'id2',
-        rootPath: "m/44'/145'/0'",
+        rootPath: "m/44'/10605'/0'",
         addressType: 'P2PKH',
         keyId: 'keyId2'
       },
       cachedStatus: {
-        availableBalanceSat: 500000000 // 5 BCH
+        availableBalanceSat: 5000000 // 5 XPI
       },
       needsBackup: true,
       order: 2,
@@ -144,13 +144,13 @@ describe('Profile Provider', () => {
     n: 1,
     m: 1,
     credentials: {
-      coin: 'bch',
+      coin: 'xpi',
       network: 'livenet',
       n: 1,
       m: 1,
       walletId: 'id1',
       keyId: 'keyId',
-      rootPath: "m/44'/145'/0'",
+      rootPath: "m/44'/10605'/0'",
       addressType: 'P2PKH',
       walletName: 'walletName'
     },
@@ -838,7 +838,7 @@ describe('Profile Provider', () => {
         networkName: 'livenet',
         bwsurl: 'https://aws.abcpay.cash/bws/api',
         singleAddress: false,
-        coin: 'bch',
+        coin: 'xpi',
         mnemonic: 'mom mom mom mom mom mom mom mom mom mom mom mom'
       };
 
@@ -862,7 +862,7 @@ describe('Profile Provider', () => {
         networkName: 'livenet',
         bwsurl: 'https://aws.abcpay.cash/bws/api',
         singleAddress: false,
-        coin: 'bch',
+        coin: 'xpi',
         extendedPrivateKey: 'extendedPrivateKey1'
       };
 
@@ -886,7 +886,7 @@ describe('Profile Provider', () => {
         networkName: 'livenet',
         bwsurl: 'https://aws.abcpay.cash/bws/api',
         singleAddress: false,
-        coin: 'bch',
+        coin: 'xpi',
         extendedPublicKey: 'extendedPublicKey1'
       };
 
@@ -910,7 +910,7 @@ describe('Profile Provider', () => {
         networkName: 'livenet',
         bwsurl: 'https://aws.abcpay.cash/bws/api',
         singleAddress: false,
-        coin: 'bch'
+        coin: 'xpi'
       };
 
       profileProvider
@@ -942,7 +942,7 @@ describe('Profile Provider', () => {
     it('should join wallet and publish "Local/WalletUpdate" event', async () => {
       const opts = {
         secret: 'secret5',
-        coin: 'bch',
+        coin: 'xpi',
         myName: 'Gabriel M'
       };
 
@@ -962,7 +962,7 @@ describe('Profile Provider', () => {
     it('should fails to join wallet if you already joined that wallet', async () => {
       const opts = {
         secret: 'secret1',
-        coin: 'bch',
+        coin: 'xpi',
         myName: 'Gabriel M'
       };
 
@@ -1063,20 +1063,20 @@ describe('Profile Provider', () => {
           switch (_id) {
             case 'id1':
               lastKnownBalance = {
-                balance: '10.00 BCH',
+                balance: '10.00 XPI',
                 updatedOn: 1558382053803
               };
               break;
 
             case 'id2':
               lastKnownBalance = {
-                balance: '5.00 BCH',
+                balance: '5.00 XPI',
                 updatedOn: 1558382068661
               };
               break;
             default:
               lastKnownBalance = {
-                balance: '0.00 BCH',
+                balance: '0.00 XPI',
                 updatedOn: Date.now()
               };
               break;
@@ -1087,8 +1087,8 @@ describe('Profile Provider', () => {
     });
     it('should set the last known balance', () => {
       profileProvider.setLastKnownBalance();
-      expect(profileProvider.wallet.id1.lastKnownBalance).toEqual('10.00 BCH');
-      expect(profileProvider.wallet.id2.lastKnownBalance).toEqual('5.00 BCH');
+      expect(profileProvider.wallet.id1.lastKnownBalance).toEqual('10.00 XPI');
+      expect(profileProvider.wallet.id2.lastKnownBalance).toEqual('5.00 XPI');
     });
   });
 
@@ -1132,7 +1132,7 @@ describe('Profile Provider', () => {
 
     it('should get all the wallets that match the array of coins', () => {
       const opts = {
-        coin: ['bch', 'bch'],
+        coin: ['xpi', 'xpi'],
         network: 'livenet'
       };
       const wallets = profileProvider.getWallets(opts);
@@ -1153,9 +1153,9 @@ describe('Profile Provider', () => {
 
     it('should not return any wallet when there is no wallets validating provided opts', () => {
       const opts = {
-        coin: 'bch',
+        coin: 'xpi',
         network: 'livenet',
-        minAmount: 1000000000
+        minAmount: 10000000
       };
       const wallets = profileProvider.getWallets(opts);
       expect(wallets).toEqual([]);
@@ -1264,7 +1264,7 @@ describe('Profile Provider', () => {
         networkName: 'livenet',
         bwsurl: 'https://aws.abcpay.cash/bws/api',
         singleAddress: false,
-        coin: 'bch',
+        coin: 'xpi',
         mnemonic: 'mom mom mom mom mom mom mom mom mom mom mom mom'
       };
     });

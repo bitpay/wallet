@@ -1,9 +1,7 @@
 import {
   async,
   ComponentFixture,
-  fakeAsync,
   TestBed,
-  tick
 } from '@angular/core/testing';
 import { TestUtils } from '../../test';
 
@@ -30,8 +28,8 @@ describe('SendPage', () => {
   }
 
   const wallet = {
-    coin: 'bch',
-    network: 'testnet',
+    coin: 'xpi',
+    network: 'livenet',
     status: {
       totalBalanceStr: '1.000000'
     }
@@ -49,7 +47,6 @@ describe('SendPage', () => {
       };
       instance.wallet = wallet;
       fixture.detectChanges();
-      fixture.componentInstance.wallet.donationCoin = null;
     });
   }));
   afterEach(() => {
@@ -83,8 +80,8 @@ describe('SendPage', () => {
       expect(instance.validDataFromClipboard).toBeUndefined();
     });
     it('should set data from the clipboard', async () => {
-      const data = 'qpfqlkt4y7v533qfrqu7lg8fwp4evqunegzsngaqae';
-      instance.wallet.coin = 'xec';
+      const data = 'lotus_16PSJLR4Xpf5YYj8UpWE9LHVyATnwpPRiEAv6XkcY';
+      instance.wallet.coin = 'xpi';
       spyOn(clipboardProvider, 'getValidData').and.returnValue(
         Promise.resolve(data)
       );
@@ -94,30 +91,30 @@ describe('SendPage', () => {
   });
 
   describe('processInput', () => {
-    describe('for wallets xec livenet', () => {
+    describe('for wallets xpi livenet', () => {
       beforeEach(() => {
-        instance.wallet.coin = 'xec';
+        instance.wallet.coin = 'xpi';
         instance.wallet.network = 'livenet';
         instance.navParams.data = {
           amount: 11111111,
-          coin: 'xec'
+          coin: 'xpi'
         };
 
         const checkIfContact = Promise.resolve(false);
         spyOn(instance, 'checkIfContact').and.returnValue(checkIfContact);
       });
 
-      it('should handle addresses xec livenet and call to redir function', async () => {
+      it('should handle addresses xpi livenet and call to redir function', async () => {
         const redirSpy = spyOn(instance.incomingDataProvider, 'redir');
-        instance.search = 'qpfqlkt4y7v533qfrqu7lg8fwp4evqunegzsngaqae';
+        instance.search = 'lotus_16PSJLR4Xpf5YYj8UpWE9LHVyATnwpPRiEAv6XkcY';
         await instance.processInput();
         expect(instance.invalidAddress).toBeFalsy();
         expect(redirSpy).toHaveBeenCalledWith(
-          'qpfqlkt4y7v533qfrqu7lg8fwp4evqunegzsngaqae',
+          'lotus_16PSJLR4Xpf5YYj8UpWE9LHVyATnwpPRiEAv6XkcY',
           {
             activePage: 'SendPage',
             amount: 11111111,
-            coin: 'xec'
+            coin: 'xpi'
           }
         );
       });
@@ -138,138 +135,7 @@ describe('SendPage', () => {
         expect(errorModalSpy).toHaveBeenCalled();
       });
 
-      it('should handle address bch testnet and call error modal', async () => {
-        const errorModalSpy = spyOn(instance, 'showErrorMessage');
-        instance.search = 'qqfs4tjymy5cs0j4lz78y2lvensl0l42wu80z5jass';
-        await instance.processInput();
-        expect(instance.invalidAddress).toBeTruthy();
-        expect(errorModalSpy).toHaveBeenCalled();
-      });
-
-      it('should handle paypro bch livenet and call error modal', fakeAsync(() => {
-        instance.wallet = {
-          coin: 'bch',
-          network: 'testnet',
-          status: {
-            totalBalanceStr: '1.000000'
-          }
-        };
-        const errorModalSpy = spyOn(instance, 'showErrorMessage');
-        const mockPayPro = Promise.resolve({
-          expires: '2019-11-05T16:29:31.754Z',
-          memo:
-            'Payment request for AbcPay invoice 3dZDvRXdxpkL4FoWtkB6ZZ for merchant Johnco',
-          payProUrl: 'https://bitpay.com/i/3dZDvRXdxpkL4FoWtkB6ZZ',
-          paymentOptions: [
-            {
-              chain: 'BCH',
-              currency: 'BCH',
-              decimals: 8,
-              estimatedAmount: 10800,
-              minerFee: 100,
-              network: 'livenet',
-              requiredFeeRate: 1,
-              selected: true
-            }
-          ],
-          verified: true
-        });
-        spyOn(instance.payproProvider, 'getPayProOptions').and.returnValue(
-          mockPayPro
-        );
-
-        instance.search =
-          'bitcoincash:?r=https://bitpay.com/i/3dZDvRXdxpkL4FoWtkB6ZZ';
-        instance.processInput();
-        tick();
-        expect(instance.invalidAddress).toBeTruthy();
-        expect(errorModalSpy).toHaveBeenCalled();
-      }));
-
-      it('should handle paypro bch testnet and call error modal', fakeAsync(() => {
-        instance.wallet = {
-          coin: 'bch',
-          network: 'livenet',
-          status: {
-            totalBalanceStr: '1.000000'
-          }
-        };
-        const errorModalSpy = spyOn(instance, 'showErrorMessage');
-        const mockPayPro = Promise.resolve({
-          expires: '2019-11-05T16:29:31.754Z',
-          memo:
-            'Payment request for AbcPay invoice JTfRobeRFmiCjBivDnzV1Q for merchant Johnco',
-          payProUrl: 'https://test.bitpay.com/i/JTfRobeRFmiCjBivDnzV1Q',
-          paymentOptions: [
-            {
-              chain: 'BCH',
-              currency: 'BCH',
-              decimals: 8,
-              estimatedAmount: 10800,
-              minerFee: 100,
-              network: 'testnet',
-              requiredFeeRate: 1,
-              selected: true
-            }
-          ],
-          verified: true
-        });
-        spyOn(instance.payproProvider, 'getPayProOptions').and.returnValue(
-          mockPayPro
-        );
-
-        instance.search =
-          'bitcoincash:?r=https://test.bitpay.com/i/JTfRobeRFmiCjBivDnzV1Q';
-        instance.processInput();
-        tick();
-        expect(instance.invalidAddress).toBeTruthy();
-        expect(errorModalSpy).toHaveBeenCalled();
-      }));
-    });
-
-    describe('for wallets bch testnet', () => {
-      beforeEach(() => {
-        instance.wallet.coin = 'bch';
-        instance.wallet.network = 'testnet';
-        instance.navParams.data.amount = 11111111;
-        instance.navParams.data.coin = 'bch';
-
-        const checkIfContact = Promise.resolve(false);
-        spyOn(instance, 'checkIfContact').and.returnValue(checkIfContact);
-      });
-
-      it('should handle addresses bch testnet and call to redir function', async () => {
-        const redirSpy = spyOn(instance.incomingDataProvider, 'redir');
-        instance.search = 'qp7j7pdealmxfv7755vgvh05v7hf34sme5phep2xvs';
-        await instance.processInput();
-        expect(instance.invalidAddress).toBeFalsy();
-        expect(redirSpy).toHaveBeenCalledWith(
-          'qp7j7pdealmxfv7755vgvh05v7hf34sme5phep2xvs',
-          {
-            activePage: 'SendPage',
-            amount: 11111111,
-            coin: 'bch'
-          }
-        );
-      });
-
-      it('should handle addresses xec livenet and call to error modal', async () => {
-        const errorModalSpy = spyOn(instance, 'showErrorMessage');
-        instance.search = 'qpfqlkt4y7v533qfrqu7lg8fwp4evqunegzsngaqae';
-        await instance.processInput();
-        expect(instance.invalidAddress).toBeTruthy();
-        expect(errorModalSpy).toHaveBeenCalled();
-      });
-
-      it('should handle address bch livenet and call to error modal', async () => {
-        const errorModalSpy = spyOn(instance, 'showErrorMessage');
-        instance.search = 'qzcy06mxsk7hw0ru4kzwtrkxds6vf8y34vrm5sf9z7';
-        await instance.processInput();
-        expect(instance.invalidAddress).toBeTruthy();
-        expect(errorModalSpy).toHaveBeenCalled();
-      });
-
-      it('should handle address bch testnet and call error modal', async () => {
+      it('should handle address bch 1 testnet and call error modal', async () => {
         const errorModalSpy = spyOn(instance, 'showErrorMessage');
         instance.search = 'qqfs4tjymy5cs0j4lz78y2lvensl0l42wu80z5jass';
         await instance.processInput();
@@ -278,41 +144,33 @@ describe('SendPage', () => {
       });
     });
 
-    describe('for wallets bch livenet', () => {
+    describe('for wallets xpi livenet', () => {
       beforeEach(() => {
-        instance.wallet.coin = 'bch';
+        instance.wallet.coin = 'xpi';
         instance.wallet.network = 'livenet';
         instance.navParams.data.amount = 11111111;
-        instance.navParams.data.coin = 'bch';
+        instance.navParams.data.coin = 'xpi';
 
         const checkIfContact = Promise.resolve(false);
         spyOn(instance, 'checkIfContact').and.returnValue(checkIfContact);
       });
 
-      it('should handle addresses bch livenet and call to redir function', async () => {
+      it('should handle addresses xpi livenet and call to redir function', async () => {
         const redirSpy = spyOn(instance.incomingDataProvider, 'redir');
-        instance.search = 'qzcy06mxsk7hw0ru4kzwtrkxds6vf8y34vrm5sf9z7';
+        instance.search = 'lotus_16PSJLR4Xpf5YYj8UpWE9LHVyATnwpPRiEAv6XkcY';
         await instance.processInput();
         expect(instance.invalidAddress).toBeFalsy();
         expect(redirSpy).toHaveBeenCalledWith(
-          'qzcy06mxsk7hw0ru4kzwtrkxds6vf8y34vrm5sf9z7',
+          'lotus_16PSJLR4Xpf5YYj8UpWE9LHVyATnwpPRiEAv6XkcY',
           {
             activePage: 'SendPage',
             amount: 11111111,
-            coin: 'bch'
+            coin: 'xpi'
           }
         );
       });
 
-      it('should handle addresses xec livenet and call to legacy address info modal', async () => {
-        const legacyAddrModalSpy = spyOn(instance, 'showLegacyAddrMessage');
-        instance.search = 'qpfqlkt4y7v533qfrqu7lg8fwp4evqunegzsngaqae';
-        await instance.processInput();
-        expect(instance.invalidAddress).toBeTruthy();
-        expect(legacyAddrModalSpy).toHaveBeenCalled();
-      });
-
-      it('should handle address bch testnet and call error modal', async () => {
+      it('should handle address bch 3 testnet and call error modal', async () => {
         const errorModalSpy = spyOn(instance, 'showErrorMessage');
         instance.search = 'qqfs4tjymy5cs0j4lz78y2lvensl0l42wu80z5jass';
         await instance.processInput();
@@ -362,17 +220,6 @@ describe('SendPage', () => {
         await instance.processInput();
         expect(instance.invalidAddress).toBeTruthy();
         expect(errorModalSpy).toHaveBeenCalled();
-      });
-
-      it('should handle address doge testnet and call showLegacyAddrMessage', async () => {
-        const showLegacyAddrMessageSpy = spyOn(
-          instance,
-          'showLegacyAddrMessage'
-        );
-        instance.search = 'nXFngUrBNpvAYHbFrJ7hphQe8sEC9CjKYb';
-        await instance.processInput();
-        expect(instance.invalidAddress).toBeTruthy();
-        expect(showLegacyAddrMessageSpy).toHaveBeenCalled();
       });
     });
 
