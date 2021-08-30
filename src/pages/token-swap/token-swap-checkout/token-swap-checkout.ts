@@ -157,7 +157,7 @@ export class TokenSwapCheckoutPage {
                     _.isString(data.message) &&
                     data.message.includes('cannot estimate')
                   ) {
-                    if (this.toToken.symbol.toLowerCase() == 'eth') {
+                    if (this.fromToken.symbol.toLowerCase() == 'eth') {
                       title = this.translate.instant(
                         'Insufficient funds for fee'
                       );
