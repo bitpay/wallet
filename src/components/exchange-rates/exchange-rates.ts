@@ -106,6 +106,11 @@ export class ExchangeRates {
     this.fiatIsoCode = this.isFiatIsoCodeSupported ? alternativeIsoCode : 'USD';
   }
 
+  public decimaltoFox(coin:string) {
+    var decimal = Math.round(1/Number(coin)).toString().length+1;
+      return Number(coin).toFixed(decimal);
+  }
+
   public getDigitsInfo(coin: string) {
     switch (coin) {
       case 'xrp':
