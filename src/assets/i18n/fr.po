@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: copay\n"
 "Language-Team: French\n"
 "Language: fr\n"
-"PO-Revision-Date: 2021-08-23 12:54\n"
+"PO-Revision-Date: 2021-08-30 12:42\n"
 
 msgid "(possible double spend)"
 msgstr "(double dépense possible)"
@@ -245,9 +245,6 @@ msgstr "Approuver"
 msgid "Approve is Pending"
 msgstr ""
 
-msgid "Approve required"
-msgstr ""
-
 msgid "Approve {{fromWalletCoin}}"
 msgstr ""
 
@@ -455,7 +452,7 @@ msgstr "Achat d'une carte-cadeau..."
 msgid "By giving my email address, I give explicit consent to BitPay to use it to contact me about payment issues."
 msgstr "En donnant mon adresse e-mail, je donne explicitement mon consentement à BitPay pour l'utiliser afin de me contacter au sujet des problèmes de paiement."
 
-msgid "By granting this permission you authorize this site to access your funds in {{ fromToken.symbol }}."
+msgid "By granting this permission, \"1inch\" will be able to withdraw your {{ fromToken.symbol }} and complete transactions for you."
 msgstr ""
 
 msgid "By providing your email address, you give explicit consent to BitPay to use your email address to send you email notifications about payments."
@@ -2135,6 +2132,9 @@ msgstr "Nonce"
 msgid "Normal"
 msgstr "Normaux"
 
+msgid "Not Supported"
+msgstr ""
+
 msgid "Not authorized"
 msgstr "Non autorisé"
 
@@ -3233,6 +3233,9 @@ msgstr "Conditions d'utilisation"
 msgid "Terms of use"
 msgstr "Conditions d’utilisation"
 
+msgid "Test Only - No Value"
+msgstr ""
+
 msgid "Testnet coins have no value and cannot be converted into \"actual\" coins. If you are purchasing cryptocurrency through a third party, and they have requested you to create this type of wallet, they are scamming you."
 msgstr ""
 
@@ -3419,9 +3422,6 @@ msgstr "Il y a eu un problème lors de la signature de {{txpsFailed}} de vos pro
 msgid "There's obviously something we're doing wrong. How could we improve your experience?"
 msgstr "Il y a visiblement quelque chose que nous faisons mal. Comment pourrions-nous améliorer votre expérience ?"
 
-msgid "This action implies a transaction in which you will only pay the contract fee. This transaction must be confirmed to allow you to do a token swap."
-msgstr ""
-
 msgid "This amount must be at least:"
 msgstr ""
 
@@ -3457,9 +3457,6 @@ msgstr "Il s'agit d'une nouvelle clé de 12 mots qui gère ses propres portefeui
 
 msgid "This key contains {walletsLength} wallets"
 msgstr "Cette clé contient {walletsLength} portefeuilles"
-
-msgid "This pair is also enabled through another of our partners (\"Changelly\"). Would you like to try this one?"
-msgstr ""
 
 msgid "This password cannot be recovered. If this password is lost, funds can only be recovered by reimporting your 12-word recovery phrase."
 msgstr "Ce code ne peut pas être récupéré. S'il est perdu, les fonds ne peuvent être récupérés qu'en réimportant votre phrase de récupération de 12 mots."
@@ -3497,11 +3494,11 @@ msgstr "Chronologie"
 msgid "To"
 msgstr "À"
 
+msgid "To complete the swap, you will need to allow the exchange (\"1Inch\") to spend your {{ fromToken.symbol }}."
+msgstr ""
+
 msgid "To get started, you'll need to enter a valid address or select an existent contact or wallet."
 msgstr "Pour commencer, vous devrez entrer une adresse valide ou sélectionner un contact ou un portefeuille existant."
-
-msgid "To proceed with this swap you must complete a single \"Approve\" transaction to authorize the exchange (\"1Inch\") to access to the {{params.coin}} funds."
-msgstr ""
 
 msgid "To {{reason}} you must first add your BitPay account - {{email}}"
 msgstr "Pour {{reason}} vous devez d'abord ajouter votre compte BitPay - {{email}}"
@@ -3637,9 +3634,6 @@ msgstr "Traduire l'adresse"
 
 msgid "Try \"create new wallet\" option instead"
 msgstr "Essayez plutôt l'option \"Créer un nouveau portefeuille\""
-
-msgid "Try Changelly"
-msgstr ""
 
 msgid "Try again"
 msgstr "Réessayer"
