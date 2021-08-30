@@ -44,7 +44,7 @@ pipeline {
 
                 sh 'npm run prepare:android'
                 sh 'chmod -R 777 platforms/'
-                sh 'cp $FIREBASE_SERVICES google-services.json'
+                sh 'cp $FIREBASE_SERVICES .'
                 sh 'cp build-extras.gradle platforms/android/'
 
                 sh 'npm run fcm:android'
