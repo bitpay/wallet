@@ -266,9 +266,6 @@ msgstr ""
 msgid "Approve is Pending"
 msgstr ""
 
-msgid "Approve required"
-msgstr ""
-
 msgid "Approve {{fromWalletCoin}}"
 msgstr ""
 
@@ -517,8 +514,8 @@ msgid ""
 msgstr ""
 
 msgid ""
-"By granting this permission you authorize this site to access your funds in "
-"{{ fromToken.symbol }}."
+"By granting this permission, \"1inch\" will be able to withdraw your {{ "
+"fromToken.symbol }} and complete transactions for you."
 msgstr ""
 
 msgid ""
@@ -2324,6 +2321,9 @@ msgstr ""
 msgid "Normal"
 msgstr ""
 
+msgid "Not Supported"
+msgstr ""
+
 msgid "Not authorized"
 msgstr ""
 
@@ -3450,6 +3450,9 @@ msgstr ""
 msgid "Terms of use"
 msgstr ""
 
+msgid "Test Only - No Value"
+msgstr ""
+
 msgid ""
 "Testnet coins have no value and cannot be converted into \"actual\" coins. "
 "If you are purchasing cryptocurrency through a third party, and they have "
@@ -3719,11 +3722,6 @@ msgid ""
 "experience?"
 msgstr ""
 
-msgid ""
-"This action implies a transaction in which you will only pay the contract "
-"fee. This transaction must be confirmed to allow you to do a token swap."
-msgstr ""
-
 msgid "This amount must be at least:"
 msgstr ""
 
@@ -3769,11 +3767,6 @@ msgid ""
 msgstr ""
 
 msgid "This key contains {walletsLength} wallets"
-msgstr ""
-
-msgid ""
-"This pair is also enabled through another of our partners (\"Changelly\"). "
-"Would you like to try this one?"
 msgstr ""
 
 msgid ""
@@ -3828,14 +3821,13 @@ msgid "To"
 msgstr ""
 
 msgid ""
-"To get started, you'll need to enter a valid address or select an existent "
-"contact or wallet."
+"To complete the swap, you will need to allow the exchange (\"1Inch\") to "
+"spend your {{ fromToken.symbol }}."
 msgstr ""
 
 msgid ""
-"To proceed with this swap you must complete a single \"Approve\" "
-"transaction to authorize the exchange (\"1Inch\") to access to the "
-"{{params.coin}} funds."
+"To get started, you'll need to enter a valid address or select an existent "
+"contact or wallet."
 msgstr ""
 
 msgid "To {{reason}} you must first add your BitPay account - {{email}}"
@@ -3971,9 +3963,6 @@ msgid "Translate address"
 msgstr ""
 
 msgid "Try \"create new wallet\" option instead"
-msgstr ""
-
-msgid "Try Changelly"
 msgstr ""
 
 msgid "Try again"
