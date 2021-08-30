@@ -44,9 +44,9 @@
       </div>
 
       <label-tip *ngIf="showPendingApprove" type="info" [async]="true">
-        <div label-tip-title translate>Approve is confirming</div>
+        <div label-tip-title translate>Approval is confirming</div>
         <div label-tip-body>
-          <div translate>The approve transaction must be confirmed before this token can be used in a swap. This should only take a moment.</div>
+          <div translate>The approval transaction must be confirmed before this token can be used in a swap. This should only take a moment.</div>
           <a *ngIf="approveTxId" class="label-tip-link" (click)="viewOnBlockchain()" translate>View on blockchain</a>
         </div>
       </label-tip>
