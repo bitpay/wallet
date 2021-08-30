@@ -187,38 +187,38 @@ export class HomePage {
     if (this.appProvider.isLockModalOpen) return;
     this.events.unsubscribe('Local/showNewFeaturesSlides');
     const disclaimerAccepted = this.profileProvider.profile.disclaimerAccepted;
-    const currentVs = `${this.appProvider.version.major}.${this.appProvider.version.minor}.${this.appProvider.version.patch}`;
-    const dismissFlag = `dismissed_${currentVs}`;
-    if (!disclaimerAccepted) {
-      // first time using the App -> don't show
-      this.persistenceProvider.setNewFeatureSlidesFlag(
-        `dismissed_${currentVs}`
-      );
-      return;
-    }
-    this.persistenceProvider.getNewFeatureSlidesFlag().then(value => {
-      if (!value || value !== dismissFlag) {
-        this.newFeatureData.get().then(feature_list => {
-          if (feature_list && feature_list.features.length > 0) {
-            const modal = this.modalCtrl.create(NewFeaturePage, {
-              featureList: feature_list
-            });
-            modal.present();
-            modal.onDidDismiss(data => {
-              if (data) {
-                if (typeof data.done === 'boolean' && data.done === true) {
-                  this.persistenceProvider.setNewFeatureSlidesFlag(dismissFlag);
-                }
-                if (typeof data.data !== 'boolean') {
-                  this.events.publish('IncomingDataRedir', data.data);
-                }
-              }
-            });
-          } else {
-            this.persistenceProvider.setNewFeatureSlidesFlag(dismissFlag);
-          }
-        });
+
+    this.newFeatureData.get().then(feature_list => {
+      if (!feature_list || feature_list.features.length == 0) return;
+
+      const dismiss_flag = `dismissed_${feature_list.major}.${feature_list.minor}.${feature_list.patch}`;
+
+      if (!disclaimerAccepted) {
+        // first time using the App -> don't show
+        this.persistenceProvider.setNewFeatureSlidesFlag(dismiss_flag);
+        return;
       }
+
+      this.persistenceProvider.getNewFeatureSlidesFlag().then(async value => {
+        if (!value || value !== dismiss_flag) {
+          const modal = this.modalCtrl.create(NewFeaturePage, {
+            featureList: feature_list
+          });
+          modal.present();
+          modal.onDidDismiss(data => {
+            if (data) {
+              if (typeof data.done === 'boolean' && data.done === true) {
+                this.persistenceProvider.setNewFeatureSlidesFlag(dismiss_flag);
+              }
+              if (typeof data.data !== 'boolean') {
+                this.events.publish('IncomingDataRedir', data.data);
+              }
+            }
+          });
+        } else {
+          this.persistenceProvider.setNewFeatureSlidesFlag(dismiss_flag);
+        }
+      });
     });
   }
 
