@@ -17,7 +17,7 @@ pipeline {
                     filename 'Dockerfile'
 //                     dir 'abcpay'
                     additionalBuildArgs '--build-arg version=28.0.3'
-//                    args '-v /home/jenkins/.ssh:/home/jenkins/.ssh:ro -u 0'
+                    args '-v /home/jenkins/.ssh:/home/jenkins/.ssh:ro -u 0'
                     reuseNode true
                 }
             }
