@@ -1,14 +1,8 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import {
-  ModalController,
-  NavController,
-  NavParams,
-  ViewController
-} from 'ionic-angular';
+import { NavController, NavParams, ViewController } from 'ionic-angular';
 
 // Pages
-import { FinishModalPage } from '../../finish/finish';
 
 // Providers
 import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
@@ -49,7 +43,6 @@ export class TokenSwapApprovePage {
     private actionSheetProvider: ActionSheetProvider,
     private logger: Logger,
     private navParams: NavParams,
-    private modalCtrl: ModalController,
     private viewCtrl: ViewController,
     private oneInchProvider: OneInchProvider,
     private navCtrl: NavController,
@@ -220,7 +213,7 @@ export class TokenSwapApprovePage {
     this.publishAndSign(this.fromWalletSelected, this.ctxp)
       .then(txSent => {
         this.onGoingProcessProvider.clear();
-        this.openFinishModal(txSent);
+        this.viewCtrl.dismiss(txSent);
       })
       .catch(err => {
         this.logger.error(this.bwcErrorProvider.msg(err));
@@ -294,19 +287,6 @@ export class TokenSwapApprovePage {
         .catch(err => {
           return reject(err);
         });
-    });
-  }
-
-  private openFinishModal(txSent): void {
-    let finishText = 'Transaction Sent';
-    let modal = this.modalCtrl.create(
-      FinishModalPage,
-      { finishText, coin: this.fromWalletSelected.coin },
-      { showBackdrop: true, enableBackdropDismiss: false }
-    );
-    modal.present();
-    modal.onDidDismiss(async () => {
-      this.viewCtrl.dismiss(txSent);
     });
   }
 

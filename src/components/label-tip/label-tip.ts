@@ -6,7 +6,11 @@ import { AlertType } from '../info-sheet/info-sheet-template';
   template: `
     <div class="label-header" *ngIf="header !== 'no-header'">
       <ng-container *ngIf="async; else other">
-        <ion-spinner class="label-header__icon" name="crescent" *ngIf="async"></ion-spinner>
+        <ion-spinner
+          class="label-header__icon"
+          name="crescent"
+          *ngIf="async"
+        ></ion-spinner>
       </ng-container>
       <ng-template #other>
         <img
