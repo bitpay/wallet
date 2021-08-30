@@ -1,9 +1,15 @@
 import { DecimalPipe } from '@angular/common';
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { ModalController, NavController, NavParams } from 'ionic-angular';
+import {
+  ModalController,
+  NavController,
+  NavParams,
+  Platform
+} from 'ionic-angular';
 import * as _ from 'lodash';
 import * as moment from 'moment';
+import { Subscription } from 'rxjs';
 
 // Pages
 import { CoinAndWalletSelectorPage } from '../../pages/coin-and-wallet-selector/coin-and-wallet-selector';
@@ -37,6 +43,9 @@ import { ReplaceParametersProvider } from '../../providers/replace-parameters/re
   templateUrl: 'exchange-crypto.html'
 })
 export class ExchangeCryptoPage {
+  private onResumeSubscription: Subscription;
+  private onPauseSubscription: Subscription;
+
   public isOpenSelectorFrom: boolean;
   public isOpenSelectorTo: boolean;
   public allWallets;
@@ -96,6 +105,7 @@ export class ExchangeCryptoPage {
     private navCtrl: NavController,
     private navParams: NavParams,
     private onGoingProcessProvider: OnGoingProcessProvider,
+    private platform: Platform,
     private profileProvider: ProfileProvider,
     private translate: TranslateService,
     private currencyProvider: CurrencyProvider,
@@ -163,12 +173,24 @@ export class ExchangeCryptoPage {
 
   ngOnDestroy() {
     if (this.timeout) clearTimeout(this.timeout);
+    this.onResumeSubscription.unsubscribe();
+    this.onPauseSubscription.unsubscribe();
   }
 
   ionViewDidLoad() {
     this.logger.info('Loaded: ExchangeCryptoPage');
 
     this.getExchangesCurrencies();
+    this.onPauseSubscription = this.platform.pause.subscribe(() => {
+      if (this.timeout) {
+        clearTimeout(this.timeout);
+      }
+    });
+    this.onResumeSubscription = this.platform.resume.subscribe(() => {
+      if (this.exchangeToUse == '1inch' && !this.fromWalletAllowanceOk) {
+        this.checkConfirmation(1000);
+      }
+    });
   }
 
   private async getExchangesCurrencies() {
