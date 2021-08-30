@@ -1212,7 +1212,7 @@ export class ExchangeCryptoPage {
       }
     );
     modal.present();
-    modal.onDidDismiss(data => {
+    modal.onWillDismiss(data => {
       if (data && data.txid) {
         this.approveTxId = data.txid;
         this.saveApproveData(this.approveTxId);
