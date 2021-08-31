@@ -1,5 +1,7 @@
 FROM javiersantos/android-ci:28.0.3
+#VOLUME /docker-build
 LABEL maintainer="VanT"
+USER root
 
 ENV NODE_VERSION=12.6.0
 #RUN apt install -y curl
