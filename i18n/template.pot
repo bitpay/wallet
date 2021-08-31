@@ -260,10 +260,10 @@ msgstr ""
 msgid "Apply"
 msgstr ""
 
-msgid "Approve"
+msgid "Approval is confirming"
 msgstr ""
 
-msgid "Approve is Pending"
+msgid "Approve"
 msgstr ""
 
 msgid "Approve {{fromWalletCoin}}"
@@ -324,9 +324,6 @@ msgid ""
 "{{params.coin}}, the maximum spendable amount of your wallet is "
 "{{params.amount}} {{params.coin}} which is lower than the minimum allowed "
 "by the exchange: {{params.minAmount}} {{params.coin}}"
-msgstr ""
-
-msgid "Assignment"
 msgstr ""
 
 msgid "Attempted payment request"
@@ -3528,6 +3525,11 @@ msgid ""
 msgstr ""
 
 msgid ""
+"The approval transaction must be confirmed before this token can be used in "
+"a swap. This should only take a moment."
+msgstr ""
+
+msgid ""
 "The data of this exchange will be deleted from your device. Make sure you "
 "don't need it"
 msgstr ""
@@ -3996,9 +3998,6 @@ msgid "Unconfirmed"
 msgstr ""
 
 msgid "Unconfirmed inputs"
-msgstr ""
-
-msgid "Unlimited"
 msgstr ""
 
 msgid "Unlink account"
@@ -4543,11 +4542,6 @@ msgstr ""
 msgid ""
 "You have only entered {wordListLength} words, please follow the "
 "recommendations provided"
-msgstr ""
-
-msgid ""
-"You have to wait for this transaction to be confirmed to operate with this "
-"token."
 msgstr ""
 
 msgid "You must first select a wallet to deposit."
