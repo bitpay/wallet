@@ -16,12 +16,12 @@ describe('ConfirmPage', () => {
       instance = testEnv.instance;
       instance.navParams = {
         data: {
-          toAddress: 'n4VQ5YdHf7hLQ2gWQYYrcxoE5B7nWuDFNF',
-          coin: 'btc'
+          toAddress: 'lotus_16PSJPYxmBxaJYAd1GGRcVn2nD1vooHJCozd5Dw91',
+          coin: 'xpi'
         }
       };
-      instance.coin = 'btc';
-      instance.tx = { coin: 'btc' };
+      instance.coin = 'xpi';
+      instance.tx = { coin: 'xpi' };
       spyOn(instance.onGoingProcessProvider, 'set');
       testBed = testEnv.testBed;
       errorsProvider = testBed.get(ErrorsProvider);
@@ -35,9 +35,9 @@ describe('ConfirmPage', () => {
 
   describe('Lifecycle Hooks', () => {
     describe('ionViewDidLoad', () => {
-      it('should set swipeBackEnabled to false', () => {
+      it('should set isOpenSelector to false', () => {
         instance.ionViewDidLoad();
-        expect(instance.navCtrl.swipeBackEnabled).toBe(false);
+        expect(instance.isOpenSelector).toBe(false);
       });
       it('should display an error message if attempting to send to an old bch address', () => {
         instance.navParams.data.toAddress =
@@ -89,7 +89,7 @@ describe('ConfirmPage', () => {
     });
     describe('confirmTx', () => {
       it('should display a confirm popup', () => {
-        const txp = { coin: 'btc' };
+        const txp = { coin: 'xpi' };
         const wallet = {};
         spyOn(instance.txFormatProvider, 'formatToUSD').and.returnValue(
           Promise.resolve('100.50')
@@ -99,7 +99,7 @@ describe('ConfirmPage', () => {
     });
     describe('approve', () => {
       const tx = {};
-      const txp = { coin: 'btc' };
+      const txp = { coin: 'xpi' };
       const wallet = {};
       it('should clear the ongoing process loader if user declines', async () => {
         spyOn(instance, 'getTxp').and.returnValue(Promise.resolve(txp));
