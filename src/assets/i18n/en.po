@@ -164,7 +164,6 @@ msgstr "Add"
 msgid "Add BitPay Account?"
 msgstr "Add BitPay Account?"
 
-#| msgid "Add Any ERC-20 Token"
 msgid "Add ERC-20 Tokens"
 msgstr "Add ERC-20 Tokens"
 
@@ -296,14 +295,12 @@ msgstr "Apple Pay"
 msgid "Apply"
 msgstr "Apply"
 
+#| msgid "Approve is Pending"
+msgid "Approval is confirming"
+msgstr "Approval is confirming"
+
 msgid "Approve"
 msgstr "Approve"
-
-msgid "Approve is Pending"
-msgstr "Approve is Pending"
-
-msgid "Approve required"
-msgstr "Approve required"
 
 msgid "Approve {{fromWalletCoin}}"
 msgstr "Approve {{fromWalletCoin}}"
@@ -370,9 +367,6 @@ msgstr ""
 "{{params.coin}}, the maximum spendable amount of your wallet is {{params."
 "amount}} {{params.coin}} which is lower than the minimum allowed by the "
 "exchange: {{params.minAmount}} {{params.coin}}"
-
-msgid "Assignment"
-msgstr "Assignment"
 
 msgid "Attempted payment request"
 msgstr "Attempted payment request"
@@ -593,11 +587,11 @@ msgstr ""
 "contact me about payment issues."
 
 msgid ""
-"By granting this permission you authorize this site to access your funds in "
-"{{ fromToken.symbol }}."
+"By granting this permission, \"1inch\" will be able to withdraw your "
+"{{ fromToken.symbol }} and complete transactions for you."
 msgstr ""
-"By granting this permission you authorize this site to access your funds in "
-"{{ fromToken.symbol }}."
+"By granting this permission, \"1inch\" will be able to withdraw your "
+"{{ fromToken.symbol }} and complete transactions for you."
 
 msgid ""
 "By providing your email address, you give explicit consent to BitPay to use "
@@ -2536,6 +2530,9 @@ msgstr "Nonce"
 msgid "Normal"
 msgstr "Normal"
 
+msgid "Not Supported"
+msgstr "Not Supported"
+
 msgid "Not authorized"
 msgstr "Not authorized"
 
@@ -3693,6 +3690,9 @@ msgstr "Terms of Use"
 msgid "Terms of use"
 msgstr "Terms of use"
 
+msgid "Test Only - No Value"
+msgstr "Test Only - No Value"
+
 msgid ""
 "Testnet coins have no value and cannot be converted into \"actual\" coins. "
 "If you are purchasing cryptocurrency through a third party, and they have "
@@ -3792,6 +3792,13 @@ msgid ""
 msgstr ""
 "The amount on the transaction does not match the amount requested. This "
 "payment will not be accepted"
+
+msgid ""
+"The approval transaction must be confirmed before this token can be used in "
+"a swap. This should only take a moment."
+msgstr ""
+"The approval transaction must be confirmed before this token can be used in "
+"a swap. This should only take a moment."
 
 msgid ""
 "The data of this exchange will be deleted from your device. Make sure you "
@@ -4011,8 +4018,6 @@ msgstr ""
 msgid "There is an error in the form"
 msgstr "There is an error in the form"
 
-#| msgid ""
-#| "There was a problem retrieving the toAddress. Please, try again later."
 msgid "There was a problem retrieving the address. Please, try again later."
 msgstr "There was a problem retrieving the address. Please, try again later."
 
@@ -4044,13 +4049,6 @@ msgid ""
 msgstr ""
 "There's obviously something we're doing wrong. How could we improve your "
 "experience?"
-
-msgid ""
-"This action implies a transaction in which you will only pay the contract "
-"fee. This transaction must be confirmed to allow you to do a token swap."
-msgstr ""
-"This action implies a transaction in which you will only pay the contract "
-"fee. This transaction must be confirmed to allow you to do a token swap."
 
 msgid "This amount must be at least:"
 msgstr "This amount must be at least:"
@@ -4109,13 +4107,6 @@ msgstr ""
 
 msgid "This key contains {walletsLength} wallets"
 msgstr "This key contains {walletsLength} wallets"
-
-msgid ""
-"This pair is also enabled through another of our partners (\"Changelly\"). "
-"Would you like to try this one?"
-msgstr ""
-"This pair is also enabled through another of our partners (\"Changelly\"). "
-"Would you like to try this one?"
 
 msgid ""
 "This password cannot be recovered. If this password is lost, funds can only "
@@ -4185,18 +4176,18 @@ msgid "To"
 msgstr "To"
 
 msgid ""
-"To get started, you'll need to enter a valid address or select an existent "
-"contact or wallet."
+"To complete the swap, you will need to allow the exchange (\"1Inch\") to "
+"spend your {{ fromToken.symbol }}."
 msgstr ""
-"To get started, you'll need to enter a valid address or select an existent "
-"contact or wallet."
+"To complete the swap, you will need to allow the exchange (\"1Inch\") to "
+"spend your {{ fromToken.symbol }}."
 
 msgid ""
-"To proceed with this swap you must complete a single \"Approve\" transaction "
-"to authorize the exchange (\"1Inch\") to access to the {{params.coin}} funds."
+"To get started, you'll need to enter a valid address or select an existent "
+"contact or wallet."
 msgstr ""
-"To proceed with this swap you must complete a single \"Approve\" transaction "
-"to authorize the exchange (\"1Inch\") to access to the {{params.coin}} funds."
+"To get started, you'll need to enter a valid address or select an existent "
+"contact or wallet."
 
 msgid "To {{reason}} you must first add your BitPay account - {{email}}"
 msgstr "To {{reason}} you must first add your BitPay account - {{email}}"
@@ -4335,9 +4326,6 @@ msgstr "Translate address"
 msgid "Try \"create new wallet\" option instead"
 msgstr "Try \"create new wallet\" option instead"
 
-msgid "Try Changelly"
-msgstr "Try Changelly"
-
 msgid "Try again"
 msgstr "Try again"
 
@@ -4370,9 +4358,6 @@ msgstr "Unconfirmed"
 
 msgid "Unconfirmed inputs"
 msgstr "Unconfirmed inputs"
-
-msgid "Unlimited"
-msgstr "Unlimited"
 
 msgid "Unlink account"
 msgstr "Unlink account"
@@ -5004,13 +4989,6 @@ msgstr ""
 "You have only entered {wordListLength} words, please follow the "
 "recommendations provided"
 
-msgid ""
-"You have to wait for this transaction to be confirmed to operate with this "
-"token."
-msgstr ""
-"You have to wait for this transaction to be confirmed to operate with this "
-"token."
-
 msgid "You must first select a wallet to deposit."
 msgstr "You must first select a wallet to deposit."
 
@@ -5262,6 +5240,48 @@ msgstr "{{txpsSuccess}} proposals signed"
 
 msgid "{{updatingTxHistoryProgress}} transactions downloaded"
 msgstr "{{updatingTxHistoryProgress}} transactions downloaded"
+
+#~ msgid "Assignment"
+#~ msgstr "Assignment"
+
+#~ msgid "Unlimited"
+#~ msgstr "Unlimited"
+
+#~ msgid ""
+#~ "You have to wait for this transaction to be confirmed to operate with "
+#~ "this token."
+#~ msgstr ""
+#~ "You have to wait for this transaction to be confirmed to operate with "
+#~ "this token."
+
+#~ msgid "Approve required"
+#~ msgstr "Approve required"
+
+#~ msgid ""
+#~ "This action implies a transaction in which you will only pay the contract "
+#~ "fee. This transaction must be confirmed to allow you to do a token swap."
+#~ msgstr ""
+#~ "This action implies a transaction in which you will only pay the contract "
+#~ "fee. This transaction must be confirmed to allow you to do a token swap."
+
+#~ msgid ""
+#~ "This pair is also enabled through another of our partners (\"Changelly"
+#~ "\"). Would you like to try this one?"
+#~ msgstr ""
+#~ "This pair is also enabled through another of our partners (\"Changelly"
+#~ "\"). Would you like to try this one?"
+
+#~ msgid ""
+#~ "To proceed with this swap you must complete a single \"Approve\" "
+#~ "transaction to authorize the exchange (\"1Inch\") to access to the "
+#~ "{{params.coin}} funds."
+#~ msgstr ""
+#~ "To proceed with this swap you must complete a single \"Approve\" "
+#~ "transaction to authorize the exchange (\"1Inch\") to access to the "
+#~ "{{params.coin}} funds."
+
+#~ msgid "Try Changelly"
+#~ msgstr "Try Changelly"
 
 #~| msgid "Search tokens"
 #~ msgid "Swap tokens"

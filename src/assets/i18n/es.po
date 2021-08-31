@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: copay\n"
 "Language-Team: Spanish\n"
 "Language: es\n"
-"PO-Revision-Date: 2021-08-23 13:04\n"
+"PO-Revision-Date: 2021-08-31 12:47\n"
 
 msgid "(possible double spend)"
 msgstr "(Posible gasto duplicado)"
@@ -239,14 +239,11 @@ msgstr "Apple Pay"
 msgid "Apply"
 msgstr "Aplicar"
 
+msgid "Approval is confirming"
+msgstr "La aprobación se está confirmando"
+
 msgid "Approve"
 msgstr "Aprobar"
-
-msgid "Approve is Pending"
-msgstr "Pendiente de Aprobación"
-
-msgid "Approve required"
-msgstr "Requiere Aprobación"
 
 msgid "Approve {{fromWalletCoin}}"
 msgstr "Aprobar {{fromWalletCoin}}"
@@ -301,9 +298,6 @@ msgstr "¿Estás seguro?"
 
 msgid "As the estimated miner fee to complete the transaction is {{params.fee}} {{params.coin}}, the maximum spendable amount of your wallet is {{params.amount}} {{params.coin}} which is lower than the minimum allowed by the exchange: {{params.minAmount}} {{params.coin}}"
 msgstr "Como la comisión estimada para completar la transacción es {{params.fee}} {{params.coin}}, el monto máximo disponible de su billetera es {{params.amount}} {{params.coin}} que es inferior al mínimo permitido por el exchange: {{params.minAmount}} {{params.coin}}"
-
-msgid "Assignment"
-msgstr "Asignación"
 
 msgid "Attempted payment request"
 msgstr "Intento de solicitud de pago"
@@ -455,8 +449,8 @@ msgstr "Comprando Gift Card..."
 msgid "By giving my email address, I give explicit consent to BitPay to use it to contact me about payment issues."
 msgstr "Al dar mi dirección de correo electrónico, doy mi consentimiento explícito a BitPay para contactarme en caso de problemas de pago."
 
-msgid "By granting this permission you authorize this site to access your funds in {{ fromToken.symbol }}."
-msgstr "Al conceder este permiso autoriza a este sitio a acceder a sus fondos en {{ fromToken.symbol }}."
+msgid "By granting this permission, \"1inch\" will be able to withdraw your {{ fromToken.symbol }} and complete transactions for you."
+msgstr "Al conceder este permiso, \"1Inch\" podrá retirar sus {{ fromToken.symbol }} y completar las transacciones por usted."
 
 msgid "By providing your email address, you give explicit consent to BitPay to use your email address to send you email notifications about payments."
 msgstr "Al proporcionar su dirección de correo electrónico, usted da consentimiento explícito a BitPay de usar su dirección de correo electrónico para enviarle notificaciones sobre pagos."
@@ -2135,6 +2129,9 @@ msgstr "Nonce"
 msgid "Normal"
 msgstr "Normal"
 
+msgid "Not Supported"
+msgstr "No Implementado"
+
 msgid "Not authorized"
 msgstr "No autorizado"
 
@@ -3233,6 +3230,9 @@ msgstr "Términos de uso"
 msgid "Terms of use"
 msgstr "Términos de uso"
 
+msgid "Test Only - No Value"
+msgstr "Sólo Prueba - Sin Valor"
+
 msgid "Testnet coins have no value and cannot be converted into \"actual\" coins. If you are purchasing cryptocurrency through a third party, and they have requested you to create this type of wallet, they are scamming you."
 msgstr "Las monedas testnet no tienen ningún valor y no pueden ser convertidas en monedas \"reales\". Si estás comprando criptomonedas a través de un tercero, y te han pedido que crees este tipo de billetera, pueden estar estafándote."
 
@@ -3280,6 +3280,9 @@ msgstr "El total de {coinName} guardados en esta billetera con menos de 1 confir
 
 msgid "The amount on the transaction does not match the amount requested. This payment will not be accepted"
 msgstr "El monto de la transacción no coincide con el monto solicitado. Este pago no será aceptado"
+
+msgid "The approval transaction must be confirmed before this token can be used in a swap. This should only take a moment."
+msgstr "La transacción de aprobación debe ser confirmada antes de que este token pueda ser utilizado en un intercambio. Esto solo debería tomar un momento."
 
 msgid "The data of this exchange will be deleted from your device. Make sure you don't need it"
 msgstr "Los datos de este intercambio se eliminarán de su dispositivo. Asegúrese de no necesitarlos."
@@ -3419,9 +3422,6 @@ msgstr "Hubo un problema al intentar firmar {{txpsFailed}} de sus transacciones.
 msgid "There's obviously something we're doing wrong. How could we improve your experience?"
 msgstr "Obviamente hay algo que estamos haciendo mal. ¿Cómo podríamos mejorar su experiencia?"
 
-msgid "This action implies a transaction in which you will only pay the contract fee. This transaction must be confirmed to allow you to do a token swap."
-msgstr "Esta acción implica una transacción en la que usted sólo pagará la cuota del contrato. Esta transacción debe ser confirmada para permitirle hacer un intercambio de token."
-
 msgid "This amount must be at least:"
 msgstr "El monto debe ser al menos:"
 
@@ -3457,9 +3457,6 @@ msgstr "Esta es una nueva clave de 12 palabras que gestiona su propio conjunto d
 
 msgid "This key contains {walletsLength} wallets"
 msgstr "Esta clave contiene {walletsLength} billeteras"
-
-msgid "This pair is also enabled through another of our partners (\"Changelly\"). Would you like to try this one?"
-msgstr "Este par también está habilitado a través de otro de nuestros socios (\"Changelly\"). ¿Te gustaría probar esto?"
 
 msgid "This password cannot be recovered. If this password is lost, funds can only be recovered by reimporting your 12-word recovery phrase."
 msgstr "Esta contraseña no puede ser recuperada. Si se extravía, los fondos solo pueden ser recuperados utilizando la frase de recuperación de 12 palabras."
@@ -3498,11 +3495,11 @@ msgstr "Línea de tiempo"
 msgid "To"
 msgstr "Para"
 
+msgid "To complete the swap, you will need to allow the exchange (\"1Inch\") to spend your {{ fromToken.symbol }}."
+msgstr "Para completar el intercambio, tendrá que permitir que el exchange (\"1Inch\") gaste sus {{ fromToken.symbol }}."
+
 msgid "To get started, you'll need to enter a valid address or select an existent contact or wallet."
 msgstr "Para empezar, necesita ingresar una dirección válida o seleccionar un contacto o billetera existente."
-
-msgid "To proceed with this swap you must complete a single \"Approve\" transaction to authorize the exchange (\"1Inch\") to access to the {{params.coin}} funds."
-msgstr "Para continuar con este cambio, debes completar una sola transacción y \"Aprobar\" para autorizar al exchange (\"1Inch\") para acceder a los fondos de {{params.coin}}."
 
 msgid "To {{reason}} you must first add your BitPay account - {{email}}"
 msgstr "Para {{reason}} primero debes agregar tu cuenta de BitPay - {{email}}"
@@ -3639,9 +3636,6 @@ msgstr "Traducir dirección"
 msgid "Try \"create new wallet\" option instead"
 msgstr "Prueba la opción \"crear nueva billetera\" en su lugar"
 
-msgid "Try Changelly"
-msgstr "Pruebe Changelly"
-
 msgid "Try again"
 msgstr "Vuelva a intentarlo"
 
@@ -3674,9 +3668,6 @@ msgstr "Sin confirmar"
 
 msgid "Unconfirmed inputs"
 msgstr "Entradas no confirmadas"
-
-msgid "Unlimited"
-msgstr "Ilimitado"
 
 msgid "Unlink account"
 msgstr "Desvincular cuenta"
@@ -4139,9 +4130,6 @@ msgstr "Solo ha introducido {wordListLength} palabra, por favor siga las recomen
 
 msgid "You have only entered {wordListLength} words, please follow the recommendations provided"
 msgstr "Solo ha introducido {wordListLength} palabras, por favor siga las recomendaciones proporcionadas"
-
-msgid "You have to wait for this transaction to be confirmed to operate with this token."
-msgstr "Tienes que esperar a que esta transacción sea confirmada para operar con este token."
 
 msgid "You must first select a wallet to deposit."
 msgstr "Primero debe seleccionar una billetera para depositar."

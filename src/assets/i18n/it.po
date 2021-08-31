@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: copay\n"
 "Language-Team: Italian\n"
 "Language: it\n"
-"PO-Revision-Date: 2021-08-23 12:54\n"
+"PO-Revision-Date: 2021-08-31 12:45\n"
 
 msgid "(possible double spend)"
 msgstr "(possibile doppia spesa)"
@@ -239,13 +239,10 @@ msgstr ""
 msgid "Apply"
 msgstr ""
 
+msgid "Approval is confirming"
+msgstr ""
+
 msgid "Approve"
-msgstr ""
-
-msgid "Approve is Pending"
-msgstr ""
-
-msgid "Approve required"
 msgstr ""
 
 msgid "Approve {{fromWalletCoin}}"
@@ -300,9 +297,6 @@ msgid "Are you sure?"
 msgstr "Sei sicuro?"
 
 msgid "As the estimated miner fee to complete the transaction is {{params.fee}} {{params.coin}}, the maximum spendable amount of your wallet is {{params.amount}} {{params.coin}} which is lower than the minimum allowed by the exchange: {{params.minAmount}} {{params.coin}}"
-msgstr ""
-
-msgid "Assignment"
 msgstr ""
 
 msgid "Attempted payment request"
@@ -455,7 +449,7 @@ msgstr "Acquisizione carta regalo..."
 msgid "By giving my email address, I give explicit consent to BitPay to use it to contact me about payment issues."
 msgstr ""
 
-msgid "By granting this permission you authorize this site to access your funds in {{ fromToken.symbol }}."
+msgid "By granting this permission, \"1inch\" will be able to withdraw your {{ fromToken.symbol }} and complete transactions for you."
 msgstr ""
 
 msgid "By providing your email address, you give explicit consent to BitPay to use your email address to send you email notifications about payments."
@@ -2135,6 +2129,9 @@ msgstr ""
 msgid "Normal"
 msgstr "Normale"
 
+msgid "Not Supported"
+msgstr ""
+
 msgid "Not authorized"
 msgstr "Non autorizzato"
 
@@ -3233,6 +3230,9 @@ msgstr "Termini di Utilizzo"
 msgid "Terms of use"
 msgstr ""
 
+msgid "Test Only - No Value"
+msgstr ""
+
 msgid "Testnet coins have no value and cannot be converted into \"actual\" coins. If you are purchasing cryptocurrency through a third party, and they have requested you to create this type of wallet, they are scamming you."
 msgstr ""
 
@@ -3279,6 +3279,9 @@ msgid "The amount of {coinName} stored in this wallet with less than 1 blockchai
 msgstr ""
 
 msgid "The amount on the transaction does not match the amount requested. This payment will not be accepted"
+msgstr ""
+
+msgid "The approval transaction must be confirmed before this token can be used in a swap. This should only take a moment."
 msgstr ""
 
 msgid "The data of this exchange will be deleted from your device. Make sure you don't need it"
@@ -3419,9 +3422,6 @@ msgstr ""
 msgid "There's obviously something we're doing wrong. How could we improve your experience?"
 msgstr "C'è evidentemente qualcosa che stiamo sbagliando. Come potremmo migliorare la tua esperienza?"
 
-msgid "This action implies a transaction in which you will only pay the contract fee. This transaction must be confirmed to allow you to do a token swap."
-msgstr ""
-
 msgid "This amount must be at least:"
 msgstr ""
 
@@ -3456,9 +3456,6 @@ msgid "This is a new 12-word key that manages its own set of wallets. It is unre
 msgstr ""
 
 msgid "This key contains {walletsLength} wallets"
-msgstr ""
-
-msgid "This pair is also enabled through another of our partners (\"Changelly\"). Would you like to try this one?"
 msgstr ""
 
 msgid "This password cannot be recovered. If this password is lost, funds can only be recovered by reimporting your 12-word recovery phrase."
@@ -3497,10 +3494,10 @@ msgstr "Cronologia"
 msgid "To"
 msgstr "A"
 
-msgid "To get started, you'll need to enter a valid address or select an existent contact or wallet."
+msgid "To complete the swap, you will need to allow the exchange (\"1Inch\") to spend your {{ fromToken.symbol }}."
 msgstr ""
 
-msgid "To proceed with this swap you must complete a single \"Approve\" transaction to authorize the exchange (\"1Inch\") to access to the {{params.coin}} funds."
+msgid "To get started, you'll need to enter a valid address or select an existent contact or wallet."
 msgstr ""
 
 msgid "To {{reason}} you must first add your BitPay account - {{email}}"
@@ -3638,9 +3635,6 @@ msgstr "Tradurre l'indirizzo"
 msgid "Try \"create new wallet\" option instead"
 msgstr ""
 
-msgid "Try Changelly"
-msgstr ""
-
 msgid "Try again"
 msgstr "Riprova"
 
@@ -3672,9 +3666,6 @@ msgid "Unconfirmed"
 msgstr "Non confermato"
 
 msgid "Unconfirmed inputs"
-msgstr ""
-
-msgid "Unlimited"
 msgstr ""
 
 msgid "Unlink account"
@@ -4137,9 +4128,6 @@ msgid "You have only entered {wordListLength} word, please follow the recommenda
 msgstr ""
 
 msgid "You have only entered {wordListLength} words, please follow the recommendations provided"
-msgstr ""
-
-msgid "You have to wait for this transaction to be confirmed to operate with this token."
 msgstr ""
 
 msgid "You must first select a wallet to deposit."
