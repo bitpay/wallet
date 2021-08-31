@@ -43,11 +43,10 @@
         </ion-row>
       </div>
 
-      <label-tip *ngIf="showPendingApprove" type="info">
-        <span label-tip-title translate>Approve is Pending</span>
+      <label-tip *ngIf="showPendingApprove" type="info" [async]="true">
+        <div label-tip-title translate>Approval is confirming</div>
         <div label-tip-body>
-          <span translate>You have to wait for this transaction to be confirmed to operate with this token.</span>
-          <br *ngIf="approveTxId">
+          <div translate>The approval transaction must be confirmed before this token can be used in a swap. This should only take a moment.</div>
           <a *ngIf="approveTxId" class="label-tip-link" (click)="viewOnBlockchain()" translate>View on blockchain</a>
         </div>
       </label-tip>
