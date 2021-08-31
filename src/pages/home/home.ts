@@ -197,7 +197,11 @@ export class HomePage {
       return;
     }
     this.persistenceProvider.getNewFeatureSlidesFlag().then(value => {
-      if (!value || value !== dismissFlag) {
+      // if no flag or if current build major minor !== flag major and minor
+      if (
+        !value ||
+        !this.appProvider.meetsMajorMinorVersion(currentVs, value.split('_')[1])
+      ) {
         this.newFeatureData.get().then(feature_list => {
           if (feature_list && feature_list.features.length > 0) {
             const modal = this.modalCtrl.create(NewFeaturePage, {

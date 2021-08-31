@@ -98,7 +98,6 @@ export class NewFeatureData {
       }
 
       return (
-        this.appProv.meetsVersion(vs, this.appProv.version) &&
         (vs.app.length == 0 ||
           vs.app[0] === '*' ||
           vs.app.find(

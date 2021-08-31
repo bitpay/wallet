@@ -141,19 +141,17 @@ export class AppProvider {
     }
   }
 
-  public meetsVersion(version, targetVersion) {
-    if (!version || !targetVersion) {
+  private getMajorMinor(version) {
+    return version.split(/\.(?=[^\.]+$)/)[0];
+  }
+
+  public meetsMajorMinorVersion(currentVersion, dismissFlagVersion) {
+    if (!currentVersion || !dismissFlagVersion) {
       return false;
     }
-
-    const nVersion =
-      parseInt(version.major, 10) +
-      parseInt(version.minor, 10) +
-      parseInt(version.patch, 10);
-    const tVersion =
-      parseInt(targetVersion.major, 10) +
-      parseInt(targetVersion.minor, 10) +
-      parseInt(targetVersion.patch, 10);
-    return nVersion <= tVersion;
+    return (
+      this.getMajorMinor(currentVersion) ===
+      this.getMajorMinor(dismissFlagVersion)
+    );
   }
 }
