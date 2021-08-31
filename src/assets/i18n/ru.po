@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: copay\n"
 "Language-Team: Russian\n"
 "Language: ru\n"
-"PO-Revision-Date: 2021-08-30 12:42\n"
+"PO-Revision-Date: 2021-08-31 12:45\n"
 
 msgid "(possible double spend)"
 msgstr "(возможна двойная трата)"
@@ -239,10 +239,10 @@ msgstr "Apple Pay"
 msgid "Apply"
 msgstr ""
 
-msgid "Approve"
+msgid "Approval is confirming"
 msgstr ""
 
-msgid "Approve is Pending"
+msgid "Approve"
 msgstr ""
 
 msgid "Approve {{fromWalletCoin}}"
@@ -297,9 +297,6 @@ msgid "Are you sure?"
 msgstr "Вы уверены?"
 
 msgid "As the estimated miner fee to complete the transaction is {{params.fee}} {{params.coin}}, the maximum spendable amount of your wallet is {{params.amount}} {{params.coin}} which is lower than the minimum allowed by the exchange: {{params.minAmount}} {{params.coin}}"
-msgstr ""
-
-msgid "Assignment"
 msgstr ""
 
 msgid "Attempted payment request"
@@ -3284,6 +3281,9 @@ msgstr ""
 msgid "The amount on the transaction does not match the amount requested. This payment will not be accepted"
 msgstr ""
 
+msgid "The approval transaction must be confirmed before this token can be used in a swap. This should only take a moment."
+msgstr ""
+
 msgid "The data of this exchange will be deleted from your device. Make sure you don't need it"
 msgstr ""
 
@@ -3666,9 +3666,6 @@ msgid "Unconfirmed"
 msgstr "Неподтверждено"
 
 msgid "Unconfirmed inputs"
-msgstr ""
-
-msgid "Unlimited"
 msgstr ""
 
 msgid "Unlink account"
@@ -4131,9 +4128,6 @@ msgid "You have only entered {wordListLength} word, please follow the recommenda
 msgstr ""
 
 msgid "You have only entered {wordListLength} words, please follow the recommendations provided"
-msgstr ""
-
-msgid "You have to wait for this transaction to be confirmed to operate with this token."
 msgstr ""
 
 msgid "You must first select a wallet to deposit."

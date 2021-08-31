@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: copay\n"
 "Language-Team: Korean\n"
 "Language: ko\n"
-"PO-Revision-Date: 2021-08-30 12:42\n"
+"PO-Revision-Date: 2021-08-31 12:45\n"
 
 msgid "(possible double spend)"
 msgstr "(이중 지출 가능)"
@@ -239,11 +239,11 @@ msgstr "Apple Pay"
 msgid "Apply"
 msgstr "적용하십시오"
 
+msgid "Approval is confirming"
+msgstr ""
+
 msgid "Approve"
 msgstr "승인"
-
-msgid "Approve is Pending"
-msgstr ""
 
 msgid "Approve {{fromWalletCoin}}"
 msgstr ""
@@ -298,9 +298,6 @@ msgstr "Are you sure?"
 
 msgid "As the estimated miner fee to complete the transaction is {{params.fee}} {{params.coin}}, the maximum spendable amount of your wallet is {{params.amount}} {{params.coin}} which is lower than the minimum allowed by the exchange: {{params.minAmount}} {{params.coin}}"
 msgstr "As the estimated miner fee to complete the transaction is {{params.fee}} {{params.coin}}, the maximum spendable amount of your wallet is {{params.amount}} {{params.coin}} which is lower than the minimum allowed by the exchange: {{params.minAmount}} {{params.coin}}"
-
-msgid "Assignment"
-msgstr ""
 
 msgid "Attempted payment request"
 msgstr "Attempted payment request"
@@ -3284,6 +3281,9 @@ msgstr "The amount of {coinName} stored in this wallet with less than 1 blockcha
 msgid "The amount on the transaction does not match the amount requested. This payment will not be accepted"
 msgstr "The amount on the transaction does not match the amount requested. This payment will not be accepted"
 
+msgid "The approval transaction must be confirmed before this token can be used in a swap. This should only take a moment."
+msgstr ""
+
 msgid "The data of this exchange will be deleted from your device. Make sure you don't need it"
 msgstr ""
 
@@ -3666,9 +3666,6 @@ msgid "Unconfirmed"
 msgstr "미확인됨"
 
 msgid "Unconfirmed inputs"
-msgstr ""
-
-msgid "Unlimited"
 msgstr ""
 
 msgid "Unlink account"
@@ -4131,9 +4128,6 @@ msgid "You have only entered {wordListLength} word, please follow the recommenda
 msgstr ""
 
 msgid "You have only entered {wordListLength} words, please follow the recommendations provided"
-msgstr ""
-
-msgid "You have to wait for this transaction to be confirmed to operate with this token."
 msgstr ""
 
 msgid "You must first select a wallet to deposit."

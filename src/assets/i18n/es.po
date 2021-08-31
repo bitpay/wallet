@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: copay\n"
 "Language-Team: Spanish\n"
 "Language: es\n"
-"PO-Revision-Date: 2021-08-30 12:45\n"
+"PO-Revision-Date: 2021-08-31 12:47\n"
 
 msgid "(possible double spend)"
 msgstr "(Posible gasto duplicado)"
@@ -239,11 +239,11 @@ msgstr "Apple Pay"
 msgid "Apply"
 msgstr "Aplicar"
 
+msgid "Approval is confirming"
+msgstr "La aprobación se está confirmando"
+
 msgid "Approve"
 msgstr "Aprobar"
-
-msgid "Approve is Pending"
-msgstr "Pendiente de Aprobación"
 
 msgid "Approve {{fromWalletCoin}}"
 msgstr "Aprobar {{fromWalletCoin}}"
@@ -298,9 +298,6 @@ msgstr "¿Estás seguro?"
 
 msgid "As the estimated miner fee to complete the transaction is {{params.fee}} {{params.coin}}, the maximum spendable amount of your wallet is {{params.amount}} {{params.coin}} which is lower than the minimum allowed by the exchange: {{params.minAmount}} {{params.coin}}"
 msgstr "Como la comisión estimada para completar la transacción es {{params.fee}} {{params.coin}}, el monto máximo disponible de su billetera es {{params.amount}} {{params.coin}} que es inferior al mínimo permitido por el exchange: {{params.minAmount}} {{params.coin}}"
-
-msgid "Assignment"
-msgstr "Asignación"
 
 msgid "Attempted payment request"
 msgstr "Intento de solicitud de pago"
@@ -3284,6 +3281,9 @@ msgstr "El total de {coinName} guardados en esta billetera con menos de 1 confir
 msgid "The amount on the transaction does not match the amount requested. This payment will not be accepted"
 msgstr "El monto de la transacción no coincide con el monto solicitado. Este pago no será aceptado"
 
+msgid "The approval transaction must be confirmed before this token can be used in a swap. This should only take a moment."
+msgstr "La transacción de aprobación debe ser confirmada antes de que este token pueda ser utilizado en un intercambio. Esto solo debería tomar un momento."
+
 msgid "The data of this exchange will be deleted from your device. Make sure you don't need it"
 msgstr "Los datos de este intercambio se eliminarán de su dispositivo. Asegúrese de no necesitarlos."
 
@@ -3668,9 +3668,6 @@ msgstr "Sin confirmar"
 
 msgid "Unconfirmed inputs"
 msgstr "Entradas no confirmadas"
-
-msgid "Unlimited"
-msgstr "Ilimitado"
 
 msgid "Unlink account"
 msgstr "Desvincular cuenta"
@@ -4133,9 +4130,6 @@ msgstr "Solo ha introducido {wordListLength} palabra, por favor siga las recomen
 
 msgid "You have only entered {wordListLength} words, please follow the recommendations provided"
 msgstr "Solo ha introducido {wordListLength} palabras, por favor siga las recomendaciones proporcionadas"
-
-msgid "You have to wait for this transaction to be confirmed to operate with this token."
-msgstr "Tienes que esperar a que esta transacción sea confirmada para operar con este token."
 
 msgid "You must first select a wallet to deposit."
 msgstr "Primero debe seleccionar una billetera para depositar."

@@ -295,11 +295,12 @@ msgstr "Apple Pay"
 msgid "Apply"
 msgstr "Apply"
 
+#| msgid "Approve is Pending"
+msgid "Approval is confirming"
+msgstr "Approval is confirming"
+
 msgid "Approve"
 msgstr "Approve"
-
-msgid "Approve is Pending"
-msgstr "Approve is Pending"
 
 msgid "Approve {{fromWalletCoin}}"
 msgstr "Approve {{fromWalletCoin}}"
@@ -366,9 +367,6 @@ msgstr ""
 "{{params.coin}}, the maximum spendable amount of your wallet is {{params."
 "amount}} {{params.coin}} which is lower than the minimum allowed by the "
 "exchange: {{params.minAmount}} {{params.coin}}"
-
-msgid "Assignment"
-msgstr "Assignment"
 
 msgid "Attempted payment request"
 msgstr "Attempted payment request"
@@ -588,9 +586,6 @@ msgstr ""
 "By giving my email address, I give explicit consent to BitPay to use it to "
 "contact me about payment issues."
 
-#| msgid ""
-#| "By granting this permission you authorize this site to access your funds "
-#| "in {{ fromToken.symbol }}."
 msgid ""
 "By granting this permission, \"1inch\" will be able to withdraw your "
 "{{ fromToken.symbol }} and complete transactions for you."
@@ -2535,7 +2530,6 @@ msgstr "Nonce"
 msgid "Normal"
 msgstr "Normal"
 
-#| msgid "Supported by"
 msgid "Not Supported"
 msgstr "Not Supported"
 
@@ -3800,6 +3794,13 @@ msgstr ""
 "payment will not be accepted"
 
 msgid ""
+"The approval transaction must be confirmed before this token can be used in "
+"a swap. This should only take a moment."
+msgstr ""
+"The approval transaction must be confirmed before this token can be used in "
+"a swap. This should only take a moment."
+
+msgid ""
 "The data of this exchange will be deleted from your device. Make sure you "
 "don't need it"
 msgstr ""
@@ -4357,9 +4358,6 @@ msgstr "Unconfirmed"
 
 msgid "Unconfirmed inputs"
 msgstr "Unconfirmed inputs"
-
-msgid "Unlimited"
-msgstr "Unlimited"
 
 msgid "Unlink account"
 msgstr "Unlink account"
@@ -4991,13 +4989,6 @@ msgstr ""
 "You have only entered {wordListLength} words, please follow the "
 "recommendations provided"
 
-msgid ""
-"You have to wait for this transaction to be confirmed to operate with this "
-"token."
-msgstr ""
-"You have to wait for this transaction to be confirmed to operate with this "
-"token."
-
 msgid "You must first select a wallet to deposit."
 msgstr "You must first select a wallet to deposit."
 
@@ -5249,6 +5240,19 @@ msgstr "{{txpsSuccess}} proposals signed"
 
 msgid "{{updatingTxHistoryProgress}} transactions downloaded"
 msgstr "{{updatingTxHistoryProgress}} transactions downloaded"
+
+#~ msgid "Assignment"
+#~ msgstr "Assignment"
+
+#~ msgid "Unlimited"
+#~ msgstr "Unlimited"
+
+#~ msgid ""
+#~ "You have to wait for this transaction to be confirmed to operate with "
+#~ "this token."
+#~ msgstr ""
+#~ "You have to wait for this transaction to be confirmed to operate with "
+#~ "this token."
 
 #~ msgid "Approve required"
 #~ msgstr "Approve required"
