@@ -148,44 +148,6 @@ describe('Provider: Incoming Data Provider', () => {
         expect(eventsSpy).toHaveBeenCalledWith('IncomingDataRedir', nextView);
       });
     });
-
-    it('Should handle XEC plain Address', () => {
-      let data = ['ecash:qpfqlkt4y7v533qfrqu7lg8fwp4evqunegzsngaqae'];
-      data.forEach(element => {
-        expect(
-          incomingDataProvider.redir(element, { activePage: 'ScanPage' })
-        ).toBe(true);
-        expect(loggerSpy).toHaveBeenCalledWith(
-          'Incoming-data: ECash URI'
-        );
-
-        expect(actionSheetSpy).toHaveBeenCalledWith({
-          data: {
-            data: element,
-            type: 'ecashAddress',
-            coin: 'xec'
-          }
-        });
-      });
-    });
-    it('Should handle XPI plain Address', () => {
-      let data = ['lotus_16PSJPYxmBxaJYAd1GGRcVn2nD1vooHJCozd5Dw91'];
-      data.forEach(element => {
-        expect(
-          incomingDataProvider.redir(element, { activePage: 'ScanPage' })
-        ).toBe(true);
-        expect(loggerSpy).toHaveBeenCalledWith('Incoming-data: Lotus URI');
-
-        expect(actionSheetSpy).toHaveBeenCalledWith({
-          data: {
-            data: element,
-            type: 'lotusAddress',
-            coin: 'xpi'
-          }
-        });
-      });
-    });
-
     it('Should handle Bitcoin cash Copay/BitPay format and CashAddr format URI', () => {
       let data = [
         'bitcoincash:CcnxtMfvBHGTwoKGPSuezEuYNpGPJH6tjN',
@@ -219,127 +181,134 @@ describe('Provider: Incoming Data Provider', () => {
         expect(eventsSpy).toHaveBeenCalledWith('IncomingDataRedir', nextView);
       });
     });
+    it('Should handle XPI format URI', () => {
+      let element = 'lotus_16PSJQvoMKjCt78jpCqTLut9iRuiV2vJBH7Rmuwbq';
+      let parsed = bwcProvider.getBitcoreXpi().URI(element);
+      let addr = parsed.address ? parsed.address.toString() : '';
 
-    it('Should handle XEC URI as address if there is no amount', () => {
-      let data = ['ecash:qqm0wxg52pzxu292yhgfx0wxwctrupcvgyw6z6ytay'];
+      // keep address in original format
+      if (parsed.address && element.indexOf(addr) < 0) {
+        addr = parsed.address.toCashAddress();
+      }
+      let stateParams = {
+        toAddress: addr,
+        description: null,
+        coin: 'xpi'
+      };
+      let nextView = {
+        name: 'AmountPage',
+        params: stateParams
+      };
+      expect(
+        incomingDataProvider.redir(element, { activePage: 'ScanPage' })
+      ).toBe(true);
+      expect(loggerSpy).toHaveBeenCalledWith(
+        'Incoming-data: Lotus URI'
+      );
+      expect(eventsSpy).toHaveBeenCalledWith('IncomingDataRedir', nextView);
+    });
+    it('Should handle XEC format URI', () => {
+      let element = 'ecash:qpfqlkt4y7v533qfrqu7lg8fwp4evqunegzsngaqae';
+      let parsed = bwcProvider.getBitcoreXec().URI(element);
+      let addr = parsed.address ? parsed.address.toString() : '';
+
+      // keep address in original format
+      if (parsed.address && element.indexOf(addr) < 0) {
+        addr = parsed.address.toCashAddress();
+      }
+      let stateParams = {
+        toAddress: addr,
+        description: null,
+        coin: 'xec'
+      };
+      let nextView = {
+        name: 'AmountPage',
+        params: stateParams
+      };
+      expect(
+        incomingDataProvider.redir(element, { activePage: 'ScanPage' })
+      ).toBe(true);
+      expect(loggerSpy).toHaveBeenCalledWith(
+        'Incoming-data: ECash URI'
+      );
+      expect(eventsSpy).toHaveBeenCalledWith('IncomingDataRedir', nextView);
+    });
+    it('Should handle XPI URI with amount', () => {
+      let data = [
+        'lotus_16PSJPYxmBxaJYAd1GGRcVn2nD1vooHJCozd5Dw91?amount=1543000000000000000',
+      ];
+
       data.forEach(element => {
+        let parsed = bwcProvider.getBitcoreXpi().URI(element);
+        let addr = parsed.address ? parsed.address.toString() : '';
+
+        // keep address in original format
+        if (parsed.address && element.indexOf(addr) < 0) {
+          addr = parsed.address.toCashAddress();
+        }
+
+        let amount = parsed.amount;
+
+        let stateParams = {
+          amount,
+          toAddress: addr,
+          description: null,
+          coin: 'xpi',
+          requiredFeeRate: undefined,
+          destinationTag: undefined
+        };
+        let nextView = {
+          name: 'ConfirmPage',
+          params: stateParams
+        };
+        expect(
+          incomingDataProvider.redir(element, { activePage: 'ScanPage' })
+        ).toBe(true);
+        expect(loggerSpy).toHaveBeenCalledWith(
+          'Incoming-data: Lotus URI'
+        );
+        expect(eventsSpy).toHaveBeenCalledWith('IncomingDataRedir', nextView);
+      });
+
+    });
+    it('Should handle XEC URI with amount', () => {
+      let data = [
+        'ecash:qpfqlkt4y7v533qfrqu7lg8fwp4evqunegzsngaqae?amount=1543000000000000000',
+      ];
+
+      data.forEach(element => {
+        let parsed = bwcProvider.getBitcoreXec().URI(element);
+        let addr = parsed.address ? parsed.address.toString() : '';
+
+        // keep address in original format
+        if (parsed.address && element.indexOf(addr) < 0) {
+          addr = parsed.address.toCashAddress();
+        }
+
+        let amount = parsed.amount;
+
+        let stateParams = {
+          amount,
+          toAddress: addr,
+          description: null,
+          coin: 'xec',
+          requiredFeeRate: undefined,
+          destinationTag: undefined
+        };
+        let nextView = {
+          name: 'ConfirmPage',
+          params: stateParams
+        };
         expect(
           incomingDataProvider.redir(element, { activePage: 'ScanPage' })
         ).toBe(true);
         expect(loggerSpy).toHaveBeenCalledWith(
           'Incoming-data: ECash URI'
         );
-
-        expect(actionSheetSpy).toHaveBeenCalledWith({
-          data: {
-            data: 'qqm0wxg52pzxu292yhgfx0wxwctrupcvgyw6z6ytay',
-            type: 'ecashAddress',
-            coin: 'xec'
-          }
-        });
-      });
-    });
-
-    it('Should handle XPI URI as address if there is no amount', () => {
-      let data = ['lotus_16PSJQvoMKjCt78jpCqTLut9iRuiV2vJBH7Rmuwbq'];
-      data.forEach(element => {
-        expect(
-          incomingDataProvider.redir(element, { activePage: 'ScanPage' })
-        ).toBe(true);
-        expect(loggerSpy).toHaveBeenCalledWith('Incoming-data: Lotus URI');
-
-        expect(actionSheetSpy).toHaveBeenCalledWith({
-          data: {
-            data: 'lotus_16PSJQvoMKjCt78jpCqTLut9iRuiV2vJBH7Rmuwbq',
-            type: 'LotusAddress',
-            coin: 'xpi'
-          }
-        });
-      });
-    });
-
-    it('Should handle XPI URI with amount (value)', () => {
-      let data = [
-        {
-          uri:
-            'lotus_16PSJPYxmBxaJYAd1GGRcVn2nD1vooHJCozd5Dw91?value=1543000000000000000',
-          stateParams: {
-            amount: '1543000000000000000',
-            toAddress: 'lotus_16PSJPYxmBxaJYAd1GGRcVn2nD1vooHJCozd5Dw91',
-            description: '',
-            coin: 'xpi',
-            requiredFeeRate: undefined,
-            destinationTag: undefined
-          },
-          nextpage: 'ConfirmPage'
-        },
-        {
-          uri:
-            'lotus_16PSJPYxmBxaJYAd1GGRcVn2nD1vooHJCozd5Dw91?value=1543000000000000000?gasPrice=0000400000000000000',
-          stateParams: {
-            amount: '1543000000000000000',
-            toAddress: 'lotus_16PSJPYxmBxaJYAd1GGRcVn2nD1vooHJCozd5Dw91',
-            description: '',
-            coin: 'xpi',
-            requiredFeeRate: '0000400000000000000',
-            destinationTag: undefined
-          },
-          nextpage: 'ConfirmPage'
-        }
-      ];
-      data.forEach(element => {
-        let nextView = {
-          name: element.nextpage,
-          params: element.stateParams
-        };
-        expect(
-          incomingDataProvider.redir(element.uri, { activePage: 'ScanPage' })
-        ).toBe(true);
-        expect(loggerSpy).toHaveBeenCalledWith('Incoming-data: Lotus URI');
         expect(eventsSpy).toHaveBeenCalledWith('IncomingDataRedir', nextView);
       });
-    });
 
-    it('Should handle XPI URI with amount', () => {
-      let data = [
-        {
-          uri: 'lotus_16PSJPYxmBxaJYAd1GGRcVn2nD1vooHJCozd5Dw91',
-          stateParams: {
-            amount: '1500',
-            toAddress: 'lotus_16PSJPYxmBxaJYAd1GGRcVn2nD1vooHJCozd5Dw91',
-            description: '',
-            coin: 'xpi',
-            requiredFeeRate: undefined,
-            destinationTag: undefined
-          },
-          nextpage: 'ConfirmPage'
-        },
-        {
-          uri: 'lotus_16PSJPYxmBxaJYAd1GGRcVn2nD1vooHJCozd5Dw91?amount=15&dt=12',
-          stateParams: {
-            amount: '1500',
-            toAddress: 'lotus_16PSJPYxmBxaJYAd1GGRcVn2nD1vooHJCozd5Dw91',
-            description: '',
-            coin: 'xpi',
-            requiredFeeRate: undefined,
-            destinationTag: '12'
-          },
-          nextpage: 'ConfirmPage'
-        }
-      ];
-      data.forEach(element => {
-        let nextView = {
-          name: element.nextpage,
-          params: element.stateParams
-        };
-        expect(
-          incomingDataProvider.redir(element.uri, { activePage: 'ScanPage' })
-        ).toBe(true);
-        expect(loggerSpy).toHaveBeenCalledWith('Incoming-data: Lotus URI');
-        expect(eventsSpy).toHaveBeenCalledWith('IncomingDataRedir', nextView);
-      });
     });
-
     it('Should handle Bitcoin cash Copay/BitPay format and CashAddr format URI with amount', () => {
       let data = [
         'BITCOINCASH:QZCY06MXSK7HW0RU4KZWTRKXDS6VF8Y34VRM5SF9Z7?amount=1.00000000',
@@ -486,7 +455,7 @@ describe('Provider: Incoming Data Provider', () => {
       const stateParams = {
         privateKey: '123',
         toAddress: null,
-        coin: 'xpi',
+        coin: 'btc',
         addressbookEntry: null,
         fromFooterMenu: undefined
       };
@@ -526,7 +495,7 @@ describe('Provider: Incoming Data Provider', () => {
         name: 'AddressbookAddPage',
         params: stateParams
       };
-      const data = { redirTo: 'AddressbookAddPage', value: 'xxx', coin: 'bch' };
+      const data = { redirTo: 'AddressbookAddPage', value: 'xxx', coin: 'xpi' };
       incomingDataProvider.finishIncomingData(data);
       expect(eventsSpy).toHaveBeenCalledWith('IncomingDataRedir', nextView);
     });
@@ -539,26 +508,6 @@ describe('Provider: Incoming Data Provider', () => {
     });
     it('Should return the correct type for each kind of data', () => {
       const dataArray = [
-        {
-          data: 'https://bitpay.com/i/5GREtmntcTvB9aejVDhVdm',
-          expectedType: 'InvoiceUri'
-        },
-        {
-          data: 'https://test.bitpay.com/i/VPDDwaG7eaGvFtbyDBq8NR',
-          expectedType: 'InvoiceUri'
-        },
-        {
-          data: 'bitcoin:?r=https://bitpay.com/i/CtcM753gnZ4Wpr5pmXU6i9',
-          expectedType: 'PayPro'
-        },
-        {
-          data: 'bitcoincash:?r=https://bitpay.com/i/Rtz1RwWA7kdRRU3Wyo4YDY',
-          expectedType: 'PayPro'
-        },
-        {
-          data: 'ethereum:?r=https://test.bitpay.com/i/VPDDwaG7eaGvFtbyDBq8NR',
-          expectedType: 'PayPro'
-        },
         {
           data: 'bitcoin:1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa',
           expectedType: 'BitcoinUri'
@@ -604,55 +553,8 @@ describe('Provider: Incoming Data Provider', () => {
           expectedType: 'BitcoinCashUri'
         },
         {
-          data: 'ethereum:0xb506c911deE6379e3d4c4d0F4A429a70523960Fd',
-          expectedType: 'EthereumUri'
-        },
-        {
-          data:
-            'ethereum:0xb506c911deE6379e3d4c4d0F4A429a70523960Fd?value=1543000000000000000',
-          expectedType: 'EthereumUri'
-        },
-        {
-          data:
-            'ethereum:0xb506c911deE6379e3d4c4d0F4A429a70523960Fd?value=1543000000000000000?gasPrice=0000400000000000000',
-          expectedType: 'EthereumUri'
-        },
-        {
           data: 'bitcoincash:1ML5KKKrJEHw3fQqhhajQjHWkh3yKhNZpa',
           expectedType: 'BitcoinCashUri'
-        },
-        {
-          data:
-            'bitpay:mrNYDWy8ZgmgXVKDb4MM71LmfZWBwGztUK?coin=btc&amount=0.0002&message=message',
-          expectedType: 'BitPayUri'
-        },
-        {
-          data:
-            'bitpay:1HZJoc4ZKMvyAYcYCU1vbmwm3KzZq34EmU?coin=btc&amount=0.0002&message=asd',
-          expectedType: 'BitPayUri'
-        },
-        {
-          data:
-            'bitpay:0xDF5C0dd7656bB976aD7285a3Fb80C0F6B9604576?coin=eth&amount=1543000000000000000?gasPrice=0000400000000000000',
-          expectedType: 'BitPayUri'
-        },
-        {
-          data:
-            'bitpay:bchtest:qp2gujqu2dsp6zs4kp0pevm2yl8ydx723q2kvfn7tc?coin=bch&amount=0.0002&message=asd',
-          expectedType: 'BitPayUri'
-        },
-        {
-          data:
-            'bitpay:bitcoincash:qpcc9qe5ja73k7ekkqrnjfp9tya0r3d5tvpm2yfa0d?coin=bch&amount=0.0002&message=asd',
-          expectedType: 'BitPayUri'
-        },
-        {
-          data: 'http://bitpay.com/',
-          expectedType: 'PlainUrl'
-        },
-        {
-          data: 'https://bitpay.com',
-          expectedType: 'PlainUrl'
         },
         {
           data: 'qr00upv8qjgkym8zng3f663n9qte9ljuqqcs8eep5w',
@@ -661,18 +563,6 @@ describe('Provider: Incoming Data Provider', () => {
         {
           data: 'CcnxtMfvBHGTwoKGPSuezEuYNpGPJH6tjN',
           expectedType: 'BitcoinCashAddress'
-        },
-        {
-          data: '0xb506c911deE6379e3d4c4d0F4A429a70523960Fd',
-          expectedType: 'EthereumAddress'
-        },
-        {
-          data: 'bitpay://coinbase',
-          expectedType: 'Coinbase'
-        },
-        {
-          data: 'bitpay://bitpay.com?secret=xxxxx&email=xxx@xx.com',
-          expectedType: 'BitPayCard'
         },
         {
           data:

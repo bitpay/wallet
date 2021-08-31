@@ -9,7 +9,6 @@ import { AnalyticsProvider } from '../analytics/analytics';
 import { AppProvider } from '../app/app';
 import { BwcProvider } from '../bwc/bwc';
 import { Coin, CurrencyProvider } from '../currency/currency';
-import { ExternalLinkProvider } from '../external-link/external-link';
 import { Logger } from '../logger/logger';
 import { PersistenceProvider } from '../persistence/persistence';
 import { ProfileProvider } from '../profile/profile';
@@ -32,7 +31,6 @@ export class IncomingDataProvider {
     private events: Events,
     private bwcProvider: BwcProvider,
     public currencyProvider: CurrencyProvider,
-    private externalLinkProvider: ExternalLinkProvider,
     private logger: Logger,
     private analyticsProvider: AnalyticsProvider,
     private appProvider: AppProvider,
@@ -68,30 +66,6 @@ export class IncomingDataProvider {
     this.incomingDataRedir(nextView);
   }
 
-  private isValidPayPro(data: string): boolean {
-    data = this.sanitizeUri(data);
-    return !!/^(bitcoin|bitcoincash|bchtest|ethereum|ripple|dogecoin|litecoin|ecash|lotus)?:\?r=[\w+]/.exec(
-      data
-    );
-  }
-
-  private isValidBitPayInvoice(data: string): boolean {
-    return !!/^https:\/\/(www.)?(test.|staging.)?bitpay.com\/i\/\w+/.exec(data);
-  }
-
-  private isValidBitPayUri(data: string): boolean {
-    data = this.sanitizeUri(data);
-    if (!(data && data.indexOf('bitpay:') === 0)) return false;
-    const address = this.extractAddress(data);
-    if (!address) return false;
-    let params: URLSearchParams = new URLSearchParams(
-      data.replace(`bitpay:${address}`, '')
-    );
-    const coin = params.get('coin');
-    if (!coin) return false;
-    return true;
-  }
-
   private isValidBitcoinUri(data: string): boolean {
     data = this.sanitizeUri(data);
     return !!this.bwcProvider.getBitcore().URI.isValid(data);
@@ -110,16 +84,6 @@ export class IncomingDataProvider {
   private isValidLotusUri(data: string): boolean {
     data = this.sanitizeUri(data);
     return !!this.bwcProvider.getBitcoreXpi().URI.isValid(data);
-  }
-
-  private isValidEthereumUri(data: string): boolean {
-    data = this.sanitizeUri(data);
-    return !!this.bwcProvider.getCore().Validation.validateUri('ETH', data);
-  }
-
-  private isValidRippleUri(data: string): boolean {
-    data = this.sanitizeUri(data);
-    return !!this.bwcProvider.getCore().Validation.validateUri('XRP', data);
   }
 
   private isValidDogecoinUri(data: string): boolean {
@@ -144,9 +108,6 @@ export class IncomingDataProvider {
   }
 
   private isValidPlainUrl(data: string): boolean {
-    if (this.isValidBitPayInvoice(data)) {
-      return false;
-    }
     data = this.sanitizeUri(data);
     return !!/^https?:\/\//.test(data);
   }
@@ -186,18 +147,6 @@ export class IncomingDataProvider {
     );
   }
 
-  private isValidEthereumAddress(data: string): boolean {
-    return !!this.bwcProvider
-      .getCore()
-      .Validation.validateAddress('ETH', 'livenet', data);
-  }
-
-  private isValidRippleAddress(data: string): boolean {
-    return !!this.bwcProvider
-      .getCore()
-      .Validation.validateAddress('XRP', 'livenet', data);
-  }
-
   private isValidDogecoinAddress(data: string): boolean {
     return !!(
       this.bwcProvider.getBitcoreDoge().Address.isValid(data, 'livenet') ||
@@ -210,51 +159,6 @@ export class IncomingDataProvider {
       this.bwcProvider.getBitcoreLtc().Address.isValid(data, 'livenet') ||
       this.bwcProvider.getBitcoreLtc().Address.isValid(data, 'testnet')
     );
-  }
-
-  private isValidCoinbaseUri(data: string): boolean {
-    data = this.sanitizeUri(data);
-    return !!(
-      data && data.indexOf(this.appProvider.info.name + '://coinbase') === 0
-    );
-  }
-
-  private isValidSimplexUri(data: string): boolean {
-    data = this.sanitizeUri(data);
-    return !!(
-      data && data.indexOf(this.appProvider.info.name + '://simplex') === 0
-    );
-  }
-
-  private isValidWyreUri(data: string): boolean {
-    data = this.sanitizeUri(data);
-    return !!(
-      data &&
-      (data.indexOf(this.appProvider.info.name + '://wyre') === 0 ||
-        data.indexOf(this.appProvider.info.name + '://wyreError') === 0)
-    );
-  }
-
-  private isValidInvoiceUri(data: string): boolean {
-    data = this.sanitizeUri(data);
-    return !!(
-      data && data.indexOf(this.appProvider.info.name + '://invoice') === 0
-    );
-  }
-
-  private isValidBitPayCardUri(data: string): boolean {
-    data = this.sanitizeUri(data);
-    return !!(data && data.indexOf('bitpay://bitpay') === 0);
-  }
-
-  private isValidBitPayRedirLink(data: string): boolean {
-    data = this.sanitizeUri(data);
-    return !!(data && data.indexOf('bitpay://landing') === 0);
-  }
-
-  private isValidBitPayDynamicLink(data: string): boolean {
-    data = this.sanitizeUri(data);
-    return !!(data && data.indexOf('com.bitpay.wallet://google/link') === 0);
   }
 
   private isValidJoinCode(data: string): boolean {
@@ -290,36 +194,6 @@ export class IncomingDataProvider {
       fromHomeCard: redirParams ? redirParams.fromHomeCard : false
     });
   }
-
-  private handleDynamicLink(deepLink: string): void {
-    this.logger.debug('Incoming-data: Dynamic Link ' + deepLink);
-    this.persistenceProvider.setDynamicLink(deepLink);
-  }
-
-  private handleBitPayUri(data: string, redirParams?: RedirParams): void {
-    this.logger.debug('Incoming-data: BitPay URI');
-    let amountFromRedirParams =
-      redirParams && redirParams.amount ? redirParams.amount : '';
-    const address = this.extractAddress(data);
-    let params: URLSearchParams = new URLSearchParams(
-      data.replace(`bitpay:${address}`, '')
-    );
-    let amount = params.get('amount') || amountFromRedirParams;
-    const coin: Coin = Coin[params.get('coin').toUpperCase()];
-    const message = params.get('message');
-    const requiredFeeParam = params.get('gasPrice');
-    if (amount) {
-      const { unitToSatoshi } = this.currencyProvider.getPrecision(coin);
-      amount = parseInt(
-        (Number(amount) * unitToSatoshi).toFixed(0),
-        10
-      ).toString();
-      this.goSend(address, amount, message, coin, requiredFeeParam);
-    } else {
-      this.goToAmountPage(address, coin);
-    }
-  }
-
 
   private handleBitcoinCashUri(data: string, redirParams?: RedirParams): void {
     this.logger.debug('Incoming-data: Bitcoin Cash URI');
@@ -380,7 +254,6 @@ export class IncomingDataProvider {
     if (parsed.r) {
     } else this.goSend(address, amount, message, coin);
   }
-
 
   private handleDogecoinUri(data: string, redirParams?: RedirParams): void {
     this.logger.debug('Incoming-data: Dogecoin URI');
@@ -463,7 +336,6 @@ export class IncomingDataProvider {
     // });
   }
 
-
   private handlePlainBitcoinCashAddress(
     data: string,
     redirParams?: RedirParams
@@ -482,9 +354,6 @@ export class IncomingDataProvider {
       this.goToAmountPage(data, coin);
     }
   }
-
-
-
 
   private handlePlainDogecoinAddress(
     data: string,
@@ -611,171 +480,14 @@ export class IncomingDataProvider {
     }
   }
 
-  // private goToBitPayCard(data: string): void {
-  //   this.logger.debug('Incoming-data (redirect): BitPay Card URL');
-  //
-  //   // Disable BitPay Card
-  //   if (!this.appProvider.info._enabledExtensions.debitcard) {
-  //     this.logger.warn('BitPay Card has been disabled for this build');
-  //     return;
-  //   }
-  //
-  //   let secret = this.getParameterByName('secret', data);
-  //   let email = this.getParameterByName('email', data);
-  //   let otp = this.getParameterByName('otp', data);
-  //   let reason = this.getParameterByName('r', data);
-  //   switch (reason) {
-  //     default:
-  //     case '0':
-  //       /* For BitPay card binding */
-  //       let stateParams = { secret, email, otp };
-  //       let nextView = {
-  //         name: 'BitPayCardIntroPage',
-  //         params: stateParams
-  //       };
-  //       this.incomingDataRedir(nextView);
-  //       break;
-  //   }
-  // }
-
-  private goToBitPayRedir(data: string): void {
-    this.logger.debug('Incoming-data (redirect): BitPay Redir');
-    const redir = data.replace('bitpay://landing/', '');
-    switch (redir) {
-      default:
-      case 'card':
-        // Disable BitPay Card
-        if (!this.appProvider.info._enabledExtensions.debitcard) {
-          this.logger.warn('BitPay Card has been disabled for this build');
-          return;
-        }
-        const nextView = {
-          name: 'PhaseOneCardIntro'
-        };
-        this.incomingDataRedir(nextView);
-        break;
-    }
-  }
-
-  private goToCoinbase(data: string): void {
-    this.logger.debug('Incoming-data (redirect): Coinbase URL');
-
-    const code = this.getParameterByName('code', data);
-    const state = this.getParameterByName('state', data);
-    const stateParams = { code, state };
-    const nextView = {
-      name: 'CoinbasePage',
-      params: stateParams
-    };
-    this.incomingDataRedir(nextView);
-  }
-
-  private goToSimplex(data: string): void {
-    this.logger.debug('Incoming-data (redirect): Simplex URL: ' + data);
-
-    const res = data.replace(new RegExp('&amp;', 'g'), '&');
-    const success = this.getParameterByName('success', res);
-    const paymentId = this.getParameterByName('paymentId', res);
-    const quoteId = this.getParameterByName('quoteId', res);
-    const userId = this.getParameterByName('userId', res);
-
-    const stateParams = { success, paymentId, quoteId, userId };
-    const nextView = {
-      name: 'SimplexPage',
-      params: stateParams
-    };
-    this.incomingDataRedir(nextView);
-  }
-
-  private goToWyre(data: string): void {
-    this.logger.debug('Incoming-data (redirect): Wyre URL: ' + data);
-    if (data.indexOf(this.appProvider.info.name + '://wyreError') >= 0) {
-      const infoSheet = this.actionSheetProvider.createInfoSheet('wyre-error');
-      infoSheet.present();
-      infoSheet.onDidDismiss(option => {
-        if (option) {
-          this.openExternalLink(
-            'https://wyre-support.zendesk.com/hc/en-us/requests/new'
-          );
-        }
-      });
-      return;
-    }
-
-    if (data === this.appProvider.info.name + '://wyre') return;
-    const res = data.replace(new RegExp('&amp;', 'g'), '&');
-    const transferId = this.getParameterByName('transferId', res);
-    const walletId = this.getParameterByName('walletId', res);
-    const owner = this.getParameterByName('owner', res);
-    const orderId = this.getParameterByName('id', res);
-    const accountId = this.getParameterByName('accountId', res);
-    const dest = this.getParameterByName('dest', res);
-    const destAmount = this.getParameterByName('destAmount', res);
-    const destCurrency = this.getParameterByName('destCurrency', res);
-    const purchaseAmount = this.getParameterByName('purchaseAmount', res);
-    const sourceAmount = this.getParameterByName('sourceAmount', res);
-    const sourceCurrency = this.getParameterByName('sourceCurrency', res);
-    const status = this.getParameterByName('status', res);
-    const createdAt = this.getParameterByName('createdAt', res);
-    const paymentMethodName = this.getParameterByName('paymentMethodName', res);
-    const blockchainNetworkTx = this.getParameterByName(
-      'blockchainNetworkTx',
-      res
-    );
-    if (!orderId) {
-      this.logger.debug('No orderId present. Do not redir');
-      return;
-    }
-
-    const stateParams = {
-      transferId,
-      walletId,
-      owner,
-      orderId,
-      accountId,
-      dest,
-      destAmount,
-      destCurrency,
-      purchaseAmount,
-      sourceAmount,
-      sourceCurrency,
-      status,
-      createdAt,
-      paymentMethodName,
-      blockchainNetworkTx
-    };
-    const nextView = {
-      name: 'WyrePage',
-      params: stateParams
-    };
-    this.incomingDataRedir(nextView);
-  }
-
-  private openExternalLink(url: string) {
-    this.externalLinkProvider.open(url);
-  }
-
-  private goToInvoice(data: string): void {
-    this.logger.debug('Incoming-data (redirect): Invoice URL');
-
-    const invoiceUrl = this.getParameterByName('url', data);
-    this.redir(invoiceUrl);
-  }
-
   public redir(data: string, redirParams?: RedirParams): boolean {
     if (redirParams && redirParams.activePage)
       this.activePage = redirParams.activePage;
     if (redirParams && redirParams.activePage)
       this.fromFooterMenu = redirParams.fromFooterMenu;
 
-    //  Handling of a bitpay invoice url
-    if (this.isValidBitPayInvoice(data)) {
-      return true;
-    } else if (this.isValidPayPro(data)) {
-      return true;
-
       // Bitcoin  URI
-    } else if (this.isValidBitcoinUri(data)) {
+    if (this.isValidBitcoinUri(data)) {
       // this.handleBitcoinUri(data, redirParams);
       return true;
 
@@ -792,15 +504,6 @@ export class IncomingDataProvider {
       // Lotus URI
     } else if (this.isValidLotusUri(data)) {
       this.handleLotusUri(data, redirParams);
-      return true;
-
-      // Ethereum URI
-    } else if (this.isValidEthereumUri(data)) {
-      // this.handleEthereumUri(data, redirParams);
-      return true;
-
-      // Ripple URI
-    } else if (this.isValidRippleUri(data)) {
       return true;
 
       // Dogecoin URI
@@ -838,16 +541,6 @@ export class IncomingDataProvider {
       this.handlePlainBitcoinCashAddress(data, redirParams);
       return true;
 
-      // Address (Ethereum)
-    } else if (this.isValidEthereumAddress(data)) {
-      // this.handleEthereumAddress(data, redirParams);
-      return true;
-
-      // Address (Ripple)
-    } else if (this.isValidRippleAddress(data)) {
-      // this.handleRippleAddress(data, redirParams);
-      return true;
-
       // Plain Address (Doge)
     } else if (this.isValidDogecoinAddress(data)) {
       this.handlePlainDogecoinAddress(data, redirParams);
@@ -867,42 +560,7 @@ export class IncomingDataProvider {
     } else if (this.isValidECashAddress(data)) {
       this.handlePlainEcashAddress(data, redirParams);
       return true;
-
-      // Coinbase
-    } else if (this.isValidCoinbaseUri(data)) {
-      this.goToCoinbase(data);
-      return true;
-
-      // Simplex
-    } else if (this.isValidSimplexUri(data)) {
-      this.goToSimplex(data);
-      return true;
-
-      // Wyre
-    } else if (this.isValidWyreUri(data)) {
-      this.goToWyre(data);
-      return true;
-
-      // Invoice Intent
-    } else if (this.isValidInvoiceUri(data)) {
-      this.goToInvoice(data);
-      return true;
-
-      // BitPay Redir Link
-    } else if (this.isValidBitPayRedirLink(data)) {
-      this.goToBitPayRedir(data);
-      return true;
-
-      // BitPayCard Authentication
-    } else if (this.isValidBitPayCardUri(data)) {
-      // this.goToBitPayCard(data);
-      return true;
-
-      // BitPay URI
-    } else if (this.isValidBitPayUri(data)) {
-      this.handleBitPayUri(data);
-      return true;
-
+      
       // Join
     } else if (this.isValidJoinCode(data) || this.isValidJoinLegacyCode(data)) {
       this.goToJoinWallet(data);
@@ -966,10 +624,6 @@ export class IncomingDataProvider {
 
       return true;
       // Anything else
-    } else if (this.isValidBitPayDynamicLink(data)) {
-      const deepLink = this.getParameterByName('deep_link_id', data);
-      this.handleDynamicLink(deepLink);
-      return true;
     } else {
       if (redirParams && redirParams.activePage === 'ScanPage') {
         this.logger.debug('Incoming-data: Plain text');
@@ -987,21 +641,9 @@ export class IncomingDataProvider {
 
   public parseData(data: string): any {
     if (!data) return;
-    if (this.isValidBitPayInvoice(data)) {
-      return {
-        data,
-        type: 'InvoiceUri',
-        title: 'Invoice URL'
-      };
-    } else if (this.isValidPayPro(data)) {
-      return {
-        data,
-        type: 'PayPro',
-        title: 'Payment URL'
-      };
 
       // Bitcoin URI
-    } else if (this.isValidBitcoinUri(data)) {
+    if (this.isValidBitcoinUri(data)) {
       return {
         data,
         type: 'BitcoinUri',
@@ -1016,21 +658,6 @@ export class IncomingDataProvider {
         title: 'Bitcoin Cash URI'
       };
 
-      // Ethereum URI
-    } else if (this.isValidEthereumUri(data)) {
-      return {
-        data,
-        type: 'EthereumUri',
-        title: 'Ethereum URI'
-      };
-
-      // Ripple URI
-    } else if (this.isValidRippleUri(data)) {
-      return {
-        data,
-        type: 'RippleUri',
-        title: 'Ripple URI'
-      };
       // Dogecoin URI
     } else if (this.isValidDogecoinUri(data)) {
       return {
@@ -1115,22 +742,6 @@ export class IncomingDataProvider {
         title: this.translate.instant('Lotus Address')
       };
 
-      // Plain Address (Ethereum)
-    } else if (this.isValidEthereumAddress(data)) {
-      return {
-        data,
-        type: 'EthereumAddress',
-        title: this.translate.instant('Ethereum Address')
-      };
-
-      // Plain Address (Ripple)
-    } else if (this.isValidRippleAddress(data)) {
-      return {
-        data,
-        type: 'RippleAddress',
-        title: this.translate.instant('XRP Address')
-      };
-
       // Plain Address (Dogecoin)
     } else if (this.isValidDogecoinAddress(data)) {
       return {
@@ -1145,30 +756,6 @@ export class IncomingDataProvider {
         data,
         type: 'LitecoinAddress',
         title: this.translate.instant('Litecoin Address')
-      };
-
-      // Coinbase
-    } else if (this.isValidCoinbaseUri(data)) {
-      return {
-        data,
-        type: 'Coinbase',
-        title: 'Coinbase URI'
-      };
-
-      // BitPayCard Authentication
-    } else if (this.isValidBitPayCardUri(data)) {
-      return {
-        data,
-        type: 'BitPayCard',
-        title: 'BitPay Card URI'
-      };
-
-      // BitPay  URI
-    } else if (this.isValidBitPayUri(data)) {
-      return {
-        data,
-        type: 'BitPayUri',
-        title: 'BitPay URI'
       };
 
       // Join
@@ -1221,15 +808,6 @@ export class IncomingDataProvider {
     newUri.replace('://', ':');
 
     return newUri;
-  }
-
-  public getPayProUrl(data: string): string {
-    return decodeURIComponent(
-      data.replace(
-        /(bitcoin|bitcoincash|ethereum|ripple|dogecoin|litecoin)?:\?r=/,
-        ''
-      )
-    );
   }
 
   public getParameterByName(name: string, url: string): string {
