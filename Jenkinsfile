@@ -11,7 +11,6 @@ pipeline {
                     if (fileExists('./abcpay'))
                     {
                         sh 'rm -r abcpay'
-                        //
                     }
                 }
                 sh 'git clone https://gitlab.com/abcpros/abcpay.git'
