@@ -11,26 +11,19 @@ export class WalletItemContent {
 
   getBalance(wallet, currency) {
     const lastKnownBalance = this.getLastKownBalance(wallet, currency);
-    if (currency === 'XRP') {
-      const availableBalanceStr =
-        wallet.cachedStatus &&
-        wallet.cachedStatus.availableBalanceStr &&
-        wallet.cachedStatus.availableBalanceStr.replace(` ${currency}`, '');
-      return availableBalanceStr || lastKnownBalance;
-    } else {
-      const totalBalanceStr =
-        wallet.cachedStatus &&
-        wallet.cachedStatus.totalBalanceStr &&
-        wallet.cachedStatus.totalBalanceStr.replace(` ${currency}`, '');
+    const totalBalanceStr =
+      wallet.cachedStatus &&
+      wallet.cachedStatus.totalBalanceStr &&
+      wallet.cachedStatus.totalBalanceStr.replace(` ${currency}`, '');
 
-      // New created wallet does not have "lastkKnownBalance"
-      if (
-        totalBalanceStr == '0.00' &&
-        (lastKnownBalance == '0.00' || !lastKnownBalance)
-      )
-        return '0';
-      return DecimalFormat(totalBalanceStr) || DecimalFormat(lastKnownBalance);
-    }
+    // New created wallet does not have "lastkKnownBalance"
+    if (
+      totalBalanceStr == '0.00' &&
+      (lastKnownBalance == '0.00' || !lastKnownBalance)
+    )
+      return '0';
+    console.log(totalBalanceStr);
+    return DecimalFormat(totalBalanceStr) || lastKnownBalance;
   }
 
   getAlternativeBalance(wallet, currency) {
