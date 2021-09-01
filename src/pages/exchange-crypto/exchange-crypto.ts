@@ -182,12 +182,16 @@ export class ExchangeCryptoPage {
 
     this.getExchangesCurrencies();
     this.onPauseSubscription = this.platform.pause.subscribe(() => {
+      this.logger.debug('Swap - onPauseSubscription called');
       if (this.timeout) {
+        this.logger.debug('Swap - onPauseSubscription clearing timeout');
         clearTimeout(this.timeout);
       }
     });
     this.onResumeSubscription = this.platform.resume.subscribe(() => {
+      this.logger.debug('Swap - onResumeSubscription called');
       if (this.exchangeToUse == '1inch' && !this.fromWalletAllowanceOk) {
+        this.logger.debug('Swap - onResumeSubscription checking Confirmation');
         this.checkConfirmation(1000);
       }
     });
@@ -1245,24 +1249,8 @@ export class ExchangeCryptoPage {
   }
 
   private checkConfirmation(ms: number) {
-    const currentIndex = this.navCtrl.getActive().index;
-    const currentView = this.navCtrl.getViews();
-
-    if (
-      this.fromWalletSelected &&
-      [
-        'ExchangeCryptoPage',
-        'ExchangeCryptoSettingsPage',
-        'OneInchPage'
-      ].includes(currentView[currentIndex].name)
-    ) {
-      this.timeout = setTimeout(
-        () => {
-          this.verifyAllowances();
-        },
-        ms ? ms : 15000
-      );
-    }
+    this.logger.debug('Swap - checking confirmation');
+    this.timeout = setTimeout(() => this.verifyAllowances(), ms || 15000);
   }
 
   private verifyAllowances() {
