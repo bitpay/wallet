@@ -22,7 +22,6 @@ export class WalletItemContent {
       (lastKnownBalance == '0.00' || !lastKnownBalance)
     )
       return '0';
-    console.log(totalBalanceStr);
     return DecimalFormat(totalBalanceStr) || lastKnownBalance;
   }
 
