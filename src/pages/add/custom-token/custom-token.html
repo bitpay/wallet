@@ -37,11 +37,11 @@
   <ion-list class="settings-list bp-list">
     <div>
       <button *ngFor="let token of tokenSearchResults" class="list-button" (click)="openConfirmModal(token)" ion-item>
-        <ion-icon *ngIf="currencyProvider.COIN[token.symbol | uppercase]" item-start>
+        <ion-icon *ngIf="currencyProvider.COIN[token.symbol | uppercase]" class="item-icon" item-start>
           <img src="assets/img/currencies/{{token.symbol.toLowerCase()}}.svg" />
         </ion-icon>
-        <ion-icon *ngIf="!currencyProvider.COIN[token.symbol | uppercase]" item-start>
-          <img width="40" height="40" src="{{token.logoURI}}" onerror="this.onerror=null;this.src='assets/img/icon-swap.svg'"/>
+        <ion-icon *ngIf="!currencyProvider.COIN[token.symbol | uppercase]" class="item-icon" item-start>
+          <img src="{{token.logoURI}}" onerror="this.onerror=null;this.src='assets/img/icon-swap.svg'"/>
         </ion-icon>
         <div class="item-title">{{ token.name }} ({{ token.symbol }})</div>
       </button>

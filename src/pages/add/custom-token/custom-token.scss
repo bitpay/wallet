@@ -1,39 +1,18 @@
 page-custom-token {
-  .check {
-    font-size: 22px;
-    padding-top: 3px;
-    &.success {
-      color: color($colors, success);
+  .list-button {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    .item-title {
+      color: black;
+      font-size: 18px;
+      font-weight: 500;
     }
-    &.fail {
-      color: color($colors, danger);
-    }
-  }
-  .custom-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 18px;
-    .buttons-container {
-      .add-button {
-        height: 48px;
-        width: 48px;
-        font-size: 20px;
-        border-radius: 50%;
-        border: 1px solid color($colors, primary);
-        box-shadow: none;
-      }
-      .remove-button {
-        opacity: 50%;
-        height: 33px;
-        width: 33px;
-        border-radius: 50%;
-        font-size: 14px;
-        border: 1px solid color($colors, grey);
-        box-shadow: none;
-        ion-icon {
-          color: color($colors, grey);
-        }
+    ion-icon.item-icon {
+      margin-left: 3px;
+      img {
+        $icon-dimension: 40px;
+        height: $icon-dimension;
+        width: $icon-dimension;
       }
     }
   }
@@ -47,10 +26,6 @@ page-custom-token {
       border-bottom: 0px !important;
     }
   }
-  .last-item {
-    margin-left: auto !important;
-  }
-
   .send-header-wrapper {
     padding: 1rem;
     box-shadow: 1px 2px 8px rgba(0, 0, 0, 0.1);
