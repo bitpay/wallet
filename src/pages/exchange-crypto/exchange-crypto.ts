@@ -1245,24 +1245,7 @@ export class ExchangeCryptoPage {
   }
 
   private checkConfirmation(ms: number) {
-    const currentIndex = this.navCtrl.getActive().index;
-    const currentView = this.navCtrl.getViews();
-
-    if (
-      this.fromWalletSelected &&
-      [
-        'ExchangeCryptoPage',
-        'ExchangeCryptoSettingsPage',
-        'OneInchPage'
-      ].includes(currentView[currentIndex].name)
-    ) {
-      this.timeout = setTimeout(
-        () => {
-          this.verifyAllowances();
-        },
-        ms ? ms : 15000
-      );
-    }
+    this.timeout = setTimeout(() => this.verifyAllowances(), ms || 15000);
   }
 
   private verifyAllowances() {
