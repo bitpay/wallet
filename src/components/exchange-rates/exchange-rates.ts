@@ -4,7 +4,7 @@ import * as _ from 'lodash';
 import { PricePage } from '../../pages/home/price-page/price-page';
 import { ConfigProvider, CurrencyProvider, Logger } from '../../providers';
 import { Coin } from '../../providers/currency/currency';
-import { DecimalFormatBalance, DecimalFormatPrice } from '../../providers/decimal-format.ts/decimal-format';
+import { DecimalFormatBalance } from '../../providers/decimal-format.ts/decimal-format';
 import {
   DateRanges,
   ExchangeRate,
@@ -107,7 +107,18 @@ export class ExchangeRates {
     this.fiatIsoCode = this.isFiatIsoCodeSupported ? alternativeIsoCode : 'USD';
   }
 
-  public dynamicDecimalFormat(coin:string) {
-    return DecimalFormatPrice(coin);
+  public getDigitsInfo(coin: string) {
+    switch (coin) {
+      case 'xrp':
+        return '1.4-4';
+      case 'doge':
+        return '1.4-4';
+      case 'xpi':
+        return '1.6-6';
+      case 'xec':
+        return '1.6-6';
+      default:
+        return '1.2-2';
+    }
   }
 }
