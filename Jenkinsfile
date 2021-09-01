@@ -40,12 +40,6 @@ pipeline {
 
         stage('Android Build') {
             agent {
-                //   dockerfile true
-                //   docker {
-                //       image 'mib200/node-android-cordova-build-box:latest'
-                //      args '-v /home/jenkins/.ssh:/home/jenkins/.ssh:ro -u 0'
-                //      reuseNode true
-                //   }
                 dockerfile {
                     filename 'Dockerfile'
                     // dir 'abcpay'
