@@ -1,0 +1,34 @@
+page-txp {
+  .proposal-title {
+    margin-bottom: 0.3rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    line-clamp: 2;
+    -webkit-line-clamp: 2;
+    box-orient: vertical;
+    -webkit-box-orient: vertical;
+  }
+  .proposal-container {
+    .item-subtitle {
+      .icon-container {
+        vertical-align: middle;
+        width: 18px;
+        margin: 0 2px 0 0;
+      }
+    }
+    .proposal-subtitle {
+      display: flex;
+      align-items: center;
+    }
+  }
+  ion-note {
+    text-align: end;
+    .amount {
+      color: color($colors, dark);
+    }
+    .date {
+      font-size: 12.5px;
+    }
+  }
+}

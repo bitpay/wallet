@@ -21,7 +21,7 @@ import { AnalyticsProvider } from '../../providers/analytics/analytics';
 import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
 import { ConfigProvider } from '../../providers/config/config';
 import { CurrencyProvider } from '../../providers/currency/currency';
-import { DecimalFormat } from '../../providers/decimal-format.ts/decimal-format';
+import { DecimalFormatBalance } from '../../providers/decimal-format.ts/decimal-format';
 import { ErrorsProvider } from '../../providers/errors/errors';
 import { ExternalLinkProvider } from '../../providers/external-link/external-link';
 import { ActionSheetProvider, AppProvider } from '../../providers/index';
@@ -784,12 +784,12 @@ export class WalletDetailsPage {
       const availableAlternative =
         this.wallet.cachedStatus &&
         this.wallet.cachedStatus.availableBalanceAlternative;
-      return DecimalFormat(availableAlternative);
+      return DecimalFormatBalance(availableAlternative);
     } else {
       const totalBalanceAlternative =
         this.wallet.cachedStatus &&
         this.wallet.cachedStatus.totalBalanceAlternative;
-      return DecimalFormat(totalBalanceAlternative);
+      return DecimalFormatBalance(totalBalanceAlternative);
     }
   }
 
