@@ -33,6 +33,7 @@ import { CreateNewWalletPage } from '../pages/includes/create-new-wallet/create-
 import { GravatarPage } from '../pages/includes/gravatar/gravatar';
 import { LotusDonationCard } from '../pages/includes/lotus-donation-card/lotus-donation-card';
 import { MultipleOutputsPage } from '../pages/includes/multiple-outputs/multiple-outputs';
+import { TxpPage } from '../pages/includes/txp/txp';
 
 /* Tabs */
 import { HomePage } from '../pages/home/home';
@@ -160,6 +161,7 @@ export const PAGES = [
   TabsPage,
   TxpDetailsPage,
   TxDetailsModal,
+  TxpPage,
   WalletSettingsPage,
   WalletDeletePage,
   WalletNamePage,
