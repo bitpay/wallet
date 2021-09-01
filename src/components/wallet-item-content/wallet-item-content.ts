@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { decimalFormat } from '../../providers/decimal-format.ts/decimal-format';
+import { DecimalFormat } from '../../providers/decimal-format.ts/decimal-format';
 
 @Component({
   selector: 'wallet-item-content',
@@ -29,7 +29,7 @@ export class WalletItemContent {
         (lastKnownBalance == '0.00' || !lastKnownBalance)
       )
         return '0';
-      return totalBalanceStr || lastKnownBalance;
+      return DecimalFormat(totalBalanceStr) || DecimalFormat(lastKnownBalance);
     }
   }
 
@@ -37,12 +37,12 @@ export class WalletItemContent {
     if (currency === 'XRP') {
       const availableAlternative =
         wallet.cachedStatus && wallet.cachedStatus.availableBalanceAlternative;
-      return decimalFormat(availableAlternative);
+      return DecimalFormat(availableAlternative);
     } else {
       const totalBalanceAlternative =
         wallet.cachedStatus && wallet.cachedStatus.totalBalanceAlternative;
       if (totalBalanceAlternative == '0.00') return '0';
-      return decimalFormat(totalBalanceAlternative);
+      return DecimalFormat(totalBalanceAlternative);
     }
   }
 

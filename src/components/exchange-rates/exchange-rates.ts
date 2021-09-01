@@ -4,7 +4,7 @@ import * as _ from 'lodash';
 import { PricePage } from '../../pages/home/price-page/price-page';
 import { ConfigProvider, CurrencyProvider, Logger } from '../../providers';
 import { Coin } from '../../providers/currency/currency';
-import { decimalFormat } from '../../providers/decimal-format.ts/decimal-format';
+import { DecimalFormat } from '../../providers/decimal-format.ts/decimal-format';
 import {
   DateRanges,
   ExchangeRate,
@@ -95,7 +95,7 @@ export class ExchangeRates {
     this.coins[i].totalBalanceChangeAmount =
       this.coins[i].currentPrice - lastRate;
     this.coins[i].totalBalanceChange =
-      decimalFormat((this.coins[i].totalBalanceChangeAmount * 100) / lastRate);
+      DecimalFormat((this.coins[i].totalBalanceChangeAmount * 100) / lastRate);
   }
 
   private setIsoCode() {
@@ -108,6 +108,6 @@ export class ExchangeRates {
   }
 
   public dynamicDecimalFormat(coin:string) {
-    return decimalFormat(coin);
+    return DecimalFormat(coin);
   }
 }

@@ -23,7 +23,7 @@ import {
 import { ActionSheetProvider } from '../../providers/action-sheet/action-sheet';
 import { AnalyticsProvider } from '../../providers/analytics/analytics';
 import { ConfigProvider } from '../../providers/config/config';
-import { decimalFormat } from '../../providers/decimal-format.ts/decimal-format';
+import { DecimalFormat } from '../../providers/decimal-format.ts/decimal-format';
 
 // Pages
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -217,7 +217,7 @@ export class HomePage {
   private updateTotalBalance(data) {
     if (!data) return;
     this.zone.run(() => {
-      this.totalBalanceAlternative = decimalFormat(data.totalBalanceAlternative);
+      this.totalBalanceAlternative = DecimalFormat(data.totalBalanceAlternative);
       this.totalBalanceChange = data.totalBalanceChange;
       this.totalBalanceAlternativeIsoCode = data.totalBalanceAlternativeIsoCode;
     });
@@ -233,7 +233,7 @@ export class HomePage {
     this.events.subscribe('Local/HomeBalance', data => {
       if (data && this.showTotalBalance) this.setTotalBalance(data);
       else {
-        decimalFormat(this.totalBalanceAlternative);
+        this.totalBalanceAlternative = '0';
       }
       this.fetchingStatus = false;
     });

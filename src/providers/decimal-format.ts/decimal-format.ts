@@ -1,3 +1,4 @@
-export function decimalFormat(coin:string|number) {
-    return Number(coin).toFixed(Math.round(1/Number(coin)).toString().length+1);
+export function DecimalFormat(coin:string|number) {
+    var decimal = Math.round(1/Number(coin)).toString().length+1;
+    return Number(coin).toFixed(decimal);
 }
