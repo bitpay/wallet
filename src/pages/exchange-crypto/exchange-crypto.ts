@@ -1245,6 +1245,7 @@ export class ExchangeCryptoPage {
   }
 
   private checkConfirmation(ms: number) {
+    this.logger.debug('Swap - checking confirmation');
     this.timeout = setTimeout(() => this.verifyAllowances(), ms || 15000);
   }
 
