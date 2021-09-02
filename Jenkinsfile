@@ -10,6 +10,17 @@ pipeline {
     environment {
         DISABLE_AUTH = 'true'
         DB_ENGINE = 'sqlite'
+
+        // Assuming a file credential has been added to Jenkins, with the ID 'my-app-signing-keystore',
+        // this will export an environment variable during the build, pointing to the absolute path of
+        // the stored Android keystore file.  When the build ends, the temporarily file will be removed.
+        FIREBASE_SERVICES = credentials('abcpay_android_firebase_services')
+        SIGNING_KEYSTORE = credentials('abcpay_keystore_staging')
+
+        // Similarly, the value of this variable will be a password stored by the Credentials Plugin
+        SIGNING_KEY_ALIAS = credentials('abcpay_android_keystore_alias')
+        KEY_PASSWORD = credentials('abcpay_android_keystore_password')
+        FIREBASE_CI_TOKEN = credentials('abcpay_android_firebase_token')
     }
     stages {
         stage('Check-Branch') {
@@ -67,19 +78,6 @@ pipeline {
                 ])
             }
         }
-        environment {
-            // Assuming a file credential has been added to Jenkins, with the ID 'my-app-signing-keystore',
-            // this will export an environment variable during the build, pointing to the absolute path of
-            // the stored Android keystore file.  When the build ends, the temporarily file will be removed.
-            FIREBASE_SERVICES = credentials('abcpay_android_firebase_services')
-            SIGNING_KEYSTORE = credentials('abcpay_keystore_staging')
-
-            // Similarly, the value of this variable will be a password stored by the Credentials Plugin
-            SIGNING_KEY_ALIAS = credentials('abcpay_android_keystore_alias')
-            KEY_PASSWORD = credentials('abcpay_android_keystore_password')
-            FIREBASE_CI_TOKEN = credentials('abcpay_android_firebase_token')
-        }
-
         stage('Android Build') {
             agent {
                 dockerfile {
@@ -98,8 +96,6 @@ pipeline {
 //                    return GIT_BRANCH == 'origin/master' || params.FORCE_FULL_BUILD
 //                }
 //            }
-
-
 
             steps {
                 // dir('abcpay') {
@@ -129,7 +125,6 @@ pipeline {
                 // }
             }
         }
-
         stage('Publish') {
             parallel {
                 stage('deploying dev') {
@@ -169,11 +164,6 @@ pipeline {
                         }
                     }
                 }
-            }
-
-
-            steps {
-                sh 'npm run clean-all'
             }
         }
 
