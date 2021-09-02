@@ -4,34 +4,34 @@ pipeline {
         label 'Cloud-Agent' // Please run this job on master agent
     }
     stages {
-        stage('Clone repos'){
-            steps {
-                // script {
-                //     if (fileExists('./abcpay'))
-                //     {
-                //         sh 'rm -r abcpay'
-                //         //
-                //     }
-                // }
-                // sh 'git clone https://gitlab.com/abcpros/abcpay.git'
-                // dir('abcpay'){
-                //     sh 'git checkout vant/deploy'
-                // }
-                // sh 'echo $(pwd)'
-                // sh 'echo $(ls)'
-                // sh 'echo $(ls abcpay/)'
-
-
-                checkout([
-                        $class : 'GitSCM',
-                        branches : [[name: 'vant/deploy']],
-                        doGenerateSubmoduleConfigurations: false,
-                        //extensions : [[$class: 'CleanBeforeCheckout']],
-                        submoduleCfg : [],
-                        userRemoteConfigs: [[credentialsId: 'GitLab_Abc', url: 'https://gitlab.com/abcpros/abcpay.git']]
-                ])
-            }
-        }
+//        stage('Clone repos'){
+//            steps {
+//                // script {
+//                //     if (fileExists('./abcpay'))
+//                //     {
+//                //         sh 'rm -r abcpay'
+//                //         //
+//                //     }
+//                // }
+//                // sh 'git clone https://gitlab.com/abcpros/abcpay.git'
+//                // dir('abcpay'){
+//                //     sh 'git checkout vant/deploy'
+//                // }
+//                // sh 'echo $(pwd)'
+//                // sh 'echo $(ls)'
+//                // sh 'echo $(ls abcpay/)'
+//
+//
+//                checkout([
+//                        $class : 'GitSCM',
+//                        branches : [[name: 'vant/deploy']],
+//                        doGenerateSubmoduleConfigurations: false,
+//                        //extensions : [[$class: 'CleanBeforeCheckout']],
+//                        submoduleCfg : [],
+//                        userRemoteConfigs: [[credentialsId: 'GitLab_Abc', url: 'https://gitlab.com/abcpros/abcpay.git']]
+//                ])
+//            }
+//        }
         stage('Check-Branch') {
             steps {
                 sh 'printenv'
@@ -50,7 +50,7 @@ pipeline {
                 }
             }
             when {
-                branch 'vant/deploy'
+                branch 'origin/vant/deploy'
                 beforeAgent true
             }
 
