@@ -74,8 +74,13 @@ export class CustomTokenPage {
     this.tokenSearchResults = this.filteredTokens;
     this.TOKEN_SHOW_LIMIT = 10;
     this.currentTokenListPage = 0;
-    this.availableCustomTokens = this.currencyProvider.getAvailableCustomTokens();
-    this.throttleSearch(' ');
+    this.availableCustomTokens = _.orderBy(
+      this.currencyProvider.getAvailableCustomTokens(),
+      'name'
+    ).filter(token => {
+      return token.symbol.toLowerCase() != 'eth';
+    });
+    this.updateSearchInput('');
     this.showInvoiceWarning();
     this.showPairedWalletSelector();
   }
@@ -235,8 +240,6 @@ export class CustomTokenPage {
   }
 
   private throttleSearch = _.throttle((search: string) => {
-    search = search === '' ? ' ' : search;
-
     this.tokenSearchResults = this.filter(search).slice(
       0,
       this.TOKEN_SHOW_LIMIT
@@ -244,26 +247,32 @@ export class CustomTokenPage {
   }, 1000);
 
   private filter(search: string) {
-    this.filteredTokens = [];
+    if (!search || search == '') {
+      this.filteredTokens = _.clone(this.availableCustomTokens);
+    } else {
+      this.filteredTokens = [];
 
-    if (_.isEmpty(search)) {
-      this.tokenListShowMore = false;
-      return [];
+      const exactResult: any[] = this.availableCustomTokens.filter(token => {
+        return (
+          token.symbol.toLowerCase() == search.toLowerCase() ||
+          token.name.toLowerCase() == search.toLowerCase() ||
+          token.address.toLowerCase() == search.toLowerCase()
+        );
+      });
+      const filteredTokens = this.availableCustomTokens.filter(token => {
+        return (
+          token.name.toLowerCase().includes(search.toLowerCase()) ||
+          token.symbol.toLowerCase().includes(search.toLowerCase())
+        );
+      });
+
+      this.filteredTokens = [...new Set([...exactResult, ...filteredTokens])];
     }
 
-    this.filteredTokens = this.availableCustomTokens.filter(token => {
-      return (
-        token.name.toLowerCase().includes(search.toLowerCase()) ||
-        token.symbol.toLowerCase().includes(search.toLowerCase()) ||
-        token.address.toLowerCase().includes(search.toLowerCase())
-      );
-    });
+    this.tokenListShowMore =
+      this.filteredTokens.length > this.TOKEN_SHOW_LIMIT ? true : false;
 
-    this.tokenListShowMore = this.filteredTokens.length > this.TOKEN_SHOW_LIMIT;
-
-    return this.filteredTokens.sort((a, b) => {
-      return a.name.toLowerCase().localeCompare(b.name.toLowerCase());
-    });
+    return this.filteredTokens;
   }
 
   public close(): void {
