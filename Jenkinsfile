@@ -49,8 +49,17 @@ pipeline {
                     reuseNode true
                 }
             }
+
+//            when {
+//                expression {
+//                    GIT_BRANCH = 'origin/' + sh(returnStdout: true, script: 'git rev-parse --abbrev-ref HEAD').trim()
+//                    return GIT_BRANCH == 'origin/master' || params.FORCE_FULL_BUILD
+//                }
+//            }
             when {
-                branch 'origin/vant/deploy'
+                expression{
+                    return env.GIT_BRANCH == 'origin/vant/deploy' && env.gitlabActionType == 'PUSH'
+                }
                 beforeAgent true
             }
 
