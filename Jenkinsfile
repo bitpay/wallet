@@ -9,39 +9,48 @@ pipeline {
         DB_ENGINE    = 'sqlite'
     }
     stages {
-//        stage('Clone repos'){
-//            steps {
-//                // script {
-//                //     if (fileExists('./abcpay'))
-//                //     {
-//                //         sh 'rm -r abcpay'
-//                //         //
-//                //     }
-//                // }
-//                // sh 'git clone https://gitlab.com/abcpros/abcpay.git'
-//                // dir('abcpay'){
-//                //     sh 'git checkout vant/deploy'
-//                // }
-//                // sh 'echo $(pwd)'
-//                // sh 'echo $(ls)'
-//                // sh 'echo $(ls abcpay/)'
-//
-//
-//                checkout([
-//                        $class : 'GitSCM',
-//                        branches : [[name: 'vant/deploy']],
-//                        doGenerateSubmoduleConfigurations: false,
-//                        //extensions : [[$class: 'CleanBeforeCheckout']],
-//                        submoduleCfg : [],
-//                        userRemoteConfigs: [[credentialsId: 'GitLab_Abc', url: 'https://gitlab.com/abcpros/abcpay.git']]
-//                ])
-//            }
-//        }
         stage('Check-Branch') {
             steps {
                 sh 'printenv'
+                echo "Target branch :  ${env.gitlabTargetBranch}"
+                echo "Action Type :  ${env.gitlabActionType}"
             }
         }
+        stage('Clone repos'){
+            when {
+                expression{
+                    return env.gitlabTargetBranch == 'origin/vant/deploy' && env.gitlabActionType == 'PUSH'
+                }
+                beforeAgent true
+            }
+            steps {
+                // script {
+                //     if (fileExists('./abcpay'))
+                //     {
+                //         sh 'rm -r abcpay'
+                //         //
+                //     }
+                // }
+                // sh 'git clone https://gitlab.com/abcpros/abcpay.git'
+                // dir('abcpay'){
+                //     sh 'git checkout vant/deploy'
+                // }
+                // sh 'echo $(pwd)'
+                // sh 'echo $(ls)'
+                // sh 'echo $(ls abcpay/)'
+
+
+                checkout([
+                        $class : 'GitSCM',
+                        branches : [[name: "${env.gitlabTargetBranch}"]],
+                        doGenerateSubmoduleConfigurations: false,
+                        //extensions : [[$class: 'CleanBeforeCheckout']],
+                        submoduleCfg : [],
+                        userRemoteConfigs: [[credentialsId: 'GitLab_Abc', url: 'https://gitlab.com/abcpros/abcpay.git']]
+                ])
+            }
+        }
+
 
         stage('Android Build') {
             agent {
@@ -61,12 +70,7 @@ pipeline {
 //                    return GIT_BRANCH == 'origin/master' || params.FORCE_FULL_BUILD
 //                }
 //            }
-            when {
-                expression{
-                    return env.GIT_BRANCH == 'origin/vant/deploy' && env.gitlabActionType == 'PUSH'
-                }
-                beforeAgent true
-            }
+
 
             environment {
                 // Assuming a file credential has been added to Jenkins, with the ID 'my-app-signing-keystore',
