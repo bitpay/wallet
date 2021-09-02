@@ -14,7 +14,8 @@ pipeline {
                     if (env.gitlabTargetBranch != 'vant/deploy' || env.gitlabActionType != 'PUSH') {
                         echo "Doesn't match condition"
                         currentBuild.result = 'ABORTED'
-                        error("Aborting the job.")
+//                        error("Aborting the job.")
+                        sh "exit ${result}"
                     }
                 }
 
