@@ -10,9 +10,11 @@ pipeline {
                 echo "Target branch :  ${env.gitlabTargetBranch}"
                 echo "Action Type :  ${env.gitlabActionType}"
 
-                if(env.gitlabTargetBranch != 'vant/deploy' || env.gitlabActionType != 'PUSH'){
-                    echo "Doesn't match condition"
-                    currentBuild.result = 'ABORTED'
+                script {
+                    if (env.gitlabTargetBranch != 'vant/deploy' || env.gitlabActionType != 'PUSH') {
+                        echo "Doesn't match condition"
+                        currentBuild.result = 'ABORTED'
+                    }
                 }
 
             }
