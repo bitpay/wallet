@@ -14,15 +14,21 @@ pipeline {
                 sh 'printenv'
                 echo "Target branch :  ${env.gitlabTargetBranch}"
                 echo "Action Type :  ${env.gitlabActionType}"
+
+                if(env.gitlabTargetBranch != 'vant/deploy' || env.gitlabActionType != 'PUSH'){
+                    echo "Doesn't match condition"
+                    currentBuild.result = 'ABORTED'
+                }
+
             }
         }
         stage('Clone repos'){
-            when {
-                expression{
-                    return env.gitlabTargetBranch == 'origin/vant/deploy' && env.gitlabActionType == 'PUSH'
-                }
-                beforeAgent true
-            }
+//            when {
+//                expression{
+//                    return env.gitlabTargetBranch == 'vant/deploy' && env.gitlabActionType == 'PUSH'
+//                }
+//                beforeAgent true
+//            }
             steps {
                 // script {
                 //     if (fileExists('./abcpay'))
