@@ -3,7 +3,6 @@ pipeline {
     agent {
         label 'Cloud-Agent' // Please run this job on master agent
     }
-
     stages {
         stage('Clone repos'){
             steps {
