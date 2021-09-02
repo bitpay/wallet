@@ -33,16 +33,16 @@ describe('TxFormatProvider', () => {
 
   describe('toCashAddress', () => {
     it('should get the address in Cash Address format', () => {
-      let address = 'CcyUyVPZtNRQ5JxhjXLKQwWt1xKr8igncP'; // BCH livenet address
+      let address = 'qz49wrnh7d9p7ejrg55lqr6zdpu4x2kh7uckpdhth3'; // BCH livenet address
       let cashAddr: string = txFormatProvider.toCashAddress(address);
-      expect(cashAddr).toEqual('qrs0knp7gal4d8xyxy2w3cq5tpzfa5ywgcuqqlwykf');
+      expect(cashAddr).toEqual('qz49wrnh7d9p7ejrg55lqr6zdpu4x2kh7uckpdhth3');
     });
 
     it('should get the address in Cash Address format, with prefix', () => {
-      let address = 'CcyUyVPZtNRQ5JxhjXLKQwWt1xKr8igncP'; // BCH livenet address
+      let address = 'qz49wrnh7d9p7ejrg55lqr6zdpu4x2kh7uckpdhth3'; // BCH livenet address
       let cashAddr: string = txFormatProvider.toCashAddress(address, true);
       expect(cashAddr).toEqual(
-        'bitcoincash:qrs0knp7gal4d8xyxy2w3cq5tpzfa5ywgcuqqlwykf'
+        'bitcoincash:qz49wrnh7d9p7ejrg55lqr6zdpu4x2kh7uckpdhth3'
       );
     });
   });
@@ -52,14 +52,17 @@ describe('TxFormatProvider', () => {
       // [coin, amount, fullPrecision, expectedResult]
       ['bit', 12312312, true, '123,123.12'],
       ['sat', 12312312, true, '12312312'],
-      ['btc', 0, true, '0.00000000'],
-      ['btc', 0, false, '0.00'],
-      ['btc', 12312312, true, '0.12312312'],
-      ['btc', 1231231223423, true, '12,312.31223423'],
-      ['btc', 1231231223423, false, '12,312.312234'],
-      ['eth', 345345345345345345, true, '0.34534534'],
-      ['eth', 345345345345345345, false, '0.345345'],
-      ['eth', 345345345345345345123123, true, '345,345.34534534']
+      ['bch', 0, true, '0.00000000'],
+      ['bch', 0, false, '0.00'],
+      ['bch', 12312312, true, '0.12312312'],
+      ['bch', 1231231223423, true, '12,312.31223423'],
+      ['bch', 1231231223423, false, '12,312.312234'],
+      ['xec', 12312312, true, '123,123.12'],
+      ['xec', 1231231223, true, '12,312,312.23'],
+      ['xec', 12312312, false, '123,123.12'],
+      ['xpi', 6789987768, true, '6,789.987768'],
+      ['xpi', 1231231223423, true, '1,231,231.223423'],
+      ['xpi', 678998776, false, '678.998776'],
     ];
 
     testVectors.forEach(v => {
@@ -81,40 +84,40 @@ describe('TxFormatProvider', () => {
   describe('formatAmountStr', () => {
     it('should return undefined if satoshis amount are not type of number', () => {
       expect(
-        txFormatProvider.formatAmountStr('btc', undefined)
+        txFormatProvider.formatAmountStr('xpi', undefined)
       ).toBeUndefined();
     });
 
     it('should return a string with formatted amount', () => {
       let newOpts = {
         wallet: {
-          settings: { unitCode: 'btc' }
+          settings: { unitCode: 'xpi' }
         }
       };
       configProvider.set(newOpts);
 
-      expect(txFormatProvider.formatAmountStr('btc', 12312312)).toEqual(
-        '0.123123 BTC'
+      expect(txFormatProvider.formatAmountStr('xpi', 12312312)).toEqual(
+        '12.312312 XPI'
       );
     });
   });
 
   describe('toFiat', () => {
     it('should return undefined if satoshis amount are undefined', () => {
-      txFormatProvider.toFiat('btc', undefined, 'USD').then(result => {
+      txFormatProvider.toFiat('xpi', undefined, 'USD').then(result => {
         expect(result).toBeUndefined();
       });
     });
 
     it('should return null', () => {
-      txFormatProvider.toFiat('btc', 12312312, 'USD').then(result => {
+      txFormatProvider.toFiat('xpi', 12312312, 'USD').then(result => {
         expect(result).toBeNull();
       });
     });
 
     it('should return a string with formatted amount', () => {
       spyOn(rateProvider, 'toFiat').and.returnValue(1000000);
-      txFormatProvider.toFiat('btc', 12312312, 'USD').then(result => {
+      txFormatProvider.toFiat('xpi', 12312312, 'USD').then(result => {
         expect(result).toEqual('1000000.00');
       });
     });
@@ -122,61 +125,22 @@ describe('TxFormatProvider', () => {
 
   describe('formatToUSD', () => {
     it('should return undefined if satoshis amount are undefined', () => {
-      txFormatProvider.formatToUSD('btc', undefined).then(result => {
+      txFormatProvider.formatToUSD('xpi', undefined).then(result => {
         expect(result).toBeUndefined();
       });
     });
 
     it('should return null', () => {
-      txFormatProvider.formatToUSD('btc', 12312312).then(result => {
+      txFormatProvider.formatToUSD('xpi', 12312312).then(result => {
         expect(result).toBeNull();
       });
     });
 
     it('should return a string with formatted amount in USD', () => {
       spyOn(rateProvider, 'toFiat').and.returnValue(1000000);
-      txFormatProvider.formatToUSD('btc', 12312312).then(result => {
+      txFormatProvider.formatToUSD('bch', 12312312).then(result => {
         expect(result).toEqual('1000000.00');
       });
-    });
-  });
-
-  describe('formatAlternativeStr', () => {
-    beforeEach(() => {
-      let newOpts = {
-        wallet: {
-          settings: {
-            unitCode: 'btc',
-            alternativeIsoCode: 'ARS'
-          }
-        }
-      };
-      configProvider.set(newOpts);
-    });
-
-    it('should return undefined if satoshis amount are undefined', () => {
-      expect(
-        txFormatProvider.formatAlternativeStr('btc', undefined)
-      ).toBeUndefined();
-    });
-
-    it('should return null', () => {
-      let result = txFormatProvider.formatAlternativeStr('btc', 12312312);
-      expect(result).toBeNull();
-    });
-
-    it('should return null', () => {
-      spyOn(filterProvider, 'formatFiatAmount').and.returnValue(undefined);
-      spyOn(rateProvider, 'isCoinAvailable').and.returnValue(true);
-      let result = txFormatProvider.formatAlternativeStr('btc', 12312312);
-      expect(result).toBeNull();
-    });
-
-    it('should return a string with formatted amount in alternative Iso Code setted in wallet', () => {
-      spyOn(rateProvider, 'toFiat').and.returnValue(1000000);
-      spyOn(rateProvider, 'isCoinAvailable').and.returnValue(true);
-      let result = txFormatProvider.formatAlternativeStr('btc', 12312312);
-      expect(result).toEqual('1,000,000 ARS');
     });
   });
 
@@ -189,7 +153,7 @@ describe('TxFormatProvider', () => {
         {
           alternativeAmountStr: '28.36 USD',
           amount: 447100,
-          toAddress: 'mxMUZvgFR8D3LRscz5GbXERPXNSp1ww8Bb'
+          toAddress: 'lotus_16PSJPYxmBxaJYAd1GGRcVn2nD1vooHJCozd5Dw91'
         }
       ]
     };
@@ -198,7 +162,7 @@ describe('TxFormatProvider', () => {
       let newOpts = {
         wallet: {
           settings: {
-            unitCode: 'btc',
+            unitCode: 'xpi',
             alternativeIsoCode: 'USD'
           }
         }
@@ -208,15 +172,15 @@ describe('TxFormatProvider', () => {
 
     it('should return same tx if tx.action is invalid', () => {
       tx.action = 'invalid';
-      expect(txFormatProvider.processTx(Coin.BTC, tx)).toEqual(tx);
+      expect(txFormatProvider.processTx(Coin.XPI, tx)).toEqual(tx);
     });
 
     it('should return tx with defined values if tx.action is received', () => {
       tx.action = 'received';
-      let result = txFormatProvider.processTx(Coin.BTC, tx);
+      let result = txFormatProvider.processTx(Coin.XPI, tx);
 
       expect(tx.toAddress).toBeDefined();
-      expect(tx.toAddress).toEqual('mxMUZvgFR8D3LRscz5GbXERPXNSp1ww8Bb');
+      expect(tx.toAddress).toEqual('lotus_16PSJPYxmBxaJYAd1GGRcVn2nD1vooHJCozd5Dw91');
       expect(tx.amountStr).toBeDefined();
       expect(tx.alternativeAmountStr).toBeDefined();
       expect(tx.feeStr).toBeDefined();
@@ -243,7 +207,7 @@ describe('TxFormatProvider', () => {
 
     it('should return same tx.amount if only has one output', () => {
       tx.action = 'sent';
-      txFormatProvider.processTx(Coin.BTC, tx);
+      txFormatProvider.processTx(Coin.XPI, tx);
       expect(tx.hasMultiplesOutputs).toBeFalsy();
       expect(tx.amount).toEqual(447100);
     });
@@ -262,7 +226,7 @@ describe('TxFormatProvider', () => {
           toAddress: 'mxMUZvgFR8D3LRscz5GbXERPXNSp1ww8Bb'
         }
       ];
-      txFormatProvider.processTx(Coin.BTC, tx);
+      txFormatProvider.processTx(Coin.BCH, tx);
       expect(tx.hasMultiplesOutputs).toBeTruthy();
       expect(tx.amount).toEqual(1094200);
     });
@@ -273,25 +237,25 @@ describe('TxFormatProvider', () => {
       let newOpts = {
         wallet: {
           settings: {
-            unitCode: 'btc',
+            unitCode: 'xpi',
             alternativeIsoCode: 'USD',
-            unitToSatoshi: 100000000
+            unitToSatoshi: 1000000
           }
         }
       };
       configProvider.set(newOpts);
     });
 
-    it('should return amount parsed correctly if the currency is BTC', () => {
-      let result = txFormatProvider.parseAmount(Coin.BTC, 0.012235, 'BTC', {
+    it('should return amount parsed correctly if the currency is XPI', () => {
+      let result = txFormatProvider.parseAmount(Coin.XPI, 0.012235, 'XPI', {
         onlyIntegers: false
       });
       expect(result).toEqual({
-        amount: '0.01223500',
-        currency: 'BTC',
+        amount: '0.012235',
+        currency: 'XPI',
         alternativeIsoCode: 'USD',
-        amountSat: 1223500,
-        amountUnitStr: '0.012235 BTC'
+        amountSat: 12235,
+        amountUnitStr: '0.012235 XPI'
       });
     });
 
@@ -299,7 +263,7 @@ describe('TxFormatProvider', () => {
       spyOn(filterProvider, 'formatFiatAmount').and.returnValue('1,505');
       spyOn(rateProvider, 'fromFiat').and.returnValue(24117237);
 
-      let result = txFormatProvider.parseAmount(Coin.BTC, 1505, 'USD', {
+      let result = txFormatProvider.parseAmount(Coin.XPI, 1505, 'USD', {
         onlyIntegers: false
       });
       expect(result).toEqual({
@@ -311,46 +275,18 @@ describe('TxFormatProvider', () => {
       });
     });
 
-    it('should return amount parsed correctly if the currency is JPY and onlyIntegers is true', () => {
-      let newOpts = {
-        wallet: {
-          settings: {
-            unitCode: 'btc',
-            alternativeIsoCode: 'JPY',
-            unitToSatoshi: 100000000
-          }
-        }
-      };
-      configProvider.set(newOpts);
-
-      spyOn(filterProvider, 'formatFiatAmount').and.returnValue('1,505');
-      spyOn(rateProvider, 'fromFiat').and.returnValue(24117237);
-
-      let onlyIntegers = true;
-      let result = txFormatProvider.parseAmount(Coin.BTC, 1505, 'JPY', {
-        onlyIntegers
-      });
-      expect(result).toEqual({
-        amount: 1505,
-        currency: 'JPY',
-        alternativeIsoCode: 'JPY',
-        amountSat: 24117237,
-        amountUnitStr: '1,505 JPY'
-      });
-    });
-
     it('should return amount parsed correctly if the currency is sat', () => {
       spyOn(filterProvider, 'formatFiatAmount').and.returnValue('1,505');
 
-      let result = txFormatProvider.parseAmount(Coin.BTC, 1505, 'sat', {
+      let result = txFormatProvider.parseAmount(Coin.XPI, 1505, 'sat', {
         onlyIntegers: false
       });
       expect(result).toEqual({
-        amount: '0.00001505',
-        currency: 'BTC',
+        amount: '0.001505',
+        currency: 'XPI',
         alternativeIsoCode: 'USD',
         amountSat: 1505,
-        amountUnitStr: '0.000015 BTC'
+        amountUnitStr: '0.001505 XPI'
       });
     });
   });
@@ -361,9 +297,9 @@ describe('TxFormatProvider', () => {
         wallet: {
           settings: {
             alternativeIsoCode: 'USD',
-            unitCode: 'btc',
-            unitDecimals: 8,
-            unitToSatoshi: 100000000
+            unitCode: 'xpi',
+            unitDecimals: 6,
+            unitToSatoshi: 1000000
           }
         }
       };
@@ -371,8 +307,8 @@ describe('TxFormatProvider', () => {
     });
 
     it('should return amount in unit format', () => {
-      let result = txFormatProvider.satToUnit(12312312, Coin.BTC);
-      expect(result).toEqual(0.12312312);
+      let result = txFormatProvider.satToUnit(12312312, Coin.XPI);
+      expect(result).toEqual(12.312312);
     });
   });
 });
