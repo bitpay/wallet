@@ -48,6 +48,7 @@ export class WalletConnectProvider {
     'eth_sign',
     'eth_signTransaction',
     'eth_signTypedData',
+    'eth_signTypedData_v4',
     'personal_sign'
   ];
 
@@ -397,6 +398,7 @@ export class WalletConnectProvider {
           : 0;
         break;
       case 'eth_signTypedData':
+      case 'eth_signTypedData_v4':
       case 'personal_sign':
       case 'eth_sign':
         // nothing

@@ -58,6 +58,8 @@ page-wallet-connect-request-details {
           height: 18px;
           margin-right: 10px;
         }
+        display: flex;
+        align-items: center;
       }
       ion-icon.item-img.icon {
         &.icon-md.item-icon,
@@ -73,6 +75,17 @@ page-wallet-connect-request-details {
       }
       .line-divider {
         margin: 0px;
+      }
+      .dapp-img {
+        width: 50px;
+        height: 50px;
+        border-radius: 8px;
+        &-sm {
+          border-radius: 50%;
+          @media (max-width: 381px) {
+            display: none;
+          }
+        }
       }
     }
     .button-standard {
