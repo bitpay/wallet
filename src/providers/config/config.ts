@@ -274,7 +274,7 @@ export class ConfigProvider {
 
       theme: {
         enabled: true,
-        system: false,
+        system: true,
         name: 'dark'
       },
 

@@ -21,7 +21,7 @@ export class FingerprintModalPage {
     this.unregister = this.platform.registerBackButtonAction(() => {});
     this.checkFingerprint();
     // Get Theme
-    this.isDarkTheme = this.themeProvider.getCurrentAppTheme() === 'dark';
+    this.isDarkTheme = this.themeProvider.currentAppTheme === 'dark';
   }
 
   public checkFingerprint(): void {

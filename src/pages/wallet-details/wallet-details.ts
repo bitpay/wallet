@@ -116,7 +116,7 @@ export class WalletDetailsPage {
     private analyticsProvider: AnalyticsProvider,
     private appProvider: AppProvider
   ) {
-    this.selectedTheme = this.themeProvider.getSelectedTheme();
+    this.selectedTheme = this.themeProvider.currentAppTheme;
     this.zone = new NgZone({ enableLongStackTrace: false });
     this.isCordova = this.platformProvider.isCordova;
 
