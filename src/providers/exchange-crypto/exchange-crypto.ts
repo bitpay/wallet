@@ -1,3 +1,4 @@
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import * as _ from 'lodash';
@@ -16,7 +17,11 @@ export class ExchangeCryptoProvider {
   public paymentMethodsAvailable;
   public exchangeCoinsSupported: string[];
 
+  // private baseUrl: string = 'http://localhost:3232/bws/api'; // testing
+  private baseUrl: string = 'https://bws.bitpay.com/bws/api';
+
   constructor(
+    private http: HttpClient,
     private changellyProvider: ChangellyProvider,
     private configProvider: ConfigProvider,
     private currencyProvider: CurrencyProvider,
@@ -87,5 +92,30 @@ export class ExchangeCryptoProvider {
       warningMsg.push(message);
     }
     return warningMsg.join('\n');
+  }
+
+  public getSpenderApprovalWhitelist(): Promise<any> {
+    return new Promise((resolve, reject) => {
+      const headers = new HttpHeaders({
+        'Content-Type': 'application/json'
+      });
+
+      this.logger.debug('Asking BWS for contract approval whitelist');
+
+      this.http
+        .get(this.baseUrl + '/v1/services/dex/getSpenderApprovalWhitelist', {
+          headers
+        })
+        .subscribe(
+          (data: any) => {
+            this.logger.debug('Contract approval whitelist: ', data);
+            if (data) return resolve(data);
+            return reject('No contract approval whitelist');
+          },
+          err => {
+            return reject(err);
+          }
+        );
+    });
   }
 }

@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { NavController, NavParams, ViewController } from 'ionic-angular';
-
-// Pages
+import * as _ from 'lodash';
 
 // Providers
 import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
@@ -10,6 +9,7 @@ import { BwcErrorProvider } from '../../../providers/bwc-error/bwc-error';
 import { BwcProvider } from '../../../providers/bwc/bwc';
 import { ConfigProvider } from '../../../providers/config/config';
 import { CurrencyProvider } from '../../../providers/currency/currency';
+import { ExchangeCryptoProvider } from '../../../providers/exchange-crypto/exchange-crypto';
 import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
 import { Logger } from '../../../providers/logger/logger';
 import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
@@ -38,6 +38,8 @@ export class TokenSwapApprovePage {
   public ctxp;
   public fiatFee: number;
   public errors;
+  public siteUrl: string;
+  public spenderVerified: boolean;
 
   constructor(
     private actionSheetProvider: ActionSheetProvider,
@@ -48,6 +50,7 @@ export class TokenSwapApprovePage {
     private navCtrl: NavController,
     private platformProvider: PlatformProvider,
     private profileProvider: ProfileProvider,
+    private exchangeCryptoProvider: ExchangeCryptoProvider,
     private externalLinkProvider: ExternalLinkProvider,
     private txFormatProvider: TxFormatProvider,
     private translate: TranslateService,
@@ -87,12 +90,32 @@ export class TokenSwapApprovePage {
   public getApproveCalldata() {
     this.oneInchProvider
       .approveSpender1inch()
-      .then((approveSpenderData: any) => {
+      .then(async (approveSpenderData: any) => {
         this.approveSpenderAddress = approveSpenderData.address;
         const data = {
           tokenAddress: this.fromToken.address,
           infinity: true
         };
+
+        try {
+          const contractApprovalWhitelist: any[] = await this.exchangeCryptoProvider.getSpenderApprovalWhitelist();
+
+          const knownContract = contractApprovalWhitelist.find(contract => {
+            return (
+              contract.address.toLowerCase() ==
+              this.approveSpenderAddress.toLowerCase()
+            );
+          });
+
+          if (!_.isEmpty(knownContract)) {
+            this.logger.debug('Spender address verified: ', knownContract);
+            this.siteUrl = knownContract.url;
+            this.spenderVerified = true;
+          }
+        } catch (err) {
+          this.logger.debug('Spender address could not be verified: ', err);
+          this.spenderVerified = false;
+        }
 
         this.oneInchProvider
           .approveCalldata1inch(data)
