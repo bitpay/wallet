@@ -1,7 +1,7 @@
 export function DecimalFormatBalance(coin:string|number) {
     if (typeof coin === 'string') 
         coin = coin.replace(",","");
-    if (Number(coin) == 0) {
+        if (Number(coin) <= 0 || isNaN(Number(coin))) {
         return "0.00"
     } else {
         if (Number(coin) < 10) {
