@@ -27,7 +27,10 @@ export class WalletConnectRequestDetailsPage {
     eth_signTransaction: 'Approve',
     eth_sign: 'Approve',
     personal_sign: 'Approve',
-    eth_signTypedData: 'Approve'
+    eth_signTypedData: 'Approve',
+    eth_signTypedData_v1: 'Approve',
+    eth_signTypedData_v3: 'Approve',
+    eth_signTypedData_v4: 'Approve'
   };
   public request: any;
   public params: any;
@@ -123,6 +126,9 @@ export class WalletConnectRequestDetailsPage {
           }
           break;
         case 'eth_signTypedData':
+        case 'eth_signTypedData_v1':
+        case 'eth_signTypedData_v3':
+        case 'eth_signTypedData_v4':
           addressRequested = request.params[0];
           if (address.toLowerCase() === addressRequested.toLowerCase()) {
             const result = this.walletConnectProvider.signTypedData(

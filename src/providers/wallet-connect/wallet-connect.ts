@@ -48,6 +48,9 @@ export class WalletConnectProvider {
     'eth_sign',
     'eth_signTransaction',
     'eth_signTypedData',
+    'eth_signTypedData_v1',
+    'eth_signTypedData_v3',
+    'eth_signTypedData_v4',
     'personal_sign'
   ];
 
@@ -250,7 +253,7 @@ export class WalletConnectProvider {
       const _payload = this.refEthereumRequests(payload);
 
       const alreadyExist = _.some(this.requests, request => {
-        return request.id === _payload;
+        return request.id === _payload.id;
       });
 
       if (!alreadyExist) {
@@ -397,6 +400,9 @@ export class WalletConnectProvider {
           : 0;
         break;
       case 'eth_signTypedData':
+      case 'eth_signTypedData_v1':
+      case 'eth_signTypedData_v3':
+      case 'eth_signTypedData_v4':
       case 'personal_sign':
       case 'eth_sign':
         // nothing

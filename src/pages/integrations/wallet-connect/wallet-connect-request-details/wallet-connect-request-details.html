@@ -108,7 +108,7 @@
             </ion-item>
           </div>
 
-          <div *ngIf="request.method === 'eth_signTypedData' || request.method === 'eth_sign'">
+          <div *ngIf="request.method === 'eth_signTypedData' || request.method === 'eth_sign' || request.method === 'eth_signTypedData_v1' || request.method === 'eth_signTypedData_v3' || request.method === 'eth_signTypedData_v4'">
             <ion-item *ngIf="i === 0 && param" copy-to-clipboard="{{ param }}">
               <ion-label>
                 <div class="summary-item">
