@@ -26,6 +26,7 @@ import { ErrorsProvider } from '../../providers/errors/errors';
 import { ExternalLinkProvider } from '../../providers/external-link/external-link';
 import { ActionSheetProvider, AppProvider } from '../../providers/index';
 import { Logger } from '../../providers/logger/logger';
+import { PersistenceProvider } from '../../providers/persistence/persistence';
 import { PlatformProvider } from '../../providers/platform/platform';
 import { ProfileProvider } from '../../providers/profile/profile';
 import { ThemeProvider } from '../../providers/theme/theme';
@@ -46,11 +47,6 @@ const HISTORY_SHOW_LIMIT = 10;
 const MIN_UPDATE_TIME = 2000;
 const TIMEOUT_FOR_REFRESHER = 1000;
 
-interface UpdateWalletOptsI {
-  walletId: string;
-  force?: boolean;
-  alsoUpdateHistory?: boolean;
-}
 @Component({
   selector: 'page-wallet-details',
   templateUrl: 'wallet-details.html'
@@ -90,6 +86,8 @@ export class WalletDetailsPage {
   public showExchangeCrypto: boolean;
   public isShowDonationBtn: boolean;
   public selectedTheme;
+  public multisigPendingWallets: any[] = [];
+  public multisigContractInstantiationInfo: any[];
 
   constructor(
     public http: HttpClient,
@@ -115,7 +113,8 @@ export class WalletDetailsPage {
     private themeProvider: ThemeProvider,
     private configProvider: ConfigProvider,
     private analyticsProvider: AnalyticsProvider,
-    private appProvider: AppProvider
+    private appProvider: AppProvider,
+    private persistenceProvider: PersistenceProvider
   ) {
     this.selectedTheme = this.themeProvider.currentAppTheme;
     this.zone = new NgZone({ enableLongStackTrace: false });
@@ -139,11 +138,13 @@ export class WalletDetailsPage {
       this.clearHistoryCache();
     } else {
       if (this.wallet.completeHistory) this.showHistory();
-      else
-        this.fetchTxHistory({
+      else {
+        this.events.publish('Local/WalletFocus', {
           walletId: this.wallet.credentials.walletId,
-          force: true
+          force: true,
+          alsoUpdateHistory: true
         });
+      }
     }
 
     this.requiresMultipleSignatures = this.wallet.credentials.m > 1;
@@ -168,23 +169,29 @@ export class WalletDetailsPage {
     this.events.subscribe('Local/WalletHistoryUpdate', this.updateHistory);
   }
 
-  ionViewWillEnter() {
-    this.backgroundColor = this.themeProvider.getThemeInfo().walletDetailsBackgroundStart;
+  ionViewDidLoad() {
     this.onResumeSubscription = this.platform.resume.subscribe(() => {
       this.profileProvider.setFastRefresh(this.wallet);
       this.subscribeEvents();
     });
+    this.backgroundColor = this.themeProvider.getThemeInfo().walletDetailsBackgroundStart;
     this.profileProvider.setFastRefresh(this.wallet);
     this.events.publish('Local/WalletFocus', {
-      walletId: this.wallet.credentials.walletId
+      walletId: this.wallet.credentials.walletId,
+      force: true,
+      alsoUpdateHistory: true
     });
     this.subscribeEvents();
+    this.checkIfEthMultisigPendingInstantiation();
   }
 
   ionViewWillLeave() {
     this.profileProvider.setSlowRefresh(this.wallet);
-    this.events.unsubscribe('Local/WalletUpdate', this.updateStatus);
-    this.events.unsubscribe('Local/WalletHistoryUpdate', this.updateHistory);
+  }
+
+  ngOnDestroy() {
+    this.events.unsubscribe('Local/WalletUpdate');
+    this.events.unsubscribe('Local/WalletHistoryUpdate');
     this.onResumeSubscription.unsubscribe();
   }
 
@@ -199,47 +206,6 @@ export class WalletDetailsPage {
       !this.updateStatusError &&
       !this.updateTxHistoryError
     );
-  }
-
-  private fetchTxHistory(opts: UpdateWalletOptsI) {
-    if (!opts.walletId) {
-      this.logger.error('Error no walletId in update History');
-      return;
-    }
-
-    const progressFn = ((_, newTxs) => {
-      let args = {
-        walletId: opts.walletId,
-        finished: false,
-        progress: newTxs
-      };
-      this.events.publish('Local/WalletHistoryUpdate', args);
-    }).bind(this);
-
-    // Fire a startup event, to allow UI to show the spinner
-    this.events.publish('Local/WalletHistoryUpdate', {
-      walletId: opts.walletId,
-      finished: false
-    });
-    this.walletProvider
-      .fetchTxHistory(this.wallet, progressFn, opts)
-      .then(txHistory => {
-        this.wallet.completeHistory = txHistory;
-        this.events.publish('Local/WalletHistoryUpdate', {
-          walletId: opts.walletId,
-          finished: true
-        });
-      })
-      .catch(err => {
-        if (err != 'HISTORY_IN_PROGRESS') {
-          this.logger.warn('WalletHistoryUpdate ERROR', err);
-          this.events.publish('Local/WalletHistoryUpdate', {
-            walletId: opts.walletId,
-            finished: false,
-            error: err
-          });
-        }
-      });
   }
 
   public isUtxoCoin(): boolean {
@@ -306,11 +272,11 @@ export class WalletDetailsPage {
   }
 
   private updateAll = _.debounce(
-    (opts?) => {
-      opts = opts || {};
+    () => {
       this.events.publish('Local/WalletFocus', {
         walletId: this.wallet.credentials.walletId,
-        force: true
+        force: true,
+        alsoUpdateHistory: true
       });
     },
     MIN_UPDATE_TIME,
@@ -372,6 +338,11 @@ export class WalletDetailsPage {
 
       if (this.wallet.needsBackup && hasTx && this.showBackupNeededMsg)
         this.openBackupModal();
+
+      this.events.publish('Local/WalletFocus', {
+        walletId: this.wallet.credentials.walletId,
+        force: true
+      });
 
       this.showHistory();
     } else {
@@ -629,7 +600,7 @@ export class WalletDetailsPage {
   }
 
   public doRefresh(refresher) {
-    this.updateAll({ force: true });
+    this.updateAll();
 
     setTimeout(() => {
       refresher.complete();
@@ -839,5 +810,146 @@ export class WalletDetailsPage {
     const existsContact = _.find(this.addressbook, c => c.address === address);
     if (existsContact) return existsContact.name;
     return null;
+  }
+
+  private async checkIfEthMultisigPendingInstantiation() {
+    this.logger.debug('Checking for eth multisig pending wallets');
+    const pendingInstantiations = await this.persistenceProvider.getEthMultisigPendingInstantiation(
+      this.wallet.id
+    );
+    if (!pendingInstantiations || !pendingInstantiations[0]) return;
+
+    this.logger.debug(
+      'Pending eth wallets found: ',
+      pendingInstantiations.length
+    );
+    const promises = [];
+    pendingInstantiations.forEach(async info => {
+      promises.push(
+        this.walletProvider.getMultisigContractInstantiationInfo(this.wallet, {
+          sender: info.sender,
+          txId: info.txId
+        })
+      );
+    });
+
+    Promise.all(promises).then(multisigContractInstantiationInfo => {
+      if (multisigContractInstantiationInfo.length > 0) {
+        this.logger.debug(
+          'Contract information found: ',
+          multisigContractInstantiationInfo.length
+        );
+
+        multisigContractInstantiationInfo.forEach((info, index) => {
+          if (!info[0]) return;
+
+          this.multisigPendingWallets.push({
+            multisigContractAddress: info[0].instantiation,
+            txId: info[0].transactionHash
+          });
+          const pendingInstantiation = pendingInstantiations.filter(info => {
+            return info.txId === this.multisigPendingWallets[index].txId;
+          });
+          this.multisigPendingWallets[index].walletName =
+            pendingInstantiation[0].walletName;
+          this.multisigPendingWallets[index].n = pendingInstantiation[0].n;
+          this.multisigPendingWallets[index].m = pendingInstantiation[0].m;
+        });
+      }
+    });
+  }
+
+  public createMultisigWallet(multisigWallet) {
+    this.logger.debug(
+      'Creating multisig wallet: ',
+      multisigWallet.multisigContractAddress
+    );
+
+    const multisigEthInfo = {
+      multisigContractAddress: multisigWallet.multisigContractAddress,
+      walletName: multisigWallet.walletName,
+      n: multisigWallet.n,
+      m: multisigWallet.m
+    };
+    this.createAndBindEthMultisigWallet(multisigEthInfo, multisigWallet.txId);
+  }
+
+  public createAndBindEthMultisigWallet(multisigEthInfo, txId) {
+    this.logger.debug('Multisig Info: ', JSON.stringify(multisigEthInfo));
+
+    this.profileProvider
+      .createMultisigEthWallet(this.wallet, multisigEthInfo)
+      .then(multisigWallet => {
+        // store preferences for the paired eth wallet
+        this.walletProvider.updateRemotePreferences(this.wallet);
+        this.removeMultisigWallet(txId);
+        this.navCtrl.popToRoot().then(_ => {
+          this.events.publish('Local/WalletListChange');
+          this.navCtrl.push(WalletDetailsPage, {
+            walletId: multisigWallet.id
+          });
+        });
+      });
+  }
+
+  public async removeMultisigWallet(txId) {
+    this.logger.debug('Removing multisig wallet: ', txId);
+    let pendingInstantiations = await this.persistenceProvider.getEthMultisigPendingInstantiation(
+      this.wallet.id
+    );
+    pendingInstantiations = pendingInstantiations.filter(info => {
+      return info.txId !== txId;
+    });
+    await this.persistenceProvider.setEthMultisigPendingInstantiation(
+      this.wallet.id,
+      pendingInstantiations
+    );
+    this.multisigPendingWallets = this.multisigPendingWallets.filter(
+      pendingWallet => {
+        return pendingWallet.txId !== txId;
+      }
+    );
+  }
+
+  public viewTxOnBlockchain(txId): void {
+    const url =
+      this.wallet.credentials.network === 'livenet'
+        ? `https://${this.blockexplorerUrl}tx/${txId}`
+        : `https://${this.blockexplorerUrlTestnet}tx/${txId}`;
+
+    let optIn = true;
+    let title = null;
+    let message = this.translate.instant('View Transaction');
+    let okText = this.translate.instant('Open');
+    let cancelText = this.translate.instant('Go Back');
+    this.externalLinkProvider.open(
+      url,
+      optIn,
+      title,
+      message,
+      okText,
+      cancelText
+    );
+  }
+
+  public viewAddressOnBlockchain(address): void {
+    const url =
+      this.wallet.credentials.network === 'livenet'
+        ? `https://${this.blockexplorerUrl}address/${address}`
+        : `https://${this.blockexplorerUrlTestnet}address/${address}`;
+
+    let optIn = true;
+    let title = null;
+    let message = this.translate.instant('View Address');
+    let okText = this.translate.instant('Open');
+    let cancelText = this.translate.instant('Go Back');
+    this.externalLinkProvider.open(
+      url,
+      optIn,
+      title,
+      message,
+      okText,
+      cancelText
+    );
   }
 }

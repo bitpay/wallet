@@ -48,8 +48,11 @@
               <balance-to-show [balance]="getBalance()"></balance-to-show>
               <img *ngIf="wallet.coin === 'xrp'" width="21" (click)="openBalanceDetails()" src="assets/img/icon-info-blue.svg">
             </div>
-            <div class="balance-alt-str" *ngIf="wallet?.cachedStatus && wallet?.cachedStatus.totalBalanceAlternative">
+            <div class="balance-alt-str" *ngIf="wallet?.cachedStatus && wallet?.cachedStatus.totalBalanceAlternative && !currencyProvider.isCustomERCToken(wallet?.coin) && wallet?.network !== 'testnet'">
               {{getAlternativeBalance()}} {{wallet?.cachedStatus.alternativeIsoCode}}
+            </div>
+            <div class="balance-alt-str" *ngIf="wallet?.network === 'testnet'">
+              {{ 'Test Only - No Value' | translate }}
             </div>
           </div>
 
@@ -189,6 +192,9 @@
           <img *ngIf="wallet.coin !== 'doge' && wallet.coin !== 'xpi'" src="assets/img/ghost-tongue-out.svg">
           <img *ngIf="wallet.coin === 'xpi'" [src]="selectedTheme === 'dark' ? 'assets/img/frog-dark.svg' : 'assets/img/frog-light.svg'">
           <img *ngIf="wallet.coin === 'doge'" src="assets/img/sad-doge.svg">
+          <img *ngIf="wallet.network === 'testnet'" src="assets/img/icon-warning-circled.svg">
+          <img *ngIf="wallet.coin !== 'doge' && wallet.network === 'livenet'" src="assets/img/ghost-tongue-out.svg">
+          <img *ngIf="wallet.coin === 'doge' && wallet.network === 'livenet'" src="assets/img/sad-doge.svg">
         </ng-template>
       </div>
       <div class="title-info">
@@ -198,6 +204,10 @@
           <span translate *ngIf="!wallet?.credentials.multisigEthInfo && wallet.coin === 'xpi'">It's an empty pond here</span>
           <span translate *ngIf="!wallet?.credentials.multisigEthInfo && wallet.coin === 'doge' ">A dog without funds is a sad dog</span>
           <span translate *ngIf="wallet?.credentials.multisigEthInfo">Join more Copayers</span>
+          <span translate *ngIf="wallet.network === 'testnet'">Someone asked you to create this wallet?</span>
+          <span translate *ngIf="!wallet?.credentials.multisigEthInfo && wallet.coin !== 'doge' && wallet.network === 'livenet'">It's a ghost town in here</span>
+          <span translate *ngIf="!wallet?.credentials.multisigEthInfo && wallet.coin === 'doge' && wallet.network === 'livenet'">A dog without funds is a sad dog</span>
+          <span translate *ngIf="wallet?.credentials.multisigEthInfo && wallet.network === 'livenet'">Join more Copayers</span>
         </ng-template>
       </div>
       <div class="subtitle-info">
@@ -205,10 +215,13 @@
           The XRP ledger requires that all wallets maintain a minimum balance of 20 XRP. This non-refundable 20 XRP will remain permanently locked in your wallet. Please first deposit no less than 20 XRP to activate your wallet.
         </span>
         <ng-template #noFunds>
-          <span translate *ngIf="!wallet?.credentials.multisigEthInfo">
+          <span translate *ngIf="wallet.network === 'testnet'">
+            {{ 'Testnet is an alternative {coinName} block chain meant for testing. This allows application developers and testers to experiment without having to use real {coinName}. Testnet coins are different from actual {coinName}, and do not have any value. They cannot be converted into “real” coins and cannot be exchanged or sold as they have no value.' | translate : {coinName: currencyProvider.getCoinName(wallet.credentials.coin) } }}
+          </span>
+          <span translate *ngIf="!wallet?.credentials.multisigEthInfo && !wallet.network === 'livenet'">
             If you have funds stored on a website then you should move them into a secure wallet... like this one!
           </span>
-          <span translate *ngIf="wallet?.credentials.multisigEthInfo">
+          <span translate *ngIf="wallet?.credentials.multisigEthInfo && !wallet.network === 'livenet'">
             Share this invitation with the Copayers who join this wallet.
           </span>
         </ng-template>
@@ -232,6 +245,56 @@
       <br>
       <span translate *ngIf="updatingTxHistoryProgress>4">{{updatingTxHistoryProgress}} transactions downloaded</span>
     </div>
+
+    <ion-list *ngIf="multisigPendingWallets && multisigPendingWallets[0]" class="bp-list">
+      <ion-item-divider sticky class="tx-history-header">
+        <span>{{'Pending multisig wallet' | translate }} </span>
+      </ion-item-divider>
+      <div *ngFor="let multisigPendingWallet of multisigPendingWallets">
+        <action-card>
+          <div action-card-title class="main-label">
+            <div>
+              {{ 'Name' }}
+              <ion-note item-end>
+                {{ multisigPendingWallet.walletName }}
+              </ion-note>
+            </div>
+          </div>
+          <div action-card-body>
+            <div class="item">{{ 'Required Confirmations - Total Copayers' | translate }}</div>
+            <ion-note item-end>
+              {{ multisigPendingWallet.m }} - {{multisigPendingWallet.n}}
+            </ion-note>
+            <div (click)="viewTxOnBlockchain(multisigPendingWallet.txId)" class="item">
+              <div>{{ 'Instantiation transaction ID' | translate }}</div>
+              <ion-note item-end>
+                {{ multisigPendingWallet.txId }}
+              </ion-note>
+            </div>
+            <div (click)="viewAddressOnBlockchain(multisigPendingWallet.multisigContractAddress)" class="item">
+              <div>{{ 'Contract Address' | translate }}</div>
+              <ion-note item-end>
+                {{ multisigPendingWallet.multisigContractAddress }}
+              </ion-note>
+            </div>
+          </div>
+          <div action-card-button>
+            <ion-row>
+              <ion-col>
+                <button (click)="removeMultisigWallet(multisigPendingWallet.txId)" ion-button class="button-standard" color="primary" outline>
+                  {{ 'Remove' | translate }}
+                </button>
+              </ion-col>
+              <ion-col>
+                <button (click)="createMultisigWallet(multisigPendingWallet)" ion-button class="button-standard" color="primary" outline>
+                  {{ 'Create' | translate }}
+                </button>
+              </ion-col>
+            </ion-row>
+          </div>
+        </action-card>
+      </div>
+    </ion-list>
 
     <ion-list *ngIf="history && history[0]" class="tx-history">
       <ion-item-group *ngFor="let group of groupedHistory; trackBy: trackByFn; let i = index;">
