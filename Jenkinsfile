@@ -23,7 +23,7 @@ pipeline {
         FIREBASE_CI_TOKEN = credentials('abcpay_android_firebase_token')
     }
     stages {
-        stage('Check-Branch') {
+        stage('Branch Checking') {
             steps {
                 sh 'printenv'
                 echo "Target branch :  ${env.gitlabTargetBranch}"
@@ -53,7 +53,7 @@ pipeline {
 
             }
         }
-        stage('Clone repos') {
+        stage('Repo cloning') {
             steps {
                 // script {
                 //     if (fileExists('./abcpay'))
@@ -81,7 +81,7 @@ pipeline {
                 ])
             }
         }
-        stage('Android Build') {
+        stage('Building') {
             agent {
                 dockerfile {
                     filename 'Dockerfile'
@@ -130,9 +130,9 @@ pipeline {
                 // }
             }
         }
-        stage('Publish') {
+        stage('Publishing') {
             parallel {
-                stage('deploying dev') {
+                stage('dev') {
                     when {
                         expression {
                             return envFlag == 'dev'
@@ -140,24 +140,27 @@ pipeline {
                     }
                     steps {
                         withCredentials([string(credentialsId: 'abcpay_firebase_id_dev', variable: 'FIREBASE_PROJECT_ID')]) {
+                            sh 'npm install -g firebase-tools'
                             sh 'firebase appdistribution:distribute app-stg-release.apk --app $FIREBASE_PROJECT_ID --groups "AbcPayCore" --token "$FIREBASE_CI_TOKEN"'
                         }
                     }
 
                 }
-                stage('deploying staging') {
+                stage('beta') {
                     when {
                         expression {
                             return envFlag == 'stg'
                         }
                     }
                     steps {
+
                         withCredentials([string(credentialsId: 'abcpay_firebase_id_staging', variable: 'FIREBASE_PROJECT_ID')]) {
+                            sh 'npm install -g firebase-tools'
                             sh 'firebase appdistribution:distribute app-stg-release.apk --app $FIREBASE_PROJECT_ID --groups "AbcPayCore" --token "$FIREBASE_CI_TOKEN"'
                         }
                     }
                 }
-                stage('deploying production') {
+                stage('live') {
                     when {
                         expression {
                             return envFlag == 'prod'
@@ -165,6 +168,7 @@ pipeline {
                     }
                     steps {
                         withCredentials([string(credentialsId: 'abcpay_firebase_id_prod', variable: 'FIREBASE_PROJECT_ID')]) {
+                            sh 'npm install -g firebase-tools'
                             sh 'firebase appdistribution:distribute app-stg-release.apk --app $FIREBASE_PROJECT_ID --groups "AbcPayCore" --token "$FIREBASE_CI_TOKEN"'
                         }
                     }
