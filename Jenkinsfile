@@ -30,15 +30,18 @@ pipeline {
                 echo "Action Type :  ${env.gitlabActionType}"
 
                 script {
-                    if (env.gitlabTargetBranch != mainbranch) {
-                        envFlag = 'none'
-                    } else if (env.gitlabActionType == 'PUSH' || env.gitlabActionType == 'MERGE') {
+                    if ( (env.gitlabTargetBranch != mainbranch) && (env.gitlabActionType == 'PUSH' || env.gitlabActionType == 'MERGE')) {
                         envFlag = 'dev'
+                    } else if (env.gitlabActionType == 'TAG_PUSH') {
+                        echo 'matching staging or production'
+                        if(env.gitlabTargetBranch ==~ /^(.*)tags\/release_staging$/){
+                            envFlag = 'stg'
+                        } else if(env.gitlabTargetBranch ==~ /^(.*)tags\/release_production$/){
+                            envFlag = 'prod'
+                        }
                     }
-//                    else if (env.gitlabActionType == 'TAG_PUSH') {
-//                        envFlag = 'dev'
-//                    }
 
+                    echo 'matched ${envFlag}'
 
                     if (envFlag == 'none') {
                         echo "Doesn't match condition"
@@ -102,13 +105,15 @@ pipeline {
                 sh 'echo $(pwd)'
                 sh 'echo $(ls)'
                 sh 'npm ci'
+
+                sh 'npm run prepare:android'
+                sh 'chmod -R 777 ./'
+
                 sh 'mkdir src/environments'
                 sh 'echo > src/environments/index.ts'
                 sh 'chmod 777 src/environments/index.ts'
 
 
-                sh 'npm run prepare:android'
-                sh 'chmod -R 777 platforms/'
                 sh 'cp $FIREBASE_SERVICES .'
                 sh 'cp build-extras.gradle platforms/android/'
 
@@ -123,6 +128,11 @@ pipeline {
                 sh '${ANDROID_HOME}/build-tools/28.0.3/apksigner sign -v --ks ${SIGNING_KEYSTORE} --ks-key-alias $SIGNING_KEY_ALIAS --ks-pass pass:"${KEY_PASSWORD}" --key-pass pass:"${KEY_PASSWORD}" --out app-stg-release.apk platforms/android/app/build/outputs/apk/release/android-release-aligned-unsigned.apk'
 
                 // }
+            }
+            post {
+                always {
+                    sh 'npm run clean-all'
+                }
             }
         }
         stage('Publish') {
