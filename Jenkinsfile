@@ -129,11 +129,6 @@ pipeline {
 
                 // }
             }
-            post {
-                always {
-                    sh 'npm run clean-all'
-                }
-            }
         }
         stage('Publish') {
             parallel {
