@@ -1,13 +1,13 @@
-export function DecimalFormatBalance(coin:string|number) {
-    if (typeof coin === 'string') 
-        coin = coin.replace(",","");
-        if (Number(coin) <= 0 || isNaN(Number(coin))) {
-        return "0.00"
+export function DecimalFormatBalance(balance:any) {
+    if (typeof balance === 'string') 
+        balance = balance.replace(",","");
+    if (isNaN(Number(balance)) || Number(balance) <= 0) {
+        return "0.00";
     } else {
-        if (Number(coin) < 10) {
-            return Number(Number(coin).toFixed(Math.round(1/Number(coin)).toString().length+2)).toLocaleString("en-GB");
+        if (Number(balance) < 10) {
+            return Number(Number(balance).toFixed(Math.round(1/Number(balance)).toString().length+2)).toLocaleString("en-GB");
         } else {
-            return Number(Number(coin).toFixed(Math.round(1/Number(coin)).toString().length+1)).toLocaleString("en-GB");
+            return Number(Number(balance).toFixed(Math.round(1/Number(balance)).toString().length+1)).toLocaleString("en-GB");
         }
     }
 }
