@@ -176,11 +176,10 @@ pipeline {
                 }
             }
         }
-
-        post {
-            always {
-                sh 'npm run clean-all'
-            }
+    }
+    post {
+        always {
+            sh 'npm run clean-all'
         }
     }
 }
