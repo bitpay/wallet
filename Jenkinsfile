@@ -132,7 +132,7 @@ pipeline {
         }
         stage('Publishing') {
             parallel {
-                stage('dev') {
+                stage('Deploying dev') {
                     when {
                         expression {
                             return envFlag == 'dev'
@@ -146,7 +146,7 @@ pipeline {
                     }
 
                 }
-                stage('beta') {
+                stage('Deploying beta') {
                     when {
                         expression {
                             return envFlag == 'stg'
@@ -160,7 +160,7 @@ pipeline {
                         }
                     }
                 }
-                stage('live') {
+                stage('Deploying live') {
                     when {
                         expression {
                             return envFlag == 'prod'
