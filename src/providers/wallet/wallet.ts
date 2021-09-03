@@ -1446,7 +1446,7 @@ export class WalletProvider {
     const prefs = {
       email: config.emailNotifications.email,
       language: this.languageProvider.getCurrent(),
-      unit: 'btc' // deprecated
+      unit: 'bch' // deprecated
     };
 
     let updates = [];

@@ -42,7 +42,7 @@ export class AboutPage {
     private themeProvider: ThemeProvider
   ) {
     // Get Theme
-    this.isDarkTheme = this.themeProvider.getCurrentAppTheme() === 'dark';
+    this.isDarkTheme = this.themeProvider.currentAppTheme === 'dark';
   }
 
   async ionViewDidLoad() {
