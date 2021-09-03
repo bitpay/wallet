@@ -30,13 +30,13 @@ pipeline {
                 echo "Action Type :  ${env.gitlabActionType}"
 
                 script {
-                    if ( (env.gitlabTargetBranch != mainbranch) && (env.gitlabActionType == 'PUSH' || env.gitlabActionType == 'MERGE')) {
+                    if ( (env.gitlabTargetBranch == mainbranch) && (env.gitlabActionType == 'PUSH' || env.gitlabActionType == 'MERGE')) {
                         envFlag = 'dev'
                     } else if (env.gitlabActionType == 'TAG_PUSH') {
                         echo 'matching staging or production'
-                        if(env.gitlabTargetBranch ==~ /^(.*)tags\/release_staging$/){
+                        if(env.gitlabTargetBranch ==~ /^(.*)tags\/beta(.*)$/){
                             envFlag = 'stg'
-                        } else if(env.gitlabTargetBranch ==~ /^(.*)tags\/release_production$/){
+                        } else if(env.gitlabTargetBranch ==~ /^(.*)tags\/live(.*)$/){
                             envFlag = 'prod'
                         }
                     }
@@ -177,5 +177,10 @@ pipeline {
             }
         }
 
+        post {
+            always {
+                sh 'npm run clean-all'
+            }
+        }
     }
 }
