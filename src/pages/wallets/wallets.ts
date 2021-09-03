@@ -430,7 +430,9 @@ export class WalletsPage {
     loading.present();
     this.walletProvider.getDonationInfo().then((data:any) => {
       loading.dismiss();
-      if(_.isEmpty(data))  throw 'No data Remaning'
+      if(_.isEmpty(data)) {
+        throw new Error("No data Remaning");
+      }
       this.navCtrl.push(AmountPage, {
         toAddress: _.get(_.find(data.donationToAddresses, item => item.coin == wallet.coin), 'address', '' ),
         donationSupportCoins : data.donationSupportCoins,

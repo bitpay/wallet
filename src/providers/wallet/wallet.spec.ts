@@ -106,9 +106,9 @@ describe('Provider: Wallet Provider', () => {
       const newOpts = {
         wallet: {
           settings: {
-            unitCode: 'btc',
+            unitCode: 'xpi',
             alternativeIsoCode: 'USD',
-            unitToSatoshi: 100000000
+            unitToSatoshi: 1000000
           }
         }
       };
@@ -128,9 +128,6 @@ describe('Provider: Wallet Provider', () => {
         .fetchStatus(wallet, opts)
         .then(status => {
           expect(status).toEqual(expectedStatus);
-        })
-        .catch(err => {
-          expect(err).toBeUndefined();
         });
     });
 
@@ -145,9 +142,6 @@ describe('Provider: Wallet Provider', () => {
         .fetchStatus(wallet, opts)
         .then(status => {
           expect(status).toEqual(expectedStatus);
-        })
-        .catch(err => {
-          expect(err).toBeUndefined();
         });
     });
 
@@ -162,9 +156,6 @@ describe('Provider: Wallet Provider', () => {
         .fetchStatus(wallet, opts)
         .then(status => {
           expect(status.pendingTxps[0].pendingForUs).toBeTruthy();
-        })
-        .catch(err => {
-          expect(err).toBeUndefined();
         });
     });
 
@@ -196,9 +187,6 @@ describe('Provider: Wallet Provider', () => {
         .then(status => {
           expect(status.pendingTxps[0].statusForUs).toEqual('accepted');
           expect(status.pendingTxps[1].statusForUs).toEqual('rejected');
-        })
-        .catch(err => {
-          expect(err).toBeUndefined();
         });
     });
 
@@ -213,19 +201,19 @@ describe('Provider: Wallet Provider', () => {
           { address: 'address1', path: 'm/1/219', amount: 2000000 },
           { address: 'address2', path: 'm/1/26', amount: 7000000 }
         ],
-        totalBalanceSat: 500000000,
-        lockedBalanceSat: 100000000,
-        availableBalanceSat: 400000000,
+        totalBalanceSat: 5000000,
+        lockedBalanceSat: 1000000,
+        availableBalanceSat: 4000000,
         totalBytesToSendMax: undefined,
         pendingAmount: 0,
-        spendableAmount: 400000000,
-        unitToSatoshi: 100000000,
-        satToUnit: 1e-8,
-        totalBalanceStr: '5.00 BTC',
-        lockedBalanceStr: '1.00 BTC',
-        availableBalanceStr: '4.00 BTC',
-        spendableBalanceStr: '4.00 BTC',
-        pendingBalanceStr: '0.00 BTC',
+        spendableAmount: 4000000,
+        unitToSatoshi: 1000000,
+        satToUnit: 1e-6,
+        totalBalanceStr: '5.00 XPI',
+        lockedBalanceStr: '1.00 XPI',
+        availableBalanceStr: '4.00 XPI',
+        spendableBalanceStr: '4.00 XPI',
+        pendingBalanceStr: '0.00 XPI',
         alternativeName: 'US Dollar',
         alternativeIsoCode: 'USD',
         totalBalanceAlternative: '1,000,000',
@@ -244,9 +232,6 @@ describe('Provider: Wallet Provider', () => {
           delete status['statusUpdatedOn'];
           delete expectedStatus['statusUpdatedOn'];
           expect(status).toEqual(expectedStatus);
-        })
-        .catch(err => {
-          expect(err).toBeUndefined();
         });
     });
 
@@ -269,19 +254,19 @@ describe('Provider: Wallet Provider', () => {
           { address: 'address1', path: 'm/1/219', amount: 2000000 },
           { address: 'address2', path: 'm/1/26', amount: 7000000 }
         ],
-        totalBalanceSat: 500000000,
-        lockedBalanceSat: 100000000,
-        availableBalanceSat: 400000000,
+        totalBalanceSat: 5000000,
+        lockedBalanceSat: 1000000,
+        availableBalanceSat: 4000000,
         totalBytesToSendMax: undefined,
         pendingAmount: 0,
-        spendableAmount: 400000000,
-        unitToSatoshi: 100000000,
-        satToUnit: 1e-8,
-        totalBalanceStr: '5.00 BTC',
-        lockedBalanceStr: '1.00 BTC',
-        availableBalanceStr: '4.00 BTC',
-        spendableBalanceStr: '4.00 BTC',
-        pendingBalanceStr: '0.00 BTC',
+        spendableAmount: 4000000,
+        unitToSatoshi: 1000000,
+        satToUnit: 1e-6,
+        totalBalanceStr: '5.00 XPI',
+        lockedBalanceStr: '1.00 XPI',
+        availableBalanceStr: '4.00 XPI',
+        spendableBalanceStr: '4.00 XPI',
+        pendingBalanceStr: '0.00 XPI',
         alternativeName: 'US Dollar',
         alternativeIsoCode: 'USD',
         totalBalanceAlternative: '1,000,000',
@@ -307,43 +292,29 @@ describe('Provider: Wallet Provider', () => {
   });
 
   describe('Function: getAddressView', () => {
-    it('should get the correct address with protocol format for BCH testnet', () => {
-      spyOn(txFormatProvider, 'toCashAddress').and.returnValue(
-        'qqfs4tjymy5cs0j4lz78y2lvensl0l42wu80z5jass'
-      );
-
-      const address = walletProvider.getAddressView(
-        Coin.BCH,
-        'testnet',
-        'qqfs4tjymy5cs0j4lz78y2lvensl0l42wu80z5jass'
-      );
-      expect(address).toEqual(
-        'bchtest:qqfs4tjymy5cs0j4lz78y2lvensl0l42wu80z5jass'
-      );
-    });
 
     it('should get the correct address with protocol format for BCH livenet', () => {
       spyOn(txFormatProvider, 'toCashAddress').and.returnValue(
-        'qz8ds306px5n65gffn8u69vvnksfw6huwyjczrvkh3'
+        'bitcoincash:qz49wrnh7d9p7ejrg55lqr6zdpu4x2kh7uckpdhth3'
       );
 
       const address = walletProvider.getAddressView(
         Coin.BCH,
         'livenet',
-        'qz8ds306px5n65gffn8u69vvnksfw6huwyjczrvkh3'
+        'qz49wrnh7d9p7ejrg55lqr6zdpu4x2kh7uckpdhth3'
       );
       expect(address).toEqual(
-        'bitcoincash:qz8ds306px5n65gffn8u69vvnksfw6huwyjczrvkh3'
+        'bitcoincash:qz49wrnh7d9p7ejrg55lqr6zdpu4x2kh7uckpdhth3'
       );
     });
 
-    it("should return the same address if it isn't BCH", () => {
+    it("should return the same address if it isn't XPI", () => {
       const address = walletProvider.getAddressView(
-        Coin.BTC,
+        Coin.XEC,
         'livenet',
-        '3DTdZeycDBaimjuuknVGrG8fxdLbjsAjXN'
+        'qq2gyzhvfujgfx25ldzyel9gtvd72ddvhc8eqscg4e'
       );
-      expect(address).toEqual('3DTdZeycDBaimjuuknVGrG8fxdLbjsAjXN');
+      expect(address).toEqual('ecash:qq2gyzhvfujgfx25ldzyel9gtvd72ddvhc8eqscg4e');
     });
   });
 
@@ -390,7 +361,7 @@ describe('Provider: Wallet Provider', () => {
       walletProvider
         .getAddress(wallet, force)
         .then(address => {
-          expect(address).toEqual('1CVuVALD6Zo7ms24n3iUXv162kvUzsHr69');
+          expect(address).toEqual('lotus_16PSJLR4Xpf5YYj8UpWE9LHVyATnwpPRiEAv6XkcY');
         })
         .catch(err => {
           expect(err).toBeUndefined();
@@ -623,9 +594,6 @@ describe('Provider: Wallet Provider', () => {
         .then(txHistory => {
           expect(wallet.completeHistoryIsValid).toBeTruthy();
           expect(txHistory).toEqual(expectedTxHistory);
-        })
-        .catch(err => {
-          expect(err).toBeUndefined();
         });
     });
   });
@@ -674,7 +642,7 @@ describe('Provider: Wallet Provider', () => {
       const wallet: WalletMock = new WalletMock();
       const txp = {
         txid: 'txid1',
-        coin: 'btc',
+        coin: 'xec',
         amount: 10000
       };
       const pass = 'password';
@@ -692,12 +660,12 @@ describe('Provider: Wallet Provider', () => {
         });
     });
 
-    it('Should return an ethereum txp with signed rawTx', async () => {
+    it('Should return an bch txp with signed rawTx', async () => {
       await keyProvider.load();
       const wallet: WalletMock = new WalletMock();
       const txp = {
         txid: 'txid1',
-        coin: 'eth',
+        coin: 'bch',
         amount: 10000
       };
       const pass = 'password';
@@ -722,7 +690,7 @@ describe('Provider: Wallet Provider', () => {
       const txp = {
         txid: 'txid1',
         amount: 10000,
-        coin: 'btc',
+        coin: 'bch',
         status: 'accepted'
       };
 
@@ -736,12 +704,12 @@ describe('Provider: Wallet Provider', () => {
         });
     });
 
-    it('Should return the broadcasted ethereum txid', () => {
+    it('Should return the broadcasted xec txid', () => {
       const wallet: WalletMock = new WalletMock();
       const txp = {
         txid: 'txid1',
         amount: 10000,
-        coin: 'eth',
+        coin: 'xec',
         status: 'accepted'
       };
 
@@ -984,7 +952,7 @@ describe('Provider: Wallet Provider', () => {
       await keyProvider.load();
       txp = {
         txid: 'txid1',
-        coin: 'btc',
+        coin: 'doge',
         status: 'pending'
       };
       spyOn(keyProvider, 'handleEncryptedWallet').and.returnValue(
@@ -1003,11 +971,11 @@ describe('Provider: Wallet Provider', () => {
         });
     });
 
-    it('Should prepare, sign and broadcast ethereum txp if the status is pending', async () => {
+    it('Should prepare, sign and broadcast bch txp if the status is pending', async () => {
       await keyProvider.load();
       txp = {
         txid: 'txid1',
-        coin: 'eth',
+        coin: 'xpi',
         status: 'pending'
       };
       spyOn(keyProvider, 'handleEncryptedWallet').and.returnValue(
@@ -1031,7 +999,7 @@ describe('Provider: Wallet Provider', () => {
 
       txp = {
         txid: 'txid1',
-        coin: 'btc',
+        coin: 'xec',
         status: 'accepted'
       };
       spyOn(keyProvider, 'handleEncryptedWallet').and.returnValue(
@@ -1050,12 +1018,12 @@ describe('Provider: Wallet Provider', () => {
         });
     });
 
-    it('Should prepare, publish, sign and broadcast ethereum txp if the status is accepted', async () => {
+    it('Should prepare, publish, sign and broadcast lotus txp if the status is accepted', async () => {
       await keyProvider.load();
 
       txp = {
         txid: 'txid1',
-        coin: 'eth',
+        coin: 'xpi',
         status: 'accepted'
       };
       spyOn(keyProvider, 'handleEncryptedWallet').and.returnValue(
@@ -1084,14 +1052,14 @@ describe('Provider: Wallet Provider', () => {
       await keyProvider.load();
       pass = 'password1';
       spyOn<any>(keyProvider, 'getBaseAddressDerivationPath').and.returnValue(
-        "m/44'/0'/0'"
+        "m/44'/10605'/0'"
       );
 
       walletProvider
         .getEncodedWalletInfo(wallet, pass)
         .then(walletInfo => {
           expect(walletInfo).toEqual(
-            "1|mom mom mom mom mom mom mom mom mom mom mom mom|livenet|m/44'/0'/0'|false|btc"
+            "1|mom mom mom mom mom mom mom mom mom mom mom mom|livenet|m/44'/10605'/0'|false|xpi"
           );
         })
         .catch(err => {
@@ -1103,7 +1071,7 @@ describe('Provider: Wallet Provider', () => {
       await keyProvider.load();
       pass = 'password2';
       spyOn<any>(keyProvider, 'getBaseAddressDerivationPath').and.returnValue(
-        "m/44'/0'/0'"
+        "m/44'/10605'/0'"
       );
       wallet.credentials.keyId = 'keyId2';
 
@@ -1111,7 +1079,7 @@ describe('Provider: Wallet Provider', () => {
         .getEncodedWalletInfo(wallet, pass)
         .then(walletInfo => {
           expect(walletInfo).toEqual(
-            "2|xPrivKey2|livenet|m/44'/0'/0'|false|btc"
+            "2|xPrivKey2|livenet|m/44'/10605'/0'|false|xpi"
           );
         })
         .catch(err => {
@@ -1122,7 +1090,7 @@ describe('Provider: Wallet Provider', () => {
     it('Should be reject for a BIP45 wallet', () => {
       pass = 'password1';
       spyOn<any>(keyProvider, 'getBaseAddressDerivationPath').and.returnValue(
-        "m/44'/0'/0'"
+        "m/44'/10605'/0'"
       );
 
       walletProvider.getEncodedWalletInfo(wallet, pass).catch(err => {

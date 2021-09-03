@@ -99,6 +99,10 @@ ion-header.bp-header .toolbar {
   }
 }
 
+ion-header .toolbar {
+  padding-top: env(safe-area-inset-top);
+}
+
 .wide-header__title {
   color: $text-color;
   font-size: 25px;
@@ -311,7 +315,7 @@ ion-spinner * {
   background-color: #2fcf6e;
 }
 
-.xec-background{
+.xec-background {
   background-color: #016cbf;
 }
 
@@ -871,8 +875,8 @@ $settings-inactive: url('../assets/img/tab-icons/tab-settings.svg') no-repeat
   50% 50%;
 $address-book-active: url('../assets/img/tab-icons/tab-address-book-active.svg')
   no-repeat 50% 50%;
-$address-book-inactive: url('../assets/img/tab-icons/tab-address-book.svg') no-repeat
-  50% 50%;
+$address-book-inactive: url('../assets/img/tab-icons/tab-address-book.svg')
+  no-repeat 50% 50%;
 $scan-active: url('../assets/img/tab-icons/tab-scan-active.svg') no-repeat 50%
   50%;
 $scan-inactive: url('../assets/img/tab-icons/tab-scan.svg') no-repeat 50% 50%;

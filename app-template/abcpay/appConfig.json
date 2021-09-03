@@ -3,7 +3,7 @@
   "packageDescription": "Abcpay Wallet",
   "packageNameId": "cash.abcpay.wallet",
   "packageNameIdDesktop": "cash.abcpay.wallet.desktop",
-  "themeColor": "#ffffff",
+  "themeColor": "#000000",
   "userVisibleName": "AbcPay",
   "purposeLine": "Secure Bitcoin Wallet",
   "bundleName": "wallet",

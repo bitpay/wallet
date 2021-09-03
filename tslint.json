@@ -1,5 +1,11 @@
 {
   "extends": ["tslint:latest", "tslint-config-prettier"],
+  "linterOptions": {
+    "exclude": [
+      "bin",
+      "scripts/setenv.ts"
+    ]
+  },
   "rules": {
     "no-submodule-imports": [
       true,
