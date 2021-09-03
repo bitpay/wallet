@@ -93,13 +93,6 @@ pipeline {
                 }
             }
 
-//            when {
-//                expression {
-//                    GIT_BRANCH = 'origin/' + sh(returnStdout: true, script: 'git rev-parse --abbrev-ref HEAD').trim()
-//                    return GIT_BRANCH == 'origin/master' || params.FORCE_FULL_BUILD
-//                }
-//            }
-
             steps {
                 // dir('abcpay') {
                 sh 'echo $(pwd)'
@@ -109,7 +102,7 @@ pipeline {
                 sh 'npm run prepare:android'
                 sh 'chmod -R 777 ./'
 
-                sh 'mkdir src/environments'
+                sh 'mkdir -p src/environments'
                 sh 'echo > src/environments/index.ts'
                 sh 'chmod 777 src/environments/index.ts'
 
