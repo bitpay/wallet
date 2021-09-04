@@ -22,7 +22,7 @@ export class WalletItemContent {
       (lastKnownBalance == '0.00' || !lastKnownBalance)
     )
       return '0';
-    return DecimalFormatBalance(totalBalanceStr) || lastKnownBalance;
+    return DecimalFormatBalance(totalBalanceStr) || DecimalFormatBalance(lastKnownBalance);
   }
 
   getAlternativeBalance(wallet, currency) {
