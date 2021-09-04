@@ -11,5 +11,5 @@
 //}
 // When set, this function `ext.postBuildExtras` allows code to run at the end of `build.gradle`
 ext.postBuildExtras = {
-    android.buildTypes.release.applicationIdSuffix = '.staging'
+    android.buildTypes.release.applicationIdSuffix = '.dev'
 }

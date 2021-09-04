@@ -1,12 +1,13 @@
 #!groovy
 
-def envFlag = 'none'
 def mainbranch = 'vant/deploy'
 pipeline {
     agent {
         label 'Cloud-Agent' // Please run this job on master agent
     }
-
+    parameters{
+        string(name: 'BRANCH_NAME', defaultValue: 'master', description: 'Input branch name to build')
+    }
     environment {
         DISABLE_AUTH = 'true'
         DB_ENGINE = 'sqlite'
@@ -21,6 +22,7 @@ pipeline {
         SIGNING_KEY_ALIAS = credentials('abcpay_android_keystore_alias')
         KEY_PASSWORD = credentials('abcpay_android_keystore_password')
         FIREBASE_CI_TOKEN = credentials('abcpay_android_firebase_token')
+        FIREBASE_PROJECT_ID = credentials('abcpay_firebase_id_dev')
     }
     stages {
         stage('Branch Checking') {
@@ -30,24 +32,15 @@ pipeline {
                 echo "Action Type :  ${env.gitlabActionType}"
 
                 script {
-                    if ( (env.gitlabTargetBranch == mainbranch) && (env.gitlabActionType == 'PUSH' || env.gitlabActionType == 'MERGE')) {
-                        envFlag = 'dev'
-                    } else if (env.gitlabActionType == 'TAG_PUSH') {
-                        echo 'matching staging or production'
-                        if(env.gitlabTargetBranch ==~ /^(.*)tags\/beta(.*)$/){
-                            envFlag = 'stg'
-                        } else if(env.gitlabTargetBranch ==~ /^(.*)tags\/live(.*)$/){
-                            envFlag = 'prod'
-                        }
-                    }
 
-                    echo 'matched ${envFlag}'
-
-                    if (envFlag == 'none') {
+                    if ((env.gitlabTargetBranch != null && env.gitlabTargetBranch != mainbranch) ||
+                            (env.gitlabActionType != null && env.gitlabActionType != 'PUSH' && env.gitlabActionType != 'MERGE')) {
                         echo "Doesn't match condition"
                         currentBuild.result = 'ABORTED'
                         error("Aborting the job.")
 //                        sh "exit "
+                    } else if(env.gitlabTargetBranch == null){
+                        mainbranch = params.BRANCH_NAME
                     }
                 }
 
@@ -73,7 +66,7 @@ pipeline {
 
                 checkout([
                         $class                           : 'GitSCM',
-                        branches                         : [[name: "${env.gitlabTargetBranch}"]],
+                        branches                         : [[name: "${mainbranch}"]],
                         doGenerateSubmoduleConfigurations: false,
                         //extensions : [[$class: 'CleanBeforeCheckout']],
                         submoduleCfg                     : [],
@@ -119,53 +112,8 @@ pipeline {
                 sh 'echo ${ANDROID_HOME}'
 
                 sh '${ANDROID_HOME}/build-tools/28.0.3/apksigner sign -v --ks ${SIGNING_KEYSTORE} --ks-key-alias $SIGNING_KEY_ALIAS --ks-pass pass:"${KEY_PASSWORD}" --key-pass pass:"${KEY_PASSWORD}" --out app-stg-release.apk platforms/android/app/build/outputs/apk/release/android-release-aligned-unsigned.apk'
-
+                sh 'firebase appdistribution:distribute app-stg-release.apk --app $FIREBASE_PROJECT_ID --groups "AbcPayCore" --token "$FIREBASE_CI_TOKEN"'
                 // }
-            }
-        }
-        stage('Publishing') {
-            parallel {
-                stage('Deploying dev') {
-                    when {
-                        expression {
-                            return envFlag == 'dev'
-                        }
-                    }
-                    steps {
-                        withCredentials([string(credentialsId: 'abcpay_firebase_id_dev', variable: 'FIREBASE_PROJECT_ID')]) {
-                            sh 'npm install -g firebase-tools'
-                            sh 'firebase appdistribution:distribute app-stg-release.apk --app $FIREBASE_PROJECT_ID --groups "AbcPayCore" --token "$FIREBASE_CI_TOKEN"'
-                        }
-                    }
-
-                }
-                stage('Deploying beta') {
-                    when {
-                        expression {
-                            return envFlag == 'stg'
-                        }
-                    }
-                    steps {
-
-                        withCredentials([string(credentialsId: 'abcpay_firebase_id_staging', variable: 'FIREBASE_PROJECT_ID')]) {
-                            sh 'npm install -g firebase-tools'
-                            sh 'firebase appdistribution:distribute app-stg-release.apk --app $FIREBASE_PROJECT_ID --groups "AbcPayCore" --token "$FIREBASE_CI_TOKEN"'
-                        }
-                    }
-                }
-                stage('Deploying live') {
-                    when {
-                        expression {
-                            return envFlag == 'prod'
-                        }
-                    }
-                    steps {
-                        withCredentials([string(credentialsId: 'abcpay_firebase_id_prod', variable: 'FIREBASE_PROJECT_ID')]) {
-                            sh 'npm install -g firebase-tools'
-                            sh 'firebase appdistribution:distribute app-stg-release.apk --app $FIREBASE_PROJECT_ID --groups "AbcPayCore" --token "$FIREBASE_CI_TOKEN"'
-                        }
-                    }
-                }
             }
         }
     }
