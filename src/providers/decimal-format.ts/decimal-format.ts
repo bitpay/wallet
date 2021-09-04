@@ -1,6 +1,6 @@
 export function DecimalFormatBalance(balance:any) {
     if (typeof balance === 'string') 
-        balance = balance.replace(",","");
+        balance = balance.replace(/,/g, '')
     if (isNaN(Number(balance)) || Number(balance) <= 0) {
         return "0.00";
     } else {

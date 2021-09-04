@@ -23,7 +23,6 @@ import {
 import { ActionSheetProvider } from '../../providers/action-sheet/action-sheet';
 import { AnalyticsProvider } from '../../providers/analytics/analytics';
 import { ConfigProvider } from '../../providers/config/config';
-import { DecimalFormatBalance } from '../../providers/decimal-format.ts/decimal-format';
 
 // Pages
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -223,7 +222,7 @@ export class HomePage {
   private updateTotalBalance(data) {
     if (!data) return;
     this.zone.run(() => {
-      this.totalBalanceAlternative = DecimalFormatBalance(data.totalBalanceAlternative);
+      this.totalBalanceAlternative = data.totalBalanceAlternative;
       this.totalBalanceChange = data.totalBalanceChange;
       this.totalBalanceAlternativeIsoCode = data.totalBalanceAlternativeIsoCode;
     });
