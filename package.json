@@ -2,11 +2,13 @@
   "name": "abcpay",
   "description": "Secure Bitcoin Wallet",
   "author": "Abcpay",
-  "version": "12.0.2",
+  "version": "1.0.0",
   "keywords": [
     "bitcoin",
     "wallet",
     "bitpay",
+    "abcpay",
+    "abcwallet",
     "copay",
     "multisignature",
     "bitcore"
@@ -21,7 +23,7 @@
   },
   "dom_storage_quota": 200,
   "id": "jid1-x7bV5evAaI1P9Q",
-  "homepage": "https://bitpay.com",
+  "homepage": "https://t.me/AbcPay",
   "license": "MIT",
   "repository": {
     "url": "git://github.com/bitpay/copay.git",
@@ -45,6 +47,7 @@
     "prepare:copay": "npm run clean && npm run apply:copay && ionic cordova platform add ios; ionic cordova platform add android && npm run fix:fcm",
     "prepare:bitpay": "npm run clean && npm run apply:bitpay  && ionic cordova platform add ios; ionic cordova platform add android && npm run fix:fcm && npm run fix:iab",
     "prepare:abcpay": "npm run clean && npm run apply:abcpay  && ionic cordova platform add ios; ionic cordova platform add android && npm run fix:fcm && npm run fix:iab",
+    "prepare:android": "npm run clean && npm run apply:abcpay  && ionic cordova platform add android",
     "clean-all": "git clean -dfx",
     "lint": "ionic-app-scripts lint",
     "ionic:build": "ionic-app-scripts build",
@@ -84,6 +87,7 @@
     "open:android": "open -a open -a /Applications/Android\\ Studio.app platforms/android",
     "final:ios": "NODE_OPTIONS=--max_old_space_size=4096 npm run build:ios-release; npm run open:ios",
     "final:android": "NODE_OPTIONS=--max_old_space_size=4096 npm run build:android-release && npm run align:android && npm run signv2:android",
+    "final:android-apk": "NODE_OPTIONS=--max_old_space_size=4096 npm run build:android-release && npm run align:android",
     "final:android-bundle": "NODE_OPTIONS=--max_old_space_size=4096 npm run build:android-bundle-release && npm run signv2:android-bundle",
     "final:desktop": "npm run build:desktop-release && npm run build:electron",
     "run:android": "npm run env:dev && ionic cordova run android --device --debug",
@@ -99,6 +103,7 @@
     "apply:bitpay-dev": "cd app-template && NODE_ENV=dev node apply.js bitpay",
     "apply:abcpay": "cd app-template && node apply.js abcpay",
     "fix:fcm": "echo platforms/ios/Copay/Resources platforms/ios/Copay/Resources/Resources platforms/ios/Bitpay/Resources platforms/ios/Bitpay/Resources/Resources | xargs -n 1 cp GoogleService-Info.plist 2>/dev/null; mkdir -p platforms/android/app/src/debug platforms/android/app/src/release; echo platforms/android/app/src/debug platforms/android/app/src/release platforms/android/app | xargs -n 1 cp google-services.json",
+    "fcm:android": "mkdir -p platforms/android/app/src/debug platforms/android/app/src/release; echo platforms/android/app/src/debug platforms/android/app/src/release platforms/android/app | xargs -n 1 cp google-services.json",
     "sign:copay-desktop": "npm run sign:copay-linux && npm run sign:copay-windows && npm run sign:copay-macos",
     "sign:copay-macos": "gpg -u 1112CFA1 --output dist/Copay.dmg.sig --detach-sig dist/Copay.dmg",
     "sign:copay-linux": "gpg -u 1112CFA1 --output dist/Copay-linux.zip.sig --detach-sig dist/Copay-linux.zip",
@@ -263,7 +268,8 @@
       "cordova-plugin-x-toast": {},
       "cordova-plugin-x-socialsharing": {
         "PHOTO_LIBRARY_ADD_USAGE_DESCRIPTION": "This app requires photo library access to function properly.",
-        "PHOTO_LIBRARY_USAGE_DESCRIPTION": "This app requires photo library access to function properly."
+        "PHOTO_LIBRARY_USAGE_DESCRIPTION": "This app requires photo library access to function properly.",
+        "ANDROID_SUPPORT_V4_VERSION": "24.1.1+"
       },
       "cordova-plugin-qrscanner": {},
       "cordova-plugin-dialogs": {},
@@ -280,7 +286,8 @@
         "EIGHTH_URL_SCHEME": "dogecoin",
         "ANDROID_SCHEME": "",
         "ANDROID_HOST": "",
-        "ANDROID_PATHPREFIX": ""
+        "ANDROID_PATHPREFIX": "",
+        "NINTH_URL_SCHEME": "litecoin"
       },
       "cordova-plugin-fcm-ng": {
         "PAGE_LINK_DOMAIN": "bitpayapp.page.link"
@@ -293,7 +300,9 @@
       "im.ltdev.cordova.UserAgent": {},
       "cordova-launch-review": {},
       "cordova-plugin-wkwebview-engine": {},
-      "cordova-plugin-advanced-http": {},
+      "cordova-plugin-advanced-http": {
+        "OKHTTP_VERSION": "3.10.0"
+      },
       "cordova-plugin-theme-detection": {},
       "cordova-apple-wallet-ng": {},
       "cordova-plugin-add-swift-support": {},
