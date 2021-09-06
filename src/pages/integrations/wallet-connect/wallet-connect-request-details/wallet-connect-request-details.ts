@@ -39,6 +39,7 @@ export class WalletConnectRequestDetailsPage {
   public dappImgSrc: string;
   private defaultImgSrc: string = 'assets/img/wallet-connect/icon-dapp.svg';
   public isSupportedMethod: boolean = true;
+  public title: string;
 
   constructor(
     private logger: Logger,
@@ -56,11 +57,17 @@ export class WalletConnectRequestDetailsPage {
 
   ionViewDidLoad() {
     this.setConnectionData();
+    this.title = this.translate.instant('Pending Call Request');
     this.request = this.navParams.data.request;
     this.params = this.navParams.data.params;
     this.isSupportedMethod = this.walletConnectProvider.isSupportedMethod(
       this.request.method
     );
+    const decodedData = this.request.decodedData;
+    if (decodedData && decodedData.name === 'approve') {
+      this.title = this.translate.instant('Pending Approve Request');
+      this.buttonAction['eth_sendTransaction'] = 'Approve';
+    }
   }
 
   // not ideal - workaround for navCtrl issues
