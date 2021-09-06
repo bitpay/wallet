@@ -187,7 +187,8 @@
     "text-encoding": "0.6.4",
     "text-mask-core": "5.1.2",
     "web-animations-js": "2.3.1",
-    "zone.js": "0.8.26"
+    "zone.js": "0.8.26",
+    "abi-decoder": "2.3.0"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "0.12.4",
