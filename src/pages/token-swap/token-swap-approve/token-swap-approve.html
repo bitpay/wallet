@@ -1,6 +1,6 @@
 <wide-header-page title="{{'Token Swap Spender Approval' | translate}}" hideBackButton="true" [hasSlideButton]="isCordova">
   <ion-buttons right>
-    <button clear wide-header-bar-button (click)="cancelExchange()" ion-button>
+    <button clear wide-header-bar-button (click)="rejectApprove()" ion-button>
       <span translate>Reject</span>
     </button>
   </ion-buttons>
@@ -10,9 +10,9 @@
     <label-tip type="info" class="no-arrowhead">
       <span label-tip-title translate>Give this site permission to access your token?</span>
       <div label-tip-body>
-        <span translate>By granting this permission you authorize this site to access your funds in {{ fromToken.symbol }}.</span>
+        <span translate>To complete the swap, you will need to allow the exchange ("1Inch") to spend your {{ fromToken.symbol }}.</span>
         <br>
-        <span translate>This action implies a transaction in which you will only pay the contract fee. This transaction must be confirmed to allow you to do a token swap.</span>
+        <span translate>By granting this permission, "1inch" will be able to withdraw your {{ fromToken.symbol }} and complete transactions for you.</span>
       </div>
     </label-tip>
 
@@ -66,23 +66,6 @@
       <ion-item>
         <ion-label>
           <div class="summary-item">
-            <span>{{"Assignment" | translate}}</span>
-          </div>
-        </ion-label>
-        <ion-note item-end>
-          <div class="summary-item-detail">
-            <span>
-              {{"Unlimited" | translate}} {{ fromToken.symbol }}
-            </span>
-          </div>
-        </ion-note>
-      </ion-item>
-
-      <div class="line-divider"></div>
-
-      <ion-item>
-        <ion-label>
-          <div class="summary-item">
             <span>{{"Miner Fee" | translate}}</span>
           </div>
         </ion-label>
@@ -94,6 +77,14 @@
           </div>
         </ion-note>
       </ion-item>
+
+      <div *ngIf="fiatFee" class="amount-details">
+        <div class="secondary-note">
+          <span>
+            ~{{ fiatFee | number : '1.2-2' }} {{ alternativeIsoCode }}
+          </span>
+        </div>
+      </div>
 
       <div class="line-divider"></div>
 
@@ -146,10 +137,10 @@
     </ion-list>
   </div>
   <div footer-content>
-    <page-slide-to-accept #slideButton *ngIf="isCordova && canContinue()" [disabled]="!canContinue()" buttonText="{{'Slide to Approve' | translate}}" [isDogecoin]="fromWalletSelected && fromWalletSelected.coin == 'doge'"  (slideDone)="makePayment()">
+    <page-slide-to-accept #slideButton *ngIf="isCordova" buttonText="{{'Slide to Approve' | translate}}" [isDogecoin]="fromWalletSelected && fromWalletSelected.coin == 'doge'"  (slideDone)="makePayment()">
     </page-slide-to-accept>
     <ion-toolbar *ngIf="!isCordova">
-      <button ion-button full class="button-footer" (click)="makePayment()" [disabled]="!canContinue()">{{'Approve' | translate}}</button>
+      <button ion-button full class="button-footer" (click)="makePayment()">{{'Approve' | translate}}</button>
     </ion-toolbar>
   </div>
 </wide-header-page>

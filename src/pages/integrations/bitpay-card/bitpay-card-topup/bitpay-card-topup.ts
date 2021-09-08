@@ -1132,6 +1132,7 @@ export class BitPayCardTopUpPage {
       wallets: this.wallets,
       selectedWalletId: id,
       title: this.translate.instant('From'),
+      context: 'topup',
       coinbaseData
     };
     const walletSelector = this.actionSheetProvider.createWalletSelector(

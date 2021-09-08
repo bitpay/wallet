@@ -21,7 +21,7 @@
           <img src="assets/img/currencies/{{coin.unitCode.toLowerCase()}}.svg" />
         </ion-icon>
         <ion-icon *ngIf="!currencyProvider.COIN[coin.unitCode | uppercase]" class="item-img" item-start>
-          <img src="https://tokens.1inch.exchange/{{currencyProvider.getTokenAddress(coin.unitCode.toLowerCase())}}.png" onerror="this.onerror=null;this.src='assets/img/icon-swap.svg'"/>
+          <img [src]="currencyProvider.getLogoURI(coin.unitCode.toLowerCase())"/>
         </ion-icon>
         <ion-label>
           <div class="main-label">{{coin.name}}</div>
@@ -41,7 +41,7 @@
           <img src="assets/img/currencies/{{coin.unitCode.toLowerCase()}}.svg" />
         </ion-icon>
         <ion-icon *ngIf="!currencyProvider.COIN[coin.unitCode | uppercase]" class="item-img" item-start>
-          <img src="https://tokens.1inch.exchange/{{currencyProvider.getTokenAddress(coin.unitCode.toLowerCase())}}.png" onerror="this.onerror=null;this.src='assets/img/icon-swap.svg'"/>
+          <img [src]="currencyProvider.getLogoURI(coin.unitCode.toLowerCase())"/>
         </ion-icon>
         <ion-label>
           <div class="main-label">{{coin.name}}</div>
@@ -54,15 +54,22 @@
       </button>
       <div class="line-divider"></div>
     </div>
-    <button *ngIf="oneInchAllSupportedCoins && showOneInchTokensSearchBtn" ion-item detail-none class="create-button" (click)="showTokensSearch()">
-      {{ 'Other supported tokens' | translate }}
+
+    <button *ngIf="oneInchAllSupportedCoins && showOneInchTokensSearchBtn" ion-item class="list-button mb" (click)="showTokensSearch()" >
+      <ion-icon class="item-img" item-start>
+        <img src="assets/img/add-encapsulated.svg" />
+      </ion-icon>
+      <ion-label>
+        <div class="main-label">{{ 'Other Supported Tokens' | translate }}</div>
+      </ion-label>
     </button>
+
   </ion-list>
   <ion-list *ngIf="tokensSearch" class="bp-list">
     <div class="send-header-wrapper">
       <ion-item class="search-wrapper">
         <ion-input placeholder="{{'Search tokens' | translate}}" [(ngModel)]="searchQuery" (ngModelChange)="updateSearchInput(searchQuery)"></ion-input>
-        <ion-icon *ngIf="searchQuery != ''" item-end class="backspace-icon" name="backspace" (click)="cleanSearch()"></ion-icon>
+        <ion-icon *ngIf="searchQuery" item-end class="backspace-icon" name="backspace" (click)="cleanSearch()"></ion-icon>
       </ion-item>
     </div>
     <div *ngFor="let token of tokenSearchResults">

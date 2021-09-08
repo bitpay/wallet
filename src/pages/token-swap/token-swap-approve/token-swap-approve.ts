@@ -1,19 +1,14 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import {
-  ModalController,
-  NavController,
-  NavParams,
-  ViewController
-} from 'ionic-angular';
+import { NavController, NavParams, ViewController } from 'ionic-angular';
 
 // Pages
-import { FinishModalPage } from '../../finish/finish';
 
 // Providers
 import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
 import { BwcErrorProvider } from '../../../providers/bwc-error/bwc-error';
 import { BwcProvider } from '../../../providers/bwc/bwc';
+import { ConfigProvider } from '../../../providers/config/config';
 import { CurrencyProvider } from '../../../providers/currency/currency';
 import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
 import { Logger } from '../../../providers/logger/logger';
@@ -21,6 +16,7 @@ import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-g
 import { OneInchProvider } from '../../../providers/one-inch/one-inch';
 import { PlatformProvider } from '../../../providers/platform/platform';
 import { ProfileProvider } from '../../../providers/profile/profile';
+import { RateProvider } from '../../../providers/rate/rate';
 import { TxFormatProvider } from '../../../providers/tx-format/tx-format';
 import {
   TransactionProposal,
@@ -38,33 +34,15 @@ export class TokenSwapApprovePage {
   public toToken;
   public calldata;
   public approveSpenderAddress: string;
-  public amountFrom: number;
-  public amountTo: number;
   public alternativeIsoCode: string;
-  public useSendMax: boolean;
-  public sendMaxInfo;
-  public fixedRateId: string;
-  public rate: number;
-  public fee: number;
-  public gasPrice: number;
-  public gasLimit: number;
-  public fiatAmountTo;
-  private ctxp;
-
-  public totalExchangeFee: number;
-  public payinAddress: string;
-  public payinExtraId: string;
-
-  public paymentExpired: boolean;
-  public remainingTimeStr: string;
-
+  public ctxp;
+  public fiatFee: number;
   public errors;
 
   constructor(
     private actionSheetProvider: ActionSheetProvider,
     private logger: Logger,
     private navParams: NavParams,
-    private modalCtrl: ModalController,
     private viewCtrl: ViewController,
     private oneInchProvider: OneInchProvider,
     private navCtrl: NavController,
@@ -73,6 +51,8 @@ export class TokenSwapApprovePage {
     private externalLinkProvider: ExternalLinkProvider,
     private txFormatProvider: TxFormatProvider,
     private translate: TranslateService,
+    private configProvider: ConfigProvider,
+    private rateProvider: RateProvider,
     private currencyProvider: CurrencyProvider,
     private walletProvider: WalletProvider,
     private bwcErrorProvider: BwcErrorProvider,
@@ -89,6 +69,8 @@ export class TokenSwapApprovePage {
     );
     this.fromToken = this.navParams.data.fromTokenSelected;
     this.toToken = this.navParams.data.toTokenSelected;
+    this.alternativeIsoCode =
+      this.configProvider.get().wallet.settings.alternativeIsoCode || 'USD';
 
     this.getApproveCalldata();
   }
@@ -119,12 +101,22 @@ export class TokenSwapApprovePage {
             this.createTx(this.fromWalletSelected)
               .then(ctxp => {
                 this.ctxp = ctxp;
+                if (this.ctxp.fee) {
+                  this.fiatFee = this.rateProvider.toFiat(
+                    this.ctxp.fee,
+                    this.alternativeIsoCode,
+                    'eth'
+                  );
+                }
               })
               .catch(err => {
-                const isInsufficientLinkedEthFundsForFeeErr =
-                  err instanceof this.errors.INSUFFICIENT_ETH_FEE;
+                this.onGoingProcessProvider.clear();
+                const isInsufficientFundsErr =
+                  err instanceof this.errors.INSUFFICIENT_FUNDS;
+                const isInsufficientFundsForFeeErr =
+                  err instanceof this.errors.INSUFFICIENT_FUNDS_FOR_FEE;
 
-                if (isInsufficientLinkedEthFundsForFeeErr) {
+                if (isInsufficientFundsErr || isInsufficientFundsForFeeErr) {
                   let { requiredFee } = err.messageData;
 
                   const coin = this.fromWalletSelected.coin.toLowerCase();
@@ -156,7 +148,7 @@ export class TokenSwapApprovePage {
                         'https://support.bitpay.com/hc/en-us/articles/115003393863-What-are-bitcoin-miner-fees-'
                       );
                     }
-                    this.navCtrl.popToRoot();
+                    this.rejectApprove();
                   });
                 } else {
                   this.showErrorAndBack(err.title, err.message);
@@ -221,14 +213,17 @@ export class TokenSwapApprovePage {
     this.publishAndSign(this.fromWalletSelected, this.ctxp)
       .then(txSent => {
         this.onGoingProcessProvider.clear();
-        this.openFinishModal(txSent);
+        this.viewCtrl.dismiss(txSent);
       })
       .catch(err => {
         this.logger.error(this.bwcErrorProvider.msg(err));
-        this.showErrorAndBack(
-          null,
-          this.translate.instant('Could not send transaction')
-        );
+        this.showErrorAndBack(null, err);
+        this.logger.warn('Error on publishAndSign: removing payment proposal');
+        this.walletProvider
+          .removeTx(this.fromWalletSelected, this.ctxp)
+          .catch(() => {
+            this.logger.warn('Could not delete payment proposal');
+          });
         return;
       });
   }
@@ -295,19 +290,6 @@ export class TokenSwapApprovePage {
     });
   }
 
-  private openFinishModal(txSent): void {
-    let finishText = 'Transaction Sent';
-    let modal = this.modalCtrl.create(
-      FinishModalPage,
-      { finishText, coin: this.fromWalletSelected.coin },
-      { showBackdrop: true, enableBackdropDismiss: false }
-    );
-    modal.present();
-    modal.onDidDismiss(async () => {
-      this.viewCtrl.dismiss(txSent);
-    });
-  }
-
   private showErrorAndBack(title: string, msg, noExit?: boolean): void {
     title = title ? title : this.translate.instant('Error');
     this.logger.error(msg);
@@ -324,16 +306,12 @@ export class TokenSwapApprovePage {
     errorActionSheet.onDidDismiss(_option => {
       if (!noExit) {
         this.onGoingProcessProvider.clear();
-        this.navCtrl.pop();
+        this.rejectApprove();
       }
     });
   }
 
-  public canContinue(): boolean {
-    return !this.paymentExpired;
-  }
-
-  public cancelExchange() {
+  public rejectApprove() {
     this.viewCtrl.dismiss();
   }
 }

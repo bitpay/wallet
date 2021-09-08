@@ -2,10 +2,16 @@ page-coin-and-wallet-selector {
   .back-arrow {
     font-size: 28px;
   }
+  .send-header-wrapper {
+    padding: 1rem;
+  }
   .search-wrapper {
     .backspace-icon {
       z-index: 999;
     }
+  }
+  .mb {
+    margin-bottom: 50px;
   }
   .bp-list {
     .list-subtitle {

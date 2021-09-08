@@ -26,7 +26,9 @@ import {
 } from '../../providers/wallet-connect/web3-providers/web3-providers';
 
 import * as _ from 'lodash';
+import { AbiDecoderProvider } from '../abi-decoder/abi-decoder';
 import { IncomingDataProvider } from '../incoming-data/incoming-data';
+import { OneInchProvider } from '../one-inch/one-inch';
 
 @Injectable()
 export class WalletConnectProvider {
@@ -48,6 +50,9 @@ export class WalletConnectProvider {
     'eth_sign',
     'eth_signTransaction',
     'eth_signTypedData',
+    'eth_signTypedData_v1',
+    'eth_signTypedData_v3',
+    'eth_signTypedData_v4',
     'personal_sign'
   ];
 
@@ -63,7 +68,9 @@ export class WalletConnectProvider {
     private events: Events,
     private incomingDataProvider: IncomingDataProvider,
     private keyProvider: KeyProvider,
-    private bwcProvider: BwcProvider
+    private bwcProvider: BwcProvider,
+    private abiDecoderProvider: AbiDecoderProvider,
+    private oneInchProvider: OneInchProvider
   ) {
     this.logger.debug('WalletConnect Provider initialized');
   }
@@ -247,10 +254,10 @@ export class WalletConnectProvider {
       // }
 
       this.analyticsProvider.logEvent('wallet_connect_call_request', {});
-      const _payload = this.refEthereumRequests(payload);
+      const _payload = await this.refEthereumRequests(payload);
 
       const alreadyExist = _.some(this.requests, request => {
-        return request.id === _payload;
+        return request.id === _payload.id;
       });
 
       if (!alreadyExist) {
@@ -376,7 +383,7 @@ export class WalletConnectProvider {
     this.logger.log('Cleared Cached WalletConnect Session');
   }
 
-  private refEthereumRequests(payload) {
+  private async refEthereumRequests(payload) {
     this.logger.debug(`refEthereumRequests ${payload.method}`);
     switch (payload.method) {
       case 'eth_sendTransaction':
@@ -395,8 +402,25 @@ export class WalletConnectProvider {
         payload.params[0].value = payload.params[0].value
           ? convertHexToNumber(payload.params[0].value)
           : 0;
+        // Decode ERC20 approve transaction
+        // For any other request the Dapp contract ABI will be needed for decoding the transaction data
+        payload.decodedData = this.abiDecoderProvider.decodeERC20Data(
+          payload.params[0].data
+        );
+
+        if (payload.decodedData && payload.decodedData.name === 'approve') {
+          try {
+            const allTokens = await this.oneInchProvider.getCurrencies1inch();
+            payload.tokenInfo = allTokens.tokens[payload.params[0].to];
+          } catch {
+            this.logger.warn('Wallet Connect - Token not found');
+          }
+        }
         break;
       case 'eth_signTypedData':
+      case 'eth_signTypedData_v1':
+      case 'eth_signTypedData_v3':
+      case 'eth_signTypedData_v4':
       case 'personal_sign':
       case 'eth_sign':
         // nothing
@@ -408,7 +432,7 @@ export class WalletConnectProvider {
         );
         break;
     }
-    return payload;
+    return Promise.resolve(payload);
   }
 
   public async killSession(): Promise<void> {

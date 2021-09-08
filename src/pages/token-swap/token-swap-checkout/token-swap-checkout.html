@@ -106,6 +106,14 @@
         </ion-note>
       </ion-item>
 
+      <div *ngIf="fiatFee" class="amount-details">
+        <div class="secondary-note">
+          <span>
+            ~{{ fiatFee | number : '1.2-2' }} {{ alternativeIsoCode }}
+          </span>
+        </div>
+      </div>
+
       <div class="line-divider"></div>
 
       <ion-item>
@@ -117,7 +125,7 @@
         <ion-note item-end *ngIf="gasPrice">
           <div class="summary-item-detail">
             <span>
-              {{ gasPrice }} wei
+              {{ gasPrice * 1e-9 | number:'1.2-2' }} Gwei
             </span>
           </div>
         </ion-note>
@@ -198,10 +206,10 @@
     </ion-list>
   </div>
   <div footer-content>
-    <page-slide-to-accept #slideButton *ngIf="isCordova && canContinue()" [disabled]="!canContinue()" buttonText="{{'Slide to Make Payment' | translate}}" [isDogecoin]="fromWalletSelected && fromWalletSelected.coin == 'doge'"  (slideDone)="makePayment()">
+    <page-slide-to-accept #slideButton *ngIf="isCordova && canContinue()" [disabled]="!canContinue()" buttonText="{{'Slide to Complete Swap' | translate}}" [isDogecoin]="fromWalletSelected && fromWalletSelected.coin == 'doge'"  (slideDone)="makePayment()">
     </page-slide-to-accept>
     <ion-toolbar *ngIf="!isCordova">
-      <button ion-button full class="button-footer" (click)="makePayment()" [disabled]="!canContinue()">{{'Make Payment' | translate}}</button>
+      <button ion-button full class="button-footer" (click)="makePayment()" [disabled]="!canContinue()">{{'Complete Swap' | translate}}</button>
     </ion-toolbar>
   </div>
 </wide-header-page>

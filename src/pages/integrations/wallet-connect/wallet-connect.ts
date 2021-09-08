@@ -204,6 +204,17 @@ export class WalletConnectPage {
     this.connected = connected;
     this.activeChainId = activeChainId;
     this.wallet = this.profileProvider.getWallet(walletId);
+    // check if wallet still exist
+    if (!this.wallet) {
+      this.errorsProvider.showDefaultError(
+        this.translate.instant(
+          'Could not found your selected wallet. Try with a new connection'
+        ),
+        this.translate.instant('Could not connect')
+      );
+      await this.killSession();
+      return;
+    }
     this.address = address;
     this.peerMeta = peerMeta;
     this.requests = requests;

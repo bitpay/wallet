@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import * as _ from 'lodash';
+import * as moment from 'moment';
 
 // providers
 import { Logger } from '../logger/logger';
@@ -185,6 +186,7 @@ export class OneInchProvider {
         : '0x11111112542d85b3ef69ae05771c2dccff4faa26'; // 1inch v3 contract address
 
       this.logger.debug('Making verifyAllowancesAndBalances request');
+      const now = moment().unix() * 1000;
 
       // tokensFetchType property can be 'baseTokens' or 'customAndLpTokens'
 
@@ -194,7 +196,8 @@ export class OneInchProvider {
             spenderAddress +
             '/' +
             data.addressToCheck +
-            '?tokensFetchType=baseTokens',
+            '?tokensFetchType=baseTokens?t=' +
+            now,
           {
             headers
           }

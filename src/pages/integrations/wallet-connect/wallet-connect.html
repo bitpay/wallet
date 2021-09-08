@@ -176,13 +176,13 @@
 
           <ion-item>
             <ion-label>
-              <div class="summary-item" translate>Pending Call Requests</div>
+              <div class="summary-item" translate>Pending Requests</div>
             </ion-label>
           </ion-item>
 
           <ion-item *ngIf="!requests || requests?.length === 0">
             <ion-label>
-              {{'No pending call requests' | translate}}
+              {{'No pending requests' | translate}}
             </ion-label>
           </ion-item>
 
@@ -195,12 +195,20 @@
                 <ion-label>
                   <div class="main-label">{{peerMeta?.name}}</div>
                 </ion-label>
-                <ion-note item-end>
+                <ion-note *ngIf="request.decodedData && request.decodedData.name === 'approve'; else notApprove" item-end>
                   <div class="main-note">
-                    <span> {{ request.params[0].value | satToUnit: wallet.coin }}</span>
+                    <span>{{ 'Approve' | translate }} {{ request.tokenInfo?.symbol || request.tokenInfo?.name}}</span>
                     <ion-icon name="ios-arrow-forward-outline" color="light-grey"></ion-icon>
                   </div>
                 </ion-note>
+                <ng-template #notApprove>
+                  <ion-note item-end>
+                    <div class="main-note">
+                      <span> {{ request.params[0].value | satToUnit: wallet.coin }}</span>
+                      <ion-icon name="ios-arrow-forward-outline" color="light-grey"></ion-icon>
+                    </div>
+                  </ion-note>
+               </ng-template>
               </button>
             </ion-list>
           </div>

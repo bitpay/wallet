@@ -1180,13 +1180,26 @@ export class ProfileProvider {
         {
           baseUrl: opts.bwsurl // clientOpts
         },
-        (err, key, walletClients) => {
+        async (err, key, walletClients) => {
           if (err) {
             return reject(err);
           }
           if (walletClients.length === 0) {
             return reject('WALLET_DOES_NOT_EXIST');
           } else {
+            let customTokens = [];
+            walletClients.forEach(w => {
+              if (
+                !this.coinSupported(w.credentials.coin) &&
+                w.credentials.token
+              )
+                customTokens.push({
+                  ...w.credentials.token,
+                  ...{ symbol: w.credentials.token.symbol.toLowerCase() }
+                });
+            });
+            if (customTokens && customTokens[0])
+              await this.currencyProvider.addCustomToken(customTokens);
             return resolve({ key, walletClients });
           }
         }

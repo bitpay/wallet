@@ -197,7 +197,11 @@ export class HomePage {
       return;
     }
     this.persistenceProvider.getNewFeatureSlidesFlag().then(value => {
-      if (!value || value !== dismissFlag) {
+      // if no flag or if current build major minor !== flag major and minor
+      if (
+        !value ||
+        !this.appProvider.meetsMajorMinorVersion(currentVs, value.split('_')[1])
+      ) {
         this.newFeatureData.get().then(feature_list => {
           if (feature_list && feature_list.features.length > 0) {
             const modal = this.modalCtrl.create(NewFeaturePage, {
@@ -215,7 +219,7 @@ export class HomePage {
               }
             });
           } else {
-            this.persistenceProvider.setNewFeatureSlidesFlag(currentVs);
+            this.persistenceProvider.setNewFeatureSlidesFlag(dismissFlag);
           }
         });
       }
@@ -539,6 +543,7 @@ export class HomePage {
           break;
         case 'exchangecrypto':
           this.showExchangeCryptoOption = true;
+          this.addSwapTokensAdvertisement();
           break;
         case 'giftcards':
           this.showShoppingOption = true;
@@ -696,6 +701,25 @@ export class HomePage {
         dismissible: true,
         isTesting: false,
         imgSrc: 'assets/img/wallet-connect/advertisement.svg'
+      });
+    this.showAdvertisements = true;
+  }
+
+  private async addSwapTokensAdvertisement() {
+    const alreadyVisible = this.advertisements.find(
+      a => a.name === 'swapTokens'
+    );
+    !alreadyVisible &&
+      this.advertisements.unshift({
+        name: 'swapTokens',
+        title: this.translate.instant('Swap Tokens'),
+        body: this.translate.instant('Choose from hundreds of ERC-20 tokens.'),
+        app: 'bitpay',
+        linkText: this.translate.instant('Get Started'),
+        link: 'swap-tokens-page',
+        dismissible: true,
+        isTesting: false,
+        imgSrc: 'assets/img/exchange-crypto/icon-swap.svg'
       });
     this.showAdvertisements = true;
   }
@@ -893,6 +917,10 @@ export class HomePage {
   public goTo(page, params: any = {}) {
     if (page === 'wallet-connect-page') {
       this.goToWalletConnectPage();
+      return;
+    }
+    if (page === 'swap-tokens-page') {
+      this.checkSwapCryptoDisclaimer();
       return;
     }
     if (page === 'card-referral') {

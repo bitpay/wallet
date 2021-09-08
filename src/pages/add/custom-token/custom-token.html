@@ -1,72 +1,58 @@
-<wide-header-page title="{{ 'Add Token' | translate }}">
-  <ion-buttons right>
-    <button clear wide-header-bar-button (click)="createAndBindTokenWallet()" [disabled]="!customTokenForm.valid" ion-button>
-      <span translate>Add</span>
-    </button>
-  </ion-buttons>
-  <div page-content>
-    <button class="linked-wallet" ion-item (click)="showPairedWalletSelector()" detail-none>
-      <ion-label>
-        <div class="summary-item">
-          <span translate>Linked to</span>
-        </div>
-      </ion-label>
+<ion-header>
+  <ion-navbar>
+    <ion-title class="bp-title">Add Token</ion-title>
+  </ion-navbar>
+</ion-header>
 
-      <ion-note item-end>
-        <ion-row align-items-center class="wallet" *ngIf="pairedWallet">
-          <ion-col>
-            <coin-icon [coin]="pairedWallet.coin" [network]="pairedWallet.network"></coin-icon>
-          </ion-col>
+<ion-content>
 
-          <ion-col>
-            <span class="note-container ellipsis">{{pairedWallet.name}}</span>
-          </ion-col>
-        </ion-row>
+  <button class="linked-wallet" ion-item (click)="showPairedWalletSelector()" detail-none>
+    <ion-label>
+      <div class="summary-item">
+        <span translate>Linked to</span>
+      </div>
+    </ion-label>
 
-        <ion-row align-items-center class="wallet" *ngIf="!pairedWallet">
-          <div class="last-item" item-end>
-            <button ion-button clear color="grey" icon-only>
-              <ion-icon *ngIf="!isOpenSelector" name="ios-arrow-down-outline"></ion-icon>
-              <ion-icon *ngIf="isOpenSelector" name="ios-arrow-up-outline"></ion-icon>
-            </button>
-          </div>
-        </ion-row>
-      </ion-note>
-    </button>
+    <ion-note item-end>
+      <ion-row align-items-center class="wallet" *ngIf="pairedWallet">
+        <ion-col>
+          <coin-icon [coin]="pairedWallet.coin" [network]="pairedWallet.network"></coin-icon>
+        </ion-col>
 
-    <form [formGroup]="customTokenForm">
-        <p class="title"><a (click)="openSearchModal()"translate>Search for a token</a> <span translate>or enter the contract address</span></p>
-        <ion-item>
-          <ion-icon *ngIf="isValid" name="ios-checkmark-circle" class="check success" item-right></ion-icon>
-          <ion-icon *ngIf="isValid === false" name="ios-close-circle" class="check fail" item-right></ion-icon>
-          <ion-label floating>{{'Token address' | translate}}</ion-label>
-          <ion-input  (ionChange)="setTokenInfo()" type="text" formControlName="tokenAddress"></ion-input>
-        </ion-item>
+        <ion-col>
+          <span class="note-container ellipsis">{{pairedWallet.name}}</span>
+        </ion-col>
+      </ion-row>
 
-        <ion-item *ngIf="customTokenForm.value.tokenName">
-          <ion-label floating>{{'Token name' | translate}}</ion-label>
-          <ion-input [disabled]="true" type="text" formControlName="tokenName"></ion-input>
-        </ion-item>
+    </ion-note>
+  </button>
 
 
-        <ion-item *ngIf="customTokenForm.value.tokenSymbol">
-          <ion-label floating>{{'Token symbol' | translate}}</ion-label>
-          <ion-input [disabled]="true" type="text" formControlName="tokenSymbol"></ion-input>
-        </ion-item>
-
-        <ion-item *ngIf="customTokenForm.value.tokenDecimals">
-          <ion-label floating>{{'Token precision' | translate}}</ion-label>
-          <ion-input [disabled]="true" type="text" formControlName="tokenDecimals"></ion-input>
-        </ion-item>
-
-
-      <label-tip type="info" header="no-header" class="no-arrowhead">
-        <div label-tip-body>
-          <span translate>
-            Keep in mind that once the tokens funds are received, to move them you will need to have enough funds in your Ethereum linked wallet to pay the ETH miner fees.
-          </span>
-          </div>
-      </label-tip>
-    </form>
+  <div class="send-header-wrapper">
+    <ion-item class="search-wrapper">
+      <ion-input placeholder="{{'Search tokens' | translate}}" [(ngModel)]="searchQuery" (ngModelChange)="updateSearchInput(searchQuery)"></ion-input>
+      <ion-icon *ngIf="searchQuery" item-end class="backspace-icon" name="backspace" (click)="cleanSearch()"></ion-icon>
+    </ion-item>
   </div>
-</wide-header-page>
+  <ion-list class="settings-list bp-list">
+    <div>
+      <button *ngFor="let token of tokenSearchResults" class="list-button" (click)="openConfirmModal(token)" ion-item>
+        <ion-icon *ngIf="currencyProvider.COIN[token.symbol | uppercase]" class="item-icon" item-start>
+          <img src="assets/img/currencies/{{token.symbol.toLowerCase()}}.svg" />
+        </ion-icon>
+        <ion-icon *ngIf="!currencyProvider.COIN[token.symbol | uppercase]" class="item-icon" item-start>
+          <img src="{{token.logoURI}}" onerror="this.onerror=null;this.src='assets/img/icon-swap.svg'"/>
+        </ion-icon>
+        <div class="item-title">{{ token.name }} ({{ token.symbol }})</div>
+      </button>
+    </div>
+    <div class="token-count" *ngIf="tokenListShowMore">
+      <span>{{filteredTokens.length - tokenSearchResults.length}} more</span>
+      &nbsp;
+      <ion-icon name="arrow-down"></ion-icon>
+    </div>
+  </ion-list>
+  <ion-infinite-scroll *ngIf="tokenListShowMore" (ionInfinite)="moreSearchResults($event)">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+</ion-content>

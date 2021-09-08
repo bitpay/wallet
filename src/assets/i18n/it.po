@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: copay\n"
 "Language-Team: Italian\n"
 "Language: it\n"
-"PO-Revision-Date: 2021-08-04 18:54\n"
+"PO-Revision-Date: 2021-08-31 12:45\n"
 
 msgid "(possible double spend)"
 msgstr "(possibile doppia spesa)"
@@ -29,11 +29,20 @@ msgstr ""
 msgid ", please provide your phone number."
 msgstr ""
 
+msgid ". Added a new wallet."
+msgstr ""
+
+msgid ". Added {{newWallets}} new wallets."
+msgstr ""
+
 msgid "1.5% of the amount."
 msgstr ""
 
 msgid "1D"
 msgstr "Florea Marin Ladislau "
+
+msgid "1Inch is not available at this moment. Please, try again later."
+msgstr ""
 
 msgid "5 USD minimum fee or 2.9% of the amount + 0.30 USD, whichever is greater + Required miners fee."
 msgstr ""
@@ -113,6 +122,9 @@ msgstr "Aggiungi"
 msgid "Add BitPay Account?"
 msgstr "Aggiungere Account BitPay?"
 
+msgid "Add ERC-20 Tokens"
+msgstr ""
+
 msgid "Add Encryption"
 msgstr ""
 
@@ -121,6 +133,9 @@ msgstr ""
 
 msgid "Add Me"
 msgstr "Aggiungimi"
+
+msgid "Add Token"
+msgstr ""
 
 msgid "Add Wallet"
 msgstr "Aggiunti Portafoglio"
@@ -134,9 +149,6 @@ msgstr "Aggiungi come contatto"
 msgid "Add copayers"
 msgstr "Aggiungi copayer"
 
-msgid "Add custom token"
-msgstr ""
-
 msgid "Add funds"
 msgstr "Aggiungi fondi"
 
@@ -149,6 +161,9 @@ msgstr "Aggiungere questo account BitPay ({{email}})?"
 msgid "Add {coinName} address"
 msgstr ""
 
+msgid "Adding Tokens"
+msgstr ""
+
 msgid "Additional third-party fees may apply."
 msgstr ""
 
@@ -157,6 +172,9 @@ msgstr "Indirizzo"
 
 msgid "Address Book"
 msgstr "Rubrica Indirizzi"
+
+msgid "Address From"
+msgstr ""
 
 msgid "Address Type"
 msgstr "Tipo di indirizzo"
@@ -221,7 +239,13 @@ msgstr ""
 msgid "Apply"
 msgstr ""
 
+msgid "Approval is confirming"
+msgstr ""
+
 msgid "Approve"
+msgstr ""
+
+msgid "Approve {{fromWalletCoin}}"
 msgstr ""
 
 msgid "Approximate Bitcoin network fee to transfer wallet's balance (with normal priority)"
@@ -425,6 +449,9 @@ msgstr "Acquisizione carta regalo..."
 msgid "By giving my email address, I give explicit consent to BitPay to use it to contact me about payment issues."
 msgstr ""
 
+msgid "By granting this permission, \"1inch\" will be able to withdraw your {{ fromToken.symbol }} and complete transactions for you."
+msgstr ""
+
 msgid "By providing your email address, you give explicit consent to BitPay to use your email address to send you email notifications about payments."
 msgstr "Fornendo il tuo indirizzo email, darai il consenso esplicito a BitPay di utilizzare il tuo indirizzo email per inviarti notifiche via email relative ai pagamenti."
 
@@ -500,6 +527,9 @@ msgstr "Controlla la transazione su dettagli nel tuo portafoglio"
 msgid "Choose a backup file from your computer"
 msgstr "Scegli un file di backup dal tuo computer"
 
+msgid "Choose from hundreds of ERC-20 tokens."
+msgstr ""
+
 msgid "Claim Code"
 msgstr ""
 
@@ -553,6 +583,9 @@ msgstr ""
 
 msgid "Coming soon"
 msgstr "In arrivo"
+
+msgid "Complete Swap"
+msgstr ""
 
 msgid "Completed"
 msgstr "Completato"
@@ -614,6 +647,9 @@ msgstr "Connetti Account Coinbase"
 msgid "Connect Your BitPay ID"
 msgstr ""
 
+msgid "Connect to Defi"
+msgstr ""
+
 msgid "Connect with Coinbase"
 msgstr ""
 
@@ -626,7 +662,7 @@ msgstr ""
 msgid "Connecting BitPay ID..."
 msgstr "Connessione ID BitPay..."
 
-msgid "Connecting to Changelly..."
+msgid "Connecting to 1Inch..."
 msgstr ""
 
 msgid "Connecting to Coinbase..."
@@ -649,9 +685,6 @@ msgstr ""
 
 msgid "Continue"
 msgstr "Continua"
-
-msgid "Continue & Make Payment"
-msgstr ""
 
 msgid "Continue Anyway"
 msgstr ""
@@ -752,7 +785,7 @@ msgstr "Impossibile eliminare la proposta di pagamento"
 msgid "Could not encrypt wallet"
 msgstr "Impossibile crittografare il portafoglio"
 
-msgid "Could not find any ERC20 contract attach to the provided address"
+msgid "Could not find any ERC20 contract attached to the provided address."
 msgstr ""
 
 msgid "Could not get crypto offer. Please, try again later."
@@ -860,19 +893,22 @@ msgstr "Carte attuali"
 msgid "Current fee value:"
 msgstr ""
 
-msgid "Currently our partner does not support exchanges with the selected coin"
+msgid "Currently it has not been possible to find a path that allows the transaction between the selected pair of tokens: "
+msgstr ""
+
+msgid "Currently none of our partners accept the exchange of the selected pair: "
+msgstr ""
+
+msgid "Currently our partners does not support exchanges with the selected coin"
+msgstr ""
+
+msgid "Currently the \"Send Max\" feature is not supported for ETH swaps on the 1Inch exchange. Try entering the amount manually."
 msgstr ""
 
 msgid "Custom"
 msgstr "Personalizzata"
 
-msgid "Custom Tokens"
-msgstr ""
-
 msgid "Custom fee"
-msgstr ""
-
-msgid "Custom tokens cannot be used for payments on BitPay"
 msgstr ""
 
 msgid "DETAILS"
@@ -950,16 +986,10 @@ msgstr ""
 msgid "Designed for people who want to live life on crypto. View your balance, request a new PIN, and reload instantly all within the BitPay App."
 msgstr ""
 
-msgid "Destination"
-msgstr ""
-
 msgid "Destination Tag"
 msgstr ""
 
 msgid "Destination Tag (Payin Extra Id)"
-msgstr ""
-
-msgid "Destination wallet needs to be backed up"
 msgstr ""
 
 msgid "Details"
@@ -1043,6 +1073,9 @@ msgstr ""
 msgid "Easily deposit and withdraw funds."
 msgstr ""
 
+msgid "Easily swap hundreds of ERC-20 tokens through Decentralized Exchanges (DEXs)."
+msgstr ""
+
 msgid "Economy"
 msgstr "Economia"
 
@@ -1090,9 +1123,6 @@ msgstr "Inserisci importo"
 
 msgid "Enter Two Factor for your BitPay account"
 msgstr "Immettere il fattore due per il tuo account BitPay"
-
-msgid "Enter WalletConnect URI"
-msgstr ""
 
 msgid "Enter a destination tag"
 msgstr ""
@@ -1163,6 +1193,9 @@ msgstr ""
 msgid "Error getting fee rate"
 msgstr "Errore durante l'acquisizione della tariffa"
 
+msgid "Error on Re-Import"
+msgstr ""
+
 msgid "Error pairing BitPay Account"
 msgstr "Errore di accoppiamento BitPay Account"
 
@@ -1183,15 +1216,6 @@ msgstr ""
 
 msgid "Exceeded daily limit of $500 per user"
 msgstr "Superato il limite giornaliero di $500 per utente"
-
-msgid "Exchange"
-msgstr ""
-
-msgid "Exchange Crypto"
-msgstr ""
-
-msgid "Exchange Crypto Settings"
-msgstr ""
 
 msgid "Exchange Fee"
 msgstr ""
@@ -1319,6 +1343,9 @@ msgstr "Da"
 msgid "From BitPay account"
 msgstr "Dal conto BitPay"
 
+msgid "Function"
+msgstr ""
+
 msgid "Fund it. Spend it."
 msgstr ""
 
@@ -1349,10 +1376,19 @@ msgstr ""
 msgid "GOT IT"
 msgstr "CAPITO"
 
+msgid "Gas"
+msgstr ""
+
 msgid "Gas Limit"
 msgstr ""
 
 msgid "Gas Price"
+msgstr ""
+
+msgid "Gas limit"
+msgstr ""
+
+msgid "Gas price"
 msgstr ""
 
 msgid "General"
@@ -1415,6 +1451,9 @@ msgstr "Carta regalo annullata"
 msgid "Gift card purchases are temporarily unavailable. Please try again later."
 msgstr "Gli acquisti con carta regalo sono temporaneamente non disponibili. Per favore riprova più tardi."
 
+msgid "Give this site permission to access your token?"
+msgstr ""
+
 msgid "Go Back"
 msgstr "Indietro"
 
@@ -1433,6 +1472,9 @@ msgstr "Hai riscattato tutte le tue carte regalo {brand}? Le carte regalo archiv
 msgid "Have you redeemed the entire balance of this gift card?"
 msgstr "Hai riscattato l'intero saldo di questa carta regalo?"
 
+msgid "Having problems with 1Inch?"
+msgstr ""
+
 msgid "Having problems with Changelly?"
 msgstr ""
 
@@ -1448,6 +1490,9 @@ msgstr ""
 msgid "Help & support"
 msgstr "Aiuto e assistenza"
 
+msgid "Help BitPay Improve"
+msgstr ""
+
 msgid "Help BitPay improve"
 msgstr ""
 
@@ -1456,6 +1501,9 @@ msgstr ""
 
 msgid "Help and support information is available at the website."
 msgstr "Guida e informazioni di supporto tecnico sono disponibili sul sito web."
+
+msgid "Help us by answering 3 quick questions."
+msgstr ""
 
 msgid "Hidden"
 msgstr ""
@@ -1494,6 +1542,9 @@ msgid "How to recover your funds if you lose this device?"
 msgstr ""
 
 msgid "However, unconfirmed funds are not allowed for spending with merchants, BitPay Card loads, or BitPay in-app gift card purchases."
+msgstr ""
+
+msgid "I UNDERSTAND"
 msgstr ""
 
 msgid "I Understand"
@@ -1589,7 +1640,13 @@ msgstr "Importazione del Portafoglio..."
 msgid "In order to begin purchasing and receiving cryptocurrencies you will need to verify your key. This could take up to 3 minutes long to complete."
 msgstr ""
 
+msgid "In order to create a token wallet, an Ethereum (ETH) wallet is required. Please create an ETH wallet first."
+msgstr ""
+
 msgid "In order to create a token wallet, an Ethereum (ETH) wallet is required. Please create an ETH wallet first. Only one {{ params.token.name }} wallet is allowed per ETH wallet."
+msgstr ""
+
+msgid "In order to create a token wallet, an Ethereum (ETH) wallet is required. Please create an ETH wallet first. Only one {{ token.name }} wallet is allowed per ETH wallet."
 msgstr ""
 
 msgid "In order to create this multisig wallet, an Ethereum (ETH) wallet with enough funds is required."
@@ -1630,6 +1687,9 @@ msgstr "Indirizzo di rete non corretto"
 
 msgid "Information"
 msgstr "Informazioni"
+
+msgid "Initializing Swap Crypto..."
+msgstr ""
 
 msgid "Instant Reloads*"
 msgstr ""
@@ -1730,7 +1790,7 @@ msgstr ""
 msgid "Keep in mind that once the funds are received in your {{params.coin}} wallet, to move them you will need to have enough funds in your Ethereum linked wallet ("
 msgstr ""
 
-msgid "Keep in mind that once the tokens funds are received, to move them you will need to have enough funds in your Ethereum linked wallet to pay the ETH miner fees."
+msgid "Keep in mind that once the funds are received in your {{token.name}} wallet, to move them you will need to have enough funds in your Ethereum linked wallet to pay the ETH miner fees."
 msgstr ""
 
 msgid "Keep in mind your encrypt password is not the 12-word recovery phrase"
@@ -1799,6 +1859,9 @@ msgstr "Connesso"
 msgid "Linked Ethereum Wallet"
 msgstr ""
 
+msgid "Linked Wallet"
+msgstr ""
+
 msgid "Linked to"
 msgstr ""
 
@@ -1806,9 +1869,6 @@ msgid "Linked to (Copayer 1)"
 msgstr ""
 
 msgid "Linked to wallet: {linkedEthWalletName}"
-msgstr ""
-
-msgid "Linked wallet"
 msgstr ""
 
 msgid "Litecoin Address"
@@ -1856,6 +1916,9 @@ msgstr "Basso Costo"
 msgid "Low amount inputs"
 msgstr "Ingressi di quantità bassa"
 
+msgid "Low values increase chances that transaction will fail, high values increase chances of front running."
+msgstr ""
+
 msgid "Manage your Coinbase account, check balances, deposit and withdraw funds between wallets."
 msgstr ""
 
@@ -1880,7 +1943,7 @@ msgstr "Messaggio dal commerciante"
 msgid "Message"
 msgstr ""
 
-msgid "Method"
+msgid "Method not supported"
 msgstr ""
 
 msgid "Miner Fee"
@@ -1929,6 +1992,9 @@ msgid "Multiple recipients ({recipientsCount})"
 msgstr ""
 
 msgid "Multisig contract address not found."
+msgstr ""
+
+msgid "NO THANKS"
 msgstr ""
 
 msgid "Name"
@@ -2045,17 +2111,11 @@ msgstr ""
 msgid "No wallet found"
 msgstr "Nessun portafoglio trovato"
 
-msgid "No wallet selected"
-msgstr ""
-
 msgid "No wallets available"
 msgstr "Nessun portafoglio disponibile"
 
 msgid "No wallets available to receive funds"
 msgstr "Nessun portafoglo disponibile per ricevere i fondi"
-
-msgid "No wallets available to use this exchange"
-msgstr ""
 
 msgid "No wallets with funds"
 msgstr "Nessun portafoglio con fondi"
@@ -2068,6 +2128,9 @@ msgstr ""
 
 msgid "Normal"
 msgstr "Normale"
+
+msgid "Not Supported"
+msgstr ""
 
 msgid "Not authorized"
 msgstr "Non autorizzato"
@@ -2096,6 +2159,9 @@ msgstr "Indirizzo bitcoin non valido"
 msgid "Notes"
 msgstr ""
 
+msgid "Notice"
+msgstr ""
+
 msgid "Notifications"
 msgstr "Notifiche"
 
@@ -2110,6 +2176,9 @@ msgstr ""
 
 msgid "Notify me if confirmed"
 msgstr "Notificami se confermato"
+
+msgid "Now you can add ERC-20 tokens to keep track of all your digital assets in one place. In your wallet, tap + and ‘Add Token’ to add."
+msgstr ""
 
 msgid "OAuth Code"
 msgstr ""
@@ -2134,6 +2203,9 @@ msgstr "Ok"
 
 msgid "On"
 msgstr "Attivato"
+
+msgid "OneInch is not available at this moment. Please, try again later."
+msgstr ""
 
 msgid "Only a {name} phone number can be used for this purchase."
 msgstr ""
@@ -2174,10 +2246,10 @@ msgstr ""
 msgid "Open settings"
 msgstr "Apri impostazioni"
 
-msgid "Or add a custom token"
+msgid "Or its equivalent in {{ fiatCurrency?.toUpperCase() }}."
 msgstr ""
 
-msgid "Or its equivalent in {{ fiatCurrency?.toUpperCase() }}."
+msgid "Or paste URL"
 msgstr ""
 
 msgid "Order Details"
@@ -2190,6 +2262,9 @@ msgid "Order Now"
 msgstr ""
 
 msgid "Order Summary"
+msgstr ""
+
+msgid "Other Supported Tokens"
 msgstr ""
 
 msgid "Ouch!"
@@ -2311,6 +2386,9 @@ msgstr ""
 
 msgid "Pending"
 msgstr "In sospeso"
+
+msgid "Pending Call Request"
+msgstr ""
 
 msgid "Pending Call Requests"
 msgstr ""
@@ -2453,10 +2531,16 @@ msgstr ""
 msgid "RBF transaction"
 msgstr ""
 
+msgid "READ MORE"
+msgstr ""
+
 msgid "Random"
 msgstr "Casuale"
 
 msgid "Re-Import Wallets"
+msgstr ""
+
+msgid "Read More"
 msgstr ""
 
 msgid "Read Only"
@@ -2603,6 +2687,9 @@ msgstr "Richiedi una funzione"
 msgid "Request a new feature"
 msgstr "Suggerisci una nuova funzione"
 
+msgid "Request approval for transactions"
+msgstr ""
+
 msgid "Request feature"
 msgstr "Richiedi funzione"
 
@@ -2687,9 +2774,6 @@ msgstr ""
 msgid "Search for a country"
 msgstr ""
 
-msgid "Search for a token"
-msgstr ""
-
 msgid "Search tokens"
 msgstr ""
 
@@ -2708,6 +2792,9 @@ msgstr ""
 msgid "Select Currency"
 msgstr ""
 
+msgid "Select Destination Coin"
+msgstr ""
+
 msgid "Select Destination Wallet"
 msgstr ""
 
@@ -2723,11 +2810,26 @@ msgstr ""
 msgid "Select Source Wallet"
 msgstr ""
 
+msgid "Select Wallet"
+msgstr ""
+
 msgid "Select Your Country"
+msgstr ""
+
+msgid "Select a Country"
+msgstr ""
+
+msgid "Select a Destination"
+msgstr ""
+
+msgid "Select a Payment Method"
 msgstr ""
 
 msgid "Select a wallet"
 msgstr "Selezionare un portafoglio"
+
+msgid "Select an Ethereum Linked Wallet"
+msgstr ""
 
 msgid "Select an Ethereum Wallet"
 msgstr ""
@@ -2834,9 +2936,6 @@ msgstr "La risposta del server non può essere verificata"
 msgid "Session Log"
 msgstr "Registro di sessione"
 
-msgid "Session Request"
-msgstr ""
-
 msgid "Set up a password"
 msgstr "Imposta una password"
 
@@ -2897,7 +2996,7 @@ msgstr ""
 msgid "Show \"Buy Crypto\""
 msgstr ""
 
-msgid "Show \"Exchange Crypto\""
+msgid "Show \"Swap Crypto\""
 msgstr ""
 
 msgid "Show Portfolio Value"
@@ -2905,9 +3004,6 @@ msgstr ""
 
 msgid "Show advanced options"
 msgstr "Mostra opzioni avanzate"
-
-msgid "Show in Home tab"
-msgstr ""
 
 msgid "Show me the legacy address"
 msgstr ""
@@ -2939,10 +3035,16 @@ msgstr ""
 msgid "Single address"
 msgstr "Singolo indirizzo"
 
+msgid "Site URL"
+msgstr ""
+
 msgid "Skip"
 msgstr "Salta"
 
-msgid "Slide to Make Payment"
+msgid "Slide to Approve"
+msgstr ""
+
+msgid "Slide to Complete Swap"
 msgstr ""
 
 msgid "Slide to accept"
@@ -2966,10 +3068,19 @@ msgstr ""
 msgid "Slide to withdraw"
 msgstr ""
 
+msgid "Slippage Tolerance"
+msgstr ""
+
+msgid "Slippage happens when traders have to settle for a different price than what they initially requested due to a movement in price between the time the order enters the market and the execution of a trade."
+msgstr ""
+
 msgid "Some inputs you want to speed up have no confirmations. Please wait until they are confirmed and try again."
 msgstr ""
 
 msgid "Someone asked you to create this wallet?"
+msgstr ""
+
+msgid "Someone asked you to join a multisig wallet?"
 msgstr ""
 
 msgid "Something exciting is arriving"
@@ -2979,9 +3090,6 @@ msgid "Something goes wrong..."
 msgstr ""
 
 msgid "Something went wrong"
-msgstr ""
-
-msgid "Source"
 msgstr ""
 
 msgid "Specified amount: "
@@ -3017,6 +3125,9 @@ msgstr "Proposta di pagamento non trovata"
 msgid "Spendable balance"
 msgstr "Saldo spendibile"
 
+msgid "Spender Contract Address"
+msgstr ""
+
 msgid "Spending this balance will need significant Bitcoin network fees"
 msgstr "Per spendere questa quantità saranno necessarie significative commissioni di rete Bitcoin"
 
@@ -3035,10 +3146,25 @@ msgstr ""
 msgid "Subtotal"
 msgstr ""
 
+msgid "Successfully added {{params.name}}."
+msgstr ""
+
 msgid "Super Economy"
 msgstr "Super Economica"
 
 msgid "Supported by"
+msgstr ""
+
+msgid "Swap"
+msgstr ""
+
+msgid "Swap Crypto"
+msgstr ""
+
+msgid "Swap Crypto Settings"
+msgstr ""
+
+msgid "Swap Tokens"
 msgstr ""
 
 msgid "Swap crypto for another"
@@ -3086,6 +3212,9 @@ msgstr ""
 msgid "Take control of your crypto"
 msgstr ""
 
+msgid "Take the survey"
+msgstr ""
+
 msgid "Tap and hold to show"
 msgstr "Toccare e tenere premuto per mostrare"
 
@@ -3099,6 +3228,9 @@ msgid "Terms of Use"
 msgstr "Termini di Utilizzo"
 
 msgid "Terms of use"
+msgstr ""
+
+msgid "Test Only - No Value"
 msgstr ""
 
 msgid "Testnet coins have no value and cannot be converted into \"actual\" coins. If you are purchasing cryptocurrency through a third party, and they have requested you to create this type of wallet, they are scamming you."
@@ -3147,6 +3279,9 @@ msgid "The amount of {coinName} stored in this wallet with less than 1 blockchai
 msgstr ""
 
 msgid "The amount on the transaction does not match the amount requested. This payment will not be accepted"
+msgstr ""
+
+msgid "The approval transaction must be confirmed before this token can be used in a swap. This should only take a moment."
 msgstr ""
 
 msgid "The data of this exchange will be deleted from your device. Make sure you don't need it"
@@ -3251,6 +3386,9 @@ msgstr ""
 msgid "There are no records of your wallet on our servers. If you are importing a BIP44 compatible wallet from a 3rd party you can continue to recreate it. If you wallet is not BIP44 compatible, you will not be able to access its funds."
 msgstr ""
 
+msgid "There are no wallets available that meet the requirements to operate with our supported exchanges"
+msgstr ""
+
 msgid "There are no wallets with enough funds to make the payment"
 msgstr ""
 
@@ -3265,6 +3403,9 @@ msgstr ""
 
 msgid "There is an error in the form"
 msgstr "C'è un errore nel form"
+
+msgid "There was a problem retrieving the address. Please, try again later."
+msgstr ""
 
 msgid "There was a problem retrieving the returnAddress. Please, try again later."
 msgstr ""
@@ -3353,11 +3494,29 @@ msgstr "Cronologia"
 msgid "To"
 msgstr "A"
 
+msgid "To complete the swap, you will need to allow the exchange (\"1Inch\") to spend your {{ fromToken.symbol }}."
+msgstr ""
+
 msgid "To get started, you'll need to enter a valid address or select an existent contact or wallet."
 msgstr ""
 
 msgid "To {{reason}} you must first add your BitPay account - {{email}}"
 msgstr "Per {{reason}} è necessario innanzitutto aggiungere il tuo account BitPay - {{email}}"
+
+msgid "Token"
+msgstr ""
+
+msgid "Token Added"
+msgstr ""
+
+msgid "Token Contract Address"
+msgstr ""
+
+msgid "Token Swap"
+msgstr ""
+
+msgid "Token Swap Spender Approval"
+msgstr ""
 
 msgid "Token address"
 msgstr ""
@@ -3369,6 +3528,12 @@ msgid "Token precision"
 msgstr ""
 
 msgid "Token symbol"
+msgstr ""
+
+msgid "Tokens"
+msgstr ""
+
+msgid "Tokens added from this list cannot be used for payments on BitPay."
 msgstr ""
 
 msgid "Top up in progress..."
@@ -3557,6 +3722,9 @@ msgstr ""
 msgid "Use Unconfirmed Funds"
 msgstr "Usa i fondi non confermati"
 
+msgid "Use WalletConnect to access your favorite dApps."
+msgstr ""
+
 msgid "Use default url"
 msgstr "Usare url predefinito"
 
@@ -3585,6 +3753,9 @@ msgid "Verification Required"
 msgstr ""
 
 msgid "Verify Your Phrase"
+msgstr ""
+
+msgid "Verifying token approval data..."
 msgstr ""
 
 msgid "Version"
@@ -3641,7 +3812,13 @@ msgstr ""
 msgid "View on blockchain"
 msgstr "Mostra su blockchain"
 
+msgid "View your wallet balance and activity"
+msgstr ""
+
 msgid "Virtual"
+msgstr ""
+
+msgid "Visit 1Inch Help Center."
 msgstr ""
 
 msgid "Visit Help Center"
@@ -3727,9 +3904,6 @@ msgstr "Frase di recupero portafoglio non disponibile"
 
 msgid "Wallet service not found"
 msgstr "Wallet service non trovato"
-
-msgid "WalletConnect"
-msgstr ""
 
 msgid "WalletConnect is an open source protocol for connecting decentralized applications to mobile wallets with QR code scanning or deep linking."
 msgstr ""
@@ -3818,6 +3992,9 @@ msgstr ""
 msgid "Which Ethereum wallet would you like this token to use for transaction costs?"
 msgstr ""
 
+msgid "Which Ethereum wallet would you like to use with WalletConnect?"
+msgstr ""
+
 msgid "Why is my transaction unconfirmed?"
 msgstr ""
 
@@ -3869,6 +4046,9 @@ msgstr "Sì"
 msgid "Yes, please use my email address to send me exclusive email offers."
 msgstr ""
 
+msgid "You are about to join a shared wallet. This is an advanced feature, make sure you understand how multisig wallets work before putting funds in it. If a third party invited you to join, make sure you trust them, if you have purchased cryptocurrency they may be scamming you."
+msgstr ""
+
 msgid "You are creating a {m}-{n} wallet. And you need all {m} copayers addresses at creation time."
 msgstr ""
 
@@ -3905,6 +4085,9 @@ msgstr ""
 msgid "You can make contributions by signing up on our Crowdin community translation website. We’re looking forward to hearing from you!"
 msgstr "È possibile contribuire registrandovi sulla comunità di traduzione Crowdin. Non vediamo l'ora di sentirvi!"
 
+msgid "You can now return to your browser."
+msgstr ""
+
 msgid "You can scan bitcoin addresses, payment requests, paper wallets, and more."
 msgstr "È possibile scansionare indirizzi bitcoin, richieste di pagamento, portafogli di carta e altro ancora."
 
@@ -3920,6 +4103,9 @@ msgstr "Puoi utilizzare le tue carte regalo Mercado Livre sul tuo account Mercad
 msgid "You could sign the transaction later in your wallet details"
 msgstr "Puoi firmare la transazione più tardi nei dettagli del tuo portafoglio"
 
+msgid "You didn't finish your card application."
+msgstr ""
+
 msgid "You do not have a {coin} wallet able to receive funds. If you decide to create it, remember it needs to be backed up."
 msgstr ""
 
@@ -3927,6 +4113,12 @@ msgid "You do not have enough confirmed funds to make this payment. Please wait 
 msgstr ""
 
 msgid "You do not have enough confirmed funds to make this payment. Wait for your pending transactions to confirm or enable \"Use unconfirmed funds\" in Advanced Settings."
+msgstr ""
+
+msgid "You do not have enough funds in your ETH linked wallet to pay the fee for this Swap."
+msgstr ""
+
+msgid "You do not have enough funds to pay the fee for this Swap."
 msgstr ""
 
 msgid "You have entered the phrase without spaces"
@@ -4019,19 +4211,22 @@ msgstr "aggiungi la tua carta(e) BitPay Visa"
 msgid "dummy"
 msgstr ""
 
+msgid "is not supported by BitPay. Please check the official WalletConnect documentation to see what the supported methods are."
+msgstr ""
+
 msgid "me"
 msgstr "io"
 
 msgid "of total amount"
 msgstr "dell'importo totale"
 
-msgid "or enter the contract address"
-msgstr ""
-
 msgid "preparing..."
 msgstr "preparazione..."
 
 msgid "using your 12 words recovery phrase"
+msgstr ""
+
+msgid "wants to connect to your wallet"
 msgstr ""
 
 msgid "{appName} BCH wallets use the CashAddr format by default"
@@ -4082,7 +4277,7 @@ msgstr "{{appName}} dipende dal servizio portafoglio di Bitcore (BWS) per inform
 msgid "{{appName}} only supports Bitcoin Cash using new version numbers addresses."
 msgstr ""
 
-msgid "{{countInArray}} of your wallets already exist in {{nameCase}}"
+msgid "{{existentWallets}} of your wallets already exist in {{nameCase}}"
 msgstr ""
 
 msgid "{{newWalletsCount}} wallets found"
@@ -4094,7 +4289,7 @@ msgstr ""
 msgid "{{params.name}} ({{params.isoCode}}) is no longer supported. Please select another alternative currency."
 msgstr ""
 
-msgid "{{peerMetaName}} ({{peerMetaUrl}}) is trying to connect to {{walletName}}"
+msgid "{{peerMetaName}} ({{peerMetaUrl}}) is requesting to connect. This will disconnect your current session."
 msgstr ""
 
 msgid "{{txpsSuccess}} proposal signed"
@@ -4105,7 +4300,4 @@ msgstr ""
 
 msgid "{{updatingTxHistoryProgress}} transactions downloaded"
 msgstr "{{updatingTxHistoryProgress}} transazioni scaricate"
-
-msgid "{{walletName}} will be disconected from your actual connection to {{peerMetaName}} ({{peerMetaUrl}})"
-msgstr ""
 

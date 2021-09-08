@@ -615,7 +615,7 @@
     <info-sheet-template *ngSwitchCase="'custom-tokens-warning'" type="warning">
       <span sheet-title-text translate>Adding Tokens</span>
       <span sheet-text>
-        <span translate>Tokens added from this list or manually cannot be used for payments on BitPay.</span>
+        <span translate>Tokens added from this list cannot be used for payments on BitPay.</span>
       </span>
       <span sheet-button-text translate>GOT IT</span>
     </info-sheet-template>
@@ -644,26 +644,18 @@
       <span sheet-second-button-text translate>NO THANKS</span>
     </info-sheet-template>
 
-    <info-sheet-template *ngSwitchCase="'switch-exchange-crypto'" type="info">
-      <span sheet-title-text translate>Approve required</span>
-      <span sheet-text>
-        <span translate>To proceed with this swap you must complete a single "Approve" transaction to authorize the exchange ("1Inch") to access to the {{params.coin}} funds.</span>
-        <span *ngIf="params.canUseChangelly">
-          <br>
-          <br>
-          <span translate>This pair is also enabled through another of our partners ("Changelly"). Would you like to try this one?</span>
-        </span>
-      </span>
-      <span *ngIf="params.canUseChangelly" sheet-button-text translate>Try Changelly</span>
-      <span sheet-second-button-text translate>GOT IT</span>
-    </info-sheet-template>
-
     <info-sheet-template *ngSwitchCase="'join-wallet-warning'" type="warning">
       <span sheet-title-text translate>Someone asked you to join a multisig wallet?</span>
       <span sheet-text translate>You are about to join a shared wallet. This is an advanced feature, make sure you understand how multisig wallets work before putting funds in it. If a third party invited you to join, make sure you trust them, if you have purchased cryptocurrency they may be scamming you.
       </span>
       <span sheet-button-text translate>READ MORE</span>
       <span sheet-second-button-text translate>GOT IT</span>
+    </info-sheet-template>
+
+    <info-sheet-template *ngSwitchCase="'token-added'" type="success">
+      <span sheet-title-text translate>Token Added</span>
+      <span sheet-text translate>Successfully added {{params.name}}.</span>
+      <span sheet-button-text translate>OK</span>
     </info-sheet-template>
   </div>
 </action-sheet>

@@ -111,7 +111,7 @@
       <variable name="UL_PREFIX_1" value="/i/" />
       <variable name="UL_PREFIX_2" value="/wallet/wc" />
     </plugin>
-    <plugin name="cordova-plugin-fcm-ng" spec="8.3.0">
+    <plugin name="cordova-plugin-fcm-ng" spec="8.5.0">
       <variable name="PAGE_LINK_DOMAIN" value="*DYNAMICLINK*" />
     </plugin>
 
