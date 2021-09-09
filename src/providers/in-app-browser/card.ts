@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Device } from '@ionic-native/device';
 import * as bitauthService from 'bitauth';
 import { Events } from 'ionic-angular';
 import * as _ from 'lodash';
@@ -7,7 +6,6 @@ import { BehaviorSubject, ReplaySubject } from 'rxjs';
 import { InAppBrowserRef } from '../../models/in-app-browser/in-app-browser-ref.model';
 import { ActionSheetProvider } from '../action-sheet/action-sheet';
 import { AppIdentityProvider } from '../app-identity/app-identity';
-import { AppleWalletProvider } from '../apple-wallet/apple-wallet';
 import { ConfigProvider } from '../config/config';
 import { Logger } from '../logger/logger';
 import { ProfileProvider } from '../profile/profile';
@@ -25,7 +23,6 @@ import { ThemeProvider } from '../theme/theme';
 const LOADING_WRAPPER_TIMEOUT = 0;
 const IAB_LOADING_INTERVAL = 1000;
 const IAB_LOADING_ATTEMPTS = 20;
-declare var GooglePayIssuer: any;
 const REFERRAL_SOCIAL_SHARING_MESSAGE = (
   code: string,
   name: string,
@@ -65,8 +62,6 @@ export class IABCardProvider {
     private externalLinkProvider: ExternalLinkProvider,
     private themeProvider: ThemeProvider,
     private appProvider: AppProvider,
-    private appleWalletProvider: AppleWalletProvider,
-    private device: Device,
     private analyticsProvider: AnalyticsProvider,
     private socialSharing: SocialSharing
   ) {}
@@ -260,26 +255,6 @@ export class IABCardProvider {
           });
           break;
 
-        case 'checkProvisioningAvailability':
-          this.checkProvisioningAvailability();
-          break;
-
-        case 'startAddPaymentPass': {
-          const { walletProvider } = event.data.params;
-
-          switch (walletProvider) {
-            case 'google':
-              this.startAddGooglePaymentPass(event);
-              break;
-          }
-
-          break;
-        }
-
-        case 'completeAddPaymentPass':
-          this.completeAddApplePaymentPass(event);
-          break;
-
         case 'fbLogEvent':
           this.logEvent(event);
           break;
@@ -339,29 +314,6 @@ export class IABCardProvider {
           break;
       }
     });
-  }
-
-  async checkAppleWallet(cards) {
-    return Promise.all(
-      cards.map(async card => {
-        if (card.cardType === 'virtual') {
-          const {
-            isInWallet,
-            isInWatch
-          } = await this.appleWalletProvider.checkPairedDevicesBySuffix(
-            card.lastFourDigits
-          );
-
-          return {
-            ...card,
-            isInWallet,
-            isInWatch
-          };
-        }
-
-        return card;
-      })
-    );
   }
 
   logEvent(event) {
@@ -948,126 +900,5 @@ export class IABCardProvider {
         force: true
       });
     });
-  }
-
-  async checkProvisioningAvailability() {
-    try {
-      // check if current ios version supports apple wallet
-      const isAvailable = await this.appleWalletProvider.available();
-
-      let payload: { isAvailable: boolean; error?: string } = {
-        isAvailable
-      };
-
-      if (!isAvailable) {
-        this.logger.log('appleWallet - startAddPaymentPass - not available');
-        payload = {
-          ...payload,
-          error: `ios version (${this.device.version}) does not support apple wallet`
-        };
-      }
-
-      this.sendMessage({
-        message: 'setProvisioningAvailability',
-        payload
-      });
-    } catch (err) {
-      this.logger.error(`appleWallet - checkProvisioningAvailability - ${err}`);
-      this.sendMessage({
-        message: 'setProvisioningAvailability',
-        payload: {
-          isAvailable: false,
-          error: err
-        }
-      });
-    }
-  }
-
-  async completeAddApplePaymentPass({ res, id }) {
-    /* FROM CARD IAB
-     * data - activationData, encryptedPassData, wrappedKey
-     * id - card Id
-     * */
-    this.logger.debug(
-      `appleWallet - completeAddPaymentPass - ${JSON.stringify(res)}`
-    );
-
-    const {
-      user: {
-        card: { provisioningData }
-      }
-    } = res.data;
-
-    if (!provisioningData) return;
-
-    const {
-      wrappedKey: ephemeralPublicKey,
-      activationData,
-      encryptedPassData
-    }: any = provisioningData || {};
-
-    try {
-      const res = await this.appleWalletProvider.completeAddPaymentPass({
-        activationData,
-        encryptedPassData,
-        ephemeralPublicKey
-      });
-
-      const payload =
-        res === 'success'
-          ? { id }
-          : { id, error: 'completeAddPaymentPass failed' };
-
-      this.sendMessage({
-        message: 'completeAddPaymentPass',
-        payload
-      });
-      await new Promise(res => setTimeout(res, 300));
-      this.cardIAB_Ref.show();
-    } catch (err) {
-      this.logger.error(`appleWallet - completeAddPaymentPass - ${err}`);
-      this.sendMessage({
-        message: 'completeAddPaymentPass',
-        payload: {
-          id,
-          error: 'completeAddPaymentPass failed'
-        }
-      });
-      await new Promise(res => setTimeout(res, 300));
-      this.cardIAB_Ref.show();
-    }
-  }
-
-  startAddGooglePaymentPass(event) {
-    const {
-      opc,
-      tsp = 'MASTER',
-      name,
-      lastFourDigits,
-      address
-    } = event.data.params.data;
-
-    const googlePay = new GooglePayIssuer();
-
-    const onSuccess = () => {
-      this.logger.log('success google pay');
-    };
-
-    const onError = () => {
-      this.logger.log('error google pay');
-    };
-
-    this.sendMessage({ message: 'googlePayProvisioningCb' });
-
-    googlePay.pushProvision(
-      opc,
-      tsp,
-      name,
-      lastFourDigits,
-      address,
-      onSuccess,
-      onError
-    );
-    this.appProvider.skipLockModal = true;
   }
 }
