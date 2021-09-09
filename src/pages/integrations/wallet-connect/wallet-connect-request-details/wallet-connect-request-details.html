@@ -30,6 +30,27 @@
             </div>
           </label-tip>
 
+            <ion-item *ngIf="request.decodedData && request.decodedData.name ==='approve' && request.decodedData.params[0] && request.decodedData.params[0].value ">
+              <ion-label>
+                <div class="summary-item">
+                  <span translate>Spender</span>
+                </div>
+              </ion-label>
+              <ion-note item-end>
+                <ion-row align-items-center>
+                  <div class="background-content">
+                  <ion-col>
+                    <ion-icon item-start>
+                      <img class="wc-img-sm" [src]="dappImgSrc" (error)="setDappImgSrc(true)" width="20">
+                    </ion-icon>
+                  </ion-col>
+                  <ion-col>
+                    <span copy-to-clipboard="{{ request.decodedData.params[0].value }}" class="ellipsis">{{ request.decodedData.params[0].value | shortenedAddress}}</span>
+                  </ion-col>
+                  </div>
+                </ion-row>
+              </ion-note>
+            </ion-item>
             <ion-item *ngIf="param.to">
               <ion-label>
                 <div class="summary-item">
@@ -40,13 +61,18 @@
                 <ion-row align-items-center>
                   <div class="background-content">
                   <ion-col>
-                    <ion-icon item-start>
-                      <img class="dapp-img-sm" [src]="dappImgSrc" (error)="setDappImgSrc(true)" width="20">
+                    <ion-icon *ngIf="request.decodedData && request.decodedData.name ==='approve' && request.tokenInfo && request.tokenInfo.logoURI; else shortNotice" item-start>
+                      <img class="wc-img-sm" [src]="request.tokenInfo.logoURI" width="20">
                     </ion-icon>
+                    <ng-template #shortNotice>
+                      <ion-icon item-start>
+                        <img class="wc-img-sm" [src]="dappImgSrc" (error)="setDappImgSrc(true)" width="20">
+                      </ion-icon>
+                    </ng-template>
                   </ion-col>
                   <ion-col>
-                      <span class="ellipsis">{{ param.to | shortenedAddress}}</span>
-                    </ion-col>
+                    <span class="ellipsis" copy-to-clipboard="{{ param.to }}">{{ param.to | shortenedAddress}}</span>
+                  </ion-col>
                   </div>
                 </ion-row>
               </ion-note>
@@ -126,7 +152,9 @@
                 </div>
               </ion-label>
               <ion-note item-end>
-                    <span class="ellipsis">{{ param | shortenedAddress }}</span>
+                <div class="background-content">
+                  <span class="ellipsis">{{ param | shortenedAddress }}</span>
+                </div>
               </ion-note>
             </ion-item>
 
@@ -138,7 +166,7 @@
                   <span translate>Message</span>
                 </div>
               </ion-label>
-              <ion-textarea disabled [value]="param"></ion-textarea>
+              <ion-textarea [attr.rows]=10 disabled [value]="param"></ion-textarea>
             </ion-item>
           </div>
 
@@ -161,7 +189,7 @@
                 </div>
               </ion-label>
               <ion-note item-end>
-                    <span class="ellipsis">{{ param | shortenedAddress }}</span>
+                  <span class="ellipsis">{{ param | shortenedAddress }}</span>
               </ion-note>
             </ion-item>
           </div>
