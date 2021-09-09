@@ -666,7 +666,7 @@ export class CopayApp {
               } = params;
 
               // if coming from intent or scan -> no current session - has uri but wallet not selected
-              if (!walletId && uri.includes('bridge') && !hasSession) {
+              if (!walletId && uri && uri.includes('bridge') && !hasSession) {
                 this.events.publish(
                   'Update/WalletConnectNewSessionRequest',
                   uri
@@ -675,7 +675,7 @@ export class CopayApp {
               }
 
               // coming from intent/universalLink
-              if (uri.startsWith('https')) return;
+              if (uri && uri.startsWith('https')) return;
 
               // if coming from scan -> pasteURL
               if (pasteURL || fromSettings) {
@@ -685,7 +685,7 @@ export class CopayApp {
 
               if (
                 force ||
-                (isDeepLink && !request && uri.includes('bridge')) ||
+                (isDeepLink && !request && uri && uri.includes('bridge')) ||
                 ['WalletConnectRequestDetailsPage', 'ScanPage'].includes(
                   activePage
                 )
