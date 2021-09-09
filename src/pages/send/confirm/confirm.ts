@@ -1306,32 +1306,10 @@ export class ConfirmPage {
 
   private instantiateMultisigContract: any = async (txp, n?: number) => {
     let tryNumber = n ? n : 0;
-
-    var finishInstantiation = async () => {
-      if (tryNumber < 6) {
-        return this.instantiateMultisigContract(txp, ++tryNumber);
-      } else {
-        this.onGoingProcessProvider.clear();
-        await this.showMultisigIntantiationInfoSheet();
-        const pendingInstantiations =
-          (await this.persistenceProvider.getEthMultisigPendingInstantiation(
-            this.wallet.id
-          )) || [];
-        pendingInstantiations.push({
-          walletId: this.wallet.credentials.id,
-          sender: txp.from,
-          txId: txp.txid,
-          walletName: this.navParams.data.walletName,
-          n: this.navParams.data.totalCopayers,
-          m: this.navParams.data.requiredConfirmations
-        });
-        this.persistenceProvider.setEthMultisigPendingInstantiation(
-          this.wallet.id,
-          pendingInstantiations
-        );
-        this.openFinishModal(false, { redir: null });
-      }
-    };
+    if (tryNumber == 5) {
+      this.logger.error('Error getting multisig contract instantiation info');
+      return;
+    }
 
     setTimeout(async () => {
       let multisigContractInstantiationInfo: any[] = [];
@@ -1351,7 +1329,9 @@ export class ConfirmPage {
           }
         );
 
-        if (!multisigContract[0]) finishInstantiation();
+        if (!multisigContract[0]) {
+          return this.instantiateMultisigContract(txp, tryNumber++);
+        }
 
         const multisigEthInfo = {
           multisigContractAddress: multisigContract[0].instantiation,
@@ -1366,22 +1346,10 @@ export class ConfirmPage {
           multisigEthInfo
         );
       } else {
-        finishInstantiation();
+        return this.instantiateMultisigContract(txp, tryNumber++);
       }
     }, 10000);
   };
-
-  private showMultisigIntantiationInfoSheet(): Promise<void> {
-    return new Promise(resolve => {
-      const insufficientFundsInfoSheet = this.actionSheetProvider.createInfoSheet(
-        'multisig-instantiation'
-      );
-      insufficientFundsInfoSheet.present();
-      insufficientFundsInfoSheet.onDidDismiss(_ => {
-        return resolve();
-      });
-    });
-  }
 
   public createAndBindEthMultisigWallet(pairedWallet, multisigEthInfo) {
     if (!_.isEmpty(pairedWallet)) {

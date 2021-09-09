@@ -318,6 +318,7 @@ export class JoinWalletPage {
     joinWarningSheet.present();
     joinWarningSheet.onDidDismiss(option => {
       if (option) {
+        // TODO: update support page of AbcPay
         this.externalLinkProvider.open(
           'https://support.bitpay.com/hc/en-us/articles/360032618692-What-is-a-Multisignature-Multisig-or-Shared-Wallet-'
         );

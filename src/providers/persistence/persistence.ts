@@ -88,10 +88,6 @@ const Keys = {
   TEMP_MDES_DEBUG_FLAG: 'tempMdesDebugFlag',
   TEMP_MDES_CERT_ONLY_DEBUG_FLAG: 'tempMdesCertOnlyDebugFlag',
   NETWORK: 'network',
-  CUSTOMTOKENSDATA: 'customTokensData',
-  CUSTOMTOKENSOPTS: 'customTokensOpts',
-  BITPAY_CARD_ORDER_STARTED: `bitPayCardOrderStarted`,
-  BITPAY_SURVEY_CARD_DISMISSED: `bitPaySurveyCardDismissed`,
   CUSTOM_VIRTUAL_CARD_DESIGN: `customVirtualCardDesign`
 };
 
@@ -1035,49 +1031,6 @@ export class PersistenceProvider {
 
   getNetwork() {
     return this.storage.get(Keys.NETWORK);
-  }
-
-  setCustomTokenData(customTokenData) {
-    return this.storage.set(Keys.CUSTOMTOKENSDATA, customTokenData);
-  }
-
-  getCustomTokenData() {
-    return this.storage.get(Keys.CUSTOMTOKENSDATA);
-  }
-
-  setCustomTokenOpts(customTokenOpts) {
-    return this.storage.set(Keys.CUSTOMTOKENSOPTS, customTokenOpts);
-  }
-
-  getCustomTokenOpts() {
-    return this.storage.get(Keys.CUSTOMTOKENSOPTS);
-  }
-
-  setEthMultisigPendingInstantiation(walletId, instantiationInfo) {
-    return this.storage.set(
-      `eth-multisig-instantiation-${walletId}`,
-      instantiationInfo
-    );
-  }
-
-  getEthMultisigPendingInstantiation(walletId) {
-    return this.storage.get(`eth-multisig-instantiation-${walletId}`);
-  }
-
-  setBitPayCardOrderStarted(ts: number) {
-    return this.storage.set(Keys.BITPAY_CARD_ORDER_STARTED, ts);
-  }
-
-  getBitPayCardOrderStarted() {
-    return this.storage.get(Keys.BITPAY_CARD_ORDER_STARTED);
-  }
-
-  setBitPaySurveyCardDismissed(ts: number) {
-    return this.storage.set(Keys.BITPAY_SURVEY_CARD_DISMISSED, ts);
-  }
-
-  getBitPaySurveyCardDismissed() {
-    return this.storage.get(Keys.BITPAY_SURVEY_CARD_DISMISSED);
   }
 
   getCustomVirtualCardDesign() {

@@ -26,7 +26,6 @@ import { ErrorsProvider } from '../../providers/errors/errors';
 import { ExternalLinkProvider } from '../../providers/external-link/external-link';
 import { ActionSheetProvider, AppProvider } from '../../providers/index';
 import { Logger } from '../../providers/logger/logger';
-import { PersistenceProvider } from '../../providers/persistence/persistence';
 import { PlatformProvider } from '../../providers/platform/platform';
 import { ProfileProvider } from '../../providers/profile/profile';
 import { ThemeProvider } from '../../providers/theme/theme';
@@ -113,8 +112,7 @@ export class WalletDetailsPage {
     private themeProvider: ThemeProvider,
     private configProvider: ConfigProvider,
     private analyticsProvider: AnalyticsProvider,
-    private appProvider: AppProvider,
-    private persistenceProvider: PersistenceProvider
+    private appProvider: AppProvider
   ) {
     this.selectedTheme = this.themeProvider.currentAppTheme;
     this.zone = new NgZone({ enableLongStackTrace: false });
@@ -182,7 +180,6 @@ export class WalletDetailsPage {
       alsoUpdateHistory: true
     });
     this.subscribeEvents();
-    this.checkIfEthMultisigPendingInstantiation();
   }
 
   ionViewWillLeave() {
@@ -810,105 +807,6 @@ export class WalletDetailsPage {
     const existsContact = _.find(this.addressbook, c => c.address === address);
     if (existsContact) return existsContact.name;
     return null;
-  }
-
-  private async checkIfEthMultisigPendingInstantiation() {
-    this.logger.debug('Checking for eth multisig pending wallets');
-    const pendingInstantiations = await this.persistenceProvider.getEthMultisigPendingInstantiation(
-      this.wallet.id
-    );
-    if (!pendingInstantiations || !pendingInstantiations[0]) return;
-
-    this.logger.debug(
-      'Pending eth wallets found: ',
-      pendingInstantiations.length
-    );
-    const promises = [];
-    pendingInstantiations.forEach(async info => {
-      promises.push(
-        this.walletProvider.getMultisigContractInstantiationInfo(this.wallet, {
-          sender: info.sender,
-          txId: info.txId
-        })
-      );
-    });
-
-    Promise.all(promises).then(multisigContractInstantiationInfo => {
-      if (multisigContractInstantiationInfo.length > 0) {
-        this.logger.debug(
-          'Contract information found: ',
-          multisigContractInstantiationInfo.length
-        );
-
-        multisigContractInstantiationInfo.forEach((info, index) => {
-          if (!info[0]) return;
-
-          this.multisigPendingWallets.push({
-            multisigContractAddress: info[0].instantiation,
-            txId: info[0].transactionHash
-          });
-          const pendingInstantiation = pendingInstantiations.filter(info => {
-            return info.txId === this.multisigPendingWallets[index].txId;
-          });
-          this.multisigPendingWallets[index].walletName =
-            pendingInstantiation[0].walletName;
-          this.multisigPendingWallets[index].n = pendingInstantiation[0].n;
-          this.multisigPendingWallets[index].m = pendingInstantiation[0].m;
-        });
-      }
-    });
-  }
-
-  public createMultisigWallet(multisigWallet) {
-    this.logger.debug(
-      'Creating multisig wallet: ',
-      multisigWallet.multisigContractAddress
-    );
-
-    const multisigEthInfo = {
-      multisigContractAddress: multisigWallet.multisigContractAddress,
-      walletName: multisigWallet.walletName,
-      n: multisigWallet.n,
-      m: multisigWallet.m
-    };
-    this.createAndBindEthMultisigWallet(multisigEthInfo, multisigWallet.txId);
-  }
-
-  public createAndBindEthMultisigWallet(multisigEthInfo, txId) {
-    this.logger.debug('Multisig Info: ', JSON.stringify(multisigEthInfo));
-
-    this.profileProvider
-      .createMultisigEthWallet(this.wallet, multisigEthInfo)
-      .then(multisigWallet => {
-        // store preferences for the paired eth wallet
-        this.walletProvider.updateRemotePreferences(this.wallet);
-        this.removeMultisigWallet(txId);
-        this.navCtrl.popToRoot().then(_ => {
-          this.events.publish('Local/WalletListChange');
-          this.navCtrl.push(WalletDetailsPage, {
-            walletId: multisigWallet.id
-          });
-        });
-      });
-  }
-
-  public async removeMultisigWallet(txId) {
-    this.logger.debug('Removing multisig wallet: ', txId);
-    let pendingInstantiations = await this.persistenceProvider.getEthMultisigPendingInstantiation(
-      this.wallet.id
-    );
-    pendingInstantiations = pendingInstantiations.filter(info => {
-      return info.txId !== txId;
-    });
-    await this.persistenceProvider.setEthMultisigPendingInstantiation(
-      this.wallet.id,
-      pendingInstantiations
-    );
-    this.multisigPendingWallets = this.multisigPendingWallets.filter(
-      pendingWallet => {
-        return pendingWallet.txId !== txId;
-      }
-    );
   }
 
   public viewTxOnBlockchain(txId): void {
