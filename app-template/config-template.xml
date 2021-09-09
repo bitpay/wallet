@@ -124,8 +124,8 @@
 
     <!-- Platform Specific Settings -->
     <platform name="ios">
-      <preference name="com.appboy.api_key" value="BRAZE_API_KEY_REPLACE_ME" />
-      <preference name="com.appboy.ios_api_endpoint" value="BRAZE_API_ENDPOINT_REPLACE_ME" />
+      <preference name="com.appboy.api_key" value="IOS_BRAZE_API_KEY_REPLACE_ME" />
+      <preference name="com.appboy.ios_api_endpoint" value="IOS_BRAZE_API_ENDPOINT_REPLACE_ME" />
       <config-file platform="ios" target="*-Info.plist" parent="UIStatusBarHidden"><true/></config-file>
       <config-file platform="ios" target="*-Info.plist" parent="UIViewControllerBasedStatusBarAppearance">
         <true />
@@ -173,6 +173,10 @@
     </platform>
 
     <platform name="android">
+      <preference name="com.appboy.api_key" value="ANDROID_BRAZE_API_KEY_REPLACE_ME" />
+      <preference name="com.appboy.android_api_endpoint" value="ANDROID_BRAZE_API_ENDPOINT_REPLACE_ME" />
+      <preference name="com.appboy.android_fcm_sender_id" value="str_1036948132229" />
+      <preference name="com.appboy.firebase_cloud_messaging_registration_enabled" value="true" />
       <hook src="copy-build-extras-gradle.js" type="before_build" />
       <preference name="android-manifest/application/@android:allowBackup" value="false" />
 
