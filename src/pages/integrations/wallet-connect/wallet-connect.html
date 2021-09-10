@@ -62,7 +62,7 @@
       <div *ngIf="showDappInfo && !connected && !loading" class="dapp-info" @fadeUp>
         <ion-item no-padding no-lines>
           <ion-icon item-start>
-            <img class="dapp-img" [src]="dappImgSrc" (error)="setDappImgSrc(true)">
+            <img class="wc-img" [src]="dappImgSrc" (error)="setDappImgSrc(true)">
           </ion-icon>
           <ion-label>
             <div class="session-request-label">
@@ -138,7 +138,7 @@
               <ion-row align-items-center justify-content-end>
                 <ion-col col-auto text-right>
                   <ion-icon item-start>
-                    <img class="dapp-img-sm" [src]="dappImgSrc" (error)="setDappImgSrc(true)" width="20">
+                    <img class="wc-img-sm" [src]="dappImgSrc" (error)="setDappImgSrc(true)" width="20">
                   </ion-icon>
                 </ion-col>
                 <ion-col>

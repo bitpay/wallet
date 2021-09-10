@@ -7,6 +7,7 @@ import { ConfirmPage } from '../../../../pages/send/confirm/confirm';
 
 // Providers
 import {
+  CurrencyProvider,
   ErrorsProvider,
   ExternalLinkProvider,
   Logger,
@@ -52,7 +53,8 @@ export class WalletConnectRequestDetailsPage {
     private navCtrl: NavController,
     private replaceParametersProvider: ReplaceParametersProvider,
     private events: Events,
-    private externalLinkProvider: ExternalLinkProvider
+    private externalLinkProvider: ExternalLinkProvider,
+    public currencyProvider: CurrencyProvider
   ) {}
 
   ionViewDidLoad() {
