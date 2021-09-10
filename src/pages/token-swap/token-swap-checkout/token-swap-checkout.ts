@@ -133,19 +133,31 @@ export class TokenSwapCheckoutPage {
             // Low values increase chances that transaction will fail, high values increase chances of front running.  Set values in the range from 0 to 50
             const slippage = 0.5;
 
+            let minUnitAmount;
+            if (this.useSendMax && this.fromTokenBalance) {
+              minUnitAmount = this.fromTokenBalance;
+            } else {
+              // workaround to prevent scientific notation
+              const _amount: number =
+                this.amountFrom * 10 ** this.fromToken.decimals;
+              minUnitAmount = _amount.toLocaleString('fullwide', {
+                useGrouping: false,
+                maximumFractionDigits: 0
+              });
+            }
+
             let swapRequestData = {
               fromTokenAddress: this.fromToken.address,
               toTokenAddress: this.toToken.address,
-              amount:
-                this.useSendMax && this.fromTokenBalance
-                  ? this.fromTokenBalance
-                  : this.amountFrom * 10 ** this.fromToken.decimals, // amount in minimum unit
+              amount: minUnitAmount, // amount in minimum unit
               fromAddress, // we can use '0x0000000000000000000000000000000000000000' for testing purposes
               slippage: this.navParams.data.slippage
                 ? this.navParams.data.slippage
                 : slippage,
               destReceiver: toAddress
             };
+
+            this.logger.debug('swapRequestData: ', swapRequestData);
 
             this.oneInchProvider
               .getSwap1inch(this.fromWalletSelected, swapRequestData)
