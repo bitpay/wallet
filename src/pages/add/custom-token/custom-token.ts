@@ -60,7 +60,7 @@ export class CustomTokenPage {
     private addressProvider: AddressProvider,
     private translate: TranslateService,
     private modalCtrl: ModalController,
-    private currencyProvider: CurrencyProvider,
+    public currencyProvider: CurrencyProvider,
     private viewCtrl: ViewController,
     private onGoingProcessProvider: OnGoingProcessProvider
   ) {

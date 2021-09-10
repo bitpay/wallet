@@ -151,6 +151,11 @@ export class CurrencyProvider {
     return this.coinOpts[coin].logoURI || 'assets/img/default-erc20.svg';
   }
 
+  defaultLogoURI(img) {
+    img.onerror = null;
+    img.src = 'assets/img/default-erc20.svg';
+  }
+
   isUtxoCoin(coin: string): boolean {
     return !!this.coinOpts[coin].properties.isUtxo;
   }

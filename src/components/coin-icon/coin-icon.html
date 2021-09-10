@@ -3,5 +3,5 @@
 </ion-icon>
 
 <ion-icon *ngIf="coin && !currencyProvider.COIN[coin | uppercase]" color="success" class="item-img rectangle background_default" item-start>
-  <img src="{{currencyProvider.getLogoURI(coin)}}" />
+  <img src="{{currencyProvider.getLogoURI(coin)}}" (error)="currencyProvider.defaultLogoURI(img)" #img/>
 </ion-icon>
