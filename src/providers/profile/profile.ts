@@ -1121,10 +1121,19 @@ export class ProfileProvider {
           }
           addressBook = data.addressBook;
         } catch (err) {
-          this.logger.error(err);
-          return reject(
-            this.translate.instant('Could not import. Check input file.')
-          );
+          if (err && err.message == 'Bad Key version') {
+            // Workaround for bad generated files. Fixed: https://github.com/bitpay/wallet/pull/11872
+            data.key.version = '1';
+            data.key.mnemonicHasPassphrase = false;
+            key = new Key({
+              seedType: 'object',
+              seedData: data.key
+            });
+          } else {
+            return reject(
+              this.translate.instant('Could not import. Check input file.')
+            );
+          }
         }
       } else {
         // old format ? root = credentials.
