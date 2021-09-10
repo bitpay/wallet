@@ -26,7 +26,7 @@ import {
   EmailNotificationsProvider,
   FeeProvider,
   IABCardProvider,
-  IncomingDataProvider,
+  IncomingDataProvider, InvoiceProvider,
   MerchantProvider,
   PersistenceProvider,
   RateProvider,
@@ -139,9 +139,10 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     homeIntegrationsProvider: HomeIntegrationsProvider,
     persistenceProvider: PersistenceProvider,
     WalletConnectProvider: WalletConnectProvider,
-    private bitpayIdProvider: BitPayIdProvider,
-    private merchantProvider: MerchantProvider
-  ) {
+    bitpayIdProvider: BitPayIdProvider,
+    private merchantProvider: MerchantProvider,
+    invoiceProvider: InvoiceProvider
+) {
     super(
       addressProvider,
       addressBookProvider,
@@ -177,7 +178,9 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       iabCardProvider,
       homeIntegrationsProvider,
       persistenceProvider,
-      WalletConnectProvider
+      WalletConnectProvider,
+      invoiceProvider,
+      bitpayIdProvider
     );
     this.configWallet = this.configProvider.get().wallet;
   }
