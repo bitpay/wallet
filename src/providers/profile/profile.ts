@@ -518,11 +518,15 @@ export class ProfileProvider {
       ).coinCode;
 
       const chain = this.currencyProvider.getChain(wallet.coin).toLowerCase();
+
       if (
         (wallet.n == 1 && wallet.credentials.addressType == 'P2PKH') ||
         (wallet.credentials.addressType == 'P2WPKH' &&
           derivationStrategy == 'BIP44' &&
-          (chain == 'btc' || (chain == 'bch' && coinCode == "145'")))
+          (chain == 'btc' ||
+            (chain == 'bch' && coinCode == "145'") ||
+            chain == 'ltc' ||
+            chain == 'doge'))
       ) {
         return true;
       }
@@ -530,7 +534,10 @@ export class ProfileProvider {
         (wallet.n > 1 && wallet.credentials.addressType == 'P2SH') ||
         (wallet.credentials.addressType == 'P2WSH' &&
           derivationStrategy == 'BIP48' &&
-          (chain == 'btc' || (chain == 'bch' && coinCode == "145'")))
+          (chain == 'btc' ||
+            (chain == 'bch' && coinCode == "145'") ||
+            chain == 'ltc' ||
+            chain == 'doge'))
       ) {
         return true;
       }
