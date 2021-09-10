@@ -17,6 +17,7 @@ import { ScanPage } from '../../scan/scan';
 import { WalletDetailsPage } from '../../wallet-details/wallet-details';
 
 // Providers
+import { BitPayIdProvider, InvoiceProvider } from '../../../providers';
 import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
 import { AddressBookProvider } from '../../../providers/address-book/address-book';
 import { AddressProvider } from '../../../providers/address/address';
@@ -118,6 +119,9 @@ export class ConfirmPage {
   public customGasPrice: number;
   public customGasLimit: number;
 
+  public merchantName: string;
+  public itemizedDetails;
+
   public errors = this.bwcProvider.getErrors();
 
   // // Card flags for zen desk chat support
@@ -159,7 +163,9 @@ export class ConfirmPage {
     private iabCardProvider: IABCardProvider,
     protected homeIntegrationsProvider: HomeIntegrationsProvider,
     protected persistenceProvider: PersistenceProvider,
-    private walletConnectProvider: WalletConnectProvider
+    private walletConnectProvider: WalletConnectProvider,
+    private invoiceProvider: InvoiceProvider,
+    protected bitpayIdProvider: BitPayIdProvider
   ) {
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
     this.fromWalletDetails = this.navParams.data.fromWalletDetails;
@@ -202,6 +208,7 @@ export class ConfirmPage {
   };
 
   ionViewDidLoad() {
+    this.getInvoiceData();
     this.logger.info('Loaded: ConfirmPage');
     this.navCtrl.swipeBackEnabled = false;
     this.isOpenSelector = false;
@@ -331,6 +338,21 @@ export class ConfirmPage {
       });
     }
     this.events.subscribe('Local/TagScan', this.updateDestinationTag);
+  }
+
+  private async getInvoiceData() {
+    const invoiceId = this.navParams.data.payProUrl.split('i/')[1];
+    const host = this.navParams.data.payProUrl.includes('test') ? 'testnet' : 'livenet';
+    await this.invoiceProvider.setNetwork(host);
+    const fetchData = await this.invoiceProvider.canGetInvoiceData(invoiceId);
+    const result = await this.bitpayIdProvider.unlockInvoice(invoiceId);
+
+    if((result === 'unlockSuccess' || fetchData)) {
+      const invoiceData = await this.invoiceProvider.getBitPayInvoice(invoiceId);
+      const {merchantName, itemizedDetails} = invoiceData;
+      this.itemizedDetails = itemizedDetails;
+      this.merchantName = merchantName;
+    }
   }
 
   private setTitle(): void {
