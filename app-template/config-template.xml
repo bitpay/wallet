@@ -107,7 +107,7 @@
       <variable name="ANDROID_SCHEME" value="" />
       <variable name="ANDROID_HOST" value="" />
       <variable name="ANDROID_PATHPREFIX" value="" />
-      <variable name="UL_HOST" value="bitpay.com" />
+      <variable name="UL_HOST" value="link.bitpay.com" />
       <variable name="UL_PREFIX_1" value="/i/" />
       <variable name="UL_PREFIX_2" value="/wallet/wc" />
     </plugin>
