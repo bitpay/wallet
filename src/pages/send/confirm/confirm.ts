@@ -342,14 +342,18 @@ export class ConfirmPage {
 
   private async getInvoiceData() {
     const invoiceId = this.navParams.data.payProUrl.split('i/')[1];
-    const host = this.navParams.data.payProUrl.includes('test') ? 'testnet' : 'livenet';
+    const host = this.navParams.data.payProUrl.includes('test')
+      ? 'testnet'
+      : 'livenet';
     await this.invoiceProvider.setNetwork(host);
     const fetchData = await this.invoiceProvider.canGetInvoiceData(invoiceId);
     const result = await this.bitpayIdProvider.unlockInvoice(invoiceId);
 
-    if((result === 'unlockSuccess' || fetchData)) {
-      const invoiceData = await this.invoiceProvider.getBitPayInvoice(invoiceId);
-      const {merchantName, itemizedDetails} = invoiceData;
+    if (result === 'unlockSuccess' || fetchData) {
+      const invoiceData = await this.invoiceProvider.getBitPayInvoice(
+        invoiceId
+      );
+      const { merchantName, itemizedDetails } = invoiceData;
       this.itemizedDetails = itemizedDetails;
       this.merchantName = merchantName;
     }

@@ -26,7 +26,8 @@ import {
   EmailNotificationsProvider,
   FeeProvider,
   IABCardProvider,
-  IncomingDataProvider, InvoiceProvider,
+  IncomingDataProvider,
+  InvoiceProvider,
   MerchantProvider,
   PersistenceProvider,
   RateProvider,
@@ -142,7 +143,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     bitpayIdProvider: BitPayIdProvider,
     private merchantProvider: MerchantProvider,
     invoiceProvider: InvoiceProvider
-) {
+  ) {
     super(
       addressProvider,
       addressBookProvider,
