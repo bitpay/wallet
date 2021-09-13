@@ -1,6 +1,5 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, NgZone, ViewChild } from '@angular/core';
-// import { TranslateService } from '@ngx-translate/core';
 import {
   Events,
   LoadingController,
@@ -23,7 +22,6 @@ import { ProposalsNotificationsPage } from './proposals-notifications/proposals-
 // Providers
 import { ActionSheetProvider } from '../../providers/action-sheet/action-sheet';
 import { AnalyticsProvider } from '../../providers/analytics/analytics';
-// import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
 import { Logger } from '../../providers/logger/logger';
 import { PersistenceProvider } from '../../providers/persistence/persistence';
 import { PlatformProvider } from '../../providers/platform/platform';
@@ -60,13 +58,11 @@ export class WalletsPage {
     private navCtrl: NavController,
     private profileProvider: ProfileProvider,
     private walletProvider: WalletProvider,
-    // private bwcErrorProvider: BwcErrorProvider,
     private platformProvider: PlatformProvider,
     private analyticsProvider: AnalyticsProvider,
     private logger: Logger,
     private events: Events,
     private persistenceProvider: PersistenceProvider,
-    // private translate: TranslateService,
     private modalCtrl: ModalController,
     private actionSheetProvider: ActionSheetProvider,
     private navParams: NavParams,
@@ -234,29 +230,6 @@ export class WalletsPage {
       });
   }
 
-  // private processWalletError(wallet, err): void {
-  //   wallet.error = wallet.errorObj = null;
-
-  //   if (!err || err == 'INPROGRESS') return;
-
-  //   wallet.cachedStatus = null;
-  //   wallet.errorObj = err;
-
-  //   if (err.message === '403') {
-  //     wallet.error = this.translate.instant('Access denied');
-  //   } else if (err === 'WALLET_NOT_REGISTERED') {
-  //     wallet.error = this.translate.instant('Wallet not registered');
-  //   } else {
-  //     wallet.error = this.bwcErrorProvider.msg(err);
-  //   }
-  //   this.logger.warn(
-  //     this.bwcErrorProvider.msg(
-  //       wallet.error,
-  //       'Error updating status for ' + wallet.id
-  //     )
-  //   );
-  // }
-  
   public handleDonation(wallet) {
     const loading = this.loadingCtr.create({
       content: 'Please wait...'
