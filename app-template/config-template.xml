@@ -55,7 +55,7 @@
     <!-- Android Version: Marshmallow 6.0 (API Level 23) or higher -->
     <preference name="android-minSdkVersion" value="23" />
     <!-- Android Version: Q 10.0 (API Level 29) or higher -->
-    <preference name="android-targetSdkVersion" value="29" />
+    <preference name="android-targetSdkVersion" value="30" />
 
     <!-- iOS 10.3 or higher -->
     <preference name="deployment-target" value="10.3" />
