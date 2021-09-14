@@ -5,10 +5,29 @@ page-wallet-connect-request-details {
       ion-item:not(.align-with-button) {
         padding-left: 0px;
       }
+      .wallet {
+        display: flex;
+        align-items: center;
+        coin-icon {
+          ion-icon.item-img.icon {
+            padding: 5px;
+            margin: 0;
+            img {
+              width: 24px;
+            }
+          }
+        }
+      }
       .item-inner {
         padding-right: 0px;
       }
       ion-note {
+        &.peer-url {
+          max-width: 200px;
+          ion-row {
+            flex-wrap: nowrap;
+          }
+        }
         margin-right: 0px;
         color: #000000;
         font-size: 16px;
@@ -73,6 +92,17 @@ page-wallet-connect-request-details {
       }
       .line-divider {
         margin: 0px;
+      }
+      .wc-img {
+        width: 50px;
+        height: 50px;
+        border-radius: 8px;
+        &-sm {
+          border-radius: 50%;
+          @media (max-width: 381px) {
+            display: none;
+          }
+        }
       }
     }
     .button-standard {
