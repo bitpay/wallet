@@ -69,22 +69,26 @@ export class InvoiceProvider {
     this.persistenceProvider.setGiftCardUserInfo(JSON.stringify(data));
   }
 
-  public async canGetInvoiceData(id: string) {
-    return new Promise<boolean>(res => {
+  public async getInvoiceData(id: string) {
+    return new Promise<any>((res, reject) => {
       cordova.plugin.http.sendRequest(
         `${this.credentials.BITPAY_API_URL}/invoiceData/${id}`,
         {
           method: 'get'
         },
-        () => {
+        response => {
           this.logger.debug('Get InvoiceData: Success');
-          return res(true);
+          return res(response);
         },
         ({ error }) => {
           this.logger.error('Get InvoiceData: ERROR ' + error);
-          return res(false);
+          return reject(error);
         }
       );
     });
+  }
+
+  public async canGetInvoiceData(id: string) {
+    return !!(await this.getInvoiceData(id).catch(() => false));
   }
 }

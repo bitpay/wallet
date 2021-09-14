@@ -1538,11 +1538,21 @@ export class IncomingDataProvider {
       const host = data.includes('test') ? 'testnet' : 'livenet';
       const invoiceId = data.split('i/')[1];
 
-      await this.invoiceProvider.setNetwork(host);
-      const fetchData = await this.invoiceProvider.canGetInvoiceData(invoiceId);
+      if (data.includes('link.')) {
+        data = data.replace('link.', '');
+      }
+
       const result = await this.bitPayIdProvider.unlockInvoice(invoiceId);
 
-      if (result === 'unlockSuccess' || fetchData) {
+      if (result === 'unlockSuccess') {
+        await this.handleBitPayInvoice(data);
+        return;
+      }
+
+      await this.invoiceProvider.setNetwork(host);
+      const fetchData = await this.invoiceProvider.canGetInvoiceData(invoiceId);
+
+      if (fetchData) {
         await this.handleBitPayInvoice(data);
         return;
       }
