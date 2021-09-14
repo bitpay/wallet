@@ -690,6 +690,7 @@ export class CopayApp {
                   activePage
                 )
               ) {
+                await this.nav.setRoot(TabsPage);
                 await this.nav.popToRoot();
                 await this.selectGlobalTab(0);
                 await this.nav.push(this.pageMap[name], params);
