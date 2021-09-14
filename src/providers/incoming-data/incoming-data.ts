@@ -94,7 +94,7 @@ export class IncomingDataProvider {
   }
 
   private isValidBitPayInvoice(data: string): boolean {
-    return !!/^https:\/\/(www.)?(test.|staging.|link.)?bitpay.com\/i\/\w+/.exec(
+    return !!/^https:\/\/(www.)?(test.|staging.|link.|link.test.|link.staging.)?bitpay.com\/i\/\w+/.exec(
       data
     );
   }
@@ -1533,7 +1533,7 @@ export class IncomingDataProvider {
     }
   }
 
-  private async handleUnlock(data) {
+  public async handleUnlock(data) {
     try {
       const host = data.includes('test') ? 'testnet' : 'livenet';
       const invoiceId = data.split('i/')[1];
