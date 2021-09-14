@@ -78,7 +78,7 @@ export class TokenSwapCheckoutPage {
     private profileProvider: ProfileProvider,
     private translate: TranslateService,
     private configProvider: ConfigProvider,
-    private currencyProvider: CurrencyProvider,
+    public currencyProvider: CurrencyProvider,
     private rateProvider: RateProvider,
     private walletProvider: WalletProvider,
     private bwcErrorProvider: BwcErrorProvider,

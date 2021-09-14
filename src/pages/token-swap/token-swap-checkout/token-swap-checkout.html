@@ -55,7 +55,7 @@
           <ion-row align-items-center class="wallet" *ngIf="toToken.isCustomToken">
             <ion-col>
               <ion-icon class="item-img rectangle background_default" item-start>
-                <img width="35" [src]="toToken.logoURI" onerror="this.onerror=null;this.src='assets/img/icon-swap.svg'">
+                <img width="35" [src]="toToken.logoURI" (error)="currencyProvider.defaultLogoURI(img)" #img>
               </ion-icon>
             </ion-col>
             <ion-col>

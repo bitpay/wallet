@@ -41,7 +41,7 @@
           <img src="assets/img/currencies/{{token.symbol.toLowerCase()}}.svg" />
         </ion-icon>
         <ion-icon *ngIf="!currencyProvider.COIN[token.symbol | uppercase]" class="item-icon" item-start>
-          <img src="{{token.logoURI}}" onerror="this.onerror=null;this.src='assets/img/icon-swap.svg'"/>
+          <img src="{{token.logoURI}}" (error)="currencyProvider.defaultLogoURI(img)" #img/>
         </ion-icon>
         <div class="item-title">{{ token.name }} ({{ token.symbol }})</div>
       </button>

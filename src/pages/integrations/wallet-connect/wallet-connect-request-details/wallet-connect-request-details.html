@@ -62,7 +62,7 @@
                   <div class="background-content">
                   <ion-col>
                     <ion-icon *ngIf="request.decodedData && request.decodedData.name ==='approve' && request.tokenInfo && request.tokenInfo.logoURI; else shortNotice" item-start>
-                      <img class="wc-img-sm" [src]="request.tokenInfo.logoURI" width="20">
+                      <img class="wc-img-sm" [src]="request.tokenInfo.logoURI" (error)="currencyProvider.defaultLogoURI(img)" #img width="20">
                     </ion-icon>
                     <ng-template #shortNotice>
                       <ion-icon item-start>

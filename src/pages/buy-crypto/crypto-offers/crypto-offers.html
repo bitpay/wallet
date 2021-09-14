@@ -11,7 +11,7 @@
             <div class="summary-title" translate>Crypto</div>
             <div class="summary-description" [ngClass]="{'testnet': wallet.network === 'testnet'}">
               <img class="coin-icon" *ngIf="currencyProvider.COIN[coin | uppercase]" src="assets/img/currencies/{{coin.toLowerCase()}}.svg" />
-              <img class="coin-icon" *ngIf="!currencyProvider.COIN[coin | uppercase]" [src]="currencyProvider.getLogoURI(coin.toLowerCase())"/>
+              <img class="coin-icon" *ngIf="!currencyProvider.COIN[coin | uppercase]" [src]="currencyProvider.getLogoURI(coin.toLowerCase())" (error)="currencyProvider.defaultLogoURI(img)" #img/>
               {{coin | uppercase}}
             </div>
           </ion-col>

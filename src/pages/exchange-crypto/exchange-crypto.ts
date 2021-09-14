@@ -108,7 +108,7 @@ export class ExchangeCryptoPage {
     private platform: Platform,
     private profileProvider: ProfileProvider,
     private translate: TranslateService,
-    private currencyProvider: CurrencyProvider,
+    public currencyProvider: CurrencyProvider,
     private txFormatProvider: TxFormatProvider,
     private exchangeCryptoProvider: ExchangeCryptoProvider,
     private feeProvider: FeeProvider,

@@ -61,7 +61,7 @@ export class CoinAndWalletSelectorPage {
     private navCtrl: NavController,
     private viewCtrl: ViewController,
     private profileProvider: ProfileProvider,
-    private currencyProvider: CurrencyProvider,
+    public currencyProvider: CurrencyProvider,
     private translate: TranslateService,
     private errorsProvider: ErrorsProvider,
     private navParams: NavParams,
