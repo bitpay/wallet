@@ -295,7 +295,6 @@ msgstr "Apple Pay"
 msgid "Apply"
 msgstr "Apply"
 
-#| msgid "Approve is Pending"
 msgid "Approval is confirming"
 msgstr "Approval is confirming"
 
@@ -592,6 +591,18 @@ msgid ""
 msgstr ""
 "By granting this permission, \"1inch\" will be able to withdraw your "
 "{{ fromToken.symbol }} and complete transactions for you."
+
+#| msgid ""
+#| "By granting this permission, \"1inch\" will be able to withdraw your "
+#| "{{ fromToken.symbol }} and complete transactions for you."
+msgid ""
+"By granting this permission, \"{{ peerMeta?.name }}\" will be able to "
+"withdraw your {{ request.tokenInfo?.symbol || request.tokenInfo?.name}} and "
+"complete transactions for you."
+msgstr ""
+"By granting this permission, \"{{ peerMeta?.name }}\" will be able to "
+"withdraw your {{ request.tokenInfo?.symbol || request.tokenInfo?.name}} and "
+"complete transactions for you."
 
 msgid ""
 "By providing your email address, you give explicit consent to BitPay to use "
@@ -952,6 +963,9 @@ msgstr "Could not encrypt wallet"
 
 msgid "Could not find any ERC20 contract attached to the provided address."
 msgstr "Could not find any ERC20 contract attached to the provided address."
+
+msgid "Could not found your selected wallet. Try with a new connection"
+msgstr "Could not found your selected wallet. Try with a new connection"
 
 msgid "Could not get crypto offer. Please, try again later."
 msgstr "Could not get crypto offer. Please, try again later."
@@ -2485,8 +2499,9 @@ msgstr "No funds found"
 msgid "No password"
 msgstr "No password"
 
-msgid "No pending call requests"
-msgstr "No pending call requests"
+#| msgid "No pending call requests"
+msgid "No pending requests"
+msgstr "No pending requests"
 
 msgid "No private key"
 msgstr "No private key"
@@ -2809,14 +2824,19 @@ msgstr "Payment was confirmed and is being exchanged."
 msgid "Pending"
 msgstr "Pending"
 
+#| msgid "Pending Call Request"
+msgid "Pending Approve Request"
+msgstr "Pending Approve Request"
+
 msgid "Pending Call Request"
 msgstr "Pending Call Request"
 
-msgid "Pending Call Requests"
-msgstr "Pending Call Requests"
-
 msgid "Pending Proposals"
 msgstr "Pending Proposals"
+
+#| msgid "Pending Call Requests"
+msgid "Pending Requests"
+msgstr "Pending Requests"
 
 msgid "Pending multisig wallet"
 msgstr "Pending multisig wallet"
@@ -3585,6 +3605,10 @@ msgstr "Spend proposal not found"
 msgid "Spendable balance"
 msgstr "Spendable balance"
 
+#| msgid "Reminder"
+msgid "Spender"
+msgstr "Spender"
+
 msgid "Spender Contract Address"
 msgstr "Spender Contract Address"
 
@@ -4181,6 +4205,18 @@ msgid ""
 msgstr ""
 "To complete the swap, you will need to allow the exchange (\"1Inch\") to "
 "spend your {{ fromToken.symbol }}."
+
+#| msgid ""
+#| "To complete the swap, you will need to allow the exchange (\"1Inch\") to "
+#| "spend your {{ fromToken.symbol }}."
+msgid ""
+"To complete the swap, you will need to allow the exchange (\"{{ peerMeta?."
+"name }}\") to spend your {{ request.tokenInfo?.symbol || request.tokenInfo?."
+"name}}."
+msgstr ""
+"To complete the swap, you will need to allow the exchange (\"{{ peerMeta?."
+"name }}\") to spend your {{ request.tokenInfo?.symbol || request.tokenInfo?."
+"name}}."
 
 msgid ""
 "To get started, you'll need to enter a valid address or select an existent "

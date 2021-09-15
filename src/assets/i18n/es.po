@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: copay\n"
 "Language-Team: Spanish\n"
 "Language: es\n"
-"PO-Revision-Date: 2021-08-31 12:47\n"
+"PO-Revision-Date: 2021-09-15 13:54\n"
 
 msgid "(possible double spend)"
 msgstr "(Posible gasto duplicado)"
@@ -452,6 +452,9 @@ msgstr "Al dar mi dirección de correo electrónico, doy mi consentimiento expl�
 msgid "By granting this permission, \"1inch\" will be able to withdraw your {{ fromToken.symbol }} and complete transactions for you."
 msgstr "Al conceder este permiso, \"1Inch\" podrá retirar sus {{ fromToken.symbol }} y completar las transacciones por usted."
 
+msgid "By granting this permission, \"{{ peerMeta?.name }}\" will be able to withdraw your {{ request.tokenInfo?.symbol || request.tokenInfo?.name}} and complete transactions for you."
+msgstr "Al conceder este permiso, \"{{ peerMeta?.name }}\" podrá retirar tus {{ request.tokenInfo?.symbol || request.tokenInfo?.name}} y completar tus transacciones."
+
 msgid "By providing your email address, you give explicit consent to BitPay to use your email address to send you email notifications about payments."
 msgstr "Al proporcionar su dirección de correo electrónico, usted da consentimiento explícito a BitPay de usar su dirección de correo electrónico para enviarle notificaciones sobre pagos."
 
@@ -787,6 +790,9 @@ msgstr "No se pudo encriptar la billetera"
 
 msgid "Could not find any ERC20 contract attached to the provided address."
 msgstr "No se pudo encontrar ningún contrato ERC20 adjunto a la dirección proporcionada."
+
+msgid "Could not found your selected wallet. Try with a new connection"
+msgstr "No se pudo encontrar la cartera seleccionada. Intente con una nueva conexión"
 
 msgid "Could not get crypto offer. Please, try again later."
 msgstr "No se pudo obtener la oferta de criptomoneda. Por favor, inténtalo de nuevo más tarde."
@@ -2084,7 +2090,7 @@ msgstr "No se encontraron fondos"
 msgid "No password"
 msgstr "Sin contraseña"
 
-msgid "No pending call requests"
+msgid "No pending requests"
 msgstr "No hay solicitudes pendientes"
 
 msgid "No private key"
@@ -2387,14 +2393,17 @@ msgstr "El pago fue confirmado y se está intercambiando."
 msgid "Pending"
 msgstr "Pendiente"
 
-msgid "Pending Call Request"
-msgstr "Solicitudes Pendientes"
+msgid "Pending Approve Request"
+msgstr "Solicitud pendiente de aprobación"
 
-msgid "Pending Call Requests"
+msgid "Pending Call Request"
 msgstr "Solicitudes Pendientes"
 
 msgid "Pending Proposals"
 msgstr "Propuestas de pago pendientes"
+
+msgid "Pending Requests"
+msgstr "Solicitudes Pendientes"
 
 msgid "Pending multisig wallet"
 msgstr "Billetera multifirma pendiente"
@@ -3125,6 +3134,9 @@ msgstr "La propuesta de gasto no se ha encontrado"
 msgid "Spendable balance"
 msgstr "Balance disponible"
 
+msgid "Spender"
+msgstr "Gastador"
+
 msgid "Spender Contract Address"
 msgstr "Dirección del Contrato del Inversor"
 
@@ -3497,6 +3509,9 @@ msgstr "Para"
 
 msgid "To complete the swap, you will need to allow the exchange (\"1Inch\") to spend your {{ fromToken.symbol }}."
 msgstr "Para completar el intercambio, tendrá que permitir que el exchange (\"1Inch\") gaste sus {{ fromToken.symbol }}."
+
+msgid "To complete the swap, you will need to allow the exchange (\"{{ peerMeta?.name }}\") to spend your {{ request.tokenInfo?.symbol || request.tokenInfo?.name}}."
+msgstr "Para completar el cambio, tendrás que permitir que el exchange (\"{{ peerMeta?.name }}\") gaste tu {{ request.tokenInfo?.symbol || request.tokenInfo?.name}}."
 
 msgid "To get started, you'll need to enter a valid address or select an existent contact or wallet."
 msgstr "Para empezar, necesita ingresar una dirección válida o seleccionar un contacto o billetera existente."

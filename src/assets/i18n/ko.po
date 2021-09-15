@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: copay\n"
 "Language-Team: Korean\n"
 "Language: ko\n"
-"PO-Revision-Date: 2021-08-31 12:45\n"
+"PO-Revision-Date: 2021-09-15 13:49\n"
 
 msgid "(possible double spend)"
 msgstr "(이중 지출 가능)"
@@ -30,7 +30,7 @@ msgid ", please provide your phone number."
 msgstr "올바른 전화번호를 입력하세요"
 
 msgid ". Added a new wallet."
-msgstr ""
+msgstr ". Added a new wallet."
 
 msgid ". Added {{newWallets}} new wallets."
 msgstr ""
@@ -452,6 +452,9 @@ msgstr "By giving my email address, I give explicit consent to BitPay to use it 
 msgid "By granting this permission, \"1inch\" will be able to withdraw your {{ fromToken.symbol }} and complete transactions for you."
 msgstr ""
 
+msgid "By granting this permission, \"{{ peerMeta?.name }}\" will be able to withdraw your {{ request.tokenInfo?.symbol || request.tokenInfo?.name}} and complete transactions for you."
+msgstr ""
+
 msgid "By providing your email address, you give explicit consent to BitPay to use your email address to send you email notifications about payments."
 msgstr "By providing your email address, you give explicit consent to BitPay to use your email address to send you email notifications about payments."
 
@@ -786,6 +789,9 @@ msgid "Could not encrypt wallet"
 msgstr "Could not encrypt wallet"
 
 msgid "Could not find any ERC20 contract attached to the provided address."
+msgstr ""
+
+msgid "Could not found your selected wallet. Try with a new connection"
 msgstr ""
 
 msgid "Could not get crypto offer. Please, try again later."
@@ -2084,7 +2090,7 @@ msgstr "No funds found"
 msgid "No password"
 msgstr "No password"
 
-msgid "No pending call requests"
+msgid "No pending requests"
 msgstr ""
 
 msgid "No private key"
@@ -2387,14 +2393,17 @@ msgstr ""
 msgid "Pending"
 msgstr "보류 중"
 
-msgid "Pending Call Request"
+msgid "Pending Approve Request"
 msgstr ""
 
-msgid "Pending Call Requests"
+msgid "Pending Call Request"
 msgstr ""
 
 msgid "Pending Proposals"
 msgstr "제안 보류 중"
+
+msgid "Pending Requests"
+msgstr ""
 
 msgid "Pending multisig wallet"
 msgstr ""
@@ -3125,6 +3134,9 @@ msgstr "지출 제안을 찾을 수 없습니다"
 msgid "Spendable balance"
 msgstr "Spendable balance"
 
+msgid "Spender"
+msgstr ""
+
 msgid "Spender Contract Address"
 msgstr ""
 
@@ -3495,6 +3507,9 @@ msgid "To"
 msgstr "수신:"
 
 msgid "To complete the swap, you will need to allow the exchange (\"1Inch\") to spend your {{ fromToken.symbol }}."
+msgstr ""
+
+msgid "To complete the swap, you will need to allow the exchange (\"{{ peerMeta?.name }}\") to spend your {{ request.tokenInfo?.symbol || request.tokenInfo?.name}}."
 msgstr ""
 
 msgid "To get started, you'll need to enter a valid address or select an existent contact or wallet."

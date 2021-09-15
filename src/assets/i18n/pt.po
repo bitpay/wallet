@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: copay\n"
 "Language-Team: Portuguese, Brazilian\n"
 "Language: pt\n"
-"PO-Revision-Date: 2021-08-31 12:45\n"
+"PO-Revision-Date: 2021-09-15 13:49\n"
 
 msgid "(possible double spend)"
 msgstr "(Possível gasto duplo)"
@@ -452,6 +452,9 @@ msgstr "Ao dar meu endereço de e-mail, eu dou explícito consentimento à BitPa
 msgid "By granting this permission, \"1inch\" will be able to withdraw your {{ fromToken.symbol }} and complete transactions for you."
 msgstr ""
 
+msgid "By granting this permission, \"{{ peerMeta?.name }}\" will be able to withdraw your {{ request.tokenInfo?.symbol || request.tokenInfo?.name}} and complete transactions for you."
+msgstr ""
+
 msgid "By providing your email address, you give explicit consent to BitPay to use your email address to send you email notifications about payments."
 msgstr "Ao fornecer seu endereço de e-mail, você dá consentimento explícito para BitPay usar seu endereço de e-mail para enviar que e-mail notificações sobre pagamentos."
 
@@ -786,6 +789,9 @@ msgid "Could not encrypt wallet"
 msgstr "Não foi possível criptografar a carteira"
 
 msgid "Could not find any ERC20 contract attached to the provided address."
+msgstr ""
+
+msgid "Could not found your selected wallet. Try with a new connection"
 msgstr ""
 
 msgid "Could not get crypto offer. Please, try again later."
@@ -2084,7 +2090,7 @@ msgstr "Fundos encontrados"
 msgid "No password"
 msgstr "Sem senha"
 
-msgid "No pending call requests"
+msgid "No pending requests"
 msgstr ""
 
 msgid "No private key"
@@ -2387,14 +2393,17 @@ msgstr "O pagamento foi confirmado e está sendo trocado."
 msgid "Pending"
 msgstr "Pendente"
 
-msgid "Pending Call Request"
+msgid "Pending Approve Request"
 msgstr ""
 
-msgid "Pending Call Requests"
+msgid "Pending Call Request"
 msgstr ""
 
 msgid "Pending Proposals"
 msgstr "Proposta pendente"
+
+msgid "Pending Requests"
+msgstr ""
 
 msgid "Pending multisig wallet"
 msgstr ""
@@ -3125,6 +3134,9 @@ msgstr "Proposta de pagamento não encontrada"
 msgid "Spendable balance"
 msgstr "Saldo disponível"
 
+msgid "Spender"
+msgstr ""
+
 msgid "Spender Contract Address"
 msgstr ""
 
@@ -3495,6 +3507,9 @@ msgid "To"
 msgstr "Para"
 
 msgid "To complete the swap, you will need to allow the exchange (\"1Inch\") to spend your {{ fromToken.symbol }}."
+msgstr ""
+
+msgid "To complete the swap, you will need to allow the exchange (\"{{ peerMeta?.name }}\") to spend your {{ request.tokenInfo?.symbol || request.tokenInfo?.name}}."
 msgstr ""
 
 msgid "To get started, you'll need to enter a valid address or select an existent contact or wallet."
