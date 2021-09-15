@@ -63,7 +63,7 @@
     <preference name="AndroidXEnabled" value="true" />
 
     <!-- Supported Platforms -->
-    <engine name="android" spec="10.0.0" />
+    <engine name="android" spec="9.0.0" />
     <engine name="ios" spec="5.1.1" />
 
     <!-- Plugins -->
