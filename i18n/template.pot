@@ -516,6 +516,12 @@ msgid ""
 msgstr ""
 
 msgid ""
+"By granting this permission, \"{{ peerMeta?.name }}\" will be able to "
+"withdraw your {{ request.tokenInfo?.symbol || request.tokenInfo?.name}} and "
+"complete transactions for you."
+msgstr ""
+
+msgid ""
 "By providing your email address, you give explicit consent to BitPay to use "
 "your email address to send you email notifications about payments."
 msgstr ""
@@ -861,6 +867,9 @@ msgid "Could not encrypt wallet"
 msgstr ""
 
 msgid "Could not find any ERC20 contract attached to the provided address."
+msgstr ""
+
+msgid "Could not found your selected wallet. Try with a new connection"
 msgstr ""
 
 msgid "Could not get crypto offer. Please, try again later."
@@ -2273,7 +2282,7 @@ msgstr ""
 msgid "No password"
 msgstr ""
 
-msgid "No pending call requests"
+msgid "No pending requests"
 msgstr ""
 
 msgid "No private key"
@@ -2586,13 +2595,16 @@ msgstr ""
 msgid "Pending"
 msgstr ""
 
+msgid "Pending Approve Request"
+msgstr ""
+
 msgid "Pending Call Request"
 msgstr ""
 
-msgid "Pending Call Requests"
+msgid "Pending Proposals"
 msgstr ""
 
-msgid "Pending Proposals"
+msgid "Pending Requests"
 msgstr ""
 
 msgid "Pending multisig wallet"
@@ -3342,6 +3354,9 @@ msgstr ""
 msgid "Spendable balance"
 msgstr ""
 
+msgid "Spender"
+msgstr ""
+
 msgid "Spender Contract Address"
 msgstr ""
 
@@ -3825,6 +3840,12 @@ msgstr ""
 msgid ""
 "To complete the swap, you will need to allow the exchange (\"1Inch\") to "
 "spend your {{ fromToken.symbol }}."
+msgstr ""
+
+msgid ""
+"To complete the swap, you will need to allow the exchange (\"{{ "
+"peerMeta?.name }}\") to spend your {{ request.tokenInfo?.symbol || "
+"request.tokenInfo?.name}}."
 msgstr ""
 
 msgid ""
