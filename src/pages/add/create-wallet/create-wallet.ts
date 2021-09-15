@@ -489,6 +489,10 @@ export class CreateWalletPage implements OnInit {
           derivationPathByDefault = this.derivationPathHelperProvider
             .defaultMultisigDOGE;
           break;
+        case 'ltc':
+          derivationPathByDefault = this.derivationPathHelperProvider
+            .defaultMultisigLTC;
+          break;
         default:
           derivationPathByDefault = this.derivationPathHelperProvider
             .defaultMultisigBTC;

@@ -380,4 +380,16 @@ page-wallet-details {
   .danger-background {
     background-color: color($background-colors, danger);
   }
+  action-card {
+    .main-label {
+      display: flex;
+      justify-content: space-between;
+    }
+    .action-card__body {
+      text-align: left !important;
+    }
+    .button-standard {
+      margin: 5px auto;
+    }
+  }
 }

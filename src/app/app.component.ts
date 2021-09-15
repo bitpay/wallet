@@ -262,7 +262,6 @@ export class CopayApp {
 
       // Clear all notifications
       this.pushNotificationsProvider.clearAllNotifications();
-
       // Firebase Dynamic link
       this.dynamicLinksProvider.init();
     }

@@ -308,7 +308,7 @@ export class ProposalsNotificationsPage {
           this.openModal(finishText, 'success');
         }
         // own TxActions  are not triggered?
-        this.events.publish('Local/TxAction', wallet.walletId);
+        this.events.publish('Local/WalletFocus', wallet.walletId);
       })
       .catch(err => {
         this.logger.error('Sign multiple transaction proposals failed: ', err);

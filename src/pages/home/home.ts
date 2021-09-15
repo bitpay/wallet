@@ -125,15 +125,21 @@ export class HomePage {
     if (this.appProvider.isLockModalOpen) return;
     this.events.unsubscribe('Local/showNewFeaturesSlides');
     const disclaimerAccepted = this.profileProvider.profile.disclaimerAccepted;
-    const currentVs =
-      this.appProvider.version.major + '.' + this.appProvider.version.minor;
+    const currentVs = `${this.appProvider.version.major}.${this.appProvider.version.minor}.${this.appProvider.version.patch}`;
+    const dismissFlag = `dismissed_${currentVs}`;
     if (!disclaimerAccepted) {
       // first time using the App -> don't show
-      this.persistenceProvider.setNewFeatureSlidesFlag(currentVs);
+      this.persistenceProvider.setNewFeatureSlidesFlag(
+        `dismissed_${currentVs}`
+      );
       return;
     }
     this.persistenceProvider.getNewFeatureSlidesFlag().then(value => {
-      if (!value || String(value) !== currentVs) {
+      // if no flag or if current build major minor !== flag major and minor
+      if (
+        !value ||
+        !this.appProvider.meetsMajorMinorVersion(currentVs, value.split('_')[1])
+      ) {
         this.newFeatureData.get().then(feature_list => {
           if (feature_list && feature_list.features.length > 0) {
             const modal = this.modalCtrl.create(NewFeaturePage, {
@@ -143,7 +149,7 @@ export class HomePage {
             modal.onDidDismiss(data => {
               if (data) {
                 if (typeof data.done === 'boolean' && data.done === true) {
-                  this.persistenceProvider.setNewFeatureSlidesFlag(currentVs);
+                  this.persistenceProvider.setNewFeatureSlidesFlag(dismissFlag);
                 }
                 if (typeof data.data !== 'boolean') {
                   this.events.publish('IncomingDataRedir', data.data);
@@ -151,7 +157,7 @@ export class HomePage {
               }
             });
           } else {
-            this.persistenceProvider.setNewFeatureSlidesFlag(currentVs);
+            this.persistenceProvider.setNewFeatureSlidesFlag(dismissFlag);
           }
         });
       }
@@ -376,6 +382,12 @@ export class HomePage {
         const now = moment().unix();
         const timeExceeded = now - feedbackInfo.time >= 24 * 7 * 60 * 60;
         this.showRateCard = timeExceeded && !feedbackInfo.sent;
+        if(this.showCard){
+          this.showCard.setShowRateCard(this.showRateCard);
+          this.showCard.setShowSurveyCard(
+            timeExceeded && !feedbackInfo.surveyTaken
+          );
+        }
       }
     });
   }

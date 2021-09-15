@@ -137,4 +137,18 @@ export class AppProvider {
       return this.http.get(this.jsonPathServices).toPromise();
     }
   }
+
+  private getMajorMinor(version) {
+    return version.split(/\.(?=[^\.]+$)/)[0];
+  }
+
+  public meetsMajorMinorVersion(currentVersion, dismissFlagVersion) {
+    if (!currentVersion || !dismissFlagVersion) {
+      return false;
+    }
+    return (
+      this.getMajorMinor(currentVersion) ===
+      this.getMajorMinor(dismissFlagVersion)
+    );
+  }
 }

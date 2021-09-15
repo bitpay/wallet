@@ -87,7 +87,8 @@ const Keys = {
   CARD_FAST_TRACK_ENABLED: 'cardFastTrackEnabled',
   TEMP_MDES_DEBUG_FLAG: 'tempMdesDebugFlag',
   TEMP_MDES_CERT_ONLY_DEBUG_FLAG: 'tempMdesCertOnlyDebugFlag',
-  NETWORK: 'network'
+  NETWORK: 'network',
+  CUSTOM_VIRTUAL_CARD_DESIGN: `customVirtualCardDesign`
 };
 
 interface Storage {
@@ -1030,6 +1031,14 @@ export class PersistenceProvider {
 
   getNetwork() {
     return this.storage.get(Keys.NETWORK);
+  }
+
+  getCustomVirtualCardDesign() {
+    return this.storage.get(Keys.CUSTOM_VIRTUAL_CARD_DESIGN);
+  }
+
+  setCustomVirtualCardDesign(currency) {
+    return this.storage.set(Keys.CUSTOM_VIRTUAL_CARD_DESIGN, currency);
   }
 }
 

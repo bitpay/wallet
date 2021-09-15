@@ -77,7 +77,10 @@ export type InfoSheetType =
   | 'correct-recovery-prhase'
   | 'unsupported-alt-currency'
   | 'custom-fee-warning'
-  | 'sync-wallets';
+  | 'sync-wallets'
+  | 'testnet-warning-1'
+  | 'multisig-instantiation'
+  | 'join-wallet-warning';
 
 export type OptionsSheetType =
   | 'wallet-options'
