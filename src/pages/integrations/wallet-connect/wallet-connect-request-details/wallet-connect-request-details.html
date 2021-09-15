@@ -1,208 +1,303 @@
-<wide-header-page title="{{title}}">
+<wide-header-page title="{{title}}" [hasSlideButton]="isCordova">
+  <ion-buttons *ngIf="request && isSupportedMethod" right>
+    <button clear wide-header-bar-button (click)="rejectRequest(request)" ion-button>
+      <span translate>Reject</span>
+    </button>
+  </ion-buttons>
+
   <div page-content class="wc-container">
-    <ion-list class="bp-list">
-      <ion-item>
-        <ion-label>
-          <div class="main-label" translate>SUMMARY</div>
-        </ion-label>
-      </ion-item>
-
-      <label-tip type="warn" class="no-arrowhead" *ngIf="!isSupportedMethod">
-        <span label-tip-title translate>Method not supported</span>
-        <div label-tip-body>
-          <div translate>
-           <b>{{ request?.method }}</b> is not supported by BitPay. Please check the official WalletConnect documentation to see what the supported methods are.
-          </div>
-          <br>
-          <a class="label-tip-link" (click)="openExternalLink()" translate>Read More</a>
+    
+    <label-tip type="warn" class="no-arrowhead" *ngIf="request && !isSupportedMethod">
+      <span label-tip-title translate>Method not supported</span>
+      <div label-tip-body>
+        <div translate>
+        <b>{{ request.method }}</b> is not supported by BitPay. Please check the official WalletConnect documentation to see what the supported methods are.
         </div>
-      </label-tip>
+        <br>
+        <a class="label-tip-link" (click)="openExternalLink('https://docs.walletconnect.org/json-rpc-api-methods/ethereum')" translate>Read More</a>
+      </div>
+    </label-tip>
 
-      <div *ngFor="let param of request?.params; let i = index;">
-        <div *ngIf="request.method === 'eth_sendTransaction'">
-
-          <label-tip *ngIf="request.decodedData && request.decodedData.name ==='approve'" type="info" class="no-arrowhead">
+    <div *ngIf="request && isSupportedMethod">
+      <div *ngIf="isApproveRequest; else notApprove">
+          <label-tip *ngIf="peerMeta" type="info" class="no-arrowhead">
             <span label-tip-title translate>Give this site permission to access your token?</span>
             <div label-tip-body>
-              <span translate>To complete the swap, you will need to allow the exchange ("{{ peerMeta?.name }}") to spend your {{ request.tokenInfo?.symbol || request.tokenInfo?.name}}.</span>
+              <span translate>To complete the swap, you will need to allow the exchange ("{{ peerMeta.name }}") to spend your {{ request.tokenInfo.symbol || request.tokenInfo.name}}.</span>
               <br>
-              <span translate>By granting this permission, "{{ peerMeta?.name }}" will be able to withdraw your {{ request.tokenInfo?.symbol || request.tokenInfo?.name}} and complete transactions for you.</span>
+              <span translate>By granting this permission, "{{ peerMeta.name }}" will be able to withdraw you
+                r {{ request.tokenInfo.symbol || request.tokenInfo.name}} and complete transactions for you.</span>
             </div>
           </label-tip>
 
-            <ion-item *ngIf="request.decodedData && request.decodedData.name ==='approve' && request.decodedData.params[0] && request.decodedData.params[0].value ">
+          <ion-list class="bp-list">
+            <ion-item class="sub-title">
+              <ion-label>
+                <div class="main-label" translate>Details of the transaction</div>
+              </ion-label>
+            </ion-item>
+            
+            <div class="line-divider"></div>
+
+            <ion-item>
               <ion-label>
                 <div class="summary-item">
-                  <span translate>Spender</span>
+                  <span>{{"Site URL" | translate}}</span>
                 </div>
               </ion-label>
-              <ion-note item-end>
-                <ion-row align-items-center>
-                  <div class="background-content">
-                  <ion-col>
+              <ion-note item-end copy-to-clipboard="{{ peerMeta?.url }}" class="peer-url">
+                <ion-row align-items-center justify-content-end>
+                  <ion-col col-auto text-right>
                     <ion-icon item-start>
                       <img class="wc-img-sm" [src]="dappImgSrc" (error)="setDappImgSrc(true)" width="20">
                     </ion-icon>
                   </ion-col>
                   <ion-col>
-                    <span copy-to-clipboard="{{ request.decodedData.params[0].value }}" class="ellipsis">{{ request.decodedData.params[0].value | shortenedAddress}}</span>
+                    <span class="note-container ellipsis">{{ peerMeta?.url }}</span>
                   </ion-col>
-                  </div>
                 </ion-row>
               </ion-note>
             </ion-item>
-            <ion-item *ngIf="param.to">
+      
+            <div class="line-divider"></div>
+
+            <ion-item ion-item>
               <ion-label>
                 <div class="summary-item">
-                  <span translate>Sending to</span>
+                  <span translate>Token</span>
                 </div>
               </ion-label>
-              <ion-note item-end>
+              <ion-note *ngIf="request.tokenInfo && request.tokenInfo.logoURI && request.tokenInfo.address" copy-to-clipboard="{{ request.tokenInfo.address }}" item-end text-left>
                 <ion-row align-items-center>
                   <div class="background-content">
-                  <ion-col>
-                    <ion-icon *ngIf="request.decodedData && request.decodedData.name ==='approve' && request.tokenInfo && request.tokenInfo.logoURI; else shortNotice" item-start>
-                      <img class="wc-img-sm" [src]="request.tokenInfo.logoURI" (error)="currencyProvider.defaultLogoURI(img)" #img width="20">
-                    </ion-icon>
-                    <ng-template #shortNotice>
+                    <ion-col>
                       <ion-icon item-start>
-                        <img class="wc-img-sm" [src]="dappImgSrc" (error)="setDappImgSrc(true)" width="20">
+                        <img class="wc-img-sm" [src]="request.tokenInfo.logoURI" (error)="currencyProvider.defaultLogoURI(img)" #img width="20">
                       </ion-icon>
-                    </ng-template>
-                  </ion-col>
-                  <ion-col>
-                    <span class="ellipsis" copy-to-clipboard="{{ param.to }}">{{ param.to | shortenedAddress}}</span>
-                  </ion-col>
+                    </ion-col>
+                    <ion-col>
+                      <span class="note-container ellipsis">{{request.tokenInfo.address | shortenedAddress }}</span>
+                    </ion-col>
                   </div>
                 </ion-row>
               </ion-note>
             </ion-item>
-
-            <div class="line-divider" *ngIf="param.gas"></div>
-
-            <ion-item *ngIf="param.gas">
-              <ion-label>
-                <div class="summary-item">
-                  <span translate>Gas</span>
-                </div>
-              </ion-label>
-              <ion-note item-end>
-                    <span class="ellipsis">{{ param.gas }}</span>
-              </ion-note>
-            </ion-item>
-
-            <div class="line-divider" *ngIf="param.gasPrice"></div>
-
-            <ion-item *ngIf="param.gasPrice">
-              <ion-label>
-                <div class="summary-item">
-                  <span translate>Gas price</span>
-                </div>
-              </ion-label>
-              <ion-note item-end>
-                    <span class="ellipsis">{{ param.gasPrice * 1e-9 | number:'1.2-2' }} (Gwei)</span>
-              </ion-note>
-            </ion-item>
-
-            <div class="line-divider" *ngIf="param.gasLimit"></div>
-
-            <ion-item *ngIf="param.gasLimit">
-              <ion-label>
-                <div class="summary-item">
-                  <span translate>Gas limit</span>
-                </div>
-              </ion-label>
-              <ion-note item-end>
-                    <span class="ellipsis">{{ param.gasLimit }}</span>
-              </ion-note>
-            </ion-item>
-
-            <div class="line-divider" *ngIf="param.nonce"></div>
-
-            <ion-item *ngIf="param.nonce">
-              <ion-label>
-                <div class="summary-item">
-                  <span translate>Nonce</span>
-                </div>
-              </ion-label>
-              <ion-note item-end>
-                    <span class="ellipsis">{{ param.nonce }}</span>
-              </ion-note>
-            </ion-item>
-
-            <div class="line-divider" *ngIf="param.value"></div>
-
-            <ion-item *ngIf="param.value">
-              <ion-label>
-                <div class="summary-item">
-                  <span translate>Amount</span>
-                </div>
-              </ion-label>
-              <ion-note item-end>
-                    <span class="ellipsis">{{ param.value | satToUnit: wallet?.coin }}</span>
-              </ion-note>
-            </ion-item>
-          </div>
-
-          <div *ngIf="request.method === 'eth_signTypedData' || request.method === 'eth_sign' || request.method === 'eth_signTypedData_v1' || request.method === 'eth_signTypedData_v3' || request.method === 'eth_signTypedData_v4'">
-            <ion-item *ngIf="i === 0 && param" copy-to-clipboard="{{ param }}">
-              <ion-label>
-                <div class="summary-item">
-                  <span translate>Address</span>
-                </div>
-              </ion-label>
-              <ion-note item-end>
-                <div class="background-content">
-                  <span class="ellipsis">{{ param | shortenedAddress }}</span>
-                </div>
-              </ion-note>
-            </ion-item>
-
-            <div class="line-divider" *ngIf="i === 1 && param"></div>
-
-            <ion-item *ngIf="i === 1 && param">
-              <ion-label>
-                <div class="summary-item">
-                  <span translate>Message</span>
-                </div>
-              </ion-label>
-              <ion-textarea [attr.rows]=10 disabled [value]="param"></ion-textarea>
-            </ion-item>
-          </div>
-
-          <div *ngIf="request.method === 'personal_sign'">
-            <ion-item *ngIf="i === 0 && param">
-              <ion-label>
-                <div class="summary-item">
-                  <span translate>Message</span>
-                </div>
-              </ion-label>
-              <ion-textarea disabled [value]="param"></ion-textarea>
-            </ion-item>
-
-            <div class="line-divider" *ngIf="i === 1 && param"></div>
-
-            <ion-item *ngIf="i === 1 && param" copy-to-clipboard="{{ param }}">
-              <ion-label>
-                <div class="summary-item">
-                  <span translate>Address</span>
-                </div>
-              </ion-label>
-              <ion-note item-end>
-                  <span class="ellipsis">{{ param | shortenedAddress }}</span>
-              </ion-note>
-            </ion-item>
-          </div>
-        </div>
-      </ion-list>
       
-      <div class="btn-container">
-        <button  margin-top (click)="approveRequest(request)" ion-button class="button-standard" color="primary" [disabled]="!isSupportedMethod">
-          {{ buttonAction[request?.method] || 'Confirm' | translate }}
-        </button>
-        <button  margin-top (click)="rejectRequest(request)" ion-button class="button-standard" color="primary" outline>
-          {{ 'Reject' | translate }}
-        </button>
+            <div class="line-divider"></div>
+      
+            <ion-item>
+              <ion-label>
+                <div class="summary-item">
+                  <span>{{"Wallet" | translate}}</span>
+                </div>
+              </ion-label>
+              <ion-note item-end text-left>
+                <ion-row class="wallet" align-items-center>
+                  <ion-col>
+                    <coin-icon [coin]="wallet.coin" [network]="wallet.network"></coin-icon>
+                  </ion-col>
+                  <ion-col>
+                    <span class="note-container ellipsis">{{ wallet.name }}</span>
+                  </ion-col>
+                </ion-row>
+              </ion-note>
+            </ion-item>
+
+            <div class="line-divider"></div>
+      
+            <ion-item>
+              <ion-label>
+                <div class="summary-item">
+                  <span>{{"Miner Fee" | translate}}</span>
+                </div>
+              </ion-label>
+              <ion-note item-end>
+                <div class="summary-item-detail">
+                  <span *ngIf="ctxp">
+                    {{ ctxp.fee | satToUnit: getChain(wallet.coin) }}
+                  </span>
+                </div>
+              </ion-note>
+            </ion-item>
+      
+            <div *ngIf="fiatFee" class="amount-details">
+              <div class="secondary-note">
+                <span>
+                  ~{{ fiatFee | number : '1.2-2' }} {{ alternativeIsoCode }}
+                </span>
+              </div>
+            </div>
+          </ion-list>
       </div>
+        
+      <ng-template #notApprove>
+        <ion-list class="bp-list">
+          <ion-item>
+            <ion-label>
+              <div class="main-label" translate>SUMMARY</div>
+            </ion-label>
+          </ion-item>
+          <div *ngFor="let param of request?.params; let i = index;">
+            <div *ngIf="request.method === 'eth_sendTransaction'">
+
+              <ion-item *ngIf="param.to">
+                <ion-label>
+                  <div class="summary-item">
+                    <span translate>Sending to</span>
+                  </div>
+                </ion-label>
+                <ion-note item-end>
+                  <ion-row align-items-center>
+                    <div class="background-content">
+                    <ion-col>
+                        <ion-icon item-start>
+                          <img class="wc-img-sm" [src]="dappImgSrc" (error)="setDappImgSrc(true)" width="20">
+                        </ion-icon>
+                    </ion-col>
+                    <ion-col>
+                      <span class="ellipsis" copy-to-clipboard="{{ param.to }}">{{ param.to | shortenedAddress}}</span>
+                    </ion-col>
+                    </div>
+                  </ion-row>
+                </ion-note>
+              </ion-item>
+
+              <div class="line-divider" *ngIf="param.gas"></div>
+
+              <ion-item *ngIf="param.gas">
+                <ion-label>
+                  <div class="summary-item">
+                    <span translate>Gas</span>
+                  </div>
+                </ion-label>
+                <ion-note item-end>
+                      <span class="ellipsis">{{ param.gas }}</span>
+                </ion-note>
+              </ion-item>
+
+              <div class="line-divider" *ngIf="param.gasPrice"></div>
+
+              <ion-item *ngIf="param.gasPrice">
+                <ion-label>
+                  <div class="summary-item">
+                    <span translate>Gas price</span>
+                  </div>
+                </ion-label>
+                <ion-note item-end>
+                      <span class="ellipsis">{{ param.gasPrice * 1e-9 | number:'1.2-2' }} (Gwei)</span>
+                </ion-note>
+              </ion-item>
+
+              <div class="line-divider" *ngIf="param.gasLimit"></div>
+
+              <ion-item *ngIf="param.gasLimit">
+                <ion-label>
+                  <div class="summary-item">
+                    <span translate>Gas limit</span>
+                  </div>
+                </ion-label>
+                <ion-note item-end>
+                      <span class="ellipsis">{{ param.gasLimit }}</span>
+                </ion-note>
+              </ion-item>
+
+              <div class="line-divider" *ngIf="param.nonce"></div>
+
+              <ion-item *ngIf="param.nonce">
+                <ion-label>
+                  <div class="summary-item">
+                    <span translate>Nonce</span>
+                  </div>
+                </ion-label>
+                <ion-note item-end>
+                      <span class="ellipsis">{{ param.nonce }}</span>
+                </ion-note>
+              </ion-item>
+
+              <div class="line-divider" *ngIf="param.value"></div>
+
+              <ion-item *ngIf="param.value">
+                <ion-label>
+                  <div class="summary-item">
+                    <span translate>Amount</span>
+                  </div>
+                </ion-label>
+                <ion-note item-end>
+                      <span class="ellipsis">{{ param.value | satToUnit: wallet?.coin }}</span>
+                </ion-note>
+              </ion-item>
+            </div>
+
+            <div *ngIf="request.method === 'eth_signTypedData' || request.method === 'eth_sign' || request.method === 'eth_signTypedData_v1' || request.method === 'eth_signTypedData_v3' || request.method === 'eth_signTypedData_v4'">
+              <ion-item *ngIf="i === 0 && param" copy-to-clipboard="{{ param }}">
+                <ion-label>
+                  <div class="summary-item">
+                    <span translate>Address</span>
+                  </div>
+                </ion-label>
+                <ion-note item-end>
+                  <div class="background-content">
+                    <span class="ellipsis">{{ param | shortenedAddress }}</span>
+                  </div>
+                </ion-note>
+              </ion-item>
+
+              <div class="line-divider" *ngIf="i === 1 && param"></div>
+
+              <ion-item *ngIf="i === 1 && param">
+                <ion-label>
+                  <div class="summary-item">
+                    <span translate>Message</span>
+                  </div>
+                </ion-label>
+                <ion-textarea [attr.rows]=10 disabled [value]="param"></ion-textarea>
+              </ion-item>
+            </div>
+
+            <div *ngIf="request.method === 'personal_sign'">
+              <ion-item *ngIf="i === 0 && param">
+                <ion-label>
+                  <div class="summary-item">
+                    <span translate>Message</span>
+                  </div>
+                </ion-label>
+                <ion-textarea disabled [value]="param"></ion-textarea>
+              </ion-item>
+
+              <div class="line-divider" *ngIf="i === 1 && param"></div>
+
+              <ion-item *ngIf="i === 1 && param" copy-to-clipboard="{{ param }}">
+                <ion-label>
+                  <div class="summary-item">
+                    <span translate>Address</span>
+                  </div>
+                </ion-label>
+                <ion-note item-end>
+                    <span class="ellipsis">{{ param | shortenedAddress }}</span>
+                </ion-note>
+              </ion-item>
+            </div>
+          </div>
+        </ion-list>
+      </ng-template>
     </div>
+
+  </div>
+
+  <div *ngIf="isApproveRequest && request && isSupportedMethod; else notApproveButton" footer-content>
+    <page-slide-to-accept #slideButton *ngIf="isCordova" buttonText="{{'Slide to Approve' | translate}}"  (slideDone)="makePayment()">
+    </page-slide-to-accept>
+    <ion-toolbar *ngIf="!isCordova">
+      <button ion-button full class="button-footer" (click)="makePayment()">{{'Approve' | translate}}</button>
+    </ion-toolbar>
+  </div>
+  
+  <ng-template #notApproveButton>
+    <div class="btn-container" *ngIf="request && isSupportedMethod">
+      <button  margin-top (click)="approveRequest(request)" ion-button class="button-standard" color="primary" [disabled]="!isSupportedMethod">
+        {{ buttonAction[request?.method] || 'Continue' | translate }}
+      </button>
+    </div>
+  </ng-template>
+
 </wide-header-page>
