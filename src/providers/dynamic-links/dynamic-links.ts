@@ -62,6 +62,7 @@ export class DynamicLinksProvider {
       return;
     }
 
+    this.onGoingProcessProvider.clear();
     if (dynLink && dynLink.deepLink) this.processDeepLink(dynLink.deepLink);
   }
 
