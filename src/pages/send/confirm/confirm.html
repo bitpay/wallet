@@ -1,4 +1,4 @@
-<wide-header-page title="{{ mainTitle }}" [hasSlideButton]="!hideSlideButton && isCordova">
+<wide-header-page title="{{ mainTitle }}" [hasSlideButton]="!hideSlideButton && isCordova" [merchantName]="merchantName">
   <div page-content>
     <label-tip *ngIf="isSpeedUpTx" type="info" header="no-header" class="no-arrowhead">
       <div *ngIf="wallet.coin === 'btc'" label-tip-body translate>
@@ -309,6 +309,17 @@
         <ion-note class="main-note" *ngIf="!paymentExpired" item-end>{{remainingTimeStr}}</ion-note>
         <ion-note class="main-note" *ngIf="paymentExpired" [ngStyle]="{'color': 'red'}" item-end>{{'Expired' | translate}}</ion-note>
       </ion-item>
+
+      <ng-container *ngFor="let item of itemizedDetails" >
+        <ion-item *ngIf="item.description && item.amount">
+            <ion-label>
+              <div class="summary-item">
+                <span>{{item.description}}</span>
+              </div>
+            </ion-label>
+            <ion-note class="main-note" item-end>{{item.amount}} USD</ion-note>
+        </ion-item>
+      </ng-container>
 
       <div class="summary-line"></div>
 
