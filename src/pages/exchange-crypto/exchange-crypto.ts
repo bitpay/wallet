@@ -846,16 +846,24 @@ export class ExchangeCryptoPage {
             );
           })[0];
 
+    // workaround to prevent scientific notation
+    const _amount: number = this.amountFrom * 10 ** this.fromToken.decimals;
+    const minUnitAmount: string = _amount.toLocaleString('fullwide', {
+      useGrouping: false,
+      maximumFractionDigits: 0
+    });
+
     const data: any = {
       fromTokenAddress: this.fromToken.address,
       toTokenAddress: this.toToken.address,
-      amount: this.amountFrom * 10 ** this.fromToken.decimals // amount in minimum unit
+      amount: minUnitAmount // amount in minimum unit
     };
 
     if (this.referrerFee) {
       data.fee = this.referrerFee; // taking this fee from BWS. This percentage of fromTokenAddress token amount  will be sent to referrerAddress, the rest will be used as input for a swap | min: 0; max: 3; default: 0;
     }
 
+    this.logger.debug('quoteRequestData: ', data);
     this.oneInchProvider
       .getQuote1inch(data)
       .then(data => {
