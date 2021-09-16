@@ -19,6 +19,7 @@ export interface RedirParams {
   coin?: Coin;
   fromHomeCard?: boolean;
   fromFooterMenu?: boolean;
+  force?: boolean;
 }
 
 @Injectable()
@@ -97,7 +98,7 @@ export class IncomingDataProvider {
   }
 
   private isValidWalletConnectUri(data: string): boolean {
-    return !!/^(wc)?:/.exec(data);
+    return !!/(wallet\/wc|wc:)/g.exec(data);
   }
 
   public isValidBitcoinCashUriWithLegacyAddress(data: string): boolean {
@@ -518,6 +519,9 @@ export class IncomingDataProvider {
 
       // Wallet Connect URI
     } else if (this.isValidWalletConnectUri(data)) {
+      if (data.includes('?uri')) {
+        data = data.split('?uri=')[1];
+      }
       this.handleWalletConnectUri(data);
       return true;
 
@@ -599,6 +603,11 @@ export class IncomingDataProvider {
 
           if (payload.includes('dashboardRedirect')) {
             params['dashboardRedirect'] = true;
+          }
+
+          if (payload.includes('&vcd=')) {
+            const currency = payload.split('&vcd=')[1];
+            this.persistenceProvider.setCustomVirtualCardDesign(currency);
           }
 
           // this param is set if pairing for the first time after an order

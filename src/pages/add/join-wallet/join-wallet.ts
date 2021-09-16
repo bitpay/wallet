@@ -23,6 +23,7 @@ import { ConfigProvider } from '../../../providers/config/config';
 import { Coin } from '../../../providers/currency/currency';
 import { DerivationPathHelperProvider } from '../../../providers/derivation-path-helper/derivation-path-helper';
 import { ErrorsProvider } from '../../../providers/errors/errors';
+import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
 import { Logger } from '../../../providers/logger/logger';
 import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
 import { PlatformProvider } from '../../../providers/platform/platform';
@@ -72,7 +73,8 @@ export class JoinWalletPage {
     private clipboardProvider: ClipboardProvider,
     private modalCtrl: ModalController,
     private errorsProvider: ErrorsProvider,
-    private actionSheetProvider: ActionSheetProvider
+    private actionSheetProvider: ActionSheetProvider,
+    private externalLinkProvider: ExternalLinkProvider
   ) {
     this.isCordova = this.platformProvider.isCordova;
     this.okText = this.translate.instant('Ok');
@@ -81,7 +83,7 @@ export class JoinWalletPage {
     this.showAdvOpts = false;
     this.keyId = this.navParams.data.keyId;
     this.coin = this.navParams.data.coin;
-    this.regex = /^[0-9A-HJ-NP-Za-km-z]{70,80}$/; // For invitationCode
+    this.regex = /^[0-9A-Za-z]{70,80}$/; // For invitationCode
     this.joinForm = this.form.group({
       walletName: [null],
       myName: [null],
@@ -310,7 +312,20 @@ export class JoinWalletPage {
       return;
     }
 
-    this.join(opts);
+    const joinWarningSheet = this.actionSheetProvider.createInfoSheet(
+      'join-wallet-warning'
+    );
+    joinWarningSheet.present();
+    joinWarningSheet.onDidDismiss(option => {
+      if (option) {
+        // TODO: update support page of AbcPay
+        this.externalLinkProvider.open(
+          'https://support.bitpay.com/hc/en-us/articles/360032618692-What-is-a-Multisignature-Multisig-or-Shared-Wallet-'
+        );
+      } else {
+        this.join(opts);
+      }
+    });
   }
 
   private join(opts): void {

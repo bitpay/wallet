@@ -597,5 +597,28 @@
       <span sheet-text>{{params.msg}}</span>
       <span sheet-button-text translate>OK</span>
     </info-sheet-template>
+
+    <info-sheet-template *ngSwitchCase="'testnet-warning-1'" type="warning">
+      <span sheet-title-text translate>Warning!</span>
+      <span sheet-text translate>
+        {{ 'Testnet is an alternative {coinName} block chain meant for testing. This allows application developers and testers to experiment without having to use real {coinName}. Testnet coins are different from actual {coinName}, and do not have any value. They cannot be converted into "real" coins and cannot be exchanged or sold as they have no value.' | translate : {coinName: params.coinName } }}
+      </span>
+      <span sheet-button-text translate>I Understand</span>
+      <span sheet-second-button-text translate>Cancel</span>
+    </info-sheet-template>
+
+    <info-sheet-template *ngSwitchCase="'multisig-instantiation'" type="success">
+      <span sheet-title-text translate>The transaction is taking longer than usual to confirm</span>
+      <span sheet-text translate>When your transaction is confirmed, the multisig wallet will show up in the wallet list. You can check the transaction status in the wallet history.</span>
+      <span sheet-button-text translate>OK</span>
+    </info-sheet-template>
+
+    <info-sheet-template *ngSwitchCase="'join-wallet-warning'" type="warning">
+      <span sheet-title-text translate>Someone asked you to join a multisig wallet?</span>
+      <span sheet-text translate>You are about to join a shared wallet. This is an advanced feature, make sure you understand how multisig wallets work before putting funds in it. If a third party invited you to join, make sure you trust them, if you have purchased cryptocurrency they may be scamming you.
+      </span>
+      <span sheet-button-text translate>READ MORE</span>
+      <span sheet-second-button-text translate>GOT IT</span>
+    </info-sheet-template>
   </div>
 </action-sheet>

@@ -74,17 +74,18 @@ export class WalletReceiveComponent extends ActionSheetParent {
     });
   }
 
-  private bwsEventHandler: any = (walletId, type, n) => {
+  private bwsEventHandler: any = data => {
     if (
-      this.wallet.credentials.walletId == walletId &&
-      type == 'NewIncomingTx' &&
-      n.data
+      data &&
+      this.wallet.credentials.walletId == data.walletId &&
+      data.notification_type == 'NewIncomingTx' &&
+      data.notification
     ) {
       let addr =
         this.address.indexOf(':') > -1
           ? this.address.split(':')[1]
           : this.address;
-      if (n.data.address == addr) this.setAddress(true);
+      if (data.notification.address == addr) this.setAddress(true);
     }
   };
 
@@ -151,7 +152,8 @@ export class WalletReceiveComponent extends ActionSheetParent {
 
     await Observable.timer(200).toPromise();
     this.playAnimation = false;
-    this.showCoinNetworkWarning(this.wallet.coin);
+    if (this.wallet.network === 'testnet') this.showTestnetWarning();
+    else this.showCoinNetworkWarning(this.wallet.coin);
   }
 
   public setQrAddress() {
@@ -177,6 +179,13 @@ export class WalletReceiveComponent extends ActionSheetParent {
     sheet.instance.sheetType = sheetType;
     sheet.instance.params = params;
     return sheet;
+  }
+
+  private showTestnetWarning() {
+    const infoSheet = this.createInfoSheet('testnet-warning-1', {
+      coinName: this.currencyProvider.getCoinName(this.wallet.coin)
+    });
+    infoSheet.present();
   }
 
   private showFirstWarning() {

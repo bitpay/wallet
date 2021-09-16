@@ -233,6 +233,56 @@
       <span translate *ngIf="updatingTxHistoryProgress>4">{{updatingTxHistoryProgress}} transactions downloaded</span>
     </div>
 
+    <ion-list *ngIf="multisigPendingWallets && multisigPendingWallets[0]" class="bp-list">
+      <ion-item-divider sticky class="tx-history-header">
+        <span>{{'Pending multisig wallet' | translate }} </span>
+      </ion-item-divider>
+      <div *ngFor="let multisigPendingWallet of multisigPendingWallets">
+        <action-card>
+          <div action-card-title class="main-label">
+            <div>
+              {{ 'Name' }}
+              <ion-note item-end>
+                {{ multisigPendingWallet.walletName }}
+              </ion-note>
+            </div>
+          </div>
+          <div action-card-body>
+            <div class="item">{{ 'Required Confirmations - Total Copayers' | translate }}</div>
+            <ion-note item-end>
+              {{ multisigPendingWallet.m }} - {{multisigPendingWallet.n}}
+            </ion-note>
+            <div (click)="viewTxOnBlockchain(multisigPendingWallet.txId)" class="item">
+              <div>{{ 'Instantiation transaction ID' | translate }}</div>
+              <ion-note item-end>
+                {{ multisigPendingWallet.txId }}
+              </ion-note>
+            </div>
+            <div (click)="viewAddressOnBlockchain(multisigPendingWallet.multisigContractAddress)" class="item">
+              <div>{{ 'Contract Address' | translate }}</div>
+              <ion-note item-end>
+                {{ multisigPendingWallet.multisigContractAddress }}
+              </ion-note>
+            </div>
+          </div>
+          <div action-card-button>
+            <ion-row>
+              <ion-col>
+                <button (click)="removeMultisigWallet(multisigPendingWallet.txId)" ion-button class="button-standard" color="primary" outline>
+                  {{ 'Remove' | translate }}
+                </button>
+              </ion-col>
+              <ion-col>
+                <button (click)="createMultisigWallet(multisigPendingWallet)" ion-button class="button-standard" color="primary" outline>
+                  {{ 'Create' | translate }}
+                </button>
+              </ion-col>
+            </ion-row>
+          </div>
+        </action-card>
+      </div>
+    </ion-list>
+
     <ion-list *ngIf="history && history[0]" class="tx-history">
       <ion-item-group *ngFor="let group of groupedHistory; trackBy: trackByFn; let i = index;">
 

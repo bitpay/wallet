@@ -6,9 +6,27 @@ import { Component, Input } from '@angular/core';
 })
 export class CoinIconComponent {
   @Input()
-  coin: string;
-  @Input()
   network: string;
 
-  constructor() {}
+  @Input()
+  set coin(value: string) {
+    this._coin = value;
+    this.setCoinPath(this._coin);
+  }
+
+  get coin(): string {
+    return this._coin;
+  }
+
+  private _coin: string;
+  public assetUrl: string;
+
+  private setCoinPath(coin: string) {
+    this.assetUrl = 'assets/img/currencies/';
+    if (this.network === 'testnet' && ['ltc'].includes(coin)) {
+      this.assetUrl += 'testnet/';
+    }
+
+    this.assetUrl += `${coin}.svg`;
+  }
 }

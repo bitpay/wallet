@@ -1,7 +1,6 @@
 // import { from } from 'rxjs/observable/from';
 
 /* Native modules */
-export { AppleWalletNg } from 'apple-wallet-ng';
 export { Clipboard } from '@ionic-native/clipboard';
 export { Device } from '@ionic-native/device';
 export { FCMNG } from 'fcm-ng';
@@ -23,7 +22,6 @@ export { AddressProvider } from '../providers/address/address';
 export { AnalyticsProvider } from '../providers/analytics/analytics';
 export { AppIdentityProvider } from '../providers/app-identity/app-identity';
 export { AppProvider } from '../providers/app/app';
-export { AppleWalletProvider } from '../providers/apple-wallet/apple-wallet';
 export { BackupProvider } from '../providers/backup/backup';
 export { BitPayProvider } from '../providers/bitpay/bitpay';
 export { BwcErrorProvider } from '../providers/bwc-error/bwc-error';

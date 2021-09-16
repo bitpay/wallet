@@ -29,6 +29,8 @@ export interface FlatWallet {
   walletId: string;
   color: string;
   name: string;
+  lastKnownBalance: string;
+  cachedStatus: any;
   recipientType: 'wallet';
   coin: Coin;
   network: 'testnet' | 'livenet';
@@ -241,6 +243,8 @@ export class TransferToPage {
       walletId: wallet.credentials.walletId,
       color: wallet.color,
       name: wallet.name,
+      lastKnownBalance: wallet.lastKnownBalance,
+      cachedStatus: wallet.cachedStatus,
       recipientType: 'wallet',
       coin: wallet.coin,
       network: wallet.network,

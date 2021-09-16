@@ -83,7 +83,7 @@ export class PushNotificationsProvider {
 
         this.fcmInterval = setInterval(() => {
           this.renewSubscription();
-        }, 5 * 60 * 1000); // 5 min
+        }, 3 * 60 * 1000); // 3 min
       });
     });
   }
@@ -124,8 +124,9 @@ export class PushNotificationsProvider {
           }
         } else {
           const wallet = this.findWallet(data.walletId, data.tokenAddress);
-          if (!wallet) return;
-          this.newBwsEvent(data, wallet.credentials.walletId);
+          if (!wallet && data.notification_type !== 'NewBlock') return;
+          const walletId = wallet ? wallet.credentials.walletId : null;
+          this.newBwsEvent(data, walletId);
           this.showInappNotification(data);
         }
       });
@@ -138,12 +139,12 @@ export class PushNotificationsProvider {
       id = walletId + '-' + notification.tokenAddress.toLowerCase();
       this.logger.debug(`event for token wallet: ${id}`);
     }
-    this.events.publish(
-      'bwsEvent',
-      id,
-      notification.notification_type,
+    let eventData = {
+      walletId: id,
+      notification_type: notification.notification_type,
       notification
-    );
+    };
+    this.events.publish('bwsEvent', eventData);
   }
 
   public updateSubscription(walletClient): void {
