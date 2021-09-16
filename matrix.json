@@ -1,0 +1,413 @@
+{
+    "version": "3.0",
+    "organisation": {
+        "name": "BitPay",
+        "web": "https://bitpay.com/",
+        "email": "feedback@bitpay.com",
+        "location": "USA",
+        "established": "2018-01-01",
+        "socials": [
+            {
+                "type": "linkedin",
+                "slug": "company/bitpay-inc-"
+            },
+            {
+                "type": "twitter",
+                "slug": "BitPay"
+            }
+        ],
+        "soft": []
+    },
+    "wallets": [
+        {
+            "name": "BitPay",
+            "web": "https://bitpay.com/wallet/",
+            "uuid": "682F7675-361E-49EA-BB86-90EC27F27E12",
+            "features": {
+                "currencies": [
+                    {
+                        "type": "crypto",
+                        "ticker": "BTC"
+                    },
+                    {
+                        "type": "crypto",
+                        "ticker": "BCH"
+                    },
+                    {
+                        "type": "fiat",
+                        "ticker": "AFN"
+                    },
+                    {
+                        "type": "fiat",
+                        "ticker": "ALL"
+                    },
+                    {
+                        "type": "fiat",
+                        "ticker": "DZD"
+                    },
+                    {
+                        "type": "fiat",
+                        "ticker": "AOA"
+                    },
+                    {
+                        "type": "fiat",
+                        "ticker": "ARS"
+                    },
+                    {
+                        "type": "fiat",
+                        "ticker": "AMD"
+                    },
+                    {
+                        "type": "fiat",
+                        "ticker": "AWG"
+                    },
+                    {
+                        "type": "fiat",
+                        "ticker": "AUD"
+                    },
+                    {
+                        "type": "fiat",
+                        "ticker": "AZN"
+                    },
+                    {
+                        "type": "fiat",
+                        "ticker": "BSD"
+                    },
+                    {
+                        "type": "fiat",
+                        "ticker": "BHD"
+                    },
+                    {
+                        "type": "fiat",
+                        "ticker": "BDT"
+                    },
+                    {
+                        "type": "fiat",
+                        "ticker": "BBD"
+                    },
+                    {
+                        "type": "fiat",
+                        "ticker": "BYN"
+                    },
+                    {
+                        "type": "fiat",
+                        "ticker": "BZD"
+                    },
+                    {
+                        "type": "fiat",
+                        "ticker": "BMD"
+                    },
+                    {
+                        "type": "fiat",
+                        "ticker": "BTN"
+                    },
+                    {
+                        "type": "fiat",
+                        "ticker": "BOB"
+                    },
+                    {
+                        "type": "fiat",
+                        "ticker": "BAM"
+                    },
+                    {
+                        "type": "fiat",
+                        "ticker": "BWP"
+                    },
+                    {
+                        "type": "fiat",
+                        "ticker": "BRL"
+                    },
+                    {
+                        "type": "fiat",
+                        "ticker": "BND"
+                    },
+                    {
+                        "type": "fiat",
+                        "ticker": "BGN"
+                    },
+                    {
+                        "type": "fiat",
+                        "ticker": "BIF"
+                    },
+                    {
+                        "type": "fiat",
+                        "ticker": "KHR"
+                    },
+                    {
+                        "type": "fiat",
+                        "ticker": "CAD"
+                    },
+                    {
+                        "type": "fiat",
+                        "ticker": "CVE"
+                    },
+                    {
+                        "type": "fiat",
+                        "ticker": "KYD"
+                    },
+                    {
+                        "type": "fiat",
+                        "ticker": "XOF"
+                    },
+                    {
+                        "type": "fiat",
+                        "ticker": "XAF"
+                    },
+                    {
+                        "type": "fiat",
+                        "ticker": "XPF"
+                    },
+                    {
+                        "type": "fiat",
+                        "ticker": "CLP"
+                    },
+                    {
+                        "type": "fiat",
+                        "ticker": "CLF"
+                    },
+                    {
+                        "type": "fiat",
+                        "ticker": "CNY"
+                    },
+                    {
+                        "type": "fiat",
+                        "ticker": "USDC"
+                    },
+                    {
+                        "type": "fiat",
+                        "ticker": "COP"
+                    },
+                    {
+                        "type": "fiat",
+                        "ticker": "KMF"
+                    },
+                    {
+                        "type": "fiat",
+                        "ticker": "CDF"
+                    },
+                    {
+                        "type": "fiat",
+                        "ticker": "CRC"
+                    },
+                    {
+                        "type": "fiat",
+                        "ticker": "HRK"
+                    },
+                    {
+                        "type": "fiat",
+                        "ticker": "CUP"
+                    },
+                    {
+                        "type": "fiat",
+                        "ticker": "CZK"
+                    },
+                    {
+                        "type": "fiat",
+                        "ticker": "DKK"
+                    },
+                    {
+                        "type": "fiat",
+                        "ticker": "DJF"
+                    },
+                    {
+                        "type": "fiat",
+                        "ticker": "DOP"
+                    },
+                    {
+                        "type": "fiat",
+                        "ticker": "XCD"
+                    },
+                    {
+                        "type": "fiat",
+                        "ticker": "EGP"
+                    },
+                    {
+                        "type": "fiat",
+                        "ticker": "ETB"
+                    },
+                    {
+                        "type": "fiat",
+                        "ticker": "EUR"
+                    },
+                    {
+                        "type": "fiat",
+                        "ticker": "FKP"
+                    },
+                    {
+                        "type": "fiat",
+                        "ticker": "FJD"
+                    },
+                    {
+                        "type": "fiat",
+                        "ticker": "GMD"
+                    },
+                    {
+                        "type": "fiat",
+                        "ticker": "GUSD"
+                    },
+                    {
+                        "type": "fiat",
+                        "ticker": "GEL"
+                    },
+                    {
+                        "type": "fiat",
+                        "ticker": "GHS"
+                    },
+                    {
+                        "type": "fiat",
+                        "ticker": "GIP"
+                    },
+                    {
+                        "type": "fiat",
+                        "ticker": "XAU"
+                    },
+                    {
+                        "type": "fiat",
+                        "ticker": "GTQ"
+                    },
+                    {
+                        "type": "fiat",
+                        "ticker": "GNF"
+                    },
+                    {
+                        "type": "fiat",
+                        "ticker": "GYD"
+                    },
+                    {
+                        "type": "fiat",
+                        "ticker": "HTG"
+                    },
+                    {
+                        "type": "fiat",
+                        "ticker": "HNL"
+                    },
+                    {
+                        "type": "fiat",
+                        "ticker": "HKD"
+                    },
+                    {
+                        "type": "fiat",
+                        "ticker": "HUF"
+                    },
+                    {
+                        "type": "fiat",
+                        "ticker": "ISK"
+                    },
+                    {
+                        "type": "fiat",
+                        "ticker": "INR"
+                    }
+                ],
+                "wallet_types": [
+                    "lightning",
+                    "watch-only",
+                    "on-chain",
+                    "single-address",
+                    "brd"
+                ],
+                "security": [
+                    "fake-wallet",
+                    "encrypted-password",
+                    "pin-on-tx"
+                ],
+                "privacy": [],
+                "languages": [
+                    {
+                        "iso6392": "EN"
+                    },
+                    {
+                        "iso6392": "ES"
+                    },
+                    {
+                        "iso6392": "FR"
+                    },
+                    {
+                        "iso6392": "IT"
+                    },
+                    {
+                        "iso6392": "NL"
+                    },
+                    {
+                        "iso6392": "PL"
+                    },
+                    {
+                        "iso6392": "DE"
+                    },
+                    {
+                        "iso6392": "CN"
+                    },
+                    {
+                        "iso6392": "JP"
+                    },
+                    {
+                        "iso6392": "RU"
+                    },
+                    {
+                        "iso6392": "PT"
+                    }
+                ],
+                "custodial": "N",
+                "license": [
+                    "MIT"
+                ],
+                "multisig": "Y",
+                "testnet": "Y",
+                "batchtx": "P",
+                "fio": "?",
+                "form_factor": "mobile",
+                "custom_node": "P",
+                "rbf": "Y",
+                "psbt": "?",
+                "reproducible_builds": "?",
+                "hd": "Y",
+                "sna": "Y",
+                "fee_estimation": "?",
+                "fee_control": "?",
+                "hardware": [],
+                "lightning": [],
+                "refill": [],
+                "validation": "spv",
+                "platforms": [
+                    {
+                        "name": "ios",
+                        "github": "https://github.com/bitpay/copay",
+                        "download": "https://itunes.apple.com/us/app/copay/id951330296",
+                        "language": "TypeScript"
+                    },
+                    {
+                        "name": "android",
+                        "github": "https://github.com/bitpay/copay",
+                        "download": "https://play.google.com/store/apps/details?id=com.bitpay.wallet",
+                        "language": "TypeScript"
+                    },
+                    {
+                        "name": "windows phone",
+                        "github": "https://github.com/bitpay/copay",
+                        "download": "https://www.microsoft.com/en-nz/p/copay/9wzdncrcwvrq?rtc=1",
+                        "language": "TypeScript"
+                    },
+                    {
+                        "name": "linux",
+                        "github": "https://github.com/bitpay/copay",
+                        "download": "https://github.com/bitpay/copay/releases/latest",
+                        "language": "TypeScript"
+                    },
+                    {
+                        "name": "windows",
+                        "github": "https://github.com/bitpay/copay",
+                        "download": "https://github.com/bitpay/copay/releases/latest",
+                        "language": "TypeScript"
+                    },
+                    {
+                        "name": "osx",
+                        "github": "https://github.com/bitpay/copay",
+                        "download": "https://github.com/bitpay/copay/releases/latest",
+                        "language": "TypeScript"
+                    }
+                ],
+                "coin_control": "?",
+                "tx_labelling": "?"
+            }
+        }
+    ]
+}
