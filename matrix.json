@@ -1,0 +1,103 @@
+{
+    "uuid": "682F7675-361E-49EA-BB86-90EC27F27E12",
+    "version": "2.0",
+    "organisation": {
+        "name": "BitPay",
+        "web": "https://bitpay.com/",
+        "email": "feedback@bitpay.com",
+        "location": "USA",
+        "established": "2018-01-01"
+    },
+    "wallet": {
+        "name": "BitPay",
+        "web": "https://bitpay.com/wallet/",
+        "socials": [
+            {
+                "type": "linkedin",
+                "slug": "company/bitpay-inc-"
+            },
+            {
+                "type": "twitter",
+                "slug": "BitPay"
+            }
+        ],
+        "version": ""
+    },
+    "features": {
+        "currencies": [
+            {
+                "type": "crypto",
+                "ticker": "BTC,BCH"
+            },
+            {
+                "type": "fiat",
+                "ticker": "AFN,ALL,DZD,AOA,ARS,AMD,AWG,AUD,AZN,BSD,BHD,BDT,BBD,BYN,BZD,BMD,BTN,BOB,BAM,BWP,BRL,BND,BGN,BIF,KHR,CAD,CVE,KYD,XOF,XAF,XPF,CLP,CLF,CNY,USDC,COP,KMF,CDF,CRC,HRK,CUP,CZK,DKK,DJF,DOP,XCD,EGP,ETB,EUR,FKP,FJD,GMD,GUSD,GEL,GHS,GIP,XAU,GTQ,GNF,GYD,HTG,HNL,HKD,HUF,ISK,INR"
+            }
+        ],
+        "wallet_types": ["lightning", "watch-only", "on-chain", "single-address", "brd"],
+        "security": ["fake-wallet", "encrypted-password","pin-on-tx"],
+        "privacy": [],
+        "languages": [
+            {
+                "iso6392": "EN,ES,FR,IT,NL,PL,DE,CN,JP,RU,PT"
+            }
+        ],
+        "custodial": "N",
+        "license": ["MIT"],
+        "multisig": "Y",
+        "testnet": "Y",
+        "batchtx": "P",
+        "fio": "?",
+        "form_factor": "mobile",
+        "custom_node": "P",
+        "rbf": "Y",
+        "psbt": "?",
+        "reproducible_builds": "?",
+        "hd": "Y",
+        "sna": "Y",
+        "fee_estimation": "?",
+        "fee_control": "?",
+        "hardware": [],
+        "lightning": [],
+        "refill": [],
+        "validation": "spv",
+        "platforms": [
+            {
+                "name": "ios",
+                "github": "https://github.com/bitpay/copay",
+                "download": "https://itunes.apple.com/us/app/copay/id951330296",
+                "language": "TypeScript"
+            },
+            {
+                "name": "android",
+                "github": "https://github.com/bitpay/copay",
+                "download": "https://play.google.com/store/apps/details?id=com.bitpay.wallet",
+                "language": "TypeScript"
+            },
+            {
+                "name": "windows phone",
+                "github": "https://github.com/bitpay/copay",
+                "download": "https://www.microsoft.com/en-nz/p/copay/9wzdncrcwvrq?rtc=1",
+                "language": "TypeScript"
+            },
+            {
+                "name": "linux",
+                "github": "https://github.com/bitpay/copay",
+                "download": "https://github.com/bitpay/copay/releases/latest",
+                "language": "TypeScript"
+            },
+            {
+                "name": "windows",
+                "github": "https://github.com/bitpay/copay",
+                "download": "https://github.com/bitpay/copay/releases/latest",
+                "language": "TypeScript"
+            },
+            {
+                "name": "osx",
+                "github": "https://github.com/bitpay/copay",
+                "download": "https://github.com/bitpay/copay/releases/latest",
+                "language": "TypeScript"
+            }
+        ]
+    }
+}
