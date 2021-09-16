@@ -1,4 +1,4 @@
-<wide-header-page title="{{ mainTitle }}" [hasSlideButton]="!hideSlideButton && isCordova">
+<wide-header-page title="{{ mainTitle }}" [hasSlideButton]="!hideSlideButton && isCordova" [merchantName]="merchantName">
   <div page-content>
     <label-tip *ngIf="isSpeedUpTx" type="info" header="no-header" class="no-arrowhead">
       <div *ngIf="wallet.coin === 'btc'" label-tip-body translate>
@@ -30,7 +30,7 @@
             <div class="background-content" *ngIf="!tx.paypro && !fromCoinbase" copy-to-clipboard="{{ tx.origToAddress }}">
               <img *ngIf="coin && currencyProvider.COIN[coin | uppercase]" class="coin-img" src="assets/img/currencies/{{tx.coin}}.svg" [ngClass]="{'testnet': tx.network === 'testnet'}" alt="Coin" />
               <ion-icon *ngIf="coin && !currencyProvider.COIN[coin | uppercase]" class="coin-img" [ngClass]="{'testnet': tx.network === 'testnet'}" item-start>
-                <img src="https://tokens.1inch.exchange/{{currencyProvider.getTokenAddress(coin)}}.png" onerror="this.onerror=null;this.src='assets/img/icon-swap.svg'" />
+                <img [src]="currencyProvider.getLogoURI(coin)" (error)="currencyProvider.defaultLogoURI(img)" #img/>
               </ion-icon>
               <span *ngIf="!tx.name">{{toAddressName || (tx.origToAddress | shortenedAddress)}}</span>
               <span class="ellipsis" *ngIf="tx.name">{{tx.name}}</span>
@@ -309,6 +309,17 @@
         <ion-note class="main-note" *ngIf="!paymentExpired" item-end>{{remainingTimeStr}}</ion-note>
         <ion-note class="main-note" *ngIf="paymentExpired" [ngStyle]="{'color': 'red'}" item-end>{{'Expired' | translate}}</ion-note>
       </ion-item>
+
+      <ng-container *ngFor="let item of itemizedDetails" >
+        <ion-item *ngIf="item.description && item.amount">
+            <ion-label>
+              <div class="summary-item">
+                <span>{{item.description}}</span>
+              </div>
+            </ion-label>
+            <ion-note class="main-note" item-end>{{item.amount}} USD</ion-note>
+        </ion-item>
+      </ng-container>
 
       <div class="summary-line"></div>
 

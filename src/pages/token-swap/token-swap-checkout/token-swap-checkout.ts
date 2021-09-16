@@ -47,9 +47,11 @@ export class TokenSwapCheckoutPage {
   public alternativeIsoCode: string;
   public useSendMax: boolean;
   public sendMaxInfo;
+  public fromTokenBalance;
   public fixedRateId: string;
   public rate: number;
   public fee: number;
+  public fiatFee: number;
   public gasPrice: number;
   public gasLimit: number;
   public fiatAmountTo;
@@ -76,7 +78,7 @@ export class TokenSwapCheckoutPage {
     private profileProvider: ProfileProvider,
     private translate: TranslateService,
     private configProvider: ConfigProvider,
-    private currencyProvider: CurrencyProvider,
+    public currencyProvider: CurrencyProvider,
     private rateProvider: RateProvider,
     private walletProvider: WalletProvider,
     private bwcErrorProvider: BwcErrorProvider,
@@ -99,6 +101,7 @@ export class TokenSwapCheckoutPage {
     this.toToken = this.navParams.data.toTokenSelected;
     this.useSendMax = this.navParams.data.useSendMax;
     this.sendMaxInfo = this.navParams.data.sendMaxInfo;
+    this.fromTokenBalance = this.navParams.data.fromTokenBalance;
     this.amountFrom = this.navParams.data.amountFrom;
     this.totalExchangeFee =
       (this.amountFrom * this.navParams.data.referrerFee) / 100; // use fee from bws
@@ -130,10 +133,23 @@ export class TokenSwapCheckoutPage {
             // Low values increase chances that transaction will fail, high values increase chances of front running.  Set values in the range from 0 to 50
             const slippage = 0.5;
 
+            let minUnitAmount;
+            if (this.useSendMax && this.fromTokenBalance) {
+              minUnitAmount = this.fromTokenBalance;
+            } else {
+              // workaround to prevent scientific notation
+              const _amount: number =
+                this.amountFrom * 10 ** this.fromToken.decimals;
+              minUnitAmount = _amount.toLocaleString('fullwide', {
+                useGrouping: false,
+                maximumFractionDigits: 0
+              });
+            }
+
             let swapRequestData = {
               fromTokenAddress: this.fromToken.address,
               toTokenAddress: this.toToken.address,
-              amount: this.amountFrom * 10 ** this.fromToken.decimals, // amount in minimum unit
+              amount: minUnitAmount, // amount in minimum unit
               fromAddress, // we can use '0x0000000000000000000000000000000000000000' for testing purposes
               slippage: this.navParams.data.slippage
                 ? this.navParams.data.slippage
@@ -141,18 +157,48 @@ export class TokenSwapCheckoutPage {
               destReceiver: toAddress
             };
 
+            this.logger.debug('swapRequestData: ', swapRequestData);
+
             this.oneInchProvider
               .getSwap1inch(this.fromWalletSelected, swapRequestData)
               .then(data => {
                 if (data && data.error) {
-                  const msg = `${data.error}: ${data.message}`;
-                  const title = '1inch Error';
+                  let msg, title;
+                  if (
+                    data.message &&
+                    _.isString(data.message) &&
+                    data.message.includes('cannot estimate')
+                  ) {
+                    if (this.fromToken.symbol.toLowerCase() == 'eth') {
+                      title = this.translate.instant(
+                        'Insufficient funds for fee'
+                      );
+                      msg = this.translate.instant(
+                        'You do not have enough funds to pay the fee for this Swap.'
+                      );
+                    } else {
+                      title = this.translate.instant(
+                        'Insufficient funds for fee in your ETH linked wallet'
+                      );
+                      msg = this.translate.instant(
+                        'You do not have enough funds in your ETH linked wallet to pay the fee for this Swap.'
+                      );
+                    }
+                  } else {
+                    title = '1inch Error';
+                    msg = `${data.error}: ${data.message}`;
+                  }
                   return this.showErrorAndBack(title, msg);
                 }
                 this.swapData = data;
                 this.gasLimit = Math.ceil(Number(this.swapData.tx.gas) * 1.25); // Estimated amount of the gas limit, increase this value by 25%
                 this.gasPrice = Number(this.swapData.tx.gasPrice);
                 this.fee = this.gasLimit * this.gasPrice;
+                this.fiatFee = this.rateProvider.toFiat(
+                  this.fee,
+                  this.alternativeIsoCode,
+                  'eth'
+                );
                 this.amountTo =
                   Number(this.swapData.toTokenAmount) /
                   10 ** this.toToken.decimals; // amount in minimum unit
@@ -185,7 +231,7 @@ export class TokenSwapCheckoutPage {
             this.showErrorAndBack(
               null,
               this.translate.instant(
-                'There was a problem retrieving the toAddress. Please, try again later.'
+                'There was a problem retrieving the address. Please, try again later.'
               )
             );
             return;
@@ -196,7 +242,7 @@ export class TokenSwapCheckoutPage {
         this.showErrorAndBack(
           null,
           this.translate.instant(
-            'There was a problem retrieving the fromAddress. Please, try again later.'
+            'There was a problem retrieving the address. Please, try again later.'
           )
         );
         return;
@@ -215,6 +261,7 @@ export class TokenSwapCheckoutPage {
         keyId: this.toWalletSelected.keyId,
         name: this.toToken.name,
         address: this.toToken.address,
+        logoURI: this.toToken.logoURI,
         symbol: this.toToken.symbol.toLowerCase(),
         decimals: this.toToken.decimals
       };
@@ -308,6 +355,19 @@ export class TokenSwapCheckoutPage {
               this.translate.instant('Could not send transaction')
             );
             return;
+          })
+          .catch(err => {
+            this.logger.error(this.bwcErrorProvider.msg(err));
+            this.showErrorAndBack(null, err);
+            this.logger.warn(
+              'Error on publishAndSign: removing payment proposal'
+            );
+            this.walletProvider
+              .removeTx(this.fromWalletSelected, this.ctxp)
+              .catch(() => {
+                this.logger.warn('Could not delete payment proposal');
+              });
+            return;
           });
       })
       .catch(err => {
@@ -395,7 +455,7 @@ export class TokenSwapCheckoutPage {
       txId: txSent.txid,
       date: now,
       amountTo: this.amountTo,
-      coinTo: this.toToken.symbol,
+      coinTo: this.toToken.symbol.toLowerCase(),
       addressTo: this.addressTo,
       walletIdTo: this.toWalletSelected.id,
       amountFrom: this.amountFrom,
@@ -408,13 +468,13 @@ export class TokenSwapCheckoutPage {
 
     this.oneInchProvider.saveOneInch(newData, null).then(() => {
       this.logger.debug('Saved exchange with txid: ' + newData.txId);
-      this.analyticsProvider.logEvent('token_swap_payment_sent', {
-        // TODO: review this event
+      this.analyticsProvider.logEvent('exchange_crypto_payment_sent', {
         userId: this.fromWalletSelected.id,
         coinFrom: this.fromWalletSelected.coin,
-        coinTo: this.toToken.symbol,
+        coinTo: this.toToken.symbol.toLowerCase(),
         amountFrom: this.amountFrom,
-        amountTo: this.amountTo
+        amountTo: this.amountTo,
+        exchange: 'oneInch'
       });
       this.onGoingProcessProvider.clear();
       this.openFinishModal();

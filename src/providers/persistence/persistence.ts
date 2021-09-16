@@ -97,7 +97,8 @@ const Keys = {
   CUSTOMTOKENSOPTS: 'customTokensOpts',
   BITPAY_CARD_ORDER_STARTED: `bitPayCardOrderStarted`,
   BITPAY_SURVEY_CARD_DISMISSED: `bitPaySurveyCardDismissed`,
-  ACCEPTED_SWAP_CRYPTO_DISCLAIMER: 'acceptedSwapCryptoDisclaimer'
+  ACCEPTED_SWAP_CRYPTO_DISCLAIMER: 'acceptedSwapCryptoDisclaimer',
+  CUSTOM_VIRTUAL_CARD_DESIGN: `customVirtualCardDesign`
 };
 
 interface Storage {
@@ -1123,6 +1124,14 @@ export class PersistenceProvider {
 
   getBitPaySurveyCardDismissed() {
     return this.storage.get(Keys.BITPAY_SURVEY_CARD_DISMISSED);
+  }
+
+  getCustomVirtualCardDesign() {
+    return this.storage.get(Keys.CUSTOM_VIRTUAL_CARD_DESIGN);
+  }
+
+  setCustomVirtualCardDesign(currency) {
+    return this.storage.set(Keys.CUSTOM_VIRTUAL_CARD_DESIGN, currency);
   }
 }
 

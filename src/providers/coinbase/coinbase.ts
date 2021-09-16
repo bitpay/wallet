@@ -13,6 +13,7 @@ import { PlatformProvider } from '../platform/platform';
 import { RateProvider } from '../rate/rate';
 
 import { CurrencyProvider } from '../currency/currency';
+import { Coin } from '../tx-format/tx-format';
 
 import * as _ from 'lodash';
 
@@ -354,7 +355,13 @@ export class CoinbaseProvider {
 
   public getAccounts(data?) {
     if (!this.isLinked()) return;
-    const availableCoins = this.currencyProvider.getAvailableCoins();
+    // Filter custom ERC-20 token
+    const availableCoins = _.filter(
+      this.currencyProvider.getAvailableCoins(),
+      coin => {
+        return !this.currencyProvider.isCustomERCToken(coin);
+      }
+    );
     if (data) data['accounts'] = this.coinbaseData['accounts'] || [];
     // go to coinbase to update data
     this._getAccounts().then(remoteData => {
@@ -369,9 +376,8 @@ export class CoinbaseProvider {
           accounts.push(allAccounts[i]);
         }
       }
-      const orderedAccounts = _.orderBy(accounts, ['name'], ['asc']);
-      if (data) data['accounts'] = orderedAccounts;
-      this.setAccounts(orderedAccounts);
+      if (data) data['accounts'] = accounts;
+      this.setAccounts(accounts);
     });
   }
 
@@ -437,7 +443,8 @@ export class CoinbaseProvider {
   }
 
   private _getAccounts(): Promise<any> {
-    const url = this.credentials.API + '/v2' + '/accounts?&limit=' + LIMIT;
+    const url =
+      this.credentials.API + '/v2' + '/accounts?order=asc&limit=' + LIMIT;
     const headers = {
       'Content-Type': 'application/json',
       Accept: 'application/json',
@@ -803,8 +810,11 @@ export class CoinbaseProvider {
       const accountCoin = ac.balance.currency.toLowerCase();
       if (minFiatCurrency) {
         // check if it's crypto currency
-        if (minFiatCurrency.currency.toLowerCase()) {
-          return minFiatCurrency.currency.toLowerCase() == accountCoin;
+        const coin = Coin[minFiatCurrency.currency]
+          ? Coin[minFiatCurrency.currency]
+          : null;
+        if (coin) {
+          return coin == accountCoin;
         }
         const availableBalanceFiat = this.rateProvider.toFiat(
           this.currencyProvider.getPrecision(accountCoin).unitToSatoshi *

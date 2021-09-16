@@ -527,7 +527,10 @@ export class ExchangeCheckoutPage {
       this.analyticsProvider.logEvent('exchange_crypto_payment_sent', {
         userId: this.fromWalletSelected.id,
         coinFrom: this.fromWalletSelected.coin,
-        coinTo: this.toWalletSelected.coin
+        coinTo: this.toWalletSelected.coin,
+        amountFrom: this.amountFrom,
+        amountTo: this.amountTo,
+        exchange: 'changelly'
       });
       this.openFinishModal();
     });

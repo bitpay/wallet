@@ -77,53 +77,56 @@ export class CurrencyProvider {
       });
   }
 
-  public async addCustomToken(customToken) {
+  public async addCustomToken(customTokens) {
     const customTokenData = {};
-    customTokenData[customToken.symbol] = {
-      name: customToken.name,
-      chain: 'ETH',
-      coin: customToken.symbol,
-      unitInfo: {
-        unitName: customToken.symbol.toUpperCase(),
-        unitToSatoshi: 10 ** customToken.decimals,
-        unitDecimals: customToken.decimals,
-        unitCode: customToken.symbol
-      },
-      properties: {
-        hasMultiSig: false,
-        hasMultiSend: false,
-        isUtxo: false,
-        isERCToken: true,
-        isStableCoin: true,
-        singleAddress: true,
-        isCustom: true
-      },
-      paymentInfo: {
-        paymentCode: 'EIP681b',
-        protocolPrefix: { livenet: 'ethereum', testnet: 'ethereum' },
-        ratesApi: '',
-        blockExplorerUrls: 'etherscan.io/',
-        blockExplorerUrlsTestnet: 'kovan.etherscan.io/'
-      },
-      feeInfo: {
-        feeUnit: 'Gwei',
-        feeUnitAmount: 1e9,
-        blockTime: 0.2,
-        maxMerchantFee: 'urgent'
-      },
-      theme: {
-        coinColor: '#2775ca',
-        backgroundColor: '#2775c9',
-        gradientBackgroundColor: '#2775c9'
-      }
-    };
     const customERC20Opts = {};
-    customERC20Opts[customToken.address] = {
-      name: customToken.name,
-      symbol: customToken.symbol.toUpperCase(),
-      decimal: customToken.decimals,
-      address: customToken.address
-    };
+    [].concat(customTokens).forEach(customToken => {
+      customTokenData[customToken.symbol] = {
+        name: customToken.name,
+        chain: 'ETH',
+        coin: customToken.symbol,
+        logoURI: customToken.logoURI,
+        unitInfo: {
+          unitName: customToken.symbol.toUpperCase(),
+          unitToSatoshi: 10 ** customToken.decimals,
+          unitDecimals: customToken.decimals,
+          unitCode: customToken.symbol
+        },
+        properties: {
+          hasMultiSig: false,
+          hasMultiSend: false,
+          isUtxo: false,
+          isERCToken: true,
+          isStableCoin: true,
+          singleAddress: true,
+          isCustom: true
+        },
+        paymentInfo: {
+          paymentCode: 'EIP681b',
+          protocolPrefix: { livenet: 'ethereum', testnet: 'ethereum' },
+          ratesApi: '',
+          blockExplorerUrls: 'etherscan.io/',
+          blockExplorerUrlsTestnet: 'kovan.etherscan.io/'
+        },
+        feeInfo: {
+          feeUnit: 'Gwei',
+          feeUnitAmount: 1e9,
+          blockTime: 0.2,
+          maxMerchantFee: 'urgent'
+        },
+        theme: {
+          coinColor: '#2775ca',
+          backgroundColor: '#2775c9',
+          gradientBackgroundColor: '#2775c9'
+        }
+      };
+      customERC20Opts[customToken.address] = {
+        name: customToken.name,
+        symbol: customToken.symbol.toUpperCase(),
+        decimal: customToken.decimals,
+        address: customToken.address
+      };
+    });
     let storedCustomTokenData = await this.persistenceProvider.getCustomTokenData();
     await this.persistenceProvider.setCustomTokenData({
       ...storedCustomTokenData,
@@ -142,6 +145,15 @@ export class CurrencyProvider {
     this.http.get(TokensListAPIUrl).subscribe((data: any) => {
       this.availableCustomTokens = Object.values(data.tokens) as Token[];
     });
+  }
+
+  getLogoURI(coin: string): string {
+    return this.coinOpts[coin].logoURI || 'assets/img/default-erc20.svg';
+  }
+
+  defaultLogoURI(img) {
+    img.onerror = null;
+    img.src = 'assets/img/default-erc20.svg';
   }
 
   isUtxoCoin(coin: string): boolean {

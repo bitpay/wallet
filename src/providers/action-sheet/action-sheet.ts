@@ -83,8 +83,8 @@ export type InfoSheetType =
   | 'testnet-warning-1'
   | 'multisig-instantiation'
   | 'exchange-crypto-disclaimer'
-  | 'switch-exchange-crypto'
-  | 'join-wallet-warning';
+  | 'join-wallet-warning'
+  | 'token-added';
 
 export type OptionsSheetType =
   | 'wallet-options'

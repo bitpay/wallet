@@ -518,11 +518,15 @@ export class ProfileProvider {
       ).coinCode;
 
       const chain = this.currencyProvider.getChain(wallet.coin).toLowerCase();
+
       if (
         (wallet.n == 1 && wallet.credentials.addressType == 'P2PKH') ||
         (wallet.credentials.addressType == 'P2WPKH' &&
           derivationStrategy == 'BIP44' &&
-          (chain == 'btc' || (chain == 'bch' && coinCode == "145'")))
+          (chain == 'btc' ||
+            (chain == 'bch' && coinCode == "145'") ||
+            chain == 'ltc' ||
+            chain == 'doge'))
       ) {
         return true;
       }
@@ -530,7 +534,10 @@ export class ProfileProvider {
         (wallet.n > 1 && wallet.credentials.addressType == 'P2SH') ||
         (wallet.credentials.addressType == 'P2WSH' &&
           derivationStrategy == 'BIP48' &&
-          (chain == 'btc' || (chain == 'bch' && coinCode == "145'")))
+          (chain == 'btc' ||
+            (chain == 'bch' && coinCode == "145'") ||
+            chain == 'ltc' ||
+            chain == 'doge'))
       ) {
         return true;
       }
@@ -1121,10 +1128,19 @@ export class ProfileProvider {
           }
           addressBook = data.addressBook;
         } catch (err) {
-          this.logger.error(err);
-          return reject(
-            this.translate.instant('Could not import. Check input file.')
-          );
+          if (err && err.message == 'Bad Key version') {
+            // Workaround for bad generated files. Fixed: https://github.com/bitpay/wallet/pull/11872
+            data.key.version = '1';
+            data.key.mnemonicHasPassphrase = false;
+            key = new Key({
+              seedType: 'object',
+              seedData: data.key
+            });
+          } else {
+            return reject(
+              this.translate.instant('Could not import. Check input file.')
+            );
+          }
         }
       } else {
         // old format ? root = credentials.
@@ -1180,13 +1196,26 @@ export class ProfileProvider {
         {
           baseUrl: opts.bwsurl // clientOpts
         },
-        (err, key, walletClients) => {
+        async (err, key, walletClients) => {
           if (err) {
             return reject(err);
           }
           if (walletClients.length === 0) {
             return reject('WALLET_DOES_NOT_EXIST');
           } else {
+            let customTokens = [];
+            walletClients.forEach(w => {
+              if (
+                !this.coinSupported(w.credentials.coin) &&
+                w.credentials.token
+              )
+                customTokens.push({
+                  ...w.credentials.token,
+                  ...{ symbol: w.credentials.token.symbol.toLowerCase() }
+                });
+            });
+            if (customTokens && customTokens[0])
+              await this.currencyProvider.addCustomToken(customTokens);
             return resolve({ key, walletClients });
           }
         }

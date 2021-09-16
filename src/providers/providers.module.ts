@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
 
 import {
+  AbiDecoderProvider,
   ActionSheetProvider,
   AddressBookProvider,
   AddressProvider,
@@ -177,7 +178,8 @@ import {
     DecimalPipe,
     PersistenceProvider,
     File,
-    CardPhasesProvider
+    CardPhasesProvider,
+    AbiDecoderProvider
   ]
 })
 export class ProvidersModule {}

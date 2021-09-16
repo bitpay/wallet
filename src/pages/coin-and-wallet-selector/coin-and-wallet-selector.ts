@@ -61,7 +61,7 @@ export class CoinAndWalletSelectorPage {
     private navCtrl: NavController,
     private viewCtrl: ViewController,
     private profileProvider: ProfileProvider,
-    private currencyProvider: CurrencyProvider,
+    public currencyProvider: CurrencyProvider,
     private translate: TranslateService,
     private errorsProvider: ErrorsProvider,
     private navParams: NavParams,
@@ -267,6 +267,7 @@ export class CoinAndWalletSelectorPage {
       keyId: pairedWallet.keyId,
       name: token.name,
       address: token.address,
+      logoURI: token.logoURI,
       symbol: token.symbol.toLowerCase(),
       decimals: token.decimals
     };
@@ -333,6 +334,7 @@ export class CoinAndWalletSelectorPage {
   }
 
   public updateSearchInput(search: string): void {
+    this.currentTokenListPage = 0;
     this.throttleSearch(search);
   }
 
@@ -349,13 +351,21 @@ export class CoinAndWalletSelectorPage {
     } else {
       this.filteredTokens = [];
 
-      this.filteredTokens = this.oneInchAllSupportedCoins.filter(token => {
+      const exactResult: any[] = this.oneInchAllSupportedCoins.filter(token => {
         return (
-          token.name.toLowerCase().includes(search.toLowerCase()) ||
-          token.symbol.toLowerCase().includes(search.toLowerCase()) ||
-          token.address.toLowerCase().includes(search.toLowerCase())
+          token.symbol.toLowerCase() == search.toLowerCase() ||
+          token.name.toLowerCase() == search.toLowerCase() ||
+          token.address.toLowerCase() == search.toLowerCase()
         );
       });
+      const filteredTokens = this.oneInchAllSupportedCoins.filter(token => {
+        return (
+          token.name.toLowerCase().includes(search.toLowerCase()) ||
+          token.symbol.toLowerCase().includes(search.toLowerCase())
+        );
+      });
+
+      this.filteredTokens = [...new Set([...exactResult, ...filteredTokens])];
     }
 
     this.tokenListShowMore =
@@ -369,7 +379,7 @@ export class CoinAndWalletSelectorPage {
       this.currentTokenListPage++;
       this.showTokens();
       loading.complete();
-    }, 1000);
+    }, 100);
   }
 
   public showTokens(): void {
@@ -385,6 +395,5 @@ export class CoinAndWalletSelectorPage {
 
   public cleanSearch() {
     this.searchQuery = '';
-    this.updateSearchInput('');
   }
 }

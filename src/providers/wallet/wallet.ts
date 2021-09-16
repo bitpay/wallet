@@ -1192,8 +1192,9 @@ export class WalletProvider {
     return wallet.completeHistory && wallet.completeHistoryIsValid;
   }
 
-  public getTx(wallet, txid: string): Promise<any> {
+  public getTx(wallet, txid: string, opts: HistoryOptionsI = {}): Promise<any> {
     return new Promise((resolve, reject) => {
+      opts = opts || {};
       const finish = list => {
         const tx = _.find(list, {
           txid
@@ -1203,13 +1204,11 @@ export class WalletProvider {
         return tx;
       };
 
-      if (this.isHistoryCached(wallet)) {
+      if (this.isHistoryCached(wallet) && !opts.force) {
         const tx = finish(wallet.completeHistory);
         return resolve(tx);
       } else {
-        const opts = {
-          limitTx: txid
-        };
+        opts.limitTx = txid;
         this.fetchTxHistory(wallet, null, opts)
           .then(txHistory => {
             const tx = finish(txHistory);
