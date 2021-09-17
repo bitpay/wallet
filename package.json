@@ -73,7 +73,7 @@
     "start:ios": "npm run build:ios && npm run open:ios",
     "start:android": "npm run run:android",
     "start:desktop": "npm run build:desktop && electron .",
-    "generate:android-bundle": "cd platforms/android && gradle bundle",
+    "generate:android-bundle": "cd platforms/android && gradle bundleRelease",
     "build:ios": "npm run env:dev && ionic cordova build ios --debug --buildConfig",
     "build:android": "npm run env:dev && ionic cordova build android --debug",
     "build:android-bundle": "npm run build:android && npm run generate:android-bundle",
@@ -285,7 +285,10 @@
         "ANDROID_SCHEME": "",
         "ANDROID_HOST": "",
         "ANDROID_PATHPREFIX": "",
-        "NINTH_URL_SCHEME": "litecoin"
+        "NINTH_URL_SCHEME": "litecoin",
+        "UL_HOST": "bitpay.com",
+        "UL_PREFIX_1": "/i/",
+        "UL_PREFIX_2": "/wallet/wc"
       },
       "cordova-plugin-fcm-ng": {
         "PAGE_LINK_DOMAIN": "bitpayapp.page.link"
