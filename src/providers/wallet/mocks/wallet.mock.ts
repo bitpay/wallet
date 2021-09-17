@@ -124,6 +124,7 @@ export class WalletMock {
     network?: string;
     publicKeyRing?: any[];
     coin: string;
+    rootPath: string;
   };
   coin: string;
   id: string;
@@ -146,7 +147,8 @@ export class WalletMock {
       walletId: 'walletid1',
       walletName: 'Test wallet',
       keyId: 'keyId1',
-      coin: 'btc'
+      coin: 'btc',
+      rootPath: "m/44'/0'/0'"
     };
     this.coin = 'btc';
     this.id = 'walletid1';

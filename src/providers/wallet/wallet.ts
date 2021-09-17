@@ -815,9 +815,13 @@ export class WalletProvider {
       this.getSavedTxs(walletId)
         .then(txsFromLocal => {
           fixTxsUnit(txsFromLocal);
-
-          const nonEscrowReclaimTxs = this.removeEscrowReclaimTransactions(wallet, txsFromLocal);
-          const confirmedTxs = this.removeAndMarkSoftConfirmedTx(nonEscrowReclaimTxs);
+          const nonEscrowReclaimTxs = this.removeEscrowReclaimTransactions(
+            wallet,
+            txsFromLocal
+          );
+          const confirmedTxs = this.removeAndMarkSoftConfirmedTx(
+            nonEscrowReclaimTxs
+          );
           const endingTxid = confirmedTxs[0] ? confirmedTxs[0].txid : null;
           const endingTs = confirmedTxs[0] ? confirmedTxs[0].time : null;
 
@@ -979,7 +983,10 @@ export class WalletProvider {
                   });
                   // Final update
                   if (walletId == wallet.credentials.walletId) {
-                    wallet.completeHistory = this.removeEscrowReclaimTransactions(wallet, newHistory);
+                    wallet.completeHistory = this.removeEscrowReclaimTransactions(
+                      wallet,
+                      newHistory
+                    );
                   }
 
                   return this.persistenceProvider
@@ -1067,9 +1074,12 @@ export class WalletProvider {
   }
 
   public removeEscrowReclaimTransactions(wallet, txs): any[] {
-    if(!this.isZceCompatible(wallet)) return txs;
-    return txs.filter(tx => 
-      ['moved', 'moving'].includes(tx.action) && txs.find(tx2 => tx2.time === tx.time) ? false : true
+    if (!this.isZceCompatible(wallet)) return txs;
+    return txs.filter(tx =>
+      ['moved', 'moving'].includes(tx.action) &&
+      txs.find(tx2 => tx2.time === tx.time)
+        ? false
+        : true
     );
   }
 
@@ -1692,7 +1702,14 @@ export class WalletProvider {
   }
 
   public isZceCompatible(wallet) {
-    return wallet.coin === 'bch' && wallet.credentials.addressType === 'P2PKH';
+    const isSingleSigBch =
+      wallet.coin === 'bch' && wallet.credentials.addressType === 'P2PKH';
+    const isNotDuplicatedFromAnotherChain =
+      wallet.credentials.rootPath.split('/')[2] === "145'";
+    return (
+      isSingleSigBch &&
+      (isNotDuplicatedFromAnotherChain || wallet.network === 'testnet')
+    );
   }
 
   private async generateEscrowReclaimTx(wallet, signedTxp, password) {

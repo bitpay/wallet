@@ -1111,7 +1111,9 @@ export class ConfirmPage {
             data: instruction.data,
             gasLimit: tx.gasLimit
           });
-          txp.instantAcceptanceEscrow = instruction.instantAcceptanceEscrow;
+          if (this.walletProvider.isZceCompatible(this.wallet)) {
+            txp.instantAcceptanceEscrow = instruction.instantAcceptanceEscrow;
+          }
         }
       } else {
         if (tx.fromSelectInputs) {
@@ -1831,9 +1833,7 @@ export class ConfirmPage {
       this.updateTx(this.tx, this.wallet, {
         clearCache: true,
         dryRun: true
-      }).catch(err => {
-        this.handleError(err);
-      });
+      }).catch(err => this.handleError(err));
       return;
     }
 
