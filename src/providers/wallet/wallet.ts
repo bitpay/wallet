@@ -816,13 +816,14 @@ export class WalletProvider {
         .then(txsFromLocal => {
           fixTxsUnit(txsFromLocal);
 
-          const confirmedTxs = this.removeAndMarkSoftConfirmedTx(txsFromLocal);
+          const nonEscrowReclaimTxs = this.removeEscrowReclaimTransactions(wallet, txsFromLocal);
+          const confirmedTxs = this.removeAndMarkSoftConfirmedTx(nonEscrowReclaimTxs);
           const endingTxid = confirmedTxs[0] ? confirmedTxs[0].txid : null;
           const endingTs = confirmedTxs[0] ? confirmedTxs[0].time : null;
 
           // First update
           WalletProvider.progressFn[walletId](txsFromLocal, 0);
-          wallet.completeHistory = txsFromLocal;
+          wallet.completeHistory = nonEscrowReclaimTxs;
 
           // send update
           this.events.publish('Local/WalletHistoryUpdate', {
@@ -978,7 +979,7 @@ export class WalletProvider {
                   });
                   // Final update
                   if (walletId == wallet.credentials.walletId) {
-                    wallet.completeHistory = newHistory;
+                    wallet.completeHistory = this.removeEscrowReclaimTransactions(wallet, newHistory);
                   }
 
                   return this.persistenceProvider
@@ -1063,6 +1064,13 @@ export class WalletProvider {
       if (tx.confirmations >= this.SOFT_CONFIRMATION_LIMIT) return tx;
       tx.recent = true;
     });
+  }
+
+  public removeEscrowReclaimTransactions(wallet, txs): any[] {
+    if(!this.isZceCompatible(wallet)) return txs;
+    return txs.filter(tx => 
+      ['moved', 'moving'].includes(tx.action) && txs.find(tx2 => tx2.time === tx.time) ? false : true
+    );
   }
 
   // Approx utxo amount, from which the uxto is economically redeemable
@@ -1681,6 +1689,10 @@ export class WalletProvider {
           return reject(err);
         });
     });
+  }
+
+  public isZceCompatible(wallet) {
+    return wallet.coin === 'bch' && wallet.credentials.addressType === 'P2PKH';
   }
 
   private async generateEscrowReclaimTx(wallet, signedTxp, password) {
