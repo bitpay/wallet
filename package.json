@@ -47,7 +47,7 @@
     "prepare:copay": "npm run clean && npm run apply:copay && ionic cordova platform add ios; ionic cordova platform add android && npm run fix:fcm",
     "prepare:bitpay": "npm run clean && npm run apply:bitpay  && ionic cordova platform add ios; ionic cordova platform add android && npm run fix:fcm && npm run fix:iab",
     "prepare:abcpay": "npm run clean && npm run apply:abcpay  && ionic cordova platform add ios; ionic cordova platform add android && npm run fix:fcm && npm run fix:iab",
-    "prepare:android": "npm run clean && npm run apply:abcpay && ionic cordova platform add android --verbose",
+    "prepare:android": "npm run clean && npm run apply:abcpay && ionic cordova platform add android",
     "clean-all": "git clean -dfx",
     "lint": "ionic-app-scripts lint",
     "ionic:build": "ionic-app-scripts build",
