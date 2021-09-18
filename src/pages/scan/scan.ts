@@ -255,7 +255,7 @@ export class ScanPage {
     if (this.canGoBack) this.navCtrl.pop({ animate: false });
 
     if (this.incomingDataProvider.isValidBitPayInvoice(contents)) {
-      this.incomingDataProvider.redir(contents);
+      this.incomingDataProvider.handleUnlock(contents);
       return;
     }
 

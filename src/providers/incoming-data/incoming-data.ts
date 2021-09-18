@@ -1533,10 +1533,10 @@ export class IncomingDataProvider {
     }
   }
 
-  private async handleUnlock(data) {
+  public async handleUnlock(data) {
     try {
       const host = data.includes('test') ? 'testnet' : 'livenet';
-      const invoiceId = data.split('i/')[1];
+      const invoiceId = data.split('i/')[1].split('?')[0];
 
       if (data.includes('link.')) {
         data = data.replace('link.', '');
