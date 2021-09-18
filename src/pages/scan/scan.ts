@@ -254,6 +254,11 @@ export class ScanPage {
   private handleSuccessfulScan(contents: string): void {
     if (this.canGoBack) this.navCtrl.pop({ animate: false });
 
+    if (this.incomingDataProvider.isValidBitPayInvoice(contents)) {
+      this.incomingDataProvider.redir(contents);
+      return;
+    }
+
     if (this.fromAddressbook) {
       this.events.publish('Local/AddressScan', { value: contents });
     } else if (this.fromImport) {
