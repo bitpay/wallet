@@ -1,4 +1,9 @@
 <wide-header-page title="{{ mainTitle }}" [hasSlideButton]="!hideSlideButton && isCordova" [merchantName]="merchantName">
+  <ion-buttons *ngIf="walletConnectRequestId" right>
+    <button clear wide-header-bar-button (click)="rejectRequest()" ion-button>
+      <span translate>Reject</span>
+    </button>
+  </ion-buttons>
   <div page-content>
     <label-tip *ngIf="isSpeedUpTx" type="info" header="no-header" class="no-arrowhead">
       <div *ngIf="wallet.coin === 'btc'" label-tip-body translate>
@@ -8,6 +13,14 @@
       <div *ngIf="wallet.coin === 'eth'" label-tip-body translate>
         In order to speed up the confirmation of your ETH transaction, the original transaction will be replaced by a new one that uses a higher miner fee.
         <br>
+      </div>
+    </label-tip>
+    <label-tip *ngIf="walletConnectRequestId && walletConnectPeerMeta && walletConnectTokenInfo" type="info" class="no-arrowhead">
+      <span label-tip-title translate>Give this site permission to access your token?</span>
+      <div label-tip-body>
+        <span translate>To complete the swap, you will need to allow the exchange ("{{ walletConnectPeerMeta.name }}") to spend your {{ walletConnectTokenInfo.symbol || walletConnectTokenInfo.name}}.</span>
+        <br>
+        <span translate>By granting this permission, "{{ walletConnectPeerMeta.name }}" will be able to withdraw your {{ walletConnectTokenInfo.symbol || walletConnectTokenInfo.name }} and complete transactions for you.</span>
       </div>
     </label-tip>
     <ion-list *ngIf="tx" class="bp-list">
@@ -26,11 +39,18 @@
         </ion-label>
 
         <ion-note item-end>
+
           <div class="payment-proposal-to" *ngIf="!tx.recipientType">
             <div class="background-content" *ngIf="!tx.paypro && !fromCoinbase" copy-to-clipboard="{{ tx.origToAddress }}">
-              <img *ngIf="coin && currencyProvider.COIN[coin | uppercase]" class="coin-img" src="assets/img/currencies/{{tx.coin}}.svg" [ngClass]="{'testnet': tx.network === 'testnet'}" alt="Coin" />
-              <ion-icon *ngIf="coin && !currencyProvider.COIN[coin | uppercase]" class="coin-img" [ngClass]="{'testnet': tx.network === 'testnet'}" item-start>
+              <img *ngIf="coin && currencyProvider.COIN[coin | uppercase] && !walletConnectRequestId" class="coin-img" src="assets/img/currencies/{{tx.coin}}.svg" [ngClass]="{'testnet': tx.network === 'testnet'}" alt="Coin" />
+              <ion-icon *ngIf="coin && !currencyProvider.COIN[coin | uppercase] && !walletConnectRequestId" class="coin-img" [ngClass]="{'testnet': tx.network === 'testnet'}" item-start>
                 <img [src]="currencyProvider.getLogoURI(coin)" (error)="currencyProvider.defaultLogoURI(img)" #img/>
+              </ion-icon>
+              <ion-icon *ngIf="walletConnectRequestId && !walletConnectIsApproveRequest" item-start>
+                <img class="wc-img-sm" [src]="dappImgSrc" (error)="setDappImgSrc()" width="20">
+              </ion-icon>
+              <ion-icon *ngIf="walletConnectRequestId && walletConnectIsApproveRequest" item-start>
+                <img class="wc-img-sm" [src]="walletConnectTokenInfo.logoURI" (error)="currencyProvider.defaultLogoURI(img)" #img width="20">
               </ion-icon>
               <span *ngIf="!tx.name">{{toAddressName || (tx.origToAddress | shortenedAddress)}}</span>
               <span class="ellipsis" *ngIf="tx.name">{{tx.name}}</span>
@@ -126,7 +146,8 @@
       <button ion-item [attr.detail-none]="usingMerchantFee ? '' : null" *ngIf="!coinbaseAccount && wallet" (click)="chooseFeeLevel()" class="item-fee" [ngClass]="{'warn': wallet && tx.txp[wallet.id] && tx.txp[wallet.id].feeTooHigh, 'btn-opacity': usingMerchantFee}">
         <ion-label>
           <div class="summary-item">
-            <span *ngIf="!merchantFeeLabel" translate>Miner fee</span>
+            <span *ngIf="!merchantFeeLabel && !wallet.coin === 'eth' && !isERCToken" translate>Miner fee</span>
+            <span *ngIf="!merchantFeeLabel && (wallet.coin === 'eth' || isERCToken)" translate>Max fees</span>
             <span *ngIf="merchantFeeLabel">{{ merchantFeeLabel }}</span>
           </div>
         </ion-label>
@@ -169,7 +190,7 @@
       <button ion-item detail-none *ngIf="wallet && (wallet.coin === 'eth' || isERCToken) && tx.txp[wallet.id] && !editGasPrice" [ngClass]="{'not-clickable': tx.speedUpTx}" (click)="editGasPrice = !editGasPrice; editGasLimit = false">
         <ion-label>
           <div class="summary-item">
-            <span translate>Gas Price</span>
+            <span translate>Gas price</span>
           </div>
         </ion-label>
         <ion-note class="main-note" item-end>
@@ -180,7 +201,7 @@
       <ion-item detail-none *ngIf="wallet && (wallet.coin === 'eth' || isERCToken) && tx.txp[wallet.id] && editGasPrice">
         <ion-label>
           <div class="summary-item">
-            <span translate>Gas Price</span>
+            <span translate>Gas price</span>
           </div>
         </ion-label>
         <ion-note class="main-note" item-end>
@@ -208,10 +229,10 @@
 
       <div class="line-divider" *ngIf="wallet && (wallet.coin === 'eth' || isERCToken) && tx.txp[wallet.id]"></div>
 
-      <button ion-item detail-none *ngIf="wallet && (wallet.coin === 'eth' || isERCToken) && tx.txp[wallet.id] && !editGasLimit" [ngClass]="{'not-clickable': tx.sendMax || tx.speedUpTx || isERCToken}" (click)="editGasLimit = !editGasLimit; editGasPrice = false">
+      <button ion-item detail-none *ngIf="wallet && (wallet.coin === 'eth' || isERCToken) && tx.txp[wallet.id] && !editGasLimit" [ngClass]="{'not-clickable': tx.sendMax || tx.speedUpTx || isERCToken || walletConnectRequestId}" (click)="editGasLimit = !editGasLimit; editGasPrice = false">
         <ion-label>
           <div class="summary-item">
-            <span translate>Gas Limit</span>
+            <span translate>Gas limit</span>
           </div>
         </ion-label>
         <ion-note class="main-note" item-end>
@@ -222,7 +243,7 @@
       <ion-item detail-none *ngIf="wallet && (wallet.coin === 'eth' || isERCToken) && tx.txp[wallet.id] && editGasLimit">
         <ion-label>
           <div class="summary-item">
-            <span translate>Gas Limit</span>
+            <span translate>Gas limit</span>
           </div>
         </ion-label>
         <ion-note class="main-note" item-end>
@@ -298,12 +319,12 @@
         </ion-note>
       </button>
 
-      <div class="line-divider"></div>
+      <div *ngIf="tx.paypro && (wallet || coinbaseAccount)" class="line-divider"></div>
 
       <ion-item *ngIf="tx.paypro && (wallet || coinbaseAccount)">
         <ion-label>
           <div class="summary-item">
-            <span translate>Payment Expires</span>
+            <span translate>Payment expires</span>
           </div>
         </ion-label>
         <ion-note class="main-note" *ngIf="!paymentExpired" item-end>{{remainingTimeStr}}</ion-note>

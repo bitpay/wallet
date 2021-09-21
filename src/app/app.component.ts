@@ -676,7 +676,6 @@ export class CopayApp {
 
               // coming from intent/universalLink
               if (uri && uri.startsWith('https')) return;
-
               // if coming from scan -> pasteURL
               if (pasteURL || fromSettings) {
                 await this.nav.push(this.pageMap[name], params);
@@ -695,7 +694,6 @@ export class CopayApp {
                 await this.nav.push(this.pageMap[name], params);
                 return;
               }
-
               // inApp notification
               if (!isDeepLink) {
                 if (this.walletConnectMainActive) {
@@ -723,7 +721,45 @@ export class CopayApp {
             case 'WalletConnectRequestDetailsPage':
               await this.nav.push(this.pageMap['WalletConnectPage'], params);
               await sleep(300);
-              await this.nav.push(this.pageMap[name], params);
+              if (
+                params.request &&
+                params.request.method === 'eth_sendTransaction'
+              ) {
+                const {
+                  walletId,
+                  peerMeta
+                } = this.walletConnectProvider.getReduceConnectionData();
+                const wallet = this.profileProvider.getWallet(walletId);
+                const isApproveRequest =
+                  params.request &&
+                  params.request.decodedData &&
+                  params.request.decodedData.name === 'approve';
+                // redirect to confirm page with navParams
+                let data = {
+                  amount: params.request.params[0].value,
+                  toAddress: params.request.params[0].to,
+                  coin: wallet.credentials.coin,
+                  walletId: wallet.credentials.walletId,
+                  network: wallet.network,
+                  data: params.request.params[0].data,
+                  gasLimit: params.request.params[0].gas,
+                  requestId: params.request.id,
+                  isApproveRequest,
+                  tokenInfo: null,
+                  peerMeta
+                };
+                this.logger.debug(
+                  'redirect to confirm page with data: ',
+                  JSON.stringify(data)
+                );
+
+                if (isApproveRequest) {
+                  data.tokenInfo = params.request.tokenInfo;
+                }
+                await this.nav.push(this.pageMap['ConfirmPage'], data);
+              } else {
+                await this.nav.push(this.pageMap[name], params);
+              }
               break;
 
             default:
@@ -741,7 +777,6 @@ export class CopayApp {
               // wait for wallets status
               await sleep(300);
               const globalNav = this.getGlobalTabs().getSelected();
-
               await globalNav.push(this.pageMap[name], params);
 
               if (typeof nextView.callback === 'function') {

@@ -100,7 +100,6 @@ export class ConfirmPage {
 
   public isOpenSelector: boolean;
   public fromWalletDetails: boolean;
-  public walletConnectRequestId: number;
 
   // Coinbase
   public fromCoinbase;
@@ -123,6 +122,14 @@ export class ConfirmPage {
   public itemizedDetails;
 
   public errors = this.bwcProvider.getErrors();
+
+  // Wallet Connect
+  public walletConnectRequestId: number;
+  public walletConnectTokenInfo;
+  public walletConnectPeerMeta;
+  public walletConnectIsApproveRequest;
+  public defaultImgSrc: string = 'assets/img/wallet-connect/icon-dapp.svg';
+  public dappImgSrc: string;
 
   // // Card flags for zen desk chat support
   // private isCardPurchase: boolean;
@@ -169,7 +176,6 @@ export class ConfirmPage {
   ) {
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
     this.fromWalletDetails = this.navParams.data.fromWalletDetails;
-    this.walletConnectRequestId = this.navParams.data.walletConnectRequestId;
     this.fromCoinbase = this.navParams.data.fromCoinbase;
     this.bitcoreCash = this.bwcProvider.getBitcoreCash();
     this.CONFIRM_LIMIT_USD = 20;
@@ -186,6 +192,10 @@ export class ConfirmPage {
     this.showCoinbase =
       this.homeIntegrationsProvider.shouldShowInHome('coinbase') &&
       this.coinbaseProvider.isLinked();
+    this.walletConnectRequestId = this.navParams.data.requestId;
+    this.walletConnectTokenInfo = this.navParams.data.tokenInfo;
+    this.walletConnectPeerMeta = this.navParams.data.peerMeta;
+    this.walletConnectIsApproveRequest = this.navParams.data.isApproveRequest;
     // this.isCardPurchase =
     //   this.navParams.data.payProUrl &&
     //   this.navParams.data.payProUrl.includes('redir=wc');
@@ -341,6 +351,8 @@ export class ConfirmPage {
   }
 
   private async getInvoiceData() {
+    if (!this.navParams.data.payProUrl) return;
+
     const invoiceId = this.navParams.data.payProUrl.split('i/')[1];
     const host = this.navParams.data.payProUrl.includes('test')
       ? 'testnet'
@@ -360,13 +372,13 @@ export class ConfirmPage {
   }
 
   private setTitle(): void {
-    if (this.fromCoinbase) {
-      this.mainTitle = this.translate.instant('Confirm Deposit');
-    } else if (this.isSpeedUpTx) {
-      this.mainTitle = this.translate.instant('Confirm Speed Up');
-    } else {
-      this.mainTitle = this.translate.instant('Confirm Payment');
-    }
+    this.mainTitle = this.fromCoinbase
+      ? this.translate.instant('Confirm Deposit')
+      : this.isSpeedUpTx
+      ? this.translate.instant('Confirm Speed Up')
+      : this.walletConnectIsApproveRequest
+      ? this.translate.instant('Spender Approval')
+      : this.translate.instant('Confirm Payment');
   }
 
   private setAddressesContactName() {
@@ -615,6 +627,11 @@ export class ConfirmPage {
         ? this.translate.instant('Slide to speed up')
         : this.translate.instant('Click to speed up');
       this.successText = this.translate.instant('Speed up successful');
+    } else if (this.walletConnectRequestId) {
+      this.buttonText = this.isCordova
+        ? this.translate.instant('Slide to approve and send')
+        : this.translate.instant('Click to approve and send');
+      this.successText = this.translate.instant('Transaction Sent');
     } else {
       this.buttonText = this.isCordova
         ? this.translate.instant('Slide to send')
@@ -851,6 +868,8 @@ export class ConfirmPage {
   }
 
   protected isHighFee(amount: number, fee: number) {
+    if (this.walletConnectRequestId && this.walletConnectIsApproveRequest)
+      return false; // avoid message for wallet connect approvals
     return this.getFeeRate(amount, fee) > this.FEE_TOO_HIGH_LIMIT_PER;
   }
 
@@ -918,7 +937,7 @@ export class ConfirmPage {
               this.minAllowedGasLimit = this.tx.txp[wallet.id].gasLimit;
           }
 
-          if (txp.feeTooHigh) {
+          if (txp.feeTooHigh && txp.amount !== 0) {
             this.showHighFeeSheet();
           }
 
@@ -2013,5 +2032,24 @@ export class ConfirmPage {
       customFeePerKB: this.tx.txp[this.wallet.id].gasPrice
     };
     this.onFeeModalDismiss(data);
+  }
+
+  public setDappImgSrc(useDefault?: boolean) {
+    this.dappImgSrc =
+      this.walletConnectPeerMeta &&
+      this.walletConnectPeerMeta.icons &&
+      !useDefault
+        ? this.walletConnectPeerMeta.icons[1]
+          ? this.walletConnectPeerMeta.icons[1]
+          : this.walletConnectPeerMeta.icons[0]
+        : this.defaultImgSrc;
+  }
+
+  public rejectRequest(): void {
+    this.walletConnectProvider
+      .rejectRequest(this.walletConnectRequestId)
+      .then(_ => {
+        this.navCtrl.pop();
+      });
   }
 }
