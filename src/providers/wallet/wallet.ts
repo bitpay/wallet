@@ -1075,12 +1075,15 @@ export class WalletProvider {
 
   public removeEscrowReclaimTransactions(wallet, txs): any[] {
     if (!this.isZceCompatible(wallet)) return txs;
-    return txs.filter(tx =>
-      ['moved', 'moving'].includes(tx.action) &&
-      txs.find(tx2 => tx2.time === tx.time)
-        ? false
-        : true
-    );
+    return txs.filter(tx => {
+      if (tx.action !== 'moved') {
+        return true;
+      }
+      const sendTxAtSameTimeAsMove = txs.find(
+        tx2 => tx2.action === 'sent' && Math.abs(tx.time - tx2.time) < 100
+      );
+      return !sendTxAtSameTimeAsMove;
+    });
   }
 
   // Approx utxo amount, from which the uxto is economically redeemable
