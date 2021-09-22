@@ -490,7 +490,7 @@ export class CoinbaseProvider {
           } else if (this.isRevokedTokenError(data.error.errors)) {
             return reject(
               this.parseErrorsAsString(data.error) +
-                'Please, try to re-connect again.'
+                'Please, log out and try to re-connect again.'
             );
           } else {
             this.logger.error('Coinbase: Get Accounts ERROR ' + data.status);
@@ -532,7 +532,7 @@ export class CoinbaseProvider {
           } else if (this.isRevokedTokenError(data.error.errors)) {
             return reject(
               this.parseErrorsAsString(data.error) +
-                'Please, try to re-connect again.'
+                'Please, log out and try to re-connect again.'
             );
           } else {
             this.logger.error('Coinbase: Get Account ERROR ' + data.status);
@@ -574,7 +574,7 @@ export class CoinbaseProvider {
           } else if (this.isRevokedTokenError(data.error.errors)) {
             return reject(
               this.parseErrorsAsString(data.error) +
-                'Please, try to re-connect again.'
+                'Please, log out and try to re-connect again.'
             );
           } else {
             this.logger.error(
@@ -619,7 +619,7 @@ export class CoinbaseProvider {
           } else if (this.isRevokedTokenError(data.error.errors)) {
             return reject(
               this.parseErrorsAsString(data.error) +
-                'Please, try to re-connect again.'
+                'Please, log out and try to re-connect again.'
             );
           } else {
             this.logger.error(
@@ -667,7 +667,7 @@ export class CoinbaseProvider {
           } else if (this.isRevokedTokenError(data.error.errors)) {
             return reject(
               this.parseErrorsAsString(data.error) +
-                'Please, try to re-connect again.'
+                'Please, log out and try to re-connect again.'
             );
           } else {
             this.logger.error('Coinbase: Create Address ERROR ' + data.status);
@@ -720,7 +720,7 @@ export class CoinbaseProvider {
           } else if (this.isRevokedTokenError(data.error.errors)) {
             return reject(
               this.parseErrorsAsString(data.error) +
-                'Please, try to re-connect again.'
+                'Please, log out and try to re-connect again.'
             );
           } else {
             this.logger.error(
