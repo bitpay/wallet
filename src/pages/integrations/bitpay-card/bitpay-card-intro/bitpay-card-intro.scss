@@ -41,62 +41,65 @@ page-bitpay-card-intro {
       /*  TODO  border-radius: 0 0 65% 25%;*/
       overflow: hidden;
       text-align: center;
-      &--new {
-        border-radius: 0 0 65% 25%;
+      display: grid;
+      grid-template-columns: 1fr 1.5fr;
+      margin: 0 16px;
+      align-items: center;
+      &-title {
+        font-size: 25px;
+        font-weight: 700;
+        line-height: 34px;
+        text-align: start;
       }
-    }
-    &-img {
-      height: 306px;
-      img {
-        margin-top: 38px;
-        /* TODO width: 232px; */
-      }
-      &--new {
+      &-img {
+        height: 306px;
+        justify-self: end;
         img {
-          width: 232px;
+          margin-top: 38px;
+          /* TODO width: 232px; */
         }
       }
     }
     &-content {
-      padding: 0 40px;
+      margin: 0 16px;
       .title {
-        margin-top: 20px;
-        font-size: 28px;
-        font-weight: bold;
-        letter-spacing: -0.2px;
-        line-height: 33px;
+        margin-top: 32px;
+        font-size: 16px;
+        font-weight: normal;
+        line-height: 25px;
+        color: #252525;
       }
       p {
-        color: #565d6d;
+        color: #252525;
         font-size: 16px;
         line-height: 25px;
       }
     }
     &-item {
-      margin-top: 50px;
+      margin-top: 20px;
       &-header {
         display: flex;
         align-items: center;
         img {
-          height: 48px;
-          width: 48px;
+          height: 45px;
+          width: 45px;
         }
       }
       &-title {
-        width: 175px;
         font-size: 21px;
         font-weight: bold;
         line-height: 31px;
         margin-left: 1.5rem;
       }
       p {
-        padding-left: 64px;
+        padding-left: 60px;
+        margin-top: 0px;
       }
     }
     &__agreement {
-      margin: 50px 0 150px 0;
+      margin: 20px 0 150px 0;
       font-size: 11px;
-      color: #626262;
+      color: #434d5a;
     }
     &__link-button {
       cursor: pointer;
