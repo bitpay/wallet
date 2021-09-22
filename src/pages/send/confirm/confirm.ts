@@ -1111,6 +1111,9 @@ export class ConfirmPage {
             data: instruction.data,
             gasLimit: tx.gasLimit
           });
+          if (this.walletProvider.isZceCompatible(this.wallet)) {
+            txp.instantAcceptanceEscrow = instruction.instantAcceptanceEscrow;
+          }
         }
       } else {
         if (tx.fromSelectInputs) {
@@ -1824,6 +1827,15 @@ export class ConfirmPage {
       err instanceof this.errors.INSUFFICIENT_FUNDS_FOR_FEE;
     const isInsufficientLinkedEthFundsForFeeErr =
       err instanceof this.errors.INSUFFICIENT_ETH_FEE;
+
+    if (this.tx.paypro.instructions[0].instantAcceptanceEscrow) {
+      this.tx.paypro.instructions[0].instantAcceptanceEscrow = undefined;
+      this.updateTx(this.tx, this.wallet, {
+        clearCache: true,
+        dryRun: true
+      }).catch(err => this.handleError(err));
+      return;
+    }
 
     if (isInsufficientFundsErr) {
       if (this.showUseUnconfirmedMsg()) {

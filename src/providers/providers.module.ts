@@ -88,7 +88,8 @@ import {
   Vibration,
   WalletConnectProvider,
   WalletProvider,
-  WyreProvider
+  WyreProvider,
+  ZceProvider
 } from './index';
 
 @NgModule({
@@ -179,7 +180,8 @@ import {
     PersistenceProvider,
     File,
     CardPhasesProvider,
-    AbiDecoderProvider
+    AbiDecoderProvider,
+    ZceProvider
   ]
 })
 export class ProvidersModule {}

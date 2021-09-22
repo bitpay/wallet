@@ -86,11 +86,15 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
   public networkFee: number;
   public totalAmount: number;
   public totalDiscount: number;
+  public accessKey: string;
   public activationFee: number;
   public amountUnitStr: string;
   public network: string;
   public onlyIntegers: boolean;
   public isERCToken: boolean;
+  public paypro: any;
+  public invoice: any;
+  public purchaseParams: any;
 
   public cardConfig: CardConfig;
   public displayNameIncludesGiftCard: boolean = false;
@@ -426,6 +430,9 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
           message: this.translate.instant('Could not get the invoice')
         };
       });
+    this.invoice = invoice;
+    this.accessKey = accessKey;
+    this.totalDiscount = totalDiscount;
     return { invoice, accessKey, totalDiscount };
   }
 
@@ -447,15 +454,17 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       address
     };
 
-    const details = await this.payproProvider
-      .getPayProDetails({ paymentUrl: payProUrl, coin: wallet.coin, payload })
-      .catch(err => {
-        throw {
-          title: this.translate.instant('Error fetching this invoice'),
-          message: err
-        };
-      });
-    const { instructions } = details;
+    if (!this.paypro) {
+      this.paypro = await this.payproProvider
+        .getPayProDetails({ paymentUrl: payProUrl, coin: wallet.coin, payload })
+        .catch(err => {
+          throw {
+            title: this.translate.instant('Error fetching this invoice'),
+            message: err
+          };
+        });
+    }
+    const { instructions } = this.paypro;
     const txp: Partial<TransactionProposal> = {
       coin: wallet.coin,
       amount: _.sumBy(instructions, 'amount'),
@@ -478,6 +487,9 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
         message: instruction.message,
         data: instruction.data
       });
+      if (this.walletProvider.isZceCompatible(this.wallet)) {
+        txp.instantAcceptanceEscrow = instruction.instantAcceptanceEscrow;
+      }
     }
 
     if (
@@ -499,10 +511,10 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       txp.multisigContractAddress = this.wallet.credentials.multisigEthInfo.multisigContractAddress;
     }
 
-    if (details.requiredFeeRate) {
+    if (this.paypro.requiredFeeRate) {
       const requiredFeeRate = !this.currencyProvider.isUtxoCoin(wallet.coin)
-        ? parseInt((details.requiredFeeRate * 1.1).toFixed(0), 10) // Workaround to avoid gas price supplied is lower than requested error
-        : Math.ceil(details.requiredFeeRate * 1000);
+        ? parseInt((this.paypro.requiredFeeRate * 1.1).toFixed(0), 10) // Workaround to avoid gas price supplied is lower than requested error
+        : Math.ceil(this.paypro.requiredFeeRate * 1000);
       txp.feePerKb = requiredFeeRate;
       this.logger.debug('Using merchant fee rate:' + txp.feePerKb);
     } else {
@@ -516,7 +528,44 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       txp.outputs[0].toAddress = txp.toAddress;
     }
 
-    return this.walletProvider.createTx(wallet, txp);
+    this.onGoingProcessProvider.set('loadingTxInfo');
+    const ctxp = await this.walletProvider.createTx(wallet, txp);
+
+    // Save in memory
+    this.tx = ctxp;
+    this.invoiceId = invoice.id;
+
+    const now = moment().unix() * 1000;
+
+    this.tx.giftData = {
+      currency: this.purchaseParams.currency,
+      date: now,
+      amount: this.purchaseParams.amount,
+      uuid: this.purchaseParams.uuid,
+      accessKey: this.accessKey,
+      invoiceId: invoice.id,
+      invoiceUrl: invoice.url,
+      invoiceTime: invoice.invoiceTime,
+      name: this.cardConfig.name
+    };
+    const amountSat = invoice.paymentSubtotals[COIN];
+    this.totalAmountStr = this.txFormatProvider.formatAmountStr(
+      wallet.coin,
+      ctxp.amount || amountSat
+    );
+
+    // Warn: fee too high
+    if (this.currencyProvider.isUtxoCoin(wallet.coin)) {
+      this.checkFeeHigh(
+        Number(amountSat),
+        Number(this.invoiceFeeSat) + Number(ctxp.fee)
+      );
+    }
+
+    this.setTotalAmount(wallet.coin, this.invoiceFeeSat, ctxp.fee);
+
+    this.logGiftCardPurchaseEvent(false, COIN, this.purchaseParams);
+    this.onGoingProcessProvider.clear();
   }
 
   private async redeemGiftCard(initialCard: GiftCard) {
@@ -589,7 +638,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     this.onGoingProcessProvider.set('loadingTxInfo');
     await this.refreshCardConfigIfNeeded().catch(_ => {});
     const discount = getVisibleDiscount(this.cardConfig);
-    const dataSrc = {
+    this.purchaseParams = {
       amount: this.amount,
       currency: this.currency,
       discounts: discount ? [discount.code] : [],
@@ -600,7 +649,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       ...(this.phone && { phone: this.phone })
     };
 
-    const data = await this.createInvoice(dataSrc).catch(err => {
+    const data = await this.createInvoice(this.purchaseParams).catch(err => {
       this.onGoingProcessProvider.clear();
       throw this.showErrorInfoSheet(err.message, err.title, true);
     });
@@ -616,9 +665,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     this.amountUnitStr = parsedAmount.amountUnitStr;
 
     const invoice = data.invoice;
-    const accessKey = data.accessKey;
     this.totalDiscount = data.totalDiscount || 0;
-    const amountSat = invoice.paymentSubtotals[COIN];
 
     if (!this.isCryptoCurrencySupported(COIN, invoice)) {
       this.onGoingProcessProvider.clear();
@@ -639,48 +686,9 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       { amountUnitStr: this.amountUnitStr }
     );
 
-    const ctxp = await this.createTx(wallet, invoice, this.message).catch(
-      err => {
-        this.onGoingProcessProvider.clear();
-        throw this._handleError(err);
-      }
+    await this.createTx(wallet, invoice, this.message).catch(err =>
+      this._handleError(err)
     );
-
-    this.onGoingProcessProvider.clear();
-
-    // Save in memory
-    this.tx = ctxp;
-    this.invoiceId = invoice.id;
-
-    const now = moment().unix() * 1000;
-
-    this.tx.giftData = {
-      currency: dataSrc.currency,
-      date: now,
-      amount: dataSrc.amount,
-      uuid: dataSrc.uuid,
-      accessKey,
-      invoiceId: invoice.id,
-      invoiceUrl: invoice.url,
-      invoiceTime: invoice.invoiceTime,
-      name: this.cardConfig.name
-    };
-    this.totalAmountStr = this.txFormatProvider.formatAmountStr(
-      wallet.coin,
-      ctxp.amount || amountSat
-    );
-
-    // Warn: fee too high
-    if (this.currencyProvider.isUtxoCoin(wallet.coin)) {
-      this.checkFeeHigh(
-        Number(amountSat),
-        Number(this.invoiceFeeSat) + Number(ctxp.fee)
-      );
-    }
-
-    this.setTotalAmount(wallet.coin, this.invoiceFeeSat, ctxp.fee);
-
-    this.logGiftCardPurchaseEvent(false, COIN, dataSrc);
   }
 
   private _handleError(err) {
@@ -691,6 +699,14 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     const isInsufficientLinkedEthFundsForFeeErr =
       err instanceof this.errors.INSUFFICIENT_ETH_FEE;
 
+    if (this.paypro.instructions[0].instantAcceptanceEscrow) {
+      this.paypro.instructions[0].instantAcceptanceEscrow = undefined;
+      this.createTx(this.wallet, this.invoice, this.message).catch(err =>
+        this._handleError(err)
+      );
+      return;
+    }
+    this.onGoingProcessProvider.clear();
     if (isInsufficientFundsErr) {
       this.showErrorInfoSheet(err.message, err.title);
     } else if (
@@ -747,7 +763,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     this.onGoingProcessProvider.set('loadingTxInfo');
     await this.refreshCardConfigIfNeeded().catch(_ => {});
     const discount = getVisibleDiscount(this.cardConfig);
-    const dataSrc = {
+    this.purchaseParams = {
       amount: this.amount,
       currency: this.currency,
       discounts: discount ? [discount.code] : [],
@@ -758,7 +774,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       ...(this.phone && { phone: this.phone })
     };
 
-    const data = await this.createInvoice(dataSrc).catch(err => {
+    const data = await this.createInvoice(this.purchaseParams).catch(err => {
       this.onGoingProcessProvider.clear();
       throw this.showErrorInfoSheet(err.message, err.title, true);
     });
@@ -805,10 +821,10 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     const now = moment().unix() * 1000;
 
     this.tx.giftData = {
-      currency: dataSrc.currency,
+      currency: this.purchaseParams.currency,
       date: now,
-      amount: dataSrc.amount,
-      uuid: dataSrc.uuid,
+      amount: this.purchaseParams.amount,
+      uuid: this.purchaseParams.uuid,
       accessKey,
       invoiceId: invoice.id,
       invoiceUrl: invoice.url,
@@ -822,7 +838,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
 
     this.setTotalAmount(COIN.toLowerCase());
 
-    this.logGiftCardPurchaseEvent(false, COIN, dataSrc);
+    this.logGiftCardPurchaseEvent(false, COIN, this.purchaseParams);
   }
 
   public async buyConfirm() {
