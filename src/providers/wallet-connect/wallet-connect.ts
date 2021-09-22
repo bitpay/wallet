@@ -192,6 +192,13 @@ export class WalletConnectProvider {
     };
   }
 
+  public getReduceConnectionData() {
+    return {
+      peerMeta: this.peerMeta,
+      walletId: this.walletId
+    };
+  }
+
   public resetConnectionData() {
     this.peerMeta = null;
   }
@@ -484,15 +491,15 @@ export class WalletConnectProvider {
     }
   }
 
-  public async rejectRequest(request): Promise<void> {
+  public async rejectRequest(requestId): Promise<void> {
     if (this.walletConnector) {
       try {
         this.logger.debug('walletConnector.rejectRequest');
         this.walletConnector.rejectRequest({
-          id: request.id,
+          id: requestId,
           error: { message: 'Failed or Rejected Request' }
         });
-        await this.closeRequest(request.id);
+        await this.closeRequest(requestId);
       } catch (error) {
         this.errorsProvider.showDefaultError(
           error,
