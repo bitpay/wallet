@@ -23,6 +23,7 @@ export class CoinbaseSettingsPage {
 
   public data: object = {};
   public linkedAccount: boolean;
+  public revokedToken: boolean;
   public hasCredentials: boolean;
 
   constructor(
@@ -41,7 +42,9 @@ export class CoinbaseSettingsPage {
   ionViewWillEnter() {
     this.hasCredentials = !!this.coinbaseProvider.oauthUrl;
     this.linkedAccount = this.coinbaseProvider.isLinked();
-    if (this.linkedAccount) this.coinbaseProvider.getCurrentUser(this.data);
+    this.revokedToken = this.coinbaseProvider.isTokenRevoked;
+    if (this.linkedAccount && !this.revokedToken)
+      this.coinbaseProvider.getCurrentUser(this.data);
   }
 
   public showInHomeSwitch(): void {

@@ -174,11 +174,19 @@ export class CoinbaseAccountPage {
             recipientType: 'coinbase',
             fromCoinbase: { accountId: this.id, accountName: account_name }
           });
+        })
+        .catch(e => {
+          this.onGoingProcessProvider.clear();
+          this.showErrorAndBack(e);
         });
     });
   }
 
   public withdraw(): void {
+    if (this.coinbase.isTokenRevoked) {
+      this.showError('Token was revoked. Please, try to re-connect again.');
+      return;
+    }
     const coin = this.data['account'].currency.code.toLowerCase();
     const wallets = this.profileProvider.getWallets({
       onlyComplete: true,

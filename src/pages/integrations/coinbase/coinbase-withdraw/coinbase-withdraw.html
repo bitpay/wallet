@@ -23,8 +23,8 @@
           <ion-col>
             <div *ngIf="!address">...</div>
             <div *ngIf="address" copy-to-clipboard="{{ address }}">
-              <span class="ellipsis" *ngIf="!wallet.name">{{address}}</span>
-              <span class="ellipsis" *ngIf="wallet.name">{{wallet.name}}</span>
+              <span class="ellipsis" *ngIf="!wallet.name">BitPay: {{address}}</span>
+              <span class="ellipsis" *ngIf="wallet.name">BitPay: {{wallet.name}}</span>
             </div>
           </ion-col>
         </ion-row>
@@ -53,6 +53,8 @@
       </ion-note>
     </button>
 
+    <div class="line-divider"></div>
+
     <ion-item *ngIf="wallet.coin == 'xrp'">
       <ion-label stacked>{{'Destination Tag' | translate}}</ion-label>
       <ion-input class="padded-input" type="number" placeholder="{{'Enter a destination tag' | translate}}" [(ngModel)]="destinationTag" name="destinationTag" autocomplete="off" autocorrect="off"></ion-input>
@@ -64,7 +66,9 @@
       </div>
     </label-tip>
 
-    <ion-item *ngIf="description">
+    <div class="line-divider"></div>
+
+    <ion-item *ngIf="description" margin-bottom>
       <ion-label>
         <div class="summary-item">
           <span translate>Description</span>
@@ -85,7 +89,19 @@
         </div>
       </ion-note>
     </ion-item>
+    <div class="amount-details" *ngIf="nativeBalance && nativeCurrency" padding-bottom>
+      <div class="secondary-note">
+        {{nativeBalance}} {{ nativeCurrency }}
+      </div>
+    </div>
   </ion-list>
+  <label-tip type="info" header="no-header">
+    <div label-tip-body>
+      Coinbase will charge you a fee based on their estimate of the network transaction fees.
+      <br>
+      <a class="pointer" (click)="openExternalLink('https://help.coinbase.com/en/coinbase/trading-and-funding/pricing-and-fees/fees')" translate>Learn more</a>
+    </div>
+  </label-tip>
   </div>
 
   <div footer-content>

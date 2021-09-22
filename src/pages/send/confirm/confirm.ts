@@ -357,7 +357,6 @@ export class ConfirmPage {
 
   private async getInvoiceData() {
     if (!this.navParams.data.payProUrl) return;
-
     const invoiceId = this.navParams.data.payProUrl.split('i/')[1];
     const host = this.navParams.data.payProUrl.includes('test')
       ? 'testnet'
