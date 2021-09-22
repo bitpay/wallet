@@ -205,7 +205,12 @@ export class ConfirmPage {
     // Overrides the ngOnInit logic of WalletTabsChild
   }
 
+  // not ideal - workaround for navCtrl issues for wallet connect
+  ionViewWillEnter() {
+    this.events.publish('Update/ViewingWalletConnectConfirm', true);
+  }
   ionViewWillLeave() {
+    this.events.publish('Update/ViewingWalletConnectConfirm', false);
     this.navCtrl.swipeBackEnabled = true;
   }
 

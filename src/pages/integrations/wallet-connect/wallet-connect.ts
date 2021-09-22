@@ -89,6 +89,7 @@ export class WalletConnectPage {
   public exitingAnimationPatch: boolean;
   public isAndroid: boolean;
   private detailsActive: boolean;
+  private confirmActive: boolean;
 
   constructor(
     private actionSheetProvider: ActionSheetProvider,
@@ -129,6 +130,10 @@ export class WalletConnectPage {
       'Update/ViewingWalletConnectDetails',
       (status: boolean) => (this.detailsActive = status)
     );
+    this.events.subscribe(
+      'Update/ViewingWalletConnectConfirm',
+      (status: boolean) => (this.confirmActive = status)
+    );
 
     this.wallets = this.profileProvider.getWallets({
       coin: 'eth',
@@ -148,7 +153,7 @@ export class WalletConnectPage {
   }
 
   ionViewWillLeave() {
-    this.exitingAnimationPatch = !this.detailsActive;
+    this.exitingAnimationPatch = !this.detailsActive || !this.confirmActive;
     this.events.publish('Update/ViewingWalletConnectMain', false);
     this.onGoingProcessProvider.clear();
   }
@@ -231,7 +236,7 @@ export class WalletConnectPage {
 
   private setRequests: any = (requests, incoming?) => {
     this.requests = requests;
-    if (incoming && !this.detailsActive) {
+    if (incoming && !this.detailsActive && !this.confirmActive) {
       this.goToNextView(incoming, incoming.params, true);
     }
     this.changeRef.detectChanges();

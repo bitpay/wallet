@@ -106,6 +106,7 @@ export class CopayApp {
   private copayerModal: any;
   private walletConnectMainActive: boolean;
   private walletConnectDetailsActive: boolean;
+  private walletConnectConfirmActive: boolean;
 
   private pageMap = {
     AboutPage,
@@ -408,6 +409,10 @@ export class CopayApp {
       'Update/ViewingWalletConnectDetails',
       (status: boolean) => (this.walletConnectDetailsActive = status)
     );
+    this.events.subscribe(
+      'Update/ViewingWalletConnectConfirm',
+      (status: boolean) => (this.walletConnectConfirmActive = status)
+    );
     this.platformProvider.platformReady.next(true);
 
     if (
@@ -681,13 +686,14 @@ export class CopayApp {
                 await this.nav.push(this.pageMap[name], params);
                 return;
               }
-
               if (
                 force ||
                 (isDeepLink && !request && uri && uri.includes('bridge')) ||
-                ['WalletConnectRequestDetailsPage', 'ScanPage'].includes(
-                  activePage
-                )
+                [
+                  'WalletConnectRequestDetailsPage',
+                  'ConfirmPage',
+                  'ScanPage'
+                ].includes(activePage)
               ) {
                 await this.selectGlobalTab(0);
                 await this.nav.popToRoot();
@@ -702,7 +708,8 @@ export class CopayApp {
 
                 const notifyOnly =
                   this.walletConnectMainActive ||
-                  this.walletConnectDetailsActive;
+                  this.walletConnectDetailsActive ||
+                  this.walletConnectConfirmActive;
 
                 const notificationConfig = {
                   title: 'WalletConnect',
