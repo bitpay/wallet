@@ -603,11 +603,11 @@ export class ConfirmPage {
     if (isPayPro) {
       this.buttonText = this.isCordova
         ? this.translate.instant('Slide to pay')
-        : this.translate.instant('Click to pay');
+        : this.translate.instant('Pay');
     } else if (isCoinbase) {
       this.buttonText = this.isCordova
         ? this.translate.instant('Slide to deposit')
-        : this.translate.instant('Click to deposit');
+        : this.translate.instant('Deposit');
       this.successText =
         this.wallet.credentials.n == 1
           ? this.translate.instant('Deposit success')
@@ -615,7 +615,7 @@ export class ConfirmPage {
     } else if (isMultisig) {
       this.buttonText = this.isCordova
         ? this.translate.instant('Slide to accept')
-        : this.translate.instant('Click to accept');
+        : this.translate.instant('Accept');
       this.successText =
         this.wallet.credentials.n == 1
           ? this.translate.instant('Payment Sent')
@@ -630,17 +630,17 @@ export class ConfirmPage {
     } else if (isSpeedUp) {
       this.buttonText = this.isCordova
         ? this.translate.instant('Slide to speed up')
-        : this.translate.instant('Click to speed up');
+        : this.translate.instant('Speed up');
       this.successText = this.translate.instant('Speed up successful');
     } else if (this.walletConnectRequestId) {
       this.buttonText = this.isCordova
         ? this.translate.instant('Slide to approve and send')
-        : this.translate.instant('Click to approve and send');
+        : this.translate.instant('Approve and send');
       this.successText = this.translate.instant('Transaction Sent');
     } else {
       this.buttonText = this.isCordova
         ? this.translate.instant('Slide to send')
-        : this.translate.instant('Click to send');
+        : this.translate.instant('Send');
       this.successText = this.translate.instant('Payment Sent');
     }
   }
