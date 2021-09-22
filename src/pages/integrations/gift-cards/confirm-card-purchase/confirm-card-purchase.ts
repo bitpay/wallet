@@ -229,7 +229,8 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
 
     this.showCoinbase =
       this.homeIntegrationsProvider.shouldShowInHome('coinbase') &&
-      this.coinbaseProvider.isLinked();
+      this.coinbaseProvider.isLinked() &&
+      this.coinbaseProvider.isTokenValid();
 
     this.coinbaseAccounts =
       this.showCoinbase && this.network === 'livenet'

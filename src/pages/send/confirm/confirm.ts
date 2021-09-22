@@ -191,7 +191,8 @@ export class ConfirmPage {
     this.isSpeedUpTx = this.navParams.data.speedUpTx;
     this.showCoinbase =
       this.homeIntegrationsProvider.shouldShowInHome('coinbase') &&
-      this.coinbaseProvider.isLinked();
+      this.coinbaseProvider.isLinked() &&
+      this.coinbaseProvider.isTokenValid();
     this.walletConnectRequestId = this.navParams.data.requestId;
     this.walletConnectTokenInfo = this.navParams.data.tokenInfo;
     this.walletConnectPeerMeta = this.navParams.data.peerMeta;
