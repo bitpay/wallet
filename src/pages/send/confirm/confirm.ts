@@ -1828,7 +1828,12 @@ export class ConfirmPage {
     const isInsufficientLinkedEthFundsForFeeErr =
       err instanceof this.errors.INSUFFICIENT_ETH_FEE;
 
-    if (this.tx.paypro.instructions[0].instantAcceptanceEscrow) {
+    if (
+      this.tx.paypro &&
+      this.tx.paypro.instructions &&
+      this.tx.paypro.instructions[0] &&
+      this.tx.paypro.instructions[0].instantAcceptanceEscrow
+    ) {
       this.tx.paypro.instructions[0].instantAcceptanceEscrow = undefined;
       this.updateTx(this.tx, this.wallet, {
         clearCache: true,

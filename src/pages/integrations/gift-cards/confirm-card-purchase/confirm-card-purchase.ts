@@ -699,7 +699,12 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     const isInsufficientLinkedEthFundsForFeeErr =
       err instanceof this.errors.INSUFFICIENT_ETH_FEE;
 
-    if (this.paypro.instructions[0].instantAcceptanceEscrow) {
+    if (
+      this.paypro &&
+      this.paypro.instructions &&
+      this.paypro.instructions[0] &&
+      this.paypro.instructions[0].instantAcceptanceEscrow
+    ) {
       this.paypro.instructions[0].instantAcceptanceEscrow = undefined;
       this.createTx(this.wallet, this.invoice, this.message).catch(err =>
         this._handleError(err)
