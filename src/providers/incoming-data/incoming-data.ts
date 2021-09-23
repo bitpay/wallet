@@ -1586,8 +1586,9 @@ export class IncomingDataProvider {
           );
           await verificationRequiredInfoSheet.present();
           verificationRequiredInfoSheet.onDidDismiss(async () => {
+            const { host: redirectHost } = new URL(data);
             await this.externalLinkProvider.open(
-              `https://${host}/id/verify?context=unlockv&id=${invoiceId}`
+              `https://${redirectHost}/id/verify?context=unlockv&id=${invoiceId}`
             );
           });
       }
