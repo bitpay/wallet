@@ -613,6 +613,33 @@
     ion-toolbar {
       background-color: $bg-color-dark-theme-2;
     }
+
+    .bitpayCard {
+      &-header {
+        &-title {
+          color: $text-color-dark-theme;
+        }
+      }
+      &-content {
+        .title {
+          color: $text-color-dark-theme;
+        }
+        p {
+          color: $text-color-dark-theme-2;
+        }
+      }
+      &-item {
+        &-title {
+          color: $text-color-dark-theme;
+        }
+        p {
+          color: $text-color-dark-theme-2;
+        }
+      }
+      &__agreement {
+        color: $text-color-dark-theme-3;
+      }
+    }
   }
 
   // 4 - Components

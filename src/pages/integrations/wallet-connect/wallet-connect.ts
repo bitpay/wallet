@@ -3,6 +3,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Events, NavController, NavParams } from 'ionic-angular';
 
 // Pages
+import { ConfirmPage } from '../../../pages/send/confirm/confirm';
 import { ScanPage } from '../../scan/scan';
 import { WalletConnectRequestDetailsPage } from './wallet-connect-request-details/wallet-connect-request-details';
 
@@ -88,6 +89,7 @@ export class WalletConnectPage {
   public exitingAnimationPatch: boolean;
   public isAndroid: boolean;
   private detailsActive: boolean;
+  private confirmActive: boolean;
 
   constructor(
     private actionSheetProvider: ActionSheetProvider,
@@ -128,6 +130,10 @@ export class WalletConnectPage {
       'Update/ViewingWalletConnectDetails',
       (status: boolean) => (this.detailsActive = status)
     );
+    this.events.subscribe(
+      'Update/ViewingWalletConnectConfirm',
+      (status: boolean) => (this.confirmActive = status)
+    );
 
     this.wallets = this.profileProvider.getWallets({
       coin: 'eth',
@@ -147,7 +153,7 @@ export class WalletConnectPage {
   }
 
   ionViewWillLeave() {
-    this.exitingAnimationPatch = !this.detailsActive;
+    this.exitingAnimationPatch = !this.detailsActive || !this.confirmActive;
     this.events.publish('Update/ViewingWalletConnectMain', false);
     this.onGoingProcessProvider.clear();
   }
@@ -230,8 +236,8 @@ export class WalletConnectPage {
 
   private setRequests: any = (requests, incoming?) => {
     this.requests = requests;
-    if (incoming && !this.detailsActive) {
-      this.goToRequestDetailsPage(incoming, incoming.params);
+    if (incoming && !this.detailsActive && !this.confirmActive) {
+      this.goToNextView(incoming, incoming.params, true);
     }
     this.changeRef.detectChanges();
   };
@@ -377,6 +383,69 @@ export class WalletConnectPage {
       request,
       params
     });
+  }
+
+  public goToNextView(request, params, skipConfirmation?: boolean) {
+    if (request && request.method === 'eth_sendTransaction') {
+      const address = this.address;
+      const wallet = this.wallet;
+      const peerMeta = this.peerMeta;
+      const addressRequested = request.params[0].from;
+      const isApproveRequest =
+        request &&
+        request.decodedData &&
+        request.decodedData.name === 'approve';
+      if (address.toLowerCase() === addressRequested.toLowerCase()) {
+        // redirect to confirm page with navParams
+        let data = {
+          amount: request.params[0].value,
+          toAddress: request.params[0].to,
+          coin: wallet.credentials.coin,
+          walletId: wallet.credentials.walletId,
+          network: wallet.network,
+          data: request.params[0].data,
+          gasLimit: request.params[0].gas,
+          requestId: request.id,
+          isApproveRequest,
+          tokenInfo: isApproveRequest ? request.tokenInfo : null,
+          peerMeta
+        };
+        this.logger.debug(
+          'redirect to confirm page with data: ',
+          JSON.stringify(data)
+        );
+
+        if (isApproveRequest || skipConfirmation) {
+          this.navCtrl.push(ConfirmPage, data);
+        } else this.openConfirmPageConfirmation(peerMeta, data);
+      } else {
+        this.errorsProvider.showDefaultError(
+          this.translate.instant(
+            'Address requested does not match active account'
+          ),
+          this.translate.instant('Error')
+        );
+      }
+    } else this.goToRequestDetailsPage(request, params);
+  }
+
+  public openConfirmPageConfirmation(peerMeta, data): void {
+    const title = this.translate.instant('Confirm Request');
+    let message = this.replaceParametersProvider.replace(
+      this.translate.instant(
+        `Please check on {{peerMetaName}} that the request is still waiting for confirmation and the swap amount is correct before proceeding to the confirmation step`
+      ),
+      { peerMetaName: peerMeta.name }
+    );
+    const okText = this.translate.instant('Continue');
+    const cancelText = this.translate.instant('Go Back');
+    this.popupProvider
+      .ionicConfirm(title, message, okText, cancelText)
+      .then((res: boolean) => {
+        if (res) {
+          this.navCtrl.push(ConfirmPage, data);
+        }
+      });
   }
 
   public setDappImgSrc(useDefault?: boolean) {

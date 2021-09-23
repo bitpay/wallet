@@ -208,4 +208,15 @@ page-bitpay-card-topup {
   .item.item-input input {
     width: 80px;
   }
+  .wc-img {
+    width: 50px;
+    height: 50px;
+    border-radius: 8px;
+    &-sm {
+      border-radius: 50%;
+      @media (max-width: 381px) {
+        display: none;
+      }
+    }
+  }
 }
