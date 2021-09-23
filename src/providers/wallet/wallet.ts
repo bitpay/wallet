@@ -1928,7 +1928,9 @@ export class WalletProvider {
 
   formatAmout(amount: number, coin: string) {
     if (_.isEmpty(coin)) coin = 'xpi' // lotus
-    return _.toNumber(this.txFormatProvider.formatAmount(coin, amount));
+    const precision = _.get(this.currencyProvider.getPrecision(coin as Coin), 'unitToSatoshi', 0);
+    if (precision == 0) return 0;
+    return (amount / precision)
   }
 
   getDonationInfo() {

@@ -104,6 +104,7 @@ export class AmountPage {
   isShowReceiveLotus: boolean;
   receiveLotus: string;
   receiveAmountLotus: number;
+  formatRemaning: string;
   constructor(
     private configProvider: ConfigProvider,
     private filterProvider: FilterProvider,
@@ -123,7 +124,10 @@ export class AmountPage {
     this.zone = new NgZone({ enableLongStackTrace: false });
     this.isDonation = this.navParams.data.isDonation
     if (this.isDonation) {
-      this.remaining = this.navParams.data.remaining ;
+      this.remaining = this.navParams.data.remaining;
+      const coin = _.get(this.navParams, 'data.donationCoin', 'xpi');
+      const precision = this.currencyProvider.getPrecision(coin as Coin).unitToSatoshi;
+      this.formatRemaning = this.txFormatProvider.formatAmount(coin, precision * this.remaining);
       this.receiveAmountLotus = this.navParams.data.receiveLotus;
     }
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
