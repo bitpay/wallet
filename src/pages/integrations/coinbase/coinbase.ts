@@ -102,7 +102,7 @@ export class CoinbasePage {
   private submitOauthCode(code: string): void {
     // Security check
     if (
-      this.isElectron &&
+      !this.isElectron &&
       !this.navParams.data.state &&
       this.navParams.data.state != this.coinbaseProvider.getCurrentState()
     ) {
