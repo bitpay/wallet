@@ -104,7 +104,7 @@ export class AmountPage {
   isShowReceiveLotus: boolean;
   receiveLotus: string;
   receiveAmountLotus: number;
-  formatRemaning: string;
+  formatRemaining: string;
   constructor(
     private configProvider: ConfigProvider,
     private filterProvider: FilterProvider,
@@ -127,7 +127,7 @@ export class AmountPage {
       this.remaining = this.navParams.data.remaining;
       const coin = _.get(this.navParams, 'data.donationCoin', 'xpi');
       const precision = this.currencyProvider.getPrecision(coin as Coin).unitToSatoshi;
-      this.formatRemaning = this.txFormatProvider.formatAmount(coin, precision * this.remaining);
+      this.formatRemaining = this.txFormatProvider.formatAmount(coin, precision * this.remaining);
       this.receiveAmountLotus = this.navParams.data.receiveLotus;
     }
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
