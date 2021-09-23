@@ -1070,9 +1070,10 @@ export class IncomingDataProvider {
       switch (switchExp) {
         case 'pairing':
           const secret = payload.split('=')[1].split('&')[0];
+          const withNotification = !payload.includes('paymentUrl');
           const params = {
             secret,
-            withNotification: true
+            withNotification
           };
           if (payload.includes('&code=')) {
             params['code'] = payload.split('&code=')[1];
@@ -1561,20 +1562,14 @@ export class IncomingDataProvider {
         // call IAB and attempt pairing
         case 'pairingRequired':
           const authRequiredInfoSheet = this.actionSheetProvider.createInfoSheet(
-            'auth-required'
+            'pairing-required'
           );
           await authRequiredInfoSheet.present();
-          authRequiredInfoSheet.onDidDismiss(() => {
-            this.iabCardProvider.show();
-            setTimeout(() => {
-              this.iabCardProvider.sendMessage(
-                {
-                  message: 'pairingOnly',
-                  payload: { paymentUrl: data }
-                },
-                () => {}
-              );
-            }, 100);
+          authRequiredInfoSheet.onDidDismiss(async () => {
+            const { host: redirectHost } = new URL(data);
+            await this.externalLinkProvider.open(
+              `https://${redirectHost}/id/verify?context=unlockv&id=${invoiceId}`
+            );
           });
           break;
 

@@ -936,7 +936,7 @@ export class IABCardProvider {
           this.events.publish('BitPayId/Connected', user);
 
           // if with notification -> connect your bitpay id in settings or pairing from personal dashboard
-          if (withNotification) {
+          if (withNotification || paymentUrl) {
             // resets inappbrowser connect state
             this.cardIAB_Ref.executeScript(
               {
