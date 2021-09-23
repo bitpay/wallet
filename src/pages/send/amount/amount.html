@@ -4,7 +4,7 @@
     <ng-container *ngIf="isDonation && !shouldShowZeroState()">
       <div class="remaining" [ngStyle]="{color: getColorRemaining()}">
         <ng-container *ngIf="!((receiveAmountLotus * 3) > remaining);else onlyFewLotus">
-          <span >Lotus Remaining :</span> <span>{{remaining}}</span>
+          <span >Lotus Remaining :</span> <span>{{formatRemaining}}</span>
         </ng-container>
         <ng-template #onlyFewLotus>
           <span>Only few remaining...</span>
