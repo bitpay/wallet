@@ -385,7 +385,7 @@ export class TabsPage {
     });
 
     Promise.all(promises).then(() => {
-      if (!this.hasConnectionError) {
+      if (!this.hasConnectionError && !opts.coin) {
         this.updateTotalBalance(wallets);
       }
       this.updateTxps();
