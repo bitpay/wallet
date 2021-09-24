@@ -1079,6 +1079,10 @@ export class IncomingDataProvider {
             params['code'] = payload.split('&code=')[1];
           }
 
+          if (payload.includes('&paymentUrl=')) {
+            params['paymentUrl'] = payload.split('&paymentUrl=')[1];
+          }
+
           if (payload.includes('dashboardRedirect')) {
             params['dashboardRedirect'] = true;
           }
