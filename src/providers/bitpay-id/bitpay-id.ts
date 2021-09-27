@@ -12,6 +12,7 @@ import { AppIdentityProvider } from '../app-identity/app-identity';
 import { InAppBrowserProvider } from '../in-app-browser/in-app-browser';
 import { Network, PersistenceProvider } from '../persistence/persistence';
 import { PlatformProvider } from '../platform/platform';
+declare var AppboyPlugin: any;
 
 @Injectable()
 export class BitPayIdProvider {
@@ -138,6 +139,10 @@ export class BitPayIdProvider {
                 incentiveLevel,
                 incentiveLevelId
               } = data;
+
+              if (email) {
+                AppboyPlugin.setEmail(email);
+              }
 
               if (experiments && experiments.includes('NADebitCard')) {
                 this.persistenceProvider.setCardExperimentFlag('enabled');
