@@ -191,7 +191,8 @@ export class ConfirmPage {
     this.isSpeedUpTx = this.navParams.data.speedUpTx;
     this.showCoinbase =
       this.homeIntegrationsProvider.shouldShowInHome('coinbase') &&
-      this.coinbaseProvider.isLinked();
+      this.coinbaseProvider.isLinked() &&
+      this.coinbaseProvider.isTokenValid();
     this.walletConnectRequestId = this.navParams.data.requestId;
     this.walletConnectTokenInfo = this.navParams.data.tokenInfo;
     this.walletConnectPeerMeta = this.navParams.data.peerMeta;
@@ -357,7 +358,6 @@ export class ConfirmPage {
 
   private async getInvoiceData() {
     if (!this.navParams.data.payProUrl) return;
-
     const invoiceId = this.navParams.data.payProUrl.split('i/')[1];
     const host = this.navParams.data.payProUrl.includes('test')
       ? 'testnet'

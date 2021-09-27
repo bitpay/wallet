@@ -15,7 +15,7 @@
       <ion-toolbar class="wide-header__title">
         <expandable-header-primary>
           <img src="assets/img/coinbase/coinbase-logo.png" width="150">
-          <div class="email-account" *ngIf="linkedAccount">{{data?.user?.email || '...'}}</div>
+          <div class="email-account" *ngIf="linkedAccount && tokenValid">{{data?.user?.email || '...'}}</div>
         </expandable-header-primary>
       </ion-toolbar>
     </expandable-header>
@@ -36,7 +36,7 @@
       Missing Credentials
     </div>
 
-    <ion-list *ngIf="linkedAccount" class="bp-list">
+    <ion-list *ngIf="linkedAccount && tokenValid" class="bp-list">
       <ion-item>
         <ion-label>{{'Name' | translate}}</ion-label>
         <ion-note item-end>
@@ -56,6 +56,12 @@
         </ion-note>
       </ion-item>
     </ion-list>
+
+    <label-tip *ngIf="!tokenValid" type="warn" header="no-header" class="no-arrowhead">
+      <div label-tip-body>
+        Token was revoked. Please, log out and try to re-connect again.
+      </div>
+    </label-tip>
 
     <button *ngIf="linkedAccount" ion-button class="button-standard" color="danger" (click)="revokeToken()">
       {{'Log out' | translate}}
