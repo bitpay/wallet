@@ -1080,7 +1080,12 @@ export class IncomingDataProvider {
           }
 
           if (payload.includes('&paymentUrl=')) {
-            params['paymentUrl'] = payload.split('&paymentUrl=')[1];
+            params['paymentUrl'] = payload
+              .split('&paymentUrl=')[1]
+              .split('&')[0];
+            if (payload.includes('t=hv')) {
+              params['paymentUrl'] = params['paymentUrl'] + '?t=hv';
+            }
           }
 
           if (payload.includes('dashboardRedirect')) {
@@ -1540,7 +1545,8 @@ export class IncomingDataProvider {
 
   public async handleUnlock(data) {
     try {
-      const host = data.includes('test') ? 'testnet' : 'livenet';
+      const network = data.includes('test') ? 'testnet' : 'livenet';
+      const { host } = new URL(data);
       const invoiceId = data.split('i/')[1].split('?')[0];
 
       if (data.includes('link.')) {
@@ -1554,7 +1560,7 @@ export class IncomingDataProvider {
         return;
       }
 
-      await this.invoiceProvider.setNetwork(host);
+      await this.invoiceProvider.setNetwork(network);
       const fetchData = await this.invoiceProvider.canGetInvoiceData(invoiceId);
 
       if (fetchData) {
@@ -1570,9 +1576,8 @@ export class IncomingDataProvider {
           );
           await authRequiredInfoSheet.present();
           authRequiredInfoSheet.onDidDismiss(async () => {
-            const { host: redirectHost } = new URL(data);
             await this.externalLinkProvider.open(
-              `https://${redirectHost}/id/verify?context=unlockv&id=${invoiceId}`
+              `https://${host}/id/verify?context=unlockv&id=${invoiceId}`
             );
           });
           break;
@@ -1585,9 +1590,8 @@ export class IncomingDataProvider {
           );
           await verificationRequiredInfoSheet.present();
           verificationRequiredInfoSheet.onDidDismiss(async () => {
-            const { host: redirectHost } = new URL(data);
             await this.externalLinkProvider.open(
-              `https://${redirectHost}/id/verify?context=unlockv&id=${invoiceId}`
+              `https://${host}/id/verify?context=unlockv&id=${invoiceId}`
             );
           });
       }
