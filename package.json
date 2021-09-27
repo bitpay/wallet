@@ -292,7 +292,8 @@
       "cordova-plugin-idfa": {
         "ANDROID_PLAY_ADID_VERSION": "17.0.+"
       },
-      "cordova-plugin-androidx-adapter": {}
+      "cordova-plugin-androidx-adapter": {},
+      "appboy-cordova-sdk-ng": {}
     },
     "platforms": [
       "android",
