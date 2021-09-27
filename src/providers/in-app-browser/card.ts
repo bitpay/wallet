@@ -936,7 +936,7 @@ export class IABCardProvider {
           this.events.publish('BitPayId/Connected', user);
 
           // if with notification -> connect your bitpay id in settings or pairing from personal dashboard
-          if (withNotification || paymentUrl) {
+          if (withNotification) {
             // resets inappbrowser connect state
             this.cardIAB_Ref.executeScript(
               {
@@ -981,6 +981,19 @@ export class IABCardProvider {
             await infoSheet.present();
             // close in app browser
             this.hide();
+          } else if (paymentUrl) {
+            // resets inappbrowser connect state
+            this.cardIAB_Ref.executeScript(
+              {
+                code: `window.postMessage(${JSON.stringify({
+                  message: 'reset'
+                })}, '*')`
+              },
+              () => this.logger.log(`card -> reset iab state`)
+            );
+
+            this.onGoingProcess.set('unlockingInvoice');
+            this.events.publish('unlockInvoice', paymentUrl);
           }
 
           // publish new user
