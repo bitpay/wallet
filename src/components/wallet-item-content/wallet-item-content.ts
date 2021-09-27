@@ -11,6 +11,9 @@ export class WalletItemContent {
   wallet: any;
 
   @Input()
+  useFadeEffect?: boolean;
+
+  @Input()
   context?: string;
 
   constructor(public currencyProvider: CurrencyProvider) {}

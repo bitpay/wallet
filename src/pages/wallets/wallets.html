@@ -61,7 +61,7 @@
         </ion-label>
       </div>
       <ion-list no-lines class="bp-list" [ngClass]="{ collapsed: isCollapsed(walletGroup[0].keyId) }">
-        <wallet-item-content *ngFor="let wallet of walletGroup" [wallet]="wallet" (click)="goToWalletDetails(wallet)"></wallet-item-content>
+        <wallet-item-content *ngFor="let wallet of walletGroup" [useFadeEffect]="useImgFadeEffect" [wallet]="wallet" (click)="goToWalletDetails(wallet)"></wallet-item-content>
       </ion-list>
       <label-tip type="warn" *ngIf="walletGroup && walletGroup[0] && walletGroup[0].needsBackup" header="no-header" margin-top>
         <div label-tip-body>

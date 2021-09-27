@@ -1,5 +1,5 @@
 <ion-item [ngClass]="{'wallet-disabled': !wallet?.isComplete() || wallet?.needsBackup || notSupported}">
-  <coin-icon [coin]="wallet.coin" [network]="wallet.network" item-left></coin-icon>
+  <coin-icon [ngClass]="{'easeload': useFadeEffect}" [coin]="wallet.coin" [network]="wallet.network" item-left></coin-icon>
   <ion-label>
     <div class="main-label">{{ wallet?.name }}</div>
     <ion-note *ngIf="notSupported">
