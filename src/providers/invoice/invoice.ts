@@ -69,10 +69,11 @@ export class InvoiceProvider {
     this.persistenceProvider.setGiftCardUserInfo(JSON.stringify(data));
   }
 
-  public async getInvoiceData(id: string) {
+  public async getInvoiceData(id: string, network: string) {
+    const host = network === 'testnet' ? 'test.bitpay.com' : 'bitpay.com';
     return new Promise<any>((response, reject) => {
       cordova.plugin.http.sendRequest(
-        `${this.credentials.BITPAY_API_URL}/invoiceData/${id}`,
+        `https://${host}/invoiceData/${id}`,
         {
           method: 'get'
         },
@@ -88,7 +89,7 @@ export class InvoiceProvider {
     });
   }
 
-  public async canGetInvoiceData(id: string) {
-    return !!(await this.getInvoiceData(id).catch(() => false));
+  public async canGetInvoiceData(id: string, network: string) {
+    return !!(await this.getInvoiceData(id, network).catch(() => false));
   }
 }

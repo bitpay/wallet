@@ -1560,8 +1560,10 @@ export class IncomingDataProvider {
         return;
       }
 
-      await this.invoiceProvider.setNetwork(network);
-      const fetchData = await this.invoiceProvider.canGetInvoiceData(invoiceId);
+      const fetchData = await this.invoiceProvider.canGetInvoiceData(
+        invoiceId,
+        network
+      );
 
       if (fetchData) {
         await this.handleBitPayInvoice(data);
