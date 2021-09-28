@@ -18,8 +18,7 @@ readline.question('Which platform? (ios or android): ', entry => {
       const platform = entry.toUpperCase();
       if (platform === 'ANDROID') {
         readline.question('Enter fcm senderId: ', senderId => {
-          const brazeXML =
-            `<?xml version="1.0" encoding="utf-8"?>
+          const brazeXML = `<?xml version="1.0" encoding="utf-8"?>
               <resources>
                 <string name="com_appboy_api_key">${key}</string>
                 <string name="com_appboy_custom_endpoint">${endpoint}</string>
