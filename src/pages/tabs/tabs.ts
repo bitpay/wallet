@@ -366,7 +366,9 @@ export class TabsPage {
     opts.backedUp = true;
     let wallets = this.profileProvider.getWallets(opts);
     if (_.isEmpty(wallets)) {
-      this.events.publish('Local/HomeBalance');
+      if (!opts.coin) {
+        this.events.publish('Local/HomeBalance');
+      }
       return;
     }
 
@@ -385,7 +387,7 @@ export class TabsPage {
     });
 
     Promise.all(promises).then(() => {
-      if (!this.hasConnectionError) {
+      if (!this.hasConnectionError && !opts.coin) {
         this.updateTotalBalance(wallets);
       }
       this.updateTxps();

@@ -56,6 +56,14 @@ export class CoinbaseAccountPage {
   ionViewWillEnter() {
     this.backgroundColor = this.themeProvider.getThemeInfo().walletDetailsBackgroundStart;
     this.updateAll();
+    setTimeout(() => {
+      if (!this.coinbase.isTokenValid()) {
+        this.showErrorAndBack(
+          'Token was revoked. Please, log out and try to re-connect again.'
+        );
+        return;
+      }
+    }, 10000);
   }
 
   private updateAll() {
@@ -116,6 +124,12 @@ export class CoinbaseAccountPage {
   }
 
   public deposit(): void {
+    if (!this.coinbase.isTokenValid()) {
+      this.showError(
+        'Token was revoked. Please, log out and try to re-connect again.'
+      );
+      return;
+    }
     const account_name = this.data['account'].name;
     const coin = this.data['account'].currency.code.toLowerCase();
     const wallets = this.profileProvider.getWallets({
@@ -174,11 +188,21 @@ export class CoinbaseAccountPage {
             recipientType: 'coinbase',
             fromCoinbase: { accountId: this.id, accountName: account_name }
           });
+        })
+        .catch(e => {
+          this.onGoingProcessProvider.clear();
+          this.showErrorAndBack(e);
         });
     });
   }
 
   public withdraw(): void {
+    if (!this.coinbase.isTokenValid()) {
+      this.showError(
+        'Token was revoked. Please, log out and try to re-connect again.'
+      );
+      return;
+    }
     const coin = this.data['account'].currency.code.toLowerCase();
     const wallets = this.profileProvider.getWallets({
       onlyComplete: true,

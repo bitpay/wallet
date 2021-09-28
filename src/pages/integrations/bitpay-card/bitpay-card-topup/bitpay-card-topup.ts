@@ -223,7 +223,8 @@ export class BitPayCardTopUpPage {
   private setCoinbase(network) {
     this.showCoinbase =
       this.homeIntegrationsProvider.shouldShowInHome('coinbase') &&
-      this.coinbaseProvider.isLinked();
+      this.coinbaseProvider.isLinked() &&
+      this.coinbaseProvider.isTokenValid();
     if (!this.showCoinbase && network != 'livenet') return;
     this.coinbaseProvider.preFetchAllData();
     this.coinbaseAccounts = this.coinbaseProvider.coinbaseData
