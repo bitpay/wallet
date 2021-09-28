@@ -1546,7 +1546,7 @@ export class IncomingDataProvider {
   public async handleUnlock(data) {
     try {
       const network = data.includes('test') ? 'testnet' : 'livenet';
-      const { host } = new URL(data);
+      let { host } = new URL(data);
       if (host.includes('bitpay.com') && !host.includes('link.')) {
         host = 'link.' + host;
       }
