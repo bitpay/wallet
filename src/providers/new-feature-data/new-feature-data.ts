@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
 import { ViewController } from 'ionic-angular';
 import _ from 'lodash';
 import { AppProvider } from '../app/app';
@@ -44,7 +43,6 @@ export class NewFeatureData {
     private appProv: AppProvider,
     private locationProv: LocationProvider,
     private platProv: PlatformProvider,
-    private translate: TranslateService,
     private persistenceProvider: PersistenceProvider,
     private logger: Logger
   ) {
@@ -55,36 +53,7 @@ export class NewFeatureData {
       this.logger.log(`persistence initialized with ${this.NETWORK}`);
     });
 
-    this.feature_list = [
-      {
-        major: 12,
-        minor: 8,
-        patch: 1,
-        app: ['*'],
-        platform: ['*'],
-        dummy: this.translate.instant('dummy'),
-        features: [
-          {
-            title: this.translate.instant('Swap Tokens'),
-            details: this.translate.instant(
-              'Easily swap hundreds of ERC-20 tokens through Decentralized Exchanges (DEXs).'
-            ),
-            image: {
-              path: 'assets/img/new-feature/12.8/12.8-1-swap-crypto.svg'
-            }
-          },
-          {
-            title: this.translate.instant('Add ERC-20 Tokens'),
-            details: this.translate.instant(
-              'Now you can add ERC-20 tokens to keep track of all your digital assets in one place. In your wallet, tap + and ‘Add Token’ to add.'
-            ),
-            image: {
-              path: 'assets/img/new-feature/12.8/12.8-1-erc20.svg'
-            }
-          }
-        ]
-      }
-    ];
+    this.feature_list = [];
   }
 
   async get() {
