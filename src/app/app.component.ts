@@ -87,6 +87,8 @@ import { sleep } from '../utils';
   (window as any).handleOpenURL_LastURL = url;
 };
 
+declare var AppboyPlugin: any;
+
 @Component({
   templateUrl: 'app.html',
   providers: [TouchIdProvider]
@@ -463,10 +465,14 @@ export class CopayApp {
           this.logger.debug('Error creating IAB instance: ', err.message);
         }
       });
+
+      const user = await this.persistenceProvider.getBitPayIdUserInfo(network);
+      if (user && user.email) {
+        AppboyPlugin.setEmail(user.email);
+      }
     }
 
     this.addressBookProvider.migrateOldContacts();
-
     this.walletConnectProvider.checkConnection();
   }
 

@@ -124,6 +124,8 @@
 
     <!-- Platform Specific Settings -->
     <platform name="ios">
+      <preference name="com.appboy.api_key" value="IOS_BRAZE_API_KEY_REPLACE_ME" />
+      <preference name="com.appboy.ios_api_endpoint" value="IOS_BRAZE_API_ENDPOINT_REPLACE_ME" />
       <config-file platform="ios" target="*-Info.plist" parent="UIStatusBarHidden"><true/></config-file>
       <config-file platform="ios" target="*-Info.plist" parent="UIViewControllerBasedStatusBarAppearance">
         <true />
