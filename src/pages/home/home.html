@@ -44,6 +44,9 @@
             </span>
           </ion-icon>
         </button>
+        <div class="test-mode"*ngIf="testModeEnabled">
+          <ion-badge>Test Mode</ion-badge>
+        </div>
         {{ 'Home' | translate }}
       </expandable-header-primary>
     </ion-toolbar>
