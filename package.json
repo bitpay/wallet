@@ -41,7 +41,7 @@
     "start": "npm run ionic:serve",
     "clean": "rm -rf platforms && rm -rf plugins && rm -f config.xml",
     "prepare:copay": "npm run clean && npm run apply:copay && ionic cordova platform add ios; ionic cordova platform add android && npm run fix:fcm",
-    "prepare:bitpay": "npm run clean && npm run apply:bitpay  && ionic cordova platform add ios; ionic cordova platform add android && npm run fix:fcm && npm run fix:iab",
+    "prepare:bitpay": "npm run clean && npm run apply:bitpay  && ionic cordova platform add ios; ionic cordova platform add android && npm run fix:fcm && npm run fix:iab && npm run moveBrazeXML",
     "clean-all": "git clean -dfx",
     "lint": "ionic-app-scripts lint",
     "ionic:build": "ionic-app-scripts build",
@@ -98,7 +98,8 @@
     "sign:bitpay-linux": "gpg -u 1112CFA1 --output dist/BitPay-linux.zip.sig --detach-sig dist/BitPay-linux.zip",
     "sign:bitpay-windows": "gpg -u 1112CFA1 --output dist/BitPay.exe.sig --detach-sig dist/BitPay.exe",
     "verify:bitpay-desktop": "gpg --verify dist/BitPay-linux.zip.sig dist/BitPay-linux.zip; gpg --verify dist/BitPay.exe.sig dist/BitPay.exe; gpg --verify dist/BitPay.dmg.sig dist/BitPay.dmg",
-    "setBrazeCredentials": "node utils/braze-config.js"
+    "setBrazeCredentials": "node utils/braze-config.js",
+    "moveBrazeXML": "sh ./utils/braze.sh"
   },
   "dependencies": {
     "@angular/animations": "5.2.11",

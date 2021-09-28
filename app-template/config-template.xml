@@ -173,10 +173,6 @@
     </platform>
 
     <platform name="android">
-      <preference name="com.appboy.api_key" value="ANDROID_BRAZE_API_KEY_REPLACE_ME" />
-      <preference name="com.appboy.android_api_endpoint" value="ANDROID_BRAZE_API_ENDPOINT_REPLACE_ME" />
-      <preference name="com.appboy.android_fcm_sender_id" value="ANDROID_BRAZE_FCM_SENDER_ID_REPLACE_ME" />
-      <preference name="com.appboy.firebase_cloud_messaging_registration_enabled" value="true" />
       <hook src="copy-build-extras-gradle.js" type="before_build" />
       <preference name="android-manifest/application/@android:allowBackup" value="false" />
 
