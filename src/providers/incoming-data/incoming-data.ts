@@ -1551,7 +1551,7 @@ export class IncomingDataProvider {
       if (data.includes('link.')) {
         data = data.replace('link.', '');
       }
-      
+
       const { host } = new URL(data);
       const result = await this.bitPayIdProvider.unlockInvoice(invoiceId);
 
