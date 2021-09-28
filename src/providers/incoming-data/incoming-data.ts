@@ -1547,6 +1547,9 @@ export class IncomingDataProvider {
     try {
       const network = data.includes('test') ? 'testnet' : 'livenet';
       const { host } = new URL(data);
+      if (host.includes('bitpay.com') && !host.includes('link.')) {
+        host = 'link.' + host;
+      }
       const invoiceId = data.split('i/')[1].split('?')[0];
 
       if (data.includes('link.')) {
