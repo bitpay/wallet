@@ -527,6 +527,14 @@
       <span sheet-button-text translate>CONTINUE</span>
     </info-sheet-template>
 
+    <info-sheet-template *ngSwitchCase="'pairing-required'" type="warning">
+      <span sheet-title-text translate>Verification Required</span>
+      <span sheet-text>
+        To complete this payment additional verification is required.
+      </span>
+      <span sheet-button-text translate>CONTINUE</span>
+    </info-sheet-template>
+
     <info-sheet-template *ngSwitchCase="'verification-required'" type="warning">
       <span sheet-title-text translate>Verification Required</span>
       <span sheet-text>

@@ -981,6 +981,19 @@ export class IABCardProvider {
             await infoSheet.present();
             // close in app browser
             this.hide();
+          } else if (paymentUrl) {
+            // resets inappbrowser connect state
+            this.cardIAB_Ref.executeScript(
+              {
+                code: `window.postMessage(${JSON.stringify({
+                  message: 'reset'
+                })}, '*')`
+              },
+              () => this.logger.log(`card -> reset iab state`)
+            );
+
+            this.onGoingProcess.set('unlockingInvoice');
+            this.events.publish('unlockInvoice', paymentUrl);
           }
 
           // publish new user

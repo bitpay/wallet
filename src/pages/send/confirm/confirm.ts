@@ -359,11 +359,13 @@ export class ConfirmPage {
   private async getInvoiceData() {
     if (!this.navParams.data.payProUrl) return;
     const invoiceId = this.navParams.data.payProUrl.split('i/')[1];
-    const host = this.navParams.data.payProUrl.includes('test')
+    const network = this.navParams.data.payProUrl.includes('test')
       ? 'testnet'
       : 'livenet';
-    await this.invoiceProvider.setNetwork(host);
-    const fetchData = await this.invoiceProvider.canGetInvoiceData(invoiceId);
+    const fetchData = await this.invoiceProvider.canGetInvoiceData(
+      invoiceId,
+      network
+    );
     const result = await this.bitpayIdProvider.unlockInvoice(invoiceId);
 
     if (result === 'unlockSuccess' || fetchData) {

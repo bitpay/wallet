@@ -84,7 +84,8 @@ export type InfoSheetType =
   | 'multisig-instantiation'
   | 'exchange-crypto-disclaimer'
   | 'join-wallet-warning'
-  | 'token-added';
+  | 'token-added'
+  | 'pairing-required';
 
 export type OptionsSheetType =
   | 'wallet-options'

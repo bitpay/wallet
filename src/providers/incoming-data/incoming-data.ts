@@ -1070,12 +1070,22 @@ export class IncomingDataProvider {
       switch (switchExp) {
         case 'pairing':
           const secret = payload.split('=')[1].split('&')[0];
+          const withNotification = !payload.includes('paymentUrl');
           const params = {
             secret,
-            withNotification: true
+            withNotification
           };
           if (payload.includes('&code=')) {
             params['code'] = payload.split('&code=')[1];
+          }
+
+          if (payload.includes('&paymentUrl=')) {
+            params['paymentUrl'] = payload
+              .split('&paymentUrl=')[1]
+              .split('&')[0];
+            if (payload.includes('t=hv')) {
+              params['paymentUrl'] = params['paymentUrl'] + '?t=hv';
+            }
           }
 
           if (payload.includes('dashboardRedirect')) {
@@ -1535,13 +1545,14 @@ export class IncomingDataProvider {
 
   public async handleUnlock(data) {
     try {
-      const host = data.includes('test') ? 'testnet' : 'livenet';
+      const network = data.includes('test') ? 'testnet' : 'livenet';
       const invoiceId = data.split('i/')[1].split('?')[0];
 
       if (data.includes('link.')) {
         data = data.replace('link.', '');
       }
 
+      const { host } = new URL(data);
       const result = await this.bitPayIdProvider.unlockInvoice(invoiceId);
 
       if (result === 'unlockSuccess') {
@@ -1549,8 +1560,10 @@ export class IncomingDataProvider {
         return;
       }
 
-      await this.invoiceProvider.setNetwork(host);
-      const fetchData = await this.invoiceProvider.canGetInvoiceData(invoiceId);
+      const fetchData = await this.invoiceProvider.canGetInvoiceData(
+        invoiceId,
+        network
+      );
 
       if (fetchData) {
         await this.handleBitPayInvoice(data);
@@ -1561,20 +1574,13 @@ export class IncomingDataProvider {
         // call IAB and attempt pairing
         case 'pairingRequired':
           const authRequiredInfoSheet = this.actionSheetProvider.createInfoSheet(
-            'auth-required'
+            'pairing-required'
           );
           await authRequiredInfoSheet.present();
-          authRequiredInfoSheet.onDidDismiss(() => {
-            this.iabCardProvider.show();
-            setTimeout(() => {
-              this.iabCardProvider.sendMessage(
-                {
-                  message: 'pairingOnly',
-                  payload: { paymentUrl: data }
-                },
-                () => {}
-              );
-            }, 100);
+          authRequiredInfoSheet.onDidDismiss(async () => {
+            await this.externalLinkProvider.open(
+              `https://${host}/id/verify?context=unlockv&id=${invoiceId}`
+            );
           });
           break;
 
