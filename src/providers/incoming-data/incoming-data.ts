@@ -1546,16 +1546,13 @@ export class IncomingDataProvider {
   public async handleUnlock(data) {
     try {
       const network = data.includes('test') ? 'testnet' : 'livenet';
-      let { host } = new URL(data);
-      if (host.includes('bitpay.com') && host.includes('link.')) {
-        host = host.replace('link.', '');
-      }
       const invoiceId = data.split('i/')[1].split('?')[0];
 
       if (data.includes('link.')) {
         data = data.replace('link.', '');
       }
-
+      
+      const { host } = new URL(data);
       const result = await this.bitPayIdProvider.unlockInvoice(invoiceId);
 
       if (result === 'unlockSuccess') {
