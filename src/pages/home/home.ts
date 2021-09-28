@@ -20,10 +20,12 @@ import {
   Logger,
   MerchantProvider,
   NewFeatureData,
+  OnGoingProcessProvider,
   PersistenceProvider,
   PlatformProvider,
   PopupProvider,
   ProfileProvider,
+  PushNotificationsProvider,
   RateProvider,
   ReleaseProvider,
   WalletConnectProvider
@@ -42,7 +44,6 @@ import {
 import { CardConfig } from '../../providers/gift-card/gift-card.types';
 
 // Pages
-import { SplashScreen } from '@ionic-native/splash-screen';
 import { ActionSheetParent } from '../../components/action-sheet/action-sheet-parent';
 import { InfoSheetComponent } from '../../components/info-sheet/info-sheet';
 import { User } from '../../models/user/user.model';
@@ -114,6 +115,7 @@ export class HomePage {
   public accountInitials: string;
   public isCopay: boolean;
   public showSurveyCard: boolean = false;
+  public testModeEnabled: boolean;
   private bitPaySurveyCardChecked: boolean = false;
   private user$: Observable<User>;
   private network = Network[this.bitPayIdProvider.getEnvironment().network];
@@ -149,13 +151,14 @@ export class HomePage {
     private newFeatureData: NewFeatureData,
     private emailProvider: EmailNotificationsProvider,
     private popupProvider: PopupProvider,
-    private splashScreen: SplashScreen,
     private iabCardProvider: IABCardProvider,
     private bitPayIdProvider: BitPayIdProvider,
     private walletConnectProvider: WalletConnectProvider,
     private incomingDataProvider: IncomingDataProvider,
     private rateProvider: RateProvider,
-    private domProvider: DomProvider
+    private domProvider: DomProvider,
+    private pushNotificationProvider: PushNotificationsProvider,
+    private onGoingProcessProvider: OnGoingProcessProvider
   ) {
     this.logger.info('Loaded: HomePage');
     this.isCopay = this.appProvider.info.name === 'copay';
@@ -181,6 +184,9 @@ export class HomePage {
         this.accountInitials = this.getBitPayIdInitials(user);
       }
     });
+    this.persistenceProvider
+      .getNetwork()
+      .then(network => (this.testModeEnabled = network === 'testnet'));
   }
 
   private showNewFeatureSlides() {
@@ -1090,20 +1096,20 @@ export class HomePage {
               ? Network.testnet
               : Network.livenet;
           this.persistenceProvider.setNetwork(newNetwork);
-          const infoSheet = this.actionSheetProvider.createInfoSheet(
-            'in-app-notification',
-            {
-              title: 'Network Changed',
-              body: `Network changed to ${newNetwork}. Restarting app.`
-            }
+          this.testModeEnabled = newNetwork === 'testnet';
+          const notificationConfig = {
+            title: `Test Mode ${this.testModeEnabled ? 'Enabled' : 'Disabled'}`,
+            body: `Network changed to ${
+              this.testModeEnabled ? 'testnet' : 'mainnet'
+            }. Close and restart the app.`,
+            action: 'notifyOnly',
+            closeButtonText: ' ',
+            autoDismiss: false
+          };
+          this.pushNotificationProvider.showInappNotification(
+            notificationConfig
           );
-          infoSheet.present();
-          infoSheet.onDidDismiss(() => {
-            window.location.reload();
-            if (this.platformProvider.isCordova) this.splashScreen.show();
-          });
-
-          this.tapped = 0;
+          this.onGoingProcessProvider.set('Restart the app');
         });
     }
   }
