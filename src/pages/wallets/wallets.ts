@@ -39,6 +39,7 @@ export class WalletsPage {
   public txpsN: number;
 
   public collapsedGroups;
+  public useImgFadeEffect: boolean = true;
 
   private zone;
   private onResumeSubscription: Subscription;
@@ -149,6 +150,11 @@ export class WalletsPage {
   private _didEnter() {
     this.updateTxps();
     this.walletAudienceEvents();
+    if (this.useImgFadeEffect) {
+      setTimeout(() => {
+        this.useImgFadeEffect = false;
+      }, 5000);
+    }
   }
 
   ionViewDidLoad() {

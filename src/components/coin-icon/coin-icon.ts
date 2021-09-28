@@ -30,4 +30,8 @@ export class CoinIconComponent {
     this.assetUrl += `${coin}.svg`;
   }
   constructor(public currencyProvider: CurrencyProvider) {}
+
+  public onLoadImg(img) {
+    img.style.opacity = 1;
+  }
 }

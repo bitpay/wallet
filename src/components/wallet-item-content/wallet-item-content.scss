@@ -3,6 +3,11 @@ wallet-item-content {
     opacity: 0.5;
   }
 
+  .easeload ion-icon img {
+    opacity: 0;
+    transition: opacity 0.25s ease;
+  }
+
   ion-item {
     .item-inner {
       border-bottom: 0px !important;
