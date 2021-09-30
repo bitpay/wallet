@@ -9,7 +9,7 @@
           <div class="item-title">{{getCoinName(option.currency.toLowerCase())}}</div>
           <span class="alternative">{{option.estimatedAmount | satToUnit: option.currency.toLowerCase()}}</span>
           <ion-note item-end>
-            <span *ngIf="!option.disabled">{{hasWallets[option.currency.toLowerCase()]}} {{hasWallets[option.currency.toLowerCase()] > 1 ? 'Wallets' : 'Wallet'}}</span>
+            <span>{{hasWallets[option.currency.toLowerCase()] || '0'}} {{hasWallets[option.currency.toLowerCase()] === 1 ? 'Wallet' : 'Wallets'}}</span>
           </ion-note>
         </button>
       </div>
