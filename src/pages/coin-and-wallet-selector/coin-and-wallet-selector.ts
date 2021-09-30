@@ -55,6 +55,9 @@ export class CoinAndWalletSelectorPage {
   public tokenSearchResults;
   public selectedToken;
 
+  public popularTokensPosition: number;
+  public otherTokensPosition: number;
+
   constructor(
     private actionSheetProvider: ActionSheetProvider,
     private logger: Logger,
@@ -346,27 +349,58 @@ export class CoinAndWalletSelectorPage {
   }, 1000);
 
   private filter(search: string) {
-    if (!search || search == '') {
-      this.filteredTokens = _.clone(this.oneInchAllSupportedCoins);
+    this.filteredTokens = [];
+    let exactResult,
+      filteredPopularTokens,
+      filteredTokens: any[] = [];
+
+    exactResult = this.oneInchAllSupportedCoins.filter(token => {
+      return (
+        token.symbol.toLowerCase() == search.toLowerCase() ||
+        token.name.toLowerCase() == search.toLowerCase() ||
+        token.address.toLowerCase() == search.toLowerCase()
+      );
+    });
+    filteredPopularTokens = this.oneInchAllSupportedCoins.filter(token => {
+      return (
+        this.currencyProvider.getPopularErc20Tokens().includes(token.symbol) &&
+        (token.name.toLowerCase().includes(search.toLowerCase()) ||
+          token.symbol.toLowerCase().includes(search.toLowerCase()))
+      );
+    });
+    filteredTokens = this.oneInchAllSupportedCoins.filter(token => {
+      return (
+        !this.currencyProvider.getPopularErc20Tokens().includes(token.symbol) &&
+        (token.name.toLowerCase().includes(search.toLowerCase()) ||
+          token.symbol.toLowerCase().includes(search.toLowerCase()))
+      );
+    });
+
+    if (filteredPopularTokens.length > 0) {
+      if (exactResult[0]) {
+        if (
+          this.currencyProvider
+            .getPopularErc20Tokens()
+            .includes(exactResult[0].symbol)
+        ) {
+          this.popularTokensPosition = 0;
+          this.otherTokensPosition = filteredPopularTokens.length;
+        } else {
+          this.popularTokensPosition = 1;
+          this.otherTokensPosition = filteredPopularTokens.length + 1;
+        }
+      } else {
+        this.popularTokensPosition = 0;
+        this.otherTokensPosition = filteredPopularTokens.length;
+      }
     } else {
-      this.filteredTokens = [];
-
-      const exactResult: any[] = this.oneInchAllSupportedCoins.filter(token => {
-        return (
-          token.symbol.toLowerCase() == search.toLowerCase() ||
-          token.name.toLowerCase() == search.toLowerCase() ||
-          token.address.toLowerCase() == search.toLowerCase()
-        );
-      });
-      const filteredTokens = this.oneInchAllSupportedCoins.filter(token => {
-        return (
-          token.name.toLowerCase().includes(search.toLowerCase()) ||
-          token.symbol.toLowerCase().includes(search.toLowerCase())
-        );
-      });
-
-      this.filteredTokens = [...new Set([...exactResult, ...filteredTokens])];
+      this.popularTokensPosition = null;
+      this.otherTokensPosition = null;
     }
+
+    this.filteredTokens = [
+      ...new Set([...exactResult, ...filteredPopularTokens, ...filteredTokens])
+    ];
 
     this.tokenListShowMore =
       this.filteredTokens.length > this.TOKEN_SHOW_LIMIT ? true : false;
@@ -395,5 +429,6 @@ export class CoinAndWalletSelectorPage {
 
   public cleanSearch() {
     this.searchQuery = '';
+    this.updateSearchInput('');
   }
 }
