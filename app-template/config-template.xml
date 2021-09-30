@@ -27,6 +27,11 @@
     <access origin="https://tokens.1inch.io" />
     <access origin="https://api.testwyre.com" />
     <access origin="https://api.sendwyre.com" />
+    <access origin="https://app.uniswap.org" />
+    <access origin="https://example.walletconnect.org" />
+    <access origin="https://app.compound.finance" />
+    <access origin="https://pancakeswap.finance" />
+    <access origin="https://app.aave.com" />
     <allow-navigation href="gap://ready" />
     <preference name="AndroidPersistentFileLocation" value="Internal" />
     <preference name="iosPersistentFileLocation" value="Library" />
