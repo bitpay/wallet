@@ -146,7 +146,7 @@
       <button ion-item [attr.detail-none]="usingMerchantFee ? '' : null" *ngIf="!coinbaseAccount && wallet" (click)="chooseFeeLevel()" class="item-fee" [ngClass]="{'warn': wallet && tx.txp[wallet.id] && tx.txp[wallet.id].feeTooHigh, 'btn-opacity': usingMerchantFee}">
         <ion-label>
           <div class="summary-item">
-            <span *ngIf="!merchantFeeLabel && !wallet.coin === 'eth' && !isERCToken" translate>Miner fee</span>
+            <span *ngIf="!merchantFeeLabel && wallet.coin !== 'eth' && !isERCToken" translate>Miner fee</span>
             <span *ngIf="!merchantFeeLabel && (wallet.coin === 'eth' || isERCToken)" translate>Max fees</span>
             <span *ngIf="merchantFeeLabel">{{ merchantFeeLabel }}</span>
           </div>
