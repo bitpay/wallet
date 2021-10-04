@@ -32,6 +32,7 @@ interface CryptoOffer {
   amountLimits?: any;
   errorMsg?: string;
   quoteData?: any; // Simplex
+  outOfLimitMsg?: string;
 }
 @Component({
   selector: 'page-crypto-offers',
@@ -232,7 +233,8 @@ export class CryptoOffersPage {
   // SIMPLEX
 
   public goToSimplexBuyPage() {
-    if (this.offers.simplex.errorMsg) return;
+    if (this.offers.simplex.errorMsg || this.offers.simplex.outOfLimitMsg)
+      return;
     this.openPopUpConfirmation('simplex');
   }
 
@@ -330,7 +332,7 @@ export class CryptoOffersPage {
       this.amount < this.offers.simplex.amountLimits.min ||
       this.amount > this.offers.simplex.amountLimits.max
     ) {
-      this.offers.simplex.errorMsg = `The ${this.fiatCurrency} amount must be between ${this.offers.simplex.amountLimits.min} and ${this.offers.simplex.amountLimits.max}`;
+      this.offers.simplex.outOfLimitMsg = `There is no Simplex's offer available, as the current purchase limits for this exchange must be between ${this.offers.simplex.amountLimits.min} ${this.fiatCurrency} and ${this.offers.simplex.amountLimits.max} ${this.fiatCurrency}`;
       return;
     } else {
       let paymentMethod: string[] = [];
@@ -414,7 +416,7 @@ export class CryptoOffersPage {
   // WYRE
 
   public goToWyreBuyPage() {
-    if (this.offers.wyre.errorMsg) return;
+    if (this.offers.wyre.errorMsg || this.offers.wyre.outOfLimitMsg) return;
     this.onGoingProcessProvider.set('processingOrderReservation');
     this.walletProvider
       .getAddress(this.wallet, false)
@@ -496,7 +498,7 @@ export class CryptoOffersPage {
       this.amount < this.offers.wyre.amountLimits.min ||
       this.amount > this.offers.wyre.amountLimits.max
     ) {
-      this.offers.wyre.errorMsg = `The ${this.fiatCurrency} daily amount must be between ${this.offers.wyre.amountLimits.min} and ${this.offers.wyre.amountLimits.max}`;
+      this.offers.wyre.outOfLimitMsg = `There is no Wyre's offer available, as the current daily purchase limits for this exchange must be between ${this.offers.wyre.amountLimits.min} ${this.fiatCurrency} and ${this.offers.wyre.amountLimits.max} ${this.fiatCurrency}`;
       return;
     } else {
       this.walletProvider

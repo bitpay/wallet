@@ -71,6 +71,10 @@ page-crypto-offers {
     background: white;
     padding: 15px 20px;
 
+    &.disabled {
+      opacity: 0.5;
+    }
+
     .content {
       width: 100%;
       .visible-container {
@@ -100,6 +104,9 @@ page-crypto-offers {
         .error-msg {
           color: color($colors, danger);
           font-size: 14px;
+        }
+        .out-of-limit-msg {
+          font-size: 12px;
         }
       }
     }
