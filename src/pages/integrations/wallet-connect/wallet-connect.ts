@@ -81,7 +81,6 @@ export class WalletConnectPage {
   public title: string;
   public sessionRequestLabel: string;
   public showWalletSelector: boolean = false;
-  public dappImgSrc: string;
   public loading: boolean = false;
   private isEventLogged: boolean = false;
   private walletId: string;

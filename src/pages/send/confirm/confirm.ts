@@ -128,8 +128,6 @@ export class ConfirmPage {
   public walletConnectTokenInfo;
   public walletConnectPeerMeta;
   public walletConnectIsApproveRequest;
-  public defaultImgSrc: string = 'assets/img/wallet-connect/icon-dapp.svg';
-  public dappImgSrc: string;
 
   // // Card flags for zen desk chat support
   // private isCardPurchase: boolean;
@@ -2041,15 +2039,9 @@ export class ConfirmPage {
     this.onFeeModalDismiss(data);
   }
 
-  public setDappImgSrc(useDefault?: boolean) {
-    this.dappImgSrc =
-      this.walletConnectPeerMeta &&
-      this.walletConnectPeerMeta.icons &&
-      !useDefault
-        ? this.walletConnectPeerMeta.icons[1]
-          ? this.walletConnectPeerMeta.icons[1]
-          : this.walletConnectPeerMeta.icons[0]
-        : this.defaultImgSrc;
+  public setDefaultImgSrc(img) {
+    img.onerror = null;
+    img.src = 'assets/img/wallet-connect/icon-dapp.svg';
   }
 
   public rejectRequest(): void {

@@ -19,10 +19,7 @@ export class WalletConnectRequestDetailsPage {
   public address: string;
   public request: any;
   public params: any;
-  public peerMeta: any;
   public wallet: any;
-  public dappImgSrc: string;
-  private defaultImgSrc: string = 'assets/img/wallet-connect/icon-dapp.svg';
   public isSupportedMethod: boolean = true;
 
   constructor(
@@ -62,13 +59,10 @@ export class WalletConnectRequestDetailsPage {
   private setConnectionData: any = async _ => {
     const {
       walletId,
-      address,
-      peerMeta
+      address
     } = await this.walletConnectProvider.getConnectionData();
     this.wallet = this.profileProvider.getWallet(walletId);
     this.address = address;
-    this.peerMeta = peerMeta;
-    this.setDappImgSrc();
   };
 
   public rejectRequest(request): void {
@@ -150,15 +144,6 @@ export class WalletConnectRequestDetailsPage {
         this.translate.instant('Error')
       );
     }
-  }
-
-  public setDappImgSrc(useDefault?: boolean) {
-    this.dappImgSrc =
-      this.peerMeta && this.peerMeta.icons && !useDefault
-        ? this.peerMeta.icons[1]
-          ? this.peerMeta.icons[1]
-          : this.peerMeta.icons[0]
-        : this.defaultImgSrc;
   }
 
   public openExternalLink(url): void {
