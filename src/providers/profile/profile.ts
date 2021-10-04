@@ -2107,6 +2107,12 @@ export class ProfileProvider {
       });
     }
 
+    if (opts.noEthMultisig) {
+      ret = _.filter(ret, w => {
+        return !(w.credentials.coin == 'eth' && w.credentials.n > 1);
+      });
+    }
+
     return _.sortBy(ret, 'order');
   }
 
