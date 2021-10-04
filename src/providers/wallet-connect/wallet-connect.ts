@@ -75,26 +75,40 @@ export class WalletConnectProvider {
     this.logger.debug('WalletConnect Provider initialized');
   }
 
-  public signTypedData(data: any, wallet) {
-    const key = this.keyProvider.getKey(wallet.keyId).get();
-    const bitcore = this.bwcProvider.getBitcore();
-    const xpriv = new bitcore.HDPrivateKey(key.xPrivKey);
-    const priv = xpriv.deriveChild("m/44'/60'/0'/0/0").privateKey;
-    const result = signTypedData_v4(Buffer.from(priv.toString(), 'hex'), {
-      data
-    });
-    return result;
+  public async signTypedData(data: any, wallet) {
+    try {
+      const password = await this.keyProvider.handleEncryptedWallet(
+        wallet.keyId
+      );
+      const key = this.keyProvider.get(wallet.keyId, password);
+      const bitcore = this.bwcProvider.getBitcore();
+      const xpriv = new bitcore.HDPrivateKey(key.xPrivKey);
+      const priv = xpriv.deriveChild("m/44'/60'/0'/0/0").privateKey;
+      const result = signTypedData_v4(Buffer.from(priv.toString(), 'hex'), {
+        data
+      });
+      return result;
+    } catch (err) {
+      throw err;
+    }
   }
 
-  public personalSign(data: any, wallet) {
-    const key = this.keyProvider.getKey(wallet.keyId).get();
-    const bitcore = this.bwcProvider.getBitcore();
-    const xpriv = new bitcore.HDPrivateKey(key.xPrivKey);
-    const priv = xpriv.deriveChild("m/44'/60'/0'/0/0").privateKey;
-    const result = personalSign(Buffer.from(priv.toString(), 'hex'), {
-      data
-    });
-    return result;
+  public async personalSign(data: any, wallet) {
+    try {
+      const password = await this.keyProvider.handleEncryptedWallet(
+        wallet.keyId
+      );
+      const key = this.keyProvider.get(wallet.keyId, password);
+      const bitcore = this.bwcProvider.getBitcore();
+      const xpriv = new bitcore.HDPrivateKey(key.xPrivKey);
+      const priv = xpriv.deriveChild("m/44'/60'/0'/0/0").privateKey;
+      const result = personalSign(Buffer.from(priv.toString(), 'hex'), {
+        data
+      });
+      return result;
+    } catch (err) {
+      throw err;
+    }
   }
 
   public register(): void {

@@ -4,6 +4,7 @@ import { Events, NavController, NavParams } from 'ionic-angular';
 
 // Providers
 import {
+  BwcErrorProvider,
   CurrencyProvider,
   ErrorsProvider,
   ExternalLinkProvider,
@@ -35,6 +36,7 @@ export class WalletConnectRequestDetailsPage {
     private navCtrl: NavController,
     private events: Events,
     private externalLinkProvider: ExternalLinkProvider,
+    private bwcErrorProvider: BwcErrorProvider,
     public currencyProvider: CurrencyProvider
   ) {}
 
@@ -77,7 +79,7 @@ export class WalletConnectRequestDetailsPage {
     });
   }
 
-  public approveRequest(request): void {
+  public async approveRequest(request) {
     try {
       let addressRequested;
       const address = this.address;
@@ -88,7 +90,7 @@ export class WalletConnectRequestDetailsPage {
         case 'eth_signTypedData_v4':
           addressRequested = request.params[0];
           if (address.toLowerCase() === addressRequested.toLowerCase()) {
-            const result = this.walletConnectProvider.signTypedData(
+            const result = await this.walletConnectProvider.signTypedData(
               JSON.parse(request.params[1]),
               this.wallet
             );
@@ -105,7 +107,7 @@ export class WalletConnectRequestDetailsPage {
         case 'personal_sign':
           addressRequested = request.params[1];
           if (address.toLowerCase() === addressRequested.toLowerCase()) {
-            const result = this.walletConnectProvider.personalSign(
+            const result = await this.walletConnectProvider.personalSign(
               request.params[0],
               this.wallet
             );
@@ -122,7 +124,7 @@ export class WalletConnectRequestDetailsPage {
         case 'eth_sign':
           addressRequested = request.params[0];
           if (address.toLowerCase() === addressRequested.toLowerCase()) {
-            const result = this.walletConnectProvider.personalSign(
+            const result = await this.walletConnectProvider.personalSign(
               request.params[1],
               this.wallet
             );
@@ -143,12 +145,18 @@ export class WalletConnectRequestDetailsPage {
           );
           break;
       }
-    } catch (error) {
-      this.logger.error('Wallet Connect - ApproveRequest error: ', error);
-      this.errorsProvider.showDefaultError(
-        error,
-        this.translate.instant('Error')
-      );
+    } catch (err) {
+      if (
+        err &&
+        err.message != 'FINGERPRINT_CANCELLED' &&
+        err.message != 'PASSWORD_CANCELLED'
+      ) {
+        this.logger.error('Wallet Connect - ApproveRequest error: ', err);
+        this.errorsProvider.showDefaultError(
+          this.bwcErrorProvider.msg(err),
+          this.translate.instant('Error')
+        );
+      }
     }
   }
 
