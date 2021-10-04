@@ -468,12 +468,15 @@ export class ConfirmPage {
       return Promise.resolve();
     }
 
-    this.wallets = this.profileProvider.getWallets({
+    const opts = {
       onlyComplete: true,
       hasFunds: true,
       network,
-      coin
-    });
+      coin,
+      noEthMultisig: this.tx.paypro ? true : false
+    };
+
+    this.wallets = this.profileProvider.getWallets(opts);
 
     this.coinbaseAccounts =
       this.showCoinbase && network === 'livenet'
@@ -514,6 +517,15 @@ export class ConfirmPage {
       this.wallet.credentials.multisigEthInfo &&
       this.wallet.credentials.multisigEthInfo.multisigContractAddress
     ) {
+      if (this.tx.paypro) {
+        const msg = this.translate.instant(
+          'Invoice payments are not available for ethereum multisig wallets'
+        );
+        setTimeout(() => {
+          this.handleError(msg, true);
+        }, 100);
+        return;
+      }
       this.tx.multisigContractAddress = this.wallet.credentials.multisigEthInfo.multisigContractAddress;
     }
 

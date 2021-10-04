@@ -169,7 +169,8 @@ export class BitPayCardTopUpPage {
           onlyComplete: true,
           coin,
           network,
-          hasFunds: true
+          hasFunds: true,
+          noEthMultisig: true
         };
 
         if (Coin[this.currency]) {
