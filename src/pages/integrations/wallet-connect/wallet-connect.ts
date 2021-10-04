@@ -81,9 +81,7 @@ export class WalletConnectPage {
   public title: string;
   public sessionRequestLabel: string;
   public showWalletSelector: boolean = false;
-  public dappImgSrc: string;
   public loading: boolean = false;
-  public defaultImgSrc: string = 'assets/img/wallet-connect/icon-dapp.svg';
   private isEventLogged: boolean = false;
   private walletId: string;
   public exitingAnimationPatch: boolean;
@@ -230,7 +228,6 @@ export class WalletConnectPage {
             'wants to connect to your wallet'
           )}`
         : null;
-    this.setDappImgSrc();
     this.changeRef.detectChanges();
   };
 
@@ -448,12 +445,12 @@ export class WalletConnectPage {
       });
   }
 
-  public setDappImgSrc(useDefault?: boolean) {
+  public setDefaultImgSrc(img) {
     if (
-      useDefault &&
       !this.isEventLogged &&
       this.peerMeta &&
-      this.peerMeta.icons
+      this.peerMeta.icons &&
+      this.peerMeta.icons[0]
     ) {
       this.analyticsProvider.logEvent('wallet_connect_img_src_blocked', {
         imgSrc: this.peerMeta.icons[0]
@@ -461,12 +458,8 @@ export class WalletConnectPage {
       this.isEventLogged = true;
     }
 
-    this.dappImgSrc =
-      this.peerMeta && this.peerMeta.icons && !useDefault
-        ? this.peerMeta.icons[1]
-          ? this.peerMeta.icons[1]
-          : this.peerMeta.icons[0]
-        : this.defaultImgSrc;
+    img.onerror = null;
+    img.src = 'assets/img/wallet-connect/icon-dapp.svg';
   }
 
   public trackByFn(index: number): number {

@@ -62,7 +62,7 @@
       <div *ngIf="showDappInfo && !connected && !loading" class="dapp-info" @fadeUp>
         <ion-item no-padding no-lines>
           <ion-icon item-start>
-            <img class="wc-img" [src]="dappImgSrc" (error)="setDappImgSrc(true)">
+            <img class="wc-img" [src]="peerMeta?.icons[0]" (error)="setDefaultImgSrc(img)" #img>
           </ion-icon>
           <ion-label>
             <div class="session-request-label">
@@ -138,7 +138,7 @@
               <ion-row align-items-center justify-content-end>
                 <ion-col col-auto text-right>
                   <ion-icon item-start>
-                    <img class="wc-img-sm" [src]="dappImgSrc" (error)="setDappImgSrc(true)" width="20">
+                    <img class="wc-img-sm" [src]="peerMeta?.icons[0]" (error)="setDefaultImgSrc(img)" #img width="20">
                   </ion-icon>
                 </ion-col>
                 <ion-col>
@@ -190,7 +190,7 @@
             <ion-list class="bp-list">
               <button ion-item (click)="goToNextView(request, request.params)" detail-none>
                 <ion-icon class="item-img" item-start>
-                  <img [src]="dappImgSrc" (error)="setDappImgSrc(true)">
+                  <img [src]="peerMeta?.icons[0]" (error)="setDefaultImgSrc(img)" #img>
                 </ion-icon>
                 <ion-label>
                   <div class="main-label">{{peerMeta?.name}}</div>
