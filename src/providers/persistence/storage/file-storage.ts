@@ -128,31 +128,29 @@ export class FileStorage implements IStorage {
     });
   }
 
-  set(k: string, v): Promise<void> {
-    return Promise.resolve(
+  set(k: string, v): Promise<any> {
+    return new Promise((resolve, reject) => {
       this.init().then(() => {
         this.file.getFile(this.dir, k, { create: true }).then(fileEntry => {
           // Create a FileWriter object for our FileEntry (log.txt).
-          return new Promise((resolve, reject) => {
-            fileEntry.createWriter(fileWriter => {
-              fileWriter.onwriteend = () => {
-                this.log.debug('Successful file write...');
-                return resolve();
-              };
+          fileEntry.createWriter(fileWriter => {
+            fileWriter.onwriteend = () => {
+              this.log.debug('Successful file write...');
+              return resolve();
+            };
 
-              fileWriter.onerror = e => {
-                this.log.error('Failed file write: ' + e.toString());
-                return reject(e.toString());
-              };
+            fileWriter.onerror = e => {
+              this.log.error('Failed file write: ' + e.toString());
+              return reject(e.toString());
+            };
 
-              if (_.isObject(v)) v = JSON.stringify(v);
-              if (!_.isString(v)) v = v.toString();
-              fileWriter.write(v);
-            });
+            if (_.isObject(v)) v = JSON.stringify(v);
+            if (!_.isString(v)) v = v.toString();
+            fileWriter.write(v);
           });
         });
-      })
-    );
+      });
+    });
   }
 
   remove(k: string): Promise<void> {
