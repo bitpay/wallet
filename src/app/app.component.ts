@@ -466,7 +466,9 @@ export class CopayApp {
         }
       });
 
-      const user = await this.persistenceProvider.getBitPayIdUserInfo(Network[this.NETWORK]);
+      const user = await this.persistenceProvider.getBitPayIdUserInfo(
+        Network[this.NETWORK]
+      );
       if (user && user.email) {
         AppboyPlugin.setEmail(user.email);
       }
