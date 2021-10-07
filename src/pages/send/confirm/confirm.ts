@@ -364,9 +364,20 @@ export class ConfirmPage {
       invoiceId,
       network
     );
+
+    if (fetchData) {
+      const invoiceData = await this.invoiceProvider.getBitPayInvoice(
+        invoiceId
+      );
+      const { merchantName, itemizedDetails } = invoiceData;
+      this.itemizedDetails = itemizedDetails;
+      this.merchantName = merchantName;
+      return;
+    }
+
     const result = await this.bitpayIdProvider.unlockInvoice(invoiceId);
 
-    if (result === 'unlockSuccess' || fetchData) {
+    if (result === 'unlockSuccess') {
       const invoiceData = await this.invoiceProvider.getBitPayInvoice(
         invoiceId
       );
