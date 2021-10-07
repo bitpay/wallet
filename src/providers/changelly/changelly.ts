@@ -27,12 +27,13 @@ export class ChangellyProvider {
       'btc',
       'bch',
       'eth',
-      'pax',
+      'busd',
       'usdc',
-      'gusd',
       'dai',
       'doge',
-      'ltc'
+      'ltc',
+      'usdt',
+      'bat'
     ];
   }
 

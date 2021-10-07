@@ -665,5 +665,12 @@
       <span sheet-text translate>Successfully added {{params.name}}.</span>
       <span sheet-button-text translate>OK</span>
     </info-sheet-template>
+
+    <info-sheet-template *ngSwitchCase="'1inch-disabled-warning'" type="warning">
+      <span sheet-title-text translate>Disabled service</span>
+      <span sheet-text translate>The 1Inch exchange for token swaps is temporarily disabled in your country.
+      </span>
+      <span sheet-second-button-text translate>GOT IT</span>
+    </info-sheet-template>
   </div>
 </action-sheet>

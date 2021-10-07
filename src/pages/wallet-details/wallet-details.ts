@@ -27,6 +27,7 @@ import { ExternalLinkProvider } from '../../providers/external-link/external-lin
 import { GiftCardProvider } from '../../providers/gift-card/gift-card';
 import { CardConfigMap } from '../../providers/gift-card/gift-card.types';
 import { ActionSheetProvider, AppProvider } from '../../providers/index';
+import { LocationProvider } from '../../providers/location/location';
 import { Logger } from '../../providers/logger/logger';
 import { PersistenceProvider } from '../../providers/persistence/persistence';
 import { PlatformProvider } from '../../providers/platform/platform';
@@ -118,7 +119,8 @@ export class WalletDetailsPage {
     private buyCryptoProvider: BuyCryptoProvider,
     private exchangeCryptoProvider: ExchangeCryptoProvider,
     private appProvider: AppProvider,
-    private persistenceProvider: PersistenceProvider
+    private persistenceProvider: PersistenceProvider,
+    private locationProvider: LocationProvider
   ) {
     this.zone = new NgZone({ enableLongStackTrace: false });
     this.isCordova = this.platformProvider.isCordova;
@@ -134,13 +136,26 @@ export class WalletDetailsPage {
       ) &&
       (this.wallet.network == 'livenet' ||
         (this.wallet.network == 'testnet' && env.name == 'development'));
-    this.showExchangeCrypto =
-      (_.includes(
+
+    if (
+      _.includes(
         this.exchangeCryptoProvider.exchangeCoinsSupported,
         this.wallet.coin
-      ) ||
-        this.currencyProvider.isERCToken(this.wallet.coin)) &&
-      this.wallet.network == 'livenet';
+      )
+    ) {
+      this.showExchangeCrypto = this.wallet.network == 'livenet' ? true : false;
+    }
+
+    if (!this.showExchangeCrypto) {
+      this.locationProvider.getCountry().then(country => {
+        this.showExchangeCrypto =
+          country != 'US' &&
+          this.currencyProvider.isERCToken(this.wallet.coin) &&
+          this.wallet.network == 'livenet'
+            ? true
+            : false;
+      });
+    }
 
     // Getting info from cache
     if (this.navParams.data.clearCache) {
