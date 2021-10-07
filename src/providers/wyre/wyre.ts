@@ -42,7 +42,7 @@ export class WyreProvider {
     ];
     this.fiatAmountLimits = {
       min: 50,
-      max: 1000
+      max: 2500
     };
   }
 
@@ -100,7 +100,7 @@ export class WyreProvider {
       max = 1000;
     } else {
       min = 50;
-      max = 500;
+      max = 2500;
     }
     this.fiatAmountLimits.min = this.calculateFiatRate(min, fiatCurrency, coin);
     this.fiatAmountLimits.max = this.calculateFiatRate(max, fiatCurrency, coin);
