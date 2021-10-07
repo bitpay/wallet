@@ -128,8 +128,6 @@ export class ConfirmPage {
   public walletConnectTokenInfo;
   public walletConnectPeerMeta;
   public walletConnectIsApproveRequest;
-  public defaultImgSrc: string = 'assets/img/wallet-connect/icon-dapp.svg';
-  public dappImgSrc: string;
 
   // // Card flags for zen desk chat support
   // private isCardPurchase: boolean;
@@ -470,12 +468,15 @@ export class ConfirmPage {
       return Promise.resolve();
     }
 
-    this.wallets = this.profileProvider.getWallets({
+    const opts = {
       onlyComplete: true,
       hasFunds: true,
       network,
-      coin
-    });
+      coin,
+      noEthMultisig: this.tx.paypro ? true : false
+    };
+
+    this.wallets = this.profileProvider.getWallets(opts);
 
     this.coinbaseAccounts =
       this.showCoinbase && network === 'livenet'
@@ -516,6 +517,15 @@ export class ConfirmPage {
       this.wallet.credentials.multisigEthInfo &&
       this.wallet.credentials.multisigEthInfo.multisigContractAddress
     ) {
+      if (this.tx.paypro) {
+        const msg = this.translate.instant(
+          'Invoice payments are not available for ethereum multisig wallets'
+        );
+        setTimeout(() => {
+          this.handleError(msg, true);
+        }, 100);
+        return;
+      }
       this.tx.multisigContractAddress = this.wallet.credentials.multisigEthInfo.multisigContractAddress;
     }
 
@@ -2041,15 +2051,9 @@ export class ConfirmPage {
     this.onFeeModalDismiss(data);
   }
 
-  public setDappImgSrc(useDefault?: boolean) {
-    this.dappImgSrc =
-      this.walletConnectPeerMeta &&
-      this.walletConnectPeerMeta.icons &&
-      !useDefault
-        ? this.walletConnectPeerMeta.icons[1]
-          ? this.walletConnectPeerMeta.icons[1]
-          : this.walletConnectPeerMeta.icons[0]
-        : this.defaultImgSrc;
+  public setDefaultImgSrc(img) {
+    img.onerror = null;
+    img.src = 'assets/img/wallet-connect/icon-dapp.svg';
   }
 
   public rejectRequest(): void {

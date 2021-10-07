@@ -27,6 +27,11 @@
     <access origin="https://tokens.1inch.io" />
     <access origin="https://api.testwyre.com" />
     <access origin="https://api.sendwyre.com" />
+    <access origin="https://app.uniswap.org" />
+    <access origin="https://example.walletconnect.org" />
+    <access origin="https://app.compound.finance" />
+    <access origin="https://pancakeswap.finance" />
+    <access origin="https://app.aave.com" />
     <allow-navigation href="gap://ready" />
     <preference name="AndroidPersistentFileLocation" value="Internal" />
     <preference name="iosPersistentFileLocation" value="Library" />
@@ -114,7 +119,7 @@
       <variable name="UL_PREFIX_1" value="/i/" />
       <variable name="UL_PREFIX_2" value="/wallet/wc" />
     </plugin>
-    <plugin name="cordova-plugin-fcm-ng" spec="8.5.0">
+    <plugin name="cordova-plugin-fcm-ng" spec="9.0.1">
       <variable name="PAGE_LINK_DOMAIN" value="*DYNAMICLINK*" />
     </plugin>
 

@@ -215,7 +215,8 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     const walletOptions = {
       onlyComplete: true,
       network: this.network,
-      hasFunds: true
+      hasFunds: true,
+      noEthMultisig: true
     };
     this.wallets = this.profileProvider.getWallets({
       ...walletOptions,

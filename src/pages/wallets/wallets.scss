@@ -17,6 +17,13 @@ page-integrations {
     margin-top: 12px;
   }
 
+  wallet-item-content coin-icon {
+    ion-icon.item-img.icon.rectangle {
+      width: 49px;
+      height: 49px;
+    }
+  }
+
   .title {
     font-weight: 500;
 
