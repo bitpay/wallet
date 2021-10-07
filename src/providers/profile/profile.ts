@@ -2110,6 +2110,10 @@ export class ProfileProvider {
     return _.sortBy(ret, 'order');
   }
 
+  public async updateEthWalletNonce(walletId, nonce: number) {
+    this.wallet[walletId].updatedNonce = nonce;
+  }
+
   public toggleHideBalanceFlag(walletId: string): void {
     this.wallet[walletId].balanceHidden = !this.wallet[walletId].balanceHidden;
     this.persistenceProvider.setHideBalanceFlag(

@@ -59,6 +59,7 @@ export type InfoSheetType =
   | 'bch-legacy-warning-2'
   | 'network-coin-warning'
   | 'speed-up-tx'
+  | 'speed-up-eth-tx'
   | 'speed-up-notice'
   | 'unconfirmed-inputs'
   | 'rbf-tx'

@@ -396,6 +396,15 @@
       <span sheet-second-button-text translate>View details</span>
     </info-sheet-template>
 
+    <info-sheet-template *ngSwitchCase="'speed-up-eth-tx'" type="warning">
+      <span sheet-title-text translate>Transaction unconfirmed</span>
+      <span sheet-text translate>
+        You can try to speed it up by using a higher fee
+      </span>
+      <span sheet-button-text translate>Speed up transaction</span>
+      <span sheet-second-button-text translate>View details</span>
+    </info-sheet-template>
+
     <info-sheet-template *ngSwitchCase="'rbf-tx'" type="danger">
       <span sheet-title-text translate>RBF transaction</span>
       <span sheet-text>

@@ -88,6 +88,8 @@ export class ConfirmPage {
   public merchantFeeLabel: string;
   public totalAmountStr: string;
   public totalAmount;
+  public pendingConfirmationEthTxs: number;
+
   // Config Related values
   public config;
 
@@ -955,7 +957,8 @@ export class ConfirmPage {
           ) {
             const nonce = await this.walletProvider.getNonce(
               wallet,
-              tx.txp[wallet.id].from
+              txp.chain ? txp.chain.toLowerCase() : txp.coin,
+              txp.from
             );
             this.tx.nonce = tx.txp[wallet.id].nonce = nonce;
           }
@@ -1325,21 +1328,50 @@ export class ConfirmPage {
             );
             return reject(err);
           }
-
           txp.from = address;
-          this.walletProvider
-            .createTx(wallet, txp)
-            .then(ctxp => {
-              return resolve(ctxp);
-            })
-            .catch(err => {
-              return reject(err);
-            });
+          this.setEthAddressNonce(this.wallet, txp).then(() => {
+            this.walletProvider
+              .createTx(wallet, txp)
+              .then(ctxp => {
+                return resolve(ctxp);
+              })
+              .catch(err => {
+                return reject(err);
+              });
+          });
         })
         .catch(err => {
           return reject(err);
         });
     });
+  }
+
+  private async setEthAddressNonce(wallet, txp) {
+    try {
+      if ((txp.chain && txp.chain.toLowerCase() !== 'eth') || this.isSpeedUpTx)
+        return Promise.resolve();
+
+      const nonce = await this.walletProvider.getNonce(
+        wallet,
+        txp.chain ? txp.chain.toLowerCase() : txp.coin,
+        txp.from
+      );
+
+      this.pendingConfirmationEthTxs = 0;
+      for (let tx of wallet.completeHistory) {
+        if (tx.confirmations === 0) {
+          this.pendingConfirmationEthTxs = this.pendingConfirmationEthTxs + 1;
+        } else break;
+      }
+
+      txp.nonce = this.tx.nonce = wallet.updatedNonce
+        ? wallet.updatedNonce + 1
+        : nonce + this.pendingConfirmationEthTxs;
+      return Promise.resolve();
+    } catch (error) {
+      this.logger.warn('Could not get address nonce', error.message);
+      return Promise.resolve();
+    }
   }
 
   private instantiateMultisigContract: any = async (txp, n?: number) => {
@@ -1659,6 +1691,18 @@ export class ConfirmPage {
 
         if (txp.payProUrl && txp.payProUrl.includes('redir=wc')) {
           redir = 'wc';
+        }
+
+        // update eth wallet nonce
+        if (
+          txp.chain &&
+          txp.chain.toLowerCase() == 'eth' &&
+          !this.isSpeedUpTx
+        ) {
+          this.profileProvider.updateEthWalletNonce(
+            wallet.credentials.walletId,
+            txp.nonce
+          );
         }
 
         if (this.navParams.data.isEthMultisigInstantiation) {
