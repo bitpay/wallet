@@ -61,6 +61,7 @@ export interface TransactionProposal {
   chain: string;
   amount: any;
   from: string;
+  nonce?: number;
   toAddress: any;
   outputs: Array<{
     toAddress: any;
@@ -1997,11 +1998,11 @@ export class WalletProvider {
     });
   }
 
-  public getNonce(wallet, address: string): Promise<any> {
+  public getNonce(wallet, coin: string, address: string): Promise<any> {
     return new Promise((resolve, reject) => {
       wallet.getNonce(
         {
-          coin: wallet.coin,
+          coin,
           network: wallet.network,
           address
         },
