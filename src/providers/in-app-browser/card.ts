@@ -992,7 +992,6 @@ export class IABCardProvider {
               () => this.logger.log(`card -> reset iab state`)
             );
 
-            this.onGoingProcess.set('unlockingInvoice');
             this.events.publish('unlockInvoice', paymentUrl);
           }
 

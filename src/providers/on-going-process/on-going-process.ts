@@ -83,8 +83,7 @@ export class OnGoingProcessProvider {
       ),
       generalAwaiting: this.translate.instant(
         "Just a second, we're setting a few things up."
-      ),
-      unlockingInvoice: this.translate.instant('Unlocking the Invoice...')
+      )
     };
     return processNames;
   }
