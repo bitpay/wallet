@@ -17,6 +17,7 @@ import { Logger } from '../logger/logger';
 import { OnGoingProcessProvider } from '../on-going-process/on-going-process';
 import { PayproProvider } from '../paypro/paypro';
 import { PersistenceProvider } from '../persistence/persistence';
+import { PlatformProvider } from '../platform/platform';
 import { ProfileProvider } from '../profile/profile';
 
 export interface RedirParams {
@@ -53,7 +54,8 @@ export class IncomingDataProvider {
     private iabCardProvider: IABCardProvider,
     private persistenceProvider: PersistenceProvider,
     private bitPayIdProvider: BitPayIdProvider,
-    private invoiceProvider: InvoiceProvider
+    private invoiceProvider: InvoiceProvider,
+    private platformProvider: PlatformProvider
   ) {
     this.logger.debug('IncomingDataProvider initialized');
     this.events.subscribe('unlockInvoice', paymentUrl =>
@@ -144,6 +146,10 @@ export class IncomingDataProvider {
 
   private isValidWalletConnectUri(data: string): boolean {
     return !!/(wallet\/wc|wc:)/g.exec(data);
+  }
+
+  private isValidInvoiceIntentUri(data: string): boolean {
+    return !!/^bitpay:\/\/(test\.|staging\.)?bitpay\.com\/i\/\w+/.exec(data);
   }
 
   public isValidBitcoinCashUriWithLegacyAddress(data: string): boolean {
@@ -923,6 +929,12 @@ export class IncomingDataProvider {
     if (this.isValidBitPayInvoice(data)) {
       this.handleUnlock(data);
       return true;
+    } else if (
+      this.platformProvider.isElectron &&
+      this.isValidInvoiceIntentUri(data)
+    ) {
+      this.handleDesktopUnlock(data);
+      return true;
 
       // Payment Protocol
     } else if (this.isValidPayPro(data)) {
@@ -1607,6 +1619,27 @@ export class IncomingDataProvider {
           title: this.translate.instant('Error')
         })
         .present();
+    }
+  }
+
+  public async handleDesktopUnlock(data: string) {
+    const invoiceId = data.split('i/')[1];
+    const url = data.replace('bitpay://', 'https://');
+    const { host } = new URL(url);
+    try {
+      // setting attempt 4 as a check to see if invoice is locked
+      await this.payproProvider.getPayProOptions(url, true, 4);
+      await this.handleBitPayInvoice(url);
+    } catch (err) {
+      const verificationRequiredInfoSheet = this.actionSheetProvider.createInfoSheet(
+        'auth-required'
+      );
+      await verificationRequiredInfoSheet.present();
+      verificationRequiredInfoSheet.onDidDismiss(async () => {
+        await this.externalLinkProvider.open(
+          `https://${host}/id/verify?context=unlockvd&id=${invoiceId}`
+        );
+      });
     }
   }
 }
