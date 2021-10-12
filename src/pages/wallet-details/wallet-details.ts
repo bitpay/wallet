@@ -443,7 +443,10 @@ export class WalletDetailsPage {
       });
     } else if (this.canSpeedUpTx(tx)) {
       const name =
-        this.wallet.coin === 'eth' ? 'speed-up-eth-tx' : 'speed-up-tx';
+        this.wallet.coin === 'eth' ||
+        this.currencyProvider.isERCToken(this.wallet.coin)
+          ? 'speed-up-eth-tx'
+          : 'speed-up-tx';
       const infoSheet = this.actionSheetProvider.createInfoSheet(name);
       infoSheet.present();
       infoSheet.onDidDismiss(option => {
@@ -549,25 +552,33 @@ export class WalletDetailsPage {
   }
 
   public canSpeedUpTx(tx): boolean {
-    if (this.wallet.coin !== 'btc' && this.wallet.coin !== 'eth') return false;
+    if (
+      this.wallet.coin !== 'btc' &&
+      this.wallet.coin !== 'eth' &&
+      !this.currencyProvider.isERCToken(this.wallet.coin)
+    )
+      return false;
 
-    if (this.wallet.coin === 'eth') {
-      // Can speed up the eth tx instantly
+    if (
+      (this.wallet.coin === 'eth' && tx.amount !== 0) ||
+      this.currencyProvider.isERCToken(this.wallet.coin)
+    ) {
+      // Can speed up the eth/erc20 tx instantly
       return (
         this.isUnconfirmed(tx) &&
         (tx.action === 'sent' || tx.action === 'moved')
       );
+    } else {
+      const currentTime = moment();
+      const txTime = moment(tx.time * 1000);
+
+      // Can speed up the btc tx after 4 hours without confirming
+      return (
+        currentTime.diff(txTime, 'hours') >= 4 &&
+        this.isUnconfirmed(tx) &&
+        tx.action === 'received'
+      );
     }
-
-    const currentTime = moment();
-    const txTime = moment(tx.time * 1000);
-
-    // Can speed up the btc tx after 4 hours without confirming
-    return (
-      currentTime.diff(txTime, 'hours') >= 4 &&
-      this.isUnconfirmed(tx) &&
-      tx.action === 'received'
-    );
   }
 
   public openBalanceDetails(): void {

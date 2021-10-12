@@ -299,13 +299,14 @@ export class ConfirmPage {
       nonce: this.navParams.data.nonce
     };
 
+    this.isERCToken = this.currencyProvider.isERCToken(this.tx.coin);
+
     this.tx.sendMax = this.navParams.data.useSendMax ? true : false;
 
     this.tx.amount =
       this.navParams.data.useSendMax && this.shouldUseSendMax()
         ? 0
-        : this.tx.coin == 'eth' ||
-          this.currencyProvider.isERCToken(this.tx.coin)
+        : this.tx.coin == 'eth' || this.isERCToken
         ? Number(amount)
         : parseInt(amount, 10);
 
@@ -318,7 +319,9 @@ export class ConfirmPage {
     } else if (this.isSpeedUpTx) {
       this.usingCustomFee = true;
       this.tx.feeLevel =
-        this.navParams.data.coin == 'eth' ? 'priority' : 'custom';
+        this.navParams.data.coin == 'eth' || this.isERCToken
+          ? 'priority'
+          : 'custom';
     } else {
       this.tx.feeLevel = this.feeProvider.getCoinCurrentFeeLevel(this.tx.coin);
     }
@@ -846,7 +849,7 @@ export class ConfirmPage {
           }
           tx.speedUpTxInfo = speedUpTxInfo;
         }
-        if (wallet.coin === 'eth') {
+        if (wallet.coin === 'eth' || this.isERCToken) {
           tx.speedUpTxInfo.input = [];
           tx.amount = tx.speedUpTxInfo.amount;
           this.tx.amount = tx.amount;
@@ -915,7 +918,6 @@ export class ConfirmPage {
     return new Promise((resolve, reject) => {
       this.getTxp(_.clone(tx), wallet, opts.dryRun)
         .then(async txp => {
-          this.isERCToken = this.currencyProvider.isERCToken(tx.coin);
           if (this.isERCToken) {
             const chain = this.getChain(tx.coin);
             const fiatOfAmount = this.rateProvider.toFiat(
@@ -1540,7 +1542,7 @@ export class ConfirmPage {
         fee,
         feeAlternative,
         coin,
-        isERCToken: this.currencyProvider.isERCToken(coin),
+        isERCToken: this.isERCToken,
         canChooseFeeLevel
       }
     );

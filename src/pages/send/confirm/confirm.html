@@ -10,8 +10,8 @@
         A transaction using your delayed transaction inputs will be sent to your own wallet with a higher miner fee to speed up the last confirmation time.
         <br>
       </div>
-      <div *ngIf="wallet.coin === 'eth'" label-tip-body translate>
-        In order to speed up the confirmation of your ETH transaction, the original transaction will be replaced by a new one that uses a higher miner fee.
+      <div *ngIf="wallet.coin === 'eth' || isERCToken" label-tip-body translate>
+        In order to speed up the confirmation of your transaction, the original transaction will be replaced by a new one that uses a higher miner fee.
         <br>
       </div>
     </label-tip>
