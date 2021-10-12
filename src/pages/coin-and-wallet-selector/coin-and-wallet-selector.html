@@ -72,7 +72,9 @@
         <ion-icon *ngIf="searchQuery" item-end class="backspace-icon" name="backspace" (click)="cleanSearch()"></ion-icon>
       </ion-item>
     </div>
-    <div *ngFor="let token of tokenSearchResults">
+    <div *ngFor="let token of tokenSearchResults; let i = index">
+      <div class="list-subtitle" *ngIf="popularTokensPosition == i" translate>Popular Tokens</div>
+      <div class="list-subtitle" *ngIf="otherTokensPosition == i" translate>Other Tokens</div>
       <button ion-item (click)="showWalletsToLink(token)">
         <ion-icon class="item-img" item-start>
           <img [src]="token.logoURI" (error)="currencyProvider.defaultLogoURI(img)" #img>

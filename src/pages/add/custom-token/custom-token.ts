@@ -45,6 +45,8 @@ export class CustomTokenPage {
 
   public tokenSearchResults;
   public filteredTokens;
+  public popularTokensPosition: number;
+  public otherTokensPosition: number;
   public searchQuery;
   public availableCustomTokens;
   public invoiceWarning;
@@ -247,27 +249,57 @@ export class CustomTokenPage {
   }, 1000);
 
   private filter(search: string) {
-    if (!search || search == '') {
-      this.filteredTokens = _.clone(this.availableCustomTokens);
+    this.filteredTokens = [];
+    let exactResult,
+      filteredPopularTokens,
+      filteredTokens: any[] = [];
+
+    exactResult = this.availableCustomTokens.filter(token => {
+      return (
+        token.symbol.toLowerCase() == search.toLowerCase() ||
+        token.name.toLowerCase() == search.toLowerCase() ||
+        token.address.toLowerCase() == search.toLowerCase()
+      );
+    });
+    filteredPopularTokens = this.availableCustomTokens.filter(token => {
+      return (
+        this.currencyProvider.getPopularErc20Tokens().includes(token.symbol) &&
+        (token.name.toLowerCase().includes(search.toLowerCase()) ||
+          token.symbol.toLowerCase().includes(search.toLowerCase()))
+      );
+    });
+    filteredTokens = this.availableCustomTokens.filter(token => {
+      return (
+        token.name.toLowerCase().includes(search.toLowerCase()) ||
+        token.symbol.toLowerCase().includes(search.toLowerCase())
+      );
+    });
+
+    if (filteredPopularTokens.length > 0) {
+      if (exactResult[0]) {
+        if (
+          this.currencyProvider
+            .getPopularErc20Tokens()
+            .includes(exactResult[0].symbol)
+        ) {
+          this.popularTokensPosition = 0;
+          this.otherTokensPosition = filteredPopularTokens.length;
+        } else {
+          this.popularTokensPosition = 1;
+          this.otherTokensPosition = filteredPopularTokens.length + 1;
+        }
+      } else {
+        this.popularTokensPosition = 0;
+        this.otherTokensPosition = filteredPopularTokens.length;
+      }
     } else {
-      this.filteredTokens = [];
-
-      const exactResult: any[] = this.availableCustomTokens.filter(token => {
-        return (
-          token.symbol.toLowerCase() == search.toLowerCase() ||
-          token.name.toLowerCase() == search.toLowerCase() ||
-          token.address.toLowerCase() == search.toLowerCase()
-        );
-      });
-      const filteredTokens = this.availableCustomTokens.filter(token => {
-        return (
-          token.name.toLowerCase().includes(search.toLowerCase()) ||
-          token.symbol.toLowerCase().includes(search.toLowerCase())
-        );
-      });
-
-      this.filteredTokens = [...new Set([...exactResult, ...filteredTokens])];
+      this.popularTokensPosition = null;
+      this.otherTokensPosition = null;
     }
+
+    this.filteredTokens = [
+      ...new Set([...exactResult, ...filteredPopularTokens, ...filteredTokens])
+    ];
 
     this.tokenListShowMore =
       this.filteredTokens.length > this.TOKEN_SHOW_LIMIT ? true : false;
@@ -300,5 +332,6 @@ export class CustomTokenPage {
 
   public cleanSearch() {
     this.searchQuery = '';
+    this.updateSearchInput('');
   }
 }

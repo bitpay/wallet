@@ -33,6 +33,35 @@ export class CurrencyProvider {
     LTC: 'ltc'
   };
 
+  public popularERC20TokensSymbols: string[] = [
+    'USDC',
+    'WBTC',
+    'USDT',
+    'DAI',
+    'UNI',
+    'PAX',
+    'LINK',
+    'COMP',
+    'MKR',
+    'DYDX',
+    'WDOGE',
+    'renBTC',
+    'BAT',
+    'WETH',
+    'SHIB',
+    'SUSHI',
+    '1INCH',
+    'EURT',
+    'MATIC',
+    'YGG',
+    'CRO',
+    'AAVE',
+    'GRT',
+    'YFI',
+    'CRV',
+    'RUNE'
+  ];
+
   constructor(
     private persistenceProvider: PersistenceProvider,
     private http: HttpClient
@@ -264,5 +293,9 @@ export class CurrencyProvider {
     const token = tokens.find(x => x.symbol == coin.toUpperCase());
     const tokenAddress = token && token.address;
     return tokenAddress.toLowerCase();
+  }
+
+  getPopularErc20Tokens() {
+    return _.orderBy(this.popularERC20TokensSymbols);
   }
 }
