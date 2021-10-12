@@ -216,7 +216,7 @@ export class ExchangeCryptoPage {
     };
 
     try {
-      await this.locationProvider.getCountry();
+      this.country = await this.locationProvider.getCountry();
       this.logger.debug(
         `Setting available currencies for country: ${this.country}`
       );
