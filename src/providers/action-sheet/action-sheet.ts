@@ -86,7 +86,8 @@ export type InfoSheetType =
   | 'exchange-crypto-disclaimer'
   | 'join-wallet-warning'
   | 'token-added'
-  | 'pairing-required';
+  | 'pairing-required'
+  | '1inch-disabled-warning';
 
 export type OptionsSheetType =
   | 'wallet-options'

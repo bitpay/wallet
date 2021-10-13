@@ -2,6 +2,7 @@ import { async, ComponentFixture } from '@angular/core/testing';
 
 import { TestUtils } from '../../test';
 
+import { LocationProvider } from '../../providers/location/location';
 import { ProfileProvider } from './../../providers/profile/profile';
 import { WalletDetailsPage } from './wallet-details';
 
@@ -22,6 +23,9 @@ describe('WalletDetailsPage', () => {
       setNotificationsInterval: () => true
     };
     spyOn(ProfileProvider.prototype, 'getWallet').and.returnValue(mockWallet);
+    spyOn(LocationProvider.prototype, 'getCountry').and.returnValue(
+      Promise.resolve('US')
+    );
     return TestUtils.configurePageTestingModule([WalletDetailsPage]).then(
       testEnv => {
         fixture = testEnv.fixture;

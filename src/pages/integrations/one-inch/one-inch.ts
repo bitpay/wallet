@@ -5,7 +5,9 @@ import { ModalController } from 'ionic-angular';
 import { OneInchDetailsPage } from './one-inch-details/one-inch-details';
 
 // Proviers
+import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
 import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
+import { LocationProvider } from '../../../providers/location/location';
 import { Logger } from '../../../providers/logger/logger';
 import { OneInchProvider } from '../../../providers/one-inch/one-inch';
 import { ThemeProvider } from '../../../providers/theme/theme';
@@ -22,7 +24,9 @@ export class OneInchPage {
 
   constructor(
     private logger: Logger,
+    private actionSheetProvider: ActionSheetProvider,
     private externalLinkProvider: ExternalLinkProvider,
+    private locationProvider: LocationProvider,
     private modalCtrl: ModalController,
     private oneInchProvider: OneInchProvider,
     public themeProvider: ThemeProvider
@@ -46,6 +50,15 @@ export class OneInchPage {
         Object.assign(swapTxs, oneInchData);
         this.swapTxs = Object.values(swapTxs);
         this.loading = false;
+
+        this.locationProvider.getCountry().then(country => {
+          if (country == 'US') {
+            const oneInchDisabledWarningSheet = this.actionSheetProvider.createInfoSheet(
+              '1inch-disabled-warning'
+            );
+            oneInchDisabledWarningSheet.present();
+          }
+        });
       })
       .catch(err => {
         this.loading = false;
