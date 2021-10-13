@@ -366,25 +366,22 @@ export class ConfirmPage {
     );
 
     if (fetchData) {
-      const invoiceData = await this.invoiceProvider.getBitPayInvoice(
-        invoiceId
-      );
-      const { merchantName, itemizedDetails } = invoiceData;
-      this.itemizedDetails = itemizedDetails;
-      this.merchantName = merchantName;
+      await this.getItemizedDetails(invoiceId);
       return;
     }
 
     const result = await this.bitpayIdProvider.unlockInvoice(invoiceId);
 
     if (result === 'unlockSuccess') {
-      const invoiceData = await this.invoiceProvider.getBitPayInvoice(
-        invoiceId
-      );
-      const { merchantName, itemizedDetails } = invoiceData;
-      this.itemizedDetails = itemizedDetails;
-      this.merchantName = merchantName;
+      await this.getItemizedDetails(invoiceId);
     }
+  }
+
+  private async getItemizedDetails(invoiceId: string) {
+    const invoiceData = await this.invoiceProvider.getBitPayInvoice(invoiceId);
+    const { merchantName, itemizedDetails } = invoiceData;
+    this.itemizedDetails = itemizedDetails;
+    this.merchantName = merchantName;
   }
 
   private setTitle(): void {
