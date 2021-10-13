@@ -24,6 +24,7 @@ export enum Coin {
 @Injectable()
 export class TxFormatProvider {
   private bitcoreCash;
+  private bitcoreLTC;
 
   // TODO: implement configService
   public pendingTxProposalsCountForUs: number;
@@ -38,10 +39,15 @@ export class TxFormatProvider {
   ) {
     this.logger.debug('TxFormatProvider initialized');
     this.bitcoreCash = this.bwcProvider.getBitcoreCash();
+    this.bitcoreLTC = this.bwcProvider.getBitcoreLtc();
   }
 
   public toCashAddress(address: string, withPrefix?: boolean): string {
     return this.bitcoreCash.Address(address).toString(!withPrefix);
+  }
+
+  public toLTCAddress(address: string) {
+    return this.bitcoreLTC.Address(address).toString();
   }
 
   public toLegacyAddress(address: string): string {
@@ -163,6 +169,13 @@ export class TxFormatProvider {
       }
       tx.toAddress = tx.outputs[0].toAddress;
 
+      // translate legacy addresses
+      if (tx.addressTo && coin == 'ltc') {
+        for (let o of tx.outputs) {
+          o.address = o.addressToShow = this.toLTCAddress(tx.addressTo);
+        }
+      }
+
       // toDo: translate all tx.outputs[x].toAddress ?
       if (tx.toAddress && coin == 'bch') {
         tx.toAddress = this.toCashAddress(tx.toAddress);
@@ -198,6 +211,8 @@ export class TxFormatProvider {
 
     if (tx.addressTo && coin == 'bch') {
       tx.addressTo = this.toCashAddress(tx.addressTo);
+    } else if (tx.addressTo && coin == 'ltc') {
+      tx.addressTo = this.toLTCAddress(tx.addressTo);
     }
 
     return tx;
