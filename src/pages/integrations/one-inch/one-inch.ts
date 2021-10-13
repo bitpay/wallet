@@ -6,6 +6,7 @@ import { OneInchDetailsPage } from './one-inch-details/one-inch-details';
 
 // Proviers
 import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
+import { ExchangeCryptoProvider } from '../../../providers/exchange-crypto/exchange-crypto';
 import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
 import { LocationProvider } from '../../../providers/location/location';
 import { Logger } from '../../../providers/logger/logger';
@@ -25,6 +26,7 @@ export class OneInchPage {
   constructor(
     private logger: Logger,
     private actionSheetProvider: ActionSheetProvider,
+    private exchangeCryptoProvider: ExchangeCryptoProvider,
     private externalLinkProvider: ExternalLinkProvider,
     private locationProvider: LocationProvider,
     private modalCtrl: ModalController,
@@ -52,16 +54,23 @@ export class OneInchPage {
         this.loading = false;
 
         this.locationProvider.getCountry().then(country => {
-          if (country == 'US') {
-            const oneInchDisabledWarningSheet = this.actionSheetProvider.createInfoSheet(
-              '1inch-disabled-warning'
-            );
-            oneInchDisabledWarningSheet.present();
-          }
+          const opts = { country };
+          this.exchangeCryptoProvider
+            .checkServiceAvailability('1inch', opts)
+            .then(isAvailable => {
+              if (!isAvailable) {
+                const oneInchDisabledWarningSheet = this.actionSheetProvider.createInfoSheet(
+                  '1inch-disabled-warning'
+                );
+                oneInchDisabledWarningSheet.present();
+              }
+            })
+            .catch(err => {
+              if (err) this.logger.error(err);
+            });
         });
       })
       .catch(err => {
-        this.loading = false;
         if (err) this.logger.error(err);
       });
   }

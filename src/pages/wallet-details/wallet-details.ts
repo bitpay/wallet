@@ -148,12 +148,21 @@ export class WalletDetailsPage {
 
     if (!this.showExchangeCrypto) {
       this.locationProvider.getCountry().then(country => {
-        this.showExchangeCrypto =
-          country != 'US' &&
-          this.currencyProvider.isERCToken(this.wallet.coin) &&
-          this.wallet.network == 'livenet'
-            ? true
-            : false;
+        const opts = { country };
+        this.exchangeCryptoProvider
+          .checkServiceAvailability('1inch', opts)
+          .then(isAvailable => {
+            if (isAvailable) {
+              this.showExchangeCrypto =
+                this.currencyProvider.isERCToken(this.wallet.coin) &&
+                this.wallet.network == 'livenet'
+                  ? true
+                  : false;
+            }
+          })
+          .catch(err => {
+            if (err) this.logger.error(err);
+          });
       });
     }
 

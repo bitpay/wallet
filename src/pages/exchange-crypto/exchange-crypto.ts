@@ -71,7 +71,10 @@ export class ExchangeCryptoPage {
   public fixedRateId: string;
   public rate: number;
   public estimatedFee: number;
-  private country: string;
+  public isAvailable: {
+    changelly?: boolean;
+    oneInch?: boolean;
+  };
   private exchangeCryptoSupportedCoins: any[];
   private changellySupportedCoins: string[]; // Supported by Changelly and Bitpay
 
@@ -140,6 +143,11 @@ export class ExchangeCryptoPage {
     this.toWalletSelectorTitle = this.translate.instant(
       'Select Destination Wallet'
     );
+
+    this.isAvailable = {
+      changelly: true,
+      oneInch: true
+    };
 
     this.onGoingProcessProvider.set('exchangeCryptoInit');
 
@@ -215,15 +223,6 @@ export class ExchangeCryptoPage {
       );
     };
 
-    try {
-      this.country = await this.locationProvider.getCountry();
-      this.logger.debug(
-        `Setting available currencies for country: ${this.country}`
-      );
-    } catch (e) {
-      this.logger.warn("It was not possible to get the user's country.");
-    }
-
     const promises = [
       {
         exchange: 'changelly',
@@ -231,7 +230,21 @@ export class ExchangeCryptoPage {
       }
     ];
 
-    if (this.country != 'US') {
+    try {
+      const country = await this.locationProvider.getCountry();
+      const opts = { country };
+      this.logger.debug(`Setting available currencies for country: ${country}`);
+
+      this.isAvailable.oneInch = await this.exchangeCryptoProvider.checkServiceAvailability(
+        '1inch',
+        opts
+      );
+      this.logger.debug(`1Inch isAvailable: ${this.isAvailable.oneInch}`);
+    } catch (e) {
+      this.logger.warn("It was not possible to get the user's country.", e);
+    }
+
+    if (this.isAvailable.oneInch) {
       promises.push({
         exchange: '1inch',
         promise: this.oneInchProvider.getCurrencies1inch()
@@ -597,7 +610,7 @@ export class ExchangeCryptoPage {
 
     this.logger.debug('Exchange to use: ' + this.exchangeToUse);
 
-    if (this.exchangeToUse == '1inch' && this.country == 'US') {
+    if (!this.isAvailable.oneInch) {
       const oneInchDisabledWarningSheet = this.actionSheetProvider.createInfoSheet(
         '1inch-disabled-warning'
       );

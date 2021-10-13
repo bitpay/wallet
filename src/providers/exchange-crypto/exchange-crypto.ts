@@ -53,6 +53,35 @@ export class ExchangeCryptoProvider {
     });
   }
 
+  public checkServiceAvailability(service: string, opts): Promise<any> {
+    return new Promise((resolve, reject) => {
+      const url = this.baseUrl + '/v1/service/checkAvailability';
+
+      const headers = new HttpHeaders({
+        'Content-Type': 'application/json'
+      });
+
+      const body = {
+        service,
+        opts
+      };
+
+      this.logger.debug(
+        'Making checkServiceAvailability request with body: ',
+        body
+      );
+
+      this.http.post(url, body, { headers }).subscribe(
+        (data: any) => {
+          return resolve(data);
+        },
+        err => {
+          return reject(err);
+        }
+      );
+    });
+  }
+
   public async getSwapTxs(): Promise<any> {
     const [changellySwapTxs, oneInchSwapTxs]: any = await Promise.all([
       this.changellyProvider.getChangelly(),
