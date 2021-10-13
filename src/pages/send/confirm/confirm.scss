@@ -117,6 +117,16 @@ page-bitpay-card-topup {
         }
       }
     }
+    button.item {
+      &.item-ios,
+      &.item-md {
+        ion-note {
+          span {
+            margin-right: 0px;
+          }
+        }
+      }
+    }
   }
   .background-content {
     display: flex;
