@@ -95,6 +95,7 @@ export class AmountPage {
   private alternativeCurrency;
   public fromBuyCrypto: boolean;
   public fromExchangeCrypto: boolean;
+  public fromFooterMenu: boolean;
   public isCardTopUp: boolean;
   public quoteForm: FormGroup;
   public supportedFiatAltCurrencies: string[];
@@ -150,6 +151,7 @@ export class AmountPage {
     this.alternativeCurrency = this.navParams.data.alternativeCurrency;
     this.fromBuyCrypto = this.navParams.data.fromBuyCrypto;
     this.fromExchangeCrypto = this.navParams.data.fromExchangeCrypto;
+    this.fromFooterMenu = this.navParams.data.fromFooterMenu;
     this.isCardTopUp = !!this.navParams.data.card;
     this.showSendMax = false;
     this.useSendMax = false;
