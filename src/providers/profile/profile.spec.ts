@@ -298,6 +298,9 @@ describe('Profile Provider', () => {
     getBitcoreCash() {
       return true;
     }
+    getBitcoreLtc() {
+      return true;
+    }
     getClient(_walletData, _opts) {
       return _.clone(walletClientMock);
     }

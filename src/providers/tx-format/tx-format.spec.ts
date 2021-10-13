@@ -374,4 +374,18 @@ describe('TxFormatProvider', () => {
       expect(result).toEqual(0.12312312);
     });
   });
+
+  describe('toLTCAddress', () => {
+    it('should get the address in new LTC Address format', () => {
+      let address = '33k1rEnWskMrr8RZEACJdQFRMLWovhSJ5R'; // LTC livenet legacy address (P2SH)
+      let ltcAddr: string = txFormatProvider.toLTCAddress(address);
+      expect(ltcAddr).toEqual('M9xAA8CUpsDHedhTL3BeT3Vpg37FyZyZLk');
+    });
+
+    it('should keep the address if it is a new format', () => {
+      let address = 'M9xAA8CUpsDHedhTL3BeT3Vpg37FyZyZLk'; // LTC livenet new address (P2SH)
+      let ltcAddr: string = txFormatProvider.toLTCAddress(address);
+      expect(ltcAddr).toEqual('M9xAA8CUpsDHedhTL3BeT3Vpg37FyZyZLk');
+    });
+  });
 });
