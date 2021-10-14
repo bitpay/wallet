@@ -7,7 +7,7 @@ export class DerivationPathHelperProvider {
   public defaultETH: string;
   public defaultXRP: string;
   public defaultDOGE: string;
-  public defaultBCHA: string;
+  public defaultXEC: string;
   public defaultXPI: string;
   public defaultLTC: string;
   public defaultTestnet: string;
@@ -24,7 +24,7 @@ export class DerivationPathHelperProvider {
     this.defaultETH = "m/44'/60'/0'";
     this.defaultXRP = "m/44'/144'/0'";
     this.defaultDOGE = "m/44'/3'/0'";
-    this.defaultBCHA = "m/44'/899'/0'";
+    this.defaultXEC = "m/44'/899'/0'";
     this.defaultXPI = "m/44'/10605'/0'";
     this.defaultLTC = "m/44'/2'/0'";
     this.defaultMultisigBTC = "m/48'/0'/0'";
@@ -89,7 +89,7 @@ export class DerivationPathHelperProvider {
       case "3'": // for DOGE
         networkName = 'livenet';
         break;
-      case "899'": // for BCHA
+      case "899'": // for XEC
         networkName = 'livenet';
         break;
       case "10605'": // for XPI
