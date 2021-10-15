@@ -61,8 +61,8 @@
 
     <!-- Android Version: Marshmallow 6.0 (API Level 23) or higher -->
     <preference name="android-minSdkVersion" value="23" />
-    <!-- Android Version: Q 10.0 (API Level 29) or higher -->
-    <preference name="android-targetSdkVersion" value="29" />
+    <!-- Android Version: 11 (API Level 30) or higher -->
+    <preference name="android-targetSdkVersion" value="30" />
 
     <!-- iOS 10.3 or higher -->
     <preference name="deployment-target" value="10.3" />
@@ -70,7 +70,7 @@
     <preference name="AndroidXEnabled" value="true" />
 
     <!-- Supported Platforms -->
-    <engine name="android" spec="9.0.0" />
+    <engine name="android" spec="9.1.0" />
     <engine name="ios" spec="5.1.1" />
 
     <!-- Plugins -->
