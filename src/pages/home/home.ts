@@ -915,7 +915,8 @@ export class HomePage {
         this.advertisements,
         adv => adv.name !== name
       );
-      if (this.advertisements.length == 0) this.showAdvertisements = false;
+      if (this.advertisements && this.advertisements.length == 0)
+        this.showAdvertisements = false;
     }
     if (this.slides) this.slides.slideTo(0, 500);
   }

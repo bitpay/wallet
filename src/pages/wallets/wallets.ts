@@ -126,7 +126,7 @@ export class WalletsPage {
 
       if (!hasFundedWallet) {
         let totalBalance = await this.persistenceProvider.getTotalBalance();
-        if (parseFloat(totalBalance.totalBalanceAlternative)) {
+        if (totalBalance && parseFloat(totalBalance.totalBalanceAlternative)) {
           this.analyticsProvider.logEvent('user_has_funded_wallet', {
             uuid: deviceUUID
           });
