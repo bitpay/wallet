@@ -69,7 +69,7 @@
     "build:android": "npm run env:dev && ionic cordova build android --debug",
     "build:desktop": "npm run env:dev && npm run ionic:build",
     "build:ios-release": "npm run env:prod && ionic cordova build ios --release --aot true --environment prod --output-hashing all --sourcemaps false --extract-css true --named-chunks false --build-optimizer true --buildConfig",
-    "build:android-release": "npm run env:prod && ionic cordova plugin add cordova-android-googlepay-issuer-ng@1.0.4 && ionic cordova build android --release --aot true --environment prod --output-hashing all --sourcemaps false --extract-css true --named-chunks false --build-optimizer true",
+    "build:android-release": "npm run env:prod && ionic cordova plugin add cordova-android-googlepay-issuer-ng@1.0.4 && ionic cordova build android --release --aot true --environment prod --output-hashing all --sourcemaps false --extract-css true --named-chunks false --build-optimizer true --packageType=apk",
     "build:desktop-release": "npm run env:desktop && node --max-old-space-size=8192 ./node_modules/@ionic/app-scripts/bin/ionic-app-scripts.js build --prod --uglifyjs ./config/uglify.config.js --webpack ./config/webpack.config.js",
     "build:electron": "npm install electron-builder@22.9.1 --save-dev; node ./electron/build-electron.js",
     "open:ios": "open platforms/ios/*.xcworkspace",
