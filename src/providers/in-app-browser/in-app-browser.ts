@@ -69,7 +69,21 @@ export class InAppBrowserProvider {
         }
       };
       ref.addEventListener('loadstop', initCb);
-      ref.addEventListener('loaderror', err => {
+      ref.addEventListener('loaderror', (err: InAppBrowserEvent & { sslerror?: number }) => {
+        // Don't prevent IAB from opening when encountering specific analytics errors
+        const analyticsWhitelist = [
+          `https://www.googletagmanager.com/gtag/js`,
+          `https://px.ads.linkedin.com/collect/`
+        ];
+        const urlWithoutParams = (err.url || '').split('?')[0].split('#')[0];
+        const isUntrustedCaError = err.code === 0 && err.sslerror === 3 && err.message === `The certificate authority is not trusted`;
+        const isUrlWhitelisted = analyticsWhitelist.includes(urlWithoutParams);
+
+        if (isUntrustedCaError && isUrlWhitelisted) {
+          this.logger.debug(`InAppBrowserProvider -> ${refName} encountered an untrusted CA loaderror for ${err.url}`);
+          return;
+        }
+
         this.logger.debug(
           `InAppBrowserProvider -> ${refName} ${JSON.stringify(err)} load error`
         );
