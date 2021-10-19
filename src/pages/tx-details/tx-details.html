@@ -32,6 +32,17 @@
         </div>
       </label-tip>
 
+
+      <label-tip class="low-fees" type="info" *ngIf="btx.isRBF && (btx.action === 'sent' || (btx.action === 'moved)' && this.wallet.coin == 'btc'))">
+        <span label-tip-title translate>RBF transaction</span>
+        <div label-tip-body translate>
+          You could accelerate this transaction using a higher fee.
+          <br>
+          <a class="label-tip-link" (click)="goToConfirm()" translate>Speed up</a>
+        </div>
+      </label-tip>
+
+
       <ion-item class="sub-title">
         <ion-label>
           <div class="main-label" translate>DETAILS</div>

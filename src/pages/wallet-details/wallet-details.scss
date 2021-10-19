@@ -374,6 +374,9 @@ page-wallet-details {
     color: color($colors, warning);
     font-size: 44px;
   }
+  .info-background {
+    background-color: color($background-colors, info);
+  }
   .warning-background {
     background-color: color($background-colors, warning);
   }

@@ -18,7 +18,6 @@
           </div>
         </div>
       </label-tip>
-
       <ion-item class="with-label no-border">
         <ion-label>{{ 'Customize nonce' | translate }}</ion-label>
         <ion-toggle [(ngModel)]="showCustomizeNonce" (ionChange)="showCustomizeNonceChange()"></ion-toggle>
@@ -27,6 +26,20 @@
         <div label-tip-body>
           <div translate>
             If enabled, the transaction nonce could be changed on the confirm view. This is an advanced feature, use cautiously.
+          </div>
+        </div>
+      </label-tip>
+      <ion-item class="with-label no-border">
+        <ion-label>{{ 'Enable BTC Replace-By-Fee' | translate }}</ion-label>
+        <ion-toggle [(ngModel)]="showEnableRBF" (ionChange)="showEnableRBFChange()"></ion-toggle>
+      </ion-item>
+      <label-tip type="info" header="no-header">
+        <div label-tip-body>
+          <div translate>
+            If enabled, a transaction designated as RBF could be accelerated using a higher fee.
+          </div>
+          <div translate>
+            Replace-By-Fee (RBF) is a node policy that allows an unconfirmed transaction in a mempool to be replaced with a different transaction that spends at least one of the same inputs and which pays a higher transaction fee.
           </div>
         </div>
       </label-tip>

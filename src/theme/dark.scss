@@ -1127,6 +1127,15 @@
         background-color: $bg-color-dark-theme-2;
         color: $text-color-dark-theme;
 
+        &.info-background {
+          background-color: $bg-color-dark-theme-3;
+
+          ion-note.note > .amount > .received,
+          .action {
+            color: color($colors, info);
+          }
+        }
+
         &.warning-background {
           background-color: $bg-color-dark-theme-3;
 

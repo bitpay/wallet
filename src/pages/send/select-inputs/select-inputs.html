@@ -58,7 +58,7 @@
           <ion-label>
             <span *ngIf="recipient.recipientType == 'wallet'">{{recipient.name}}</span>
             <span *ngIf="recipient.recipientType == 'contact'">{{recipient.name}}</span>
-            <span *ngIf="recipient.recipientType == 'address'" class="ellipsis">{{recipient.toAddress}}</span>
+            <span *ngIf="recipient.recipientType == 'address'" class="ellipsis">{{recipient.toAddress | shortenedAddress}}</span>
           </ion-label>
           <ion-note item-end text-end>
             <div *ngIf="recipient.amountToShow" class="amount">
