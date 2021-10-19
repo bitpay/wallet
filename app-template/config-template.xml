@@ -122,7 +122,7 @@
       <variable name="PAGE_LINK_DOMAIN" value="*DYNAMICLINK*" />
     </plugin>
 
-    <plugin name="cordova-plugin-wkwebview-engine" spec="1.2.1" />
+    <plugin name="cordova-plugin-wkwebview-engine" spec="1.2.2" />
 
     <plugin name="cordova-plugin-theme-detection" spec="1.2.1" />
 

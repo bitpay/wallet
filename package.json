@@ -166,7 +166,7 @@
     "cordova-plugin-theme-detection": "1.2.1",
     "cordova-plugin-useragent": "https://github.com/danielsogl/cordova-plugin-useragent.git",
     "cordova-plugin-vibration": "3.1.1",
-    "cordova-plugin-wkwebview-engine": "1.2.1",
+    "cordova-plugin-wkwebview-engine": "1.2.2",
     "cordova-plugin-x-socialsharing": "5.6.8",
     "cordova-plugin-x-toast": "2.6.0",
     "cordova-support-android-plugin": "1.0.2",
