@@ -29,14 +29,14 @@
         <span class="unit" [ngClass]="{'small-font': useSmallFontSize}" [hidden]="globalResult">{{unit}}</span>
       </div>
       <div class="amount" [hidden]="!globalResult">{{globalResult}} {{unit}}</div>
-      <div class="result" *ngIf="!fromBuyCrypto && wallet && wallet.coin && !currencyProvider.isCustomERCToken(wallet.coin)">&asymp;
+      <div class="result" *ngIf="(!fromBuyCrypto && wallet && wallet.coin && !currencyProvider.isCustomERCToken(wallet.coin)) || fromFooterMenu">&asymp;
         <span *ngIf="fiatCode === alternativeUnit">{{alternativeAmount || '0.00'}}</span>
         <span *ngIf="fiatCode !== alternativeUnit">{{alternativeAmount || '0'}}</span>
         {{alternativeUnit}}
       </div>
     </div>
 
-    <div class="amount-switcher-margin" [ngClass]="{'fix-modal-switcher': useAsModal}" *ngIf="!fromBuyCrypto && !isCardTopUp && wallet && wallet.coin && !currencyProvider.isCustomERCToken(wallet.coin)">
+    <div class="amount-switcher-margin" [ngClass]="{'fix-modal-switcher': useAsModal}" *ngIf="(!fromBuyCrypto && !isCardTopUp && wallet && wallet.coin && !currencyProvider.isCustomERCToken(wallet.coin)) || fromFooterMenu">
       <div class="amount-switcher">
         <div class="switcher" (click)="changeUnit()" [hidden]="fixedUnit" tappable>
           <img class="switcher__icon" src="assets/img/icon-swap.svg">
