@@ -160,7 +160,7 @@ try {
   console.log(err);
 }
 
-// XCode build.json
+// XCode and Android build.json
 let buildJsonData;
 try {
   const confName = configDir.toUpperCase();
