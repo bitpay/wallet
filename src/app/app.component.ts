@@ -175,6 +175,7 @@ export class CopayApp {
     this.imageLoaderConfig.setFileNameCachedWithExtension(true);
     this.imageLoaderConfig.useImageTag(true);
     this.imageLoaderConfig.enableSpinner(false);
+    this.imageLoaderConfig.setImageReturnType('base64'); // Fix: Not allowed to load local resource
     this.initializeApp();
   }
 
