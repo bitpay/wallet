@@ -137,12 +137,22 @@ export class CoinAndWalletSelectorPage {
     }
 
     for (const coin of supportedTokens) {
-      const c = {
-        unitCode: coin,
-        name: this.currencyProvider.getCoinName(coin),
-        availableWallets: _.filter(this.wallets, w => w.coin === coin)
-      };
-      this.tokens.push(c);
+      const availableWallets: any[] = _.filter(
+        this.wallets,
+        w => w.coin === coin
+      );
+      if (
+        !this.currencyProvider.isCustomERCToken(coin) ||
+        (this.currencyProvider.isCustomERCToken(coin) &&
+          availableWallets.length > 0)
+      ) {
+        const c = {
+          unitCode: coin,
+          name: this.currencyProvider.getCoinName(coin),
+          availableWallets
+        };
+        this.tokens.push(c);
+      }
     }
   }
 
@@ -173,7 +183,6 @@ export class CoinAndWalletSelectorPage {
           coin.unitCode.toUpperCase(),
           option => {
             if (option) {
-              this.close();
               this.navCtrl.push(CreateWalletPage, {
                 isShared: false,
                 coin: coin.unitCode,
@@ -266,6 +275,16 @@ export class CoinAndWalletSelectorPage {
   }
 
   private createAndBindTokenWallet(pairedWallet, token): Promise<any> {
+    if (this.currencyProvider.isCustomERCToken(token.symbol.toLowerCase())) {
+      const _token = this.currencyProvider
+        .getAvailableCustomTokens()
+        .filter(t => {
+          return t.symbol.toLowerCase() == token.symbol.toLowerCase();
+        });
+
+      if (_token.length > 0) token = _token[0];
+    }
+
     const customToken = {
       keyId: pairedWallet.keyId,
       name: token.name,
