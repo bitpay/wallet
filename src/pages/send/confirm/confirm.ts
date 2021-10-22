@@ -369,16 +369,24 @@ export class ConfirmPage {
       invoiceId,
       network
     );
+
+    if (fetchData) {
+      await this.getItemizedDetails(invoiceId);
+      return;
+    }
+
     const result = await this.bitpayIdProvider.unlockInvoice(invoiceId);
 
-    if (result === 'unlockSuccess' || fetchData) {
-      const invoiceData = await this.invoiceProvider.getBitPayInvoice(
-        invoiceId
-      );
-      const { merchantName, itemizedDetails } = invoiceData;
-      this.itemizedDetails = itemizedDetails;
-      this.merchantName = merchantName;
+    if (result === 'unlockSuccess') {
+      await this.getItemizedDetails(invoiceId);
     }
+  }
+
+  private async getItemizedDetails(invoiceId: string) {
+    const invoiceData = await this.invoiceProvider.getBitPayInvoice(invoiceId);
+    const { merchantName, itemizedDetails } = invoiceData;
+    this.itemizedDetails = itemizedDetails;
+    this.merchantName = merchantName;
   }
 
   private setTitle(): void {
