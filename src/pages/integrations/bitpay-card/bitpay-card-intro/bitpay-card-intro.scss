@@ -25,63 +25,6 @@ page-bitpay-card-intro {
     }
   }
 
-  ion-segment {
-    width: 40%;
-    margin-left: 16px;
-    margin-top: 50px;
-    ion-segment-button.segment-activated.segment-button {
-      border-bottom-width: 1px;
-    }
-    .segment-button {
-      span {
-        font-size: 18px;
-        font-weight: 700;
-        color: #000;
-        text-transform: none;
-      }
-    }
-    .segment-activated {
-      span {
-        color: color($colors, primary);
-      }
-    }
-  }
-  .terms-content {
-    border-bottom: 1px solid #f5f7f8;
-    ion-list {
-      margin: 0px;
-    }
-    ion-item {
-      padding: 32px 16px;
-      &.item-ios,
-      &.item-md {
-        .item-inner {
-          padding-right: 0px;
-        }
-      }
-    }
-    .terms {
-      &-label {
-        font-size: 14px;
-        font-weight: 500;
-        color: #000;
-        width: 50%;
-        text-align: left;
-      }
-      &-note {
-        font-size: 14px;
-        font-weight: 400;
-        color: #252525;
-        margin-right: 0px;
-        width: 50%;
-        text-align: right;
-      }
-      &-bg-color {
-        background-color: #f5f7f8;
-      }
-    }
-  }
-
   @keyframes fadein {
     from {
       transform: translateY(20px);
@@ -157,14 +100,9 @@ page-bitpay-card-intro {
       }
     }
     &__agreement {
-      margin: 26px 16px 150px 16px;
+      margin: 20px 0 150px 0;
       font-size: 11px;
       color: #434d5a;
-      .title {
-        font-size: 14px;
-        font-weight: 400;
-        padding-top: 26px;
-      }
     }
     &__link-button {
       cursor: pointer;

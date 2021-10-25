@@ -24,10 +24,10 @@
       <div class="bitpayCard-item">
         <div class="bitpayCard-item-header">
           <img src="assets/img/bitpay-card/icon-instant-reloads.svg" />
-          <div class="bitpayCard-item-title" translate>Instant Reloads<sup>1</sup></div>
+          <div class="bitpayCard-item-title" translate>Instant Reloads*</div>
         </div>
         <p>
-        <span translate>Reload your balance with no conversion fees<sup>1</sup>.</span>
+        <span translate>Reload your balance with no conversion fees*.</span>
         Powered by our competitive <a (click)="openExchangeRates()">exchange rates</a>.
         </p>
       </div>
@@ -50,7 +50,7 @@
           <img src="assets/img/bitpay-card/icon-worldwide.svg" />
           <div class="bitpayCard-item-title" translate>Worldwide</div>
         </div>
-        <p translate>Ready to use in millions of locations around the world with contactless payment, PIN, Google Pay, Apple Pay, or by simply withdrawing cash from any compatible ATM<sup>2</sup>.</p>
+        <p translate>Ready to use in millions of locations around the world with contactless payment, PIN, Google Pay, Apple Pay, or by simply withdrawing cash from any compatible ATM*.</p>
       </div>
       <div class="bitpayCard-item">
         <div class="bitpayCard-item-header">
@@ -64,43 +64,14 @@
       <div>
         <p translate>Shop online or in stores instantly with the virtual BitPay Prepaid Mastercard©, or order your physical card for free today.</p>
       </div>
-    </div>
-    
-    <ion-segment mode="md" [(ngModel)]="terms" color="primary">
-      <ion-segment-button value="limits" mode="md">
-        <span translate>Limits</span>
-      </ion-segment-button>
-      <ion-segment-button value="fees" mode="md">
-        <span translate>Fees</span>
-      </ion-segment-button>
-    </ion-segment>
+      <div class="bitpayCard__agreement">
+        *Network fees and miner fees may apply.<br>
+        *Third party fees may apply.<br><br>
+        BY USING THIS CARD YOU AGREE WITH THE TERMS AND CONDITIONS OF THE CARDHOLDER AGREEMENT AND FEE SCHEDULE, IF ANY.  The BitPay Prepaid Mastercard is issued by Metropolitan Commercial Bank (Member FDIC) pursuant to a license from Mastercard International. “Metropolitan Commercial Bank” and “Metropolitan” are registered trademarks of Metropolitan Commercial Bank ©2014.<br><br>
+        Mastercard is a registered trademark and the circles design is a trademark of Mastercard International Incorporated.
+      </div>
 
-    <div [ngSwitch]="terms" class="terms-content">
-      <ion-list no-lines *ngSwitchCase="'limits'" >
-        <ion-item *ngFor="let limit of limitTerms; let i = index" [ngClass]="{'terms-bg-color': i%2 == 0 }">
-         <ion-label class="terms-label">{{ limit.title }}</ion-label>
-         <ion-note class="terms-note" item-end>{{ limit.note }}</ion-note>
-        </ion-item>
-      </ion-list>
-    
-      <ion-list no-lines *ngSwitchCase="'fees'">
-        <ion-item *ngFor="let fee of feeTerms; let i = index" [ngClass]="{'terms-bg-color': i%2 == 0 }">
-          <ion-label class="terms-label">{{ fee.title }}</ion-label>
-          <ion-note class="terms-note" item-end>{{ fee.note }}
-            <br>
-            <a class="pointer" *ngIf="fee.linkText" (click)="openExternalLink(fee.linkUrl)">{{fee.linkText}}</a>
-          </ion-note>
-        </ion-item>
-      </ion-list>
-    </div>
-
-    <div class="bitpayCard__agreement">
-      <span ion-text class="title" color="primary">{{'Privacy Policy' | translate }}</span><br><br><br>
-      <sup>1</sup> Network fees and miner fees may apply.<br>
-      <sup>2</sup> Third party fees may apply.<br><br>
-      BY USING THIS CARD YOU AGREE WITH THE TERMS AND CONDITIONS OF THE CARDHOLDER AGREEMENT AND FEE SCHEDULE, IF ANY.  The BitPay Prepaid Mastercard is issued by Metropolitan Commercial Bank (Member FDIC) pursuant to a license from Mastercard International. “Metropolitan Commercial Bank” and “Metropolitan” are registered trademarks of Metropolitan Commercial Bank ©2014.<br><br>
-      Mastercard is a registered trademark and the circles design is a trademark of Mastercard International Incorporated.
-    </div>
+  </div>
 </ion-content>
 
   <ion-footer *ngIf="ready">
