@@ -87,8 +87,6 @@ import { sleep } from '../utils';
   (window as any).handleOpenURL_LastURL = url;
 };
 
-declare var AppboyPlugin: any;
-
 @Component({
   templateUrl: 'app.html',
   providers: [TouchIdProvider]
@@ -470,8 +468,11 @@ export class CopayApp {
       const user = await this.persistenceProvider.getBitPayIdUserInfo(
         Network[this.NETWORK]
       );
-      if (user && user.email) {
-        AppboyPlugin.setEmail(user.email);
+      const brazeUserSet = await this.persistenceProvider.getBrazeUserSet(
+        Network[this.NETWORK]
+      );
+      if (user && !brazeUserSet) {
+        this.bitpayIdProvider.setBrazeUser(user);
       }
     }
 
