@@ -47,12 +47,13 @@ export class PhonePage {
       phone: new FormControl('', Validators.requiredTrue),
       agreement: new FormControl(false, Validators.requiredTrue)
     });
-    if (this.platformProvider.isIOS) this.title = 'Enable Apple Pay?';
-    else if (this.platformProvider.isAndroid) this.title = 'Enable Google Pay?';
   }
 
   async ngOnInit() {
     this.cardConfig = this.navParams.get('cardConfig');
+    if (this.cardConfig.phoneRequired) this.title = 'Enter Phone';
+    else if (this.platformProvider.isIOS) this.title = 'Enable Apple Pay?';
+    else if (this.platformProvider.isAndroid) this.title = 'Enable Google Pay?';
     const {
       phone,
       phoneCountryInfo: { phoneCountryCode, countryIsoCode }

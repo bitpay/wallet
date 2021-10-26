@@ -2,7 +2,7 @@
   <div page-content>
     <div class="padding">
       <div class="sub-title">
-        <span translate
+        <span translate *ngIf="!cardConfig.phoneRequired"
           >If you would like to connect this card to
           <span *ngIf="platformProvider.isIOS">Apple Pay</span
           ><span *ngIf="platformProvider.isAndroid">Google Pay</span
@@ -10,6 +10,14 @@
             >Apple Pay or Google Pay</span
           >, please provide your phone number.</span
         >
+        <span translate *ngIf="cardConfig.phoneRequired"
+        >Please provide a phone number<span *ngIf="cardConfig.mobilePaymentsSupported"> to enable two-factor authentication and 
+        <span *ngIf="platformProvider.isIOS">Apple Pay</span
+        ><span *ngIf="platformProvider.isAndroid">Google Pay</span
+        ><span *ngIf="!platformProvider.isIOS && !platformProvider.isAndroid"
+          >contactless payments</span
+        ></span><span *ngIf="!cardConfig.mobilePaymentsSupported"> to activate this gift card</span>.</span
+      >
       </div>
       <form [formGroup]="phoneForm">
         <div class="phone-input">
@@ -37,9 +45,8 @@
           no-lines
         >
           <ion-label class="form__form-toggle__label">
-            {{'By giving my phone number, I give explicit consent to BitPay to
-            use it to connect this card to Apple Pay or Google Pay.' |
-            translate}}
+            <span translate>By giving my phone number, I give explicit consent to BitPay to
+              use it to activate this card<span translate *ngIf="cardConfig.mobilePaymentsSupported"> and connect it to Apple Pay or Google Pay</span>.</span>
             <span class="form__form__link" (click)="openPolicy()" translate>
               Privacy Notice</span
             >
@@ -55,9 +62,10 @@
         [disabled]="phoneForm.invalid"
         (click)="next()"
       >
-        {{'Enable' | translate}}
+        <span *ngIf="!cardConfig.phoneRequired">{{'Enable' | translate}}</span>
+        <span *ngIf="cardConfig.phoneRequired">{{'Continue' | translate}}</span>
       </button>
-      <div tappable class="no-thanks" (click)="next(true)">No thanks</div>
+      <div tappable class="no-thanks" (click)="next(true)" *ngIf="!cardConfig.phoneRequired">No thanks</div>
     </div>
   </div>
 </wide-header-page>

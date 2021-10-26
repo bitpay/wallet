@@ -80,9 +80,10 @@ export class BuyCardPage {
       cardName: this.cardConfig.name,
       currency: this.cardConfig.currency
     };
-    const page = this.cardConfig.mobilePaymentsSupported
-      ? PhonePage
-      : ConfirmCardPurchasePage;
+    const page =
+      this.cardConfig.phoneRequired || this.cardConfig.mobilePaymentsSupported
+        ? PhonePage
+        : ConfirmCardPurchasePage;
     this.nav.push(page, data);
   }
 

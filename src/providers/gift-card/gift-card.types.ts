@@ -56,6 +56,7 @@ export interface CommonCardConfig {
   minAmount?: number;
   maxAmount?: number;
   mobilePaymentsSupported?: boolean;
+  phoneRequired?: boolean;
   printRequired?: boolean;
   promotions?: GiftCardPromotion[];
   redeemButtonText?: string;

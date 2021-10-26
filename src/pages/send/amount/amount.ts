@@ -39,6 +39,7 @@ import { ConfirmPage } from '../confirm/confirm';
 
 import { TranslateService } from '@ngx-translate/core';
 import { CoinbaseWithdrawPage } from '../../integrations/coinbase/coinbase-withdraw/coinbase-withdraw';
+import { PhonePage } from '../../integrations/gift-cards/phone/phone';
 
 @Component({
   selector: 'page-amount',
@@ -171,6 +172,8 @@ export class AmountPage {
 
     this.requestingAmount =
       this.navParams.get('nextPage') === 'CustomAmountPage';
+    this.cardName = this.navParams.get('cardName');
+    this.cardConfig = this.navParams.get('cardConfig');
     this.nextView = this.getNextView();
 
     // BitPay Card ID or Wallet ID or Coinbase Account ID
@@ -178,9 +181,6 @@ export class AmountPage {
 
     // Use only with Coinbase Withdraw
     this.toWalletId = this.navParams.data.toWalletId;
-
-    this.cardName = this.navParams.get('cardName');
-    this.cardConfig = this.navParams.get('cardConfig');
   }
 
   async ionViewDidLoad() {
@@ -322,7 +322,9 @@ export class AmountPage {
         nextPage = BitPayCardTopUpPage;
         break;
       case 'ConfirmCardPurchasePage':
-        nextPage = ConfirmCardPurchasePage;
+        nextPage = this.cardConfig.phoneRequired
+          ? PhonePage
+          : ConfirmCardPurchasePage;
         break;
       case 'CustomAmountPage':
         nextPage = CustomAmountPage;
