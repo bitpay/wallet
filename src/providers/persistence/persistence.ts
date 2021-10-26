@@ -98,7 +98,8 @@ const Keys = {
   BITPAY_CARD_ORDER_STARTED: `bitPayCardOrderStarted`,
   BITPAY_SURVEY_CARD_DISMISSED: `bitPaySurveyCardDismissed`,
   ACCEPTED_SWAP_CRYPTO_DISCLAIMER: 'acceptedSwapCryptoDisclaimer',
-  CUSTOM_VIRTUAL_CARD_DESIGN: `customVirtualCardDesign`
+  CUSTOM_VIRTUAL_CARD_DESIGN: `customVirtualCardDesign`,
+  BRAZE_USER_SET: network => `brazeUserSet-${network}`
 };
 
 interface Storage {
@@ -1132,6 +1133,14 @@ export class PersistenceProvider {
 
   setCustomVirtualCardDesign(currency) {
     return this.storage.set(Keys.CUSTOM_VIRTUAL_CARD_DESIGN, currency);
+  }
+
+  getBrazeUserSet(network: Network) {
+    return this.storage.get(Keys.BRAZE_USER_SET(network));
+  }
+
+  setBrazeUser(network: Network) {
+    return this.storage.set(Keys.BRAZE_USER_SET(network), true);
   }
 }
 

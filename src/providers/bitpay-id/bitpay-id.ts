@@ -140,10 +140,6 @@ export class BitPayIdProvider {
                 incentiveLevelId
               } = data;
 
-              if (email) {
-                AppboyPlugin.setEmail(email);
-              }
-
               if (experiments && experiments.includes('NADebitCard')) {
                 this.persistenceProvider.setCardExperimentFlag('enabled');
                 this.events.publish('experimentUpdateStart');
@@ -154,6 +150,7 @@ export class BitPayIdProvider {
                   network,
                   token.data
                 ),
+                this.setBrazeUser(user),
                 this.persistenceProvider.setBitPayIdUserInfo(network, data),
                 this.persistenceProvider.setBitpayAccount(network, {
                   email,
@@ -218,6 +215,20 @@ export class BitPayIdProvider {
     const userInfo = await this.apiCall('getBasicInfo');
     const network = Network[this.getEnvironment().network];
     await this.persistenceProvider.setBitPayIdUserInfo(network, userInfo);
+  }
+
+  public async setBrazeUser(user: User) {
+    const {
+      data: { email, eid }
+    } = user;
+
+    AppboyPlugin.changeUser(eid);
+    AppboyPlugin.setEmail(email);
+
+    await this.persistenceProvider.setBrazeUser(
+      Network[this.getEnvironment().network]
+    );
+    this.logger.debug('Braze: user set');
   }
 
   public async unlockInvoice(invoiceId: string): Promise<string> {
