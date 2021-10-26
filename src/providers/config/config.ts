@@ -269,7 +269,7 @@ export class ConfigProvider {
       allowMultiplePrimaryWallets: false,
 
       legacyQrCode: {
-        show: false
+        show: true
       },
 
       theme: {
