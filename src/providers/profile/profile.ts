@@ -405,8 +405,7 @@ export class ProfileProvider {
       date = new Date(Number(groupBackupInfo.timestamp));
 
     this.logger.info(
-      `Binding wallet: ${wallet.id} - Backed up: ${!needsBackup} ${
-        date ? date : ''
+      `Binding wallet: ${wallet.id} - Backed up: ${!needsBackup} ${date ? date : ''
       } - Encrypted: ${wallet.isPrivKeyEncrypted} - Token: ${!!wallet
         .credentials.token}`
     );
@@ -468,7 +467,7 @@ export class ProfileProvider {
             return;
           }
           wallet.setNotificationsInterval(this.EXTENDED_UPDATE_PERIOD);
-          wallet.openWallet(() => {});
+          wallet.openWallet(() => { });
         }
       );
     }
@@ -1121,10 +1120,19 @@ export class ProfileProvider {
           }
           addressBook = data.addressBook;
         } catch (err) {
-          this.logger.error(err);
-          return reject(
-            this.translate.instant('Could not import. Check input file.')
-          );
+          if (err && err.message == 'Bad Key version') {
+            // Workaround for bad generated files. Fixed: https://github.com/bitpay/wallet/pull/11872
+            data.key.version = '1';
+            data.key.mnemonicHasPassphrase = false;
+            key = new Key({
+              seedType: 'object',
+              seedData: data.key
+            });
+          } else {
+            return reject(
+              this.translate.instant('Could not import. Check input file.')
+            );
+          }
         }
       } else {
         // old format ? root = credentials.
@@ -1278,7 +1286,7 @@ export class ProfileProvider {
     let disclaimerFlag;
     try {
       disclaimerFlag = await this.persistenceProvider.getCopayDisclaimerFlag();
-    } catch (error) {}
+    } catch (error) { }
     if (disclaimerFlag) {
       this.profile.disclaimerAccepted = true;
       return Promise.resolve();
