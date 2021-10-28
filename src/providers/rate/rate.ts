@@ -45,7 +45,7 @@ export class RateProvider {
     this.alternatives = {};
     for (const coin of this.currencyProvider.getAvailableCoins()) {
       this.rateServiceUrl[coin] = env.ratesAPI[coin];
-      this.rates[coin] = { USD: 1 };
+      this.rates[coin] = { USD: 0 };
       this.ratesAvailable[coin] = false;
     }
 
@@ -91,7 +91,7 @@ export class RateProvider {
                   this.alternatives[r.code] = { name: r.name };
                 }
               });
-              this.rates[coin] = !_.isEmpty(coinRates) ? coinRates : { USD: 1 };
+              this.rates[coin] = !_.isEmpty(coinRates) ? coinRates : { USD: 0 };
               this.ratesAvailable[coin] = true;
             });
             resolve();
