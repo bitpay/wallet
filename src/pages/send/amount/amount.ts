@@ -99,7 +99,7 @@ export class AmountPage {
   supportedFiatWarning: boolean;
 
   @ViewChild(Navbar) navBar: Navbar;
-  isDonation: boolean ;
+  isDonation: boolean;
   remaining: number;
   isShowReceiveLotus: boolean;
   receiveLotus: string;
@@ -427,14 +427,17 @@ export class AmountPage {
     return _.isNumber(expression) ? true : false;
   }
 
-  private handleReceiveLotus(result) {
+  private handleReceiveLotus(amountDonation) {
     this.receiveLotus = '';
-    this.isShowReceiveLotus = _.toNumber(result) >= _.toNumber(this.navParams.data.minMoneydonation) && this.navParams.data.remaining >= this.navParams.data.receiveLotus;
+    const minMoneydonation = this.fromSatToFiat(this.rateProvider.fromFiat(this.navParams.data.minMoneydonation, 'USD', 'xec'));
+    const remaining = this.navParams.data.remaining;
+    const receiveLotus = this.navParams.data.receiveLotus;
+    this.isShowReceiveLotus = amountDonation >= minMoneydonation && remaining >= receiveLotus;
     if (this.isShowReceiveLotus) {
-      this.receiveLotus = `You will receive ${this.navParams.data.receiveLotus} Lotus`;
-    } else if (_.toNumber(result) <= _.toNumber(this.navParams.data.minMoneydonation)  && result != 0 ){
+      this.receiveLotus = `You will receive ${receiveLotus} Lotus`;
+    } else if (amountDonation <= minMoneydonation && amountDonation != 0) {
       this.receiveLotus = `You will receive 0 Lotus`;
-    } else if (_.toNumber(result) >= _.toNumber(this.navParams.data.minMoneydonation) && this.navParams.data.remaining <= this.navParams.data.receiveLotus && this.navParams.data.remaining == 0){
+    } else if (amountDonation >= minMoneydonation && remaining <= receiveLotus && remaining == 0) {
       this.receiveLotus = `Due to high demand, we are running out of Lotus today and unable to give you back. Come back another day or proceed anyway.`;
     }
   }
@@ -447,7 +450,7 @@ export class AmountPage {
       : _.isNumber(result) && +result > 0;
 
     if (_.isNumber(result)) {
-     
+
       this.globalResult = this.isExpression(this.expression)
         ? '= ' + this.processResult(result)
         : '';
@@ -455,7 +458,7 @@ export class AmountPage {
       if (this.fromBuyCrypto) return;
 
       if (this.availableUnits[this.unitIndex].isFiat) {
-        let a = this.fromFiat(result);
+        let a = result === 0 ? 0 : this.fromFiat(result);
         if (a) {
           this.alternativeAmount = this.txFormatProvider.formatAmount(
             this.availableUnits[this.altUnitIndex].id,
@@ -463,13 +466,13 @@ export class AmountPage {
             true
           );
           this.checkAmountForBitpaycard(result);
-          if (this.isDonation) {
-              this.handleReceiveLotus(result);
-              this.changeDetectorRef.detectChanges();
-          }
         } else {
           this.alternativeAmount = result ? 'N/A' : null;
           this.allowSend = false;
+        }
+        if (this.isDonation) {
+          this.handleReceiveLotus(result);
+          this.changeDetectorRef.detectChanges();
         }
       } else {
         this.alternativeAmount = this.filterProvider.formatFiatAmount(
@@ -478,8 +481,8 @@ export class AmountPage {
         this.checkAmountForBitpaycard(this.toFiat(result));
 
         if (this.isDonation) {
-            this.handleReceiveLotus(this.toFiat(result));
-            this.changeDetectorRef.detectChanges();
+          this.handleReceiveLotus(this.toFiat(result));
+          this.changeDetectorRef.detectChanges();
         }
       }
     }
@@ -522,13 +525,32 @@ export class AmountPage {
       )
     )
       return undefined;
-      
-    const rateProvider =  this.rateProvider
-    .toFiat(
-      val * this.unitToSatoshi,
-      this.fiatCode,
-      coin || this.availableUnits[this.unitIndex].id
+
+    const rateProvider = this.rateProvider
+      .toFiat(
+        val * this.unitToSatoshi,
+        this.fiatCode,
+        coin || this.availableUnits[this.unitIndex].id
+      )
+    if (_.isNil(rateProvider)) return undefined;
+    return parseFloat(rateProvider.toFixed(2));
+  }
+
+  private fromSatToFiat(val: number, coin?: Coin): number {
+    if (
+      !this.rateProvider.getRate(
+        this.fiatCode,
+        coin || this.availableUnits[this.unitIndex].isFiat ? this.availableUnits[this.altUnitIndex].id : this.availableUnits[this.unitIndex].id
+      )
     )
+      return undefined;
+
+    const rateProvider = this.rateProvider
+      .toFiat(
+        val,
+        this.fiatCode,
+        coin || this.availableUnits[this.unitIndex].isFiat ? this.availableUnits[this.altUnitIndex].id : this.availableUnits[this.unitIndex].id
+      )
     if (_.isNil(rateProvider)) return undefined;
     return parseFloat(rateProvider.toFixed(2));
   }
@@ -640,7 +662,7 @@ export class AmountPage {
       };
     }
 
-    if (this.isDonation) return this.handleAmountDonation(data) ;
+    if (this.isDonation) return this.handleAmountDonation(data);
     this.useAsModal
       ? this.closeModal(data)
       : this.navCtrl.push(this.nextView, data);
@@ -654,8 +676,8 @@ export class AmountPage {
     const { unitToSatoshi, unitDecimals } = this.availableUnits[this.unitIndex]
       .isFiat
       ? this.currencyProvider.getPrecision(
-          this.availableUnits[this.altUnitIndex].id
-        )
+        this.availableUnits[this.altUnitIndex].id
+      )
       : this.currencyProvider.getPrecision(this.unit.toLowerCase() as Coin);
     this.unitToSatoshi = unitToSatoshi;
     this.satToUnit = 1 / this.unitToSatoshi;
@@ -663,9 +685,9 @@ export class AmountPage {
     this.processAmount();
     this.logger.debug(
       'Update unit coin @amount unit:' +
-        this.unit +
-        ' alternativeUnit:' +
-        this.alternativeUnit
+      this.unit +
+      ' alternativeUnit:' +
+      this.alternativeUnit
     );
   }
 
@@ -693,6 +715,7 @@ export class AmountPage {
     this.resetValues();
 
     this.zone.run(() => {
+      this.processAmount();
       this.updateUnitUI();
       this.changeDetectorRef.detectChanges();
     });
@@ -716,7 +739,7 @@ export class AmountPage {
     this.unit = this.quoteForm.value.altCurrency;
   }
 
-  getColorRemaining(){
+  getColorRemaining() {
     return 'orange';
   }
 }
