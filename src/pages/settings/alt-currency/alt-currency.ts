@@ -83,7 +83,7 @@ export class AltCurrencyPage {
     this.rate
       .whenRatesAvailable('btc')
       .then(() => {
-        this.completeAlternativeList = this.rate.listAlternatives(true);
+        this.completeAlternativeList = this.rate.listAlternatives(true).filter(cur => ['AUD', 'USD'].includes(cur.isoCode));
         let idx = _.keyBy(this.unusedCurrencyList, 'isoCode');
         let idx2 = _.keyBy(this.lastUsedAltCurrencyList, 'isoCode');
 
