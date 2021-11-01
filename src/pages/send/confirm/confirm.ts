@@ -1858,8 +1858,7 @@ export class ConfirmPage {
       this.tx.coin === 'xrp' ||
       this.tx.coin === 'doge' ||
       this.tx.coin === 'ltc' ||
-      this.usingMerchantFee ||
-      this.tx.speedUpTxInfo
+      this.usingMerchantFee
     )
       return;
 
