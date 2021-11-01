@@ -239,9 +239,10 @@ export class IncomingDataProvider {
   private handleLotusUri(data: string, redirParams?: RedirParams): void {
     this.logger.debug('Incoming-data: Lotus URI');
     let amountFromRedirParams =
-      redirParams && redirParams.amount ? redirParams.amount : '';
+    redirParams && redirParams.amount ? redirParams.amount : '';
     const coin = Coin.XPI;
-    let parsed = this.bwcProvider.getBitcoreXpi().URI(data);
+    const bitcoreXpi  : any = this.bwcProvider.getBitcoreXpi();
+    let parsed = bitcoreXpi.URI(data);
     let address = parsed.address ? parsed.address.toString() : '';
 
     // keep address in original format
