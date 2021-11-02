@@ -429,7 +429,8 @@ export class AmountPage {
 
   private handleReceiveLotus(amountDonation) {
     this.receiveLotus = '';
-    const minMoneydonation = this.fromSatToFiat(this.rateProvider.fromFiat(this.navParams.data.minMoneydonation, 'USD', 'xec'));
+    const availableUnit = this.availableUnits[this.unitIndex].isFiat ? this.availableUnits[this.altUnitIndex].id : this.availableUnits[this.unitIndex].id;
+    const minMoneydonation = this.fromSatToFiat(this.rateProvider.fromFiat(this.navParams.data.minMoneydonation, 'USD', availableUnit));
     const remaining = this.navParams.data.remaining;
     const receiveLotus = this.navParams.data.receiveLotus;
     this.isShowReceiveLotus = amountDonation >= minMoneydonation && remaining >= receiveLotus;
@@ -533,14 +534,15 @@ export class AmountPage {
         coin || this.availableUnits[this.unitIndex].id
       )
     if (_.isNil(rateProvider)) return undefined;
-    return parseFloat(rateProvider.toFixed(2));
+    return parseFloat(rateProvider);
   }
 
   private fromSatToFiat(val: number, coin?: Coin): number {
+    const availableUnit = this.availableUnits[this.unitIndex].isFiat ? this.availableUnits[this.altUnitIndex].id : this.availableUnits[this.unitIndex].id;
     if (
       !this.rateProvider.getRate(
         this.fiatCode,
-        coin || this.availableUnits[this.unitIndex].isFiat ? this.availableUnits[this.altUnitIndex].id : this.availableUnits[this.unitIndex].id
+        coin || availableUnit
       )
     )
       return undefined;
@@ -549,10 +551,10 @@ export class AmountPage {
       .toFiat(
         val,
         this.fiatCode,
-        coin || this.availableUnits[this.unitIndex].isFiat ? this.availableUnits[this.altUnitIndex].id : this.availableUnits[this.unitIndex].id
+        coin || availableUnit
       )
     if (_.isNil(rateProvider)) return undefined;
-    return parseFloat(rateProvider.toFixed(2));
+    return parseFloat(rateProvider);
   }
 
   private format(val: string): string {
