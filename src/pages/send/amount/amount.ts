@@ -534,7 +534,7 @@ export class AmountPage {
         coin || this.availableUnits[this.unitIndex].id
       )
     if (_.isNil(rateProvider)) return undefined;
-    return parseFloat(rateProvider);
+    return parseFloat(rateProvider.toString());
   }
 
   private fromSatToFiat(val: number, coin?: Coin): number {
@@ -554,7 +554,7 @@ export class AmountPage {
         coin || availableUnit
       )
     if (_.isNil(rateProvider)) return undefined;
-    return parseFloat(rateProvider);
+    return parseFloat(rateProvider.toString());
   }
 
   private format(val: string): string {
