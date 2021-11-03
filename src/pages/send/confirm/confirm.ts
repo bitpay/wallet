@@ -849,6 +849,11 @@ export class ConfirmPage {
         if (speedUpTxInfo) {
           this.logger.debug('Speed Up info', speedUpTxInfo);
 
+          if (wallet.coin === 'btc') {
+            const feeRate = speedUpTxInfo.feeRate;
+            tx.feeRate = feeRate.substr(0, feeRate.indexOf(' ')) * 1000;
+          }
+
           if (speedUpTxInfo.amount <= 0) {
             this.showErrorInfoSheet(
               this.translate.instant('Not enough funds for fee')
@@ -1858,17 +1863,16 @@ export class ConfirmPage {
       this.tx.coin === 'xrp' ||
       this.tx.coin === 'doge' ||
       this.tx.coin === 'ltc' ||
-      this.usingMerchantFee ||
-      this.tx.speedUpTxInfo
+      this.usingMerchantFee
     )
       return;
-
     const txObject = {
       network: this.tx.network,
       coin: this.tx.coin,
       feeLevel: this.tx.feeLevel,
       customFeePerKB: this.usingCustomFee ? this.tx.feeRate : undefined,
-      feePerSatByte: this.usingCustomFee ? this.tx.feeRate / 1000 : undefined
+      feePerSatByte: this.usingCustomFee ? this.tx.feeRate / 1000 : undefined,
+      isSpeedUpTx: this.isSpeedUpTx
     };
 
     const chooseFeeLevelModal = this.modalCtrl.create(
