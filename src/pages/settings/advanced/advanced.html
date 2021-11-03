@@ -18,6 +18,18 @@
           </div>
         </div>
       </label-tip>
+
+      <ion-item class="with-label no-border">
+        <ion-label>{{ 'Customize nonce' | translate }}</ion-label>
+        <ion-toggle [(ngModel)]="showCustomizeNonce" (ionChange)="showCustomizeNonceChange()"></ion-toggle>
+      </ion-item>
+      <label-tip type="info" header="no-header">
+        <div label-tip-body>
+          <div translate>
+            If enabled, the transaction nonce could be changed on the confirm view. This is an advanced feature, use cautiously.
+          </div>
+        </div>
+      </label-tip>
     </ion-list>
     <ion-list class="settings-list bp-list">
       <button ion-item *ngIf="oldProfileAvailable && wallets && wallets[0]" class="with-label no-border" (click)="openWalletRecoveryPage()" translate>
