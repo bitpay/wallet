@@ -619,10 +619,7 @@ export class CopayApp {
     }
 
     // Wallet Connect
-    if (
-      this.appProvider.info._enabledExtensions.walletConnect &&
-      !this.platformProvider.isMacApp()
-    ) {
+    if (this.appProvider.info._enabledExtensions.walletConnect) {
       this.walletConnectProvider.register();
       this.persistenceProvider.getWalletConnect().then(walletConnectData => {
         this.walletConnectProvider.retrieveWalletConnector(walletConnectData);
