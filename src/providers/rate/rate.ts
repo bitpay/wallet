@@ -120,7 +120,7 @@ export class RateProvider {
     });
   }
 
-  public getRate(code: string, chain?: string, opts?: { rates? }): number {
+  public getRate(code: string, chain?: string, opts?: { rates?}): number {
     const customRate =
       opts && opts.rates && opts.rates[chain] && opts.rates[chain][code];
     if (customRate) return customRate;
@@ -132,10 +132,9 @@ export class RateProvider {
       this.rates['btc']['USD'] &&
       this.rates['btc']['USD'] > 0
     ) {
-      const newRate = +(
+      const newRate =
         (this.rates[chain]['USD'] * this.rates['btc'][code]) /
         this.rates['btc']['USD']
-      ).toFixed(2);
       return newRate;
     }
     this.logger.warn(
@@ -164,7 +163,7 @@ export class RateProvider {
     satoshis: number,
     code: string,
     chain,
-    opts?: { customRate?: number; rates? }
+    opts?: { customRate?: number; rates?}
   ): number {
     if (!this.isCoinAvailable(chain)) {
       return null;
@@ -182,7 +181,7 @@ export class RateProvider {
     amount: number,
     code: string,
     chain,
-    opts?: { rates? }
+    opts?: { rates?}
   ): number {
     if (!this.isCoinAvailable(chain)) {
       return null;
