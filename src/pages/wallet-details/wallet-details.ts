@@ -575,6 +575,15 @@ export class WalletDetailsPage {
       return false;
 
     if (
+      (this.wallet.coin === 'eth' ||
+        this.currencyProvider.isERCToken(this.wallet.coin)) &&
+      tx.customData &&
+      tx.customData.service
+    ) {
+      return false;
+    }
+
+    if (
       (this.wallet.coin === 'eth' && tx.amount !== 0) ||
       this.currencyProvider.isERCToken(this.wallet.coin)
     ) {

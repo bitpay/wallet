@@ -1227,6 +1227,10 @@ export class ConfirmPage {
         txp.customData = {
           service: 'coinbase'
         };
+      } else if (this.walletConnectRequestId) {
+        txp.customData = {
+          service: 'walletConnect'
+        };
       }
 
       if (tx.tokenAddress) {
