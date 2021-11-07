@@ -51,7 +51,8 @@ export class WalletsPage {
   public coinbaseData: object = {};
   isDonation;
   donationSupportCoins = [];
-
+  isShowCreateNewWallet = false;
+  
   constructor(
     public http: HttpClient,
     private plt: Platform,
@@ -102,11 +103,8 @@ export class WalletsPage {
       })
       walletsGroup.push(wallet);
     })
+    this.isShowCreateNewWallet = _.isEmpty(walletsGroup);
     return walletsGroup;
-  }
-
-  isEmptyWalletDonation(walletGroups: any) {
-    return walletGroups.length <= 1 && _.isEmpty(walletGroups[0]);
   }
 
   private async walletAudienceEvents() {

@@ -33,7 +33,7 @@
       <create-new-wallet *ngIf="!walletsGroups || !walletsGroups[0]"></create-new-wallet>
     </ng-container>
     <ng-template #donation>
-      <div *ngIf="isEmptyWalletDonation(walletsGroups)">
+      <div *ngIf="isShowCreateNewWallet">
         <create-new-wallet></create-new-wallet>
       </div>
     </ng-template> 
