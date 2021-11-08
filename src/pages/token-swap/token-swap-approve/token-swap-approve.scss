@@ -46,6 +46,16 @@ page-token-swap-approve {
       margin-bottom: 10px;
     }
   }
+  .check {
+    font-size: 22px;
+    margin: 0px 0px 0px 5px !important;
+    &.success {
+      color: color($colors, success);
+    }
+    &.fail {
+      color: color($colors, danger);
+    }
+  }
   .rate {
     width: 100%;
     color: color($colors, light-grey);
