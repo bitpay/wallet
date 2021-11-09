@@ -894,8 +894,20 @@ export class ConfirmPage {
               speedUpTxInfo.fee = speedUpTxFee;
               this.showWarningSheet(wallet, speedUpTxInfo);
               return this.getInput(wallet).then(input => {
+                if (!input) {
+                  const message = this.translate.instant(
+                    'Transaction not found. Probably invalid.'
+                  );
+                  throw message;
+                }
                 tx.speedUpTxInfo.input = input;
                 tx.amount = tx.speedUpTxInfo.input.satoshis - speedUpTxInfo.fee;
+                if (tx.amount < 0) {
+                  const message = this.translate.instant(
+                    'Insufficient funds for paying speed up fee'
+                  );
+                  throw message;
+                }
                 this.tx.amount = tx.amount;
                 this.getAmountDetails();
                 return this.buildTxp(tx, wallet, opts);
@@ -1516,12 +1528,6 @@ export class ConfirmPage {
       let input;
       _.forEach(utxos, (u, i) => {
         if (u.txid === this.navParams.data.txid) {
-          if (u.confirmations <= 0)
-            throw new Error(
-              this.translate.instant(
-                'Some inputs you want to speed up have no confirmations. Please wait until they are confirmed and try again.'
-              )
-            );
           if (u.amount > biggestUtxo) {
             biggestUtxo = u.amount;
             input = utxos[i];
