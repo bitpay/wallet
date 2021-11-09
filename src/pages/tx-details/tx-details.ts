@@ -419,5 +419,6 @@ export class TxDetailsModal {
       useSendMax: false,
       inputs
     });
+    this.close();
   }
 }
