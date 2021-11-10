@@ -554,6 +554,15 @@ export class ProfileProvider {
         wallet.n == 1 &&
         wallet.credentials.addressType == 'P2PKH' &&
         derivationStrategy == 'BIP44' &&
+        chain == 'rsk' &&
+        coinCode == "137'"
+      ) {
+        return true;
+      }
+      if (
+        wallet.n == 1 &&
+        wallet.credentials.addressType == 'P2PKH' &&
+        derivationStrategy == 'BIP44' &&
         chain == 'xrp' &&
         coinCode == "144'"
       ) {
@@ -1825,7 +1834,7 @@ export class ProfileProvider {
   public createMultipleWallets(coins: string[], tokens = []): Promise<any> {
     return new Promise((resolve, reject) => {
       if (tokens && tokens.length && coins.indexOf('eth') < 0) {
-        reject('No ethereum wallets for tokens');
+        reject('No ethereum wallets for tokens'); // TODO: add RSK
       }
 
       const defaultOpts = this.getDefaultWalletOpts(coins[0]);

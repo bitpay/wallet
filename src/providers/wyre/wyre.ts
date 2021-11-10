@@ -38,7 +38,8 @@ export class WyreProvider {
       'pax',
       'busd',
       'dai',
-      'wbtc'
+      'wbtc',
+      'rbtc'
     ];
     this.fiatAmountLimits = {
       min: 50,

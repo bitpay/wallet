@@ -110,6 +110,7 @@
       <variable name="SEVENTH_URL_SCHEME" value="wc" />
       <variable name="EIGHTH_URL_SCHEME" value="dogecoin" />
       <variable name="NINTH_URL_SCHEME" value="litecoin" />
+      <variable name="TENTH_URL_SCHEME" value="rsk" />
       <variable name="ANDROID_SCHEME" value="" />
       <variable name="ANDROID_HOST" value="" />
       <variable name="ANDROID_PATHPREFIX" value="" />

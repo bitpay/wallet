@@ -489,5 +489,79 @@ export const availableCoins: CoinsMap<CoinOpts> = {
       backgroundColor: '#f7921a',
       gradientBackgroundColor: '#f7921a'
     }
+  },
+  rbtc: {
+    name: 'Smart Bitcoin',
+    chain: 'RSK',
+    coin: 'rbtc',
+    unitInfo: {
+      unitName: 'RBTC',
+      unitToSatoshi: 1e18,
+      unitDecimals: 18,
+      unitCode: 'rbtc'
+    },
+    properties: {
+      hasMultiSig: false, // TODO: add this feature
+      hasMultiSend: false,
+      isUtxo: false,
+      isERCToken: false,
+      isStableCoin: false,
+      singleAddress: true
+    },
+    paymentInfo: {
+      paymentCode: 'EIP681',
+      protocolPrefix: { livenet: 'rsk', testnet: 'rsk' },
+      ratesApi: 'https://bws.bitpay.com/bws/api/v3/fiatrates/btc',
+      blockExplorerUrls: 'explorer.rsk.co/',
+      blockExplorerUrlsTestnet: 'explorer.testet.rsk.co/'
+    },
+    feeInfo: {
+      feeUnit: 'Gwei',
+      feeUnitAmount: 1e9,
+      blockTime: 0.53,
+      maxMerchantFee: 'urgent'
+    },
+    theme: {
+      coinColor: '#41d434',
+      backgroundColor: '#1e90ff',
+      gradientBackgroundColor: '#1e90ff'
+    }
+  },
+  rsk: { // This entry is because exchange-rates assumes that chain and coin are the same and asks for theme to 'rsk'
+    name: 'Smart Bitcoin',
+    chain: 'RSK',
+    coin: 'rbtc',
+    unitInfo: {
+      unitName: 'RBTC',
+      unitToSatoshi: 1e18,
+      unitDecimals: 18,
+      unitCode: 'rbtc'
+    },
+    properties: {
+      hasMultiSig: false, // TODO: add this feature
+      hasMultiSend: false,
+      isUtxo: false,
+      isERCToken: false,
+      isStableCoin: false,
+      singleAddress: true
+    },
+    paymentInfo: {
+      paymentCode: 'EIP681',
+      protocolPrefix: { livenet: 'rsk', testnet: 'rsk' },
+      ratesApi: 'https://bws.bitpay.com/bws/api/v3/fiatrates/btc',
+      blockExplorerUrls: 'explorer.rsk.co/',
+      blockExplorerUrlsTestnet: 'explorer.testet.rsk.co/'
+    },
+    feeInfo: {
+      feeUnit: 'Gwei',
+      feeUnitAmount: 1e9,
+      blockTime: 0.53,
+      maxMerchantFee: 'urgent'
+    },
+    theme: {
+      coinColor: '#41d434',
+      backgroundColor: '#1e90ff',
+      gradientBackgroundColor: '#1e90ff'
+    }
   }
 };

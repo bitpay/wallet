@@ -83,7 +83,20 @@ export class AddressProvider {
                 network = this.bitcoreLtc.Address(address).network.name;
                 return { coin: 'ltc', network };
               } catch (e) {
-                return null;
+                try {
+                  const isValidRSKAddress = this.core.Validation.validateAddress(
+                    'RSK',
+                    network,
+                    address
+                  );
+                  if (isValidRSKAddress) {
+                    return { coin: 'rbtc', network };
+                  } else {
+                    throw isValidRSKAddress;
+                  }
+                } catch (e) {
+                  return null;
+                }
               }
             }
           }

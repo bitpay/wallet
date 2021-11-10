@@ -90,7 +90,7 @@ export class IncomingDataProvider {
 
   private isValidPayPro(data: string): boolean {
     data = this.sanitizeUri(data);
-    return !!/^(bitcoin|bitcoincash|bchtest|ethereum|ripple|dogecoin|litecoin)?:\?r=[\w+]/.exec(
+    return !!/^(bitcoin|bitcoincash|bchtest|ethereum|ripple|dogecoin|litecoin|rsk)?:\?r=[\w+]/.exec(
       data
     );
   }
@@ -142,6 +142,11 @@ export class IncomingDataProvider {
   private isValidLitecoinUri(data: string): boolean {
     data = this.sanitizeUri(data);
     return !!this.bwcProvider.getBitcoreLtc().URI.isValid(data);
+  }
+
+  private isValidRSKUri(data: string): boolean {
+    data = this.sanitizeUri(data);
+    return !!this.bwcProvider.getCore().Validation.validateUri('RSK', data);
   }
 
   private isValidWalletConnectUri(data: string): boolean {
@@ -212,6 +217,12 @@ export class IncomingDataProvider {
       this.bwcProvider.getBitcoreLtc().Address.isValid(data, 'livenet') ||
       this.bwcProvider.getBitcoreLtc().Address.isValid(data, 'testnet')
     );
+  }
+
+  private isValidRSKAddress(data: string): boolean {
+    return !!this.bwcProvider
+      .getCore()
+      .Validation.validateAddress('RSK', 'livenet', data);
   }
 
   private isValidCoinbaseUri(data: string): boolean {
@@ -524,6 +535,31 @@ export class IncomingDataProvider {
     } else this.goSend(address, amount, message, coin);
   }
 
+  private handleRSKUri(data: string, redirParams?: RedirParams): void {
+    this.logger.debug('Incoming-data: RSK URI');
+    let amountFromRedirParams =
+      redirParams && redirParams.amount ? redirParams.amount : '';
+    const coin = 'rbtc';
+    const value = /[\?\&]value=(\d+([\,\.]\d+)?)/i;
+    const gasPrice = /[\?\&]gasPrice=(\d+([\,\.]\d+)?)/i;
+    let parsedAmount;
+    let requiredFeeParam;
+    if (value.exec(data)) {
+      parsedAmount = value.exec(data)[1];
+    }
+    if (gasPrice.exec(data)) {
+      requiredFeeParam = gasPrice.exec(data)[1];
+    }
+    const address = this.extractAddress(data);
+    const message = '';
+    const amount = parsedAmount || amountFromRedirParams;
+    if (amount) {
+      this.goSend(address, amount, message, coin, requiredFeeParam);
+    } else {
+      this.handleRSKAddress(address, redirParams);
+    }
+  }
+
   private handleWalletConnectUri(
     uri: string,
     redirParams: RedirParams = {}
@@ -662,6 +698,22 @@ export class IncomingDataProvider {
       this.showMenu({
         data,
         type: 'rippleAddress',
+        coin
+      });
+    } else if (redirParams && redirParams.amount) {
+      this.goSend(data, redirParams.amount, '', coin);
+    } else {
+      this.goToAmountPage(data, coin);
+    }
+  }
+
+  private handleRSKAddress(data: string, redirParams?: RedirParams): void {
+    this.logger.debug('Incoming-data: RSK address');
+    const coin = 'rbtc';
+    if (redirParams && redirParams.activePage === 'ScanPage') {
+      this.showMenu({
+        data,
+        type: 'rskAddress',
         coin
       });
     } else if (redirParams && redirParams.amount) {
@@ -971,6 +1023,11 @@ export class IncomingDataProvider {
       this.handleLitecoinUri(data, redirParams);
       return true;
 
+      // RSK URI
+    } else if (this.isValidRSKUri(data)) {
+      this.handleRSKUri(data, redirParams);
+      return true;
+
       // Wallet Connect URI
     } else if (this.isValidWalletConnectUri(data)) {
       if (data.includes('?uri')) {
@@ -1017,6 +1074,11 @@ export class IncomingDataProvider {
       // Plain Address (Litecoin)
     } else if (this.isValidLitecoinAddress(data)) {
       this.handlePlainLitecoinAddress(data, redirParams);
+      return true;
+
+      // Address (RSK)
+    } else if (this.isValidRSKAddress(data)) {
+      this.handleRSKAddress(data, redirParams);
       return true;
 
       // Coinbase
@@ -1233,6 +1295,14 @@ export class IncomingDataProvider {
         type: 'LitecoinUri',
         title: 'Litecoin URI'
       };
+      // RSK URI
+    } else if (this.isValidRSKUri(data)) {
+      return {
+        data,
+        type: 'RSKUri',
+        title: 'RSK URI'
+      };
+
       // Wallet Connect URI
     } else if (this.isValidWalletConnectUri(data)) {
       return {
@@ -1303,6 +1373,14 @@ export class IncomingDataProvider {
         data,
         type: 'LitecoinAddress',
         title: this.translate.instant('Litecoin Address')
+      };
+
+      // Plain Address (RSK)
+    } else if (this.isValidRSKAddress(data)) {
+      return {
+        data,
+        type: 'RSKAddress',
+        title: this.translate.instant('RSK Address')
       };
 
       // Coinbase

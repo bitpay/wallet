@@ -13,6 +13,8 @@ export class DerivationPathHelperProvider {
   public defaultMultisigBCH: string;
   public defaultMultisigDOGE: string;
   public defaultMultisigLTC: string;
+  public defaultRBTC: string;
+  public defaultRSK: string;
 
   public constructor() {
     this.defaultBTC = "m/44'/0'/0'";
@@ -26,6 +28,8 @@ export class DerivationPathHelperProvider {
     this.defaultMultisigDOGE = "m/48'/3'/0'";
     this.defaultMultisigLTC = "m/48'/2'/0'";
     this.defaultTestnet = "m/44'/1'/0'";
+    this.defaultRBTC = "m/44'/137'/0'";
+    this.defaultRSK = "m/44'/137'/0'";
   }
 
   public parsePath(path: string) {
@@ -84,6 +88,9 @@ export class DerivationPathHelperProvider {
       case "2'": // for LTC
         networkName = 'livenet';
         break;
+      case "137'": // for RSK
+        networkName = 'livenet';
+        break;
     }
     return networkName;
   }
@@ -124,6 +131,9 @@ export class DerivationPathHelperProvider {
         break;
       case 'ltc':
         isValid = ["2'", "1'"].indexOf(coinCode) > -1;
+        break;
+      case 'rsk':
+        isValid = ["137'", "0'", "1'"].indexOf(coinCode) > -1;
         break;
     }
 

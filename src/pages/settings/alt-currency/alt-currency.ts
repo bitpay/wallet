@@ -75,6 +75,9 @@ export class AltCurrencyPage {
       },
       {
         isoCode: 'WBTC'
+      },
+      {
+        isoCode: 'RBTC'
       }
     ];
   }

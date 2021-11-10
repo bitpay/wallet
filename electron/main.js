@@ -141,6 +141,8 @@ if (!app.isDefaultProtocolClient('dogecoin'))
   app.setAsDefaultProtocolClient('dogecoin');
 if (!app.isDefaultProtocolClient('litecoin'))
   app.setAsDefaultProtocolClient('litecoin');
+  if (!app.isDefaultProtocolClient('rsk'))
+  app.setAsDefaultProtocolClient('rsk');
 if (!app.isDefaultProtocolClient(appConfig.name))
   app.setAsDefaultProtocolClient(appConfig.name);
 
