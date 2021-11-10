@@ -6,17 +6,17 @@
           >If you would like to connect this card to
           <span *ngIf="platformProvider.isIOS">Apple Pay</span
           ><span *ngIf="platformProvider.isAndroid">Google Pay</span
-          ><span *ngIf="!platformProvider.isIOS && !platformProvider.isAndroid"
+          ><span *ngIf="!platformProvider.isIOS && !platformProvider.isAndroid" translate
             >Apple Pay or Google Pay</span
           >, please provide your phone number.</span
         >
         <span translate *ngIf="cardConfig.phoneRequired"
-        >Please provide a phone number<span *ngIf="cardConfig.mobilePaymentsSupported"> to enable two-factor authentication and 
+        >Please provide a phone number<span *ngIf="cardConfig.mobilePaymentsSupported" translate> to enable two-factor authentication and 
         <span *ngIf="platformProvider.isIOS">Apple Pay</span
         ><span *ngIf="platformProvider.isAndroid">Google Pay</span
-        ><span *ngIf="!platformProvider.isIOS && !platformProvider.isAndroid"
+        ><span *ngIf="!platformProvider.isIOS && !platformProvider.isAndroid" translate
           >contactless payments</span
-        ></span><span *ngIf="!cardConfig.mobilePaymentsSupported"> to activate this gift card</span>.</span
+        ></span><span *ngIf="!cardConfig.mobilePaymentsSupported" translate> to activate this gift card</span>.</span
       >
       </div>
       <form [formGroup]="phoneForm">
@@ -65,7 +65,7 @@
         <span *ngIf="!cardConfig.phoneRequired">{{'Enable' | translate}}</span>
         <span *ngIf="cardConfig.phoneRequired">{{'Continue' | translate}}</span>
       </button>
-      <div tappable class="no-thanks" (click)="next(true)" *ngIf="!cardConfig.phoneRequired">No thanks</div>
+      <div tappable class="no-thanks" (click)="next(true)" *ngIf="!cardConfig.phoneRequired">{{'No thanks' | translate}}</div>
     </div>
   </div>
 </wide-header-page>

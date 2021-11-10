@@ -5,6 +5,7 @@ import {
   ValidatorFn,
   Validators
 } from '@angular/forms';
+import { TranslateService } from '@ngx-translate/core';
 import { countries } from 'countries-list';
 import { NavController, NavParams } from 'ionic-angular';
 
@@ -41,7 +42,8 @@ export class PhonePage {
     private nav: NavController,
     private navParams: NavParams,
     private locationProvider: LocationProvider,
-    public platformProvider: PlatformProvider
+    public platformProvider: PlatformProvider,
+    private translate: TranslateService
   ) {
     this.phoneForm = new FormGroup({
       phone: new FormControl('', Validators.requiredTrue),
@@ -51,9 +53,12 @@ export class PhonePage {
 
   async ngOnInit() {
     this.cardConfig = this.navParams.get('cardConfig');
-    if (this.cardConfig.phoneRequired) this.title = 'Enter Phone';
-    else if (this.platformProvider.isIOS) this.title = 'Enable Apple Pay?';
-    else if (this.platformProvider.isAndroid) this.title = 'Enable Google Pay?';
+    if (this.cardConfig.phoneRequired)
+      this.title = this.translate.instant('Enter Phone');
+    else if (this.platformProvider.isIOS)
+      this.title = this.translate.instant('Enable Apple Pay?');
+    else if (this.platformProvider.isAndroid)
+      this.title = this.translate.instant('Enable Google Pay?');
     const {
       phone,
       phoneCountryInfo: { phoneCountryCode, countryIsoCode }
