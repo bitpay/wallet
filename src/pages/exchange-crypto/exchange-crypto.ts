@@ -667,6 +667,35 @@ export class ExchangeCryptoPage {
     } else {
       this.toToken = null;
     }
+
+    const isERCToken = this.currencyProvider.isERCToken(
+      this.toWalletSelected.coin
+    );
+
+    if (
+      isERCToken ||
+      (this.toWalletSelected.coin == 'eth' &&
+        selectedToken &&
+        selectedToken.symbol)
+    ) {
+      const coin = isERCToken
+        ? this.toWalletSelected.coin.toUpperCase()
+        : selectedToken.symbol;
+
+      const linkedEthWalletName = isERCToken
+        ? this.toWalletSelected.linkedEthWalletName
+        : this.toWalletSelected.name;
+
+      const infoSheet = this.actionSheetProvider.createInfoSheet(
+        'erc20-eth-fee-info',
+        {
+          coin,
+          linkedEthWalletName
+        }
+      );
+      infoSheet.present();
+    }
+
     this.setExchangeToUse();
   }
 
