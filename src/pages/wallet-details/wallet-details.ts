@@ -442,7 +442,11 @@ export class WalletDetailsPage {
   };
 
   public itemTapped(tx) {
-    if (tx.hasUnconfirmedInputs) {
+    if (
+      tx.hasUnconfirmedInputs &&
+      (tx.action === 'received' || tx.action === 'moved') &&
+      this.wallet.coin == 'btc'
+    ) {
       const infoSheet = this.actionSheetProvider.createInfoSheet(
         'unconfirmed-inputs'
       );
@@ -450,7 +454,11 @@ export class WalletDetailsPage {
       infoSheet.onDidDismiss(() => {
         this.goToTxDetails(tx);
       });
-    } else if (tx.isRBF) {
+    } else if (
+      tx.isRBF &&
+      tx.action === 'received' &&
+      this.wallet.coin == 'btc'
+    ) {
       const infoSheet = this.actionSheetProvider.createInfoSheet('rbf-tx');
       infoSheet.present();
       infoSheet.onDidDismiss(option => {
@@ -596,11 +604,12 @@ export class WalletDetailsPage {
       const currentTime = moment();
       const txTime = moment(tx.time * 1000);
 
-      // Can speed up the btc tx after 4 hours without confirming
+      // Can speed up the btc tx after 1 hours without confirming
       return (
-        currentTime.diff(txTime, 'hours') >= 4 &&
+        currentTime.diff(txTime, 'hours') >= 1 &&
         this.isUnconfirmed(tx) &&
-        tx.action === 'received'
+        tx.action === 'received' &&
+        this.wallet.coin == 'btc'
       );
     }
   }

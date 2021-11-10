@@ -15,6 +15,7 @@ export interface Config {
     requiredCopayers: number;
     totalCopayers: number;
     spendUnconfirmed: boolean;
+    showEnableRBF: boolean;
     reconnectDelay: number;
     idleDurationMin: number;
     settings: {
@@ -165,6 +166,7 @@ export class ConfigProvider {
         requiredCopayers: 2,
         totalCopayers: 3,
         spendUnconfirmed: false,
+        showEnableRBF: false,
         reconnectDelay: 5000,
         idleDurationMin: 4,
         settings: {
@@ -322,11 +324,15 @@ export class ConfigProvider {
 
   private logImportantConfig(config: Config): void {
     const spendUnconfirmed = config.wallet.spendUnconfirmed;
+    const showEnableRBF = config.wallet.showEnableRBF;
+
     const lockMethod = config && config.lock ? config.lock.method : null;
 
     this.logger.debug(
       'Config | spendUnconfirmed: ' +
         spendUnconfirmed +
+        ' enableBRF: ' +
+        showEnableRBF +
         ' - lockMethod: ' +
         lockMethod
     );

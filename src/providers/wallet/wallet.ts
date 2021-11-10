@@ -62,6 +62,8 @@ export interface TransactionProposal {
   amount: any;
   from: string;
   nonce?: number;
+  enableRBF?: boolean;
+  replaceTxByFee?: boolean;
   toAddress: any;
   outputs: Array<{
     toAddress: any;

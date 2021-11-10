@@ -22,6 +22,8 @@ import { TxConfirmNotificationProvider } from '../../providers/tx-confirm-notifi
 import { TxFormatProvider } from '../../providers/tx-format/tx-format';
 import { WalletProvider } from '../../providers/wallet/wallet';
 
+// Pages
+import { ConfirmPage } from '../send/confirm/confirm';
 @Component({
   selector: 'page-tx-details',
   templateUrl: 'tx-details.html'
@@ -388,5 +390,35 @@ export class TxDetailsModal {
 
   close() {
     this.viewCtrl.dismiss();
+  }
+
+  private async getTransaction(): Promise<any> {
+    try {
+      const txp = await this.walletProvider.getTxp(
+        this.wallet,
+        this.btx.proposalId
+      );
+      return txp;
+    } catch (error) {
+      this.logger.warn(error);
+    }
+  }
+
+  public async goToConfirm() {
+    const txp = await this.getTransaction();
+    const amount = this.btx.amount;
+    const toAddress = this.btx.outputs[0].address;
+    const inputs = txp.inputs;
+    this.navCtrl.push(ConfirmPage, {
+      walletId: this.wallet.credentials.walletId,
+      fromReplaceByFee: true,
+      amount,
+      toAddress,
+      coin: this.wallet.coin,
+      network: this.wallet.network,
+      useSendMax: false,
+      inputs
+    });
+    this.close();
   }
 }

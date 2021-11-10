@@ -185,6 +185,17 @@
         </ion-note>
       </button>
 
+      <div *ngIf="wallet && wallet.coin === 'btc' && showEnableRBF" class="line-divider"></div>
+
+      <ion-item detail-none *ngIf="wallet && wallet.coin === 'btc' && showEnableRBF">
+        <ion-label>
+          <div class="summary-item">
+            <span>{{'Enable Replace-By-Fee' | translate}}</span>
+          </div>
+        </ion-label>
+        <ion-toggle [(ngModel)]="enableRBF" (ionChange)="enableRBFChange()"></ion-toggle>
+      </ion-item>
+
       <div class="line-divider" *ngIf="wallet && (wallet.coin === 'eth' || isERCToken) && tx.txp[wallet.id]"></div>
 
       <button ion-item detail-none *ngIf="wallet && (wallet.coin === 'eth' || isERCToken) && tx.txp[wallet.id] && !editGasPrice" [ngClass]="{'not-clickable': tx.speedUpTx}" (click)="editGasPrice = !editGasPrice; editGasLimit = false; editNonce = false;">
@@ -376,16 +387,16 @@
         </ion-label>
         <ion-note item-end>
           <div class="total-amount" [ngClass]="{'subtotal-amount': !wallet?.credentials.token}">
-            <span *ngIf="!fromSelectInputs">{{amount}} {{tx.coin | uppercase}}</span>
-            <span *ngIf="fromSelectInputs && wallet && tx.txp[wallet.id] && tx.txp[wallet.id].fee">{{txFormatProvider.formatAmount(tx.coin, tx.amount - tx.txp[wallet.id].fee)}} {{tx.coin | uppercase}}</span>
+            <span *ngIf="!fromSelectInputs && !fromReplaceByFee">{{amount}} {{tx.coin | uppercase}}</span>
+            <span *ngIf="(fromSelectInputs || fromReplaceByFee) && wallet && tx.txp[wallet.id] && tx.txp[wallet.id].fee">{{txFormatProvider.formatAmount(tx.coin, tx.amount - tx.txp[wallet.id].fee)}} {{tx.coin | uppercase}}</span>
           </div>
         </ion-note>
       </ion-item>
 
       <div class="amount-details" padding-bottom *ngIf="!coinbaseAccount && !currencyProvider.isCustomERCToken(tx.coin)">
         <div class="total-amount-note" [ngClass]="{'subtotal-amount-note': !wallet?.credentials.token}">
-          <span *ngIf="!fromSelectInputs">{{tx.amount | satToFiat: tx.coin}}</span>
-          <span *ngIf="fromSelectInputs && wallet && tx.txp[wallet.id] && tx.txp[wallet.id].fee">{{tx.amount - tx.txp[wallet.id].fee | satToFiat: tx.coin}}</span>
+          <span *ngIf="!fromSelectInputs && !fromReplaceByFee">{{tx.amount | satToFiat: tx.coin}}</span>
+          <span *ngIf="(fromSelectInputs || fromReplaceByFee) && wallet && tx.txp[wallet.id] && tx.txp[wallet.id].fee">{{tx.amount - tx.txp[wallet.id].fee | satToFiat: tx.coin}}</span>
         </div>
         <div class="total-amount-note" [ngClass]="{'subtotal-amount-note': !wallet?.credentials.token}">
           <span translate *ngIf="tx.sendMax">Sending maximum amount</span>

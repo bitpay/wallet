@@ -80,6 +80,7 @@ export class ConfirmPage {
   public showMultiplesOutputs: boolean;
   public fromMultiSend: boolean;
   public fromSelectInputs: boolean;
+  public fromReplaceByFee: boolean;
   public recipients;
   public toAddressName;
   public coin: string;
@@ -89,6 +90,8 @@ export class ConfirmPage {
   public totalAmountStr: string;
   public totalAmount;
   public pendingConfirmationEthTxs: number;
+  public showEnableRBF: boolean;
+  public enableRBF: boolean = false;
 
   public showCustomizeNonce: boolean;
 
@@ -191,6 +194,7 @@ export class ConfirmPage {
     this.recipients = this.navParams.data.recipients;
     this.fromMultiSend = this.navParams.data.fromMultiSend;
     this.fromSelectInputs = this.navParams.data.fromSelectInputs;
+    this.fromReplaceByFee = this.navParams.data.fromReplaceByFee;
     this.appName = this.appProvider.info.nameCase;
     this.isSpeedUpTx = this.navParams.data.speedUpTx;
     this.showCoinbase =
@@ -206,6 +210,8 @@ export class ConfirmPage {
     //   this.navParams.data.payProUrl.includes('redir=wc');
     this.showCustomizeNonce =
       this.config.wallet.showCustomizeNonce && !this.navParams.data.paypro;
+    this.showEnableRBF =
+      this.config.wallet.showEnableRBF && !this.navParams.data.paypro;
   }
 
   ngOnInit() {
@@ -241,7 +247,7 @@ export class ConfirmPage {
     if (this.fromMultiSend) {
       networkName = this.navParams.data.network;
       amount = this.navParams.data.totalAmount;
-    } else if (this.fromSelectInputs) {
+    } else if (this.fromSelectInputs || this.fromReplaceByFee) {
       networkName = this.navParams.data.network;
       amount = this.navParams.data.amount
         ? this.navParams.data.amount
@@ -285,7 +291,7 @@ export class ConfirmPage {
       invoiceID: this.navParams.data.invoiceID, // xrp
       payProUrl: this.navParams.data.payProUrl,
       spendUnconfirmed: this.config.wallet.spendUnconfirmed,
-
+      enableRBF: this.enableRBF,
       // Vanity tx info (not in the real tx)
       recipientType: this.navParams.data.recipientType,
       name: this.navParams.data.name,
@@ -301,6 +307,7 @@ export class ConfirmPage {
       gasLimit: this.navParams.data.gasLimit,
       speedUpTx: this.isSpeedUpTx,
       fromSelectInputs: this.navParams.data.fromSelectInputs ? true : false,
+      fromReplaceByFee: this.navParams.data.fromReplaceByFee ? true : false,
       inputs: this.navParams.data.inputs,
       nonce: this.navParams.data.nonce
     };
@@ -328,6 +335,9 @@ export class ConfirmPage {
         this.navParams.data.coin == 'eth' || this.isERCToken
           ? 'priority'
           : 'custom';
+    } else if (this.fromReplaceByFee) {
+      this.usingCustomFee = true;
+      this.tx.feeLevel = 'priority';
     } else {
       this.tx.feeLevel = this.feeProvider.getCoinCurrentFeeLevel(this.tx.coin);
     }
@@ -398,7 +408,7 @@ export class ConfirmPage {
   private setTitle(): void {
     this.mainTitle = this.fromCoinbase
       ? this.translate.instant('Confirm Deposit')
-      : this.isSpeedUpTx
+      : this.isSpeedUpTx || this.fromReplaceByFee
       ? this.translate.instant('Confirm Speed Up')
       : this.walletConnectIsApproveRequest
       ? this.translate.instant('Spender Approval')
@@ -552,7 +562,8 @@ export class ConfirmPage {
       this.wallet.credentials.m > 1,
       !!this.tx.paypro,
       !!this.fromCoinbase,
-      this.isSpeedUpTx
+      this.isSpeedUpTx,
+      this.fromReplaceByFee
     );
 
     if (this.tx.paypro) {
@@ -597,7 +608,8 @@ export class ConfirmPage {
       false,
       !!this.tx.paypro,
       !!this.fromCoinbase,
-      this.isSpeedUpTx
+      this.isSpeedUpTx,
+      this.fromReplaceByFee
     );
 
     if (this.tx.paypro) {
@@ -629,7 +641,8 @@ export class ConfirmPage {
     isMultisig: boolean,
     isPayPro: boolean,
     isCoinbase: boolean,
-    isSpeedUp: boolean
+    isSpeedUp: boolean,
+    isReplaceByFee: boolean
   ): void {
     if (isPayPro) {
       this.buttonText = this.isCordova
@@ -658,7 +671,7 @@ export class ConfirmPage {
       ) {
         this.successText = this.translate.instant('Proposal confirmed');
       }
-    } else if (isSpeedUp) {
+    } else if (isSpeedUp || isReplaceByFee) {
       this.buttonText = this.isCordova
         ? this.translate.instant('Slide to speed up')
         : this.translate.instant('Speed up');
@@ -881,8 +894,20 @@ export class ConfirmPage {
               speedUpTxInfo.fee = speedUpTxFee;
               this.showWarningSheet(wallet, speedUpTxInfo);
               return this.getInput(wallet).then(input => {
+                if (!input) {
+                  const message = this.translate.instant(
+                    'Transaction not found. Probably invalid.'
+                  );
+                  throw message;
+                }
                 tx.speedUpTxInfo.input = input;
                 tx.amount = tx.speedUpTxInfo.input.satoshis - speedUpTxInfo.fee;
+                if (tx.amount < 0) {
+                  const message = this.translate.instant(
+                    'Insufficient funds for paying speed up fee'
+                  );
+                  throw message;
+                }
                 this.tx.amount = tx.amount;
                 this.getAmountDetails();
                 return this.buildTxp(tx, wallet, opts);
@@ -1203,9 +1228,12 @@ export class ConfirmPage {
         txp.inputs.push(tx.speedUpTxInfo.input);
         txp.fee = tx.speedUpTxInfo.fee;
         txp.excludeUnconfirmedUtxos = true;
-      } else if (tx.fromSelectInputs) {
+      } else if (tx.fromSelectInputs || tx.fromReplaceByFee) {
         txp.inputs = tx.inputs;
         txp.fee = tx.fee;
+        if (tx.fromReplaceByFee) {
+          txp.replaceTxByFee = true;
+        }
       } else {
         if (this.usingCustomFee || this.usingMerchantFee) {
           txp.feePerKb = tx.feeRate;
@@ -1341,6 +1369,8 @@ export class ConfirmPage {
         txp.invoiceID = tx.invoiceID;
         txp.destinationTag = tx.destinationTag;
       }
+
+      if (wallet.coin === 'btc') txp.enableRBF = tx.enableRBF;
 
       this.walletProvider
         .getAddress(this.wallet, false)
@@ -1502,12 +1532,6 @@ export class ConfirmPage {
       let input;
       _.forEach(utxos, (u, i) => {
         if (u.txid === this.navParams.data.txid) {
-          if (u.confirmations <= 0)
-            throw new Error(
-              this.translate.instant(
-                'Some inputs you want to speed up have no confirmations. Please wait until they are confirmed and try again.'
-              )
-            );
           if (u.amount > biggestUtxo) {
             biggestUtxo = u.amount;
             input = utxos[i];
@@ -1992,7 +2016,7 @@ export class ConfirmPage {
   }
 
   public showWallets(): void {
-    if (this.fromSelectInputs) return;
+    if (this.fromSelectInputs || this.fromReplaceByFee) return;
     this.isOpenSelector = true;
     const id = this.wallet ? this.wallet.credentials.walletId : null;
 
@@ -2034,6 +2058,10 @@ export class ConfirmPage {
     memoComponent.onDidDismiss(memo => {
       if (memo) this.tx.description = memo;
     });
+  }
+
+  public enableRBFChange() {
+    this.tx.enableRBF = this.enableRBF;
   }
 
   public openScanner(): void {
