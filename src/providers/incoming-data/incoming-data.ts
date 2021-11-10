@@ -1299,7 +1299,7 @@ export class IncomingDataProvider {
     } else if (this.isValidRSKUri(data)) {
       return {
         data,
-        type: 'RSKUri',
+        type: 'RskUri',
         title: 'RSK URI'
       };
 
@@ -1379,7 +1379,7 @@ export class IncomingDataProvider {
     } else if (this.isValidRSKAddress(data)) {
       return {
         data,
-        type: 'RSKAddress',
+        type: 'RskAddress',
         title: this.translate.instant('RSK Address')
       };
 

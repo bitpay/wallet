@@ -18,7 +18,7 @@ const validDataByCoin = {
   xrp: ['RippleUri', 'RippleAddress'],
   doge: ['DogecoinUri', 'DogecoinAddress'],
   ltc: ['LitecoinUri', 'LitecoinAddress'],
-  rsk: ['RSKUri', 'RSKAddress']
+  rsk: ['RskUri', 'RskAddress']
 };
 
 @Injectable()

@@ -62,8 +62,8 @@ export class SendPage {
     'DogecoinUri',
     'LitecoinUri',
     'BitPayUri',
-    'RSKAddress',
-    'RSKUri',
+    'RskAddress',
+    'RskUri',
   ];
   private pageMap = {
     AddressbookAddPage,

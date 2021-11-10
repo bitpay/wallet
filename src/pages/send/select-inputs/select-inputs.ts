@@ -50,13 +50,13 @@ export class SelectInputsPage {
     'EthereumAddress',
     'DogecoinAddress',
     'LitecoinAddress',
-    'RSKAddress',
+    'RskAddress',
     'EthereumUri',
     'BitcoinUri',
     'BitcoinCashUri',
     'DogecoinUri',
     'LitecoinUri',
-    'RSKUri'
+    'RskUri'
   ];
   constructor(
     private navCtrl: NavController,
@@ -170,7 +170,7 @@ export class SelectInputsPage {
       (this.parsedData.type === 'BitcoinUri' ||
         this.parsedData.type === 'BitcoinCashUri' ||
         this.parsedData.type === 'EthereumUri' ||
-        this.parsedData.type === 'RSKUri')
+        this.parsedData.type === 'RskUri')
     ) {
       let parsed;
       let toAddress;

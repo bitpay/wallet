@@ -1804,7 +1804,7 @@ export class ConfirmPage {
       'LitecoinUri',
       'RippleUri',
       'InvoiceUri',
-      'RSKUri'
+      'RskUri'
     ]);
 
     if (navigateBack) {
