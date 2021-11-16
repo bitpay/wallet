@@ -283,21 +283,26 @@ export class CoinAndWalletSelectorPage {
         });
 
       if (_token.length > 0) token = _token[0];
+
+      if (!token.decimals)
+        return Promise.reject('Cannot create token wallet. Missing decimals');
+
+      const customToken = {
+        keyId: pairedWallet.keyId,
+        name: token.name,
+        address: token.address,
+        logoURI: token.logoURI,
+        symbol: token.symbol.toLowerCase(),
+        decimals: token.decimals
+      };
+
+      return this.profileProvider.createCustomTokenWallet(
+        pairedWallet,
+        customToken
+      );
+    } else {
+      return this.profileProvider.createTokenWallet(pairedWallet, token);
     }
-
-    const customToken = {
-      keyId: pairedWallet.keyId,
-      name: token.name,
-      address: token.address,
-      logoURI: token.logoURI,
-      symbol: token.symbol.toLowerCase(),
-      decimals: token.decimals
-    };
-
-    return this.profileProvider.createCustomTokenWallet(
-      pairedWallet,
-      customToken
-    );
   }
 
   public showTokensSearch() {

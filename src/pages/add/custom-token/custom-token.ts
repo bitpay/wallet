@@ -76,11 +76,16 @@ export class CustomTokenPage {
     this.tokenSearchResults = this.filteredTokens;
     this.TOKEN_SHOW_LIMIT = 10;
     this.currentTokenListPage = 0;
+    const bitpaySupportedTokens: string[] = this.currencyProvider
+      .getBitpaySupportedTokens()
+      .map(token => token.symbol.toLowerCase());
     this.availableCustomTokens = _.orderBy(
       this.currencyProvider.getAvailableCustomTokens(),
       'name'
     ).filter(token => {
-      return token.symbol.toLowerCase() != 'eth';
+      return !['eth', ...bitpaySupportedTokens].includes(
+        token.symbol.toLowerCase()
+      );
     });
     this.updateSearchInput('');
     this.showInvoiceWarning();

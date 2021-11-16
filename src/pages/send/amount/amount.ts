@@ -352,15 +352,26 @@ export class AmountPage {
   }
 
   public sendMax(): void {
+    this.logger.debug('SendMax init');
     this.useSendMax = true;
     this.allowSend = true;
     if (!this.wallet) {
       return this.finish();
     }
+    if (
+      this.wallet.cachedStatus &&
+      this.wallet.cachedStatus.availableBalanceSat
+    )
+      this.logger.debug(
+        `availableBalanceSat: ${this.wallet.cachedStatus.availableBalanceSat}`
+      );
+
     const maxAmount = this.txFormatProvider.satToUnit(
       this.wallet.cachedStatus.availableBalanceSat,
       this.wallet.coin
     );
+    this.logger.debug(`maxAmount setted with: ${maxAmount}`);
+
     this.zone.run(() => {
       this.expression = this.availableUnits[this.unitIndex].isFiat
         ? this.toFiat(maxAmount, this.wallet.coin).toFixed(2)
