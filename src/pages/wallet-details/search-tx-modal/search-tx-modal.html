@@ -24,6 +24,7 @@
             </div>
             <div *ngIf="tx.confirmations > 0">
               <span *ngIf="tx.customData && tx.customData.service">
+                <img class="icon-services" style="padding: 5px;" src="assets/img/wallet-connect/wallet-connect-grey.svg" *ngIf="tx.customData.service == 'walletConnect'" width="40">
                 <img class="icon-services" src="assets/img/shapeshift/icon-shapeshift.svg" *ngIf="tx.customData.service == 'shapeshift'" width="40">
                 <img class="icon-services" src="assets/img/exchange-crypto/changelly-icon.svg" *ngIf="tx.customData.service == 'changelly'" width="40">
                 <img class="icon-services" src="assets/img/exchange-crypto/1inch-icon.svg" *ngIf="tx.customData.service == 'oneInch'" width="40">
