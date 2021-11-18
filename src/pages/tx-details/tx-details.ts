@@ -237,11 +237,13 @@ export class TxDetailsModal {
         }
 
         if (this.btx.action != 'invalid') {
-          if (this.btx.action == 'sent')
+          if (this.wallet.coin === 'eth' && this.btx.error)
+            this.title = this.translate.instant('Failed');
+          else if (this.btx.action == 'sent')
             this.title = this.translate.instant('Sent');
-          if (this.btx.action == 'received')
+          else if (this.btx.action == 'received')
             this.title = this.translate.instant('Received');
-          if (this.btx.action == 'moved')
+          else if (this.btx.action == 'moved')
             this.title = this.translate.instant('Sent to self');
         }
 

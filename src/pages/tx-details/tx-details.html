@@ -23,7 +23,14 @@
         </div>
       </ion-item>
 
-      <label-tip class="low-fees" type="warn" *ngIf="wallet.coin === 'btc' && btx.action == 'received' && btx.lowAmount">
+      <label-tip type="danger" *ngIf="wallet.coin === 'eth' && btx.error">
+        <span label-tip-title translate>Warning!</span>
+        <div label-tip-body translate>
+          Error encountered during contract execution ({{btx.error}})
+        </div>
+      </label-tip>
+
+      <label-tip type="warn" *ngIf="wallet.coin === 'btc' && btx.action == 'received' && btx.lowAmount">
         <span label-tip-title translate>Amount Too Low To Spend</span>
         <div label-tip-body translate>
           This transaction amount is too small compared to current Bitcoin network fees. Spending these funds will need a Bitcoin network fee cost comparable to the funds itself.
@@ -33,7 +40,7 @@
       </label-tip>
 
 
-      <label-tip class="low-fees" type="info" *ngIf="btx.isRBF && (btx.action === 'sent' || (btx.action === 'moved)' && this.wallet.coin == 'btc'))">
+      <label-tip type="info" *ngIf="btx.isRBF && (btx.action === 'sent' || (btx.action === 'moved)' && this.wallet.coin == 'btc'))">
         <span label-tip-title translate>RBF transaction</span>
         <div label-tip-body translate>
           This transaction can be accelerated using a higher fee.

@@ -308,29 +308,34 @@
                 <img src="assets/img/tx-action/icon-confirming.svg" width="40">
               </div>
               <div *ngIf="tx.confirmations > 0">
-                <span *ngIf="tx.customData && tx.customData.service && tx.action == 'sent'">
-                  <img class="icon-services" style="padding: 5px;" src="assets/img/wallet-connect/wallet-connect-grey.svg" *ngIf="tx.customData.service == 'walletConnect'" width="15">
-                  <img class="icon-services" src="assets/img/shapeshift/icon-shapeshift.svg" *ngIf="tx.customData.service == 'shapeshift'" width="40">
-                  <img class="icon-services" src="assets/img/exchange-crypto/changelly-icon.svg" *ngIf="tx.customData.service == 'changelly'" width="40">
-                  <img class="icon-services" src="assets/img/exchange-crypto/1inch-icon.svg" *ngIf="tx.customData.service == 'oneInch'" width="40">
-                  <img-loader class="icon-services" *ngIf="tx.customData.service === 'amazon'" src="https://bitpay.com/gift-cards/assets/amazoncom/icon.svg" width="40" fallbackUrl="assets/img/gift-cards/gift-cards-icon.svg"></img-loader>
-                  <img-loader class="icon-services" *ngIf="tx.customData.service === 'mercadolibre'" src="https://bitpay.com/gift-cards/assets/mercadolivre/icon.svg" width="40" fallbackUrl="assets/img/gift-cards/gift-cards-icon.svg"></img-loader>
-                  <img-loader class="icon-services" *ngIf="tx.customData.service === 'coinbase'" src="assets/img/coinbase/coinbase-icon.png" width="40" fallbackUrl="assets/img/gift-cards/gift-cards-icon.svg"></img-loader>
-                  <ng-container *ngIf="supportedCards | async as cardConfig">
-                    <img-loader class="icon-services" *ngIf="tx.customData.service === 'giftcards'" [src]="cardConfig[tx.customData.giftCardName]?.icon" width="40" fallbackUrl="assets/img/gift-cards/gift-cards-icon.svg"></img-loader>
-                  </ng-container>
-                  <img class="icon-services" src="assets/img/bitpay-card/icon-bitpay.svg" *ngIf="tx.customData.service == 'debitcard'" width="40">
+                <span *ngIf="wallet?.coin === 'eth' && tx.error; else noError">
+                  <img src="assets/img/failed-icon.svg">
                 </span>
-                <span *ngIf="tx.customData && tx.customData.toWalletName && !tx.customData.service">
-                  <img class="icon-services" src="assets/img/icon-wallet-reverse.svg" *ngIf="tx.action == 'sent'" width="40">
-                </span>
-                <span *ngIf="!tx.customData || (tx.customData && !tx.customData.service && !tx.customData.toWalletName)">
-                  <img src="assets/img/tx-action/icon-sent.svg" *ngIf="tx.action == 'sent'" width="40">
-                </span>
-                <span>
-                  <img src="assets/img/tx-action/icon-received.svg" *ngIf="tx.action == 'received'" width="40">
-                  <img src="assets/img/tx-action/icon-moved.svg" *ngIf="tx.action == 'moved'" width="40">
-                </span>
+                <ng-template #noError>
+                  <span *ngIf="tx.customData && tx.customData.service && tx.action == 'sent'">
+                    <img class="icon-services" style="padding: 5px;" src="assets/img/wallet-connect/wallet-connect-grey.svg" *ngIf="tx.customData.service == 'walletConnect'" width="15">
+                    <img class="icon-services" src="assets/img/shapeshift/icon-shapeshift.svg" *ngIf="tx.customData.service == 'shapeshift'" width="40">
+                    <img class="icon-services" src="assets/img/exchange-crypto/changelly-icon.svg" *ngIf="tx.customData.service == 'changelly'" width="40">
+                    <img class="icon-services" src="assets/img/exchange-crypto/1inch-icon.svg" *ngIf="tx.customData.service == 'oneInch'" width="40">
+                    <img-loader class="icon-services" *ngIf="tx.customData.service === 'amazon'" src="https://bitpay.com/gift-cards/assets/amazoncom/icon.svg" width="40" fallbackUrl="assets/img/gift-cards/gift-cards-icon.svg"></img-loader>
+                    <img-loader class="icon-services" *ngIf="tx.customData.service === 'mercadolibre'" src="https://bitpay.com/gift-cards/assets/mercadolivre/icon.svg" width="40" fallbackUrl="assets/img/gift-cards/gift-cards-icon.svg"></img-loader>
+                    <img-loader class="icon-services" *ngIf="tx.customData.service === 'coinbase'" src="assets/img/coinbase/coinbase-icon.png" width="40" fallbackUrl="assets/img/gift-cards/gift-cards-icon.svg"></img-loader>
+                    <ng-container *ngIf="supportedCards | async as cardConfig">
+                      <img-loader class="icon-services" *ngIf="tx.customData.service === 'giftcards'" [src]="cardConfig[tx.customData.giftCardName]?.icon" width="40" fallbackUrl="assets/img/gift-cards/gift-cards-icon.svg"></img-loader>
+                    </ng-container>
+                    <img class="icon-services" src="assets/img/bitpay-card/icon-bitpay.svg" *ngIf="tx.customData.service == 'debitcard'" width="40">
+                  </span>
+                  <span *ngIf="tx.customData && tx.customData.toWalletName && !tx.customData.service">
+                    <img class="icon-services" src="assets/img/icon-wallet-reverse.svg" *ngIf="tx.action == 'sent'" width="40">
+                  </span>
+                  <span *ngIf="!tx.customData || (tx.customData && !tx.customData.service && !tx.customData.toWalletName)">
+                    <img src="assets/img/tx-action/icon-sent.svg" *ngIf="tx.action == 'sent'" width="40">
+                  </span>
+                  <span>
+                    <img src="assets/img/tx-action/icon-received.svg" *ngIf="tx.action == 'received'" width="40">
+                    <img src="assets/img/tx-action/icon-moved.svg" *ngIf="tx.action == 'moved'" width="40">
+                  </span>
+                </ng-template>
               </div>
             </ion-icon>
 
