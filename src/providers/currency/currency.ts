@@ -15,6 +15,7 @@ export class CurrencyProvider {
   public blockExplorerUrlsTestnet = {} as CoinsMap<string>;
   public availableCoins: string[];
   public availableTokens: Token[];
+  public bitpaySupportedTokens: Token[];
   public availableCustomTokens: Token[];
   public customERC20CoinsData;
   public customERC20Opts;
@@ -68,6 +69,7 @@ export class CurrencyProvider {
   ) {
     this.coinOpts = availableCoins;
     this.availableTokens = Object.values(TokenOpts);
+    this.bitpaySupportedTokens = Object.values(TokenOpts);
     this.availableCoins = Object.keys(this.coinOpts);
     this.retreiveInfo();
     this.setCustomTokens();
@@ -96,8 +98,8 @@ export class CurrencyProvider {
           .getCustomTokenOpts()
           .then(customERC20Opts => {
             this.customERC20Opts = customERC20Opts;
-            this.coinOpts = { ...availableCoins, ...this.customERC20CoinsData };
-            const tokenOpts = { ...TokenOpts, ...this.customERC20Opts };
+            this.coinOpts = { ...this.customERC20CoinsData, ...availableCoins };
+            const tokenOpts = { ...this.customERC20Opts, ...TokenOpts };
             this.availableTokens = Object.values(tokenOpts);
             this.availableCoins = Object.keys(this.coinOpts) as string[];
             this.retreiveInfo();
@@ -201,8 +203,16 @@ export class CurrencyProvider {
     return !!this.coinOpts[coin].properties.isERCToken;
   }
 
-  isCustomERCToken(coin) {
-    return this.coinOpts[coin] && this.coinOpts[coin].properties.isCustom;
+  isCustomERCToken(coin: string) {
+    let isBitpaySupportedToken: boolean =
+      this.getBitpaySupportedTokens().filter(token => {
+        return token.symbol.toLowerCase() === coin.toLowerCase();
+      }).length > 0;
+    return (
+      this.coinOpts[coin] &&
+      this.coinOpts[coin].properties.isCustom &&
+      !isBitpaySupportedToken
+    );
   }
 
   getLinkedEthWallet(coin: string, walletId: string, m: number): string {
@@ -233,10 +243,17 @@ export class CurrencyProvider {
   }
 
   getAvailableTokens(): Token[] {
+    // Tokens previously supported by Bitpay + custom tokens
     return this.availableTokens;
   }
 
+  getBitpaySupportedTokens(): Token[] {
+    // Tokens previously supported by Bitpay that allow the payment of invoices
+    return this.bitpaySupportedTokens;
+  }
+
   getAvailableCustomTokens(): Token[] {
+    // Custom tokens
     return this.availableCustomTokens;
   }
 

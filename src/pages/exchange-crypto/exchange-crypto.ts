@@ -517,12 +517,17 @@ export class ExchangeCryptoPage {
       supportedCoins.splice(index, 1);
     }
 
+    const bitpaySupportedTokens: string[] = this.currencyProvider
+      .getBitpaySupportedTokens()
+      .map(token => token.symbol.toLowerCase());
+
     const oneInchAllSupportedCoins = this.oneInchAllSupportedCoins.filter(
       token => {
-        return (
-          token.symbol.toLowerCase() != this.fromWalletSelected.coin &&
-          token.symbol.toLowerCase() != 'eth'
-        );
+        return ![
+          'eth',
+          this.fromWalletSelected.coin,
+          ...bitpaySupportedTokens
+        ].includes(token.symbol.toLowerCase());
       }
     );
 

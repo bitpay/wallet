@@ -250,19 +250,20 @@ export class TokenSwapCheckoutPage {
   }
 
   private createAndBindTokenWallet() {
+    if (_.isEmpty(this.toWalletSelected) || _.isEmpty(this.toToken)) return;
+    const tokenSymbol = this.toToken.symbol.toLowerCase();
     if (
-      !_.isEmpty(this.toWalletSelected) &&
-      !_.isEmpty(this.toToken) &&
-      this.toToken.symbol.toLowerCase() != 'eth' &&
+      tokenSymbol != 'eth' &&
       this.toWalletSelected.coin == 'eth' &&
-      this.toToken.symbol.toLowerCase() != this.toWalletSelected.coin
+      tokenSymbol != this.toWalletSelected.coin &&
+      this.currencyProvider.isCustomERCToken(tokenSymbol)
     ) {
       const customToken = {
         keyId: this.toWalletSelected.keyId,
         name: this.toToken.name,
         address: this.toToken.address,
         logoURI: this.toToken.logoURI,
-        symbol: this.toToken.symbol.toLowerCase(),
+        symbol: tokenSymbol,
         decimals: this.toToken.decimals
       };
 
