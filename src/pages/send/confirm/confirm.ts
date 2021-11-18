@@ -1416,7 +1416,10 @@ export class ConfirmPage {
 
       this.pendingConfirmationEthTxs = 0;
       for (let tx of wallet.completeHistory) {
-        if (tx.confirmations === 0) {
+        if (
+          tx.confirmations === 0 &&
+          (tx.action === 'sent' || tx.action === 'moved')
+        ) {
           this.pendingConfirmationEthTxs = this.pendingConfirmationEthTxs + 1;
         } else break;
       }
