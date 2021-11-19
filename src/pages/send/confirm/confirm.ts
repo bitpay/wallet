@@ -89,7 +89,6 @@ export class ConfirmPage {
   public merchantFeeLabel: string;
   public totalAmountStr: string;
   public totalAmount;
-  public pendingConfirmationEthTxs: number;
   public showEnableRBF: boolean;
   public enableRBF: boolean = false;
 
@@ -1414,19 +1413,9 @@ export class ConfirmPage {
         txp.from
       );
 
-      this.pendingConfirmationEthTxs = 0;
-      for (let tx of wallet.completeHistory) {
-        if (
-          tx.confirmations === 0 &&
-          (tx.action === 'sent' || tx.action === 'moved')
-        ) {
-          this.pendingConfirmationEthTxs = this.pendingConfirmationEthTxs + 1;
-        } else break;
-      }
-
       txp.nonce = this.tx.nonce = wallet.updatedNonce
         ? wallet.updatedNonce + 1
-        : nonce + this.pendingConfirmationEthTxs;
+        : nonce;
       return Promise.resolve();
     } catch (error) {
       this.logger.warn('Could not get address nonce', error.message);
