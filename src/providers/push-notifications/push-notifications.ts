@@ -50,12 +50,7 @@ export class PushNotificationsProvider {
   }
 
   public init(): void {
-    if (
-      this.platformProvider.isIOS ||
-      !this.usePushNotifications ||
-      this._token
-    )
-      return;
+    if (!this.usePushNotifications || this._token) return;
     this.configProvider.load().then(() => {
       const config = this.configProvider.get();
       if (!config.pushNotifications.enabled) return;
