@@ -101,7 +101,7 @@ export class WalletProvider {
 
   private WALLET_STATUS_MAX_TRIES: number = 5;
   private WALLET_STATUS_DELAY_BETWEEN_TRIES: number = 1.6 * 1000;
-  private SOFT_CONFIRMATION_LIMIT: number = 12;
+  private SOFT_CONFIRMATION_LIMIT: number = 100;
   private SAFE_CONFIRMATIONS: number = 6;
   private DEFAULT_RBF_SEQNUMBER = 0xffffffff;
 
