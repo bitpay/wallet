@@ -126,6 +126,7 @@ export class AddressProvider {
     if (URILtc.isValid(str)) return true;
     if (Validation.validateUri('ETH', str)) return true;
     if (Validation.validateUri('XRP', str)) return true;
+    if (Validation.validateUri('RSK', str)) return true;
 
     // Regular Address: try Bitcoin and Bitcoin Cash
     if (Address.isValid(str, 'livenet')) return true;
@@ -138,6 +139,7 @@ export class AddressProvider {
     if (AddressLtc.isValid(str, 'testnet')) return true;
     if (Validation.validateAddress('XRP', 'livenet', str)) return true;
     if (Validation.validateAddress('ETH', 'livenet', str)) return true;
+    if (Validation.validateAddress('RSK', 'livenet', str)) return true;
 
     return false;
   }
