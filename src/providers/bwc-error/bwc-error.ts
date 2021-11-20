@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
+import _ from 'lodash';
 
 @Injectable()
 export class BwcErrorProvider {
@@ -8,7 +9,7 @@ export class BwcErrorProvider {
   public msg(err, prefix?: string): string {
     if (!err) return 'Unknown error';
 
-    const name = err.name
+    let name = err.name
       ? err.name === 'Error'
         ? err.message
         : err.name.replace(/^bwc.Error/g, '')
@@ -16,6 +17,10 @@ export class BwcErrorProvider {
 
     let body = '';
     prefix = prefix || '';
+
+    if (_.includes(name, 'bad-txns-premature-spend-of-coinbase')) {
+      name = 'BAD-TXNS-PREMATURE';
+    }
 
     switch (name) {
       case 'INPUT_NOT_FOUND':
@@ -235,7 +240,9 @@ export class BwcErrorProvider {
       case 'ERROR':
         body = err.message || err.error;
         break;
-
+      case 'BAD-TXNS-PREMATURE':
+        body = this.translate.instant('Some of your coins are immature from mining. Please wait for enough confirmation or reduce the sending amount to send.');
+        break;
       default:
         body = err.message || name;
         break;

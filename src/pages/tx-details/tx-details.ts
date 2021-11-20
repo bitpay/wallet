@@ -241,6 +241,10 @@ export class TxDetailsModal {
             this.title = this.translate.instant('Received');
           if (this.btx.action == 'moved')
             this.title = this.translate.instant('Sent to self');
+          if (this.btx.action == 'immature')
+            this.title = this.translate.instant('Immature');
+          if (this.btx.action == 'mined')
+            this.title = this.translate.instant('Mined');
         }
 
         this.updateMemo();
