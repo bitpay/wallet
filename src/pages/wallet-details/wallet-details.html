@@ -316,6 +316,8 @@
                 <span>
                   <img src="assets/img/tx-action/icon-received.svg" *ngIf="tx.action == 'received'" width="40">
                   <img src="assets/img/tx-action/icon-moved.svg" *ngIf="tx.action == 'moved'" width="40">
+                  <img src="assets/img/tx-action/icon-mined.svg" *ngIf="tx.action == 'mined'" width="40">
+                  <img src="assets/img/tx-action/icon-immature.svg" *ngIf="tx.action == 'immature'" width="40">
                 </span>
               </div>
             </ion-icon>
@@ -328,6 +330,13 @@
                     | translate}}</span>
               <span *ngIf="(tx.action == 'sent' || tx.action == 'moved') && (addressbook && tx.outputs[0] && getContactName(tx.outputs[0].address))">{{getContactName(tx.outputs[0].address)}}</span>
               <span *ngIf="tx.action == 'received'">{{'Receiving' | translate}}</span>
+            </div>
+
+            <div class="action" *ngIf="tx.action == 'immature'">
+              <span >{{'Immature'| translate}}</span>
+            </div>
+            <div class="action" *ngIf="tx.action == 'mined'">
+              <span>{{'Mined'| translate}}</span>
             </div>
 
             <div class="action" *ngIf="tx.confirmations > 0 && tx.action == 'received'">
@@ -370,7 +379,7 @@
 
             <ion-note item-end text-end>
               <div class="amount">
-                <span [ngClass]="{'received': tx.action == 'received'}" *ngIf="tx.action != 'invalid' && !(tx.amount === 0 && wallet?.coin === 'eth')">{{tx.amount |
+                <span [ngClass]="{'received': tx.action == 'received' || tx.action == 'mined'}" *ngIf="tx.action != 'invalid' && !(tx.amount === 0 && wallet?.coin === 'eth')">{{tx.amount |
                       satToUnit: wallet?.coin}}</span>
                 <span *ngIf="tx.amount === 0 && wallet?.coin === 'eth'">{{tx.fees | satToUnit: wallet?.coin}}</span>
                 <span class="double-spend" *ngIf="tx.action == 'invalid'" translate>(possible double spend)</span>

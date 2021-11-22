@@ -128,9 +128,8 @@ export class SelectInputsPage {
     const config = this.configProvider.get();
     const spendUnconfirmed = config.wallet.spendUnconfirmed;
 
-    if (spendUnconfirmed) return;
     this.inputs = _.filter(this.inputs, i => {
-      return i.confirmations !== 0;
+      return spendUnconfirmed ? !i.immature : !i.immature && i.confirmations !== 0;
     });
   }
 

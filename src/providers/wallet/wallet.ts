@@ -101,8 +101,9 @@ export class WalletProvider {
 
   private WALLET_STATUS_MAX_TRIES: number = 5;
   private WALLET_STATUS_DELAY_BETWEEN_TRIES: number = 1.6 * 1000;
-  private SOFT_CONFIRMATION_LIMIT: number = 12;
+  private SOFT_CONFIRMATION_LIMIT: number = 100;
   private SAFE_CONFIRMATIONS: number = 6;
+  private SAFE_CONFIRMATIONS_MINED: number = 100;
   private DEFAULT_RBF_SEQNUMBER = 0xffffffff;
 
   private errors = this.bwcProvider.getErrors();
@@ -1023,12 +1024,14 @@ export class WalletProvider {
           return input.mintHeight < 0;
         });
       }
-
-      if (tx.confirmations >= this.SAFE_CONFIRMATIONS) {
+      const isTxCoinbase = tx.coinbase || tx.action == 'immature' || tx.action ==  'mined';
+      if (isTxCoinbase && tx.confirmations >= this.SAFE_CONFIRMATIONS_MINED) {
+        tx.safeConfirmed = this.SAFE_CONFIRMATIONS_MINED + '+';
+      } else if (!isTxCoinbase && tx.confirmations >= this.SAFE_CONFIRMATIONS) {
         tx.safeConfirmed = this.SAFE_CONFIRMATIONS + '+';
       } else {
         tx.safeConfirmed = false;
-        wallet.hasUnsafeConfirmed = true;
+        if (!isTxCoinbase) wallet.hasUnsafeConfirmed = true;
       }
 
       if (tx.note) {
