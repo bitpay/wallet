@@ -1580,7 +1580,6 @@ export class ConfirmPage {
       coin !== 'ltc' &&
       !this.usingMerchantFee &&
       !this.fromCoinbase &&
-      !this.tx.speedUpTxInfo &&
       !this.tx.payProUrl &&
       feeLevel !== 'superEconomy';
 
@@ -1898,7 +1897,6 @@ export class ConfirmPage {
       this.tx.coin === 'xrp' ||
       this.tx.coin === 'doge' ||
       this.tx.coin === 'ltc' ||
-      this.tx.speedUpTxInfo ||
       this.tx.payProUrl ||
       this.usingMerchantFee ||
       this.fromCoinbase
