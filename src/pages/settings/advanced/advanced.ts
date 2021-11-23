@@ -64,6 +64,7 @@ export class AdvancedPage {
 
     this.spendUnconfirmed = config.wallet.spendUnconfirmed;
     this.showEnableRBF = config.wallet.showEnableRBF;
+    this.showCustomizeNonce = config.wallet.showCustomizeNonce;
   }
 
   public spendUnconfirmedChange(): void {
