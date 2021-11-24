@@ -615,7 +615,7 @@ export class ExchangeCryptoPage {
 
     this.logger.debug('Exchange to use: ' + this.exchangeToUse);
 
-    if (!this.isAvailable.oneInch) {
+    if (this.exchangeToUse == '1inch' && !this.isAvailable.oneInch) {
       const oneInchDisabledWarningSheet = this.actionSheetProvider.createInfoSheet(
         '1inch-disabled-warning'
       );
