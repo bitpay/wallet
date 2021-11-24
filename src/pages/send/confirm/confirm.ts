@@ -1579,7 +1579,8 @@ export class ConfirmPage {
       coin !== 'doge' &&
       coin !== 'ltc' &&
       !this.usingMerchantFee &&
-      !this.tx.speedUpTxInfo &&
+      !this.fromCoinbase &&
+      !this.tx.payProUrl &&
       feeLevel !== 'superEconomy';
 
     const insufficientFundsInfoSheet = this.actionSheetProvider.createInfoSheet(
@@ -1896,7 +1897,9 @@ export class ConfirmPage {
       this.tx.coin === 'xrp' ||
       this.tx.coin === 'doge' ||
       this.tx.coin === 'ltc' ||
-      this.usingMerchantFee
+      this.tx.payProUrl ||
+      this.usingMerchantFee ||
+      this.fromCoinbase
     )
       return;
     const txObject = {
