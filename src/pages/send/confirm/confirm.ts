@@ -103,6 +103,7 @@ export class ConfirmPage {
 
   // custom fee flag
   public usingCustomFee: boolean = false;
+  public usingCustomNonce: boolean = false;
   public usingMerchantFee: boolean = false;
 
   public isOpenSelector: boolean;
@@ -222,6 +223,7 @@ export class ConfirmPage {
   ionViewWillEnter() {
     this.events.publish('Update/ViewingWalletConnectConfirm', true);
   }
+
   ionViewWillLeave() {
     this.events.publish('Update/ViewingWalletConnectConfirm', false);
     this.navCtrl.swipeBackEnabled = true;
@@ -333,7 +335,7 @@ export class ConfirmPage {
       this.usingCustomFee = true;
       this.tx.feeLevel =
         this.navParams.data.coin == 'eth' || this.isERCToken
-          ? 'priority'
+          ? 'urgent'
           : 'custom';
     } else if (this.fromReplaceByFee) {
       this.usingCustomFee = true;
@@ -1404,30 +1406,71 @@ export class ConfirmPage {
       if (
         (txp.chain && txp.chain.toLowerCase() !== 'eth') ||
         this.isSpeedUpTx ||
-        this.customNonce
+        this.usingCustomNonce
       )
         return Promise.resolve();
 
-      const nonce = await this.walletProvider.getNonce(
-        wallet,
-        txp.chain ? txp.chain.toLowerCase() : txp.coin,
-        txp.from
-      );
-
-      this.pendingConfirmationEthTxs = 0;
-      for (let tx of wallet.completeHistory) {
-        if (
-          tx.confirmations === 0 &&
-          (tx.action === 'sent' || tx.action === 'moved')
-        ) {
-          this.pendingConfirmationEthTxs = this.pendingConfirmationEthTxs + 1;
-        } else break;
+      if (wallet.updatedNonce) {
+        this.logger.debug('Using session nonce:', wallet.updatedNonce);
+        txp.nonce = this.tx.nonce = wallet.updatedNonce + 1;
+        return Promise.resolve();
       }
 
-      txp.nonce = this.tx.nonce = wallet.updatedNonce
-        ? wallet.updatedNonce + 1
-        : nonce + this.pendingConfirmationEthTxs;
-      return Promise.resolve();
+      // linked eth wallet could have two pendings txs from different tokens
+      // this means we need to count pending txs from the linked wallet if is ERC20Token instead of the sending wallet
+      let nonceWallet;
+      if (this.currencyProvider.isERCToken(txp.coin)) {
+        const linkedEthWallet = this.currencyProvider.getLinkedEthWallet(
+          txp.coin,
+          wallet.id,
+          wallet.m
+        );
+        nonceWallet = this.profileProvider.getWallet(linkedEthWallet);
+      } else nonceWallet = wallet;
+
+      const setNonce = async () => {
+        const nonce = await this.walletProvider.getNonce(
+          nonceWallet,
+          txp.chain ? txp.chain.toLowerCase() : txp.coin,
+          txp.from
+        );
+
+        this.pendingConfirmationEthTxs = 0;
+        for (let tx of nonceWallet.completeHistory) {
+          if (
+            tx.confirmations === 0 &&
+            (tx.action === 'sent' || tx.action === 'moved') &&
+            tx.nonce < nonce // ignore transactions waiting for lower nonce
+          ) {
+            this.pendingConfirmationEthTxs = this.pendingConfirmationEthTxs + 1;
+          } else break;
+        }
+
+        this.logger.debug(
+          `Using web3 nonce: ${nonce} - pending txs: ${this.pendingConfirmationEthTxs}`
+        );
+        txp.nonce = this.tx.nonce = nonce + this.pendingConfirmationEthTxs;
+      };
+
+      const opts = {
+        alsoUpdateHistory: true,
+        force: true,
+        walletId: this.wallet.id
+      };
+      return this.walletProvider
+        .fetchTxHistory(nonceWallet, null, opts)
+        .then(async txHistory => {
+          nonceWallet.completeHistory = txHistory;
+          await setNonce();
+          return Promise.resolve();
+        })
+        .catch(async err => {
+          if (err != 'HISTORY_IN_PROGRESS') {
+            this.logger.warn('WalletHistoryUpdate ERROR', err);
+            await setNonce();
+            return Promise.resolve();
+          }
+        });
     } catch (error) {
       this.logger.warn('Could not get address nonce', error.message);
       return Promise.resolve();
@@ -1758,7 +1801,8 @@ export class ConfirmPage {
         if (
           txp.chain &&
           txp.chain.toLowerCase() == 'eth' &&
-          !this.isSpeedUpTx
+          !this.isSpeedUpTx &&
+          !this.usingCustomNonce
         ) {
           this.profileProvider.updateEthWalletNonce(
             wallet.credentials.walletId,
@@ -2133,6 +2177,8 @@ export class ConfirmPage {
       newFeeLevel: 'custom',
       customFeePerKB: this.customGasPrice * 1e9
     };
+    this.logger.debug('Setting custom gas price: ', this.customGasPrice * 1e9);
+
     this.onFeeModalDismiss(data);
   }
 
@@ -2146,6 +2192,7 @@ export class ConfirmPage {
       newFeeLevel: 'custom',
       customFeePerKB: this.tx.txp[this.wallet.id].gasPrice
     };
+    this.logger.debug('Setting custom gas limit: ', this.tx.gasLimit);
     this.onFeeModalDismiss(data);
   }
 
@@ -2154,6 +2201,8 @@ export class ConfirmPage {
     this.tx.nonce = this.tx.txp[this.wallet.id].nonce = Number(
       this.customNonce
     );
+    this.usingCustomNonce = true;
+    this.logger.debug('Setting custom nonce: ', this.tx.nonce);
     this.updateTx(this.tx, this.wallet, {
       clearCache: true,
       dryRun: true
