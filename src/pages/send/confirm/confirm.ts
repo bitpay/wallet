@@ -89,7 +89,7 @@ export class ConfirmPage {
   public merchantFeeLabel: string;
   public totalAmountStr: string;
   public totalAmount;
-  public pendingConfirmationEthTxs: number;
+  public pendingTxsNonce: number[];
   public showEnableRBF: boolean;
   public enableRBF: boolean = false;
 
@@ -127,6 +127,7 @@ export class ConfirmPage {
   public customGasPrice: number;
   public customGasLimit: number;
   public customNonce: number;
+  public suggestedNonce: number;
 
   public merchantName: string;
   public itemizedDetails;
@@ -1434,22 +1435,33 @@ export class ConfirmPage {
           txp.chain ? txp.chain.toLowerCase() : txp.coin,
           txp.from
         );
-
-        this.pendingConfirmationEthTxs = 0;
+        this.pendingTxsNonce = [];
         for (let tx of nonceWallet.completeHistory) {
           if (
             tx.confirmations === 0 &&
-            (tx.action === 'sent' || tx.action === 'moved') &&
-            tx.nonce < nonce // ignore transactions waiting for lower nonce
+            (tx.action === 'sent' || tx.action === 'moved')
           ) {
-            this.pendingConfirmationEthTxs = this.pendingConfirmationEthTxs + 1;
+            this.pendingTxsNonce.push(tx.nonce);
           } else break;
         }
 
+        if (this.pendingTxsNonce.length > 0) {
+          this.pendingTxsNonce.sort((a, b) => a - b);
+          for (let i = 0; i < this.pendingTxsNonce.length; i++) {
+            if (this.pendingTxsNonce[i] + 1 != this.pendingTxsNonce[i + 1]) {
+              this.suggestedNonce = this.pendingTxsNonce[i] + 1;
+              break;
+            }
+          }
+        } else this.suggestedNonce = nonce;
+
         this.logger.debug(
-          `Using web3 nonce: ${nonce} - pending txs: ${this.pendingConfirmationEthTxs}`
+          `Using web3 nonce: ${nonce} - Suggested Nonce: ${
+            this.suggestedNonce
+          } - pending txs: ${this.suggestedNonce - nonce}`
         );
-        txp.nonce = this.tx.nonce = nonce + this.pendingConfirmationEthTxs;
+
+        txp.nonce = this.tx.nonce = this.suggestedNonce;
       };
 
       const opts = {
