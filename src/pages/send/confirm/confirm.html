@@ -308,6 +308,20 @@
         </ion-note>
       </ion-item>
 
+      <label-tip type="warn" *ngIf="suggestedNonce < customNonce">
+        <span label-tip-title translate>Warning</span>
+        <div label-tip-body translate>
+          Nonce is higher than suggested nonce of {{suggestedNonce}}
+        </div>
+      </label-tip>
+
+      <label-tip type="warn" *ngIf="pendingTxsNonce && pendingTxsNonce.length > 0 && !isSpeedUpTx">
+        <span label-tip-title translate>Waiting for confirmation</span>
+        <div label-tip-body translate>
+          There is a pending transaction with a lower account nonce. This next transaction can only be executed after confirmation of the earlier transaction.
+        </div>
+      </label-tip>
+      
       <div class="line-divider"></div>
 
       <button ion-item detail-none (click)="showWallets()" [ngClass]="{'not-clickable': fromWalletDetails || walletConnectRequestId}">
