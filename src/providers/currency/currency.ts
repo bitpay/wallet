@@ -98,8 +98,20 @@ export class CurrencyProvider {
           .getCustomTokenOpts()
           .then(customERC20Opts => {
             this.customERC20Opts = customERC20Opts;
-            this.coinOpts = { ...this.customERC20CoinsData, ...availableCoins };
-            const tokenOpts = { ...this.customERC20Opts, ...TokenOpts };
+
+            // Workaround to keep the initial order of the tokens and replace any custom tokens that have failed during creation in the past
+            // TODO: review amount.ts how the alternative amounts works, and make a refactor if necessary
+            this.coinOpts = {
+              ...availableCoins,
+              ...this.customERC20CoinsData,
+              ...availableCoins
+            };
+            const tokenOpts = {
+              ...TokenOpts,
+              ...this.customERC20Opts,
+              ...TokenOpts
+            };
+
             this.availableTokens = Object.values(tokenOpts);
             this.availableCoins = Object.keys(this.coinOpts) as string[];
             this.retreiveInfo();
