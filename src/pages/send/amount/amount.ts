@@ -475,7 +475,12 @@ export class AmountPage {
           this.checkAmountForBitpaycard(result);
         } else {
           this.alternativeAmount = result ? 'N/A' : null;
-          this.allowSend = false;
+          if (
+            this.rateProvider.isCoinAvailable(
+              this.availableUnits[this.unitIndex].id
+            )
+          )
+            this.allowSend = false;
         }
       } else {
         this.alternativeAmount = this.filterProvider.formatFiatAmount(
