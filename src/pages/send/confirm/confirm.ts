@@ -308,6 +308,8 @@ export class ConfirmPage {
       multisigContractAddress: this.navParams.data.multisigContractAddress,
       tokenAddress: this.navParams.data.tokenAddress,
       gasLimit: this.navParams.data.gasLimit,
+      gasPrice: this.navParams.data.gasPrice,
+      customData: this.navParams.data.customData,
       speedUpTx: this.isSpeedUpTx,
       fromSelectInputs: this.navParams.data.fromSelectInputs ? true : false,
       fromReplaceByFee: this.navParams.data.fromReplaceByFee ? true : false,
@@ -876,12 +878,6 @@ export class ConfirmPage {
             tx.feeRate = feeRate.substr(0, feeRate.indexOf(' ')) * 1000;
           }
 
-          if (speedUpTxInfo.amount <= 0) {
-            this.showErrorInfoSheet(
-              this.translate.instant('Not enough funds for fee')
-            );
-            return Promise.resolve();
-          }
           tx.speedUpTxInfo = speedUpTxInfo;
         }
         if (wallet.coin === 'eth' || this.isERCToken) {
@@ -1226,10 +1222,9 @@ export class ConfirmPage {
       if (tx.sendMaxInfo) {
         txp.inputs = tx.sendMaxInfo.inputs;
         txp.fee = tx.sendMaxInfo.fee;
-      } else if (tx.speedUpTx) {
+      } else if (tx.speedUpTx && txp.coin === 'btc') {
         txp.inputs = [];
         txp.inputs.push(tx.speedUpTxInfo.input);
-        txp.fee = tx.speedUpTxInfo.fee;
         txp.excludeUnconfirmedUtxos = true;
       } else if (tx.fromSelectInputs || tx.fromReplaceByFee) {
         txp.inputs = tx.inputs;
@@ -1250,7 +1245,9 @@ export class ConfirmPage {
         tx.paypro.host = new URL(tx.payProUrl).host;
       }
 
-      if (tx.recipientType == 'wallet') {
+      if (tx.customData) {
+        txp.customData = tx.customData;
+      } else if (tx.recipientType == 'wallet') {
         txp.customData = {
           toWalletName: tx.name ? tx.name : null
         };

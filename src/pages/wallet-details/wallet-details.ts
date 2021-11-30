@@ -505,7 +505,10 @@ export class WalletDetailsPage {
           this.wallet.coin === 'eth' && tx.customData
             ? tx.customData.toWalletName
             : this.wallet.name,
-        nonce: tx.nonce
+        nonce: tx.nonce,
+        data: tx.data,
+        gasLimit: tx.gasLimit,
+        customData: tx.customData
       };
       const nextView = {
         name: 'ConfirmPage',
@@ -591,18 +594,13 @@ export class WalletDetailsPage {
     )
       return false;
 
-    if (
-      (this.wallet.coin === 'eth' ||
-        this.currencyProvider.isERCToken(this.wallet.coin)) &&
-      tx.customData &&
-      tx.customData.service
-    ) {
-      return false;
-    }
+    const isERC20Transfer = tx && tx.abiType && tx.abiType.name === 'transfer';
+    const isERC20Wallet = this.currencyProvider.isERCToken(this.wallet.coin);
+    const isEthWallet = this.wallet.coin === 'eth';
 
     if (
-      (this.wallet.coin === 'eth' && tx.amount !== 0) ||
-      this.currencyProvider.isERCToken(this.wallet.coin)
+      (isEthWallet && !isERC20Transfer) ||
+      (isERC20Wallet && isERC20Transfer)
     ) {
       // Can speed up the eth/erc20 tx instantly
       return (
