@@ -53,11 +53,13 @@ export class MultiSendPage {
     'EthereumAddress',
     'DogecoinAddress',
     'LitecoinAddress',
+    'RskAddress',
     'EthereumUri',
     'BitcoinUri',
     'BitcoinCashUri',
     'DogecoinUri',
-    'LitecoinUri'
+    'LitecoinUri',
+    'RskUri'
   ];
 
   constructor(
@@ -184,7 +186,8 @@ export class MultiSendPage {
       this.parsedData &&
       (this.parsedData.type === 'BitcoinUri' ||
         this.parsedData.type === 'BitcoinCashUri' ||
-        this.parsedData.type === 'EthereumUri')
+        this.parsedData.type === 'EthereumUri' ||
+        this.parsedData.type === 'RskUri')
     ) {
       let parsed;
       let toAddress;

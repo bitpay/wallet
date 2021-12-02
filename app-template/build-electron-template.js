@@ -29,6 +29,7 @@ builder
           'ripple',
           'dogecoin',
           'litecoin',
+          'rsk',
           '*NAME*'
         ]
       },

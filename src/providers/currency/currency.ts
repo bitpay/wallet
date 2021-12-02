@@ -31,7 +31,8 @@ export class CurrencyProvider {
     DAI: 'dai',
     WBTC: 'wbtc',
     DOGE: 'doge',
-    LTC: 'ltc'
+    LTC: 'ltc',
+    RBTC: 'rbtc'
   };
 
   public popularERC20TokensSymbols: string[] = [
