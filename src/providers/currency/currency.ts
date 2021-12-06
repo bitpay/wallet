@@ -31,7 +31,8 @@ export class CurrencyProvider {
     DAI: 'dai',
     WBTC: 'wbtc',
     DOGE: 'doge',
-    LTC: 'ltc'
+    LTC: 'ltc',
+    SHIB: 'shib'
   };
 
   public popularERC20TokensSymbols: string[] = [
@@ -140,7 +141,7 @@ export class CurrencyProvider {
           hasMultiSend: false,
           isUtxo: false,
           isERCToken: true,
-          isStableCoin: true,
+          isStableCoin: false,
           singleAddress: true,
           isCustom: true
         },
@@ -213,6 +214,10 @@ export class CurrencyProvider {
 
   isERCToken(coin: string): boolean {
     return !!this.coinOpts[coin].properties.isERCToken;
+  }
+
+  isStableCoin(coin: string): boolean {
+    return !!this.coinOpts[coin].properties.isStableCoin;
   }
 
   isCustomERCToken(coin: string) {

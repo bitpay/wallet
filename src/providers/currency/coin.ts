@@ -489,5 +489,43 @@ export const availableCoins: CoinsMap<CoinOpts> = {
       backgroundColor: '#f7921a',
       gradientBackgroundColor: '#f7921a'
     }
+  },
+  shib: {
+    name: 'SHIBA INU',
+    chain: 'ETH',
+    coin: 'shib',
+    unitInfo: {
+      unitName: 'SHIB',
+      unitToSatoshi: 1e18,
+      unitDecimals: 18,
+      unitCode: 'shib'
+    },
+    properties: {
+      hasMultiSig: false,
+      hasMultiSend: false,
+      isUtxo: false,
+      isERCToken: true,
+      isStableCoin: false,
+      singleAddress: true,
+      isCustom: false
+    },
+    paymentInfo: {
+      paymentCode: 'EIP681b',
+      protocolPrefix: { livenet: 'ethereum', testnet: 'ethereum' },
+      ratesApi: 'https://bws.bitpay.com/bws/api/v3/fiatrates/shib',
+      blockExplorerUrls: 'etherscan.io/',
+      blockExplorerUrlsTestnet: 'kovan.etherscan.io/'
+    },
+    feeInfo: {
+      feeUnit: 'Gwei',
+      feeUnitAmount: 1000000000,
+      blockTime: 0.2,
+      maxMerchantFee: 'urgent'
+    },
+    theme: {
+      coinColor: '#2775ca',
+      backgroundColor: '#2775c9',
+      gradientBackgroundColor: '#2775c9'
+    }
   }
 };

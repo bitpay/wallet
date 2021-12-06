@@ -19,7 +19,8 @@ export enum Coin {
   BUSD = 'busd',
   DAI = 'dai',
   WBTC = 'wbtc',
-  DOGE = 'doge'
+  DOGE = 'doge',
+  SHIB = 'shib'
 }
 @Injectable()
 export class TxFormatProvider {

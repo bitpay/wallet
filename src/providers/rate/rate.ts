@@ -90,7 +90,11 @@ export class RateProvider {
                 this.alternatives[r.code] = { name: r.name };
               }
             });
-            this.rates[coin] = !_.isEmpty(coinRates) ? coinRates : { USD: 1 };
+            this.rates[coin] = !_.isEmpty(coinRates)
+              ? coinRates
+              : this.currencyProvider.isStableCoin(coin)
+              ? { USD: 1 }
+              : null;
             this.ratesAvailable[coin] = true;
           });
           return Promise.resolve();
