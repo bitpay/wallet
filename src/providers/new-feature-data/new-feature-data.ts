@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 import { ViewController } from 'ionic-angular';
 import _ from 'lodash';
 import { AppProvider } from '../app/app';
@@ -44,7 +45,8 @@ export class NewFeatureData {
     private locationProv: LocationProvider,
     private platProv: PlatformProvider,
     private persistenceProvider: PersistenceProvider,
-    private logger: Logger
+    private logger: Logger,
+    private translate: TranslateService
   ) {
     this.persistenceProvider.getNetwork().then((network: string) => {
       if (network) {
@@ -53,7 +55,28 @@ export class NewFeatureData {
       this.logger.log(`persistence initialized with ${this.NETWORK}`);
     });
 
-    this.feature_list = [];
+    this.feature_list = [
+      {
+        major: 12,
+        minor: 10,
+        patch: 0,
+        app: ['*'],
+        platform: ['*'],
+        dummy: this.translate.instant('dummy'),
+        features: [
+          {
+            title: this.translate.instant('SHIB is Here!'),
+            details: this.translate.instant(
+              'Attention SHIBArmy! Now you can buy, store, swap, send, receive and pay with SHIB directly in your BitPay app.'
+            ),
+            image: {
+              path: 'assets/img/new-feature/12.10/12.10-1-myshib.svg'
+            },
+            slideTitle: this.translate.instant('New Token')
+          }
+        ]
+      }
+    ];
   }
 
   async get() {
