@@ -33,7 +33,8 @@ export class ChangellyProvider {
       'doge',
       'ltc',
       'usdt',
-      'bat'
+      'bat',
+      'shib'
     ];
   }
 
