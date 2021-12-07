@@ -102,7 +102,8 @@ export class SimplexProvider {
       'doge',
       'dai',
       'usdc',
-      'ltc'
+      'ltc',
+      'shib'
     ];
     this.fiatAmountLimits = {
       min: 50,
