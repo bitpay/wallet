@@ -1,0 +1,57 @@
+<wide-header-page title="{{ name }}">
+  <ion-buttons slot="end">
+    <ion-button wide-header-bar-button fill="clear" class="option-button" (click)="showMoreOptions()">
+      <ion-icon slot="icon-only" name="ellipsis-horizontal" md="ellipsis-horizontal"></ion-icon>
+    </ion-button>
+  </ion-buttons>
+  <div page-content>
+    <div class="contact-view-header">
+      <gravatar [name]="name" [height]="80" [width]="80" [email]="email" [coin]="coin" [network]="network"></gravatar>
+    </div>
+    <ion-list lines="none" class="bp-list">
+      <ion-item>
+        {{'Name' | translate}}
+        <ion-note slot="end">
+          {{ name }}
+        </ion-note>
+      </ion-item>
+      <ion-item *ngIf="email">
+        {{'Email' | translate}}
+        <ion-note slot="end">
+          {{ email }}
+        </ion-note>
+      </ion-item>
+      <ion-item class="ion-margin-top ion-margin-bottom" copy-to-clipboard="{{ address }}">
+        <ion-label>
+          {{'Address' | translate}}
+          <div class="comment ellipsis">
+            {{ address }}
+          </div>
+        </ion-label>
+      </ion-item>
+      <ion-item *ngIf="coin === 'xrp' && tag" copy-to-clipboard="{{ tag }}">
+        {{'Destination Tag' | translate}}
+        <div class="comment ellipsis">
+          {{ tag }}
+        </div>
+      </ion-item>
+      <ion-item>
+        {{'Coin' | translate}}
+        <ion-note slot="end">
+          {{ coin | uppercase }}
+        </ion-note>
+      </ion-item>
+      <ion-item>
+        {{'Network' | translate}}
+        <ion-note slot="end">
+          {{ network }}
+        </ion-note>
+      </ion-item>
+    </ion-list>
+    <div class="btn-send-container">
+      <ion-button class="button-standard" (click)="send()">
+        {{'Send' | translate}} {{coin.toUpperCase()}}
+      </ion-button>
+  </div>
+  </div>
+</wide-header-page>

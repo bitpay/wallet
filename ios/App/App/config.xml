@@ -1,0 +1,76 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+  <access origin="*" />
+  
+  <feature name="Clipboard">
+    <param name="ios-package" value="CDVClipboard"/>
+  </feature>
+
+  <feature name="LaunchReview">
+    <param name="ios-package" value="LaunchReview"/>
+  </feature>
+
+  <feature name="Device">
+    <param name="ios-package" value="CDVDevice"/>
+  </feature>
+
+  <feature name="Notification">
+    <param name="ios-package" value="CDVNotification"/>
+  </feature>
+
+  <feature name="File">
+    <param name="ios-package" value="CDVFile"/>
+    <param name="onload" value="true"/>
+  </feature>
+
+  <feature name="Fingerprint">
+    <param name="ios-package" value="Fingerprint"/>
+  </feature>
+
+  <feature name="Globalization">
+    <param name="ios-package" value="CDVGlobalization"/>
+  </feature>
+
+  <feature name="InAppBrowser">
+    <param name="ios-package" value="CDVWKInAppBrowser"/>
+    <param name="onload" value="true"/>
+  </feature>
+
+  <feature name="QRScanner">
+    <param name="ios-package" value="QRScanner"/>
+  </feature>
+
+  <feature name="CDVOrientation">
+    <param name="ios-package" value="CDVOrientation"/>
+  </feature>
+
+  <feature name="ThemeDetection">
+    <param name="ios-package" value="ThemeDetection"/>
+  </feature>
+
+  <feature name="UserAgent">
+    <param name="ios-package" value="UserAgent"/>
+  </feature>
+
+  <feature name="Vibration">
+    <param name="ios-package" value="CDVVibration"/>
+  </feature>
+
+  <feature name="SocialSharing">
+    <param name="ios-package" value="SocialSharing"/>
+    <param name="onload" value="true"/>
+  </feature>
+
+  <feature name="Toast">
+    <param name="ios-package" value="Toast"/>
+  </feature>
+
+  
+  <preference name="ScrollEnabled" value="false" />
+  <preference name="BackupWebStorage" value="none" />
+  <preference name="SplashMaintainAspectRatio" value="true" />
+  <preference name="FadeSplashScreenDuration" value="300" />
+  <preference name="SplashShowOnlyFirstTime" value="false" />
+  <preference name="SplashScreen" value="screen" />
+  <preference name="SplashScreenDelay" value="3000" />
+</widget>

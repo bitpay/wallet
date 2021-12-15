@@ -1,0 +1,21 @@
+<wide-header-page title="Wallet Service URL">
+  <div page-content>
+    <ion-list lines="none" class="bp-list">
+      <form [formGroup]="walletServiceForm">
+        <ion-item>
+          <ion-label position="stacked">Wallet Service URL</ion-label>
+          <ion-input type="text" formControlName="bwsurl" [value]="walletServiceForm.value.bwsurl" required></ion-input>
+        </ion-item>
+        <div class="explanation">
+          <span>{{comment}}</span>
+          <a (click)="resetDefaultUrl()" translate>
+            Use default url
+          </a>
+        </div>
+        <ion-button class="button-standard" (click)="save()" [disabled]="!walletServiceForm.valid">
+          {{'Save' | translate}}
+        </ion-button>
+      </form>
+    </ion-list>
+  </div>
+</wide-header-page>

@@ -1,0 +1,61 @@
+<ion-header class="ion-no-border" *ngIf="canGoBack">
+  <ion-toolbar hideBackButton transparent>
+    <ion-buttons slot='start'>
+      <ion-button class="close-container disable-hover" (click)="closeCam()" >
+        <ion-icon color="dark" name="close-outline" color="light"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content *ngIf="!isCordova">
+  <div class="not-supported">
+    <span>
+      Camera not supported
+    </span>
+  </div>
+</ion-content>
+
+<ion-content *ngIf="isCordova" class="back-transparent" forceOverflow="false">
+  <div class="page-scan-has-problems" *ngIf="(currentState == scannerStates.unauthorized || currentState == scannerStates.denied || currentState == scannerStates.unavailable)">
+    <div class="header-container">
+      <div>
+        <div class="ion-padding header">
+          <div class="image-container">
+            <img src="assets/img/ico-receive.svg" />
+          </div>
+          <div class="ion-padding title" translate>Scan QR Codes</div>
+        </div>
+        <div class="subtitle" translate>You can scan bitcoin addresses, payment requests, paper wallets, and more.</div>
+      </div>
+    </div>
+    <div class="body">
+      <div class="ion-padding">
+        <div *ngIf="currentState == scannerStates.unauthorized" translate>Enable the camera to get started.</div>
+        <div *ngIf="currentState == scannerStates.denied" translate>Enable camera access in your device settings to get started.</div>
+        <div *ngIf="currentState == scannerStates.unavailable" translate>Please connect a camera to get started.</div>
+      </div>
+      <div>
+        <ion-button  fill="outline" class="button-standard" *ngIf="currentState == scannerStates.unauthorized" (click)="authorize()">
+          {{'Allow camera access' | translate}}
+        </ion-button>
+        <ion-button fill="outline" class="button-standard" *ngIf="currentState == scannerStates.denied && canOpenSettings" (click)="openSettings()">
+          {{'Open settings' | translate}}
+        </ion-button>
+        <ion-button  fill="outline" class="button-standard" *ngIf="currentState == scannerStates.unavailable" (click)="attemptToReactivate()">
+          {{'Retry camera' | translate}}
+        </ion-button>
+      </div>
+    </div>
+  </div>
+  <div class="page-scan-loading-camera" *ngIf="currentState == scannerStates.loading"></div>
+  <div class="page-scan-camera-ready" *ngIf="currentState == scannerStates.visible">
+    <div class="guides">
+      <img class="svg qr-scan-guides" src="assets/img/bitpay-wallet-qr-scan-guides.svg">
+    </div>
+    <div class="scanner-controls">
+      <span *ngIf="canEnableLight" class="icon-flash" [ngClass]="{'active': lightActive}" (click)="toggleLight()"></span>
+      <span *ngIf="canChangeCamera" class="icon-camera-toggle" [ngClass]="{'active': cameraToggleActive}" (click)="toggleCamera()"></span>
+    </div>
+  </div>
+</ion-content>

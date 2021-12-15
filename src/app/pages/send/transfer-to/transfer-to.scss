@@ -1,0 +1,40 @@
+.show-more {
+  display: flex;
+  text-align: center;
+}
+.wallet-disabled {
+  background-color: #fbfbfb;
+  .main-label {
+    color: #d4d4d4;
+  }
+}
+.key-divider {
+  display: flex;
+  align-items: center;
+  padding: 20px 0;
+  margin: 0 25px;
+  color: var(--color-grey);
+  border-bottom: 1px solid rgba(155, 163, 174, 0.2);
+  span {
+    margin-left: 10px;
+  }
+  ion-icon{
+    width: 16px;
+    margin: 0;
+    padding: 0;
+  }
+}
+.no-wallet {
+  text-align: center;
+  font-size: 18px;
+  color: var(--ion-color-primary);
+}
+
+.start {
+  margin: 10px;
+  margin-right: 15px;
+}
+
+.key-name {
+  margin: 14px 8px 14px 8px;
+}

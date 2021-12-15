@@ -1,0 +1,26 @@
+<ion-tabs>
+
+  <ion-tab-bar slot="bottom">
+    <ion-tab-button tab="home">
+      <ion-icon name="home"></ion-icon>
+    </ion-tab-button>
+
+    <ion-tab-button tab="wallets">
+      <ion-icon name="wallet"></ion-icon>
+      <ion-badge color="warning" class="custom-badge-number">{{ txpsN }}</ion-badge>
+    </ion-tab-button>
+
+    <ion-tab-button tab="scan" *ngIf="navigationType === 'scan' && isCordova">
+      <ion-icon name="scan"></ion-icon>
+    </ion-tab-button>
+
+    <ion-tab-button tab="address-book">
+      <ion-icon name="book-outline"></ion-icon>
+    </ion-tab-button>
+
+    <ion-tab-button tab="setting">
+      <ion-icon name="settings"></ion-icon>
+    </ion-tab-button>
+  </ion-tab-bar>
+
+</ion-tabs>

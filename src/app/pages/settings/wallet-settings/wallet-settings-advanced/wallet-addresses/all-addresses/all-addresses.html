@@ -1,0 +1,45 @@
+<wide-header-page title="{{'All addresses' | translate}}">
+  <ion-buttons slot="start">
+    <ion-button class="close-container disable-hover" (click)="dismiss()">
+      <ion-icon name="close"></ion-icon>
+    </ion-button>
+  </ion-buttons>
+  <div page-content>
+    <ion-list lines="none" class="settings-list bp-list">
+      <ion-item-divider *ngIf="withBalance && withBalance[0]">
+        <ion-label>
+          {{'Addresses with balance' | translate}}
+        </ion-label>
+      </ion-item-divider>
+      <ion-item *ngFor="let w of withBalance" copy-to-clipboard="{{w.address}}">
+        <ion-label>
+          <div class="address-container">{{w.address}}</div>
+          <p class="info">
+            {{w.amount | satToUnit: coin}}
+          </p>
+        </ion-label>
+      </ion-item>
+
+      <ion-item-divider *ngIf="noBalance && noBalance[0]">
+        <ion-label>
+          {{'Unused addresses' | translate}}
+        </ion-label>
+      </ion-item-divider>
+      <ion-item *ngFor="let u of noBalance" copy-to-clipboard="{{u.address}}">
+        <ion-label>
+          <div class="address-container">{{u.address}}</div>
+          <p>
+            {{u.path}} {{u.createdOn * 1000 | amDateFormat:'MMMM Do YYYY, hh:mm a'}}
+          </p>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+  </div>
+  <div footer-content>
+    <ion-toolbar *ngIf="isCordova && allAddresses[0]">
+      <ion-button expand="full" class="button-footer" (click)="sendByEmail()">
+        <span translate>Send addresses by email</span>
+      </ion-button>
+    </ion-toolbar>
+  </div>
+</wide-header-page>

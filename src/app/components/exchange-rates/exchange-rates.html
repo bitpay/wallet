@@ -1,0 +1,23 @@
+<ion-list lines="none" class="bp-list">
+  <div *ngFor="let coin of coins">
+    <ion-item button (click)="goToPricePage(coin)">
+      <ion-icon src="assets/img/currencies/{{coin.unitCode}}.svg" class="item-img" slot="start">
+      </ion-icon>
+      <ion-label>
+        <div class="main-label">{{coin.name}}</div>
+        <div class="secondary-label">{{coin.unitCode | uppercase}}</div>
+      </ion-label>
+      <ion-note slot="end">
+        <div class="main-note">
+          <span *ngIf="coin.unitCode === 'xpi'" class="estimate-sign">* </span>
+          <span *ngIf="fiatIsoCode === 'USD' && isFiatIsoCodeSupported">$</span>{{ coin.currentPrice | number: getDigitsInfo(coin.unitCode) }}          
+          <span class="unit" *ngIf="fiatIsoCode !== 'USD' && isFiatIsoCodeSupported">{{ fiatIsoCode }}</span>
+          <span class="unit" *ngIf="!isFiatIsoCodeSupported">USD</span>
+        </div>
+        <div class="average-container" [ngClass]="coin.totalBalanceChange > 0 ? 'possitive-avg' : 'negative-avg'">
+          <span class="average"><span *ngIf="coin.totalBalanceChange > 0">+</span>{{ coin.totalBalanceChange | number:'1.2-2' }}%</span>
+        </div>
+      </ion-note>
+    </ion-item>
+  </div>
+</ion-list>

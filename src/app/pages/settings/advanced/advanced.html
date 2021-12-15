@@ -1,0 +1,28 @@
+<wide-header-page title="{{ 'Advanced' | translate }}">
+  <div page-content>
+    <ion-list lines="none" class="settings-list bp-list">
+      <ion-item button (click)="resetAllSettings()">
+        <ion-label>{{ 'Reset All Settings' | translate }}</ion-label>
+      </ion-item>
+      <ion-item class="with-label no-border">
+        <ion-label>{{ 'Use Unconfirmed Funds' | translate }}</ion-label>
+        <ion-toggle [(ngModel)]="spendUnconfirmed" (ionChange)="spendUnconfirmedChange()"></ion-toggle>
+      </ion-item>
+      <label-tip type="info" header="no-header">
+        <div label-tip-body>
+          <div translate>
+            If enabled, wallets will also try to spend unconfirmed funds.
+          </div>
+          <div *ngIf="!isCopay" translate>
+            However, unconfirmed funds are not allowed for spending with merchants, AbcPay Card loads, or AbcPay in-app gift card purchases.
+          </div>
+        </div>
+      </label-tip>
+    </ion-list>
+    <ion-list lines="nones" class="settings-list bp-list">
+      <ion-item button *ngIf="oldProfileAvailable && wallets && wallets[0]" class="with-label no-border" (click)="openWalletRecoveryPage()" translate>
+        Recover old wallets
+      </ion-item>
+    </ion-list>
+  </div>
+</wide-header-page>

@@ -1,0 +1,105 @@
+<wide-header-page title="{{'Wallet Information' | translate}}">
+  <div page-content>
+    <ion-list lines="none" class="settings-list bp-list">
+      <ion-item>
+        <ion-label slot="start" translate>Name (at creation)</ion-label>
+        <ion-note slot="end">
+          {{walletName}}
+        </ion-note>
+      </ion-item>
+      <ion-item>
+        <ion-label translate>Coin</ion-label>
+        <ion-note slot="end">
+          {{coin}}
+        </ion-note>
+      </ion-item>
+      <ion-item copy-to-clipboard="{{walletId}}">
+        <ion-text>
+          <p>Wallet Id</p>
+          <p class="ion-text-wrap">
+            {{walletId}}
+          </p>
+        </ion-text>
+      </ion-item>
+      <ion-item *ngIf="linkedEthWalletName">
+        <ion-label translate>Linked Ethereum Wallet</ion-label>
+        <ion-note slot="end">
+          {{linkedEthWalletName}}
+        </ion-note>
+      </ion-item>
+
+      <ion-item>
+        <ion-label translate>Configuration (m-n)</ion-label>
+        <ion-note slot="end">
+          {{M}}-{{N}}
+        </ion-note>
+      </ion-item>
+      <ion-item>
+        <ion-label translate>Network</ion-label>
+        <ion-note slot="end">
+          {{network}}
+        </ion-note>
+      </ion-item>
+      <ion-item *ngIf="wallet && isUtxoCoin()">
+        <ion-label translate>Address Type</ion-label>
+        <ion-note slot="end">
+          {{addressType}}
+        </ion-note>
+      </ion-item>
+      <ion-item>
+        <ion-label translate>Derivation Path</ion-label>
+        <ion-note slot="end">
+          {{rootPath}}
+        </ion-note>
+      </ion-item>
+      <ion-item *ngIf="!canSign">
+        <ion-label translate>Read Only Wallet</ion-label>
+        <ion-note slot="end">
+          <ion-label translate>No private key</ion-label>
+        </ion-note>
+      </ion-item>
+      <ion-item>
+        <ion-label translate>Account</ion-label>
+        <ion-note slot="end">
+          #{{account}}
+        </ion-note>
+      </ion-item>
+      <ion-item-divider *ngIf="copayers">
+        <ion-label>
+          Copayers
+        </ion-label>
+      </ion-item-divider>
+      <ion-item *ngFor="let copayer of copayers">
+        <ion-label>{{copayer.name}}</ion-label>
+        <ion-note *ngIf="copayer.id == copayerId" slot="end">
+          ({{'Me' | translate}})
+        </ion-note>
+      </ion-item>
+      <ion-item-divider>
+        <ion-label>
+          {{'Extended Public Keys' | translate}}
+        </ion-label>
+      </ion-item-divider>
+      <ion-item *ngFor="let pk of pubKeys; let i=index" copy-to-clipboard="{{pk}}">
+        <ion-text>
+          <p>Copayer {{i}}</p>
+          <p class="ion-text-wrap ion-no-margin pk">
+            {{pk}}
+          </p>
+          <p class="ion-text-wrap ion-no-margin" *ngIf="i == 0">({{rootPath}})</p>
+        </ion-text>
+      </ion-item>
+      <ion-item-divider *ngIf="balanceByAddress">
+        <ion-label>
+          Balance By Address
+        </ion-label>
+      </ion-item-divider>
+      <ion-item class="item" *ngFor="let a of balanceByAddress" copy-to-clipboard="{{a.address}}">
+        <ion-label>{{a.address}}</ion-label>
+        <ion-note slot="end">
+          {{(a.amount / unitToSatoshi).toFixed(8)}} {{coin}}
+        </ion-note>
+      </ion-item>
+    </ion-list>
+  </div>
+</wide-header-page>

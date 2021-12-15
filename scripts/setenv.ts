@@ -35,7 +35,7 @@ if (environment === 'production') {
 }
 const targetPath = `./src/environments/index.ts`;
 const envConfigFile = `
-import { CurrencyProvider } from '../providers/currency/currency';
+import { CurrencyProvider } from "src/app/providers/currency/currency";
 /**
  * Environment: '${nameEnv}'
  */

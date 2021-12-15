@@ -1,0 +1,35 @@
+page-wallet-balance {
+  .item-inner {
+    border-bottom: none !important;
+  }
+  .balance-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .title {
+      display: flex;
+      align-items: center;
+      img,
+      > ion-icon {
+        height: 18px;
+        width: 18px;
+        margin-right: 15px;
+        padding: 0;
+      }
+    }
+    .balance {
+      text-align: end;
+      .available {
+        color: var(--color-success);
+      }
+      .confirming,
+      .locked {
+        color: var(--color-warning);
+      }
+      .fiat {
+        color: var(--color-light-grey);
+        font-size: 12.5px;
+      }
+    }
+  }
+}

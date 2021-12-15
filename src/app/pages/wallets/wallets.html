@@ -1,0 +1,79 @@
+<ion-header [translucent]="true" class="bp-header">
+  <ion-toolbar>
+    <ion-title>
+      <div [reveal-at-scroll-pos]="expandableHeader.headerHeight" [scrollArea]="scrollArea">
+        {{ 'Wallets' | translate }}
+      </div>
+    </ion-title>
+    <ion-buttons slot="end" class="settings-button" *ngIf="walletsGroups && walletsGroups[0]">
+      <ion-button class="option-button disable-hover" (click)="showMoreOptions()">
+        <ion-icon slot="icon-only" name="ellipsis-horizontal"></ion-icon>
+      </ion-button>
+      <ion-button fill="clear" color="grey"  *ngIf="txpsN > 0" (click)="openProposalsNotificationsPage()">
+        <ion-badge color="warning" slot="icon-only" class="notifications-badge">{{ txpsN }}</ion-badge>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [forceOverscroll]="true"  scrollEvents="true" #scrollArea>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)" pullMin="90" pullMax="160">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+  <div class="wrapper">
+    <expandable-header [scrollArea]="scrollArea" [fadeFactor]="5" [disableFade]="true" #expandableHeader>
+      <ion-toolbar class="wide-header__title">
+        <expandable-header-primary>
+          {{ 'Wallets' | translate }}
+        </expandable-header-primary>
+      </ion-toolbar>
+    </expandable-header>
+
+    <ng-container *ngIf="!isDonation;else donation">
+      <create-new-wallet *ngIf="!walletsGroups || !walletsGroups[0]"></create-new-wallet>
+    </ng-container>
+    <ng-template #donation>
+      <div *ngIf="isShowCreateNewWallet">
+        <create-new-wallet></create-new-wallet>
+      </div>
+    </ng-template> 
+
+    <div *ngFor="let walletGroup of walletsGroups; let i = index" class="wallets-container">
+      <div class="section-header ion-padding-top ion-padding-bottom" *ngIf="walletGroup[0]?.canSign && walletsGroups.length > 1">
+        <ion-icon src="assets/img/settings-icons/icon-key.svg" width="15" class="item-img" slot="start">
+        </ion-icon>
+        <ion-label class="key-name">
+          <span>{{ getWalletGroup(walletGroup[0]?.keyId).name }}</span>
+        </ion-label>
+        <div class="collapse">
+          <div *ngIf="!walletGroup[0]?.canAddNewAccount" class="legacy-tag">Legacy</div>
+          <div *ngIf="walletGroup[0]?.canAddNewAccount" (click)="addWallet(walletGroup[0]?.keyId)">
+            <ion-icon src="assets/img/plus-gray.svg" width="15" class="item-img">
+            </ion-icon>
+          </div>
+          <div class="collapse-btn" *ngIf="walletsGroups.length > 1" (click)="collapseGroup(walletGroup[0]?.keyId)">
+            <ion-icon *ngIf="!isCollapsed(walletGroup[0]?.keyId)" name="chevron-down-outline"></ion-icon>
+            <ion-icon *ngIf="isCollapsed(walletGroup[0]?.keyId)" name="chevron-down-outline"></ion-icon>
+          </div>
+        </div>
+      </div>
+      <div class="section-header ion-padding-top ion-padding-bottom" *ngIf="walletGroup[0]?.keyId == 'read-only'">
+        <ion-icon src="assets/img/settings-icons/icon-read-only.svg" width="20" class="item-img" slot="start">
+        </ion-icon>
+        <ion-label class="key-name">
+          <span translate>Read Only Wallets</span>
+        </ion-label>
+      </div>
+      <ion-list lines="nones" class="bp-list" [ngClass]="{ collapsed: isCollapsed(walletGroup[0]?.keyId) }">
+        <wallet-item-content *ngFor="let wallet of walletGroup" [wallet]="wallet" (click)="goToWalletDetails(wallet)"></wallet-item-content>
+      </ion-list>
+      <label-tip type="warn" class="ion-margin-top" *ngIf="walletGroup && walletGroup[0] && walletGroup[0]?.needsBackup" header="no-header">
+        <div label-tip-body>
+          <span translate>Before retrieving your wallets addresses, it's recommended that you first write down your recovery phrase and store it securely so that your wallets can be recovered in the case your device was lost or stolen.</span>
+          <br>
+          <a class="label-tip-link" (click)="openBackupPage(walletGroup[0]?.keyId)" translate>Backup now</a>
+        </div>
+      </label-tip>
+    </div>
+  </div>
+</ion-content>

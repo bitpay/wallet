@@ -1,0 +1,67 @@
+<ion-content>
+  <swiper #swiper [config]="config" (slideChange)="slideChanged()" class="onboarding-slides">
+    <ng-template swiperSlide>
+      <ion-content>
+        <div class="slide-info">
+          <div class="img-container">
+            <img src="assets/img/onboarding-tour1.svg" />
+          </div>
+          <div class="info">
+            <h3 class="title" translate>Control your money without an account</h3>
+            <div class="text" translate>Websites and exchanges get hacked. AbcPay allows you to privately store, manage, and use your crypto funds without having to trust a centralized bank or exchange.</div>
+          </div>
+        </div>
+      </ion-content>
+    </ng-template>
+    <ng-template swiperSlide>
+        <ion-content>
+          <div class="slide-info">
+            <div class="img-container">
+              <img src="assets/img/onboarding/feature-education-3.svg" />
+            </div>
+            <div class="info">
+              <h3 class="title" translate>Leverage multi-factor security</h3>
+              <div class="text" translate>
+                Use multi-factor wallets to split payment authorization across up to 6 devices or trusted copayers for enhanced security.
+              </div>
+            </div>
+          </div>
+        </ion-content>
+    </ng-template>
+    <ng-template swiperSlide>
+        <ion-content class="final-slide">
+          <div class="slide-info">
+            <div class="img-container">
+              <img src="assets/img/onboarding/feature-education-4.svg" />
+            </div>
+            <div class="info">
+              <h3 class="title" translate>Be your own bank with a simple <a (click)="openLink('https://be.cash')">be.cash</a> card</h3>
+              <div class="text" translate>
+                Same form-factor as a credit card, but with the same decentralized, non-custodial and trustless nature we all love from Bitcoin.
+                <!-- TODO: AbcPay update new text later -->
+                <div class="note" translate>
+                  *Coming soon...
+                </div>
+              </div>
+            </div>
+          </div>
+        </ion-content>
+    </ng-template>
+  </swiper>
+</ion-content>
+
+<ion-footer class="ion-no-border custom-footer" *ngIf="!isCordova || slideEnd">
+  <ion-toolbar *ngIf="!slideEnd && !isCordova">
+    <ion-button class="button-standard" (click)="swiper.swiperRef.slideNext(400)">
+      {{'Continue' | translate}}
+    </ion-button>
+  </ion-toolbar>
+  <ion-toolbar *ngIf="slideEnd">
+    <ion-button class="button-standard ion-no-margin-bottom" (click)="goToNextPage('SelectCurrencyPage')">
+      {{'Start' | translate}}
+    </ion-button>
+    <ion-button fill="clear" class="button-standard" (click)="goToNextPage('ImportWalletPage')">
+      {{'Import from backup' | translate}}
+    </ion-button>
+  </ion-toolbar>
+</ion-footer>

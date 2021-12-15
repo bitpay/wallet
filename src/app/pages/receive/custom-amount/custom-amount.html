@@ -1,0 +1,35 @@
+<wide-header-page title="{{ wallet.name }}">
+  <ion-buttons slot="end">
+    <ion-button fill="clear" wide-header-bar-button (click)="shareAddress()" *ngIf="showShareButton">
+      <ion-icon name="share-outline" class="pointer"></ion-icon>
+    </ion-button>
+  </ion-buttons>
+  <div page-content>
+    <div *ngIf="wallet" class="receive-content">
+      <div class="title-container">
+        <span class="title">{{'Payment Request' | translate}}</span>
+        <ion-icon src="assets/img/icon-info-blue.svg" (click)="showPaymentRequestInfo()">
+        </ion-icon>
+      </div>
+      <div class="addr-container">
+        <div class="text-address ellipsis">
+          <img class="copy-to-clip" copy-to-clipboard="{{ address }}" src="assets/img/paste-clipboard.svg" width="18" />
+          <div class="address-text ellipsis">
+            <span>{{ address }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="qr-card-amount">
+      <span>{{amountUnitStr}}</span>
+      <br>
+      <small>({{altAmountStr}})</small>
+    </div>
+    <div class="qr-container">
+      <div class="card qr-card" copy-to-clipboard="{{ qrAddress }}">
+        <ngx-qrcode hide-toast="true" value="{{ qrAddress }}" cssClass="aclass" [errorCorrectionLevel]="typeErrorQr.MEDIUM"></ngx-qrcode>
+      </div>
+    </div>
+  </div>
+</wide-header-page>

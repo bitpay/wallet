@@ -1,0 +1,27 @@
+page-join-wallet {
+  .scanner-icon {
+    z-index: 99;
+    font-size: 28px;
+    color: var(--color-primary);
+  }
+  .check {
+    font-size: 22px;
+    padding-top: 3px;
+    display: flex;
+    height: 100%;
+    &.success {
+      color: var(--color-success);
+    }
+    &.fail {
+      color: var(--color-danger);
+    }
+  }
+  .linked-wallet {
+    .item-inner {
+      border-bottom: 0px !important;
+    }
+  }
+  .last-item {
+    margin-left: auto !important;
+  }
+}

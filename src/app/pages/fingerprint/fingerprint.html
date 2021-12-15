@@ -1,0 +1,24 @@
+<ion-content forceOverflow="false" fullscreen>
+  <div class="fingerprint-header">
+    <div class="title">
+      <div>
+        {{'Unlock App' | translate}}
+      </div>
+    </div>
+    <div class="icon-container">
+      <ion-icon src="assets/img/app/icon-flat.svg" class="app-icon">
+      </ion-icon>
+    </div>
+  </div>
+  <div class="fingerprint-bottom">
+    <button class="button-standard" ion-button (click)="checkFingerprint()">
+      <span>{{'Scan again' | translate}}</span>
+      <ion-icon name="finger-print" slot="end"></ion-icon>
+    </button>
+  </div>
+  <p class="made-with-custom" [ngClass]="{'white-theme': isDarkTheme}">
+    Made with 
+    <img *ngIf="isDarkTheme" src="assets/img/app/whiteLotus.svg" width="60" />
+    <img *ngIf="!isDarkTheme" src="assets/img/app/blackLotus.svg" width="60" />
+  </p>
+</ion-content>

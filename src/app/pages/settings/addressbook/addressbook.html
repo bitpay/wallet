@@ -1,0 +1,31 @@
+<wide-header-page title="{{'Address Book'|translate}}">
+  <ion-buttons *ngIf="!isEmptyList" slot="end">
+    <ion-button fill="clear" wide-header-bar-button (click)="addEntry()">
+      <span translate>New contact</span>
+    </ion-button>
+  </ion-buttons>
+  <div page-content>
+    <search-bar *ngIf="!isEmptyList && !migratingContacts" [scrollArea]="wideHeaderPage?.scrollArea" (search)="getItems($event)" placeholder="{{'Search a contact' | translate}}"></search-bar>
+    <div class="zero-state" *ngIf="isEmptyList">
+      <ion-icon src="assets/img/address-book-add.svg" class="zero-state-icon">
+      </ion-icon>
+      <div class="zero-state-heading" translate>No contacts yet</div>
+      <div class="zero-state-description" translate>Get started by adding your first one.</div>
+      <ion-button class="button-standard" (click)="addEntry()">
+        {{'New contact' | translate}}
+      </ion-button>
+    </div>
+
+    <ion-list lines="none" class="bp-list ion-margin-top">
+      <ion-item button class="ion-padding-bottom" *ngFor="let entry of (filteredAddressbook | async)" (click)="viewEntry(entry)">
+        <div class="start">
+          <gravatar [name]="entry.name" [height]="40" [width]="40" [email]="entry.email" [coin]="entry.coin" [network]="entry.network"></gravatar>
+        </div>
+        <ion-label>
+          <div class="item-title">{{ entry.name }}</div>
+          <div class="item-subtitle">{{ entry.address }}</div>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+  </div>
+</wide-header-page>

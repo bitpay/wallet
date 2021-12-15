@@ -1,0 +1,119 @@
+.message {
+  &-background {
+    width: 90%;
+    border-radius: 12px;
+    background-color: #f9f9fb;
+    margin: 20px auto 0 auto;
+    &.no-margin {
+      margin-top: 0;
+    }
+    .line-divider {
+      margin: 0px 15px;
+    }
+  }
+
+  &-header {
+    &.no-dismissible {
+      height: 30px;
+    }
+    .button[icon-only] {
+      font-size: 10px;
+    }
+  }
+  &-icon {
+    padding: 0 15px;
+    display: flex;
+    img {
+      width: 18px;
+      height: 18px;
+    }
+  }
+
+  &-title {
+    text-align: left;
+    font-size: 18px;
+    font-weight: 700;
+  }
+
+  &-body {
+    color: grey;
+    font-weight: 400;
+    text-align: left;
+    white-space: normal;
+    font-size: 16px;
+    padding: 10px 15px 20px 15px;
+    &-adv {
+      padding: 0px 15px 7px 0px;
+    }
+    a{
+      color: var(--color-primary);
+    }
+  }
+
+  &-button {
+    cursor: pointer;
+    padding-left: 15px;
+    font-size: 16px;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    color: #4f6ef7;
+    height: 45px;
+  }
+  &-img {
+    img {
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+    }
+    img.card-img {
+      border-radius: 0;
+      width: 60px;
+      height: 60px;
+    }
+  }
+}
+
+.message-background--donate {
+  margin-bottom: 40px;
+  padding-top: 15px;
+  .message-icon {
+    img {
+      margin-left: 7px;
+    }
+  }
+  .message-body {
+    padding-top: 20px;
+    a{
+      cursor: pointer;
+    }
+  }
+}
+
+.message-header {
+  margin-bottom: -15px;
+}
+.message-content {
+  .title-container {
+    align-items: center;
+  }
+}
+.icon-svg {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  > img {
+    background-repeat: no-repeat;
+    background-clip: padding-box;
+    background-size: contain;
+    height: 44px;
+    margin-bottom: 5px;
+  }
+}
+.icons-row {
+  padding: 22px 0;
+}
+.opacity-low {
+  opacity: 0.42;
+}
+

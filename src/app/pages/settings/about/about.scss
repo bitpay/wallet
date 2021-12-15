@@ -1,0 +1,92 @@
+.item-without-title {
+  margin-top: 0;
+}
+.ion-download-outline:before {
+  width: 20px;
+  text-align: center;
+}
+.ion-logo-github:before {
+  width: 20px;
+  text-align: center;
+}
+.ion-lock-outline:before {
+  width: 20px;
+  text-align: center;
+}
+.ion-list-box-outline:before {
+  width: 20px;
+  text-align: center;
+}
+.ion-copy-outline:before {
+  width: 20px;
+  text-align: center;
+}
+.made-with-custom {
+  font-family: 'Lobster';
+  font-size: 19px;
+  position: fixed;
+  bottom: 0;
+  right: 16px;
+  img {
+    position: relative;
+    top: 9px;
+  }
+}
+.white-theme {
+  color: white;
+}
+
+.bp-list {
+  .main-label {
+    font-weight: 400;
+    .bitpay-name {
+      font-weight: bold;
+    }
+    .bitpay-email {
+      font-weight: 200;
+    }
+  }
+  ion-item-divider {
+    margin-top: 0px;
+    padding: 12.5px 0px 12.5px 20px;
+    background: #f8f8f9;
+  }
+  ion-icon {
+    font-size: 20px;
+    // color: #cdd1d7;
+    opacity: 1;
+    padding: 10px 0;
+    &.icon-settings {
+      opacity: 0.5;
+    }
+    &.icon-login {
+      font-size: 60px;
+      padding-left: 15px;
+      img {
+        width: 60px;
+        height: 60px;
+      }
+    }
+    &[src] {
+      width: 20px;
+      height: 20px;
+    }
+    &.item-img{
+      padding: 14.5px;
+      font-size: 20px;
+    }
+  }
+  ion-note {
+    background: #f4f5fb;
+    --color: #565d6d;
+    font-weight: 300;
+    padding: 6px 10px;
+    border-radius: 4px;
+    font-size: 14px;
+    margin: auto;
+  }
+}
+
+.bp-list ion-item:not(.align-with-button) {
+  padding-left: 0;
+}

@@ -1,53 +1,54 @@
 @mixin modal-wrapper {
-  position: absolute;
-  display: block;
-  width: 100% !important;
-  height: 100% !important;
-}
-
-.wallet-details-modal,
-.fullscreen-modal {
-  .modal-wrapper {
-    @include modal-wrapper;
+    position: absolute;
+    display: block;
+    width: 100% !important;
+    height: 100% !important;
   }
-
-  ion-backdrop {
-    visibility: visible !important;
+  
+  .wallet-details-modal,
+  .fullscreen-modal {
+    .modal-wrapper {
+      @include modal-wrapper;
+    }
+  
+    ion-backdrop {
+      visibility: visible !important;
+    }
   }
-}
-
-.fullscreen-modal-no-backdrop {
-  .modal-wrapper {
-    @include modal-wrapper;
+  
+  .fullscreen-modal-no-backdrop {
+    .modal-wrapper {
+      @include modal-wrapper;
+    }
+  
+    ion-backdrop {
+      visibility: hidden !important;
+    }
   }
-
-  ion-backdrop {
-    visibility: hidden !important;
+  
+  .fullscreen-modal,
+  .fullscreen-modal-no-backdrop,
+  .finish-modal {
+    z-index: 999999 !important;
   }
-}
-
-.fullscreen-modal,
-.fullscreen-modal-no-backdrop,
-.finish-modal {
-  z-index: 999999 !important;
-}
-
-.wallet-details-modal {
-  transition: opacity 300ms ease;
-
-  &.scanning {
-    opacity: 0;
-    pointer-events: none;
+  
+  .wallet-details-modal {
+    transition: opacity 300ms ease;
+  
+    &.scanning {
+      opacity: 0;
+      pointer-events: none;
+    }
   }
-}
-
-.in-app-notification-modal {
-  ion-backdrop {
-    background-color: transparent;
-    opacity: 1;
+  
+  .in-app-notification-modal {
+    ion-backdrop {
+      background-color: transparent;
+      opacity: 1;
+    }
+    .modal-wrapper {
+      @include modal-wrapper;
+      --background: transparent !important;
+    }
   }
-  .modal-wrapper {
-    @include modal-wrapper;
-    --background: transparent !important;
-  }
-}
+  

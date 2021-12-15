@@ -1,0 +1,89 @@
+<wide-header-page title="{{'Wallet Addresses' | translate}}">
+  <div page-content>
+    <div class="explanation">
+      <span translate>
+        Each bitcoin wallet can generate billions of addresses from your 12-word recovery phrase. A new address is automatically generated and shown each time you receive a payment.
+      </span>
+      <a (click)="showInfo = !showInfo" *ngIf="!showInfo" translate>Why?</a>
+
+      <div *ngIf="showInfo">
+        <br>
+        <span translate>
+          It's a good idea to avoid reusing addresses - this both protects your privacy and keeps your bitcoins secure against hypothetical attacks by quantum computers.</span>
+        <a (click)="showInfo = !showInfo" translate>Hide</a>
+      </div>
+    </div>
+
+    <ion-button class="button-standard" (click)="scan()">
+      <span translate>Scan addresses for funds</span>
+    </ion-button>
+
+    <ion-item button *ngIf="viewAll" (click)="viewAllAddresses()">
+      <ion-label class="info" translate>View all addresses</ion-label>
+    </ion-item>
+
+    <div class="loading" *ngIf="loading">
+      <ion-spinner color="primary" icon="crescent"></ion-spinner>
+      <span translate>Loading addresses...</span>
+    </div>
+
+    <ion-list lines="none" *ngIf="!loading" class="settings-list bp-list">
+      <div *ngIf="allUtxosNb">
+        <ion-item-divider>
+          <ion-label>
+            {{'Wallet Inputs' | translate}}
+          </ion-label>
+        </ion-item-divider>
+
+        <ion-item>
+          <ion-label>
+            <h3 translate>Total wallet inputs</h3>
+            <p class="info">{{allUtxosNb}} [{{allUtxosSum}}]</p>
+          </ion-label>
+        </ion-item>
+
+        <ion-item>
+          <ion-label>
+            <h3 translate> Low amount inputs </h3>
+            <p class="info">{{lowUtxosNb}} [{{ lowUtxosSum }}]</p>
+          </ion-label>
+        </ion-item>
+
+        <ion-item>
+          <ion-label>
+            <h3 translate>Approximate Bitcoin network fee to transfer wallet's balance (with normal priority)</h3>
+            <p class="info">{{minFeePer}} [{{minFee}}]</p>
+          </ion-label>
+        </ion-item>
+      </div>
+
+      <div *ngIf="latestWithBalance && latestWithBalance[0]">
+        <ion-item-divider>
+          <ion-label>
+            {{'Addresses with balance' | translate}}
+          </ion-label>
+        </ion-item-divider>
+        <ion-item *ngFor="let w of latestWithBalance" copy-to-clipboard="{{w.address}}">
+          <ion-label>
+            <h4>{{w.address}}</h4>
+            <p class="info">{{w.amount | satToUnit: wallet.coin}}</p>
+          </ion-label>
+        </ion-item>
+      </div>
+
+      <div *ngIf="latestUnused && latestUnused[0]">
+        <ion-item-divider>
+          <ion-label>
+            {{'Unused addresses' | translate}}
+          </ion-label>
+        </ion-item-divider>
+        <ion-item *ngFor="let u of latestUnused" copy-to-clipboard="{{u.address}}">
+          <ion-label>
+            <h4>{{u.address}}</h4>
+            <p>{{u.path}} {{u.createdOn * 1000 | amDateFormat:'MMMM Do YYYY, hh:mm a'}}</p>
+          </ion-label>
+        </ion-item>
+      </div>
+    </ion-list>
+  </div>
+</wide-header-page>

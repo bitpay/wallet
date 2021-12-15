@@ -1,0 +1,33 @@
+<ion-header [translucent]="true" class="wide-header" [ngClass]="{'cordova': platformProvider.isCordova}">
+  <ion-toolbar>
+    <ion-buttons *ngIf="!hideBackButton" slot="start">
+      <ion-back-button *ngIf="isCustomBack" onclick="event.stopImmediatePropagation(); window.myCustomMethod()" defaultHref="/" icon="arrow-back">
+      </ion-back-button>
+      <ion-back-button *ngIf="!isCustomBack" icon="arrow-back" defaultHref="/">
+      </ion-back-button>
+    </ion-buttons>
+    <ion-title *ngIf="!hideTopTitle">
+      <div [reveal-at-scroll-pos]="expandableHeader.headerHeight" [scrollArea]="scrollArea">
+        {{title}}
+      </div>
+    </ion-title>
+    <ng-content select="[slot='start']"></ng-content>
+    <ng-content select="[slot='end']"></ng-content>
+  </ion-toolbar>
+</ion-header>
+<ion-content [fullscreen]="true" scrollEvents="true" #scrollArea
+  [ngClass]="{'add-padding-bottom': hasSlideButton, 'add-bottom-safe-area': !hasSlideButton && platformProvider.isCordova}">
+  <div class="wrapper">
+    <expandable-header [scrollArea]="scrollArea" [fadeFactor]="5" [disableFade]="true" #expandableHeader>
+      <ion-toolbar class="wide-header__title">
+        <expandable-header-primary class="ellipsis">
+          {{title}}
+        </expandable-header-primary>
+      </ion-toolbar>
+    </expandable-header>
+    <ng-content select="[page-content]"></ng-content>
+  </div>
+</ion-content>
+<ion-footer>
+  <ng-content select="[footer-content]"></ng-content>
+</ion-footer>

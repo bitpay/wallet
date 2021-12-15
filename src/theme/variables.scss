@@ -1,168 +1,26 @@
 // Ionic Variables and Theming. For more info, please see:
 // http://ionicframework.com/docs/theming/
-// Font path is used to include ionicons,
-// roboto, and noto sans fonts
-$font-path: '../assets/fonts';
-$font-family-base: 'Roboto';
-// The app direction is used to include
-// rtl styles in your app. For more info, please see:
-// http://ionicframework.com/docs/theming/rtl-support/
-$app-direction: ltr;
-@import 'ionic.globals';
-// Shared Variables
-// --------------------------------------------------
-// To customize the look and feel of this app, you can override
-// the Sass variables found in Ionic's source scss files.
-// To view all the possible Ionic variables, see:
-// http://ionicframework.com/docs/theming/overriding-ionic-variables/
-// Override - Homogenized ionic component styles
-
 @import 'icons';
 @import 'lists';
 @import 'overrides';
 @import 'mixins';
 @import 'modals';
 @import 'zero-state';
-// Colors
-$colors: (
-  primary: $color-primary,
-  secondary: $color-secondary,
-  warning: #fdb455,
-  danger: #df5264,
-  success: #01d1a2,
-  info: #5476eb,
-  light: #f4f4f4,
-  blank: #fff,
-  dark: #000,
-  grey: #667,
-  light-grey: #9b9bab,
-  error: #e56c7b,
-  btc-color: #f7931a,
-  eth-color: #6b71d6
-);
 
-$background-colors: (
-  warning: #fff7f2,
-  danger: #fff2f4,
-  success: #bfffeb,
-  info: #eff1f8
-);
+// @import 'light';
 
-// Wallet-details
-$feather-dark: #f8f8f9;
-$feather: #fbfbff;
+// toto ionic 4 --> can't import 
+// @import 'ionic.theme.default';
+// @import 'ionic.ionicons';
 
-$slateDark: #434d5a;
-$black: #303133;
+// @import 'roboto';
+// @import 'noto-sans';
 
-// Refresh color
-$refresher-icon-color: color($colors, primary);
-$refresher-icon-font-size: 12px;
-$refresher-border-color: none;
-// Toolbar
-$toolbar-text-color: color($colors, light);
-// Main color
-$text-color: color($colors, dark);
-// Border light
-$list-border-color: color($colors, light);
-// Toolbar
-$toolbar-ios-title-text-color: color($colors, light);
-$toolbar-md-title-text-color: color($colors, light);
-// Onboarding colors
-$onboarding-gradient-bottom-color: $color-secondary-dark;
-$onboarding-background-image: linear-gradient(
-  to bottom,
-  $onboarding-gradient-top-color 0%,
-  $onboarding-gradient-bottom-color 100%
-);
-// Removes green border below the input (Android)
-$text-input-md-highlight-color-invalid: transparent;
-$text-input-md-highlight-color-valid: transparent;
-$text-input-md-show-invalid-highlight: transparent;
-$text-input-md-highlight-color: transparent;
-$text-input-md-show-valid-highlight: transparent;
-// App iOS Variables
-// --------------------------------------------------
-// iOS only Sass variables can go here
-$tabs-ios-border-color: rgba(0, 0, 0, 0.1);
-$item-ios-divider-color: color($colors, grey);
-$item-ios-padding-top: 16px;
-$item-ios-padding-bottom: 16px;
-$label-ios-margin-top: 14px;
-$label-ios-margin-bottom: 14px;
-$list-ios-border-color: color($colors, light);
-$list-ios-margin-bottom: 0;
-$list-ios-header-font-weight: 700;
-$list-ios-header-color: color($colors, dark);
-$searchbar-ios-background-color: color($colors, blank);
-$searchbar-ios-padding-vertical: 16px;
-$searchbar-ios-padding-horizontal: 8px;
-$note-ios-color: color($colors, light-grey);
-$toolbar-ios-title-font-weight: 400;
-$checkbox-ios-icon-border-color-off: color($colors, light-grey);
-$range-ios-tick-width: 10px;
-$range-ios-tick-height: 10px;
-$range-ios-knob-width: 23px;
-$range-ios-knob-height: 23px;
-$range-ios-tick-border-radius: 50%;
-$range-ios-bar-height: 3px;
-$range-ios-slider-height: 35px;
-
-// App Material Design Variables
-// --------------------------------------------------
-// Material Design only Sass variables can go here
-$item-md-divider-color: color($colors, grey);
-$item-md-padding-top: 16px;
-$item-md-padding-bottom: 16px;
-$label-md-margin-top: 14px;
-$label-md-margin-bottom: 14px;
-$searchbar-md-padding-start: 8px;
-$searchbar-md-padding-end: 8px;
-$searchbar-md-padding-top: 16px;
-$list-md-border-color: color($colors, light);
-$list-md-header-margin-bottom: 0;
-$list-md-margin-bottom: 0;
-$list-md-header-color: color($colors, dark);
-$note-md-color: color($colors, light-grey);
-$alert-md-title-font-size: 16px;
-$alert-md-sub-title-font-size: 12.5px;
-$alert-md-message-font-size: 12.5px;
-$button-md-text-transform: none;
-$button-md-clear-background-color-hover: transparent;
-$badge-md-border-radius: 9px;
-$segment-button-md-border-color-activated: color($colors, primary);
-$segment-button-md-border-bottom-width: 0.5px;
-$segment-button-md-text-color-activated: color($colors, dark);
-$segment-button-md-height: 5rem;
-$segment-button-md-padding-top: 4px;
-$range-md-tick-width: 10px;
-$range-md-tick-height: 10px;
-$range-md-knob-width: 30px;
-$range-md-knob-height: 30px;
-$range-md-slider-height: 35px;
-// $range-ios-knob-box-shadow: 3% solid white;
-// App Windows Variables
-// --------------------------------------------------
-// Windows only Sass variables can go here
-// App Theme
-// --------------------------------------------------
-// Ionic apps can have different themes applied, which can
-// then be future customized. This import comes last
-// so that the above variables are used and Ionic's
-// default are overridden.
-@import 'ionic.theme.default';
-@import 'dark';
-@import 'light';
-
-// Ionicons
-// --------------------------------------------------
-// The premium icon font for Ionic. For more info, please see:
-// http://ionicframework.com/docs/ionicons/
-@import 'ionic.ionicons';
-// Fonts
-// --------------------------------------------------
-@import 'roboto';
-@import 'noto-sans';
+@mixin center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
 @font-face {
   font-family: 'AmazonEmberDisplay';
@@ -186,6 +44,388 @@ $range-md-slider-height: 35px;
   src: url(../assets/fonts/Lobster-Regular.ttf) format('truetype');
 }
 
+/** Ionic CSS Variables **/
+:root {
+  --ion-font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Roboto", sans-serif;
+  
+  /** primary **/
+  --ion-color-primary: #f39c11;
+  --ion-color-primary-rgb: 243, 156, 17;
+  --ion-color-primary-contrast: #ffffff;
+  --ion-color-primary-contrast-rgb: 255, 255, 255;
+  --ion-color-primary-shade: #d6890f;
+  --ion-color-primary-tint: #f4a629;
+
+  /** secondary **/
+  --ion-color-secondary: #3dc2ff;
+  --ion-color-secondary-rgb: 61, 194, 255;
+  --ion-color-secondary-contrast: #ffffff;
+  --ion-color-secondary-contrast-rgb: 255, 255, 255;
+  --ion-color-secondary-shade: #36abe0;
+  --ion-color-secondary-tint: #50c8ff;
+
+  /** tertiary **/
+  --ion-color-tertiary: #5260ff;
+  --ion-color-tertiary-rgb: 82, 96, 255;
+  --ion-color-tertiary-contrast: #ffffff;
+  --ion-color-tertiary-contrast-rgb: 255, 255, 255;
+  --ion-color-tertiary-shade: #4854e0;
+  --ion-color-tertiary-tint: #6370ff;
+
+  /** success **/
+  --ion-color-success: #2dd36f;
+  --ion-color-success-rgb: 45, 211, 111;
+  --ion-color-success-contrast: #ffffff;
+  --ion-color-success-contrast-rgb: 255, 255, 255;
+  --ion-color-success-shade: #28ba62;
+  --ion-color-success-tint: #42d77d;
+
+  /** warning **/
+  --ion-color-warning: #ffc409;
+  --ion-color-warning-rgb: 255, 196, 9;
+  --ion-color-warning-contrast: #000000;
+  --ion-color-warning-contrast-rgb: 0, 0, 0;
+  --ion-color-warning-shade: #e0ac08;
+  --ion-color-warning-tint: #ffca22;
+
+  /** danger **/
+  --ion-color-danger: #eb445a;
+  --ion-color-danger-rgb: 235, 68, 90;
+  --ion-color-danger-contrast: #ffffff;
+  --ion-color-danger-contrast-rgb: 255, 255, 255;
+  --ion-color-danger-shade: #cf3c4f;
+  --ion-color-danger-tint: #ed576b;
+
+  /** dark **/
+  --ion-color-dark: #222428;
+  --ion-color-dark-rgb: 34, 36, 40;
+  --ion-color-dark-contrast: #ffffff;
+  --ion-color-dark-contrast-rgb: 255, 255, 255;
+  --ion-color-dark-shade: #1e2023;
+  --ion-color-dark-tint: #383a3e;
+
+  /** medium **/
+  --ion-color-medium: #92949c;
+  --ion-color-medium-rgb: 146, 148, 156;
+  --ion-color-medium-contrast: #ffffff;
+  --ion-color-medium-contrast-rgb: 255, 255, 255;
+  --ion-color-medium-shade: #808289;
+  --ion-color-medium-tint: #9d9fa6;
+
+  /** light **/
+  --ion-color-light: #f4f5f8;
+  --ion-color-light-rgb: 244, 245, 248;
+  --ion-color-light-contrast: #000000;
+  --ion-color-light-contrast-rgb: 0, 0, 0;
+  --ion-color-light-shade: #d7d8da;
+  --ion-color-light-tint: #f5f6f9;
+
+  --color-primary: #f39c11;
+  --color-primary: #f39c11;
+  --color-warning: #fdb455;
+  --color-danger: #df5264;
+  --color-success: #01d1a2;
+  --color-info: #5476eb;
+  --color-light: #f4f4f4;
+  --color-blank: #fff;
+  --color-dark: #000;
+  --color-grey: #667;
+  --color-light-grey: #9b9bab;
+  --color-error: #e56c7b;
+  --color-btc-color: #f7931a;
+  --color-eth-color: #6b71d6;
+
+  --background-colors-warning: #fff7f2;
+  --background-colors-danger: #fff2f4;
+  --background-colors-success: #bfffeb;
+  --background-colors-info: #eff1f8;
+
+
+  // Wallet-details
+  --feather-dark: #f8f8f9;
+  --feather: #fbfbff;
+
+  --slateDark: #434d5a;
+  --black: #303133;
+
+  // Refresh color
+  --refresher-icon-color: var(--color-primary);
+  --refresher-icon-font-size: 12px;
+  --refresher-border-color: none;
+  // Toolbar
+  --toolbar-text-color: var(--color-light);
+  // Main color
+  --text-color: var(--color-dark);
+  // Border light
+  --list-border-color: var(--color-light);
+  // Toolbar
+  --toolbar-ios-title-text-color: var(--color-light);
+  --toolbar-md-title-text-color: var(--color-light);
+  // Onboarding colors
+  --onboarding-gradient-bottom-color: var(--color-secondary-dark);
+  --onboarding-background-image: linear-gradient(to bottom,
+      var(--onboarding-gradient-top-color) 0%,
+      var(--onboarding-gradient-bottom-color) 100%);
+  // Removes green border below the input (Android)
+  --text-input-md-highlight-color-invalid: transparent;
+  --text-input-md-highlight-color-valid: transparent;
+  --text-input-md-show-invalid-highlight: transparent;
+  --text-input-md-highlight-color: transparent;
+  --text-input-md-show-valid-highlight: transparent;
+  // App iOS Variables
+  // --------------------------------------------------
+  // iOS only Sass variables can go here
+  --tabs-ios-border-color: rgba(0, 0, 0, 0.1);
+  --item-ios-divider-color: var(--color-grey);
+  --item-ios-padding-top: 16px;
+  --item-ios-padding-bottom: 16px;
+  --label-ios-margin-top: 14px;
+  --label-ios-margin-bottom: 14px;
+  --list-ios-border-color: var(--color-light);
+  --list-ios-margin-bottom: 0;
+  --list-ios-header-font-weight: 700;
+  --list-ios-header-color: var(--color-dark);
+  --searchbar-ios-background-color: var(--color-blank);
+  --searchbar-ios-padding-vertical: 16px;
+  --searchbar-ios-padding-horizontal: 8px;
+  --note-ios-color: var(--color-light-grey);
+  --toolbar-ios-title-font-weight: 400;
+  --checkbox-ios-icon-border-color-off: var(--color-light-grey);
+  --range-ios-tick-width: 10px;
+  --range-ios-tick-height: 10px;
+  --range-ios-knob-width: 23px;
+  --range-ios-knob-height: 23px;
+  --range-ios-tick-border-radius: 50%;
+  --range-ios-bar-height: 3px;
+  --range-ios-slider-height: 35px;
+
+  // App Material Design Variables
+  // --------------------------------------------------
+  // Material Design only Sass variables can go here
+  --item-md-divider-color: var(--color-grey);
+  --item-md-padding-top: 16px;
+  --item-md-padding-bottom: 16px;
+  --label-md-margin-top: 14px;
+  --label-md-margin-bottom: 14px;
+  --searchbar-md-padding-start: 8px;
+  --searchbar-md-padding-end: 8px;
+  --searchbar-md-padding-top: 16px;
+  --list-md-border-color: var(--color-light);
+  --list-md-header-margin-bottom: 0;
+  --list-md-margin-bottom: 0;
+  --list-md-header-color: var(--color-dark);
+  --note-md-color: var(--color-light-grey);
+  --alert-md-title-font-size: 16px;
+  --alert-md-sub-title-font-size: 12.5px;
+  --alert-md-message-font-size: 12.5px;
+  --button-md-text-transform: none;
+  --button-md-clear-background-color-hover: transparent;
+  --badge-md-border-radius: 9px;
+  --segment-button-md-border-color-activated: var(--color-primary);
+  --segment-button-md-border-bottom-width: 0.5px;
+  --segment-button-md-text-color-activated: var(--color-dark);
+  --segment-button-md-height: 5rem;
+  --segment-button-md-padding-top: 4px;
+  --range-md-tick-width: 10px;
+  --range-md-tick-height: 10px;
+  --range-md-knob-width: 30px;
+  --range-md-knob-height: 30px;
+  --range-md-slider-height: 35px;
+
+  --home-active: url('../assets/img/tab-icons/tab-home-active.svg') no-repeat 50% 50%;
+  --home-inactive: url('../assets/img/tab-icons/tab-home.svg') no-repeat 50% 50%;
+  --wallets-active: url('../assets/img/tab-icons/tab-wallets-active.svg') no-repeat 50% 50%;
+  --wallets-inactive: url('../assets/img/tab-icons/tab-wallets.svg') no-repeat 50% 50%;
+  --transact: url('../assets/img/tab-icons/tab-transact.svg') no-repeat 50% 50%;
+  --cards-active: url('../assets/img/tab-icons/tab-cards-active.svg') no-repeat 50% 50%;
+  --cards-inactive: url('../assets/img/tab-icons/tab-cards.svg') no-repeat 50% 50%;
+  --settings-active: url('../assets/img/tab-icons/tab-settings-active.svg') no-repeat 50% 50%;
+  --settings-inactive: url('../assets/img/tab-icons/tab-settings.svg') no-repeat 50% 50%;
+  --address-book-active: url('../assets/img/tab-icons/tab-address-book-active.svg') no-repeat 50% 50%;
+  --address-book-inactive: url('../assets/img/tab-icons/tab-address-book.svg') no-repeat 50% 50%;
+  --scan-active: url('../assets/img/tab-icons/tab-scan-active.svg') no-repeat 50% 50%;
+  --scan-inactive: url('../assets/img/tab-icons/tab-scan.svg') no-repeat 50% 50%;
+  --copay-scan-active: url('../assets/img/scan-ico.svg') no-repeat 50% 50%;
+  --copay-scan-inactive: url('../assets/img/tab-icons/tab-copay-scan.svg') no-repeat 50% 50%;
+  --sz: 20px;
+  --icon-dim: 36px;
+
+  --icon-height: 20px;
+  --arrow-height: 18px;
+  --arrow-width: 14.4px;
+
+  --mobile-width: 480px;
+  --tablet-width: 768px;
+  --desktop-width: 1024px;
+  --spinner-height: 18px;
+  --short-device-height: 570px;
+  --short-screen: 630px;
+  --gradient1-light: #d8defd;
+  --gradient2-light: #f3f4f9;
+  --gradient1-dark: #606060;
+  --gradient2-dark: #202124;
+}
+
+//toto ionic --> check ionic.theme.default
+// @import 'ionic.theme.default';
+@import 'dark';
+@import 'light';
+
+// Default ionic Dark Mode (AbcPay use custom)
+// @media (prefers-color-scheme: dark) {
+//   /*
+//    * Dark Colors
+//    * -------------------------------------------
+//    */
+
+//   body {
+//     --ion-color-primary: #f39c11;
+//     --ion-color-primary-rgb: 243, 156, 17;
+//     --ion-color-primary-contrast: #ffffff;
+//     --ion-color-primary-contrast-rgb: 255, 255, 255;
+//     --ion-color-primary-shade: #f39c11;
+//     --ion-color-primary-tint: #f3a932;
+
+//     --ion-color-secondary: #50c8ff;
+//     --ion-color-secondary-rgb: 80, 200, 255;
+//     --ion-color-secondary-contrast: #ffffff;
+//     --ion-color-secondary-contrast-rgb: 255, 255, 255;
+//     --ion-color-secondary-shade: #46b0e0;
+//     --ion-color-secondary-tint: #62ceff;
+
+//     --ion-color-tertiary: #6a64ff;
+//     --ion-color-tertiary-rgb: 106, 100, 255;
+//     --ion-color-tertiary-contrast: #ffffff;
+//     --ion-color-tertiary-contrast-rgb: 255, 255, 255;
+//     --ion-color-tertiary-shade: #5d58e0;
+//     --ion-color-tertiary-tint: #7974ff;
+
+//     --ion-color-success: #2fdf75;
+//     --ion-color-success-rgb: 47, 223, 117;
+//     --ion-color-success-contrast: #000000;
+//     --ion-color-success-contrast-rgb: 0, 0, 0;
+//     --ion-color-success-shade: #29c467;
+//     --ion-color-success-tint: #44e283;
+
+//     --ion-color-warning: #ffd534;
+//     --ion-color-warning-rgb: 255, 213, 52;
+//     --ion-color-warning-contrast: #000000;
+//     --ion-color-warning-contrast-rgb: 0, 0, 0;
+//     --ion-color-warning-shade: #e0bb2e;
+//     --ion-color-warning-tint: #ffd948;
+
+//     --ion-color-danger: #ff4961;
+//     --ion-color-danger-rgb: 255, 73, 97;
+//     --ion-color-danger-contrast: #ffffff;
+//     --ion-color-danger-contrast-rgb: 255, 255, 255;
+//     --ion-color-danger-shade: #e04055;
+//     --ion-color-danger-tint: #ff5b71;
+
+//     --ion-color-dark: #f4f5f8;
+//     --ion-color-dark-rgb: 244, 245, 248;
+//     --ion-color-dark-contrast: #000000;
+//     --ion-color-dark-contrast-rgb: 0, 0, 0;
+//     --ion-color-dark-shade: #d7d8da;
+//     --ion-color-dark-tint: #f5f6f9;
+
+//     --ion-color-medium: #989aa2;
+//     --ion-color-medium-rgb: 152, 154, 162;
+//     --ion-color-medium-contrast: #000000;
+//     --ion-color-medium-contrast-rgb: 0, 0, 0;
+//     --ion-color-medium-shade: #86888f;
+//     --ion-color-medium-tint: #a2a4ab;
+
+//     --ion-color-light: #222428;
+//     --ion-color-light-rgb: 34, 36, 40;
+//     --ion-color-light-contrast: #ffffff;
+//     --ion-color-light-contrast-rgb: 255, 255, 255;
+//     --ion-color-light-shade: #1e2023;
+//     --ion-color-light-tint: #383a3e;
+//   }
+
+//   /*
+//    * iOS Dark Theme
+//    * -------------------------------------------
+//    */
+
+//   .ios body {
+//     --ion-background-color: #000000;
+//     --ion-background-color-rgb: 0, 0, 0;
+
+//     --ion-text-color: #ffffff;
+//     --ion-text-color-rgb: 255, 255, 255;
+
+//     --ion-color-step-50: #0d0d0d;
+//     --ion-color-step-100: #1a1a1a;
+//     --ion-color-step-150: #262626;
+//     --ion-color-step-200: #333333;
+//     --ion-color-step-250: #404040;
+//     --ion-color-step-300: #4d4d4d;
+//     --ion-color-step-350: #595959;
+//     --ion-color-step-400: #666666;
+//     --ion-color-step-450: #737373;
+//     --ion-color-step-500: #808080;
+//     --ion-color-step-550: #8c8c8c;
+//     --ion-color-step-600: #999999;
+//     --ion-color-step-650: #a6a6a6;
+//     --ion-color-step-700: #b3b3b3;
+//     --ion-color-step-750: #bfbfbf;
+//     --ion-color-step-800: #cccccc;
+//     --ion-color-step-850: #d9d9d9;
+//     --ion-color-step-900: #e6e6e6;
+//     --ion-color-step-950: #f2f2f2;
+
+//     --ion-item-background: #000000;
+
+//     --ion-card-background: #1c1c1d;
+//     --font-path: '../assets/fonts';
+//     --font-family-base: 'Roboto';
+//   }
+
+
+//   .ios ion-modal {
+//     --ion-background-color: var(--ion-color-step-100);
+//     --ion-toolbar-background: var(--ion-color-step-150);
+//     --ion-toolbar-border-color: var(--ion-color-step-250);
+//   }
+
+
+//   /*
+//    * Material Design Dark Theme
+//    * -------------------------------------------
+//    */
+
+//   .md body {
+//     --ion-background-color: #121212;
+//     --ion-background-color-rgb: 18, 18, 18;
+
+//     --ion-text-color: #ffffff;
+//     --ion-text-color-rgb: 255, 255, 255;
+
+//     --ion-border-color: #222222;
+
+//     --ion-color-step-50: #1e1e1e;
+//     --ion-color-step-100: #2a2a2a;
+//     --ion-color-step-150: #363636;
+//     --ion-color-step-200: #414141;
+//     --ion-color-step-250: #4d4d4d;
+//     --ion-color-step-300: #595959;
+//     --ion-color-step-350: #656565;
+//     --ion-color-step-400: #717171;
+//     --ion-color-step-450: #7d7d7d;
+//     --ion-color-step-500: #898989;
+//     --ion-color-step-550: #949494;
+//     --ion-color-step-600: #a0a0a0;
+//     --ion-color-step-650: #acacac;
+//     --ion-color-step-700: #b8b8b8;
+//     --ion-color-step-750: #c4c4c4;
+//     --ion-color-step-800: #d0d0d0;
+//     --ion-color-step-850: #dbdbdb;
+//     --ion-color-step-900: #e7e7e7;
+//     --ion-color-step-950: #f3f3f3;
+//   }
+// }
+
 /* Ionic Overrides and Workarounds */
 
 // Please include a description of the problem solved by the workaround.
@@ -203,10 +443,11 @@ $range-md-slider-height: 35px;
 .md,
 .ios {
   .card {
-    ion-list > .item:last-child,
-    ion-list > .item-wrapper:last-child .item,
-    ion-list > .item:last-child,
-    ion-list > .item-wrapper:last-child .item {
+
+    ion-list>.item:last-child,
+    ion-list>.item-wrapper:last-child .item,
+    ion-list>.item:last-child,
+    ion-list>.item-wrapper:last-child .item {
       border-bottom: none;
     }
   }
@@ -243,6 +484,7 @@ ion-footer {
 }
 
 .toolbar {
+
   // Titles centered on all headers for material design
   &.toolbar-md {
     //material design only

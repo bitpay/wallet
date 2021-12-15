@@ -1,0 +1,27 @@
+.add-icon {
+  font-size: 1.7rem !important;
+  margin: 0 !important;
+  padding: 20px !important;
+}
+.loading {
+  display: flex;
+  justify-content: center;
+  padding: 30px;
+  span {
+    margin: auto 10px auto 10px;
+  }
+}
+
+ion-item {
+  h3{
+    font-size: 16px;
+  }
+  .info {
+    color: var(--ion-color-primary) !important;
+    margin-top: 1px;
+  }
+}
+.explanation {
+  padding: 16px;
+  font-size: 14px;
+}

@@ -1,0 +1,14 @@
+<wide-header-page title="{{ 'Navigation' | translate }}">
+  <div page-content>
+    <ion-list lines="none"  class="settings-list bp-list">
+      <ion-radio-group [(ngModel)]="selectedNavigationType">
+        <ion-item *ngFor="let n of availableNavigationTypes | keys">
+          <ion-label>
+            {{ n.value.name }}
+          </ion-label>
+          <ion-radio (click)="save(n.key)" [value]="n.key"></ion-radio>
+        </ion-item>
+      </ion-radio-group>
+    </ion-list>
+  </div>
+</wide-header-page>

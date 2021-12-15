@@ -1,0 +1,32 @@
+page-select-currency {
+  ion-content {
+    height: calc(100% - 200px) !important;
+  }
+
+  .list-button {
+    padding-top: 10px;
+    padding-bottom: 10px;
+
+    ion-icon {
+      margin-left: 3px;
+      height: 40px;
+      width: 40px;
+    }
+
+    .item-title {
+      // color: black;
+      font-size: 18px;
+      font-weight: 500;
+    }
+
+    .item-note {
+      font-size: 12.5px;
+      padding-top: 4px;
+      color: lightgrey;
+    }
+  }
+
+  .list-subtitle {
+    padding-left: 20px;
+  }
+}

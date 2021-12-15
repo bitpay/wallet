@@ -1,71 +1,44 @@
 import { HttpClientModule } from '@angular/common/http';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ServiceWorkerModule } from '@angular/service-worker';
-import { IonicImageLoader } from 'ionic-image-loader';
-import { MarkdownModule } from 'ngx-markdown';
-import { NgxTextOverflowClampModule } from 'ngx-text-overflow-clamp';
-
 import { CUSTOM_ELEMENTS_SCHEMA, ErrorHandler, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import {
-  Config,
-  IonicApp,
-  IonicErrorHandler,
-  IonicModule
-} from 'ionic-angular';
+import { RouteReuseStrategy } from '@angular/router';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { IonicModule, IonicRouteStrategy, NavParams } from '@ionic/angular';
+import { MissingTranslationHandler, MissingTranslationHandlerParams, TranslateDefaultParser, TranslateLoader, TranslateModule, TranslateParser } from '@ngx-translate/core';
+import { env } from 'src/environments';
+import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-/* Modules */
-import {
-  MissingTranslationHandler,
-  MissingTranslationHandlerParams,
-  TranslateDefaultParser,
-  TranslateLoader,
-  TranslateModule,
-  TranslateParser
-} from '@ngx-translate/core';
+
+import { AppRoutingModule } from './app-routing.module';
+import { CopayApp } from './app.component';
+import { Animate } from './directives/animate/animate';
+import { CopyToClipboard } from './directives/copy-to-clipboard/copy-to-clipboard';
+import { ExternalizeLinks } from './directives/externalize-links/externalize-links';
+import { FixedScrollBgColor } from './directives/fixed-scroll-bg-color/fixed-scroll-bg-color';
+import { IonContentBackgroundColor } from './directives/ion-content-background-color/ion-content-background-color';
+import { IonMask } from './directives/ion-mask/ion-mask';
+import { LongPress } from './directives/long-press/long-press';
+import { NavbarBg } from './directives/navbar-bg/navbar-bg';
+import { NoLowFee } from './directives/no-low-fee/no-low-fee';
+import { RevealAtScrollPosition } from './directives/reveal-at-scroll-pos/reveal-at-scroll-pos';
+import { ScrolledIntoView } from './directives/scrolled-into-view/scrolled-into-view';
+import { FormatCurrencyPipe, sharedPipes } from './pipes';
+import { LanguageLoader } from './providers';
+import { CustomErrorHandler } from './providers/custom-error-handler.service';
+import { ProvidersModule } from './providers/providers.module';
+import { NgxTextOverflowClampModule } from 'ngx-text-overflow-clamp';
 import { MomentModule } from 'angular2-moment';
 import { NgxBarcodeModule } from 'ngx-barcode';
-import { NgxQRCodeModule } from 'ngx-qrcode2';
+import { NgxQRCodeModule } from '@techiediaries/ngx-qrcode';
+import { MarkdownModule } from 'ngx-markdown';
+import { COMPONENTS } from './components/components';
+import { PAGES } from './pages/pages';
 
-/* Copay App */
-import env from '../environments';
-import { CopayApp } from './app.component';
+import { SwiperModule } from 'swiper/angular'
 
-import { PAGES } from './../pages/pages';
-
-/* Pipes */
-import { FiatToUnitPipe } from '../pipes/fiatToUnit';
-import { FormatCurrencyPipe } from '../pipes/format-currency';
-import { KeysPipe } from '../pipes/keys';
-import { OrderByPipe } from '../pipes/order-by';
-import { SatToFiatPipe } from '../pipes/satToFiat';
-import { SatToUnitPipe } from '../pipes/satToUnit';
-import { ShortenedAddressPipe } from '../pipes/shortened-address';
-
-/* Directives */
-import { Animate } from '../directives/animate/animate';
-import { CopyToClipboard } from '../directives/copy-to-clipboard/copy-to-clipboard';
-import { ExternalizeLinks } from '../directives/externalize-links/externalize-links';
-import { FixedScrollBgColor } from '../directives/fixed-scroll-bg-color/fixed-scroll-bg-color';
-import { IonContentBackgroundColor } from '../directives/ion-content-background-color/ion-content-background-color';
-import { IonMask } from '../directives/ion-mask/ion-mask';
-import { LongPress } from '../directives/long-press/long-press';
-import { NavbarBg } from '../directives/navbar-bg/navbar-bg';
-import { NoLowFee } from '../directives/no-low-fee/no-low-fee';
-import { RevealAtScrollPosition } from '../directives/reveal-at-scroll-pos/reveal-at-scroll-pos';
-import { ScrolledIntoView } from '../directives/scrolled-into-view/scrolled-into-view';
-import { WideHeaderBarButton } from '../pages/templates/wide-header-page/wide-header-bar-button';
-
-/* Components */
-import { COMPONENTS } from '../components/components';
-
-/* Providers */
-import { LanguageLoader } from '../providers/language-loader/language-loader';
-import { ProvidersModule } from '../providers/providers.module';
-
-/* Modal Transitions */
-import { ModalTranslateEnterTransition } from '../components/notification-component/transitions/on-enter-translate.transition';
-import { ModalTranslateLeaveTransition } from '../components/notification-component/transitions/on-leave-translate.transition';
+import { WebView } from '@ionic-native/ionic-webview/ngx';
+import { IonicImageLoaderModule } from 'ionic-image-loader-v5';
+import { enterAnimation } from './animations/nav-animation';
 
 export function translateParserFactory() {
   return new InterpolatedTranslateParser();
@@ -84,10 +57,13 @@ export class MyMissingTranslationHandler implements MissingTranslationHandler {
 
 @NgModule({
   declarations: [
-    CopayApp,
-    ...PAGES,
+    /* Pipes */
+    ...sharedPipes,
+    // ...PAGES,
     ...COMPONENTS,
-    /* Directives */
+    ...PAGES,
+    CopayApp,
+     /* Directives */
     CopyToClipboard,
     ExternalizeLinks,
     FixedScrollBgColor,
@@ -99,35 +75,32 @@ export class MyMissingTranslationHandler implements MissingTranslationHandler {
     Animate,
     RevealAtScrollPosition,
     ScrolledIntoView,
-    WideHeaderBarButton,
-    /* Pipes */
-    FiatToUnitPipe,
-    FormatCurrencyPipe,
-    KeysPipe,
-    SatToUnitPipe,
-    SatToFiatPipe,
-    OrderByPipe,
-    ShortenedAddressPipe
+    // WideHeaderBarButton,
   ],
+  entryComponents: [CopayApp, ...PAGES, ...COMPONENTS],
   imports: [
-    IonicModule.forRoot(CopayApp, {
-      animate: env.enableAnimations,
-      tabsHideOnSubPages: true,
+    IonicModule.forRoot( {
+      animated: env.enableAnimations,
       scrollPadding: false,
-      tabsPlacement: 'bottom',
       backButtonIcon: 'arrow-round-back',
-      backButtonText: ''
+      backButtonText: '',
+      navAnimation : enterAnimation
     }),
+    FormsModule,
+    ReactiveFormsModule,
     NgxTextOverflowClampModule,
-    IonicImageLoader.forRoot(),
-    BrowserModule,
-    BrowserAnimationsModule,
+    IonicImageLoaderModule,
     HttpClientModule,
     MarkdownModule.forRoot(),
     MomentModule,
+    BrowserModule,
+    FormsModule,
+    ReactiveFormsModule, 
     NgxBarcodeModule,
     NgxQRCodeModule,
+    AppRoutingModule,
     ProvidersModule,
+    SwiperModule,
     TranslateModule.forRoot({
       parser: { provide: TranslateParser, useFactory: translateParserFactory },
       missingTranslationHandler: {
@@ -141,30 +114,21 @@ export class MyMissingTranslationHandler implements MissingTranslationHandler {
     }),
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: env.name === 'production' })
   ],
-  bootstrap: [IonicApp],
-  entryComponents: [CopayApp, ...PAGES, ...COMPONENTS],
   providers: [
+    { 
+      provide: RouteReuseStrategy, 
+      useClass: IonicRouteStrategy 
+    },
     {
       provide: ErrorHandler,
-      useClass: IonicErrorHandler
+      useClass: CustomErrorHandler
     },
-    FormatCurrencyPipe
+    FormatCurrencyPipe,
+    NavParams,
+    FormBuilder,
+    WebView
   ],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  bootstrap: [CopayApp],
 })
-export class AppModule {
-  constructor(public config: Config) {
-    this.setCustomTransitions();
-  }
-
-  private setCustomTransitions() {
-    this.config.setTransition(
-      'modal-translate-up-enter',
-      ModalTranslateEnterTransition
-    );
-    this.config.setTransition(
-      'modal-translate-up-leave',
-      ModalTranslateLeaveTransition
-    );
-  }
-}
+export class AppModule {}

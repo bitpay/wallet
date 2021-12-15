@@ -1,0 +1,36 @@
+.info-color {
+  color: var(--color-info);
+}
+.log-entry {
+  font-size: 12px;
+  line-height: 18px;
+  border: none;
+  padding-left: 0px !important;
+}
+.log-timestamp {
+  font-weight: bold;
+}
+.log-level {
+  font-weight: bold;
+}
+.filter-container {
+  padding: 0 20px;
+  .labels {
+    color: black;
+    display: flex;
+    font-size: 14px;
+    justify-content: space-between;
+    .info-label {
+      margin-right: -10px;
+    }
+  }
+}
+
+.no-entries-message {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}

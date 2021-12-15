@@ -1,0 +1,78 @@
+page-pin {
+  ion-header {
+    .toolbar-background {
+      background-color: var(--color-light);
+    }
+  }
+
+  .pin-header {
+    position: relative;
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 30vh;
+
+    @media (max-height: 600px) {
+      padding-bottom: 25px;
+    }
+
+    .close-button {
+      position: absolute;
+      right: 2rem;
+      top: 1rem;
+    }
+
+    .title {
+      color: #060606;
+      font-weight: 500;
+      font-size: 25px;
+      align-items: center;
+      text-align: center;
+      line-height: 34px;
+      margin-top: 20%;
+
+      @media (max-width: 350px) {
+        font-size: 17px;
+        line-height: 20px;
+      }
+    }
+
+    .icon-container {
+      position: absolute;
+      text-align: center;
+      width: 100%;
+      border-radius: 50%;
+      line-height: 0;
+      bottom: 42 * -1px;
+
+      .app-icon {
+        width: 42 * 2px;
+        height: 42 * 2px;
+      }
+    }
+  }
+
+  ion-content {
+    background-color: var(--color-blank) !important;
+    display: flex;
+    flex-direction: column;
+    padding-top: 0 !important;
+    text-align: center;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background-color: var(--color-blank);
+
+    .code-wrapper {
+      display: flex;
+      flex-direction: column;
+      height: 65vh;
+      min-height: 400px;
+
+      @media (max-height: 500px) {
+        min-height: 340px;
+      }
+    }
+  }
+}

@@ -1,0 +1,13 @@
+<wide-header-page title="Old Wallet Recovery Tool">
+  <div page-content>
+    <ion-list lines="none" class="settings-list bp-list">
+      <ion-item button *ngFor="let wallet of wallets" (click)="openWalletMnemonicRecoverPage(wallet.walletName, wallet)">
+        <ion-icon src="assets/img/currencies/{{wallet.coin}}.svg" [ngClass]="{ testnet: wallet.network === 'testnet' }" class="item-img icon-wallet" slot="start">
+        </ion-icon>
+        <ion-label>
+          {{wallet.walletName}}
+        </ion-label>
+      </ion-item>
+    </ion-list>
+  </div>
+</wide-header-page>

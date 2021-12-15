@@ -1,0 +1,38 @@
+<wide-header-page title="{{isZeroState ? ('Create Key' | translate) : ('Add Wallet'  | translate) }}">
+  <div page-content>
+    <ion-list lines="none" class="settings-list bp-list">
+      <ion-item button class="list-button" (click)="goToAddWalletPage()">
+        <ion-icon src="assets/img/add-wallet/wallet.svg" slot="start">
+        </ion-icon>
+        <ion-label>
+          <div class="item-title">{{isZeroState ? ('New Key' | translate) : ('Simple Wallet' | translate) }}</div>
+          <span class="item-subtitle" translate>Quick and easy setup</span>
+        </ion-label>
+      </ion-item>
+      <ion-item button class="list-button" (click)="goToAddWalletPage(true)">
+        <ion-icon src="assets/img/add-wallet/multi-device.svg" slot="start">
+        </ion-icon>
+        <ion-label>
+          <div class="item-title" translate>Shared Wallet</div>
+          <span class="item-subtitle" translate>Requires multiple devices (most secure)</span>
+        </ion-label>
+      </ion-item>
+      <ion-item button class="list-button" (click)="goToAddWalletPage(false, true)">
+        <ion-icon src="assets/img/add-wallet/multi-user.svg" slot="start">
+        </ion-icon>
+        <ion-label>
+          <div class="item-title" translate>Join Shared Wallet</div>
+          <span class="item-subtitle" translate>Requires invitation to join</span>
+        </ion-label>
+      </ion-item>
+      <ion-item button class="list-button" (click)="goToImportWallet()">
+        <ion-icon src="assets/img/add-wallet/import.svg" slot="start">
+        </ion-icon>
+        <ion-label>
+          <div class="item-title" translate>Import Wallet</div>
+          <span class="item-subtitle" translate>Recover your wallet using your passphrase</span>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+  </div>
+</wide-header-page>

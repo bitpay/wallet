@@ -1,0 +1,10 @@
+.address-container {
+  padding-bottom: 15px;
+}
+ion-item {
+  cursor: pointer;
+  .info {
+    color: var(--ion-color-primary) !important;
+    margin-top: 1px;
+  }
+}

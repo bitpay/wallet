@@ -1,0 +1,36 @@
+.contact-view-header {
+  margin: 20px auto;
+  width: 100px;
+  padding: 10px;
+}
+.btn-send {
+  color: var(--ion-color-primary);
+}
+.btn-remove {
+  color: var(--ion-color-danger);
+}
+.comment {
+  color: var(--color-light-grey);
+  padding-top: 10px;
+}
+.btn-send-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 3rem;
+  .btn-send-custom {
+    color: white;
+    background-color: #f39c11;
+    padding: 20px 45px;
+    border-radius: 20px;
+    opacity: 0.85;
+  }
+  .btn-send-custom:hover {
+    background-color: #f39c11;
+    opacity: 1;
+  }
+}
+ion-note {
+  margin: 0;
+  color: var(--color-light-grey);
+  font-size: 15px;
+}

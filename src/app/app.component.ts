@@ -1,69 +1,39 @@
 import { Component, Renderer2, ViewChild } from '@angular/core';
-import { Device } from '@ionic-native/device';
-import { ScreenOrientation } from '@ionic-native/screen-orientation';
-import { SplashScreen } from '@ionic-native/splash-screen';
-import { StatusBar } from '@ionic-native/status-bar';
-import { UserAgent } from '@ionic-native/user-agent';
-import {
-  Config,
-  Events,
-  ModalController,
-  NavController,
-  Platform
-} from 'ionic-angular';
-import { ImageLoaderConfig } from 'ionic-image-loader';
-import { Observable, Subscription } from 'rxjs';
-
-// Providers
-import {
-  AddressBookProvider,
-  AnalyticsProvider,
-  AppProvider,
-  ConfigProvider,
-  DynamicLinksProvider,
-  EmailNotificationsProvider,
-  InAppBrowserProvider,
-  IncomingDataProvider,
-  KeyProvider,
-  Logger,
-  LogsProvider,
-  PlatformProvider,
-  PopupProvider,
-  ProfileProvider,
-  PushNotificationsProvider,
-  ThemeProvider,
-  TouchIdProvider,
-} from '../providers';
-
-import {
-  PersistenceProvider
-} from '../providers/persistence/persistence';
-
-// Pages
-import { AddWalletPage } from '../pages/add-wallet/add-wallet';
-import { CopayersPage } from '../pages/add/copayers/copayers';
-import { ImportWalletPage } from '../pages/add/import-wallet/import-wallet';
-import { JoinWalletPage } from '../pages/add/join-wallet/join-wallet';
-import { FingerprintModalPage } from '../pages/fingerprint/fingerprint';
-import { DisclaimerPage } from '../pages/onboarding/disclaimer/disclaimer';
-import { FeatureEducationPage } from '../pages/onboarding/feature-education/feature-education';
-import { PaperWalletPage } from '../pages/paper-wallet/paper-wallet';
-import { PinModalPage } from '../pages/pin/pin-modal/pin-modal';
-import { AmountPage } from '../pages/send/amount/amount';
-import { ConfirmPage } from '../pages/send/confirm/confirm';
-import { AboutPage } from '../pages/settings/about/about';
-import { AddressbookAddPage } from '../pages/settings/addressbook/add/add';
-import { TabsPage } from '../pages/tabs/tabs';
-import { WalletDetailsPage } from '../pages/wallet-details/wallet-details';
-// As the handleOpenURL handler kicks in before the App is started,
-// declare the handler function at the top of app.component.ts (outside the class definition)
-// to track the passed Url
-(window as any).handleOpenURL = (url: string) => {
-  (window as any).handleOpenURL_LastURL = url;
-};
-
+import { Config, ModalController, NavController, Platform } from '@ionic/angular';
+import { Subscription, timer } from 'rxjs';
+import { AppProvider } from './providers/app/app';
+import { Logger } from './providers/logger/logger';
+import { LogsProvider } from './providers/logs/logs';
+import { PersistenceProvider } from './providers/persistence/persistence';
+import { PlatformProvider } from './providers/platform/platform';
+import { PopupProvider } from './providers/popup/popup';
+import { ThemeProvider } from './providers/theme/theme';
+import { TouchIdProvider } from './providers/touchid/touchid';
+import { SplashScreen } from '@ionic-native/splash-screen/ngx';
+import { EventManagerService } from './providers/event-manager.service';
+import { KeyProvider } from './providers/key/key';
+import { ProfileProvider } from './providers/profile/profile';
+import { PushNotificationsProvider } from './providers/push-notifications/push-notifications';
+import { EmailNotificationsProvider } from './providers/email-notifications/email-notifications';
+import { IncomingDataProvider } from './providers/incoming-data/incoming-data';
+import { ConfigProvider } from './providers/config/config';
+import { StatusBar } from '@ionic-native/status-bar/ngx';
+import { UserAgent } from '@ionic-native/user-agent/ngx';
+import { Device } from '@ionic-native/device/ngx';
+import { ScreenOrientation } from '@ionic-native/screen-orientation/ngx';
+import { DynamicLinksProvider } from './providers/dynamic-links/dynamic-links';
+import { AnalyticsProvider } from './providers/analytics/analytics';
+import { InAppBrowserProvider } from './providers/in-app-browser/in-app-browser';
+import { AddressBookProvider } from './providers/address-book/address-book';
+import { Router } from '@angular/router';
+import { PinModalPage } from './pages/pin/pin-modal/pin-modal';
+import { FingerprintModalPage } from './pages/fingerprint/fingerprint';
+import { ImageLoaderConfigService } from 'ionic-image-loader-v5';
+import { CopayersPage } from './pages/add/copayers/copayers';
 @Component({
-  templateUrl: 'app.html',
+  selector: 'app-root',
+  templateUrl: 'app.component.html',
+  styleUrls: ['app.component.scss'],
   providers: [TouchIdProvider]
 })
 export class CopayApp {
@@ -71,57 +41,55 @@ export class CopayApp {
   nav: NavController;
   cardIAB_Ref: InAppBrowser;
   NETWORK = 'livenet';
-  public rootPage:
-    | typeof AmountPage
-    | typeof DisclaimerPage
-    | typeof TabsPage
-    | typeof FeatureEducationPage;
+
+  private pageMap = {
+    AboutPage: '/tabs/about',
+    AddressbookAddPage: '/address-book-add',
+    AmountPage: '/amount',
+    ConfirmPage: '/confirm',
+    CopayersPage: '/copayers',
+    ImportWalletPage: '/import-wallet',
+    JoinWalletPage: '/join-wallet',
+    AddWalletPage: '/add-wallet',
+    PaperWalletPage: '/paper-wallet',
+    WalletDetailsPage: '/wallet-details'
+  };
+
+
   private onResumeSubscription: Subscription;
   private isCopayerModalOpen: boolean;
   private copayerModal: any;
-
-  private pageMap = {
-    AboutPage,
-    AddressbookAddPage,
-    AmountPage,
-    ConfirmPage,
-    CopayersPage,
-    ImportWalletPage,
-    JoinWalletPage,
-    AddWalletPage,
-    PaperWalletPage,
-    WalletDetailsPage,
-  };
-
   constructor(
     private config: Config,
     private platform: Platform,
     private platformProvider: PlatformProvider,
-    private statusBar: StatusBar,
-    private splashScreen: SplashScreen,
-    private events: Events,
     private logger: Logger,
     private appProvider: AppProvider,
-    private profileProvider: ProfileProvider,
-    private configProvider: ConfigProvider,
-    private imageLoaderConfig: ImageLoaderConfig,
-    private modalCtrl: ModalController,
-    private emailNotificationsProvider: EmailNotificationsProvider,
-    private screenOrientation: ScreenOrientation,
     private popupProvider: PopupProvider,
+    private logsProvider: LogsProvider,
+    private persistenceProvider: PersistenceProvider,
+    private themeProvider: ThemeProvider,
+    private events: EventManagerService,
+    private modalCtrl: ModalController,
+    private splashScreen: SplashScreen,
+    private keyProvider: KeyProvider,
+    private profileProvider: ProfileProvider,
     private pushNotificationsProvider: PushNotificationsProvider,
+    private emailNotificationsProvider: EmailNotificationsProvider,
     private incomingDataProvider: IncomingDataProvider,
-    private renderer: Renderer2,
+    private configProvider: ConfigProvider,
+    private statusBar: StatusBar,
     private userAgent: UserAgent,
     private device: Device,
-    private keyProvider: KeyProvider,
-    private persistenceProvider: PersistenceProvider,
-    private iab: InAppBrowserProvider,
-    private themeProvider: ThemeProvider,
-    private logsProvider: LogsProvider,
+    private screenOrientation: ScreenOrientation,
     private dynamicLinksProvider: DynamicLinksProvider,
+    private analyticsProvider: AnalyticsProvider,
+    private iab: InAppBrowserProvider,
+    private renderer: Renderer2,
     private addressBookProvider: AddressBookProvider,
-    private analyticsProvider: AnalyticsProvider
+    private router: Router,
+    private imageLoaderConfig: ImageLoaderConfigService,
+    private navasd : NavController
   ) {
     this.imageLoaderConfig.setFileNameCachedWithExtension(true);
     this.imageLoaderConfig.useImageTag(true);
@@ -181,14 +149,14 @@ export class CopayApp {
 
     this.logger.info(
       'Platform ready (' +
-        readySource +
-        '): ' +
-        this.appProvider.info.nameCase +
-        ' - v' +
-        this.appProvider.info.version +
-        ' #' +
-        this.appProvider.info.commitHash +
-        deviceInfo
+      readySource +
+      '): ' +
+      this.appProvider.info.nameCase +
+      ' - v' +
+      this.appProvider.info.version +
+      ' #' +
+      this.appProvider.info.commitHash +
+      deviceInfo
     );
 
     const network = await this.persistenceProvider.getNetwork();
@@ -196,7 +164,6 @@ export class CopayApp {
     if (network) {
       this.NETWORK = network;
     }
-
     this.logger.debug('BitPay: setting network', this.NETWORK);
 
     this.logger.debug('Setting Cached Total Balance');
@@ -209,15 +176,15 @@ export class CopayApp {
       this.logger.debug('Setting User Agent');
       this.userAgent.set(
         this.appProvider.info.name +
-          ' ' +
-          this.appProvider.info.version +
-          ' (' +
-          this.device.platform +
-          ' ' +
-          this.device.version +
-          ' - ' +
-          this.device.model +
-          ')'
+        ' ' +
+        this.appProvider.info.version +
+        ' (' +
+        this.device.platform +
+        ' ' +
+        this.device.version +
+        ' - ' +
+        this.device.model +
+        ')'
       );
 
       // Support landscape & portrait
@@ -262,11 +229,11 @@ export class CopayApp {
 
       // Clear all notifications
       this.pushNotificationsProvider.clearAllNotifications();
+
       // Firebase Dynamic link
       this.dynamicLinksProvider.init();
     }
 
-    // Set Theme (light or dark mode)
     this.themeProvider.apply();
     if (this.platformProvider.isElectron) this.updateDesktopOnFocus();
 
@@ -290,14 +257,16 @@ export class CopayApp {
             switch (onboardingState) {
               case 'NONAGREEDDISCLAIMER':
                 this.logger.warn('Non agreed disclaimer');
-                this.rootPage = DisclaimerPage;
+                this.router.navigate(['/disclaimer'], {
+                  replaceUrl: true
+                });
                 break;
               case 'UNFINISHEDONBOARDING':
                 this.logger.warn('Unfinished onboarding');
-                this.rootPage =
-                  this.appProvider.info.nameCase === 'Copay'
-                    ? DisclaimerPage
-                    : FeatureEducationPage;
+                const path = this.appProvider.info.nameCase === 'Copay' ? '/disclaimer' : '/feature-education';
+                this.navasd.navigateRoot([path], {
+                  replaceUrl: true
+                });
                 break;
               default:
                 const profile = this.profileProvider.profile;
@@ -332,23 +301,116 @@ export class CopayApp {
             this.logsProvider.get(this.appProvider.info.nameCase, platform);
           });
       });
-
     await this.persistenceProvider.setTempMdesCertOnlyFlag('disabled');
 
     this.addressBookProvider.migrateOldContacts();
   }
 
-  private updateDesktopOnFocus() {
-    const { remote } = (window as any).require('electron');
-    const win = remote.getCurrentWindow();
-    win.on('focus', () => {
-      if (this.themeProvider.useSystemTheme) {
-        this.themeProvider.getDetectedSystemTheme().then(theme => {
-          if (this.themeProvider.currentAppTheme == theme) return;
-          this.themeProvider.setActiveTheme('system', theme);
+  private async openWallet(wallet, params) {
+    if (wallet.isComplete()) {
+      this.router.navigate(['/tabs/wallets']).then(() => {
+        this.router.navigate(['/wallet-details'], {
+          state: {
+            ...params,
+            walletId: wallet.credentials.walletId
+          }
         });
+      })
+    } else {
+      // check if modal is already open
+      if (this.isCopayerModalOpen) {
+        this.copayerModal.dismiss();
+      }
+      this.isCopayerModalOpen = true;
+      this.copayerModal = await this.modalCtrl.create({
+        component: CopayersPage,
+        componentProps: {
+          ...params,
+          walletId: wallet.credentials.walletId
+        },
+        cssClass: 'wallet-details-modal'
+
+      });
+      await this.copayerModal.present();
+      this.copayerModal.onDidDismiss().then(({ data }) => {
+        this.isCopayerModalOpen = false;
+      });
+    }
+  }
+
+  private incomingDataRedirEvent(): void {
+    this.events.subscribe('IncomingDataRedir', nextView => {
+      if (!nextView.name) {
+        if (nextView.params && nextView.params.fromFooterMenu) return;
+        setTimeout(() => {
+          this.router.navigate(['/tabs/scan']);
+        }, 300);
+      } else if (nextView.name === 'CardsPage') {
+        setTimeout(() => {
+          this.router.navigate(['/tabs/address-book']);
+        }, 300);
+      } else if (nextView.name === 'WalletConnectPage') {
+        // const currentIndex = this.nav.getActive().index;
+        // const currentView = this.nav.getViews();
+        // const views = this.nav.getActiveChildNavs()[0].getSelected()._views;
+        if (
+          // (views[views.length - 1].name !== 'WalletConnectPage' &&
+          //   currentView[currentIndex].name !== 'WalletConnectPage') ||
+          nextView.params.uri.indexOf('bridge') !== -1
+        ) {
+          this.router.navigate(['/tabs/setting']).then(() => {
+            this.router.navigate([this.pageMap[nextView.name]], { state: nextView.params });
+          });
+        }
+        return;
+      } else {
+        if (nextView.params && nextView.params.deepLink) {
+          // No params -> return
+          if (nextView.name == 'DynamicLink') return;
+          // From deepLink
+          setTimeout(() => {
+            this.router.navigate(['/tabs/home']).then(() => {
+              this.router.navigate([this.pageMap[nextView.name]]);
+            });
+          }, 1000);
+          return;
+        }
+        this.closeScannerFromWithinWallet();
+        // wait for wallets status
+        setTimeout(() => {
+          this.router.navigate([this.pageMap[nextView.name]], { state: nextView.params }).then(() => {
+            if (typeof nextView.callback === 'function') {
+              nextView.callback();
+            }
+          })
+        }, 300);
       }
     });
+  }
+
+  private async closeScannerFromWithinWallet() {
+    if (!this.getWalletDetailsModal()) {
+      return;
+    }
+    await this.toggleScannerVisibilityFromWithinWallet(false, 300);
+  }
+
+  private toggleScannerVisibilityFromWithinWallet(
+    visible: boolean,
+    transitionDuration: number
+  ): Promise<number> {
+    const walletDetailsModal = this.getWalletDetailsModal();
+    visible
+      ? this.renderer.addClass(walletDetailsModal, 'scanning')
+      : this.renderer.removeClass(walletDetailsModal, 'scanning');
+    return timer(transitionDuration).toPromise();
+  }
+  private getWalletDetailsModal(): Element {
+    return document.getElementsByClassName('wallet-details-modal')[0];
+  }
+
+  private initPushNotifications() {
+    this.pushNotificationsProvider.init();
   }
 
   private onProfileLoad(profile) {
@@ -365,14 +427,35 @@ export class CopayApp {
 
     if (profile) {
       this.logger.info('Profile exists.');
-      this.rootPage = TabsPage;
+      this.router.navigate([''], {
+        replaceUrl: true
+      });
     } else {
       this.logger.info('No profile exists.');
       this.profileProvider.createProfile();
-      this.rootPage =
-        this.appProvider.info.nameCase === 'Copay'
-          ? DisclaimerPage
-          : FeatureEducationPage;
+      const path = this.appProvider.info.nameCase === 'Copay' ? '/disclaimer' : '/feature-education';
+      this.router.navigate([path], {
+        replaceUrl: true
+      });
+    }
+  }
+
+  private handleDeepLinks() {
+    // Check if app was resume by custom url scheme
+    (window as any).handleOpenURL = (url: string) => {
+      this.logger.info('App was resumed by custom url scheme');
+      this.handleOpenUrl(url);
+    };
+
+    // Check if app was opened by custom url scheme
+    const lastUrl: string = (window as any).handleOpenURL_LastURL || '';
+    if (lastUrl && lastUrl !== '') {
+      delete (window as any).handleOpenURL_LastURL;
+      // Important delay to have all views loaded before process URL
+      setTimeout(() => {
+        this.logger.info('App was opened by custom url scheme');
+        this.handleOpenUrl(lastUrl);
+      }, 2000);
     }
   }
 
@@ -400,40 +483,39 @@ export class CopayApp {
     }
   }
 
-  private openPINModal(action): void {
+  private async openPINModal(action): Promise<void> {
     this.appProvider.isLockModalOpen = true;
-    const modal = this.modalCtrl.create(
-      PinModalPage,
-      { action },
-      {
-        enableBackdropDismiss: false,
-        cssClass: 'fullscreen-modal'
-      }
-    );
-    modal.present({ animate: false });
-    modal.onWillDismiss(() => {
+    const modal = await this.modalCtrl.create({
+      component: PinModalPage,
+      componentProps: { action },
+
+      backdropDismiss: false,
+      cssClass: 'fullscreen-modal'
+
+    });
+    await modal.present();
+    modal.onWillDismiss().then(() => {
       this.onLockWillDismiss();
     });
-    modal.onDidDismiss(() => {
+    modal.onDidDismiss().then(() => {
       this.onLockDidDismiss();
     });
   }
 
-  private openFingerprintModal(): void {
+  private async openFingerprintModal() {
     this.appProvider.isLockModalOpen = true;
-    const modal = this.modalCtrl.create(
-      FingerprintModalPage,
-      {},
-      {
-        enableBackdropDismiss: false,
-        cssClass: 'fullscreen-modal'
-      }
+    const modal = await this.modalCtrl.create({
+      component: FingerprintModalPage,
+      componentProps: {},
+      backdropDismiss: false,
+      cssClass: 'fullscreen-modal'
+    }
     );
-    modal.present({ animate: false });
-    modal.onWillDismiss(() => {
+    await modal.present();
+    modal.onWillDismiss().then(() => {
       this.onLockWillDismiss();
     });
-    modal.onDidDismiss(() => {
+    modal.onDidDismiss().then(() => {
       this.onLockDidDismiss();
     });
   }
@@ -448,145 +530,6 @@ export class CopayApp {
     // this.iabCardProvider.resume();
   }
 
-  private incomingDataRedirEvent(): void {
-    this.events.subscribe('IncomingDataRedir', nextView => {
-      if (!nextView.name) {
-        if (nextView.params && nextView.params.fromFooterMenu) return;
-        setTimeout(() => {
-          this.getGlobalTabs()
-            .goToRoot()
-            .then(_ => {
-              this.getGlobalTabs().select(2);
-            });
-        }, 300);
-      } else if (nextView.name === 'CardsPage') {
-        this.getGlobalTabs()
-          .goToRoot()
-          .then(_ => {
-            this.getGlobalTabs().select(4);
-          });
-      } else if (nextView.name === 'WalletConnectPage') {
-        const currentIndex = this.nav.getActive().index;
-        const currentView = this.nav.getViews();
-        const views = this.nav.getActiveChildNavs()[0].getSelected()._views;
-        if (
-          (views[views.length - 1].name !== 'WalletConnectPage' &&
-            currentView[currentIndex].name !== 'WalletConnectPage') ||
-          nextView.params.uri.indexOf('bridge') !== -1
-        ) {
-          this.getGlobalTabs()
-            .goToRoot()
-            .then(_ => {
-              this.getGlobalTabs().select(5);
-              this.nav.push(this.pageMap[nextView.name], nextView.params);
-            });
-        }
-        return;
-      } else {
-        if (nextView.params && nextView.params.deepLink) {
-          // No params -> return
-          if (nextView.name == 'DynamicLink') return;
-          // From deepLink
-          setTimeout(() => {
-            this.getGlobalTabs()
-              .goToRoot()
-              .then(_ => {
-                this.getGlobalTabs().select(0);
-                this.nav.push(this.pageMap[nextView.name]);
-              });
-          }, 1000);
-          return;
-        }
-        this.closeScannerFromWithinWallet();
-        // wait for wallets status
-        setTimeout(() => {
-          const globalNav = this.getGlobalTabs().getSelected();
-          globalNav
-            .push(this.pageMap[nextView.name], nextView.params)
-            .then(() => {
-              if (typeof nextView.callback === 'function') {
-                nextView.callback();
-              }
-            });
-        }, 300);
-      }
-    });
-  }
-
-  private openWallet(wallet, params) {
-    if (wallet.isComplete()) {
-      this.getGlobalTabs().select(1);
-      this.nav.push(WalletDetailsPage, {
-        ...params,
-        walletId: wallet.credentials.walletId
-      });
-    } else {
-      // check if modal is already open
-      if (this.isCopayerModalOpen) {
-        this.copayerModal.dismiss();
-      }
-      this.isCopayerModalOpen = true;
-      this.copayerModal = this.modalCtrl.create(
-        CopayersPage,
-        {
-          ...params,
-          walletId: wallet.credentials.walletId
-        },
-        {
-          cssClass: 'wallet-details-modal'
-        }
-      );
-      this.copayerModal.present();
-      this.copayerModal.onDidDismiss(() => {
-        this.isCopayerModalOpen = false;
-      });
-    }
-  }
-
-  private async closeScannerFromWithinWallet() {
-    if (!this.getWalletDetailsModal()) {
-      return;
-    }
-    await this.toggleScannerVisibilityFromWithinWallet(false, 300);
-  }
-
-  private toggleScannerVisibilityFromWithinWallet(
-    visible: boolean,
-    transitionDuration: number
-  ): Promise<number> {
-    const walletDetailsModal = this.getWalletDetailsModal();
-    visible
-      ? this.renderer.addClass(walletDetailsModal, 'scanning')
-      : this.renderer.removeClass(walletDetailsModal, 'scanning');
-    return Observable.timer(transitionDuration).toPromise();
-  }
-
-  private getWalletDetailsModal(): Element {
-    return document.getElementsByClassName('wallet-details-modal')[0];
-  }
-
-  private initPushNotifications() {
-    this.pushNotificationsProvider.init();
-  }
-
-  private handleDeepLinks() {
-    // Check if app was resume by custom url scheme
-    (window as any).handleOpenURL = (url: string) => {
-      this.logger.info('App was resumed by custom url scheme');
-      this.handleOpenUrl(url);
-    };
-
-    // Check if app was opened by custom url scheme
-    const lastUrl: string = (window as any).handleOpenURL_LastURL || '';
-    if (lastUrl && lastUrl !== '') {
-      delete (window as any).handleOpenURL_LastURL;
-      // Important delay to have all views loaded before process URL
-      setTimeout(() => {
-        this.logger.info('App was opened by custom url scheme');
-        this.handleOpenUrl(lastUrl);
-      }, 2000);
-    }
-  }
 
   private handleOpenUrl(url: string) {
     if (url.includes('wallet-card/order-now')) {
@@ -635,7 +578,16 @@ export class CopayApp {
     }
   }
 
-  private getGlobalTabs() {
-    return this.nav.getActiveChildNavs()[0].viewCtrl.instance.tabs;
+  private updateDesktopOnFocus() {
+    const { remote } = (window as any).require('electron');
+    const win = remote.getCurrentWindow();
+    win.on('focus', () => {
+      if (this.themeProvider.useSystemTheme) {
+        this.themeProvider.getDetectedSystemTheme().then(theme => {
+          if (this.themeProvider.currentAppTheme == theme) return;
+          this.themeProvider.setActiveTheme('system', theme);
+        });
+      }
+    });
   }
 }

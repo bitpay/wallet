@@ -1,0 +1,133 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button icon="arrow-back" defaultHref= "/"></ion-back-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button class="add-btn" *ngIf="!recipient" fill='clear' (click)="openTransferToModal()" icon-only>
+        <span translation>Add Contact</span>
+      </ion-button >
+    </ion-buttons>
+    <ion-title class="bp-title">
+      <div [reveal-at-scroll-pos]="expandableHeader.headerHeight" [scrollArea]="scrollArea">
+        {{ 'Select inputs' | translate }}
+      </div>
+    </ion-title>
+  </ion-toolbar>
+  <div *ngIf="inputs && inputs.length > 5" class="item-divider-exp-header">
+    <div class="header-data" [reveal-at-scroll-pos]="(expandableHeader.headerHeight + 270)" [scrollArea]="scrollArea" *ngIf="recipient">{{ 'Total selected inputs: ' | translate}} {{totalAmount}} {{wallet.coin | uppercase}}</div>
+    <div class="header-data" [reveal-at-scroll-pos]="(expandableHeader.headerHeight + 270)" [scrollArea]="scrollArea" *ngIf="recipient && recipient.amountToShow && totalAmount >= recipient.amountToShow">{{ 'Specified amount: ' | translate}} {{recipient.amountToShow}} {{wallet.coin | uppercase}}</div>
+    <div class="header-data-warning" [reveal-at-scroll-pos]="(expandableHeader.headerHeight + 270)" [scrollArea]="scrollArea" *ngIf="recipient && recipient.amountToShow && totalAmount < recipient.amountToShow">
+      <small>{{'This amount must be at least:' | translate}} {{ recipient.amountToShow }} {{wallet.coin | uppercase}}</small>
+    </div>
+  </div>
+</ion-header>
+
+<ion-content #scrollArea scrollEvents="true" [ngClass]="{'add-padding-bottom': isCordova}">
+  <expandable-header [scrollArea]="scrollArea" [fadeFactor]="5" [disableFade]="true" #expandableHeader>
+    <ion-toolbar class="wide-header__title">
+      <expandable-header-primary>
+        {{ 'Select inputs' | translate }}
+      </expandable-header-primary>
+    </ion-toolbar>
+  </expandable-header>
+    <div>
+      <div class="send-header-wrapper" *ngIf="!recipient">
+        <ion-item class="search-wrapper" [ngClass]="{'invalid': invalidAddress && search != ''}">
+          <ion-input placeholder="{{'Enter {coinName} address' | translate: {coinName: getCoinName(wallet?.coin)} }}" [(ngModel)]="search" (ngModelChange)="processInput()"></ion-input>
+          <ion-icon *ngIf="invalidAddress && search != ''" slot='end' class="backspace-icon" name="backspace" (click)="search = ''"></ion-icon>
+          <ion-icon *ngIf="isCordova" slot='end' class="scan-icon" src="assets/img/scan-ico.svg" (click)="openScanner()">
+          </ion-icon>
+        </ion-item>
+      </div>
+
+      <ion-list *ngIf="recipient" class="content-list list list-md">
+        <ion-item-divider class="item-divider-header">
+          <span class="ellipsis">{{ 'Recipient' | translate}}</span>
+          <ion-button  slot='end' fill='clear' (click)="clearAmount(recipient)">
+            <ion-icon name="trash-outline" color="grey"></ion-icon>
+          </ion-button>
+          <ion-button  slot='end' fill='clear' (click)="removeRecipient()">
+            <ion-icon name="close-circle-outline" color="grey"></ion-icon>
+          </ion-button>
+        </ion-item-divider>
+        <ion-item (click)="openAmountModal(recipient)" class="recipient">
+          <ion-icon class="item-img wallet" slot='start'>
+            <img *ngIf="recipient.recipientType == 'wallet'" [ngClass]="{ testnet: wallet.network === 'testnet' }" class="icon-wallet" src="assets/img/currencies/{{wallet.coin}}.svg" />
+            <gravatar *ngIf="recipient.recipientType == 'contact'" [name]="recipient.name" [height]="40" [width]="40" [email]="recipient.email" [coin]="wallet.coin" [network]="wallet.network"></gravatar>
+            <img *ngIf="recipient.recipientType == 'address'" class="coin-icon" src="assets/img/icon-{{wallet.coin}}-small.svg" alt="Coin" />
+          </ion-icon>
+          <ion-label>
+            <span *ngIf="recipient.recipientType == 'wallet'">{{recipient.name}}</span>
+            <span *ngIf="recipient.recipientType == 'contact'">{{recipient.name}}</span>
+            <span *ngIf="recipient.recipientType == 'address'" class="ellipsis">{{recipient.toAddress}}</span>
+          </ion-label>
+          <ion-note slot='end' class="ion-text-end">
+            <div *ngIf="recipient.amountToShow" class="amount">
+              {{recipient.amountToShow}} {{wallet.coin | uppercase}}
+            </div>
+            <div *ngIf="recipient.amountToShow" class="amount-str">
+              {{recipient.altAmountStr}}
+            </div>
+            <span *ngIf="!recipient.amountToShow" ion-text color="primary">{{'Specify Amount' | translate}}</span>
+          </ion-note>
+        </ion-item>
+      </ion-list>
+
+      <ion-list *ngIf="recipient" class="content-list">
+        <ion-item-divider class="item-divider-header">
+          <span class="ellipsis">{{ 'Total selected inputs' | translate}}</span>
+        </ion-item-divider>
+        <ion-item class="total-inputs-content">
+          <div class="total-inputs-str">
+            {{totalAmount}} {{wallet.coin | uppercase}}
+          </div>
+          <div class="total-inputs-warning" *ngIf="recipient.amountToShow && totalAmount < recipient.amountToShow">
+            <small>{{'The sum of the selected amounts must be at least:' | translate}} {{ recipient.amountToShow }} {{wallet.coin | uppercase}}</small>
+          </div>
+        </ion-item>
+      </ion-list>
+
+      <ion-list *ngIf="recipient" class="content-list">
+        <ion-item-divider sticky class="item-divider-header">
+          <span class="ellipsis">{{ 'Wallet Inputs' | translate}}</span>
+          <ion-button slot='end' fill='clear' (click)="reverseInputs()">
+            <ion-icon *ngIf="!reverse" name="arrow-down-outline" color="grey"></ion-icon>
+            <ion-icon *ngIf="reverse" name="arrow-up-outline" color="grey"></ion-icon>
+          </ion-button>
+          <ion-button slot='end' fill='clear' *ngIf="inputs.length > 0" (click)="shortcuts(false)">
+            <ion-icon name="trash-outline" color="grey"></ion-icon>
+          </ion-button>
+          <ion-button slot='end' fill='clear' *ngIf="inputs.length > 0" (click)="shortcuts(true)">
+            <ion-icon name="checkmark-circle-outline" color="grey"></ion-icon>
+          </ion-button>
+        </ion-item-divider>
+        <ion-item *ngIf="inputs.length == 0">
+          <div class="warning">
+            <small>{{'No available inputs.' | translate}}</small>
+          </div>
+        </ion-item>
+        <div class="item-wrapper" *ngFor="let input of inputs; let i = index">
+          <ion-item >
+            <ion-label class="ion-padding-left">
+              <div class="amount">
+                {{input.amount}} {{wallet.coin | uppercase}}
+              </div>
+              <div class="address">
+                {{input.address}}
+              </div>
+            </ion-label>
+            <ion-checkbox mode="ios" (ionChange)="selectInput(input, $event)" (click)="skipIonChange=false" [checked]="input.checked" ></ion-checkbox>
+          </ion-item>
+        </div>
+      </ion-list>
+    </div>
+    <div *ngIf="!recipient" class="no-wallet-message">
+      <span translate>To get started, you'll need to enter a valid address or select an existent contact or wallet.</span>
+    </div>
+</ion-content>
+<ion-footer>
+  <ion-toolbar>
+    <ion-button expand="full" class="button-footer" (click)="goToConfirm()" [disabled]="canContinue()">{{'Continue' | translate}}</ion-button>
+  </ion-toolbar>
+</ion-footer>

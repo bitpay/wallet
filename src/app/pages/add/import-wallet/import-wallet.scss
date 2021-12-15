@@ -1,0 +1,72 @@
+ion-textarea {
+  min-height: 100px;
+}
+.assertive {
+  color: var(--color-danger);
+  ion-label {
+    white-space: inherit;
+  }
+}
+
+.hide-validation {
+  border-bottom-color: #f4f4f4 !important;
+  box-shadow: none !important;
+}
+.scanner-icon {
+  z-index: 99;
+  font-size: 28px;
+  color: var(--color-primary);
+}
+.upload-hidden {
+  opacity: 0;
+  height: 120px;
+  z-index: 1;
+  & > input {
+    height: 120px;
+    margin: 0;
+    cursor: pointer;
+  }
+}
+.ng-invalid + .upload-ui > .filled-message,
+.ng-valid + .upload-ui > .empty-message {
+  display: none;
+}
+.upload-ui {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 3px;
+  position: absolute;
+  padding: 18px 1em;
+  width: 92%;
+  top: 0;
+  left: 0;
+  margin: 20px 4%;
+  // height: $upload-box-height - 40px;
+  color: #999;
+  font-weight: bold;
+  text-align: center;
+  font-size: 16px;
+  line-height: 1.4;
+  border: 3px dashed #ddd;
+  color: #999;
+  font-style: italic;
+}
+
+.item-interactive.ion-valid {
+  --highlight-background: var(--ion-color-primary) !important;
+}
+.custom-option {
+  padding-left: 10;
+}
+
+ion-segment-button {
+  font-size: 12px;
+  opacity: 0.5;
+  &.segment-button-checked {
+    opacity: 1;
+  }
+  &::part(native) {
+    color: var(--ion-color-primary);
+  }
+}

@@ -1,0 +1,85 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+  <access origin="*" />
+  
+  <feature name="Clipboard">
+    <param name="android-package" value="com.verso.cordova.clipboard.Clipboard"/>
+  </feature>
+
+  <feature name="LaunchReview">
+    <param name="android-package" value="uk.co.workingedge.phonegap.plugin.LaunchReview"/>
+  </feature>
+
+  <feature name="LaunchMyApp">
+    <param name="android-package" value="nl.xservices.plugins.LaunchMyApp"/>
+  </feature>
+
+  <feature name="Device">
+    <param name="android-package" value="org.apache.cordova.device.Device"/>
+  </feature>
+
+  <feature name="Notification">
+    <param name="android-package" value="org.apache.cordova.dialogs.Notification"/>
+  </feature>
+
+  <feature name="File">
+    <param name="android-package" value="org.apache.cordova.file.FileUtils"/>
+    <param name="onload" value="true"/>
+  </feature>
+
+  <feature name="Fingerprint">
+    <param name="android-package" value="de.niklasmerz.cordova.biometric.Fingerprint"/>
+  </feature>
+
+  <feature name="Globalization">
+    <param name="android-package" value="org.apache.cordova.globalization.Globalization"/>
+  </feature>
+
+  <feature name="InAppBrowser">
+    <param name="android-package" value="org.apache.cordova.inappbrowser.InAppBrowser"/>
+  </feature>
+
+  <feature name="QRScanner">
+    <param name="android-package" value="com.bitpay.cordova.qrscanner.QRScanner"/>
+  </feature>
+
+  <feature name="CDVOrientation">
+    <param name="android-package" value="cordova.plugins.screenorientation.CDVOrientation"/>
+  </feature>
+
+  <feature name="StatusBar">
+    <param name="android-package" value="org.apache.cordova.statusbar.StatusBar"/>
+    <param name="onload" value="true"/>
+  </feature>
+
+  <feature name="ThemeDetection">
+    <param name="android-package" value="de.mariusbackes.cordova.plugin.ThemeDetection"/>
+  </feature>
+
+  <feature name="UserAgent">
+    <param name="android-package" value="im.ltdev.cordova.UserAgent"/>
+    <param name="onload" value="true"/>
+  </feature>
+
+  <feature name="Whitelist">
+    <param name="android-package" value="org.apache.cordova.whitelist.WhitelistPlugin"/>
+    <param name="onload" value="true"/>
+  </feature>
+
+  <feature name="SocialSharing">
+    <param name="android-package" value="nl.xservices.plugins.SocialSharing"/>
+  </feature>
+
+  <feature name="Toast">
+    <param name="android-package" value="nl.xservices.plugins.Toast"/>
+  </feature>
+
+  
+  <preference name="ScrollEnabled" value="false" />
+  <preference name="BackupWebStorage" value="none" />
+  <preference name="SplashMaintainAspectRatio" value="true" />
+  <preference name="FadeSplashScreenDuration" value="300" />
+  <preference name="SplashShowOnlyFirstTime" value="false" />
+  <preference name="SplashScreen" value="screen" />
+  <preference name="SplashScreenDelay" value="3000" />
+</widget>

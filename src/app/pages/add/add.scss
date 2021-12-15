@@ -1,0 +1,27 @@
+.list-button {
+  padding-top: 10px;
+  padding-bottom: 10px;
+
+  .item-title {
+    color: black;
+    font-size: 18px;
+    font-weight: 500;
+  }
+
+  .item-subtitle {
+    color: black;
+    font-size: 16px;
+    white-space: normal;
+  }
+
+  ion-icon {
+    margin-left: 3px;
+    --icon-dimension: 40px;
+    height: var(--icon-dimension);
+    width: var(--icon-dimension)
+  }
+
+  ion-label{
+    padding: 6px 0;
+  }
+}

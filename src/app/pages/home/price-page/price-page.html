@@ -1,0 +1,45 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button icon="arrow-back"></ion-back-button>
+    </ion-buttons>
+    <ion-title size="large" class="bp-header card-title">{{ card.name | translate}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen>
+  <div class="total-amount-container">
+    <div id="displayDate" class="section-header" translate></div>
+    <span id="displayPrice" class="total-amount-value"></span>
+    <span *ngIf="card.totalBalanceChange || card.totalBalanceChange === 0" [ngClass]="card.totalBalanceChange >= 0 ? 'possitive-avg percent' : 'negative-avg percent'">
+      <span id="averagePricePercent"><span *ngIf="card.totalBalanceChange > 0">+</span></span>
+    </span>
+
+    <div class="average-container">
+      <div *ngIf="card.totalBalanceChangeAmount || card.totalBalanceChangeAmount === 0" [ngClass]="card.totalBalanceChangeAmount >= 0 ? 'possitive-avg' : 'negative-avg'">
+        <span class="average" id="averagePriceAmount"><span *ngIf="card.totalBalanceChangeAmount > 0">+</span></span>
+      </div>
+    </div>
+  </div>
+
+  <price-chart #canvas (priceChange)="setPrice($event)"></price-chart>
+</ion-content>
+
+<ion-footer class="ion-no-border">
+  <ion-toolbar>
+    <span class="labels">
+      <div *ngFor="let option of updateOptions">
+        <ion-chip [ngClass]="{'active': activeOption === option.label, 'inactive': activeOption !== option.label }">
+          <ion-button fill="clear" [disabled]="canvas.loading" (click)="updateChart(option)">
+            {{ option.label }}
+          </ion-button>
+        </ion-chip>
+      </div>
+    </span>
+    <ng-container *ngIf="isDonation">
+      <ion-button class="button-standard" (click)="goToDonation()">
+        Donate
+      </ion-button>
+    </ng-container>
+  </ion-toolbar>
+</ion-footer>

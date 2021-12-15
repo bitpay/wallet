@@ -1,4 +1,3 @@
-$short-device-height: 570px;
 
 .prompt-user-fullscreen-container {
   @include center;
@@ -35,7 +34,7 @@ $short-device-height: 570px;
   }
 }
 
-@media (max-height: $short-device-height) {
+@media (max-height: var(--short-device-height)) {
   .prompt-user {
     .subtitle-info {
       font-size: 15px;

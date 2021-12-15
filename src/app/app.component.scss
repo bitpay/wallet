@@ -1,0 +1,1241 @@
+// http://ionicframework.com/docs/theming/
+// App Global Sass
+// --------------------------------------------------
+// Put style rules here that you want to apply globally. These
+// styles are for the entire app and not just one component.
+// Additionally, this file can be also used as an entry point
+// to import other Sass files to be included in the output CSS.
+//
+// Shared Sass variables, which can be used to adjust Ionic's
+// default Sass variables, belong in "theme/variables.scss".
+//
+// To declare rules for a specific mode, create a child rule
+// for the .md, .ios, or .wp mode classes. The mode class is
+// automatically applied to the <body> element in the app.
+@mixin center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+html {
+    height: 100vh;
+}
+
+p {
+    font-size: 14px;
+}
+
+body {
+    line-height: 22px;
+    -moz-user-select: none;
+    /* Firefox */
+    -ms-user-select: none;
+    /* Internet Explorer */
+    -khtml-user-select: none;
+    /* KHTML browsers (e.g. Konqueror) */
+    -webkit-user-select: none;
+    /* Chrome, Safari, and Opera */
+    -webkit-touch-callout: none;
+    /* Disable Android and iOS callouts*/
+}
+
+// all content without menu
+ion-content.add-bottom-safe-area {
+
+    .fixed-content,
+    .scroll-content {
+        padding-bottom: 0;
+        padding-bottom: calc(env(safe-area-inset-bottom));
+        padding-bottom: -webkit-calc(env(safe-area-inset-bottom));
+    }
+}
+
+// Default ion-note align-seft-center
+ion-note {
+    align-self: center;
+}
+
+// Turn off background hover ion-button
+ion-button {
+    --background-hover: none !important;
+    --background-hover-opacity: 0;
+}
+
+ion-segment-button {
+    --background-hover: none !important;
+    --background-hover-opacity: 0;
+}
+
+// Text transform uppercase all ion-buttons
+ion-buttons {
+    text-transform: uppercase;
+}
+
+// expandable views
+ion-content.add-padding-bottom,
+.add-padding-bottom ion-content {
+
+    .fixed-content,
+    .scroll-content {
+        padding-bottom: 120px;
+        padding-bottom: calc(120px + env(safe-area-inset-bottom));
+        padding-bottom: -webkit-calc(120px + env(safe-area-inset-bottom));
+    }
+}
+
+ion-title.bp-title {
+    font-weight: 700 !important;
+}
+
+// Alert position
+// --------------------------------------------------
+ion-alert.alert-top {
+    align-items: center;
+}
+
+ion-alert {
+    z-index: 99999 !important;
+    .alert-wrapper {
+        color: black;
+
+        .alert-title {
+            color: black;
+        }
+    }
+
+    .alert-radio-group {
+        .alert-radio:not([aria-checked='true']) .alert-radio-label {
+            color: black;
+        }
+    }
+}
+
+// Text wrap
+// --------------------------------------------------
+ion-label {
+    white-space: normal;
+}
+
+.two-lines {
+    white-space: normal;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    line-clamp: 2;
+    -webkit-line-clamp: 2;
+}
+
+// Label-tip
+// --------------------------------------------------
+label-tip {
+    color: #4a4a4a;
+    display: block;
+    padding: 5px;
+    position: relative;
+
+    width: 90%;
+    border-radius: 15px;
+
+    margin: 20px auto !important;
+
+    &:before {
+        --arrow-height: 18px;
+        --arrow-width: var(--arrow-height) * 0.8;
+        content: '';
+        width: 0;
+        height: 0;
+        border-left: var(--arrow-height) solid transparent;
+        border-right: var(--arrow-height) solid transparent;
+        border-bottom: var(--arrow-height) solid transparent;
+        position: absolute;
+        top: -18px;
+        left: 25px;
+    }
+
+    &.right-arrow:before {
+        right: 25px;
+        left: unset;
+    }
+
+    // Remove arrowhead from label
+    &.info.no-arrowhead:before,
+    &.warn.no-arrowhead:before,
+    &.danger.no-arrowhead:before {
+        display: none !important;
+    }
+
+    .label-header {
+        color: black;
+        --icon-height: 20px;
+
+        &__icon {
+            margin-right: var(--icon-height)/1.5;
+            height: var(--icon-height);
+            width: var(--icon-height);
+        }
+
+        align-items: center;
+        display: flex;
+        font-size: 16px;
+        margin-bottom: 20px;
+    }
+
+    [label-tip-body] {
+        font-size: 15px;
+
+        a.label-tip-link {
+            display: inline-block;
+            margin-top: 10px;
+        }
+    }
+}
+
+// Header
+// --------------------------------------------------
+ion-header.bp-header ion-toolbar {
+    ion-title {
+        padding: 0;
+        font-size: 18px;
+        font-weight: 700;
+    }
+}
+
+ion-header ion-toolbar {
+    padding-top: env(safe-area-inset-top);
+}
+
+.wide-header__title {
+    color: var(--text-color);
+    font-size: 25px;
+    font-weight: 700;
+    // padding-top: 10px;
+    // padding-bottom: 10px;
+    padding-left: 20px;
+    background: var(--background-color);
+}
+
+.close-container {
+    button {
+        height: 41px;
+        width: 41px;
+    }
+
+    margin-left: 13px !important;
+    border-radius: 50%;
+    background-color: rgba(155, 163, 174, 0.2);
+    color: #d8d8d8;
+    box-shadow: none;
+
+    &.button-ios {
+        margin: 0;
+    }
+
+    &.button-md.activated,
+    &.button-ios.activated {
+        background-color: rgba(155, 163, 174, 0.2);
+        box-shadow: none;
+    }
+}
+
+.option-button {
+    font-size: 24px;
+    opacity: 0.6;
+    border-radius: none;
+    background-color: transparent !important;
+    margin: 0 5px;
+    color: #434d5a;
+
+    &.activated,
+    &:hover:not(.disable-hover) {
+        color: #434d5a;
+    }
+}
+
+// Buttons
+// --------------------------------------------------
+.bottom-absolute {
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    bottom: calc(env(safe-area-inset-bottom));
+    padding: 15px 15px calc(5vw + 1vh) 15px;
+    padding: 15px 15px -webkit-calc(5vw + 1vh) 15px;
+
+    .button {
+        margin: 1.2rem auto;
+        max-width: 360px;
+    }
+}
+
+.button-footer {
+    margin: 0;
+    height: 70px;
+    width: 100%;
+    font-size: 18px;
+}
+
+// Themes
+// --------------------------------------------------
+// This is just to make a smooth transition between themes
+@mixin transition {
+    transition: all, color, 150ms cubic-bezier(0, 0, 0.3, 0.3) !important;
+}
+
+.theme-transition {
+    ion-content.add-bottom-safe-area {
+
+        .fixed-content,
+        .scroll-content {
+            @include transition();
+        }
+    }
+
+    ion-content.add-padding-bottom,
+    .add-padding-bottom ion-content {
+
+        .fixed-content,
+        .scroll-content {
+            @include transition();
+        }
+    }
+
+    ion-content,
+    .content-ios .toolbar-background-ios,
+    .toolbar-background-md,
+    .toolbar-title,
+    .back-button-ios,
+    .back-button-md,
+    .header .toolbar-background {
+        @include transition();
+    }
+
+    // Lists
+    .bp-list.settings-list {
+        .item {
+
+            &.item-ios,
+            &.item-md {
+                @include transition();
+            }
+        }
+    }
+}
+
+
+ion-refresher.refresher-active {
+    display: block;
+}
+
+ion-spinner * {
+    stroke: var(--color-light);
+}
+
+.header-ios .toolbar-background-ios {
+    border-width: 0 !important;
+}
+
+.item-subtitle {
+    margin-top: 5px;
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-weight: 300;
+    font-size: 13px;
+
+    ion-icon {
+        vertical-align: text-bottom;
+        margin-left: 5px;
+    }
+}
+
+// Fixes IOS 10.3.1 icons
+.item-img {
+    display: flex;
+    align-items: center;
+}
+
+.toolbar.toolbar-md,
+.toolbar.toolbar-ios {
+    .back-button-md {
+        min-width: 41px;
+    }
+
+    .back-button {
+        margin-left: 15px;
+        height: 41px;
+        width: 41px;
+        border-radius: 50%;
+        background-color: rgba(155, 163, 174, 0.12);
+        color: #d8d8d8;
+        box-shadow: none;
+
+        .back-button-icon-md {
+            padding: 0px 0px 32px 4px;
+
+            &::before {
+                font-size: 14px;
+            }
+        }
+
+        .back-button-icon-ios {
+            margin: 2px 2px 0px 0px;
+        }
+    }
+}
+
+// Remove border of icons when screen resolution is big
+.tab-button-icon {
+    overflow: unset;
+}
+
+// Remove the MD drop-shadow on app header
+.header-md::after {
+    display: none;
+}
+
+.icon-card {
+    width: 35px;
+    height: 35px;
+    border-radius: --icon-border-radius;
+    background-repeat: no-repeat;
+    background-clip: padding-box;
+    background-size: 103%;
+}
+
+.icon-wallet {
+    height: var(--icon-dim);
+    width: var(--icon-dim);
+    margin-right: 16px;
+
+    &.disabled {
+        background-color: var(--color-grey);
+    }
+}
+
+.btc-background {
+    background-color: #f7931a;
+}
+
+.bch-background {
+    background-color: #2fcf6e;
+}
+
+.xec-background {
+    background-color: #016cbf;
+}
+
+.eth-background {
+    background-color: #6b71d6;
+}
+
+.xrp-background {
+    background-color: #000000;
+}
+
+.doge-background {
+    background-color: #d8c172;
+}
+
+.ltc-background {
+    background-color: #a6a9aa;
+}
+
+.xpi-background {
+    background-color: #4e1b71;
+}
+
+button.item {
+    &.activated {
+        background-color: --feather;
+    }
+}
+
+.button-item {
+    ion-label {
+        display: flex;
+        align-items: center;
+    }
+}
+
+.testnet {
+    filter: grayscale(100%);
+}
+
+.background_xrp.testnet {
+    filter: opacity(0.4);
+}
+
+.icon-card {
+    background-color: #2a3f90;
+}
+
+.big-icon-svg {
+    padding: 10px;
+
+    .bg {
+        padding: 0 7px;
+        border-radius: --icon-border-radius;
+        width: 40px;
+        height: 40px;
+        background-repeat: no-repeat;
+        background-clip: padding-box;
+        background-size: 103%;
+
+        &.green {
+            background: rgb(1, 209, 162);
+        }
+    }
+}
+
+.logo-services {
+    width: 100px;
+}
+
+.icon-services {
+    overflow: hidden;
+    background-color: none;
+    border-radius: --icon-border-radius;
+    width: 35px;
+    height: 35px;
+    box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.2);
+    background-repeat: no-repeat;
+    background-clip: padding-box;
+    background-size: 103%;
+}
+
+.custom-icon {
+    color: rgb(169, 169, 169);
+}
+
+// Turn off animation of checkbox && no padding ion-list default
+ion-list {
+    padding: 0 !important;
+
+    ion-item {
+        --background-hover: transparent;
+
+        &.checkbox-no-animation {
+            --ripple-color: transparent;
+            --background-hover: transparent;
+        }
+    }
+}
+
+.icon-contact {
+    width: 35px;
+}
+
+.box-notification {
+    cursor: pointer;
+    padding: 10px;
+    text-align: center;
+
+    a {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .icon {
+        margin: 0 6px;
+        font-size: 20px;
+    }
+
+    &.success {
+        background-color: var(--background-color-success);
+        color: var(--color-success);
+    }
+
+    &.info {
+        background-color: var(--background-color-info);
+        color: var(--color-info);
+    }
+
+    &.warning {
+        background-color: var(--background-color-warning);
+        color: var(--color-warning);
+    }
+
+    &.error {
+        background-color: var(--background-color-danger);
+        color: var(--color-danger);
+    }
+}
+
+.gravatar {
+    min-width: 2.5rem;
+    min-height: 2.5rem;
+}
+
+// Compatibility Ionic 1
+.light,
+a.light,
+.stable,
+a.stable {
+    color: var(--color-light) !important;
+}
+
+.calm,
+a.calm {
+    color: var(--color-grey);
+}
+
+.positive,
+a.positive {
+    color: var(--color-primary);
+}
+
+.energized,
+a.energized {
+    color: var(--color-warning);
+}
+
+.assertive,
+a.assertive {
+    color: var(--color-danger);
+}
+
+.balanced,
+a.balanced {
+    color: var(--color-success);
+}
+
+.royal,
+a.royal {
+    color: var(--color-dark);
+}
+
+.text-gray {
+    color: var(--color-grey);
+}
+
+.text-bold {
+    font-weight: 700;
+}
+
+.ellipsis {
+    font-size: 14px;
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.pointer {
+    cursor: pointer;
+}
+
+action-card-v4 {
+    display: block !important;
+    padding: 0px;
+    border-radius: 14px !important;
+}
+
+action-card {
+    background: white !important;
+    display: block !important;
+    text-align: center !important;
+    padding: 20px !important;
+    padding-bottom: 0 !important;
+}
+
+.card {
+    padding-top: 1px;
+    width: 92%;
+    padding-bottom: 10px;
+    box-shadow: 0 7px 12px rgba(0, 0, 0, 0.06);
+    overflow: hidden;
+    margin: 20px auto;
+    display: block;
+    border-radius: 3px;
+    background-color: #ffffff;
+
+    .item-divider {
+        background-color: #ffffff;
+        margin-bottom: 5px;
+        min-height: 48px;
+    }
+
+    .item-block {
+        padding: 5px 0 0px 24px;
+    }
+
+    .input-wrapper {
+        padding-bottom: 4px;
+    }
+}
+
+search-bar {
+    background: white;
+    display: block;
+    padding: 10px 20px;
+    position: relative;
+    z-index: 2;
+}
+
+.search-container {
+    background-color: #ffffff;
+    padding: 1rem 0;
+}
+
+.search-wrapper {
+    --background: #f8f8f8;
+    display: flex;
+    align-items: baseline;
+    border-radius: 8px;
+    --padding-start: 10px !important;
+    --padding-end: 10px !important;
+    --padding-top: 1rem !important;
+    --padding-bottom: 1rem !important;
+
+    .text-input-ios {
+        margin: 16px 8px 16px 8px;
+    }
+}
+
+// Set backgrounds transparent so the QR Scanner can be seen behind the app.
+ion-app,
+.nav-decor {
+    background: transparent !important;
+}
+
+.button-standard {
+    width: 85%;
+    max-width: 300px;
+    margin: 5px auto 25px auto;
+    display: flex;
+    min-height: 60px;
+    border-radius: 5px;
+    box-shadow: none;
+    font-weight: 400;
+    font-size: 18px;
+
+    .button-inner {
+        padding: 2px;
+    }
+
+    span {
+        @extend .two-lines;
+    }
+
+    &.ion-no-margin-bottom {
+        margin-bottom: 0px;
+    }
+}
+
+.button-default {
+    color: white;
+}
+
+form {
+    ion-item {
+        margin-left: 20px;
+
+        &::part(native) {
+            padding-left: 0 !important;
+        }
+
+        ion-label[position="stacked"] {
+            --color: #999 !important;
+        }
+    }
+}
+
+.button-secondary {
+    --background: #ededed;
+    --color: black;
+
+    &:hover,
+    &:focus,
+    &:active {
+
+        &.md,
+        &.ios {
+            --background: #ededed;
+            --color: black;
+            box-shadow: none;
+        }
+    }
+
+    &:active,
+    &.activated {
+
+        &.md,
+        &.ios {
+            --background: --feather;
+        }
+    }
+}
+
+.btn-transparent {
+    border: 0px !important;
+    background-color: var(--color-secondary);
+    color: var(--color-primary);
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+}
+
+.alertDanger {
+    .alert-message {
+        color: var(--color-danger);
+    }
+}
+
+// https://github.com/ionic-team/ionic/pull/14241
+ion-alert .alert-message {
+    overflow-y: auto;
+}
+
+.header-extend {
+    background: --toolbar-background;
+    height: 180px;
+    position: absolute;
+    top: -100px;
+    width: 100%;
+    z-index: 0;
+    display: flex;
+    justify-content: center;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--color-light-grey);
+    font-size: 16px;
+    font-weight: 500;
+    margin: 20px 16px 10px 20px;
+}
+
+.key-name {
+    margin-left: 8px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+ion-label {
+    margin: 0;
+    display: block;
+    overflow: hidden;
+    -webkit-box-flex: 1;
+    -webkit-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+    font-size: inherit;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.close-container.button-default {
+    color: var(--color-dark);
+    box-shadow: none;
+}
+
+.qr-container {
+    @include center;
+    height: 293px;
+
+    .qr-card {
+        margin: 0;
+        padding-bottom: 0;
+        max-width: 293px;
+        max-height: 293px;
+        box-shadow: none;
+
+        img {
+            height: auto;
+            width: 100%;
+        }
+
+        .aclass {
+            @include center;
+            padding: 5px;
+        }
+
+        .aclass>img {
+            filter: grayscale(100%);
+            height: 100%;
+            width: 100%;
+        }
+    }
+}
+
+.address-divider {
+    width: 1px;
+    height: 25px;
+    background-color: rgb(227, 227, 227);
+    display: inline-block;
+    margin-left: 6px;
+    margin-right: 12px;
+    vertical-align: middle;
+}
+
+// Add padding bottom when item has label
+ion-item.with-label.item {
+
+    &.item-ios,
+    &.item-md {
+        .item-inner {
+            border-bottom: 0;
+        }
+    }
+}
+
+// avoid issue with box-shadow and floating labels
+.ng-valid .item-inner,
+.ng-invalid .item-inner,
+.item-input-has-focus .item-inner {
+    box-shadow: none !important;
+}
+
+.slide-confirm-down {
+    transform: translate(0px, 200px);
+    -webkit-transform: translate(0px, 200px);
+}
+
+.slide-confirm-slow {
+    transition: transform 0.6s;
+    -webkit-transition: -webkit-transform 0.6s;
+}
+
+.slide-confirm-fast {
+    transition: transform 0.2s;
+    -webkit-transition: -webkit-transform 0.2s;
+}
+
+.reorder-done {
+    color: var(--color-primary);
+}
+
+.reorder-button {
+    display: flex;
+    position: relative;
+
+    &:after {
+        // For easier tappability
+        content: '';
+        position: absolute;
+        height: 30px;
+        width: 40px;
+        top: -10px;
+        left: -10px;
+    }
+}
+
+page-bitpay-card {
+
+    .bar-button-default-ios,
+    .bar-button-default.bar-button-ios-default,
+    .bar-button-clear-ios-default {
+        color: var(--button-color) !important;
+    }
+
+    .bar-button-default-md,
+    .bar-button-default.bar-button-md-default,
+    .bar-button-clear-md-default {
+        color: var(--button-color) !important;
+    }
+
+    .bar-button-default-wp,
+    .bar-button-default.bar-button-wp-default,
+    .bar-button-clear-wp-default {
+        color: var(--button-color) !important;
+    }
+
+    ion-title .toolbar-title {
+        color: var(--color-light);
+        font-weight: 75;
+    }
+
+    ion-title {
+        &.title-ios {
+            padding: 0 70px 1px;
+        }
+
+        .toolbar-title {
+            opacity: 0.7;
+            font-weight: 600;
+        }
+    }
+
+    &:not(.no-subtitle) {
+        ion-title .toolbar-title {
+            font-weight: 100;
+            font-size: 16px;
+        }
+    }
+
+    ion-toolbar {
+        min-height: 0;
+        margin-top: -6px;
+
+        &.toolbar-md {
+            padding-top: 0;
+        }
+    }
+
+    &__balance,
+    &__balance-hidden,
+    &__subtitle {
+        text-align: left;
+        color: white;
+        padding-bottom: 10px;
+        font-size: 18px;
+        font-weight: 500;
+        margin-left: 4.5rem;
+
+        ion-icon {
+            font-size: 16px;
+            font-weight: 100;
+            margin-left: 5px;
+        }
+    }
+}
+
+.icon-plus {
+    -webkit-mask-box-image: url(../assets/img/icon-plus.svg);
+    height: 18px;
+    width: 18px;
+    background-color: #cdd1d8;
+    mask-repeat: no-repeat;
+    mask-position: 50% 50%;
+    mask-size: 2rem;
+    margin: auto;
+    transform: translate(0, -10%);
+}
+
+.tabbar {
+    height: 10vh;
+
+    .tabs-md &,
+    .tabs-ios & {
+        background: white;
+    }
+
+    .tabs-ios & {
+        .tab-button-icon {
+            height: 22px;
+        }
+    }
+
+    justify-content: center;
+    padding-top: 5px;
+    transform: translate3d(0, 0, 0);
+
+    .tab-button {
+        max-width: 80px;
+
+        .tab-button-text {
+            display: block;
+        }
+    }
+}
+
+ion-tabs {
+    &:after {
+        // Workaround to prevent tabs from disappearing when activated
+        position: absolute;
+        display: none;
+        content: url('../assets/img/tab-icons/tab-home-active.svg') url('../assets/img/tab-icons/tab-wallets-active.svg') url('../assets/img/tab-icons/tab-transact.svg') url('../assets/img/tab-icons/tab-scan.svg') url('../assets/img/tab-icons/tab-copay-scan.svg') url('../assets/img/tab-icons/tab-cards-active.svg') url('../assets/img/tab-icons/tab-settings-active.svg');
+    }
+
+    .tab-badge {
+        font-family: 'Roboto';
+    }
+
+    ion-tab-bar {
+        padding: 1rem 0px;
+
+        ion-tab-button {
+            --ripple-color: transparent;
+            min-height: 5.6rem;
+            font-weight: normal;
+            opacity: 0.8;
+            padding: 0;
+            max-width: 88px;
+            --color-selected: #4f6ef7;
+
+            &.tab-selected {
+                opacity: 1;
+                margin-bottom: 5px;
+            }
+        }
+    }
+}
+
+ion-icon {
+    &[class*='tab-'] {
+        margin: 0 5px 0 0;
+        vertical-align: middle;
+        width: --sz;
+        height: --sz;
+    }
+
+    &[class*='tab-home'] {
+        background: --home-inactive;
+        background-size: contain;
+
+        .tab-button[aria-selected='true'] & {
+            background: --home-active;
+            background-size: contain;
+        }
+    }
+
+    &[class*='tab-wallets'] {
+        background: --wallets-inactive;
+        background-size: contain;
+
+        .tab-button[aria-selected='true'] & {
+            background: --wallets-active;
+            background-size: contain;
+        }
+    }
+
+    &[class*='tab-transact'] {
+        background: --transact;
+        background-size: contain;
+        width: 36px;
+        height: 36px !important;
+
+        .tab-button[aria-selected='true'] & {
+            background: --transact;
+            background-size: contain;
+        }
+    }
+
+    &[class*='tab-scan'] {
+        background: --scan-inactive;
+        background-size: contain;
+        width: 36px;
+        height: 36px !important;
+
+        .tab-button[aria-selected='true'] & {
+            background: --scan-active;
+            background-size: contain;
+        }
+    }
+
+    &[class*='tab-copay-scan'] {
+        background: --copay-scan-inactive;
+        background-size: contain;
+        margin-top: 0px;
+        opacity: 0.2;
+
+        .tab-button[aria-selected='true'] & {
+            background: --copay-scan-active;
+            background-size: contain;
+            opacity: 1;
+        }
+    }
+
+    &[class*='tab-cards'] {
+        background: --cards-inactive;
+        background-size: contain;
+
+        .tab-button[aria-selected='true'] & {
+            background: --cards-active;
+            background-size: contain;
+        }
+    }
+
+    &[class*='tab-settings'] {
+        background: --settings-inactive;
+        background-size: contain;
+
+        .tab-button[aria-selected='true'] & {
+            background: --settings-active;
+            background-size: contain;
+        }
+    }
+
+    &[class*='tab-address-book'] {
+        background: --address-book-inactive;
+        background-size: contain;
+
+        .tab-button[aria-selected='true'] & {
+            background: --address-book-active;
+            background-size: contain;
+        }
+    }
+}
+
+.line-divider {
+    box-sizing: border-box;
+    border: 0.5px solid rgba(155, 163, 174, 0.1);
+    margin: 0px 25px;
+}
+
+.buy-crypto-currency-2 .alert-radio-group {
+    button:nth-child(2) {
+        border-bottom: 1px solid #dedede;
+    }
+}
+
+.buy-crypto-currency-3 .alert-radio-group {
+    button:nth-child(3) {
+        border-bottom: 1px solid #dedede;
+    }
+}
+
+.toast-bg {
+    .toast-wrapper {
+        background-color: var(--color-primary);
+        color: white;
+    }
+
+    .toast-message {
+        white-space: pre-line;
+    }
+}
+
+.in-app-notification-modal {
+    height: 20%;
+}
+
+expandable-header {
+    display: block;
+    overflow: hidden;
+}
+
+ion-button {
+    text-transform: unset;
+}
+
+page-disclaimer {
+    pointer-events: unset !important;
+}
+
+wide-header-page {
+    height: 100%;
+    position: relative;
+}
+
+page-session-log {
+    ion-content {
+        height: calc(100% - 160px) !important;
+    }
+}
+
+.custom {
+    .alert-wrapper {
+        bottom: 0;
+        position: absolute;
+        max-width: initial;
+    }
+
+    .alert-button-group {
+        position: relative;
+        flex-direction: row-reverse;
+        border-top: 1px solid #ebebeb;
+        width: 95%;
+        margin: auto;
+
+        button:first-child {
+            flex-grow: 1;
+        }
+
+    }
+}

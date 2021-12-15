@@ -1,0 +1,84 @@
+
+::ng-deep label-tip {
+  color: #4a4a4a;
+  display: block;
+  padding: 20px;
+  position: relative;
+
+  width: 90%;
+  border-radius: 15px;
+
+  margin: 20px auto !important;
+
+  &.right-arrow:before {
+    right: 25px;
+    left: unset;
+  }
+
+  // Remove arrowhead from label
+  &.info.no-arrowhead:before,
+  &.warn.no-arrowhead:before,
+  &.danger.no-arrowhead:before {
+    display: none !important;
+  }
+
+  &.danger {
+    background: var(--background-colors-danger);
+
+    &:before {
+      border-bottom-color: var(--background-colors-danger);
+    }
+  }
+
+  &.warn {
+    background: var(--background-colors-warning);
+
+    &:before {
+      border-bottom-color: var(--background-colors-warning);
+    }
+  }
+
+  &.info {
+    background: var(--background-colors-info);
+
+    &:before {
+      border-bottom-color: var(--background-colors-info);
+    }
+  }
+
+  .label-header {
+    color: black;
+    
+    &__icon {
+      margin-right: calc(var(--icon-height)/1.5);
+      height: var(--icon-height);
+      width: var(--icon-height);
+    }
+
+    align-items: center;
+    display: flex;
+    font-size: 16px;
+    margin-bottom: 20px;
+  }
+
+  [label-tip-body] {
+    font-size: 15px;
+
+    a.label-tip-link {
+      display: inline-block;
+      margin-top: 10px;
+    }
+  }
+
+  .blue a.label-tip-link {
+    color: var(--color-info);
+  }
+
+  .yellow a.label-tip-link {
+    color: var(--color-warning);
+  }
+
+  .red a.label-tip-link {
+    color: var(--color-danger);
+  }
+}

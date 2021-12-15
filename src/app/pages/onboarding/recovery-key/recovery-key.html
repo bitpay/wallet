@@ -1,0 +1,28 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar [hideBackButton]="hideBackButton" transparent></ion-toolbar>
+</ion-header>
+
+<ion-content forceOverflow="false">
+  <div class="recovery-key">
+    <div class="recovery-key-info">
+      <div class="img-container">
+        <img src="assets/img/onboarding/backup-key.svg" />
+      </div>
+      <div class="info">
+        <h3 class="title" translate>How to recover your funds if you lose this device?</h3>
+        <div class="text" translate>If you delete the AbcPay app or lose this device, you’ll need a recovery key to regain access to your funds.</div>
+      </div>
+    </div>
+  </div>
+</ion-content>
+<ion-footer class="ion-no-border">
+  <ion-toolbar>
+    <ion-button class="button-standard ion-no-margin-bottom" (click)="goToBackupKey()">
+      {{'View my recovery key' | translate}}
+    </ion-button>
+    <ion-button fill="clear" color="primary" class="button-standard" (click)="showInfoSheet()">
+      {{"I’ll do this later" | translate}}
+    </ion-button>
+  </ion-toolbar>
+
+</ion-footer>

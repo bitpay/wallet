@@ -1,0 +1,54 @@
+<wide-header-page title="{{title}}">
+  <div page-content>
+    <ion-list lines="none" class="bp-list">
+      <ion-item-divider (tap)="countReleaseHeaderTaps()">
+        <ion-label>
+          {{'Release information'| translate}}
+        </ion-label>
+      </ion-item-divider>
+      <ion-item button (click)="wipeBitPayAccounts()">
+        <ion-icon
+          class="item-img icon-settings"
+          name="download-outline"
+          slot="start"
+        ></ion-icon>
+        <span class="main-label" translate>Version</span>
+        <ion-note slot="end"> v{{version}} </ion-note>
+      </ion-item>
+
+      <ion-item button>
+        <ion-icon
+          class="item-img icon-settings"
+          name="logo-github"
+          slot="start"
+        ></ion-icon>
+        <span class="main-label">Commit Hash</span>
+        <ion-note slot="end"> #{{commitHash}} </ion-note>
+      </ion-item>
+
+      <ion-item-divider class="item-without-title"></ion-item-divider>
+
+      <ion-item button (click)="openSendFeedbackPage()">
+        <ion-icon src="assets/img/settings-icons/icon-send-feedback.svg" class="item-img icon-settings" slot="start">
+        </ion-icon>
+        <span class="main-label" translate>Send Feedback</span>
+      </ion-item>
+
+      <ion-item-divider class="item-without-title"></ion-item-divider>
+
+      <ion-item button (click)="openSessionLog()">
+        <ion-icon
+          class="item-img icon-settings"
+          name="copy-outline"
+          slot="start"
+        ></ion-icon>
+        <span class="main-label" translate>Session Log</span>
+      </ion-item>
+    </ion-list>
+    <p class="made-with-custom" [ngClass]="{'white-theme': isDarkTheme}">
+      Made with 
+      <img *ngIf="isDarkTheme" src="assets/img/app/whiteLotus.png" width="60" />
+      <img *ngIf="!isDarkTheme" src="assets/img/app/blackLotus.png" width="60" />
+    </p>
+  </div>
+</wide-header-page>

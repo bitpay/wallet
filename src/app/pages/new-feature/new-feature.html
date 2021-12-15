@@ -1,0 +1,32 @@
+<swiper #swiper [config]="config" (slideChange)="slideChanged()" class="new-feature-slides"
+  *ngIf="featureList && featureList.length>0">
+  <ng-container *ngFor="let newfeature of featureList">
+    <ng-template swiperSlide>
+      <div class="supperior-container" *ngIf="newfeature.image && !!newfeature.image.fitClass">
+        <div *ngIf="newfeature.image" class="img-fit" [ngStyle]="setBGImgHeader(getImage(newfeature.image.path))"></div>
+      </div>
+      <div class="supperior-container" *ngIf="!newfeature.image.fitClass">
+        <div class="page-title" *ngIf="newfeature.slideTitle != ''">{{ newfeature.slideTitle || 'Recently added' }}
+        </div>
+        <div *ngIf="newfeature.image" class="img-container">
+          <img [ngClass]="(!!newfeature.image.fitClass)?'imgFit':'img'" src="{{getImage(newfeature.image.path)}}" />
+        </div>
+      </div>
+      <div class="slide-info">
+        <div class="title">{{newfeature.title}}</div>
+        <div class="text">{{newfeature.details}}</div>
+      </div>
+    </ng-template>
+  </ng-container>
+</swiper>
+<div class="ion-padding">
+  <ion-button class="try-it-button" fill="clear" (click)="close(tryit)" *ngIf="tryit">
+    {{ 'Try it' | translate }}
+  </ion-button>
+  <ion-button fill="clear" class="next-slide-button" (click)="swiper.swiperRef.slideNext()" *ngIf="!endSlide">
+    {{ 'Next' | translate }}
+  </ion-button>
+  <ion-button fill="clear" class="next-slide-button" (click)="close(true)" *ngIf="endSlide">
+    {{ 'Got it' | translate }}
+  </ion-button>
+</div>

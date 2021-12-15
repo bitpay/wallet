@@ -1,4 +1,10 @@
 .light {
-  // Overriding Ionic Variable
-  $background-color: #fff;
+    // Overriding Ionic Variable
+    :root {
+        background: #fff;
+    }
+
+    ion-content {
+        background: #fff;
+    }
 }

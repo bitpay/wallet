@@ -1,0 +1,30 @@
+.scanner-icon {
+  z-index: 99;
+  font-size: 28px;
+  color: var(--ion-color-primary);
+}
+.check {
+  font-size: 22px;
+  padding-top: 1rem;
+  &.success {
+    color: var(--ion-color-success);
+  }
+  &.fail {
+    color: var(--ion-color-danger);
+  }
+}
+
+label-tip {
+  margin-top: 1.8rem;
+}
+
+ion-item {
+  margin-left: 1rem;
+  ion-label{
+    color: grey;
+  }
+}
+
+ion-item::part(native){
+  padding-left: 0px;
+}

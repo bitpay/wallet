@@ -1,0 +1,48 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar hideBackButton="true">
+  </ion-toolbar>
+</ion-header>
+
+<ion-content forceOverflow="false">
+  <div class="fixed">
+    <h3 class="title" translate>Notifications by email</h3>
+    <div *ngIf="!showConfirmForm">
+      <img src='assets/img/app/onboarding/push-notifications.svg' width="200" />
+    </div>
+  </div>
+</ion-content>
+
+<ion-footer class="ion-no-border">
+  <div class="email-form" *ngIf="!showConfirmForm">
+    <p class="description" translate>Where would you like to receive email notifications about payments?</p>
+    <form [formGroup]="emailForm" (ngSubmit)="showConfirm()">
+      <ion-item>
+        <ion-input type="email" formControlName="email" placeholder="{{'Email' | translate}}"></ion-input>
+      </ion-item>
+
+      <ion-item lines="none">
+        <ion-label>{{'Get news and updates from AbcPay' | translate}}</ion-label>
+        <ion-checkbox formControlName="accept" checked="false"></ion-checkbox>
+      </ion-item>
+      <ion-button  class="button-standard" type="submit" [disabled]="!emailForm.valid">
+        {{'Continue' | translate}}
+      </ion-button>
+    </form>
+    <ion-button fill='clear' class="button-standard btn-transparent primary-color" (click)="skip()">
+      {{'Skip' | translate}}
+    </ion-button>
+  </div>
+
+  <div class="email-form" *ngIf="showConfirmForm">
+    <div>
+      <p translate>Is this email address correct?</p>
+      <p>{{ emailForm.value.email }}</p>
+    </div>
+    <ion-button class="button-standard" (click)="save()">
+      {{'Confirm' | translate}}
+    </ion-button>
+    <ion-button  class="button-standard btn-transparent primary-color" (click)="showConfirm()">
+      {{'Edit' | translate}}
+    </ion-button>
+  </div>
+</ion-footer>

@@ -1,0 +1,10 @@
+.container {
+  h3 {
+    color: var(--color-danger);
+  }
+  text-align: center;
+  .warning-message {
+    line-height: 18px;
+    padding: 0 10px;
+  }
+}

@@ -1,0 +1,112 @@
+@mixin toolbar-button-color($button-color: #434d5a) {
+  .bar-button-default-ios,
+  .bar-button-default.bar-button-ios-default,
+  .bar-button-clear-ios-default {
+    color: $button-color !important;
+  }
+
+  .bar-button-default-md,
+  .bar-button-default.bar-button-md-default,
+  .bar-button-clear-md-default {
+    color: $button-color !important;
+  }
+
+  .bar-button-default-wp,
+  .bar-button-default.bar-button-wp-default,
+  .bar-button-clear-wp-default {
+    color: $button-color !important;
+  }
+}
+
+ion-buttons[slot="end"] {
+  ion-button {
+    margin-right: 13px;
+  }
+}
+expandable-header-primary {
+  line-height: 1.2;
+  font-size: 25px !important;
+}
+
+.wide-header {
+  .toolbar-background {
+    background: white;
+  }
+
+  ion-title {
+    font-weight: 700 !important;
+  }
+
+  &__title {
+    color: black;
+    font-size: 25px;
+    font-weight: 700;
+    padding-top: 0;
+    padding-bottom: 0;
+    padding-left: 20px;
+  }
+
+  ion-toolbar {
+    .ios & {
+      padding-top: 3rem; // Fix iOS 10.3
+      padding-top: calc(4px + env(safe-area-inset-top));
+
+      ion-title {
+        padding-top: 3rem; // Fix iOS 10.3
+        padding-top: env(safe-area-inset-top);
+      }
+    }
+  }
+
+  &.cordova {
+    ion-toolbar {
+      .ios & {
+        padding-bottom: 7px;
+      }
+    }
+  }
+}
+
+@include toolbar-button-color();
+
+ion-title {
+  color: black;
+  font-weight: 400;
+}
+
+ion-toolbar {
+  .ios & {
+    padding-top: 3rem; // Fix iOS 10.3
+    padding-top: calc(4px + env(safe-area-inset-top));
+
+    ion-title {
+      padding-top: 3rem; // Fix iOS 10.3
+      padding-top: env(safe-area-inset-top);
+    }
+  }
+}
+
+ion-toolbar {
+  .ios & {
+    padding-bottom: 7px;
+  }
+}
+
+@include toolbar-button-color();
+
+ion-title {
+  color: black;
+}
+
+ion-footer {
+  left: 0;
+  bottom: 0;
+  position: absolute;
+  z-index: 10;
+  display: block;
+  width: 100%;
+}
+
+ion-content{
+  height: calc(100% - 50px);
+}

@@ -1,0 +1,20 @@
+.bp-list {
+  .danger {
+    color: var(--color-danger);
+  }
+  .main-label {
+    font-weight: 400;
+  }
+  ion-icon {
+    &.md,
+    &.ios {
+      padding: 14.5px;
+      font-size: 20px;
+      &.icon-settings {
+        opacity: 0.5;
+      }
+      width: 20px;
+      height: 20px;
+    }
+  }
+}

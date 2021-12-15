@@ -1,143 +1,184 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "version": 1,
+  "defaultProject": "app",
   "newProjectRoot": "projects",
   "projects": {
-    "abcpay": {
+    "app": {
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
+      "prefix": "app",
+      "schematics": {},
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "ngx-build-plus:browser",
           "options": {
-            "outputPath": "dist",
+            "outputPath": "www",
+            "polyfills": "src/polyfills.ts",
             "index": "src/index.html",
-            "main": "src/app/main.ts",
-            "tsConfig": "./tsconfig.json",
-            "polyfills": "polyfills.ts",
+            "main": "src/main.ts",
+            "tsConfig": "tsconfig.app.json",
             "assets": [
-              "assets",
-              "favicon.ico",
-              "src/manifest.json"
+              {
+                "glob": "**/*",
+                "input": "src/assets",
+                "output": "assets"
+              },
+              {
+                "glob": "**/*.svg",
+                "input": "node_modules/ionicons/dist/ionicons/svg",
+                "output": "./svg"
+              }
             ],
-            "styles": [],
-            "scripts": []
+            "styles": [
+              "src/theme/variables.scss",
+              "src/global.scss"
+            ],
+            "scripts": [],
+            "extraWebpackConfig": "webpack.config.js",
+            "aot": false,
+            "vendorChunk": true,
+            "extractLicenses": false,
+            "buildOptimizer": false,
+            "sourceMap": true,
+            "optimization": false,
+            "namedChunks": true
           },
           "configurations": {
-            "prod": {
-              "fileReplacements": [
-                {
-                  "replace": "environments/environment.ts",
-                  "with": "environments/prod.ts"
-                }
-              ]
-            },
             "production": {
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
-              "extractCss": true,
               "namedChunks": false,
               "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true,
-              "serviceWorker": true,
-              "ngswConfigPath": "ngsw.json"
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "10mb",
+                  "maximumError": "10mb"
+                }
+              ]
+            },
+            "ci": {
+              "progress": false
             }
           }
         },
         "serve": {
-          "builder": "@angular-devkit/build-angular:dev-server",
+          "builder": "ngx-build-plus:dev-server",
           "options": {
-            "browserTarget": "abcpay:build"
+            "browserTarget": "app:build",
+            "extraWebpackConfig": "webpack.config.js"
           },
           "configurations": {
-            "prod": {
-              "browserTarget": "abcpay:build:prod"
-            },
             "production": {
-              "browserTarget": "abcpay:build:production"
+              "browserTarget": "app:build:production"
+            },
+            "ci": {
+              "progress": false
             }
           }
         },
         "extract-i18n": {
-          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "builder": "ngx-build-plus:extract-i18n",
           "options": {
-            "browserTarget": "abcpay:build"
+            "browserTarget": "app:build"
           }
         },
         "test": {
-          "builder": "@angular-devkit/build-angular:karma",
+          "builder": "ngx-build-plus:karma",
           "options": {
             "main": "src/test.ts",
-            "karmaConfig": "test/karma.conf.js",
             "polyfills": "src/polyfills.ts",
-            "tsConfig": "src/tsconfig.spec.json",
-            "codeCoverageExclude": [
-              "src/polyfills.ts",
-              "src/test.ts",
-              "src/mocks.ts",
-              "src/**/*.mock.ts",
-              "src/**/node_modules/**"
-            ],
-            "scripts": [],
+            "tsConfig": "tsconfig.spec.json",
+            "karmaConfig": "karma.conf.js",
             "styles": [],
+            "scripts": [],
             "assets": [
-              "src/assets",
-              "src/favicon.ico",
-              "src/manifest.json"
+              {
+                "glob": "favicon.ico",
+                "input": "src/",
+                "output": "/"
+              },
+              {
+                "glob": "**/*",
+                "input": "src/assets",
+                "output": "/assets"
+              }
             ]
+          },
+          "configurations": {
+            "ci": {
+              "progress": false,
+              "watch": false
+            }
           }
         },
         "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
+          "builder": "@angular-eslint/builder:lint",
           "options": {
-            "tsConfig": [
-              "tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
+            "lintFilePatterns": [
+              "src/**/*.ts",
+              "src/**/*.html"
             ]
           }
-        }
-      }
-    },
-    "copay-e2e": {
-      "root": "e2e",
-      "sourceRoot": "e2e",
-      "projectType": "application",
-      "architect": {
+        },
         "e2e": {
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
-            "protractorConfig": "test/protractor.conf.js",
-            "devServerTarget": "copay:serve"
+            "protractorConfig": "e2e/protractor.conf.js",
+            "devServerTarget": "app:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "app:serve:production"
+            },
+            "ci": {
+              "devServerTarget": "app:serve:ci"
+            }
           }
         },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
+        "ionic-cordova-build": {
+          "builder": "@ionic/angular-toolkit:cordova-build",
           "options": {
-            "tsConfig": [
-              "test/e2e/tsconfig.e2e.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
+            "browserTarget": "app:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "app:build:production"
+            }
+          }
+        },
+        "ionic-cordova-serve": {
+          "builder": "@ionic/angular-toolkit:cordova-serve",
+          "options": {
+            "cordovaBuildTarget": "app:ionic-cordova-build",
+            "devServerTarget": "app:serve"
+          },
+          "configurations": {
+            "production": {
+              "cordovaBuildTarget": "app:ionic-cordova-build:production",
+              "devServerTarget": "app:serve:production"
+            }
           }
         }
       }
     }
   },
-  "defaultProject": "abcpay",
+  "cli": {
+    "analytics": "c3118495-9c75-46a7-8375-97a7de96f816",
+    "defaultCollection": "@ionic/angular-toolkit"
+  },
   "schematics": {
-    "@schematics/angular:component": {
-      "prefix": "app",
-      "styleext": "css"
+    "@ionic/angular-toolkit:component": {
+      "styleext": "scss"
     },
-    "@schematics/angular:directive": {
-      "prefix": "app"
+    "@ionic/angular-toolkit:page": {
+      "styleext": "scss"
     }
   }
 }

@@ -1,0 +1,118 @@
+:host {
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  position: absolute;
+  flex-direction: column;
+  justify-content: space-between;
+  contain: layout size style;
+  overflow: hidden;
+  z-index: 0;
+}
+
+ion-content {
+  --offset-bottom: 0px !important;
+}
+
+.onboarding-slides {
+  width: 100%;
+  height: 100%;
+  display: block;
+  ::ng-deep.swiper-slide {
+    height: 100%;
+
+    .slide-info {
+      height: 100%;
+      display: grid;
+      grid-template-rows: 1fr 1fr 30px;
+      justify-content: center;
+
+      .img-container {
+        align-self: end;
+        display: flex;
+
+        img {
+          margin: auto;
+          max-height: 10rem;
+
+          @media (max-width: 350px) {
+            max-height: 14rem;
+          }
+        }
+      }
+
+      .info {
+        align-self: start;
+        display: grid;
+        grid-template-rows: max-content max-content;
+        height: 100%;
+        padding: 2rem;
+
+        .title {
+          color: #060606;
+          font-weight: 600;
+          align-items: center;
+          text-align: center;
+          line-height: 34px;
+
+          @media (max-width: 768px) {
+            font-size: 20px;
+            line-height: 20px;
+          }
+
+          @media (max-width: 350px) {
+            font-size: 17px;
+            line-height: 20px;
+          }
+        }
+
+        .text {
+          font-size: 16px;
+          text-align: center;
+          color: rgb(46, 46, 46);
+          font-weight: 300;
+          padding-top: 15px;
+          line-height: 25px;
+
+          @media (max-width: 768px) {
+            font-size: 14px;
+            line-height: 20px;
+          }
+
+          @media (max-width: 350px) {
+            font-size: 12px;
+            line-height: 15px;
+          }
+
+          .note {
+            font-size: 14px;
+            text-align: center;
+            color: var(--color-light-grey);
+            font-weight: 300;
+            padding-top: 15px;
+            line-height: 25px;
+
+            @media (max-width: 768px) {
+              font-size: 11px;
+              line-height: 20px;
+            }
+
+            @media (max-width: 350px) {
+              font-size: 8px;
+              line-height: 15px;
+            }
+          }
+        }
+      }
+    }
+
+    .final-slide {
+      --padding-top: 3rem;
+      .slide-info {
+        grid-template-rows: 1fr 1fr 160px;
+      }
+    }
+  }
+}
