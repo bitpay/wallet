@@ -308,7 +308,7 @@
                 <img src="assets/img/tx-action/icon-confirming.svg" width="40">
               </div>
               <div *ngIf="tx.confirmations > 0">
-                <span *ngIf="wallet?.coin === 'eth' && tx.error; else noError">
+                <span *ngIf="(wallet?.coin === 'eth' || currencyProvider.isERCToken(wallet?.coin)) && tx.error; else noError">
                   <img src="assets/img/failed-icon.svg">
                 </span>
                 <ng-template #noError>
