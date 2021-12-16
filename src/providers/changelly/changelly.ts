@@ -34,7 +34,8 @@ export class ChangellyProvider {
       'ltc',
       'usdt',
       'bat',
-      'shib'
+      'shib',
+      'xrp'
     ];
   }
 
