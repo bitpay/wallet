@@ -93,7 +93,7 @@ export class WalletDetailsPage {
 
   public supportedCards: Promise<CardConfigMap>;
   constructor(
-    private currencyProvider: CurrencyProvider,
+    public currencyProvider: CurrencyProvider,
     private navParams: NavParams,
     private navCtrl: NavController,
     private walletProvider: WalletProvider,

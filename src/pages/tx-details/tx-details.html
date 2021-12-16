@@ -23,7 +23,7 @@
         </div>
       </ion-item>
 
-      <label-tip type="danger" *ngIf="wallet.coin === 'eth' && btx.error">
+      <label-tip type="danger" *ngIf="(wallet.coin === 'eth' || currencyProvider.isERCToken(wallet.coin)) && btx.error">
         <span label-tip-title translate>Warning!</span>
         <div label-tip-body translate>
           Error encountered during contract execution ({{btx.error}})
