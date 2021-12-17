@@ -51,6 +51,9 @@ export class ImportWalletPage {
   public showAdvOpts: boolean;
   public title: string;
   public isOnboardingFlow: boolean;
+  public isShoweTokenPath: boolean;
+  public isSlpToken = false;
+  public prevCoin: string;
   navParamsData;
 
   constructor(
@@ -291,6 +294,7 @@ export class ImportWalletPage {
   }
 
   private importWithDerivationPath(opts): void {
+    opts.isSlpToken = this.isSlpToken;
     this.onGoingProcessProvider.set('importingWallet');
     this.profileProvider
       .importWithDerivationPath(opts)
@@ -667,8 +671,17 @@ export class ImportWalletPage {
   }
 
   public setDerivationPath(event) {
-    const coin = event.detail.value;
+    const coin = event ? event.detail.value : this.prevCoin;
+    this.prevCoin = coin;
+    this.isShoweTokenPath = coin.toUpperCase() === 'XPI';
     const defaultCoin = `default${coin.toUpperCase()}`;
+    const derivationPath = this.derivationPathHelperProvider[defaultCoin];
+    this.importForm.controls['derivationPath'].setValue(derivationPath);
+  }
+
+  public setDerivationPathForXpiSlpToken(event) {
+    this.isSlpToken = event.detail.checked;
+    const defaultCoin = this.isSlpToken ?  'defaultSlpToken' : `default${this.prevCoin.toUpperCase()}`;
     const derivationPath = this.derivationPathHelperProvider[defaultCoin];
     this.importForm.controls['derivationPath'].setValue(derivationPath);
   }

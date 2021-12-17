@@ -78,6 +78,7 @@ export class CreateWalletPage implements OnInit {
   public invalidAddress: boolean;
   public pairedWallet: any;
   public isOpenSelector: boolean;
+  public isSlpToken: boolean;
   navParamsData;
   constructor(
     private actionSheetProvider: ActionSheetProvider,
@@ -358,6 +359,7 @@ export class CreateWalletPage implements OnInit {
   private create(opts): void {
     this.onGoingProcessProvider.set('creatingWallet');
     opts['keyId'] = this.keyId;
+    opts['isSlpToken'] = this.isSlpToken;
     this.profileProvider
       .createWallet(opts)
       .then(wallet => {
@@ -500,5 +502,15 @@ export class CreateWalletPage implements OnInit {
     }
 
     return derivationPathByDefault;
+  }
+
+  changeSlpPath(event){
+    this.isSlpToken = event.detail.checked;
+    if(event.detail.checked){
+      this.createForm.controls['walletName'].setValue(this.createForm.controls['walletName'].value + " - 1899");
+    }
+    else{
+      this.createForm.controls['walletName'].setValue(this.createForm.controls['walletName'].value.replace("- 1899",""));
+    }
   }
 }
