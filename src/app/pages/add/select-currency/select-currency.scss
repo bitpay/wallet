@@ -17,6 +17,15 @@ page-select-currency {
       // color: black;
       font-size: 18px;
       font-weight: 500;
+      h3{
+        font-size: 16px;
+        font-weight: 600;
+      }
+      span{
+        font-size: 14px;
+        font-weight: 400;
+        color: rgba(0, 30, 46, 0.6);
+      }
     }
 
     .item-note {

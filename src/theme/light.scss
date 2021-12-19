@@ -1,10 +1,129 @@
 .light {
+    // Color - AbcPay ReDesign
+    --color-light-theme: #eef2f6;
+    --color-inner-item-light-theme: #FAFAFB;
+    --color-light-on-background-theme: #001E2E;
+    --color-light-on-surface-theme: #1C3745;
+    --color-light-outline-theme: #70818A;
+
+    // 1 - Definitions
+    // 1.1 - Backgrounds
+    --bg-color-light-theme: #eef2f6;
+    --bg-color-inner-item-light-theme: #FAFAFB;
+
+    // 1.2 - Text
+    // 1.3 - Borders
+    // 1.4 - Toggles
+    --toggle-background-light-theme: #eef2f6;
+    --toggle-background-active-light-theme: #9bc1d1;
+    // 1.5 - Slides
+    --swiper-pagination-bullet-active: #00658D;
+    --swiper-pagination-bullet: #C3E7FF;
+
     // Overriding Ionic Variable
     :root {
-        background: #fff;
+        background: var(--bg-color-light-theme);
     }
 
+    // 2 - General
     ion-content {
-        background: #fff;
+        background: var(--bg-color-light-theme);
+        --background: var(--bg-color-light-theme);
+    }
+
+    ion-list {
+        background: var(--bg-color-light-theme);
+    }
+    
+    ion-toolbar {
+        --background: var(--bg-color-light-theme);
+    }
+
+    ion-button {
+        &[fill="clear"] {
+            --background-activated: none;
+            --background: none;
+            --color: var(--color-primary);
+        }
+    }
+
+    ion-toggle {
+        --background: var(--toggle-background-light-theme);
+        --background-checked: var(--toggle-background-active-light-theme);
+    }
+
+    // 2.1 Lists
+    .bp-list {
+        ion-item {
+
+            &.ios,
+            &.md {
+                border: 0;
+                background-color: var(--bg-color-light-theme);
+                --background: var(--bg-color-inner-item-light-theme);
+                --padding-start: 5px;
+                --padding-end: 5px;
+                margin: 1rem 1rem;
+                &::part(native) {
+                    border-radius: 8px;
+                }
+            }
+
+            // &:not(.create-button):not(.assertive) {
+
+            //     &.ios,
+            //     &.md {
+            //         color: var(--text-color-dark-theme) !important;
+            //     }
+            // }
+        }
+
+        // .main-label,
+        // .main-note,
+        // .status .royal {
+        //     color: var(--text-color-dark-theme) !important;
+        // }
+
+        // ion-item-divider {
+        //     background: var(--bg-color-dark-theme) !important;
+
+        //     ion-label {
+        //         color: var(--text-color-dark-theme-3) !important;
+        //     }
+        // }
+
+        // .summary-item-detail {
+        //     color: var(--text-color-dark-theme) !important;
+
+        //     .text-input {
+        //         color: var(--text-color-dark-theme) !important;
+        //         opacity: 1;
+        //     }
+        // }
+
+        // .total-amount {
+        //     color: var(--text-color-dark-theme) !important;
+        // }
+    }
+
+    // 2.2 Slides
+    .swiper-pagination-bullet {
+        background-color: var(--swiper-pagination-bullet);
+    }
+
+    .swiper-pagination-bullet-active {
+        background-color: var(--swiper-pagination-bullet-active);
+    }
+
+    // 3 - Components
+    // 3.1 Page Feature-education
+    page-feature-education {
+        ion-content {
+            --background: var(--bg-color-inner-item-light-theme);
+        }
+
+        ion-toolbar {
+            --background: var(--bg-color-inner-item-light-theme);
+        }
     }
 }

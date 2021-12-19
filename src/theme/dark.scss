@@ -36,14 +36,30 @@
 
 
 .dark {
+    // Color - AbcPay ReDesign
+    --color-primary-abcpay-dark: #7ED0FF;
+    --color-on-primary-abcpay-dark: #00344B;
+    --color-primary-container-abcpay-dark: #004C6C;
+    --color-on-primary-container-abcpay-dark: #C3E7FF;
+
+    --color-secondary-abcpay-dark: #B6C9D8;
+    --color-on-secondary-abcpay-dark: #21333E;
+    --color-secondary-container-abcpay-dark: #374955;
+    --color-on-secondary-container-abcpay-dark: #D2E5F4;
+
+    --bg-hight-color-abcpay-dark: #EDEFF0;
+    --bg-surface-color-abcpay-dark: #E0E4E6;
+    --bg-outline-color-abcpay-dark: #70818A;
+
     // 1 - Definitions
     // 1.1 - Backgrounds
-    --bg-color-dark-theme: #121212;
+    --bg-color-dark-theme: #001E2E;
     --bg-color-dark-theme-2: #1d1d1d;
-    --bg-color-dark-theme-3: #383838;
+    --bg-color-dark-theme-3: #235068;
     --bg-color-dark-theme-4: rgba(56, 56, 56, 0.8);
+    --bg-color-dark-theme-5: linear-gradient(0deg, rgba(126, 208, 255, 0.14), rgba(126, 208, 255, 0.14)), #001E2E;
 
-    --bg-color-dark-theme-toolbar: #121212;
+    --bg-color-dark-theme-toolbar: #001E2E;
     --bg-color-dark-theme-message: #1d1d1d;
     --gradient-dark-theme: #101010;
 
@@ -60,11 +76,13 @@
     --border-color-dark-theme-2: rgba(76, 76, 76, 0.3);
 
     // 1.5 - Slides
-    --swiper-pagination-bullet-active: #434c5a;
-    --swiper-pagination-bullet: #4f4f4e;
+    --swiper-pagination-bullet-active-dark: #434c5a;
+    --swiper-pagination-bullet-dark: #7ED0FF;
 
     // 1.6 - Toggles
-    --toggle-color-dark-theme: #afafaf;
+    --toggle-color-dark-theme: #ffffff;
+    --toggle-checked-color-dark-theme: #7ED0FF;
+    --toggle-background-active-dark-theme: #3c718f;
 
     // 1.7 - Overriding Ionic Variables
     --background-color: var(--bg-color-dark-theme);
@@ -98,6 +116,19 @@
                     filter: invert(1);
                 }
             }
+        }
+    }
+
+    ion-button {
+        &.button-standard {
+            --background-activated: var(--color-primary-abcpay-dark);
+            --background: var(--color-primary-abcpay-dark);
+            --color: var(--color-on-primary-abcpay-dark);
+        }
+        &[fill="clear"] {
+            --background: transparent;
+            --background-activated: transparent;
+            --color: var(--color-primary-abcpay-dark);
         }
     }
 
@@ -186,11 +217,11 @@
     }
 
     .swiper-pagination-bullet-active {
-        background-color: var(--swiper-pagination-bullet-active);
+        background-color: var(--swiper-pagination-bullet-active-dark);
     }
 
     .swiper-pagination-bullet {
-        background-color: var(--swiper-pagination-bullet);
+        background-color: var(--swiper-pagination-bullet-dark);
     }
 
     button.item.activated,
@@ -217,12 +248,14 @@
 
     ion-toggle {
         --background: var(--bg-color-dark-theme-3);
+        --background-checked: var(--toggle-background-active-dark-theme);
 
         &::before {
                 background-color: var(--bg-color-dark-theme-3);
             }
 
         --handle-background: var(--toggle-color-dark-theme);
+        --handle-background-checked: var(--toggle-checked-color-dark-theme);
     }
 
     .alert-ios {
@@ -368,8 +401,14 @@
             &.ios,
             &.md {
                 border: 0;
-                --background: var(--bg-color-dark-theme);
                 background-color: var(--bg-color-dark-theme);
+                --background: var(--bg-color-dark-theme-5);
+                --padding-start: 5px;
+                --padding-end: 5px;
+                margin: 1rem 1rem;
+                &::part(native) {
+                    border-radius: 8px;
+                }
             }
 
             &:not(.create-button):not(.assertive) {
@@ -1596,6 +1635,9 @@
         .list-button {
             .item-title {
                 color: var(--text-color-dark-theme) !important;
+                span {
+                    color: rgba(237, 239, 240, 0.6);
+                }
             }
 
             .item-subtitle {
