@@ -11,6 +11,7 @@ export class DerivationPathHelperProvider {
   public defaultDOGE: string;
   public defaultXEC: string;
   public defaultXPI: string;
+  public defaultSlpToken: string;
   public defaultLTC: string;
   public defaultTestnet: string;
   public defaultMultisigBTC: string;
@@ -27,6 +28,7 @@ export class DerivationPathHelperProvider {
     this.defaultDOGE = "m/44'/3'/0'";
     this.defaultXEC = "m/44'/899'/0'";
     this.defaultXPI = "m/44'/10605'/0'";
+    this.defaultSlpToken = "m/44'/1899'/0'"
     this.defaultLTC = "m/44'/2'/0'";
     this.defaultMultisigBTC = "m/48'/0'/0'";
     this.defaultMultisigBCH = "m/48'/145'/0'";
@@ -95,6 +97,9 @@ export class DerivationPathHelperProvider {
       case "10605'": // for XPI
         networkName = 'livenet';
         break;
+      case "1899'": // for SLP Path only support for XPI
+        networkName = 'livenet';
+        break;
       case "2'": // for LTC
         networkName = 'livenet';
         break;
@@ -135,18 +140,17 @@ export class DerivationPathHelperProvider {
         break;
       case 'doge':
         isValid = ["3'", "1'"].indexOf(coinCode) > -1;
-        break;      
+        break;
       case 'xec':
-          isValid = ["899'", "0'", "1'"].indexOf(coinCode) > -1;
+        isValid = ["899'", "0'", "1'"].indexOf(coinCode) > -1;
         break;
       case 'xpi':
-          isValid = ["10605'", "0'", "1'"].indexOf(coinCode) > -1;
+        isValid = ["10605'", "0'", "1'"].indexOf(coinCode) > -1 || ["1899'", "0'", "1'"].indexOf(coinCode) > -1;
         break;
       case 'ltc':
         isValid = ["2'", "1'"].indexOf(coinCode) > -1;
         break;
     }
-
     return isValid;
   }
 }

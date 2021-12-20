@@ -89,6 +89,12 @@
             </div>
           </ion-select>
         </ion-item>
+        <ion-item *ngIf="isShoweTokenPath">
+          <ion-label>
+            eToken Path
+          </ion-label>
+          <ion-toggle (ionChange)="setDerivationPathForXpiSlpToken($event)"></ion-toggle>
+        </ion-item>
 
         <ion-item *ngIf="importForm.value.derivationPathEnabled">
           <ion-label position="floating">{{'Derivation path' | translate}}</ion-label>

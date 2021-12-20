@@ -1496,6 +1496,7 @@ export class ProfileProvider {
               network,
               account: opts.account || 0,
               addressType: opts.addressType,
+              isSlpToken : opts.isSlpToken,
               n: opts.n || 1
             })
           );
@@ -1520,7 +1521,8 @@ export class ProfileProvider {
               coin: opts.coin,
               network,
               account: opts.account || 0,
-              n: opts.n || 1
+              n: opts.n || 1,
+              isSlpToken : opts.isSlpToken,
             })
           );
           if (opts.duplicateKeyId) {
@@ -1559,7 +1561,8 @@ export class ProfileProvider {
               coin: opts.coin,
               network,
               account: opts.account || 0,
-              n: opts.n || 1
+              n: opts.n || 1,
+              isSlpToken : opts.isSlpToken,
             })
           );
         } catch (e) {
@@ -1572,7 +1575,8 @@ export class ProfileProvider {
                 coin: opts.coin,
                 network,
                 account: opts.account || 0,
-                n: opts.n || 1
+                n: opts.n || 1,
+                isSlpToken : opts.isSlpToken,
               })
             );
           } else {
