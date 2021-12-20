@@ -18,6 +18,9 @@ export class WideHeaderPage {
   title: string;
 
   @Input()
+  img: string;
+
+  @Input()
   isCustomBack?: boolean | any;
 
   @Input()

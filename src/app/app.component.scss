@@ -703,14 +703,13 @@ ion-app,
 
 .button-standard {
     width: 85%;
-    max-width: 300px;
     margin: 5px auto 25px auto;
     display: flex;
-    min-height: 60px;
-    border-radius: 5px;
+    min-height: 40px;
+    --border-radius: 100px;
     box-shadow: none;
     font-weight: 400;
-    font-size: 18px;
+    font-size: 14px;
 
     .button-inner {
         padding: 2px;

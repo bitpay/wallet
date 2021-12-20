@@ -8,11 +8,12 @@ import { PlatformProvider } from '../../../providers/platform/platform';
 
 // Pages
 import { ExternalLinkProvider } from 'src/app/providers/external-link/external-link';
-import { IonSlides, NavController } from '@ionic/angular';
+import { NavController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { SwiperComponent } from 'swiper/angular';
 import { Pagination, SwiperOptions } from 'swiper';
 import SwiperCore from 'swiper';
+import { ThemeProvider } from 'src/app/providers';
 
 SwiperCore.use([Pagination]);
 @Component({
@@ -26,6 +27,7 @@ export class FeatureEducationPage {
   @ViewChild('swiper', { static: true }) swiper: SwiperComponent;
 
   public isCordova: boolean;
+  public selectedTheme;
   slideEnd: boolean = false;
   private params = {
     isOnboardingFlow: true,
@@ -47,9 +49,11 @@ export class FeatureEducationPage {
     private configProvider: ConfigProvider,
     private platformProvider: PlatformProvider,
     private router: Router,
+    private themeProvider: ThemeProvider
   ) {
     this.zone = new NgZone({ enableLongStackTrace: false });
     this.isCordova = this.platformProvider.isCordova;
+    this.selectedTheme = this.themeProvider.currentAppTheme;
   }
   ngAfterViewInit() {
     this.swiper.swiperRef.allowSlidePrev = true;

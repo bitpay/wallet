@@ -34,8 +34,8 @@ ion-content {
         display: flex;
 
         img {
-          margin: auto;
-          max-height: 10rem;
+          margin: 3rem auto 0;
+          max-width: 65%;
 
           @media (max-width: 350px) {
             max-height: 14rem;
@@ -109,7 +109,7 @@ ion-content {
     }
 
     .final-slide {
-      --padding-top: 3rem;
+      // --padding-top: 3rem;
       .slide-info {
         grid-template-rows: 1fr 1fr 160px;
       }

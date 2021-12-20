@@ -1,4 +1,4 @@
-<ion-header [translucent]="true" class="wide-header" [ngClass]="{'cordova': platformProvider.isCordova}">
+<ion-header [translucent]="true" class="wide-header ion-no-border" [ngClass]="{'cordova': platformProvider.isCordova}">
   <ion-toolbar>
     <ion-buttons *ngIf="!hideBackButton" slot="start">
       <ion-back-button *ngIf="isCustomBack" onclick="event.stopImmediatePropagation(); window.myCustomMethod()" defaultHref="/" icon="arrow-back">
@@ -21,6 +21,9 @@
     <expandable-header [scrollArea]="scrollArea" [fadeFactor]="5" [disableFade]="true" #expandableHeader>
       <ion-toolbar class="wide-header__title">
         <expandable-header-primary class="ellipsis">
+          <div *ngIf="img" class="img-container">
+            <img src="assets/img/onboarding/{{img}}.svg" />
+          </div>
           {{title}}
         </expandable-header-primary>
       </ion-toolbar>
@@ -28,6 +31,6 @@
     <ng-content select="[page-content]"></ng-content>
   </div>
 </ion-content>
-<ion-footer>
+<ion-footer class="ion-no-border">
   <ng-content select="[footer-content]"></ng-content>
 </ion-footer>
