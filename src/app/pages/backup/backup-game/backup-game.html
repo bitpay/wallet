@@ -1,67 +1,21 @@
-<wide-header-page title="{{'Verify Your Phrase' | translate}}"  (back)="back()" [isCustomBack]='true'>
-  <div page-content>
-    <div class="grid-container">
-      <div class="key-container" [hidden]="mnemonicHasPassphrase && selectComplete">
-        <div class="word-container">
-          <swiper #swiper class="word-slides" [config]="config">
-            <ng-template swiperSlide *ngFor="let mnemonicWord of mnemonicWords; let i = index">
-                <div class="slide-zoom">
-                  <div class="word">
-                    <span *ngIf="customWords && customWords[i]">{{customWords[i].word}}</span>
-                    <div class="dash-line"></div>
-                  </div>
-                  <div class="word-number">
-                    {{i + 1}} / {{mnemonicWords.length}}
-                  </div>
-                </div>
-            </ng-template>
-          </swiper>
+<wide-header-page [hideToolbar]="true" (back)="back()" [isCustomBack]='true'>
+  <div page-content class="page-container ion-padding">
+    <div>
+      <div class="main-header">Verify your phrase</div>
+      <div class="sub-header">Let check your wrote down the phrase correctly. Please select each word in the numbered order.</div>
+      <div class="word-guess-conatiner">
+        <div class="word-guess-title">
+          Word #{{countWord+1}}
         </div>
-      </div>
-
-      <div class="mnemonic-words-container" [hidden]="mnemonicHasPassphrase && selectComplete">
-        <div class="mnemonic-words" *ngIf="!selectComplete">
-          <div class="bottom-title" translate>Tap each word in the correct order.</div>
-          <div class="words">
-            <ion-button class="button-secondary" *ngFor="let shuffledWord of shuffledMnemonicWords; let i = index"
-              (click)="addButton(i, shuffledWord)" [disabled]="shuffledWord.selected">{{shuffledWord.word}}</ion-button>
-          </div>
+        <div class="word-guess-content" *ngIf="randomListFinal.length === 3">
+            <ion-button *ngFor="let word of randomListFinal" (click)="checkWord(word)">
+              {{word}}
+            </ion-button>
         </div>
-        <div *ngIf="selectComplete" class="confirm-container">
-          <div translate>Is this correct?</div>
-          <ion-button *ngIf="selectComplete" class="button-standard ion-no-margin-bottom" (click)="finalStep()">
-            {{'Confirm' | translate}}
-          </ion-button>
-          <ion-button fill="clear" class="button-standard" (click)="clear()">
-            {{'Clear' | translate}}
-          </ion-button>
-        </div>
-      </div>
-
-      <div [hidden]="!mnemonicHasPassphrase || !(mnemonicHasPassphrase && selectComplete)">
-        <div class="key-container">
-          <div class="password">
-            <div class="password-title" translate>
-              In order to verify your wallet recovery phrase, please type your password.
-            </div>
-            <ion-item>
-              <ion-label position="stacked" translate>Password</ion-label>
-              <ion-input type="password" id="password" [(ngModel)]="password" autocapitalize="off" spellcheck="false">
-              </ion-input>
-            </ion-item>
-            <div class="password-text">
-              <span class="assertive" translate>This recovery phrase was created with a password. To recover this wallet
-                both the recovery phrase and password are needed.</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="bottom-absolute" *ngIf="mnemonicHasPassphrase">
-          <ion-button [disabled]="!password" class="button-standard" (click)="finalStep()">
-            {{'Confirm' | translate}}
-          </ion-button>
+        <div>
         </div>
       </div>
     </div>
+    <app-backup-word [mnemonicWords]="mnemonicWordsConverted"></app-backup-word>
   </div>
-</wide-header-page>
+</wide-header-page> 

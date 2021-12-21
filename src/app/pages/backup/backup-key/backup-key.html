@@ -1,26 +1,23 @@
-<wide-header-page title="{{'Recovery Phrase' | translate}}">
-  <div page-content>
-    <div class="key-container" *ngIf="walletGroup.canSign && mnemonicWords && mnemonicWords[0]">
-      <div class="word-container">
-        <div class="word-title" translate>Write down each word.</div>
-        <div class="word">
-          <span>{{mnemonicWords[wordToShow]}}</span>
-        </div>
-        <div class="word-number">
-          {{wordToShow + 1}} / {{mnemonicWords.length}}
+<wide-header-page [hideToolbar]="true"> 
+  <div page-content class="page-container ion-padding">
+    <div>
+      <div class="main-header">Your recovery phrase</div>
+      <div class="sub-header">Your recovery key is composed of 12 randomly selected words. Please carefully write down each word in the order it appears.</div>
+      <div class="notification-container">
+        <img src="assets/img/backup-key-game/icon-notification.svg" />
+        <div class="notification-content">
+          Never share your recovery phrase with anyone, store it securely !
         </div>
       </div>
+      <div class="word-container" *ngIf="walletGroup.canSign && mnemonicWords && mnemonicWords[0]">
+        <app-backup-word [mnemonicWords]="mnemonicWordsConverted"></app-backup-word>
+      </div>
     </div>
-    <div class="bottom-absolute" [ngClass]="{'right-align': wordToShow == 0}" *ngIf="walletGroup.canSign && mnemonicWords && mnemonicWords[0]">
-      <ion-button *ngIf="wordToShow > 0" fill="clear" class="button-left" [disabled]="credentialsEncrypted" (click)="previousWord()">
-        {{'Previous' | translate}}
-      </ion-button>
-      <ion-button *ngIf="wordToShow < mnemonicWords.length - 1"  fill="clear" class="button-right" [disabled]="credentialsEncrypted" (click)="nextWord()">
-        {{'Next' | translate}}
-      </ion-button>
-      <ion-button *ngIf="wordToShow == mnemonicWords.length - 1" fill="clear" class="button-right" [disabled]="credentialsEncrypted" (click)="goToBackupGame()">
-        {{'Continue' | translate}}
-      </ion-button>
-    </div>
+  </div>
+ 
+  <div footer-content>
+    <ion-button *ngIf="walletGroup.canSign && mnemonicWords && mnemonicWords[0]" class="button-standard" [disabled]="credentialsEncrypted" (click)="goToBackupGame()">
+      {{'Continue' | translate}}
+    </ion-button>
   </div>
 </wide-header-page>

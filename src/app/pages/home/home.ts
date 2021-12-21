@@ -111,6 +111,9 @@ export class HomePage {
     private splashScreen: SplashScreen,
     private rateProvider: RateProvider
   ) {
+    this.router.navigate(['/backup-key'], {
+      state: { keyId: "4f119181-4589-4649-8846-ba312c114728", isOnboardingFlow: false },
+    });
     this.logger.info('Loaded: HomePage');
     this.isCopay = this.appProvider.info.name === 'copay';
     this.zone = new NgZone({ enableLongStackTrace: false });

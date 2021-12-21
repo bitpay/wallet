@@ -14,7 +14,7 @@ import { DisclaimerPage } from '../../../pages/onboarding/disclaimer/disclaimer'
 @Component({
   selector: 'page-recovery-key',
   templateUrl: 'recovery-key.html',
-  styleUrls: ['/recovery-key.scss']
+  styleUrls: ['./recovery-key.scss']
 })
 export class RecoveryKeyPage {
   private unregisterBackButtonAction;

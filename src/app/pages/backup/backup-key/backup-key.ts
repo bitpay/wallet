@@ -19,6 +19,8 @@ import { ProfileProvider } from '../../../providers/profile/profile';
 import { NavController, NavParams } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
+import { BackupWordModel } from '../backup-component/backup-word/backup-word.model';
+import { BackupWordComponent } from '../backup-component/backup-word/backup-word.component';
 @Component({
   selector: 'page-backup-key',
   templateUrl: 'backup-key.html',
@@ -28,6 +30,7 @@ import { Location } from '@angular/common';
 })
 export class BackupKeyPage {
   public mnemonicWords: string[];
+  public mnemonicWordsConverted: BackupWordModel[];
   public wordToShow: number;
   public credentialsEncrypted: boolean;
   public walletGroup;
@@ -147,7 +150,7 @@ export class BackupKeyPage {
   public goToBackupGame(): void {
     this.router.navigate(['/backup-game'], {
       state: {
-        words: this.mnemonicWords,
+        words: this.mnemonicWordsConverted,
         keys: this.keys,
         keyId: this.keyId,
         isOnboardingFlow: this.navParamsData.isOnboardingFlow
@@ -161,6 +164,11 @@ export class BackupKeyPage {
     let words = this.keys.mnemonic;
 
     this.mnemonicWords = words.split(/[\u3000\s]+/);
+    this.mnemonicWordsConverted = this.mnemonicWords.map(s=> new BackupWordModel({
+      word : s,
+      isBlur : false,
+      isCorrect : true
+    }))
     this.wordToShow = 0;
   }
 

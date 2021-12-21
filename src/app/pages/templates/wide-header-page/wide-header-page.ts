@@ -24,6 +24,13 @@ export class WideHeaderPage {
   isCustomBack?: boolean | any;
 
   @Input()
+  hideHeader: boolean | any;
+
+  @Input()
+  hideToolbar: boolean | any;
+
+
+  @Input()
   hideBackButton: boolean | any;
 
   @Input()
