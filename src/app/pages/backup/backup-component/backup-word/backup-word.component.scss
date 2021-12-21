@@ -1,0 +1,42 @@
+.word-alignment{
+    width: 100%;
+    .notification-container{
+      display: flex;
+      margin-bottom: 36px;
+      padding: 12px 18px;
+      background: #FFDDB6;
+      border-radius: 8px;
+      color: #482A00;
+      font-size: 14px;
+      .notification-content{
+        margin-left: 10px;
+      }
+    }
+    .word{
+      background: white;
+      color: black;
+      .mat-grid-tile-content{
+        justify-content: flex-start !important;
+        margin-left: 10px;
+      }
+    
+      width: 100px;
+      .word-number{
+        padding: 8px;
+        font-size: 11px;
+        position: relative;
+        bottom: 2px;
+        color: rgba(237, 239, 240, 0.6);
+      }
+
+      .word-letter{
+        font-size: 12px;
+      }
+    }
+    .blur{
+      filter: blur(2px);
+    }
+    .wrong{
+      background: red !important;
+    }
+  }

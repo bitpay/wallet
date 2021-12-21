@@ -1,0 +1,8 @@
+<div class="word-alignment">
+  <mat-grid-list cols="3" rowHeight="32px" gutterSize="16px">
+      <mat-grid-tile [ngClass]="{'blur': word.isBlur, 'wrong': !word.isCorrect}" *ngFor="let word of mnemonicWords; index as i;" class="word">
+          <span class="word-number">{{i+1}}</span>
+          <span class="word-letter">{{word.word}}</span>
+      </mat-grid-tile>
+  </mat-grid-list>
+</div>
