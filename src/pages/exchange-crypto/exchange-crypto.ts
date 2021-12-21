@@ -338,6 +338,16 @@ export class ExchangeCryptoPage {
               this.currencyProvider.getAvailableCoins(),
               supportedCoinsWithFixRateEnabled
             );
+            const coinsToRemove = ['xrp'];
+            coinsToRemove.forEach((coin: string) => {
+              const index = this.changellySupportedCoins.indexOf(coin);
+              if (index > -1) {
+                this.logger.debug(
+                  `Removing ${coin.toUpperCase()} from Changelly supported coins`
+                );
+                this.changellySupportedCoins.splice(index, 1);
+              }
+            });
           }
 
           this.logger.debug(
