@@ -1,9 +1,6 @@
-import { Component, NgZone, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 import * as _ from 'lodash';
 import { Location } from '@angular/common';
-// pages
-import { AddFundsPage } from '../../onboarding/add-funds/add-funds';
-import { DisclaimerPage } from '../../onboarding/disclaimer/disclaimer';
 
 // providers
 import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
@@ -12,15 +9,11 @@ import { KeyProvider } from '../../../providers/key/key';
 import { Logger } from '../../../providers/logger/logger';
 import { PersistenceProvider } from '../../../providers/persistence/persistence';
 import { ProfileProvider } from '../../../providers/profile/profile';
-import { IonSlides, NavController, NavParams } from '@ionic/angular';
 import { EventManagerService } from 'src/app/providers/event-manager.service';
 import { Router } from '@angular/router';
 import { SwiperOptions } from 'swiper';
-import { SwiperComponent } from 'swiper/angular';
-import { BackupWordComponent } from '../backup-component/backup-word/backup-word.component';
+
 import { BackupWordModel } from '../backup-component/backup-word/backup-word.model';
-
-
 @Component({
   selector: 'page-backup-game',
   templateUrl: 'backup-game.html',
@@ -28,9 +21,6 @@ import { BackupWordModel } from '../backup-component/backup-word/backup-word.mod
   encapsulation: ViewEncapsulation.None,
 })
 export class BackupGamePage {
-  @ViewChild('swiper', { static: true }) swiper: SwiperComponent;
-
-  @ViewChild('wideHeader')
   wideHeader;
   config: SwiperOptions = {
     slidesPerView: 2,
@@ -49,13 +39,11 @@ export class BackupGamePage {
   public useIdeograms;
   public keys;
   public keyId: string;
-  public libWord : string[];
+  public libWord: string[];
   public countWord = 0;
-  public randomListFinal : string[];
+  public randomListFinal: string[];
   navParamsData;
   constructor(
-    private navCtrl: NavController,
-    private navParams: NavParams,
     private logger: Logger,
     private profileProvider: ProfileProvider,
     private bwcProvider: BwcProvider,
@@ -66,14 +54,14 @@ export class BackupGamePage {
     private router: Router,
     private location: Location) {
     if (this.router.getCurrentNavigation()) {
-       this.navParamsData = this.router.getCurrentNavigation().extras.state ? this.router.getCurrentNavigation().extras.state : {};
+      this.navParamsData = this.router.getCurrentNavigation().extras.state ? this.router.getCurrentNavigation().extras.state : {};
     } else {
       this.navParamsData = history ? history.state : {};
     }
-    this.mnemonicWords = (this.navParamsData.words as BackupWordModel[]).map(s=>s.word) ;
-    this.mnemonicWordsConverted = (this.navParamsData.words as BackupWordModel[]).map(s=> new BackupWordModel({
-      word : s.word,
-      isBlur : true,
+    this.mnemonicWords = (this.navParamsData.words as BackupWordModel[]).map(s => s.word);
+    this.mnemonicWordsConverted = (this.navParamsData.words as BackupWordModel[]).map(s => new BackupWordModel({
+      word: s.word,
+      isBlur: true,
       isCorrect: true,
     }));
     this.keys = this.navParamsData.keys;
@@ -82,23 +70,23 @@ export class BackupGamePage {
     this.readFile();
   }
 
-  readFile(){
-   fetch('assets/backup-word.txt')
-    .then(response => response.text())
-    .then(data => {
-      this.libWord = data.split(/\r\n|\n/);
-      this.createRandom();
-    })
+  readFile() {
+    fetch('assets/backup-word.txt')
+      .then(response => response.text())
+      .then(data => {
+        this.libWord = data.split(/\r\n|\n/);
+        this.createRandom();
+      })
   }
 
-  createRandom(){
+  createRandom() {
     const randomList = [this.mnemonicWordsConverted[this.countWord].word];
     for (let i = 0; i < 2; i++) {
       let isDone = true;
-      while(isDone){
+      while (isDone) {
         const randomNumber = Math.floor(Math.random() * (this.libWord.length));
         const wordRandom = this.libWord[randomNumber];
-        if(wordRandom !== this.mnemonicWordsConverted[this.countWord].word){
+        if (wordRandom !== this.mnemonicWordsConverted[this.countWord].word) {
           randomList.push(wordRandom);
           isDone = false;
         }
@@ -110,36 +98,32 @@ export class BackupGamePage {
 
   shuffleArray(array) {
     for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
     }
   }
 
-  checkWord(word){
-    if(word === this.mnemonicWordsConverted[this.countWord].word){
+  checkWord(word) {
+    if (word === this.mnemonicWordsConverted[this.countWord].word) {
       this.mnemonicWordsConverted[this.countWord].isCorrect = true;
       this.mnemonicWordsConverted[this.countWord].isBlur = false;
       this.countWord++;
-      if(this.countWord === 12){
+      if (this.countWord === 12) {
         this.finalStep();
-      }else{
+      } else {
         this.createRandom();
       }
     }
-    else{
+    else {
       this.mnemonicWordsConverted[this.countWord].isCorrect = false;
     }
-  } 
-
-  ngAfterViewInit() {
-    this.swiper.swiperRef.allowSlidePrev = false;
   }
-  
+
   back() {
     this.location.back();
   }
 
- 
+
   private setFlow() {
     if (!this.mnemonicWords) return;
 

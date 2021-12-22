@@ -1,4 +1,4 @@
-<wide-header-page [hideToolbar]="true" (back)="back()" [isCustomBack]='true'>
+<wide-header-page  [hideToolbar]="true" (back)="back()" [isCustomBack]='true'>
   <div page-content class="page-container ion-padding">
     <div>
       <div class="main-header">Verify your phrase</div>
@@ -7,7 +7,7 @@
         <div class="word-guess-title">
           Word #{{countWord+1}}
         </div>
-        <div class="word-guess-content" *ngIf="randomListFinal.length === 3">
+        <div class="word-guess-content" *ngIf="randomListFinal && randomListFinal.length === 3">
             <ion-button *ngFor="let word of randomListFinal" (click)="checkWord(word)">
               {{word}}
             </ion-button>

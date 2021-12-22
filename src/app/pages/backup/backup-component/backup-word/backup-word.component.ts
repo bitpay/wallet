@@ -9,9 +9,9 @@ import { BackupWordModel } from './backup-word.model';
 })
 export class BackupWordComponent implements OnInit {
   @Input()
-  mnemonicWords : BackupWordModel[];
+  mnemonicWords: BackupWordModel[];
   isShow = false;
   constructor() { }
 
-  ngOnInit() {}
+  ngOnInit() { }
 }

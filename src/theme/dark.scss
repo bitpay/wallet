@@ -1799,6 +1799,9 @@
         ion-content.content {
             background: var(--bg-color-dark-theme);
         }
+        .sub-header{
+            color: rgba(237, 239, 240, 0.6);
+        }
 
         .word-alignment{
             .word-title {
@@ -1809,28 +1812,23 @@
                 background: var(--bg-color-dark-theme-6);
                 color: var(--text-color-dark-theme);
 
+                .word-number{
+                    color: rgba(237, 239, 240, 0.6);
+                }
+
                 .dash-line {
                     border-bottom: 1px var(--border-color-dark-theme) dashed;
                 }
             }
         }
 
-        // .key-container,
-        // .grid-container>.key-container {
-
-        //     .word-container,
-        //     .word-container>.word-slides {
-                
-        //     }
-        // }
-
-        .grid-container>.mnemonic-words-container {
-            .mnemonic-words {
-                .words {
-                    .button {
-                        background-color: var(--bg-color-dark-theme-2);
-                        color: var(--text-color-dark-theme) !important;
-                    }
+        .word-guess-conatiner{
+            background-color: rgba(126, 208, 255, 0.11);
+            .word-guess-content{
+                ion-button{
+                --background: linear-gradient(0deg, rgba(126, 208, 255, 0.05), rgba(126, 208, 255, 0.05)), #001E2E;
+                color: var(--text-color-dark-theme);
+                --border-color: #70818A;
                 }
             }
         }

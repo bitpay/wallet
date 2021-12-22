@@ -2,9 +2,6 @@ import { Component, ViewEncapsulation } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import * as _ from 'lodash';
 
-// pages
-import { BackupGamePage } from '../backup-game/backup-game';
-
 // providers
 import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
 import { AppProvider } from '../../../providers/app/app';
@@ -20,18 +17,15 @@ import { NavController, NavParams } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { BackupWordModel } from '../backup-component/backup-word/backup-word.model';
-import { BackupWordComponent } from '../backup-component/backup-word/backup-word.component';
 @Component({
   selector: 'page-backup-key',
   templateUrl: 'backup-key.html',
   styleUrls: ['./backup-key.scss'],
   encapsulation: ViewEncapsulation.None,
-
 })
 export class BackupKeyPage {
   public mnemonicWords: string[];
   public mnemonicWordsConverted: BackupWordModel[];
-  public wordToShow: number;
   public credentialsEncrypted: boolean;
   public walletGroup;
   public keys;
@@ -56,7 +50,7 @@ export class BackupKeyPage {
     private router: Router
   ) {
     if (this.router.getCurrentNavigation()) {
-       this.navParamsData = this.router.getCurrentNavigation().extras.state ? this.router.getCurrentNavigation().extras.state : {};
+      this.navParamsData = this.router.getCurrentNavigation().extras.state ? this.router.getCurrentNavigation().extras.state : {};
     } else {
       this.navParamsData = history ? history.state : {};
     }
@@ -164,12 +158,11 @@ export class BackupKeyPage {
     let words = this.keys.mnemonic;
 
     this.mnemonicWords = words.split(/[\u3000\s]+/);
-    this.mnemonicWordsConverted = this.mnemonicWords.map(s=> new BackupWordModel({
-      word : s,
-      isBlur : false,
-      isCorrect : true
+    this.mnemonicWordsConverted = this.mnemonicWords.map(s => new BackupWordModel({
+      word: s,
+      isBlur: false,
+      isCorrect: true
     }))
-    this.wordToShow = 0;
   }
 
   public showSafeguardMessage(): void {
@@ -177,13 +170,5 @@ export class BackupKeyPage {
       'backup-safeguard-warning'
     );
     infoSheet.present();
-  }
-
-  public nextWord() {
-    this.wordToShow++;
-  }
-
-  public previousWord() {
-    this.wordToShow--;
   }
 }

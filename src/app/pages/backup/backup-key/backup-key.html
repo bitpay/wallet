@@ -1,8 +1,9 @@
-<wide-header-page [hideToolbar]="true"> 
+<wide-header-page [hideToolbar]="true">
   <div page-content class="page-container ion-padding">
     <div>
       <div class="main-header">Your recovery phrase</div>
-      <div class="sub-header">Your recovery key is composed of 12 randomly selected words. Please carefully write down each word in the order it appears.</div>
+      <div class="sub-header">Your recovery key is composed of 12 randomly selected words. Please carefully write down
+        each word in the order it appears.</div>
       <div class="notification-container">
         <img src="assets/img/backup-key-game/icon-notification.svg" />
         <div class="notification-content">
@@ -14,9 +15,10 @@
       </div>
     </div>
   </div>
- 
+
   <div footer-content>
-    <ion-button *ngIf="walletGroup.canSign && mnemonicWords && mnemonicWords[0]" class="button-standard" [disabled]="credentialsEncrypted" (click)="goToBackupGame()">
+    <ion-button *ngIf="walletGroup.canSign && mnemonicWords && mnemonicWords[0]" class="button-standard"
+      [disabled]="credentialsEncrypted" (click)="goToBackupGame()">
       {{'Continue' | translate}}
     </ion-button>
   </div>

@@ -3,19 +3,25 @@ page-backup-game {
     background: white;
   }
 
-  .page-container{
+  ion-content::part(scroll) {
+    padding-bottom: calc(
+      var(--padding-bottom) + var(--keyboard-offset)
+    ) !important;
+  }
+
+  .page-container {
     padding-top: unset;
   }
 
-  .main-header{
+  .main-header {
     font-size: 22px;
     font-weight: 600;
     margin-bottom: 16px;
   }
 
-  .sub-header{
+  .sub-header {
     font-size: 14px;
-    color: rgba(237, 239, 240, 0.6);
+    color: rgba(0, 30, 46, 0.6);
     margin-bottom: 16px;
   }
 
@@ -26,23 +32,34 @@ page-backup-game {
       color: var(--color-dark);
     }
   }
-  .word-guess-conatiner{
-    background-color: rgba(126, 208, 255, 0.11);
+  .word-guess-conatiner {
+    background-color: #fafafb;
     padding: 16px;
     margin-bottom: 32px;
-    .word-guess-title{
+    .word-guess-title {
       font-weight: 600;
       font-size: 14px;
     }
-    .word-guess-content{
+    .word-guess-content {
       margin-top: 16px;
-      ion-button{
+      display: flex;
+      ion-button {
         height: 32px;
-        --background: linear-gradient(0deg, rgba(126, 208, 255, 0.05), rgba(126, 208, 255, 0.05)), #001E2E;
-        margin-right: 16px;
+        margin-right: 15px;
+        --background: rgba(0, 93, 141, 0.05);
+        color: #1c3745;
         font-size: 12px;
+        --border-width: 1px;
+        --border-color: #70818a;
+        --box-shadow: unset;
+        --border-style: solid;
+        --border-radius: 8px;
+        --padding-start: 16px;
+        --padding-end: 16px;
+        --padding-top: 6px;
+        --padding-bottom: 6px;
+        font-weight: 600;
       }
     }
-
   }
 }
