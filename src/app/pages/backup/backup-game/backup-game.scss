@@ -2,104 +2,63 @@ page-backup-game {
   ion-content.content {
     background: white;
   }
-  .grid-container {
-    display: grid;
-    grid-template-rows: 1.5fr 1fr;
-    grid-auto-columns: 100%;
-    height: 75vh;
-    .key-container {
-      grid-row-start: 1;
-      align-self: center;
-      @media (max-height: 550px) {
-        grid-template-rows: 1fr 1fr;
-      }
-      .word-container {
-        height: 65%;
-        .word-slides {
-          .slide-zoom {
-            display: flex;
-            flex-flow: column;
-            .word {
-              position: relative;
-              display: grid;
-              align-content: center;
-              background-color: #f6f7fc;
-              border-radius: 3px;
-              color: var(--color-secondary);
-              min-width: 190px;
-              min-height: 171px;
-              justify-content: center;
-              @media (max-width: 400px) {
-                min-width: 150px;
-                min-height: 130px;
-              }
-              span {
-                font-weight: bold;
-                font-size: 35px;
-                letter-spacing: 2.5px;
-                text-overflow: ellipsis;
-                white-space: nowrap;
-                overflow: hidden;
-                padding: 1rem;
-                .button {
-                  height: 3rem;
-                  font-size: 14px;
-                }
-              }
-              .dash-line {
-                border-bottom: 1px var(--color-primary) dashed;
-                position: absolute;
-                top: 80%;
-                left: 15%;
-                right: 15%;
-              }
-            }
-            .word-number {
-              margin-top: 1rem;
-              font-weight: bold;
-              align-self: center;
-            }
-          }
-        }
-      }
-      .password {
-        padding: 2rem;
-        &-title {
-          margin-bottom: 2rem;
-        }
-        &-text {
-          margin-top: 2rem;
-        }
-      }
+
+  ion-content::part(scroll) {
+    padding-bottom: calc(
+      var(--padding-bottom) + var(--keyboard-offset)
+    ) !important;
+  }
+
+  .page-container {
+    padding-top: unset;
+  }
+
+  .main-header {
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 16px;
+  }
+
+  .sub-header {
+    font-size: 14px;
+    color: rgba(0, 30, 46, 0.6);
+    margin-bottom: 16px;
+  }
+
+  .word-container {
+    .word-title {
+      font-size: 18px;
+      padding: 20px;
+      color: var(--color-dark);
     }
-    .mnemonic-words-container {
-      display: grid;
-      grid-template-columns: auto minmax(200px, 500px) auto;
-      grid-row-start: 2;
-      align-self: end;
-      .mnemonic-words {
-        grid-column-start: 2;
-        .bottom-title {
-          font-size: 16px;
-          margin-bottom: 1rem;
-          text-align: center;
-        }
-        .words {
-          text-align: center;
-          .button {
-            box-shadow: none;
-            background-color: #f6f6f6;
-            color: var(--color-dark);
-            height: 3rem;
-            font-size: 14px;
-            margin: 5px;
-          }
-        }
-      }
-      .confirm-container {
-        grid-column-start: 2;
-        text-align: center;
-        align-self: end;
+  }
+  .word-guess-conatiner {
+    background-color: #fafafb;
+    padding: 16px;
+    margin-bottom: 32px;
+    .word-guess-title {
+      font-weight: 600;
+      font-size: 14px;
+    }
+    .word-guess-content {
+      margin-top: 16px;
+      display: flex;
+      ion-button {
+        height: 32px;
+        margin-right: 15px;
+        --background: rgba(0, 93, 141, 0.05);
+        color: #1c3745;
+        font-size: 12px;
+        --border-width: 1px;
+        --border-color: #70818a;
+        --box-shadow: unset;
+        --border-style: solid;
+        --border-radius: 8px;
+        --padding-start: 16px;
+        --padding-end: 16px;
+        --padding-top: 6px;
+        --padding-bottom: 6px;
+        font-weight: 600;
       }
     }
   }

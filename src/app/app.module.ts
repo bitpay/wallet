@@ -40,6 +40,8 @@ import { WebView } from '@ionic-native/ionic-webview/ngx';
 import { IonicImageLoaderModule } from 'ionic-image-loader-v5';
 import { enterAnimation } from './animations/nav-animation';
 
+import { MatGridListModule } from '@angular/material/grid-list'; 
+
 export function translateParserFactory() {
   return new InterpolatedTranslateParser();
 }
@@ -86,6 +88,7 @@ export class MyMissingTranslationHandler implements MissingTranslationHandler {
       backButtonText: '',
       navAnimation : enterAnimation
     }),
+    MatGridListModule,
     FormsModule,
     ReactiveFormsModule,
     NgxTextOverflowClampModule,

@@ -58,6 +58,8 @@
     --bg-color-dark-theme-3: #235068;
     --bg-color-dark-theme-4: rgba(56, 56, 56, 0.8);
     --bg-color-dark-theme-5: linear-gradient(0deg, rgba(126, 208, 255, 0.14), rgba(126, 208, 255, 0.14)), #001E2E;
+    --bg-color-dark-theme-6: linear-gradient(
+        0deg, rgba(126, 208, 255, 0.12), rgba(126, 208, 255, 0.12)), #001E2E;   
 
     --bg-color-dark-theme-toolbar: #001E2E;
     --bg-color-dark-theme-message: #1d1d1d;
@@ -1797,34 +1799,36 @@
         ion-content.content {
             background: var(--bg-color-dark-theme);
         }
+        .sub-header{
+            color: rgba(237, 239, 240, 0.6);
+        }
 
-        .key-container,
-        .grid-container>.key-container {
+        .word-alignment{
+            .word-title {
+                color: var(--text-color-dark-theme) !important;
+            }
 
-            .word-container,
-            .word-container>.word-slides {
-                .word-title {
-                    color: var(--text-color-dark-theme) !important;
+            .word {
+                background: var(--bg-color-dark-theme-6);
+                color: var(--text-color-dark-theme);
+
+                .word-number{
+                    color: rgba(237, 239, 240, 0.6);
                 }
 
-                .word {
-                    background: var(--bg-color-dark-theme-2) !important;
-                    color: var(--text-color-dark-theme) !important;
-
-                    .dash-line {
-                        border-bottom: 1px var(--border-color-dark-theme) dashed;
-                    }
+                .dash-line {
+                    border-bottom: 1px var(--border-color-dark-theme) dashed;
                 }
             }
         }
 
-        .grid-container>.mnemonic-words-container {
-            .mnemonic-words {
-                .words {
-                    .button {
-                        background-color: var(--bg-color-dark-theme-2);
-                        color: var(--text-color-dark-theme) !important;
-                    }
+        .word-guess-conatiner{
+            background-color: rgba(126, 208, 255, 0.11);
+            .word-guess-content{
+                ion-button{
+                --background: linear-gradient(0deg, rgba(126, 208, 255, 0.05), rgba(126, 208, 255, 0.05)), #001E2E;
+                color: var(--text-color-dark-theme);
+                --border-color: #70818A;
                 }
             }
         }

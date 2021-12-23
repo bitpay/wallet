@@ -19,7 +19,7 @@
   [ngClass]="{'add-padding-bottom': hasSlideButton, 'add-bottom-safe-area': !hasSlideButton && platformProvider.isCordova}">
   <div class="wrapper">
     <expandable-header [scrollArea]="scrollArea" [fadeFactor]="5" [disableFade]="true" #expandableHeader>
-      <ion-toolbar class="wide-header__title">
+      <ion-toolbar *ngIf="!hideToolbar" class="wide-header__title">
         <expandable-header-primary class="ellipsis">
           <div *ngIf="img" class="img-container">
             <img src="assets/img/onboarding/{{img}}.svg" />

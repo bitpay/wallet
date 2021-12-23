@@ -100,6 +100,7 @@ import { TransferToPage } from '../pages/send/transfer-to/transfer-to';
 /* Receive */
 import { CustomAmountPage } from '../pages/receive/custom-amount/custom-amount';
 import { WideHeaderPage } from './templates/wide-header-page/wide-header-page';
+import { BackupWordComponent } from './backup/backup-component/backup-word/backup-word.component';
 
 export const PAGES = [
   AddPage,
@@ -122,6 +123,7 @@ export const PAGES = [
   ImportWalletPage,
   JoinWalletPage,
   BackupGamePage,
+  BackupWordComponent,
   BackupKeyPage,
   ConfirmPage,
   MultiSendPage,
