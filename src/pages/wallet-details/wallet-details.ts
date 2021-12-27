@@ -134,6 +134,7 @@ export class WalletDetailsPage {
         this.buyCryptoProvider.exchangeCoinsSupported,
         this.wallet.coin
       ) &&
+      !['xrp'].includes(this.wallet.coin) &&
       (this.wallet.network == 'livenet' ||
         (this.wallet.network == 'testnet' && env.name == 'development'));
 
@@ -143,26 +144,49 @@ export class WalletDetailsPage {
         this.wallet.coin
       )
     ) {
-      this.showExchangeCrypto = this.wallet.network == 'livenet' ? true : false;
+      this.showExchangeCrypto =
+        this.wallet.network == 'livenet' && !['xrp'].includes(this.wallet.coin)
+          ? true
+          : false;
     }
 
-    if (!this.showExchangeCrypto) {
+    if (!this.showExchangeCrypto || !this.showBuyCrypto) {
       this.locationProvider.getCountry().then(country => {
-        const opts = { country };
-        this.exchangeCryptoProvider
-          .checkServiceAvailability('1inch', opts)
-          .then(isAvailable => {
-            if (isAvailable) {
-              this.showExchangeCrypto =
-                this.currencyProvider.isERCToken(this.wallet.coin) &&
-                this.wallet.network == 'livenet'
-                  ? true
-                  : false;
-            }
-          })
-          .catch(err => {
-            if (err) this.logger.error(err);
-          });
+        if (!this.showBuyCrypto) {
+          if (
+            country != 'US' &&
+            this.wallet.network == 'livenet' &&
+            ['xrp'].includes(this.wallet.coin)
+          ) {
+            this.showBuyCrypto = true;
+          }
+        }
+
+        if (!this.showExchangeCrypto) {
+          if (
+            country != 'US' &&
+            this.wallet.network == 'livenet' &&
+            ['xrp'].includes(this.wallet.coin)
+          ) {
+            this.showExchangeCrypto = true;
+          } else {
+            const opts = { country };
+            this.exchangeCryptoProvider
+              .checkServiceAvailability('1inch', opts)
+              .then(isAvailable => {
+                if (isAvailable) {
+                  this.showExchangeCrypto =
+                    this.currencyProvider.isERCToken(this.wallet.coin) &&
+                    this.wallet.network == 'livenet'
+                      ? true
+                      : false;
+                }
+              })
+              .catch(err => {
+                if (err) this.logger.error(err);
+              });
+          }
+        }
       });
     }
 
