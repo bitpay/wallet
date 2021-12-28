@@ -242,8 +242,21 @@ export class CryptoOrderSummaryPage {
     const supportedCoins = this.isPromotionActiveForCountry(
       this.selectedCountry
     )
-      ? this.buyCryptoProvider.getExchangeCoinsSupported('simplex')
-      : this.buyCryptoProvider.getExchangeCoinsSupported();
+      ? _.clone(this.buyCryptoProvider.getExchangeCoinsSupported('simplex'))
+      : _.clone(this.buyCryptoProvider.getExchangeCoinsSupported());
+
+    if (this.selectedCountry.shortCode == 'US') {
+      const coinsToRemove = ['xrp'];
+      coinsToRemove.forEach((coin: string) => {
+        const index = supportedCoins.indexOf(coin);
+        if (index > -1) {
+          this.logger.debug(
+            `Removing ${coin.toUpperCase()} from Buy crypto supported coins`
+          );
+          supportedCoins.splice(index, 1);
+        }
+      });
+    }
 
     let modal = this.modalCtrl.create(
       CoinAndWalletSelectorPage,
@@ -367,11 +380,12 @@ export class CryptoOrderSummaryPage {
 
   private isCoinSupportedByCountry(): boolean {
     if (
-      this.isPromotionActiveForCountry(this.selectedCountry) &&
-      !_.includes(
-        this.buyCryptoProvider.getExchangeCoinsSupported('simplex'),
-        this.coin
-      )
+      (this.isPromotionActiveForCountry(this.selectedCountry) &&
+        !_.includes(
+          this.buyCryptoProvider.getExchangeCoinsSupported('simplex'),
+          this.coin
+        )) ||
+      (this.coin == 'xrp' && this.selectedCountry.shortCode == 'US')
     ) {
       this.logger.debug(
         `Selected coin: ${this.coin} is not currently available for selected country: ${this.selectedCountry.name}. Show warning.`
