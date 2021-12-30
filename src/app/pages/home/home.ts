@@ -1,4 +1,4 @@
-import { Component, NgZone, ViewChild, OnInit } from '@angular/core';
+import { Component, NgZone, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import * as _ from 'lodash';
 import * as moment from 'moment';
@@ -21,12 +21,11 @@ import {
   ReleaseProvider
 } from '../../providers';
 import { ActionSheetProvider } from '../../providers/action-sheet/action-sheet';
-import { AnalyticsProvider } from '../../providers/analytics/analytics';
 import { ConfigProvider } from '../../providers/config/config';
 
 // Pages
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
-import { IonSlides, ModalController, NavController } from '@ionic/angular';
+import { IonSlides, ModalController } from '@ionic/angular';
 import { Network } from 'src/app/providers/persistence/persistence';
 import { Router } from '@angular/router';
 import { AddFundsPage } from '../onboarding/add-funds/add-funds';
