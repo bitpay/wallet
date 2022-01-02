@@ -34,7 +34,7 @@
     "generate:android-bundle": "cd android && ./gradlew task && ./gradlew bundle",
     "sign:android": "bundletool build-apks --mode=universal --bundle=./android/app/build/outputs/bundle/release/app-release.aab --output=./apks/apcpay-release.apks --ks=release.jks --ks-pass=pass:123456 --ks-key-alias=release --key-pass=pass:123456",
     "final:android-release": "npm run build:android-release && rm -rf apks && npm run generate:android-bundle && npm run sign:android",
-    "final:android-apk": "NODE_OPTIONS=--max_old_space_size=4096 npm run env:dev && npm run build && ionic cap sync android && cd android && ./gradlew assembleRelease",
+    "final:android-apk": "npm run env:dev && npm run build && ionic cap sync android && cd android && ./gradlew assembleRelease && cd ..",
     "final:android-debug": "npm run build:android && rm -rf apks && bundletool build-apks --bundle=./android/app/build/outputs/bundle/release/app-release.aab --output=./apks/apcpay-debug.apks"
   },
   "private": true,
