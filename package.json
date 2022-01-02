@@ -21,7 +21,7 @@
     "build:android-release": "npm run env:prod && npm run build-prod && ionic cap sync android && cd android && ./gradlew assembleRelease && cd ..",
     "build:ios-release": "npm run env:prod && npm run build-prod && ionic cap sync ios",
     "prepare:abcpay": "npm run clean && ionic cap add ios && ionic cap add android && npm run fcm:android && npm run fcm:ios && npm run resources",
-    "prepare:android": "npm run clean && npm run fcm:android && npm run resources",
+    "prepare:android": "npm run clean && ionic cap add android && npm run fcm:android && npm run resources",
     "fcm:android": "mkdir -p android/app; echo android/app | xargs -n 1 cp google-services.json",
     "fcm:ios": "mkdir -p ios/App/app; echo ios/App/app | xargs -n 1 cp GoogleService-Info.plist",
     "ngsw-config": "npx ngsw-config www /ngsw.json",
