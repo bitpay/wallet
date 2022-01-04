@@ -7,9 +7,9 @@ ion-content {
 
     &-info {
       height: 100%;
-      display: grid;
-      grid-template-rows: 1fr 1fr;
-      justify-content: center;
+      display: flex;
+      flex-flow: column;
+      justify-content: flex-start;
 
       .img-container {
         align-self: end;
