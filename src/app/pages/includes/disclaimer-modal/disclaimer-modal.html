@@ -8,7 +8,7 @@
           <ion-checkbox slot="start" [(ngModel)]="accepted.first"></ion-checkbox>
           <ion-label class="ion-text-wrap">
             <div class="term-note">
-              AbcPay cannot recovery your fun for you if you lose your recovey key. The loss of it will lead to permanent asset loss.
+              {{appName}} cannot recovery your fun for you if you lose your recovey key. The loss of it will lead to permanent asset loss.
             </div>
           </ion-label>
         </ion-item>
@@ -35,7 +35,7 @@
       </div>
     </ion-list>
   </div>
-  <div class="confirm-term" [ngClass]="{'confirm-term-success': accepted.first && accepted.second && accepted.third}">
+  <div (click)="confirm()" class="confirm-term" [ngClass]="{'confirm-term-success': accepted.first && accepted.second && accepted.third}">
     I understood
   </div>
  

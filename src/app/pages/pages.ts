@@ -14,7 +14,6 @@ import { FinishModalPage } from '../pages/finish/finish';
 import { NewFeaturePage } from '../pages/new-feature/new-feature';
 import { AddFundsPage } from '../pages/onboarding/add-funds/add-funds';
 import { CollectEmailPage } from '../pages/onboarding/collect-email/collect-email';
-import { DisclaimerPage } from '../pages/onboarding/disclaimer/disclaimer';
 import { FeatureEducationPage } from '../pages/onboarding/feature-education/feature-education';
 import { LockMethodPage } from '../pages/onboarding/lock-method/lock-method';
 import { RecoveryKeyPage } from '../pages/onboarding/recovery-key/recovery-key';
@@ -131,7 +130,6 @@ export const PAGES = [
   TransferToModalPage,
   TransferToPage,
   CustomAmountPage,
-  DisclaimerPage,
   AddFundsPage,
   FeatureEducationPage,
   LockMethodPage,

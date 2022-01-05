@@ -1,5 +1,5 @@
 <ion-header class="ion-no-border">
-  <ion-toolbar [hideBackButton]="hideBackButton" transparent></ion-toolbar>
+  <ion-toolbar [hideBackButton]="true" transparent></ion-toolbar>
 </ion-header>
 
 <ion-content forceOverflow="false">
@@ -17,14 +17,11 @@
     </div>
   </div>
 </ion-content>
+
 <ion-footer class="ion-no-border">
   <ion-toolbar>
     <ion-button class="button-standard" (click)="goToBackupKey()">
       Back up my phrase 
     </ion-button>
-    <!-- <ion-button fill="clear" color="primary" class="button-standard" (click)="showInfoSheet()">
-      {{"I’ll do this later" | translate}}
-    </ion-button> -->
   </ion-toolbar>
-
 </ion-footer>

@@ -8,8 +8,6 @@ import { Logger } from 'src/app/providers/logger/logger';
 // Providers
 
 // Pages
-import { BackupKeyPage } from '../../../pages/backup/backup-key/backup-key';
-import { DisclaimerPage } from '../../../pages/onboarding/disclaimer/disclaimer';
 import { DisclaimerModal } from '../../includes/disclaimer-modal/disclaimer-modal';
 
 @Component({
@@ -25,7 +23,6 @@ export class RecoveryKeyPage {
   constructor(
     public navCtrl: NavController,
     private logger: Logger,
-    private platform: Platform,
     private events: EventManagerService,
     private actionSheetProvider: ActionSheetProvider,
     private router: Router,
@@ -40,8 +37,6 @@ export class RecoveryKeyPage {
     }
     if (this.navParamsData) {
       this.isOnboardingFlow = this.navParamsData.isOnboardingFlow;
-      this.hideBackButton =
-        this.isOnboardingFlow || this.navParamsData.hideBackButton;
     }
 
   }
@@ -57,22 +52,18 @@ export class RecoveryKeyPage {
   public async goToBackupKey(): Promise<void> {
     const modal = await this.modalCtrl.create({
       component: DisclaimerModal,
-      componentProps: {
-        description: 'abc'
-      },
-
       backdropDismiss: false,
       cssClass: 'fixscreen-modal'
-
     });
     await modal.present();
     modal.onDidDismiss().then(({ data }) => {
-      if (data.selectedCoin) {
+      if (data.isConfirm) {
+        this.router.navigate(['/backup-key'], {
+          state: { keyId: this.navParamsData.keyId, isOnboardingFlow: this.isOnboardingFlow },
+        });
       }
     });
-    // this.router.navigate(['/backup-key'], {
-    //   state: { keyId: this.navParamsData.keyId, isOnboardingFlow: this.isOnboardingFlow },
-    // });
+    
   }
 
   public showInfoSheet() {
@@ -82,15 +73,9 @@ export class RecoveryKeyPage {
     infoSheet.present();
     infoSheet.onDidDismiss(option => {
       if (option) {
-        if (this.isOnboardingFlow) {
-          this.router.navigate(['/disclaimer'], {
-            state: { keyId: this.navParamsData.keyId },
-          });
-        } else {
-          this.router.navigate([''], {replaceUrl: true}).then(() => {
-            this.events.publish('Local/FetchWallets');
-          })
-        }
+        this.router.navigate([''], {replaceUrl: true}).then(() => {
+          this.events.publish('Local/FetchWallets');
+        })
       }
     });
   }

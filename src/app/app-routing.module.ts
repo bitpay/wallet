@@ -3,7 +3,6 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { AddPage } from './pages/add/add';
 import { CreateWalletPage } from './pages/add/create-wallet/create-wallet';
 import { ImportWalletPage } from './pages/add/import-wallet/import-wallet';
-import { DisclaimerPage } from './pages/onboarding/disclaimer/disclaimer';
 import { JoinWalletPage } from './pages/add/join-wallet/join-wallet';
 import { SelectCurrencyPage } from './pages/add/select-currency/select-currency';
 import { SendFeedbackPage } from './pages/feedback/send-feedback/send-feedback';
@@ -72,10 +71,6 @@ const routes: Routes = [
   {
     path: 'about',
     component: AboutPage,
-  },
-  {
-    path: 'disclaimer',
-    component: DisclaimerPage
   },
   {
     path: 'alt-curency',

@@ -180,21 +180,9 @@ export class BackupGamePage {
     );
     infoSheet.present();
     infoSheet.onDidDismiss(() => {
-      if (this.navParamsData.isOnboardingFlow) {
-        this.persistenceProvider
-          .getCopayDisclaimerFlag()
-          .then(disclaimerAgreed => {
-            const path = disclaimerAgreed ? '/add-funds' : '/disclaimer'
-            this.router.navigate([path], {
-              state: { keyId: this.keyId, },
-              replaceUrl: true
-            });
-          });
-      } else {
-        this.router.navigate(['']).then(() => {
-          this.events.publish('Local/FetchWallets');
-        });
-      }
+      this.router.navigate(['']).then(() => {
+        this.events.publish('Local/FetchWallets');
+      });
     });
   }
 
