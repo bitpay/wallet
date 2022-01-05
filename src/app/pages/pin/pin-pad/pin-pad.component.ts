@@ -1,6 +1,7 @@
 import { Component, Input, Output } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
+import { ThemeProvider } from 'src/app/providers';
 
 export interface PinButton {
   value: string;
@@ -19,7 +20,7 @@ export interface PinButton {
       >
         <div class="buttons-container" [ngSwitch]="button.value">
           <span *ngSwitchCase="'delete'">
-            <img *ngIf="type === 'pin'" src="assets/img/tail-left.svg" />
+            <img *ngIf="type === 'pin'" [src]="selectedTheme == 'dark' ? 'assets/img/delete-btn-dark.svg' : 'assets/img/delete-btn-light.svg'" />
             <img
               class="amount-delete"
               *ngIf="type === 'amount'"
@@ -31,7 +32,7 @@ export interface PinButton {
           </span>
           <span *ngSwitchDefault>{{ button.value }}</span>
         </div>
-        <div class="letters" *ngIf="type === 'pin'">{{ button.letters }}</div>
+        <div class="letters" *ngIf="type === 'pin' && button.letters">{{ button.letters }}</div>
       </ion-col>
     </ion-row>
   `,
@@ -48,6 +49,7 @@ export class PinPad {
 
   @Output()
   keystroke: Observable<string> = this.keystrokeSubject.asObservable();
+  selectedTheme;
   public buttonRows: PinButton[][] = [
     [
       {
@@ -106,6 +108,12 @@ export class PinPad {
       }
     ]
   ];
+
+  constructor(
+    private themeProvider: ThemeProvider
+  ){
+    this.selectedTheme = this.themeProvider.currentAppTheme;
+  }
 
   public onKeystroke(value: string): void {
     if (this.isValueDisabled(value)) {

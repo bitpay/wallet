@@ -3,36 +3,51 @@
 </ion-header>
 
 <ion-content forceOverflow="false">
-  <div class="lock-method" *ngIf="biometricMethod == 'faceId' && !pinMethodSelected">
+  <div class="lock-method" >
     <div class="lock-method-info">
       <div class="img-container">
-        <img src="assets/img/onboarding/faceId.svg" />
+        <img src="assets/img/onboarding/lock-method.svg" />
       </div>
       <div class="info">
-        <h3 class="title" translate>Use facial recognition to unlock?</h3>
-        <div class="text" translate>Unlock AbcPay faster by setting up facial recognition.</div>
+        <h3 class="title" translate>First, set unlock method</h3>
+        <div class="text" translate>Adding an extra layer of security to keep your balance and transactions private.</div>
       </div>
-    </div>
-  </div>
-  <div class="lock-method" *ngIf="biometricMethod == 'fingerprint' && !pinMethodSelected">
-    <div class="lock-method-info">
-      <div class="img-container">
-        <img src="assets/img/onboarding/touchId.svg" />
-      </div>
-      <div class="info">
-        <h3 class="title" translate>Use fingerprint authentication to unlock?</h3>
-        <div class="text" translate>Unlock AbcPay faster by setting up fingerprint authentication.</div>
+      <div class="select-method">
+        <ion-item lines="none" class="list-button">
+          <ng-container *ngIf="(biometricMethod == 'faceId' || biometricMethod == 'fingerprint') && !pinMethodSelected ;else unlockPinCode">
+            <ion-label class="item-title">
+              Unlock with biometric
+            </ion-label>
+            <ion-toggle [checked]="toogleChecked" (ionChange)="verifyBiometricLockMethod($event)"></ion-toggle>
+          </ng-container>
+          <ng-template #unlockPinCode>
+            <ion-label class="item-title">
+              Unlock with passcode
+            </ion-label>
+            <ion-toggle [checked]="toogleChecked" (ionChange)="verifyPasscode($event)"></ion-toggle>
+          </ng-template>
+        </ion-item>
       </div>
     </div>
   </div>
 </ion-content>
-<ion-footer class="ion-no-border" *ngIf="biometricMethod && !pinMethodSelected">
+<ion-footer class="ion-no-border">
   <ion-toolbar>
-    <ion-button class="button-standard ion-no-margin-bottom" (click)="verifyBiometricLockMethod()">
+    <div class="term-container">
+      <ion-item lines="none" class="custom-checkbox checkbox-no-animation">
+        <ion-checkbox slot="start" [(ngModel)]="acceptedTerm"></ion-checkbox>
+        <ion-label class="ion-text-wrap">
+          <div class="term-title">
+            {{'Your funds are in your custody' | translate}}
+          </div>
+          <div class="term-note">
+            {{'I understand that my funds are held and controlled securely on this device, not by a company.' | translate}}
+          </div>
+        </ion-label>
+      </ion-item>
+    </div>
+    <ion-button [disabled]="!acceptedTerm || !toogleChecked" class="button-standard" (click)="nextPage()">
       {{'Continue' | translate}}
-    </ion-button>
-    <ion-button fill='clear' color="primary" class="button-standard" (click)="showInfoSheet('pincode-info')">
-      {{'No thanks' | translate}}
     </ion-button>
   </ion-toolbar>
 </ion-footer>
