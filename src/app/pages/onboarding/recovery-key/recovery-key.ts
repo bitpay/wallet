@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { NavController, NavParams, Platform } from '@ionic/angular';
+import { ModalController, NavController, NavParams, Platform } from '@ionic/angular';
 import { ActionSheetProvider } from 'src/app/providers/action-sheet/action-sheet';
 import { EventManagerService } from 'src/app/providers/event-manager.service';
 import { Logger } from 'src/app/providers/logger/logger';
@@ -10,6 +10,7 @@ import { Logger } from 'src/app/providers/logger/logger';
 // Pages
 import { BackupKeyPage } from '../../../pages/backup/backup-key/backup-key';
 import { DisclaimerPage } from '../../../pages/onboarding/disclaimer/disclaimer';
+import { DisclaimerModal } from '../../includes/disclaimer-modal/disclaimer-modal';
 
 @Component({
   selector: 'page-recovery-key',
@@ -27,7 +28,9 @@ export class RecoveryKeyPage {
     private platform: Platform,
     private events: EventManagerService,
     private actionSheetProvider: ActionSheetProvider,
-    private router: Router
+    private router: Router,
+    private modalCtrl: ModalController
+
   ) {
 
     if (this.router.getCurrentNavigation()) {
@@ -51,10 +54,25 @@ export class RecoveryKeyPage {
     this.unregisterBackButtonAction && this.unregisterBackButtonAction();
   }
 
-  public goToBackupKey(): void {
-    this.router.navigate(['/backup-key'], {
-      state: { keyId: this.navParamsData.keyId, isOnboardingFlow: this.isOnboardingFlow },
+  public async goToBackupKey(): Promise<void> {
+    const modal = await this.modalCtrl.create({
+      component: DisclaimerModal,
+      componentProps: {
+        description: 'abc'
+      },
+
+      backdropDismiss: false,
+      cssClass: 'fixscreen-modal'
+
     });
+    await modal.present();
+    modal.onDidDismiss().then(({ data }) => {
+      if (data.selectedCoin) {
+      }
+    });
+    // this.router.navigate(['/backup-key'], {
+    //   state: { keyId: this.navParamsData.keyId, isOnboardingFlow: this.isOnboardingFlow },
+    // });
   }
 
   public showInfoSheet() {
