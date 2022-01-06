@@ -362,7 +362,7 @@ export class PersistenceProvider {
   }
 
   // for compatibility
-  getCopayDisclaimerFlag() {
+  getAbcPayDisclaimerFlag() {
     return this.storage.get(Keys.AGREE_DISCLAIMER);
   }
 

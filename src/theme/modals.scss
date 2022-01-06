@@ -15,6 +15,26 @@
       visibility: visible !important;
     }
   }
+
+  .fixscreen-modal{
+    .modal-wrapper {
+      @include modal-wrapper;
+      width: 312px !important;
+      height: 450px !important;
+      --border-radius: 28px;
+      disclaimer-modal{
+        justify-content: flex-start;
+        background-color: rgba(0, 101, 141, 0.11);
+
+      }
+    }
+  
+    ion-backdrop {
+      visibility: visible !important;
+      background: #FAFAFB;
+      opacity: 0.75;
+    }
+  }
   
   .fullscreen-modal-no-backdrop {
     .modal-wrapper {
