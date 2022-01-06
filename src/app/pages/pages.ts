@@ -14,7 +14,6 @@ import { FinishModalPage } from '../pages/finish/finish';
 import { NewFeaturePage } from '../pages/new-feature/new-feature';
 import { AddFundsPage } from '../pages/onboarding/add-funds/add-funds';
 import { CollectEmailPage } from '../pages/onboarding/collect-email/collect-email';
-import { DisclaimerPage } from '../pages/onboarding/disclaimer/disclaimer';
 import { FeatureEducationPage } from '../pages/onboarding/feature-education/feature-education';
 import { LockMethodPage } from '../pages/onboarding/lock-method/lock-method';
 import { RecoveryKeyPage } from '../pages/onboarding/recovery-key/recovery-key';
@@ -101,6 +100,7 @@ import { TransferToPage } from '../pages/send/transfer-to/transfer-to';
 import { CustomAmountPage } from '../pages/receive/custom-amount/custom-amount';
 import { WideHeaderPage } from './templates/wide-header-page/wide-header-page';
 import { BackupWordComponent } from './backup/backup-component/backup-word/backup-word.component';
+import { DisclaimerModal } from './includes/disclaimer-modal/disclaimer-modal';
 
 export const PAGES = [
   AddPage,
@@ -130,7 +130,6 @@ export const PAGES = [
   TransferToModalPage,
   TransferToPage,
   CustomAmountPage,
-  DisclaimerPage,
   AddFundsPage,
   FeatureEducationPage,
   LockMethodPage,
@@ -185,6 +184,7 @@ export const PAGES = [
   ChooseFeeLevelModal,
   WideHeaderPage,
   CoinSelectorPage,
+  DisclaimerModal,
   SlideToAcceptPage,
   LocalThemePage,
   NavigationPage,

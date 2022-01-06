@@ -1331,15 +1331,13 @@ export class ProfileProvider {
     // OLD flag
     let disclaimerFlag;
     try {
-      disclaimerFlag = await this.persistenceProvider.getCopayDisclaimerFlag();
+      disclaimerFlag = await this.persistenceProvider.getAbcPayDisclaimerFlag();
     } catch (error) { }
     if (disclaimerFlag) {
       this.profile.disclaimerAccepted = true;
       return Promise.resolve();
     } else {
-      const onboardingState = this.profile.credentials.length
-        ? 'NONAGREEDDISCLAIMER'
-        : 'UNFINISHEDONBOARDING';
+      const onboardingState = 'UNFINISHEDONBOARDING';
       return Promise.resolve(onboardingState);
     }
   }
