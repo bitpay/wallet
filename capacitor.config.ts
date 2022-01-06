@@ -1,7 +1,7 @@
 import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'com.abcpay.wallet.dev',
+  appId: 'cash.abcpay.wallet.dev',
   appName: 'abcpay-new',
   webDir: 'www',
   bundledWebRuntime: false,
