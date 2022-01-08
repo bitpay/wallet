@@ -86,6 +86,9 @@
     --toggle-checked-color-dark-theme: #7ED0FF;
     --toggle-background-active-dark-theme: #3c718f;
 
+    // 1.7 - PinPad
+    --bg-pin-pad: #0e3244;
+
     // 1.7 - Overriding Ionic Variables
     --background-color: var(--bg-color-dark-theme);
 
@@ -132,6 +135,10 @@
             --background-activated: transparent;
             --color: var(--color-primary-abcpay-dark);
         }
+    }
+
+    ion-back-button {
+        --color: var(--bg-surface-color-abcpay-dark);
     }
 
     // 3 - General
@@ -866,6 +873,22 @@
 
         .content {
             background-color: var(--bg-color-dark-theme);
+        }
+    }
+
+    pin-pad {
+        background: var(--bg-pin-pad);
+        ion-col {
+            background: var(--color-secondary-container-abcpay-dark);
+            .letters {
+                color: #9b9b9b;
+            }
+        }
+    }
+
+    pin-dots {
+        .filled {
+            background-color: var(--bg-hight-color-abcpay-dark);
         }
     }
 
@@ -2031,6 +2054,33 @@
 
         .custom-footer {
             --ion-toolbar-background: none !important;
+        }
+
+        ion-item {
+            color: var(--text-color-dark-theme) !important;
+            --background: var(--bg-pin-pad) !important;
+        }
+
+        .term-container {
+            background-color: var(--bg-pin-pad) !important;
+            ion-item {
+                ion-checkbox {
+                    --background-checked: var(--color-primary-abcpay-dark);
+                }
+            }
+            .term-title {
+                color: var(--text-color-dark-theme) !important;
+            }
+            .term-note {
+                color: var(--text-color-dark-theme-2) !important;
+            }
+        }
+
+        .button-standard {
+            &[disabled] {
+                --background: var(--bg-pin-pad);
+                --color: rgba(224, 228, 230, 0.38);
+            }
         }
     }
 

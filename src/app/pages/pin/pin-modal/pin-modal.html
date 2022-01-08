@@ -1,9 +1,10 @@
-<ion-header>
+<ion-header class="ion-no-border">
   <ion-toolbar transparent>
-    <ion-buttons slot='end'>
-      <ion-button (click)="close(true)" color="primary" *ngIf="(action === 'pinSetUp' || action === 'lockSetUp')">
+    <ion-buttons slot='start'>
+      <!-- <ion-button (click)="close(true)" color="primary" *ngIf="(action === 'pinSetUp' || action === 'lockSetUp')">
         {{'Cancel' | translate}}
-      </ion-button>
+      </ion-button> -->
+      <ion-back-button *ngIf="(action === 'pinSetUp' || action === 'lockSetUp')" (click)="close(true)" icon="chevron-back-outline" defaultHref=""></ion-back-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -12,9 +13,10 @@
   <div class="pin-header">
     <div class="title">
       <div *ngIf="!disableButtons">
-        <span class="message" *ngIf="!confirmingPin && !incorrect" translate>Please enter your PIN</span>
-        <span class="message" *ngIf="confirmingPin && !incorrect" translate>Confirm your PIN</span>
-        <span class="message" *ngIf="incorrect" translate>Incorrect PIN, try again.</span>
+        <span class="message" *ngIf="!confirmingPin && !incorrect && action === 'pinSetUp'" translate>Create your passcode</span>
+        <span class="message" *ngIf="!confirmingPin && !incorrect && action === 'lockSetUp'" translate>Please enter your passcode</span>
+        <span class="message" *ngIf="confirmingPin && !incorrect" translate>Re-type passcode</span>
+        <span class="message" *ngIf="incorrect" translate>Incorrect passcode, try again.</span>
       </div>
       <div *ngIf="disableButtons">
         <span class="message" *ngIf="expires" translate>Try again in {{expires}}</span>

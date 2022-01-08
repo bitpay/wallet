@@ -11,11 +11,12 @@ pin-dots {
     border-radius: 50%;
     transition: background-color var(--transition-duration) ease,
       border var(--transition-duration) ease;
-    background-color: #d8d8d8;
+    background-color: transparent;
+    border: 1px solid;
     height: var(--circle-diameter);
     width: var(--circle-diameter);
   }
   .filled {
-    background-color: var(--color-primary);
+    background-color: var(--color-light-on-background-theme);
   }
 }

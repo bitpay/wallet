@@ -10,13 +10,11 @@ import { Logger } from '../../../providers/logger/logger';
 import { TouchIdProvider } from '../../../providers/touchid/touchid';
 
 // Pages
-import { ImportWalletPage } from '../../../pages/add/import-wallet/import-wallet';
-import { SelectCurrencyPage } from '../../../pages/add/select-currency/select-currency';
 import { PinModalPage } from '../../../pages/pin/pin-modal/pin-modal';
-import { ModalController, NavController, NavParams } from '@ionic/angular';
+import { ModalController } from '@ionic/angular';
 import { Router } from '@angular/router';
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { Location } from '@angular/common';
+import { ThemeProvider } from 'src/app/providers';
 @Component({
   selector: 'page-lock-method',
   templateUrl: 'lock-method.html',
@@ -27,6 +25,9 @@ export class LockMethodPage {
   public biometricMethod: string;
   public pinMethodSelected: boolean = false;
   private navParamsData;
+  public acceptedTerm: boolean = false;
+  public toogleChecked: boolean = false;
+  public currentTheme: string;
 
   private pageMap = {
     SelectCurrencyPage: '/select-currency',
@@ -34,8 +35,6 @@ export class LockMethodPage {
   };
 
   constructor(
-    private navCtrl: NavController,
-    // private navParams: NavParams,
     private logger: Logger,
     private modalCtrl: ModalController,
     private touchIdProvider: TouchIdProvider,
@@ -43,12 +42,14 @@ export class LockMethodPage {
     private configProvider: ConfigProvider,
     private location: Location,
     private router: Router,
+    private themeProvider: ThemeProvider
   ) {
     if (this.router.getCurrentNavigation()) {
        this.navParamsData = this.router.getCurrentNavigation().extras.state ? this.router.getCurrentNavigation().extras.state : {};
     } else {
       this.navParamsData = history ? history.state : {};
     }
+    this.currentTheme = this.themeProvider.currentAppTheme;
   }
 
   ngOnInit() {
@@ -59,6 +60,17 @@ export class LockMethodPage {
     this.checkLockOptions();
   }
 
+  public verifyPasscode(event) {
+    if (event.detail.checked) {
+      this.toogleChecked = true;
+      this.pinMethodSelected = true;
+      this.openPinModal();
+    } else {
+      this.pinMethodSelected = false;
+      this.toogleChecked = false;
+    }
+  }
+
   private checkLockOptions() {
     this.touchIdProvider.isAvailable().then((isAvailable: boolean) => {
       if (isAvailable) {
@@ -66,28 +78,32 @@ export class LockMethodPage {
           this.touchIdProvider.getIosBiometricMethod() === 'face'
             ? 'faceId'
             : 'fingerprint';
-      } else {
-        this.pinMethodSelected = true;
-        this.openPinModal();
-      }
+      } 
     });
   }
 
-  public verifyBiometricLockMethod() {
-    if (
-      this.biometricMethod === 'fingerprint' ||
-      this.biometricMethod === 'faceId'
-    ) {
-      this.touchIdProvider.check().then(() => {
-        let lock = { method: 'fingerprint', value: null, bannedUntil: null };
-        this.configProvider.set({ lock });
-        this.router.navigate(
-          this.pageMap[this.navParamsData.nextView.name], {
-          state: { ...this.navParamsData.nextView.name }
-        }
-        );
-      });
+  public verifyBiometricLockMethod(event) {
+    if (event.detail.checked) {
+      this.toogleChecked = true;
+      if (
+        this.biometricMethod === 'fingerprint' ||
+        this.biometricMethod === 'faceId'
+      ) {
+        this.touchIdProvider.check().then(() => {
+          let lock = { method: 'fingerprint', value: null, bannedUntil: null };
+          this.configProvider.set({ lock });
+        });
+      }
+    } else {
+      this.toogleChecked = false;
     }
+  }
+
+  public nextPage() {
+    this.router.navigate(
+      [this.pageMap[this.navParamsData.nextView.name]], {
+      state: this.navParamsData.nextView.params
+    });
   }
 
   async openPinModal() {
@@ -100,14 +116,7 @@ export class LockMethodPage {
     modal.onDidDismiss().then((cancelClicked) => {
       if (cancelClicked.data) {
         this.pinMethodSelected = false;
-        if (!this.biometricMethod) this.location.back();
-      }
-      else {
-        this.router.navigate([this.pageMap[this.navParamsData.nextView.name]], {
-          state: {
-            ...this.navParamsData.nextView.params
-          }
-        });
+        this.toogleChecked = false;
       }
     });
 

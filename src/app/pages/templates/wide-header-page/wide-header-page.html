@@ -1,9 +1,9 @@
 <ion-header [translucent]="true" class="wide-header ion-no-border" [ngClass]="{'cordova': platformProvider.isCordova}">
   <ion-toolbar>
     <ion-buttons *ngIf="!hideBackButton" slot="start">
-      <ion-back-button *ngIf="isCustomBack" onclick="event.stopImmediatePropagation(); window.myCustomMethod()" defaultHref="/" icon="arrow-back">
+      <ion-back-button *ngIf="isCustomBack" onclick="event.stopImmediatePropagation(); window.myCustomMethod()" defaultHref="/" icon="chevron-back-outline">
       </ion-back-button>
-      <ion-back-button *ngIf="!isCustomBack" icon="arrow-back" defaultHref="/">
+      <ion-back-button *ngIf="!isCustomBack" icon="chevron-back-outline" defaultHref="/">
       </ion-back-button>
     </ion-buttons>
     <ion-title *ngIf="!hideTopTitle">
