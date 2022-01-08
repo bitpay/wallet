@@ -1,0 +1,73 @@
+
+disclaimer-modal {
+  .title{
+    font-size: 24px;
+    padding: 24px;
+    padding-bottom: 16px;
+    color: rgba(0, 30, 46, 1);
+  }
+  .checkbox-list {
+    padding: 30px 15px 15px 15px;
+    background: transparent;
+    &-terms {
+      padding: 0 15px;
+    }
+    .term-container {
+      border-radius: 11px;
+      background: transparent;
+      padding-right: 25px;
+      ion-item.custom-checkbox{
+        background: none;
+        justify-self: center;
+        align-self: start;
+        --background: transparent;
+        ion-checkbox {
+          align-self: flex-start;
+       
+        }
+      }
+      ion-checkbox{
+        --border-radius: 50%;
+        --size : 24px;
+        --background-checked: rgba(0, 101, 141, 1);
+        --border-color-checked: rgba(0, 101, 141, 1);
+        --background: transparent;
+        --border-color: rgba(0, 30, 46, 0.6);
+        --border-style: solid;
+        --border-width: 2px;
+        margin-top: 6px;
+      }
+      .term {
+        justify-self: start;
+        text-align: start;
+        &-title {
+          align-self: center;
+          color: #000000;
+          font-size: 18px;
+          font-weight: 500;
+          letter-spacing: 0;
+          line-height: 25px;
+        }
+        &-note {
+          font-size: 14px;
+          font-weight: normal;
+          line-height: 25px;
+          color: rgba(0, 30, 46, 0.6);
+          font-weight: normal;
+          margin-bottom: 16px;
+        }
+      }
+    }
+  }
+  .confirm-term{
+    font-weight: 600;
+    font-size: 16px;
+    color: rgba(28, 55, 69, 0.38);
+    text-align: right;
+    padding-right: 36px;
+    cursor: pointer;
+  }
+  .confirm-term-success{
+    color: rgba(0, 101, 141, 1);
+  }
+}

@@ -2076,6 +2076,38 @@
             box-shadow: 0 -15px 22px -10px var(--bg-color-dark-theme-3) !important;
         }
     }
+    .fixscreen-modal{
+        ion-backdrop{
+            background: #000000;
+            opacity: 0.75;
+        }
+    }
+    disclaimer-modal{
+        .title{
+            color: rgba(237, 239, 240, 1);
+        }
+        .confirm-term{
+            color: rgba(224, 228, 230, 0.38) !important;
+        }
+        .confirm-term-success{
+            color: #7ED0FF !important;
+        }
+        .checkbox-list{
+            .term-container {
+                .term {
+                    &-note {
+                        color: rgba(237, 239, 240, 0.6) !important;
+                    }
+                }
+            }
+            ion-checkbox{
+                --background-checked: rgba(126, 208, 255, 1) !important;
+                --border-color-checked: rgba(126, 208, 255, 1) !important;
+                --border-color: rgba(237, 239, 240, 0.6) !important;
+            }
+        }
+        
+    }
 
     page-add-funds {
         background-color: var(--bg-color-dark-theme);

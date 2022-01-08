@@ -28,7 +28,3 @@
 @import '../node_modules/swiper/swiper-bundle.css';
 
 @import "app/app.component.scss";
-page-disclaimer {
-    padding-bottom: calc(env(safe-area-inset-bottom));
-    background-color: #ffffff;
-}

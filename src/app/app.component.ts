@@ -255,15 +255,9 @@ export class CopayApp {
           .loadAndBindProfile()
           .then(onboardingState => {
             switch (onboardingState) {
-              case 'NONAGREEDDISCLAIMER':
-                this.logger.warn('Non agreed disclaimer');
-                this.router.navigate(['/disclaimer'], {
-                  replaceUrl: true
-                });
-                break;
               case 'UNFINISHEDONBOARDING':
                 this.logger.warn('Unfinished onboarding');
-                const path = this.appProvider.info.nameCase === 'Copay' ? '/disclaimer' : '/feature-education';
+                const path = '/feature-education';
                 this.navasd.navigateRoot([path], {
                   replaceUrl: true
                 });
@@ -433,7 +427,7 @@ export class CopayApp {
     } else {
       this.logger.info('No profile exists.');
       this.profileProvider.createProfile();
-      const path = this.appProvider.info.nameCase === 'Copay' ? '/disclaimer' : '/feature-education';
+      const path = '/feature-education';
       this.router.navigate([path], {
         replaceUrl: true
       });
