@@ -6,23 +6,23 @@
   <div class="lock-method" >
     <div class="lock-method-info">
       <div class="img-container">
-        <img src="assets/img/onboarding/lock-method.svg" />
+        <img src="assets/img/onboarding/biometric-{{currentTheme}}.svg" />
       </div>
       <div class="info">
-        <h3 class="title" translate>First, set unlock method</h3>
-        <div class="text" translate>Adding an extra layer of security to keep your balance and transactions private.</div>
+        <h3 class="title" translate>{{'First, set unlock method' | translate}}</h3>
+        <div class="text" translate>{{'Adding an extra layer of security to keep your balance and transactions private.' | translate}}</div>
       </div>
       <div class="select-method">
         <ion-item lines="none" class="list-button">
           <ng-container *ngIf="(biometricMethod == 'faceId' || biometricMethod == 'fingerprint') && !pinMethodSelected ;else unlockPinCode">
             <ion-label class="item-title">
-              Unlock with biometric
+              {{'Unlock with biometric' | translate}}
             </ion-label>
             <ion-toggle [checked]="toogleChecked" (ionChange)="verifyBiometricLockMethod($event)"></ion-toggle>
           </ng-container>
           <ng-template #unlockPinCode>
             <ion-label class="item-title">
-              Unlock with passcode
+              {{'Unlock with passcode' | translate}}
             </ion-label>
             <ion-toggle [checked]="toogleChecked" (ionChange)="verifyPasscode($event)"></ion-toggle>
           </ng-template>

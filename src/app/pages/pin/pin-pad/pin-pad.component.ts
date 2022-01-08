@@ -6,8 +6,8 @@ import { ThemeProvider } from 'src/app/providers';
 export interface PinButton {
   value: string;
   letters: string;
+  class?: string;
 }
-
 @Component({
   selector: 'pin-pad',
   template: `
@@ -15,7 +15,9 @@ export interface PinButton {
       <ion-col
         *ngFor="let button of row"
         (click)="onKeystroke(button.value)"
-        [ngClass]="{ disabled: isValueDisabled(button.value) }"
+        [ngClass]="{ disabled: isValueDisabled(button.value), 
+                    'no-background': button.class, 
+                    'prevent-dot-pin': type === 'pin' && button.value === '.'}"
         tappable
       >
         <div class="buttons-container" [ngSwitch]="button.value">
@@ -96,7 +98,8 @@ export class PinPad {
     [
       {
         value: '.',
-        letters: ''
+        letters: '',
+        class: 'no-background'
       },
       {
         value: '0',
@@ -104,7 +107,8 @@ export class PinPad {
       },
       {
         value: 'delete',
-        letters: ''
+        letters: '',
+        class: 'no-background'
       }
     ]
   ];

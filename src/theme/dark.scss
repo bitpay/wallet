@@ -137,6 +137,10 @@
         }
     }
 
+    ion-back-button {
+        --color: var(--bg-surface-color-abcpay-dark);
+    }
+
     // 3 - General
     ion-content {
         --background: var(--bg-color-dark-theme);
@@ -879,6 +883,12 @@
             .letters {
                 color: #9b9b9b;
             }
+        }
+    }
+
+    pin-dots {
+        .filled {
+            background-color: var(--bg-hight-color-abcpay-dark);
         }
     }
 
@@ -2053,6 +2063,11 @@
 
         .term-container {
             background-color: var(--bg-pin-pad) !important;
+            ion-item {
+                ion-checkbox {
+                    --background-checked: var(--color-primary-abcpay-dark);
+                }
+            }
             .term-title {
                 color: var(--text-color-dark-theme) !important;
             }

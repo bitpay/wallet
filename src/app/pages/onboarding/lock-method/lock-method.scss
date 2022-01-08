@@ -10,9 +10,9 @@
       justify-self: center;
       img {
         margin: auto;
-        max-height: 23rem;
+        max-height: 7rem;
         @media (max-width: 350px) {
-          max-height: 10rem;
+          max-height: 5rem;
         }
       }
     }
@@ -56,6 +56,8 @@ ion-toolbar {
     ion-item {
       --background: var(--color-inner-item-light-theme);
       --background-activated: transparent;
+      display: flex;
+      align-items: flex-start;
     }
     padding: 20px 0;
     margin: 1rem;

@@ -14,6 +14,7 @@ import { PinModalPage } from '../../../pages/pin/pin-modal/pin-modal';
 import { ModalController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
+import { ThemeProvider } from 'src/app/providers';
 @Component({
   selector: 'page-lock-method',
   templateUrl: 'lock-method.html',
@@ -26,6 +27,7 @@ export class LockMethodPage {
   private navParamsData;
   public acceptedTerm: boolean = false;
   public toogleChecked: boolean = false;
+  public currentTheme: string;
 
   private pageMap = {
     SelectCurrencyPage: '/select-currency',
@@ -40,12 +42,14 @@ export class LockMethodPage {
     private configProvider: ConfigProvider,
     private location: Location,
     private router: Router,
+    private themeProvider: ThemeProvider
   ) {
     if (this.router.getCurrentNavigation()) {
        this.navParamsData = this.router.getCurrentNavigation().extras.state ? this.router.getCurrentNavigation().extras.state : {};
     } else {
       this.navParamsData = history ? history.state : {};
     }
+    this.currentTheme = this.themeProvider.currentAppTheme;
   }
 
   ngOnInit() {
@@ -97,7 +101,7 @@ export class LockMethodPage {
 
   public nextPage() {
     this.router.navigate(
-      this.pageMap[this.navParamsData.nextView.name], {
+      [this.pageMap[this.navParamsData.nextView.name]], {
       state: this.navParamsData.nextView.params
     });
   }

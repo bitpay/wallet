@@ -47,9 +47,14 @@
         }
     }
 
+    ion-back-button {
+        --color: rgba(0, 30, 46, 0.6);
+    }
+
     ion-toggle {
         --background: var(--toggle-background-light-theme);
         --background-checked: var(--toggle-background-active-light-theme);
+        --handle-background-checked: var(--color-primary);
     }
 
     // 2.1 Lists
@@ -109,6 +114,7 @@
     // 2.2 Slides
     .swiper-pagination-bullet {
         background-color: var(--swiper-pagination-bullet);
+        opacity: 1 !important;
     }
 
     .swiper-pagination-bullet-active {

@@ -57,4 +57,12 @@
       }
     }
   }
+
+  .no-background  {
+    background: none !important;
+  }
+
+  .prevent-dot-pin {
+    pointer-events: none;
+  }
 }

@@ -116,3 +116,7 @@ ion-content {
     }
   }
 }
+
+.no-background {
+  --background: transparent !important;
+}
