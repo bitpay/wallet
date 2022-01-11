@@ -1,0 +1,89 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title class="bp-title">{{'Add Custom Token' | translate}}</ion-title>
+    <ion-buttons left>
+      <button class="close-container disable-hover" (click)="close()" ion-button>
+        <ion-icon ios="md-close" md="md-close"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+<form [formGroup]="customTokenForm">
+  <div class="input-title" translate>Enter the contract address</div>
+  <ion-list class="bp-list">
+    <ion-item>
+      <ion-icon *ngIf="isValid" name="ios-checkmark-circle" class="check success" item-right></ion-icon>
+      <ion-icon *ngIf="isValid === false" name="ios-close-circle" class="check fail" item-right></ion-icon>
+      <ion-label floating>{{'Token address' | translate}}</ion-label>
+      <ion-input  (ionChange)="setTokenInfo()" type="text" formControlName="tokenAddress"></ion-input>
+    </ion-item>
+
+    <div class="line-divider confirm__divider" *ngIf="customTokenForm.valid"></div>
+    
+    <ion-item *ngIf="customTokenForm.value.tokenName">
+      <ion-label>
+        <div class="summary-item">
+          <span>{{ 'Token name' | translate}}</span>
+        </div>
+      </ion-label>
+      <ion-note item-end>
+        <div class="summary-item-detail">
+          <span>{{customTokenForm.value.tokenName}}</span>
+        </div>
+      </ion-note>
+    </ion-item>
+    
+    <div class="line-divider confirm__divider" *ngIf="customTokenForm.valid"></div>
+    
+    <ion-item *ngIf="customTokenForm.value.tokenSymbol">
+      <ion-label>
+        <div class="summary-item">
+          <span>{{ 'Token symbol' | translate}}</span>
+        </div>
+      </ion-label>
+      <ion-note item-end>
+        <div class="summary-item-detail">
+          <span>{{customTokenForm.value.tokenSymbol}}</span>
+        </div>
+      </ion-note>
+    </ion-item>
+    
+    <div class="line-divider confirm__divider" *ngIf="customTokenForm.valid"></div>
+    
+    <ion-item *ngIf="customTokenForm.value.tokenDecimals">
+      <ion-label>
+        <div class="summary-item">
+          <span>{{ 'Token precision' | translate}}</span>
+        </div>
+      </ion-label>
+      <ion-note item-end>
+        <div class="summary-item-detail">
+          <span>{{customTokenForm.value.tokenDecimals}}</span>
+        </div>
+      </ion-note>
+    </ion-item>
+    
+    <div class="line-divider confirm__divider" *ngIf="customTokenForm.valid"></div>
+    
+  <label-tip type="info" header="no-header" class="no-arrowhead">
+    <div label-tip-body>
+      <span translate>
+        Keep in mind that once the tokens funds are received, to move them you will need to have enough funds in your Ethereum linked wallet to pay the ETH miner fees.
+      </span>
+      </div>
+  </label-tip>
+  </ion-list>
+  </form>
+  
+  <div class="confirm__margin-top">
+    <button ion-button class="button-standard" color="primary" margin-top (click)="close('add')" [disabled]="!customTokenForm.valid">
+      {{'Add Token' | translate }}
+    </button>
+    
+    <button ion-button class="button-standard" color="secondary" outline margin-top (click)="close()">
+      {{'Cancel' | translate }}
+    </button>
+  </div>
+</ion-content>

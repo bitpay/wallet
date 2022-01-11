@@ -3,6 +3,7 @@ import { AddWalletPage } from '../pages/add-wallet/add-wallet';
 import { AddPage } from '../pages/add/add';
 import { CopayersPage } from '../pages/add/copayers/copayers';
 import { CreateWalletPage } from '../pages/add/create-wallet/create-wallet';
+import { AddCustomTokenModalPage } from '../pages/add/custom-token/add-custom-token-modal/add-custom-token-modal';
 import { ConfirmAddTokenModalPage } from '../pages/add/custom-token/confirm-add-token-modal/confirm-add-token-modal';
 import { CustomTokenPage } from '../pages/add/custom-token/custom-token';
 import { ImportWalletPage } from '../pages/add/import-wallet/import-wallet';
@@ -253,6 +254,7 @@ export const PAGES = [
   NotificationsPage,
   SearchTxModalPage,
   ConfirmAddTokenModalPage,
+  AddCustomTokenModalPage,
   SessionLogPage,
   SendFeedbackPage,
   FinishModalPage,
