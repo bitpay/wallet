@@ -107,7 +107,6 @@ export class CopayApp {
   }
 
   initializeApp() {
-    this.config.set('backButtonIcon', 'tab-button-back');
     this.platform
       .ready()
       .then(readySource => {
