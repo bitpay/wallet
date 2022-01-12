@@ -58,80 +58,79 @@ export class MyMissingTranslationHandler implements MissingTranslationHandler {
 }
 
 @NgModule({
-  declarations: [
-    /* Pipes */
-    ...sharedPipes,
-    // ...PAGES,
-    ...COMPONENTS,
-    ...PAGES,
-    CopayApp,
-     /* Directives */
-    CopyToClipboard,
-    ExternalizeLinks,
-    FixedScrollBgColor,
-    IonContentBackgroundColor,
-    IonMask,
-    LongPress,
-    NavbarBg,
-    NoLowFee,
-    Animate,
-    RevealAtScrollPosition,
-    ScrolledIntoView,
-    // WideHeaderBarButton,
-  ],
-  entryComponents: [CopayApp, ...PAGES, ...COMPONENTS],
-  imports: [
-    IonicModule.forRoot( {
-      animated: env.enableAnimations,
-      scrollPadding: false,
-      backButtonIcon: 'arrow-round-back',
-      backButtonText: '',
-      navAnimation : enterAnimation
-    }),
-    MatGridListModule,
-    FormsModule,
-    ReactiveFormsModule,
-    NgxTextOverflowClampModule,
-    IonicImageLoaderModule,
-    HttpClientModule,
-    MarkdownModule.forRoot(),
-    MomentModule,
-    BrowserModule,
-    FormsModule,
-    ReactiveFormsModule, 
-    NgxBarcodeModule,
-    NgxQRCodeModule,
-    AppRoutingModule,
-    ProvidersModule,
-    SwiperModule,
-    TranslateModule.forRoot({
-      parser: { provide: TranslateParser, useFactory: translateParserFactory },
-      missingTranslationHandler: {
-        provide: MissingTranslationHandler,
-        useClass: MyMissingTranslationHandler
-      },
-      loader: {
-        provide: TranslateLoader,
-        useClass: LanguageLoader
-      }
-    }),
-    ServiceWorkerModule.register('ngsw-worker.js', { enabled: env.name === 'production' })
-  ],
-  providers: [
-    { 
-      provide: RouteReuseStrategy, 
-      useClass: IonicRouteStrategy 
-    },
-    {
-      provide: ErrorHandler,
-      useClass: CustomErrorHandler
-    },
-    FormatCurrencyPipe,
-    NavParams,
-    FormBuilder,
-    WebView
-  ],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  bootstrap: [CopayApp],
+    declarations: [
+        /* Pipes */
+        ...sharedPipes,
+        // ...PAGES,
+        ...COMPONENTS,
+        ...PAGES,
+        CopayApp,
+        /* Directives */
+        CopyToClipboard,
+        ExternalizeLinks,
+        FixedScrollBgColor,
+        IonContentBackgroundColor,
+        IonMask,
+        LongPress,
+        NavbarBg,
+        NoLowFee,
+        Animate,
+        RevealAtScrollPosition,
+        ScrolledIntoView,
+        // WideHeaderBarButton,
+    ],
+    imports: [
+        IonicModule.forRoot({
+            animated: env.enableAnimations,
+            scrollPadding: false,
+            backButtonIcon: 'arrow-round-back',
+            backButtonText: '',
+            navAnimation: enterAnimation
+        }),
+        MatGridListModule,
+        FormsModule,
+        ReactiveFormsModule,
+        NgxTextOverflowClampModule,
+        IonicImageLoaderModule,
+        HttpClientModule,
+        MarkdownModule.forRoot(),
+        MomentModule,
+        BrowserModule,
+        FormsModule,
+        ReactiveFormsModule,
+        NgxBarcodeModule,
+        NgxQRCodeModule,
+        AppRoutingModule,
+        ProvidersModule,
+        SwiperModule,
+        TranslateModule.forRoot({
+            parser: { provide: TranslateParser, useFactory: translateParserFactory },
+            missingTranslationHandler: {
+                provide: MissingTranslationHandler,
+                useClass: MyMissingTranslationHandler
+            },
+            loader: {
+                provide: TranslateLoader,
+                useClass: LanguageLoader
+            }
+        }),
+        ServiceWorkerModule.register('ngsw-worker.js', { enabled: env.name === 'production' })
+    ],
+    providers: [
+        {
+            provide: RouteReuseStrategy,
+            useClass: IonicRouteStrategy
+        },
+        {
+            provide: ErrorHandler,
+            useClass: CustomErrorHandler
+        },
+        FormatCurrencyPipe,
+        NavParams,
+        FormBuilder,
+        WebView
+    ],
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    bootstrap: [CopayApp]
 })
 export class AppModule {}
