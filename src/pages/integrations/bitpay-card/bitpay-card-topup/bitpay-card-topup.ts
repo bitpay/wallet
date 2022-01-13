@@ -263,7 +263,6 @@ export class BitPayCardTopUpPage {
     return new Promise(resolve => {
       if (this.isCordova) this.slideButton.isConfirmed(false);
       title = title || this.translate.instant('Error');
-      this.logger.error(msg);
       msg = msg && msg.errors ? msg.errors[0].message : msg;
       this.popupProvider.ionicAlert(title, msg).then(() => {
         return resolve();
@@ -886,7 +885,7 @@ export class BitPayCardTopUpPage {
     this.logCardTopUpEvent(account.currency.code, false);
 
     this.logger.debug(
-      `Creating invoice. amount: ${dataSrc.amount} - currency: ${dataSrc.currency}`
+      `Creating invoice. amount: ${this.parsedAmount.amount} - currency: ${this.parsedAmount.currency}`
     );
     this.createInvoice(dataSrc)
       .then(invoice => {

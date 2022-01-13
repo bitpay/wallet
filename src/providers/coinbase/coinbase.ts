@@ -930,13 +930,15 @@ export class CoinbaseProvider {
             data.error.errors &&
             data.error.errors[0].id == 'two_factor_required'
           ) {
-            this.logger.error('Coinbase: 2FA is required ' + data.status);
+            this.logger.warn('Coinbase: 2FA is required ' + data.status);
             return reject('2fa'); // return string to identify
           } else {
+            const dataError = JSON.stringify(data.error || data);
             this.logger.error(
-              'Coinbase: Send Transaction ERROR ' + data.status
+              'Coinbase: Pay Invoice ERROR ' + data.status,
+              dataError
             );
-            return reject(this.parseErrorsAsString(data.error));
+            return reject(dataError);
           }
         }
       );
