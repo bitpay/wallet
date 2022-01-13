@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { TranslateService } from '@ngx-translate/core';
 import {
   Events,
   ModalController,
@@ -14,9 +13,9 @@ import * as _ from 'lodash';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { CurrencyProvider, OnGoingProcessProvider } from '../../../providers';
 import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
-import { AddressProvider } from '../../../providers/address/address';
 import { ProfileProvider } from '../../../providers/profile/profile';
 import { WalletProvider } from '../../../providers/wallet/wallet';
+import { AddCustomTokenModalPage } from './add-custom-token-modal/add-custom-token-modal';
 import { ConfirmAddTokenModalPage } from './confirm-add-token-modal/confirm-add-token-modal';
 @Component({
   selector: 'page-custom-token',
@@ -59,8 +58,6 @@ export class CustomTokenPage {
     private walletProvider: WalletProvider,
     private navCtrl: NavController,
     private events: Events,
-    private addressProvider: AddressProvider,
-    private translate: TranslateService,
     private modalCtrl: ModalController,
     public currencyProvider: CurrencyProvider,
     private viewCtrl: ViewController,
@@ -145,72 +142,6 @@ export class CustomTokenPage {
       });
   }
 
-  public async setTokenInfo() {
-    if (_.isEmpty(this.customTokenForm.value.tokenAddress)) return;
-
-    const opts = {
-      tokenAddress: this.customTokenForm.value.tokenAddress
-    };
-
-    this.customTokenForm.controls['tokenName'].setValue(null);
-    this.customTokenForm.controls['tokenSymbol'].setValue(null);
-    this.customTokenForm.controls['tokenDecimals'].setValue(null);
-
-    const isValid = this.checkCoinAndNetwork(
-      this.customTokenForm.value.tokenAddress
-    );
-    if (!isValid) return;
-
-    let tokenContractInfo;
-    try {
-      tokenContractInfo = await this.walletProvider.getTokenContractInfo(
-        this.pairedWallet,
-        opts
-      );
-    } catch (error) {
-      await this.actionSheetProvider
-        .createInfoSheet('default-error', {
-          msg: this.translate.instant(
-            'Could not find any ERC20 contract attached to the provided address.'
-          ),
-          title: this.translate.instant('Error')
-        })
-        .present();
-      this.isValid = undefined;
-      return;
-    }
-
-    tokenContractInfo.address = this.customTokenForm.value.tokenAddress;
-
-    this.setCustomToken(tokenContractInfo);
-  }
-
-  private setCustomToken(tokenContractInfo) {
-    this.customTokenForm.controls['tokenAddress'].setValue(
-      tokenContractInfo.address
-    );
-    this.customTokenForm.controls['tokenName'].setValue(tokenContractInfo.name);
-    this.customTokenForm.controls['tokenSymbol'].setValue(
-      tokenContractInfo.symbol
-    );
-    this.customTokenForm.controls['tokenDecimals'].setValue(
-      tokenContractInfo.decimals
-    );
-  }
-
-  private checkCoinAndNetwork(address: string): boolean {
-    const addrData = this.addressProvider.getCoinAndNetwork(
-      address,
-      this.pairedWallet.network
-    );
-    this.isValid = Boolean(
-      addrData &&
-        this.pairedWallet.coin == addrData.coin &&
-        this.pairedWallet.network == addrData.network
-    );
-    return this.isValid;
-  }
-
   public showInvoiceWarning() {
     this.invoiceWarning = this.actionSheetProvider.createInfoSheet(
       'custom-tokens-warning'
@@ -218,10 +149,33 @@ export class CustomTokenPage {
     this.invoiceWarning.present();
   }
 
-  public openConfirmModal(token): void {
+  public openConfirmModal(token?): void {
     const modal = this.modalCtrl.create(
       ConfirmAddTokenModalPage,
       { token },
+      { showBackdrop: false, enableBackdropDismiss: true }
+    );
+    modal.present();
+    modal.onWillDismiss(data => {
+      if (data && data.token) {
+        const { name, address, symbol, decimals, logoURI } = data.token;
+
+        this.createAndBindTokenWallet({
+          keyId: this.keyId,
+          name,
+          address,
+          logoURI,
+          symbol: symbol.toLowerCase(),
+          decimals
+        });
+      }
+    });
+  }
+
+  public addCustomTokenModal(): void {
+    const modal = this.modalCtrl.create(
+      AddCustomTokenModalPage,
+      { pairedWallet: this.pairedWallet },
       { showBackdrop: false, enableBackdropDismiss: true }
     );
     modal.present();

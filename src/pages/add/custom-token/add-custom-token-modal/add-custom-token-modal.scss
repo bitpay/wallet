@@ -1,0 +1,12 @@
+page-add-custom-token-modal {
+  .confirm {
+    &__divider {
+      margin: 0 20px;
+    }
+  }
+  .input-title {
+    margin-top: 20px;
+    margin-left: 20px;
+    color: color($colors, grey);
+  }
+}

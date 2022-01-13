@@ -27,9 +27,14 @@
     </ion-note>
   </button>
 
-
-  <div class="send-header-wrapper">
-    <ion-item class="search-wrapper">
+  <ion-item class="search-header">
+    <button ion-button item-end clear (click)="addCustomTokenModal()">
+      {{'Add Custom Token' | translate }}
+    </button>
+  </ion-item>
+  
+<div class="send-header-wrapper">
+  <ion-item class="search-wrapper">
       <ion-input placeholder="{{'Search tokens' | translate}}" [(ngModel)]="searchQuery" (ngModelChange)="updateSearchInput(searchQuery)"></ion-input>
       <ion-icon *ngIf="searchQuery" item-end class="backspace-icon" name="backspace" (click)="cleanSearch()"></ion-icon>
     </ion-item>

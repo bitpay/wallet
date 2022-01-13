@@ -51,4 +51,9 @@ page-custom-token {
     font-size: 12px;
     padding-top: 0.5rem;
   }
+  .search-header {
+    .item-inner {
+      border-bottom: 0px !important;
+    }
+  }
 }
