@@ -192,12 +192,12 @@ export class CurrencyProvider {
   }
 
   getLogoURI(coin: string): string {
-    return this.coinOpts[coin].logoURI || 'assets/img/default-erc20.svg';
+    return this.coinOpts[coin].logoURI || 'assets/img/default-token.svg';
   }
 
   defaultLogoURI(img) {
     img.onerror = null;
-    img.src = 'assets/img/default-erc20.svg';
+    img.src = 'assets/img/default-token.svg';
   }
 
   isUtxoCoin(coin: string): boolean {
