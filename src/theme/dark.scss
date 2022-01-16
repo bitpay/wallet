@@ -54,7 +54,7 @@
     // 1 - Definitions
     // 1.1 - Backgrounds
     --bg-color-dark-theme: #001E2E;
-    --bg-color-dark-theme-2: #1d1d1d;
+    --bg-color-dark-theme-2: #1F4455;
     --bg-color-dark-theme-3: #235068;
     --bg-color-dark-theme-4: rgba(56, 56, 56, 0.8);
     --bg-color-dark-theme-5: linear-gradient(0deg, rgba(126, 208, 255, 0.14), rgba(126, 208, 255, 0.14)), #001E2E;
@@ -74,7 +74,7 @@
     --bg-color-warning: #ffe7d9;
 
     // 1.4 - Borders
-    --border-color-dark-theme: rgb(76, 76, 76);
+    --border-color-dark-theme: #6B858F;
     --border-color-dark-theme-2: rgba(76, 76, 76, 0.3);
 
     // 1.5 - Slides
@@ -91,6 +91,9 @@
 
     // 1.7 - Overriding Ionic Variables
     --background-color: var(--bg-color-dark-theme);
+
+    // 1.8 - Info Sheet
+    --text-color-info-sheet-dark-theme: #B8C2C7;
 
     @include toolbar-button-color(var(--text-color-dark-theme));
 
@@ -744,11 +747,12 @@
                     }
 
                     .sheet-text {
-                        color: var(--text-color-dark-theme-2) !important;
+                        color: var(--text-color-info-sheet-dark-theme) !important;
                     }
 
                     .sheet-btn-group {
                         border-top: 1px solid var(--border-color-dark-theme);
+                        color: #00FFD3;
 
                         .sheet-btn.default,
                         .sheet-second-btn {
@@ -934,7 +938,7 @@
     miner-fee-warning {
         action-sheet {
             .action-sheet-bottom {
-                background: var(--bg-color-dark-theme);
+                background: var(--bg-color-dark-theme) !important;
 
                 .encrypt-password,
                 .miner-fee {
@@ -956,43 +960,43 @@
                         }
                     }
 
+                    .info-encrypt {
+                        color: rgba(237, 239, 240, 0.6);
+                    }
+
                     .encrypt-password-form {
                         .slide-title {
-                            color: var(--text-color-dark-theme) !important;
+                            h3 {
+                                color: var(--bg-hight-color-abcpay-dark) !important;
+                            }
                         }
 
                         form {
                             ion-item {
-                                --background: var(--bg-color-dark-theme-2);
-                                color: var(--text-color-dark-theme) !important;
-
-                                ion-label {
-
-                                    &.label-ios,
-                                    &.label-md {
-                                        color: var(--text-color-dark-theme-2) !important;
-                                    }
-                                }
-
+                                --background: var(--bg-color-dark-theme) !important;
+                                border: 1px solid var(--bg-outline-color-abcpay-dark) !important;
                                 ion-input {
-
+                                    color: var(--bg-hight-color-abcpay-dark) !important;
                                     input[type='password'],
                                     input[type='text'] {
                                         color: var(--text-color-dark-theme) !important;
                                     }
                                 }
-                            }
-
-                            .item-inner {
-                                border-bottom-color: var(--border-color-dark-theme) !important;
-                            }
-
-                            button {
-
-                                .ion-md-eye:before,
-                                .ion-md-eye-off:before {
-                                    color: var(--text-color-dark-theme-2) !important;
+                                &.error-message {
+                                    border: 0 !important;
+                                    padding: 0;
                                 }
+                            }
+
+                            ion-button {
+                                ion-icon {
+                                    &[name="eye-off"] {
+                                      color: rgba(237, 239, 240, 0.6);
+                                    }
+                                    &[name="alert"] {
+                                      color: var(--color-danger);
+                                    }
+                                  }
                             }
                         }
                     }

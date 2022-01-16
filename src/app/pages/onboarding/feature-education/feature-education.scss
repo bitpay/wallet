@@ -36,8 +36,10 @@ ion-content {
         img {
           margin: 3rem auto 0;
           max-width: 65%;
+          min-height: 343px;
 
-          @media (max-width: 350px) {
+          @media (max-width: 768px) {
+            min-height: 270px;
             max-height: 14rem;
           }
         }
@@ -108,12 +110,12 @@ ion-content {
       }
     }
 
-    .final-slide {
-      // --padding-top: 3rem;
-      .slide-info {
-        grid-template-rows: 1fr 1fr 160px;
-      }
-    }
+    // .final-slide {
+    //   // --padding-top: 3rem;
+    //   .slide-info {
+    //     grid-template-rows: 1fr 1fr 160px;
+    //   }
+    // }
   }
 }
 

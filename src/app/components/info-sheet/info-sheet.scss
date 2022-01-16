@@ -32,12 +32,15 @@ action-sheet{
           padding-right: 15px;
           display: flex;
           align-self: center;
+          img {
+            max-width: 40px;
+          }
         }
       }
   
       .sheet-text {
         font-size: 16px;
-        color: rgb(46, 46, 46);
+        color: #4F6168;
         font-weight: 300;
         padding: 25px 0px;
       }
@@ -47,7 +50,7 @@ action-sheet{
       }
   
       .sheet-btn-group {
-        color: #69caa7;
+        color: #01F2FF;
         font-size: 16px;
         border-top: 1px solid #ebebeb;
         cursor: pointer;
@@ -55,7 +58,7 @@ action-sheet{
   
   
         .sheet-btn {
-          color: #69caa7;
+          color: #01F2FF;
           flex-grow: 1;
           padding-top: 15px;
           margin-right: 10px;

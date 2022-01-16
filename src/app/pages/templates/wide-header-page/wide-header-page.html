@@ -22,7 +22,7 @@
       <ion-toolbar *ngIf="!hideToolbar" class="wide-header__title">
         <expandable-header-primary class="ellipsis">
           <div *ngIf="img" class="img-container">
-            <img src="assets/img/onboarding/{{img}}.svg" />
+            <img [src]="img" />
           </div>
           {{title}}
         </expandable-header-primary>
