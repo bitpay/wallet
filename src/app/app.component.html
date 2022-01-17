@@ -1,3 +1,7 @@
 <ion-app>
-    <ion-router-outlet id="main"></ion-router-outlet>
+    <div #splash [hidden]="!routerHidden" class="custom-splash-screen">
+        <img src="assets/img/SplashScreen.svg">
+    </div>
+
+    <ion-router-outlet [hidden]="routerHidden" id="main"></ion-router-outlet>
 </ion-app>

@@ -1242,3 +1242,12 @@ page-session-log {
 
     }
 }
+
+.custom-splash-screen {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #011e2e;
+    height: 100%;
+    width: 100%;
+}
