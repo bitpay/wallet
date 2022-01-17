@@ -345,7 +345,9 @@ export class CryptoOffersPage {
           break;
       }
       const data = {
-        digital_currency: this.wallet.coin.toUpperCase(),
+        digital_currency: this.simplexProvider.checkSimplexCoin(
+          this.wallet.coin.toUpperCase()
+        ),
         fiat_currency: this.fiatCurrency,
         requested_currency: this.fiatCurrency,
         requested_amount: this.amount,
