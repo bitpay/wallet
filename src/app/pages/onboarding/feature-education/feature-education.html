@@ -31,7 +31,7 @@
   </swiper>
 </ion-content>
 
-<ion-footer class="ion-no-border custom-footer" *ngIf="!isCordova || slideEnd">
+<ion-footer class="ion-no-border custom-footer">
   <ion-toolbar *ngIf="slideEnd;else slideStart">
     <ion-button  class="button-standard ion-no-margin-bottom" (click)="goToNextPage('SelectCurrencyPage')">
       {{'Create a new wallet' | translate}}

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { ModalController, NavController, NavParams, Platform } from '@ionic/angular';
+import { ThemeProvider } from 'src/app/providers';
 import { ActionSheetProvider } from 'src/app/providers/action-sheet/action-sheet';
 import { EventManagerService } from 'src/app/providers/event-manager.service';
 import { Logger } from 'src/app/providers/logger/logger';
@@ -20,16 +21,18 @@ export class RecoveryKeyPage {
   public isOnboardingFlow: boolean;
   public hideBackButton: boolean;
   navParamsData;
+  themeCurrent: string;
   constructor(
     public navCtrl: NavController,
     private logger: Logger,
     private events: EventManagerService,
     private actionSheetProvider: ActionSheetProvider,
     private router: Router,
-    private modalCtrl: ModalController
+    private modalCtrl: ModalController,
+    private themeProvider: ThemeProvider
 
   ) {
-
+    this.themeCurrent = this.themeProvider.currentAppTheme;
     if (this.router.getCurrentNavigation()) {
        this.navParamsData = this.router.getCurrentNavigation().extras.state ? this.router.getCurrentNavigation().extras.state : {};
     } else {

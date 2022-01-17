@@ -1,6 +1,6 @@
 import { Component, ComponentRef, NgZone } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AlertController, AlertOptions, AnimationController } from '@ionic/angular';
+import { AnimationController } from '@ionic/angular';
 import { InfoSheetType } from 'src/app/providers/action-sheet/action-sheet';
 import { AppProvider } from 'src/app/providers/app/app';
 import { DomProvider } from 'src/app/providers/dom/dom';
@@ -13,18 +13,17 @@ import { ActionSheetParent } from '../action-sheet/action-sheet-parent';
   styleUrls: ['encrypt-password.scss'],
 })
 export class EncryptPasswordComponent extends ActionSheetParent {
-  public showForm: boolean;
   public encryptPasswordForm: FormGroup;
   public isCopay: boolean;
   public passwordInputType: string = 'password';
   public confirmPasswordInputType: string = 'password';
   zone;
+  public currentTheme: string;
   constructor(
     private domProvider: DomProvider,
     private fb: FormBuilder,
     private appProvider: AppProvider,
-    private alert: AlertController,
-    public animationCtrl: AnimationController
+    public animationCtrl: AnimationController,
   ) {
     super();
     this.zone = new NgZone({ enableLongStackTrace: false });
@@ -35,7 +34,8 @@ export class EncryptPasswordComponent extends ActionSheetParent {
         confirmPassword: ['', Validators.required]
       },
       { validator: this.matchingPasswords('password', 'confirmPassword') }
-    );
+      );
+      this.currentTheme = this.appProvider.themeProvider.currentAppTheme;
   }
 
   private matchingPasswords(passwordKey: string, confirmPasswordKey: string) {
@@ -49,33 +49,6 @@ export class EncryptPasswordComponent extends ActionSheetParent {
       }
       return undefined;
     };
-  }
-
-  public showInfoSheet() {
-    const _this = this;
-    const opts: AlertOptions = {
-      header: 'Are you sure?',
-      message: 'Without encrypting your wallet, a thief or another app on this device could potentially access your money.',
-      buttons: [
-        {
-          text: 'GO BACK',
-          role: 'cancel',
-          handler: (value) => {
-            //do nothing
-          }
-        },
-        {
-          text: "I'M SURE",
-          handler: (value) => {
-            _this.dismiss();
-          }
-        }
-      ],
-      cssClass: 'custom',
-    };
-    this.alert.create(opts).then((alertElement) => {
-      alertElement.present();
-    });
   }
 
   public createInfoSheet(type: InfoSheetType, params?): InfoSheetComponent {
@@ -94,11 +67,7 @@ export class EncryptPasswordComponent extends ActionSheetParent {
     sheet.instance.params = params;
     return sheet;
   }
-
-  public next(): void {
-    this.showForm = true;
-  }
-
+  
   public confirm(password: string): void {
     this.dismiss(password);
   }

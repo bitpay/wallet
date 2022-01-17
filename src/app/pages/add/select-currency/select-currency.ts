@@ -22,6 +22,7 @@ import { ErrorsProvider } from 'src/app/providers/errors/errors';
 import { EventManagerService } from 'src/app/providers/event-manager.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { KeyOnboardingPage } from '../../settings/key-settings/key-onboarding/key-onboarding';
+import { ThemeProvider } from 'src/app/providers';
 
 @Component({
   selector: 'page-select-currency',
@@ -46,6 +47,7 @@ export class SelectCurrencyPage {
   public isShared: boolean;
   public keyId;
   navParamsData;
+  img: string = '';
   constructor(
     private actionSheetProvider: ActionSheetProvider,
     private currencyProvider: CurrencyProvider,
@@ -62,8 +64,11 @@ export class SelectCurrencyPage {
     private modalCtrl: ModalController,
     private persistenceProvider: PersistenceProvider,
     private errorsProvider: ErrorsProvider,
-    private events: EventManagerService
+    private events: EventManagerService,
+    private themeProvider: ThemeProvider
   ) {
+    const themeCurrent = this.themeProvider.currentAppTheme;
+    this.img = 'assets/img/onboarding/select-currencies-' + themeCurrent + '.svg';
     if (this.router.getCurrentNavigation()) {
        this.navParamsData = this.router.getCurrentNavigation().extras.state ? this.router.getCurrentNavigation().extras.state : {};
     } else {

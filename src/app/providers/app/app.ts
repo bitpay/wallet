@@ -42,7 +42,7 @@ export class AppProvider {
     private persistence: PersistenceProvider,
     private file: File,
     private platformProvider: PlatformProvider,
-    private themeProvider: ThemeProvider,
+    public themeProvider: ThemeProvider,
     private fileStorage: FileStorage
   ) {
     this.logger.debug('AppProvider initialized');
