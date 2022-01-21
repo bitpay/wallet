@@ -171,7 +171,9 @@ export class TabsPage {
     });
 
     this.checkCardEnabled();
-    this.checkClipboardData();
+    if (this.platformProvider.isElectron) {
+      this.checkClipboardData();
+    }
     this.tabProvider.prefetchGiftCards();
   }
 
