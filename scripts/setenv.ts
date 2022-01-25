@@ -33,8 +33,8 @@ if (environment === 'production') {
 } else if(environment === 'desktop'){
     nameEnv = 'production';
 }
-const targetPath = `./src/environments/index.ts`;
-const envConfigFile = `
+let targetPath = `./src/environments/index.ts`;
+let envConfigFile = `
 import { CurrencyProvider } from "src/app/providers/currency/currency";
 /**
  * Environment: '${nameEnv}'
@@ -46,7 +46,21 @@ export const env = {
     activateScanner: ${activateScanner},
     awsUrl: '${awsUrl}' 
 };
-    export default env;`
+    export default env;
+    
+export const envConfig = { 
+    name: '${nameEnv}'
+};`
+
+fs.writeFile(targetPath, envConfigFile, (err) => {
+    if (err) {
+        console.log(err);
+    }
+});  
+
+targetPath = `./src/environments/environmentName.ts`;
+envConfigFile = `export const envName:string = '${nameEnv}';`
+
 fs.writeFile(targetPath, envConfigFile, (err) => {
     if (err) {
         console.log(err);
