@@ -46,23 +46,10 @@ export const env = {
     activateScanner: ${activateScanner},
     awsUrl: '${awsUrl}' 
 };
-    export default env;
-    
-export const envConfig = { 
-    name: '${nameEnv}'
-};`
+    export default env;`
 
 fs.writeFile(targetPath, envConfigFile, (err) => {
     if (err) {
         console.log(err);
     }
-});  
-
-targetPath = `./src/environments/environmentName.ts`;
-envConfigFile = `export const envName:string = '${nameEnv}';`
-
-fs.writeFile(targetPath, envConfigFile, (err) => {
-    if (err) {
-        console.log(err);
-    }
-});  
+});
