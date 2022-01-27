@@ -81,16 +81,8 @@ export class FeatureEducationPage {
         state: this.params
       });
     } else {
-      this.showInfoSheet(nextViewName);
+      this.goToLockMethodPage(nextViewName);
     }
-  }
-
-  private showInfoSheet(nextViewName: string): void {
-    const infoSheet = this.actionSheetProvider.createInfoSheet('protect-money');
-    infoSheet.present();
-    infoSheet.onDidDismiss(option => {
-      if (option) this.goToLockMethodPage(nextViewName);
-    });
   }
 
   private goToLockMethodPage(name: string): void {

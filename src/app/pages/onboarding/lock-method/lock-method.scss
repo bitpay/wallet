@@ -94,6 +94,7 @@ ion-toolbar {
 
 .button-standard {
   width: 92% !important;
+  --color: white;
   &[disabled] {
     --background: rgba(0, 30, 46, 0.12);
     --color: rgba(28, 55, 69, 0.38);
