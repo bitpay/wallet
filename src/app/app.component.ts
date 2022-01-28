@@ -38,7 +38,7 @@ import { CopayersPage } from './pages/add/copayers/copayers';
 })
 export class CopayApp {
   @ViewChild('splash', {static: false}) splash: ElementRef;
-  routerHidden = true;
+  routerHidden;
   nav: NavController;
   cardIAB_Ref: InAppBrowser;
   NETWORK = 'livenet';
@@ -96,6 +96,7 @@ export class CopayApp {
     this.imageLoaderConfig.useImageTag(true);
     this.imageLoaderConfig.enableSpinner(false);
     this.initializeApp();
+    this.platformProvider.isCordova ? this.routerHidden = true : this.routerHidden = false;
   }
 
   ngOnDestroy() {
@@ -248,12 +249,14 @@ export class CopayApp {
       this.splashScreen.hide();
     }, 1000);
 
-    this.platform.ready().then(() => {
-      setTimeout(() => {
-        this.routerHidden = false;
-        this.splash.nativeElement.style.display = 'none';
-      }, 3000);
-    })
+    if(this.platformProvider.isCordova){
+      this.platform.ready().then(() => {
+        setTimeout(() => {
+          this.routerHidden = false;
+          this.splash.nativeElement.style.display = 'none';
+        }, 3000);
+      })
+    }
 
     this.keyProvider
       .load()
