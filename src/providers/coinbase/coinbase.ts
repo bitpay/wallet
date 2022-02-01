@@ -151,8 +151,7 @@ export class CoinbaseProvider {
         'wallet:user:read,' +
         'wallet:user:email,' +
         'wallet:transactions:read,' +
-        'wallet:transactions:send,' +
-        'wallet:transactions:send:bypass-2fa';
+        'wallet:transactions:send';
 
       // Set Authorize URL
       this.oauthUrl =
