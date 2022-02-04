@@ -25,8 +25,8 @@ const updateIos = async() => {
 const updateAndroid = async() => {
   const project = new CapacitorProject(config);
   await project.load();
-  await project.android?.setVersionCode(5);
-  await project.android?.setVersionName('1.2.3');
+  await project.android?.setVersionCode(configProvider.androidVersion);
+  await project.android?.setVersionName(configProvider.version);
   // await project.android?.setPackageName('abc');
   await project.vfs.commitAll();
 }
