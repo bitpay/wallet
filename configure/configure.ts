@@ -27,7 +27,7 @@ const updateAndroid = async() => {
   await project.load();
   await project.android?.setVersionCode(configProvider.androidVersion);
   await project.android?.setVersionName(configProvider.version);
-  // await project.android?.setPackageName('abc');
+  await project.android?.setPackageName(configProvider.packageNameId);
   await project.vfs.commitAll();
 }
 updateAndroid();
