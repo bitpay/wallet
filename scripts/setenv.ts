@@ -33,8 +33,8 @@ if (environment === 'production') {
 } else if(environment === 'desktop'){
     nameEnv = 'production';
 }
-const targetPath = `./src/environments/index.ts`;
-const envConfigFile = `
+let targetPath = `./src/environments/index.ts`;
+let envConfigFile = `
 import { CurrencyProvider } from "src/app/providers/currency/currency";
 /**
  * Environment: '${nameEnv}'
@@ -47,8 +47,9 @@ export const env = {
     awsUrl: '${awsUrl}' 
 };
     export default env;`
+
 fs.writeFile(targetPath, envConfigFile, (err) => {
     if (err) {
         console.log(err);
     }
-});  
+});
