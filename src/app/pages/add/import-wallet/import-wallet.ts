@@ -261,23 +261,14 @@ export class ImportWalletPage {
       await new Promise(resolve => setTimeout(resolve, 1000));
       this.profileProvider.setNewWalletGroupOrder(wallets[0].credentials.keyId);
     }
-
-    if (!this.isOnboardingFlow)
-      this.router.navigate([''], {
-        state: {
-          keyId: wallets[0].credentials.keyId
-        },
-        replaceUrl: true
-      }).then(data => {
-        this.events.publish('Local/FetchWallets');
-      })
-    else {
-      this.router.navigate(['/disclaimer'], {
-        state: {
-          keyId: wallets[0].credentials.keyId
-        },
-      });
-    }
+    this.router.navigate([''], {
+      state: {
+        keyId: wallets[0].credentials.keyId
+      },
+      replaceUrl: true
+    }).then(data => {
+      this.events.publish('Local/FetchWallets');
+    })
   }
 
   private importExtendedPrivateKey(xPrivKey, opts) {
