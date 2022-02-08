@@ -1,4 +1,4 @@
-import { Component, Renderer2, ViewChild } from '@angular/core';
+import { Component, ElementRef, Renderer2, ViewChild } from '@angular/core';
 import { Config, ModalController, NavController, Platform } from '@ionic/angular';
 import { Subscription, timer } from 'rxjs';
 import { AppProvider } from './providers/app/app';
@@ -37,7 +37,8 @@ import { CopayersPage } from './pages/add/copayers/copayers';
   providers: [TouchIdProvider]
 })
 export class CopayApp {
-  @ViewChild('appNav')
+  @ViewChild('splash', {static: false}) splash: ElementRef;
+  routerHidden;
   nav: NavController;
   cardIAB_Ref: InAppBrowser;
   NETWORK = 'livenet';
@@ -95,6 +96,7 @@ export class CopayApp {
     this.imageLoaderConfig.useImageTag(true);
     this.imageLoaderConfig.enableSpinner(false);
     this.initializeApp();
+    this.platformProvider.isCordova ? this.routerHidden = true : this.routerHidden = false;
   }
 
   ngOnDestroy() {
@@ -245,6 +247,15 @@ export class CopayApp {
       this.logger.debug('Hide Splash Screen');
       this.splashScreen.hide();
     }, 1000);
+
+    if(this.platformProvider.isCordova){
+      this.platform.ready().then(() => {
+        setTimeout(() => {
+          this.routerHidden = false;
+          this.splash.nativeElement.style.display = 'none';
+        }, 3000);
+      })
+    }
 
     this.keyProvider
       .load()
