@@ -1314,40 +1314,40 @@ page-session-log {
 
 @keyframes ASplashScreen {
     0% {
-        transform: rotate(50deg);
+        transform: translate(4px,-7px) rotate(50deg);
     }
     2% {
-        transform: rotate(40deg);
+        transform: translate(4px,-6px) rotate(40deg);
     }
     4% {
-        transform: rotate(30deg);
+        transform: translate(2px,-5px) rotate(30deg);
     }
     6% {
         transform: rotate(0deg);
     }
     8% {
-        transform: rotate(-30deg);
+        transform: translate(2px,5px) rotate(-30deg);
     }
     10% {
-        transform: rotate(-50deg);
+        transform: translate(4px,7px) rotate(-50deg);
     }
     12% {
-        transform: rotate(-70deg);
+        transform: translate(6px,8px) rotate(-70deg);
     }
     14% {
-        transform: rotate(-65deg);
+        transform: translate(6px,8px) rotate(-65deg);
     }
     16% {
-        transform: rotate(-60deg);
+        transform: translate(6px,8px) rotate(-60deg);
     }
     18% {
-        transform: rotate(-50deg);
+        transform: translate(4px,7px) rotate(-50deg);
     }
     20% {
-        transform: rotate(-20deg);
+        transform: translate(2px,3px) rotate(-20deg);
     }
     22% {
-        transform: rotate(-10deg);
+        transform: translate(1px,2px) rotate(-10deg);
     }
     24% {
         transform: rotate(0deg);
@@ -1362,40 +1362,40 @@ page-session-log {
 }
 @keyframes BSplashScreen {
     0% {
-        transform: rotate(60deg);
+        transform: translate(13px, 7px) rotate(60deg);
     }
     2% {
-        transform: rotate(72deg);
+        transform: translate(13px, 9px) rotate(72deg);
     }
     4% {
-        transform: rotate(82deg);
+        transform: translate(13px, 12px) rotate(82deg);
     }
     6% {
-        transform: rotate(100deg);
+        transform: translate(13px, 16px) rotate(100deg);
     }
     8% {
-        transform: rotate(155deg);
+        transform: translate(6px, 25px) rotate(155deg);
     }
     10% {
-        transform: rotate(245deg);
+        transform: translate(-13px, 19.5px) rotate(245deg);
     }
     12% {
-        transform: rotate(325deg);
+        transform: translate(-8px, 2px) rotate(325deg);
     }
     14% {
-        transform: rotate(330deg);
+        transform: translate(-8px, 2px) rotate(330deg);
     }
     16% {
-        transform: rotate(335deg);
+        transform: translate(-6px, 1px) rotate(335deg);
     }
     18% {
-        transform: rotate(340deg);
+        transform: translate(-5px, 0px) rotate(340deg);
     }
     20% {
-        transform: rotate(345deg);
+        transform: translate(-4px, 0px) rotate(345deg);
     }
     22% {
-        transform: rotate(355deg);
+        transform: translate(-2px, 0px) rotate(355deg);
     }
     25% {
         transform: rotate(360deg);
@@ -1410,40 +1410,40 @@ page-session-log {
 }
 @keyframes CSplashScreen {
     0% {
-        transform: rotate(190deg);
+        transform: translate(39px,3px) rotate(190deg);
     }
     2% {
-        transform: rotate(180deg);
+        transform: translate(39px,3px) rotate(180deg);
     }
     4% {
-        transform: rotate(170deg);
+        transform: translate(39px,-3px) rotate(170deg);
     }
     6% {
-        transform: rotate(150deg);
+        transform: translate(37px,-10px) rotate(150deg);
     }
     8% {
-        transform: rotate(130deg);
+        transform: translate(33px,-15px) rotate(130deg);
     }
     10% {
-        transform: rotate(115deg);
+        transform: translate(28px,-18px) rotate(115deg);
     }
     12% {
-        transform: rotate(90deg);
+        transform: translate(20px,-20px) rotate(90deg);
     }
     14% {
-        transform: rotate(75deg);
+        transform: translate(15px,-19px) rotate(75deg);
     }
     16% {
-        transform: rotate(50deg);
+        transform: translate(7px,-15px) rotate(50deg);
     }
     18% {
-        transform: rotate(40deg);
+        transform: translate(5px,-12px) rotate(40deg);
     }
     20% {
-        transform: rotate(30deg);
+        transform: translate(3px,-10px) rotate(30deg);
     }
     22% {
-        transform: rotate(20deg);
+        transform: translate(2px,-7px) rotate(20deg);
     }
     24% {
         transform: rotate(0deg);
@@ -1458,40 +1458,40 @@ page-session-log {
 }
 @keyframes PSplashScreen {
     0% {
-        transform: rotate(205deg);
+        transform: translate(5px,-26px) rotate(205deg);
     }
     2% {
-        transform: rotate(200deg);
+        transform: translate(4px,-26px) rotate(200deg);
     }
     4% {
-        transform: rotate(195deg);
+        transform: translate(3px,-26px) rotate(195deg);
     }
     6% {
-        transform: rotate(115deg);
+        transform: translate(-13px,-19px) rotate(115deg);
     }
     8% {
-        transform: rotate(100deg);
+        transform: translate(-14px,-16px) rotate(100deg);
     }
     10% {
-        transform: rotate(85deg);
+        transform: translate(-14px,-12px) rotate(85deg);
     }
     12% {
-        transform: rotate(65deg);
+        transform: translate(-13px,-8px) rotate(65deg);
     }
     14% {
-        transform: rotate(45deg);
+        transform: translate(-10px,-4px) rotate(45deg);
     }
     16% {
-        transform: rotate(35deg);
+        transform: translate(-8px,-2px) rotate(35deg);
     }
     18% {
-        transform: rotate(25deg);
+        transform: translate(-7px,-1px) rotate(25deg);
     }
     20% {
-        transform: rotate(15deg);
+        transform: translate(-4px,-1px) rotate(15deg);
     }
     22% {
-        transform: rotate(10deg);
+        transform: translate(-3px,0px) rotate(10deg);
     }
     24% {
         transform: rotate(0deg);
@@ -1506,40 +1506,40 @@ page-session-log {
 }
 @keyframes PASplashScreen {
     0% {
-        transform: rotate(340deg);
+        transform: translate(0px,3px) rotate(340deg);
     }
     2% {
-        transform: rotate(350deg);
+        transform: translate(0px,1px) rotate(350deg);
     }
     4% {
-        transform: rotate(10deg);
+        transform: translate(0px,-2px) rotate(10deg);
     }
     6% {
-        transform: rotate(40deg);
+        transform: translate(2px,-6px) rotate(40deg);
     }
     8% {
-        transform: rotate(70deg);
+        transform: translate(6px,-9px) rotate(70deg);
     }
     10% {
-        transform: rotate(100deg);
+        transform: translate(10px,-10px) rotate(100deg);
     }
     12% {
-        transform: rotate(170deg);
+        transform: translate(19px,-2px) rotate(170deg);
     }
     14% {
-        transform: rotate(240deg);
+        transform: translate(14px,8px) rotate(240deg);
     }
     16% {
-        transform: rotate(260deg);
+        transform: translate(11px,9px) rotate(260deg);
     }
     18% {
-        transform: rotate(280deg);
+        transform: translate(7px,9px) rotate(280deg);
     }
     20% {
-        transform: rotate(300deg);
+        transform: translate(5px,8px) rotate(300deg);
     }
     22% {
-        transform: rotate(340deg);
+        transform: translate(0px,3px) rotate(340deg);
     }
     25% {
         transform: rotate(360deg);
@@ -1554,40 +1554,40 @@ page-session-log {
 }
 @keyframes YSplashScreen {
     0% {
-        transform: rotate(270deg);
+        transform: translate(23px,-23px) rotate(270deg);
     }
     2% {
-        transform: rotate(240deg);
+        transform: translate(20px,-35px) rotate(240deg);
     }
     4% {
-        transform: rotate(138deg);
+        transform: translate(-15px,-40px) rotate(138deg);
     }
     6% {
-        transform: rotate(65deg);
+        transform: translate(-20px,-13px) rotate(65deg);
     }
     8% {
-        transform: rotate(55deg);
+        transform: translate(-19px,-10px) rotate(55deg);
     }
     10% {
-        transform: rotate(45deg);
+        transform: translate(-16px,-7px) rotate(45deg);
     }
     12% {
-        transform: rotate(35deg);
+        transform: translate(-13px,-4px) rotate(35deg);
     }
     14% {
-        transform: rotate(30deg);
+        transform: translate(-12px,-3px) rotate(30deg);
     }
     16% {
-        transform: rotate(25deg);
+        transform: translate(-10px,-2px) rotate(25deg);
     }
     18% {
-        transform: rotate(20deg);
+        transform: translate(-8px,-2px) rotate(20deg);
     }
     20% {
-        transform: rotate(15deg);
+        transform: translate(-6px,-1px) rotate(15deg);
     }
     22% {
-        transform: rotate(10deg);
+        transform: translate(-4px,-1px) rotate(10deg);
     }
     24% {
         transform: rotate(0deg);
@@ -1643,36 +1643,48 @@ page-session-log {
     #path995 {
         opacity: 1;
         animation: 3s ASplashScreen;
+        transform-origin: center;
+        transform-box: fill-box;
     }
 
     // B
     #path1001 {
         opacity: 1;
         animation: 3s BSplashScreen;
+        transform-origin: center;
+        transform-box: fill-box;
     }
 
     // C
     #path991 {
         opacity: 1;
         animation: 3s CSplashScreen;
+        transform-origin: center;
+        transform-box: fill-box;
     }
 
     // P
     #path997 {
         opacity: 1;
         animation: 3s PSplashScreen;
+        transform-origin: center;
+        transform-box: fill-box;
     }
 
     // A
     #path993 {
         opacity: 1;
         animation: 3s PASplashScreen;
+        transform-origin: center;
+        transform-box: fill-box;
     }
 
     // Y
     #path999 {
         opacity: 1;
         animation: 3s YSplashScreen;
+        transform-origin: center;
+        transform-box: fill-box;
     }
 
     #layer2 {
