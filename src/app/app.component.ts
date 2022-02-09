@@ -253,7 +253,7 @@ export class CopayApp {
         setTimeout(() => {
           this.routerHidden = false;
           this.splash.nativeElement.style.display = 'none';
-        }, 3000);
+        }, 2900);
       })
     }
 
