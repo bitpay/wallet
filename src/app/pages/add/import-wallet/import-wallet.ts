@@ -26,10 +26,11 @@ import { ModalController, NavController, NavParams } from '@ionic/angular';
 import { EventManagerService } from 'src/app/providers/event-manager.service';
 import { Router } from '@angular/router';
 import _ from 'lodash';
+import { DisclaimerModal } from '../../includes/disclaimer-modal/disclaimer-modal';
 @Component({
   selector: 'page-import-wallet',
   templateUrl: 'import-wallet.html',
-  styleUrls: ['import-wallet.scss'],
+  styleUrls: ['import-wallet.scss']
 })
 export class ImportWalletPage {
   private reader: FileReader;
@@ -76,10 +77,12 @@ export class ImportWalletPage {
     private modalCtrl: ModalController,
     private bwcErrorProvider: BwcErrorProvider,
     private errorsProvider: ErrorsProvider,
-    private router: Router,
+    private router: Router
   ) {
     if (this.router.getCurrentNavigation()) {
-      this.navParamsData = this.router.getCurrentNavigation().extras.state ? this.router.getCurrentNavigation().extras.state : {};
+      this.navParamsData = this.router.getCurrentNavigation().extras.state
+        ? this.router.getCurrentNavigation().extras.state
+        : {};
     } else {
       this.navParamsData = history ? history.state : {};
     }
@@ -261,14 +264,36 @@ export class ImportWalletPage {
       await new Promise(resolve => setTimeout(resolve, 1000));
       this.profileProvider.setNewWalletGroupOrder(wallets[0].credentials.keyId);
     }
-    this.router.navigate([''], {
-      state: {
-        keyId: wallets[0].credentials.keyId
-      },
-      replaceUrl: true
-    }).then(data => {
-      this.events.publish('Local/FetchWallets');
-    })
+    this.profileProvider.isDisclaimerAccepted().then(async onboardingState => {
+      if (onboardingState === 'UNFINISHEDONBOARDING') {
+        const modal = await this.modalCtrl.create({
+          component: DisclaimerModal,
+          backdropDismiss: false,
+          cssClass: 'fixscreen-modal'
+        });
+        await modal.present();
+        modal.onDidDismiss().then(({ data }) => {
+          if (data.isConfirm) {
+            this.goToHomePage(wallets[0].credentials.keyId);
+          }
+        });
+      } else {
+        this.goToHomePage(wallets[0].credentials.keyId);
+      }
+    });
+  }
+
+  private goToHomePage(keyId) {
+    this.router
+      .navigate([''], {
+        state: {
+          keyId: keyId
+        },
+        replaceUrl: true
+      })
+      .then(data => {
+        this.events.publish('Local/FetchWallets');
+      });
   }
 
   private importExtendedPrivateKey(xPrivKey, opts) {
@@ -338,7 +363,6 @@ export class ImportWalletPage {
 
               backdropDismiss: false,
               cssClass: 'fullscreen-modal'
-
             });
             await modal.present();
             modal.onDidDismiss().then(({ data }) => {
@@ -386,9 +410,8 @@ export class ImportWalletPage {
       derivationPath = this.importForm.value.derivationPath;
     } else {
       if (this.derivationPathHelperProvider[`default${coin.toUpperCase()}`]) {
-        derivationPath = this.derivationPathHelperProvider[
-          `default${coin.toUpperCase()}`
-        ];
+        derivationPath =
+          this.derivationPathHelperProvider[`default${coin.toUpperCase()}`];
       } else {
         const title = this.translate.instant('Error');
         const subtitle = `No derivation path for: default${coin.toUpperCase()}`;
@@ -396,18 +419,16 @@ export class ImportWalletPage {
         return;
       }
     }
-    opts.networkName = this.derivationPathHelperProvider.getNetworkName(
-      derivationPath
-    );
-    opts.derivationStrategy = this.derivationPathHelperProvider.getDerivationStrategy(
-      derivationPath
-    );
+    opts.networkName =
+      this.derivationPathHelperProvider.getNetworkName(derivationPath);
+    opts.derivationStrategy =
+      this.derivationPathHelperProvider.getDerivationStrategy(derivationPath);
     opts.account = this.derivationPathHelperProvider.getAccount(derivationPath);
 
     // set opts.useLegacyPurpose
     if (
       this.derivationPathHelperProvider.parsePath(derivationPath).purpose ==
-      "44'" &&
+        "44'" &&
       opts.n > 1
     ) {
       opts.useLegacyPurpose = true;
@@ -418,7 +439,7 @@ export class ImportWalletPage {
     if (
       coin == 'bch' &&
       this.derivationPathHelperProvider.parsePath(derivationPath).coinCode ==
-      "0'"
+        "0'"
     ) {
       opts.useLegacyCoinType = true;
       this.logger.debug('Using 0 for BCH creation');
@@ -531,15 +552,12 @@ export class ImportWalletPage {
     if (this.importForm.value.derivationPathEnabled) {
       const derivationPath = this.importForm.value.derivationPath;
 
-      opts.networkName = this.derivationPathHelperProvider.getNetworkName(
-        derivationPath
-      );
-      opts.derivationStrategy = this.derivationPathHelperProvider.getDerivationStrategy(
-        derivationPath
-      );
-      opts.account = this.derivationPathHelperProvider.getAccount(
-        derivationPath
-      );
+      opts.networkName =
+        this.derivationPathHelperProvider.getNetworkName(derivationPath);
+      opts.derivationStrategy =
+        this.derivationPathHelperProvider.getDerivationStrategy(derivationPath);
+      opts.account =
+        this.derivationPathHelperProvider.getAccount(derivationPath);
 
       /* TODO: opts.n is just used to determinate if the wallet is multisig (m/48'/xx) or single sig (m/44') 
         we should change the name to 'isMultisig'. 
@@ -548,15 +566,15 @@ export class ImportWalletPage {
       opts.n = this.importForm.value.isMultisig
         ? 2
         : opts.derivationStrategy == 'BIP48'
-          ? 2
-          : 1;
+        ? 2
+        : 1;
 
       opts.coin = this.importForm.value.coin;
 
       // set opts.useLegacyPurpose
       if (
         this.derivationPathHelperProvider.parsePath(derivationPath).purpose ==
-        "44'" &&
+          "44'" &&
         opts.n > 1
       ) {
         opts.useLegacyPurpose = true;
@@ -567,7 +585,7 @@ export class ImportWalletPage {
       if (
         opts.coin == 'bch' &&
         this.derivationPathHelperProvider.parsePath(derivationPath).coinCode ==
-        "0'"
+          "0'"
       ) {
         opts.useLegacyCoinType = true;
         this.logger.debug('Using 0 for BCH creation');
@@ -672,7 +690,9 @@ export class ImportWalletPage {
 
   public setDerivationPathForXpiSlpToken(event) {
     this.isSlpToken = event.detail.checked;
-    const defaultCoin = this.isSlpToken ?  'defaultSlpToken' : `default${this.prevCoin.toUpperCase()}`;
+    const defaultCoin = this.isSlpToken
+      ? 'defaultSlpToken'
+      : `default${this.prevCoin.toUpperCase()}`;
     const derivationPath = this.derivationPathHelperProvider[defaultCoin];
     this.importForm.controls['derivationPath'].setValue(derivationPath);
   }
