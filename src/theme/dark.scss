@@ -2133,7 +2133,7 @@
     .fixscreen-modal{
         ion-backdrop{
             background: #000000;
-            opacity: 0.75;
+            opacity: 0.75 !important;
         }
     }
     disclaimer-modal{
