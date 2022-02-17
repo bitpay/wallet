@@ -1,4 +1,4 @@
-import { Component, ViewChild, ViewEncapsulation } from '@angular/core';
+import { AfterViewInit, Component, QueryList, ViewChild, ViewChildren, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
 import { NavController, NavParams, Platform } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
@@ -6,6 +6,8 @@ import * as _ from 'lodash';
 import { Subscription, timer } from 'rxjs';
 import { EventManagerService } from 'src/app/providers/event-manager.service';
 import { ProfileProvider } from 'src/app/providers/profile/profile';
+import { TxFormatProvider } from 'src/app/providers/tx-format/tx-format';
+import { DecimalFormatBalance } from 'src/providers/decimal-format.ts/decimal-format';
 
 // Providers
 import { ActionSheetProvider } from '../../providers/action-sheet/action-sheet';
@@ -31,6 +33,8 @@ import { SelectInputsPage } from '../send/select-inputs/select-inputs';
 import { AddressbookAddPage } from '../settings/addressbook/add/add';
 import { WalletDetailsPage } from '../wallet-details/wallet-details';
 import { MultiSendPage } from './multi-send/multi-send';
+import { RecipientComponent } from './recipient/recipient.component';
+import { RecipientModel } from './recipient/recipient.model';
 
 @Component({
   selector: 'page-send',
@@ -38,9 +42,10 @@ import { MultiSendPage } from './multi-send/multi-send';
   styleUrls: ['./send.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class SendPage {
+export class SendPage implements AfterViewInit {
   public wallet: any;
   public search: string = '';
+  public amount: string = '';
   public isCordova: boolean;
   public invalidAddress: boolean;
   public validDataFromClipboard;
@@ -68,7 +73,7 @@ export class SendPage {
     AddressbookAddPage: '/address-book-add',
     AmountPage: '/amount',
     ConfirmPage: '/confirm',
-    CopayersPage : '/copayers',
+    CopayersPage: '/copayers',
     ImportWalletPage: '/import-wallet',
     JoinWalletPage: '/join-wallet',
     PaperWalletPage: '/paper-wallet',
@@ -79,6 +84,9 @@ export class SendPage {
   titlePage: string = "Send to";
   dataDonation: any;
   navPramss: any;
+  listRecipient: RecipientModel[] = [];
+
+  @ViewChildren(RecipientComponent) listFinalRecipient: QueryList<RecipientComponent>;
   constructor(
     private currencyProvider: CurrencyProvider,
     private router: Router,
@@ -96,12 +104,18 @@ export class SendPage {
     private clipboardProvider: ClipboardProvider,
     private platformProvider: PlatformProvider,
     private profileProvider: ProfileProvider,
+    private txFormatProvider: TxFormatProvider
   ) {
     if (this.router.getCurrentNavigation()) {
       this.navPramss = this.router.getCurrentNavigation().extras.state;
     } else {
       this.navPramss = history ? history.state : {};
     }
+    this.listRecipient.push(new RecipientModel({
+      toAddress: '',
+      address: 0,
+      isValid: false
+    }))
     this.wallet = this.profileProvider.getWallet(this.navPramss.walletId);
     this.isDonation = this.navPramss.isDonation;
     if (this.isDonation) {
@@ -117,9 +131,16 @@ export class SendPage {
     this.events.subscribe('Desktop/onFocus', () => {
       this.setDataFromClipboard();
     });
+    this.events.subscribe('addRecipient', newRecipient => {
+      this.addRecipient(newRecipient);
+    });
     this.onResumeSubscription = this.plt.resume.subscribe(() => {
       this.setDataFromClipboard();
     });
+  }
+  ngAfterViewInit(): void {
+    // console.log(this.listFinalRecipient);
+    this.listFinalRecipient.changes.subscribe(s => console.log(s));
   }
 
   @ViewChild('transferTo')
@@ -131,6 +152,15 @@ export class SendPage {
 
   ionViewDidEnter() {
     this.setDataFromClipboard();
+    // if (this.router.getCurrentNavigation()) {
+    //   this.navPramss = this.router.getCurrentNavigation().extras.state;
+    // } else {
+    //   this.navPramss = history ? history.state : {};
+    // }
+    // if (this.navPramss.toAddress) {
+    //   const contact = this.navPramss.name || this.navPramss.toAddress;
+    //   this.listRecipient.find(s => s.id === this.navPramss.recipientId).toAddress = contact;
+    // }
   }
 
   ngOnDestroy() {
@@ -260,6 +290,33 @@ export class SendPage {
       }
     });
   }
+  public getBalance() {
+    const lastKnownBalance = this.wallet.lastKnownBalance;
+    if (this.wallet.coin === 'xrp') {
+      const availableBalanceStr =
+        this.wallet.cachedStatus &&
+        this.wallet.cachedStatus.availableBalanceStr;
+      return availableBalanceStr || lastKnownBalance;
+    } else {
+      const totalBalanceStr =
+        this.wallet.cachedStatus && this.wallet.cachedStatus.totalBalanceStr;
+      return totalBalanceStr || lastKnownBalance;
+    }
+  }
+
+  public getAlternativeBalance() {
+    if (this.wallet.coin === 'xrp') {
+      const availableAlternative =
+        this.wallet.cachedStatus &&
+        this.wallet.cachedStatus.availableBalanceAlternative;
+      return DecimalFormatBalance(availableAlternative);
+    } else {
+      const totalBalanceAlternative =
+        this.wallet.cachedStatus &&
+        this.wallet.cachedStatus.totalBalanceAlternative;
+      return DecimalFormatBalance(totalBalanceAlternative);
+    }
+  }
 
   public cleanSearch() {
     this.search = '';
@@ -268,36 +325,37 @@ export class SendPage {
 
   public async processInput() {
     if (this.search == '') this.invalidAddress = false;
-    const hasContacts = await this.checkIfContact();
-    if (!hasContacts) {
-      const parsedData = this.incomingDataProvider.parseData(this.search);
-      if (
-        parsedData &&
-        _.indexOf(this.validDataTypeMap, parsedData.type) != -1
-      ) {
-        const isValid = this.checkCoinAndNetwork(this.search);
-        if (isValid) this.redir();
-      } else if (parsedData && parsedData.type == 'BitPayCard') {
-        // this.close();
-        this.incomingDataProvider.redir(this.search, {
-          activePage: 'SendPage'
-        });
-      } else if (parsedData && parsedData.type == 'PrivateKey') {
-        this.incomingDataProvider.redir(this.search, {
-          activePage: 'SendPage'
-        });
-      } else {
-        this.invalidAddress = true;
-      }
+    // const hasContacts = await this.checkIfContact();
+    // if (!hasContacts) {
+
+    // } else {
+    //   this.invalidAddress = false;
+    // }
+    const parsedData = this.incomingDataProvider.parseData(this.search);
+    if (
+      parsedData &&
+      _.indexOf(this.validDataTypeMap, parsedData.type) != -1
+    ) {
+      const isValid = this.checkCoinAndNetwork(this.search);
+      if (isValid) this.redir();
+    } else if (parsedData && parsedData.type == 'BitPayCard') {
+      // this.close();
+      this.incomingDataProvider.redir(this.search, {
+        activePage: 'SendPage'
+      });
+    } else if (parsedData && parsedData.type == 'PrivateKey') {
+      this.incomingDataProvider.redir(this.search, {
+        activePage: 'SendPage'
+      });
     } else {
-      this.invalidAddress = false;
+      this.invalidAddress = true;
     }
   }
 
-  public async checkIfContact() {
-    await timer(50).toPromise();
-    return this.transferTo.hasContactsOrWallets;
-  }
+  // public async checkIfContact() {
+  //   await timer(50).toPromise();
+  //   return this.transferTo.hasContactsOrWallets;
+  // }
 
   private checkIfLegacy(): boolean {
     return (
@@ -347,5 +405,106 @@ export class SendPage {
     this.validDataFromClipboard = null;
     this.clipboardProvider.clear();
     this.processInput();
+  }
+
+  public addNewRecipient() {
+    this.listRecipient.push(new RecipientModel({
+      to: '',
+      amount: '',
+      isValid: false
+    }))
+  }
+  public continue() {
+    const listFinal = this.listFinalRecipient.map(s => s.recipient);
+    console.log(listFinal);
+    this.goToConfirm();
+  }
+  public deleteRecipient(id) {
+    this.listRecipient = this.listRecipient.filter(s => s.id !== id);
+  }
+
+  public goToConfirm(): void {
+    let totalAmount = 0;
+    if(this.listRecipient.length === 1){
+      const recipient = this.listRecipient[0];
+    this.router.navigate(['/confirm'], {
+      state: {
+        walletId: this.wallet.credentials.walletId,
+        recipientType: recipient.recipientType,
+        amount: recipient.amount,
+        currency: recipient.currency,
+        coin: this.wallet.coin,
+        network: this.wallet.network,
+        useSendMax: false,
+        toAddress: recipient.toAddress,
+        name: recipient.name,
+        fromWalletDetails: true
+      }
+    });
+    } else{
+      this.listRecipient.forEach(recipient => {
+        totalAmount += recipient.amount;
+      });
+      this.router.navigate(['/confirm'], {
+        state: {
+          walletId: this.wallet.credentials.walletId,
+          fromMultiSend: true,
+          totalAmount,
+          recipientType: 'multi',
+          color: this.wallet.color,
+          coin: this.wallet.coin,
+          network: this.wallet.network,
+          useSendMax: true,
+          recipients: this.listRecipient
+        }
+      });
+    }
+  }
+
+  sendMax(){
+    const recipient = this.listRecipient[0];
+    this.router.navigate(['/confirm'], {
+      state: {
+        walletId: this.wallet.credentials.walletId,
+        recipientType: recipient.recipientType,
+        amount: recipient.amount,
+        currency: recipient.currency,
+        coin: this.wallet.coin,
+        network: this.wallet.network,
+        useSendMax: true,
+        toAddress: recipient.toAddress,
+        name: recipient.name,
+        fromWalletDetails: true
+      }
+    });
+  }
+
+  public addRecipient(recipient): void {
+    let recipientSelected = this.listRecipient.find(s => s.id === recipient.id);
+    if (recipientSelected) {
+      // let amountToShow: string = +recipientSelected.amount
+      //   ? this.txFormatProvider.formatAmount(this.wallet.coin, +recipientSelected.amount)
+      //   : null;
+
+      // let altAmountStr = this.txFormatProvider.formatAlternativeStr(
+      //   this.wallet.coin,
+      //   ++recipientSelected.amount
+      // );
+      
+      // recipientSelected.amount = +recipientSelected.amount ? +recipientSelected.amount : null;
+      // recipientSelected.amountToShow = amountToShow;
+      // recipientSelected.altAmountStr = altAmountStr;
+      recipientSelected.toAddress = recipient.toAddress;
+      recipientSelected.name = recipient.name;
+      recipientSelected.recipientType = recipient.recipientType;
+      // recipientSelected = new RecipientModel({
+      //   amount: 
+      //   amountToShow,
+      //   altAmountStr: altAmountStr ? altAmountStr : null,
+      //   toAddress: recipient.toAddress,
+      //   recipientType: recipient.recipientType,
+      //   recipient
+      // })
+    }
   }
 }
