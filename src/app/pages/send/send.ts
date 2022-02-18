@@ -42,7 +42,7 @@ import { RecipientModel } from './recipient/recipient.model';
   styleUrls: ['./send.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class SendPage implements AfterViewInit {
+export class SendPage {
   public wallet: any;
   public search: string = '';
   public amount: string = '';
@@ -85,7 +85,9 @@ export class SendPage implements AfterViewInit {
   dataDonation: any;
   navPramss: any;
   listRecipient: RecipientModel[] = [];
-
+  walletId: string;
+  isShowSendMax: boolean = true;
+  isShowDelete: boolean = false;
   @ViewChildren(RecipientComponent) listFinalRecipient: QueryList<RecipientComponent>;
   constructor(
     private currencyProvider: CurrencyProvider,
@@ -116,6 +118,7 @@ export class SendPage implements AfterViewInit {
       address: 0,
       isValid: false
     }))
+    this.walletId = this.navPramss.walletId;
     this.wallet = this.profileProvider.getWallet(this.navPramss.walletId);
     this.isDonation = this.navPramss.isDonation;
     if (this.isDonation) {
@@ -126,7 +129,6 @@ export class SendPage implements AfterViewInit {
       this.wallet.donationCoin = undefined;
     }
     this.isCordova = this.platformProvider.isCordova;
-    this.events.subscribe('Local/AddressScan', this.updateAddressHandler);
     this.events.subscribe('SendPageRedir', this.SendPageRedirEventHandler);
     this.events.subscribe('Desktop/onFocus', () => {
       this.setDataFromClipboard();
@@ -138,13 +140,6 @@ export class SendPage implements AfterViewInit {
       this.setDataFromClipboard();
     });
   }
-  ngAfterViewInit(): void {
-    // console.log(this.listFinalRecipient);
-    this.listFinalRecipient.changes.subscribe(s => console.log(s));
-  }
-
-  @ViewChild('transferTo')
-  transferTo;
 
   ngOnInit() {
     this.logger.info('Loaded: SendPage');
@@ -152,19 +147,9 @@ export class SendPage implements AfterViewInit {
 
   ionViewDidEnter() {
     this.setDataFromClipboard();
-    // if (this.router.getCurrentNavigation()) {
-    //   this.navPramss = this.router.getCurrentNavigation().extras.state;
-    // } else {
-    //   this.navPramss = history ? history.state : {};
-    // }
-    // if (this.navPramss.toAddress) {
-    //   const contact = this.navPramss.name || this.navPramss.toAddress;
-    //   this.listRecipient.find(s => s.id === this.navPramss.recipientId).toAddress = contact;
-    // }
   }
 
   ngOnDestroy() {
-    this.events.unsubscribe('Local/AddressScan', this.updateAddressHandler);
     this.events.unsubscribe('SendPageRedir', this.SendPageRedirEventHandler);
     this.events.unsubscribe('Desktop/onFocus');
     this.onResumeSubscription.unsubscribe();
@@ -193,11 +178,6 @@ export class SendPage implements AfterViewInit {
     });
   };
 
-  private updateAddressHandler: any = data => {
-    this.search = data.value;
-    this.processInput();
-  };
-
   public shouldShowZeroState() {
     return (
       this.wallet &&
@@ -206,9 +186,7 @@ export class SendPage implements AfterViewInit {
     );
   }
 
-  public openScanner(): void {
-    this.router.navigate(['/scan'], { state: { fromSend: true } });
-  }
+  
 
   public showOptions(coin: Coin) {
     return (
@@ -218,49 +196,49 @@ export class SendPage implements AfterViewInit {
     );
   }
 
-  private checkCoinAndNetwork(data, isPayPro?): boolean {
-    let isValid, addrData;
-    if (isPayPro) {
-      isValid =
-        data &&
-        data.chain == this.currencyProvider.getChain(this.wallet.coin) &&
-        data.network == this.wallet.network;
-    } else {
-      addrData = this.addressProvider.getCoinAndNetwork(
-        data,
-        this.wallet.network
-      );
-      isValid =
-        this.currencyProvider.getChain(this.wallet.coin).toLowerCase() ==
-        addrData.coin && addrData.network == this.wallet.network;
-    }
+  // private checkCoinAndNetwork(data, isPayPro?): boolean {
+  //   let isValid, addrData;
+  //   if (isPayPro) {
+  //     isValid =
+  //       data &&
+  //       data.chain == this.currencyProvider.getChain(this.wallet.coin) &&
+  //       data.network == this.wallet.network;
+  //   } else {
+  //     addrData = this.addressProvider.getCoinAndNetwork(
+  //       data,
+  //       this.wallet.network
+  //     );
+  //     isValid =
+  //       this.currencyProvider.getChain(this.wallet.coin).toLowerCase() ==
+  //       addrData.coin && addrData.network == this.wallet.network;
+  //   }
 
-    if (isValid) {
-      this.invalidAddress = false;
-      return true;
-    } else {
-      this.invalidAddress = true;
-      let network = isPayPro ? data.network : addrData.network;
+  //   if (isValid) {
+  //     this.invalidAddress = false;
+  //     return true;
+  //   } else {
+  //     this.invalidAddress = true;
+  //     let network = isPayPro ? data.network : addrData.network;
 
-      if (this.wallet.coin === 'bch' && this.wallet.network === network) {
-        const isLegacy = this.checkIfLegacy();
-        isLegacy ? this.showLegacyAddrMessage() : this.showErrorMessage();
-      } else {
-        this.showErrorMessage();
-      }
-    }
+  //     if (this.wallet.coin === 'bch' && this.wallet.network === network) {
+  //       const isLegacy = this.checkIfLegacy();
+  //       isLegacy ? this.showLegacyAddrMessage() : this.showErrorMessage();
+  //     } else {
+  //       this.showErrorMessage();
+  //     }
+  //   }
 
-    return false;
-  }
+  //   return false;
+  // }
 
-  private redir() {
-    this.incomingDataProvider.redir(this.search, {
-      activePage: 'SendPage',
-      amount: this.navPramss.amount,
-      coin: this.navPramss.coin // TODO ???? what is this for ?
-    });
-    this.search = '';
-  }
+  // private redir() {
+  //   this.incomingDataProvider.redir(this.search, {
+  //     activePage: 'SendPage',
+  //     amount: this.navPramss.amount,
+  //     coin: this.navPramss.coin // TODO ???? what is this for ?
+  //   });
+  //   this.search = '';
+  // }
 
   private showErrorMessage() {
     const msg = this.translate.instant(
@@ -272,24 +250,25 @@ export class SendPage implements AfterViewInit {
     });
   }
 
-  private showLegacyAddrMessage() {
-    const appName = this.appProvider.info.nameCase;
-    const infoSheet = this.actionSheetProvider.createInfoSheet(
-      'legacy-address-info',
-      { appName }
-    );
-    infoSheet.present();
-    infoSheet.onDidDismiss(option => {
-      if (option) {
-        const legacyAddr = this.search;
-        const cashAddr = this.addressProvider.translateToCashAddress(
-          legacyAddr
-        );
-        this.search = cashAddr;
-        this.processInput();
-      }
-    });
-  }
+  // private showLegacyAddrMessage() {
+  //   const appName = this.appProvider.info.nameCase;
+  //   const infoSheet = this.actionSheetProvider.createInfoSheet(
+  //     'legacy-address-info',
+  //     { appName }
+  //   );
+  //   infoSheet.present();
+  //   infoSheet.onDidDismiss(option => {
+  //     if (option) {
+  //       const legacyAddr = this.search;
+  //       const cashAddr = this.addressProvider.translateToCashAddress(
+  //         legacyAddr
+  //       );
+  //       this.search = cashAddr;
+  //       this.processInput();
+  //     }
+  //   });
+  // }
+
   public getBalance() {
     const lastKnownBalance = this.wallet.lastKnownBalance;
     if (this.wallet.coin === 'xrp') {
@@ -323,34 +302,34 @@ export class SendPage implements AfterViewInit {
     this.invalidAddress = false;
   }
 
-  public async processInput() {
-    if (this.search == '') this.invalidAddress = false;
-    // const hasContacts = await this.checkIfContact();
-    // if (!hasContacts) {
+  // public async processInput() {
+  //   if (this.search == '') this.invalidAddress = false;
+  //   // const hasContacts = await this.checkIfContact();
+  //   // if (!hasContacts) {
 
-    // } else {
-    //   this.invalidAddress = false;
-    // }
-    const parsedData = this.incomingDataProvider.parseData(this.search);
-    if (
-      parsedData &&
-      _.indexOf(this.validDataTypeMap, parsedData.type) != -1
-    ) {
-      const isValid = this.checkCoinAndNetwork(this.search);
-      if (isValid) this.redir();
-    } else if (parsedData && parsedData.type == 'BitPayCard') {
-      // this.close();
-      this.incomingDataProvider.redir(this.search, {
-        activePage: 'SendPage'
-      });
-    } else if (parsedData && parsedData.type == 'PrivateKey') {
-      this.incomingDataProvider.redir(this.search, {
-        activePage: 'SendPage'
-      });
-    } else {
-      this.invalidAddress = true;
-    }
-  }
+  //   // } else {
+  //   //   this.invalidAddress = false;
+  //   // }
+  //   const parsedData = this.incomingDataProvider.parseData(this.search);
+  //   if (
+  //     parsedData &&
+  //     _.indexOf(this.validDataTypeMap, parsedData.type) != -1
+  //   ) {
+  //     const isValid = this.checkCoinAndNetwork(this.search);
+  //     if (isValid) this.redir();
+  //   } else if (parsedData && parsedData.type == 'BitPayCard') {
+  //     // this.close();
+  //     this.incomingDataProvider.redir(this.search, {
+  //       activePage: 'SendPage'
+  //     });
+  //   } else if (parsedData && parsedData.type == 'PrivateKey') {
+  //     this.incomingDataProvider.redir(this.search, {
+  //       activePage: 'SendPage'
+  //     });
+  //   } else {
+  //     this.invalidAddress = true;
+  //   }
+  // }
 
   // public async checkIfContact() {
   //   await timer(50).toPromise();
@@ -404,15 +383,16 @@ export class SendPage implements AfterViewInit {
     this.search = this.validDataFromClipboard || '';
     this.validDataFromClipboard = null;
     this.clipboardProvider.clear();
-    this.processInput();
+    // this.processInput();
   }
 
   public addNewRecipient() {
     this.listRecipient.push(new RecipientModel({
       to: '',
-      amount: '',
-      isValid: false
+      amount: 0
     }))
+    this.isShowSendMax = this.listRecipient.length === 1;
+    this.isShowDelete = this.listRecipient.length > 1;
   }
   public continue() {
     const listFinal = this.listFinalRecipient.map(s => s.recipient);
@@ -421,27 +401,29 @@ export class SendPage implements AfterViewInit {
   }
   public deleteRecipient(id) {
     this.listRecipient = this.listRecipient.filter(s => s.id !== id);
+    this.isShowSendMax = this.listRecipient.length === 1;
+    this.isShowDelete = this.listRecipient.length > 1;
   }
 
   public goToConfirm(): void {
     let totalAmount = 0;
-    if(this.listRecipient.length === 1){
+    if (this.listRecipient.length === 1) {
       const recipient = this.listRecipient[0];
-    this.router.navigate(['/confirm'], {
-      state: {
-        walletId: this.wallet.credentials.walletId,
-        recipientType: recipient.recipientType,
-        amount: recipient.amount,
-        currency: recipient.currency,
-        coin: this.wallet.coin,
-        network: this.wallet.network,
-        useSendMax: false,
-        toAddress: recipient.toAddress,
-        name: recipient.name,
-        fromWalletDetails: true
-      }
-    });
-    } else{
+      this.router.navigate(['/confirm'], {
+        state: {
+          walletId: this.wallet.credentials.walletId,
+          recipientType: recipient.recipientType,
+          amount: recipient.amount,
+          currency: recipient.currency,
+          coin: this.wallet.coin,
+          network: this.wallet.network,
+          useSendMax: false,
+          toAddress: recipient.toAddress,
+          name: recipient.name,
+          fromWalletDetails: true
+        }
+      });
+    } else {
       this.listRecipient.forEach(recipient => {
         totalAmount += recipient.amount;
       });
@@ -461,7 +443,7 @@ export class SendPage implements AfterViewInit {
     }
   }
 
-  sendMax(){
+  sendMax() {
     const recipient = this.listRecipient[0];
     this.router.navigate(['/confirm'], {
       state: {
@@ -490,7 +472,7 @@ export class SendPage implements AfterViewInit {
       //   this.wallet.coin,
       //   ++recipientSelected.amount
       // );
-      
+
       // recipientSelected.amount = +recipientSelected.amount ? +recipientSelected.amount : null;
       // recipientSelected.amountToShow = amountToShow;
       // recipientSelected.altAmountStr = altAmountStr;

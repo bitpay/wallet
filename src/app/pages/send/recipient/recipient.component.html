@@ -1,5 +1,5 @@
-<ion-button (click)="informDelete()">Delete đÊ </ion-button>
-<ion-button class="send-max" (click)="sendMax()" clear wide-header-bar-button>
+<ion-button *ngIf="isShowDelete" (click)="informDelete()">Delete đÊ </ion-button>
+<ion-button *ngIf="isShowSendMax" class="send-max" (click)="sendMax()" clear wide-header-bar-button>
   <span translate>Send max</span>
 </ion-button>
 <p>To</p>

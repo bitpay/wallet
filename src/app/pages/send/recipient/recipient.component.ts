@@ -26,6 +26,7 @@ import { RecipientModel } from './recipient.model';
 import { FilterProvider } from 'src/app/providers/filter/filter';
 import { RateProvider } from 'src/app/providers/rate/rate';
 import { Tracing } from 'trace_events';
+import { WalletTransactionHistoryPage } from '../../settings/wallet-settings/wallet-settings-advanced/wallet-transaction-history/wallet-transaction-history';
 
 @Component({
   selector: 'app-recipient',
@@ -59,9 +60,14 @@ export class RecipientComponent implements OnInit {
   public alternativeAmount: string;
   public useSendMax: boolean;
 
-  walletIdSaved: string;
   @Input()
   recipient: RecipientModel;
+
+  @Input()
+  isShowSendMax: boolean;
+
+  @Input()
+  isShowDelete: boolean;
 
   @Input()
   walletId: string;
@@ -107,20 +113,16 @@ export class RecipientComponent implements OnInit {
     private logger: Logger,
     private filterProvider: FilterProvider,
     private rateProvider: RateProvider,
+    private events: EventManagerService
   ) {
     if (this.router.getCurrentNavigation()) {
       this.navParamsData = this.router.getCurrentNavigation().extras.state;
     } else {
       this.navParamsData = history ? history.state : {};
     }
-    // this.walletIdSaved = this.navParamsData.walletId || this.walletIdSaved;
-    let walletId = '';
-    if (this.navParamsData.walletId) {
-      walletId = this.navParamsData.walletId
-    } else {
-      walletId = this.walletId
+    if(this.navParamsData.walletId){
+      this.wallet = this.profileProvider.getWallet(this.navParamsData.walletId);
     }
-    this.wallet = this.profileProvider.getWallet(walletId);
     this.isCordova = this.platformProvider.isCordova;
     this.expression = '';
     this.onlyIntegers = this.navParamsData.onlyIntegers
@@ -129,15 +131,22 @@ export class RecipientComponent implements OnInit {
     this.alternativeCurrency = this.navParamsData.alternativeCurrency;
     this.config = this.configProvider.get();
     this.fixedUnit = this.navParamsData.fixedUnit;
+    this.events.subscribe('Local/AddressScan', this.updateAddressHandler);
   }
 
   ngOnInit() {
     this.setAvailableUnits();
     this.updateUnitUI();
+    if (this.walletId) {
+      this.wallet = this.profileProvider.getWallet(this.walletId);
+    }
   }
 
-
-
+  private updateAddressHandler: any = data => {
+    this.recipient.toAddress = data.value
+    // this.processInput();
+  };
+  
   private updateUnitUI(): void {
     this.unit = this.availableUnits[this.unitIndex].shortName;
     this.alternativeUnit = this.availableUnits[this.altUnitIndex].shortName;
@@ -464,7 +473,7 @@ export class RecipientComponent implements OnInit {
   }
 
   public openScanner(): void {
-    this.router.navigate(['/scan'], { state: { fromSend: true } });
+    this.router.navigate(['/scan'], { state: { fromRecipientComponent: true} });
   }
 
   public shouldShowZeroState() {

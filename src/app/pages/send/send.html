@@ -7,22 +7,9 @@
   <div page-content>
     <div>
       <span>Available: </span>
-     <span>{{getBalance()}}</span>
+      <span>{{getBalance()}}</span>
     </div>
-
-    <div>
-      <div *ngIf="!shouldShowZeroState() && navPramss.walletId">
-          <app-recipient *ngFor="let recipient of listRecipient" 
-          [walletId]="navPramss.walletId" 
-          [recipient] = recipient 
-          (deleteEvent)="deleteRecipient($event)"
-          (sendMaxEvent)="sendMax()"></app-recipient>
-          <ion-button (click)="addNewRecipient()">Add more recipient</ion-button>
-          <ion-button (click)="continue()">Continue</ion-button>
-      </div>
-    </div>
-
-    <!-- <div class="prompt-user-fullscreen-container" *ngIf="shouldShowZeroState() && !isDonation">
+    <div class="prompt-user-fullscreen-container" *ngIf="shouldShowZeroState() && !isDonation">
       <div>
         <div class="prompt-user">
           <div class="title-icon larger-icon">
@@ -44,31 +31,17 @@
         </ng-template>
       </div>
     </div>
-
     <div *ngIf="!shouldShowZeroState()">
-      <ng-container *ngIf="!isDonation">
-        <div class="send-header-wrapper">
-          <ion-item lines="none" class="search-wrapper" [ngClass]="{'invalid': invalidAddress && search != ''}">
-            <ion-input placeholder="{{'Search contact or enter address' | translate}}" [(ngModel)]="search"
-              (ngModelChange)="processInput()"></ion-input>
-            <ion-icon color="danger" *ngIf="invalidAddress && search != ''" slot="end" class="backspace-icon"
-              name="backspace" (click)="cleanSearch()"></ion-icon>
-            <ion-icon src="assets/img/scan-ico.svg" *ngIf="isCordova" slot="end" class="scan-icon"
-              (click)="openScanner()">
-            </ion-icon>
-          </ion-item>
-        </div>
-
-        <div class="ion-text-center">
-          <ion-button [disabled]="!validDataFromClipboard" slot="end" fill="clear" (click)="pasteFromClipboard()"
-            translate>
-            Paste from Clipboard
-          </ion-button>
-        </div>
-      </ng-container>
-
-      <page-transfer-to [wallet]="wallet" [searchInput]="search" [dataDonation]="dataDonation" [useAsModal]="false"
-        [fromWalletDetails]="true" #transferTo></page-transfer-to>
-    </div> -->
+      <app-recipient *ngFor="let recipient of listRecipient" 
+      [walletId]="walletId" 
+      [recipient]="recipient"
+      (deleteEvent)="deleteRecipient($event)" 
+      [isShowSendMax]="isShowSendMax"
+      [isShowDelete]="isShowDelete" 
+      (sendMaxEvent)="sendMax()">
+      </app-recipient>
+      <ion-button (click)="addNewRecipient()">Add more recipient</ion-button>
+      <ion-button (click)="continue()">Continue</ion-button>
+    </div>
   </div>
 </wide-header-page>
