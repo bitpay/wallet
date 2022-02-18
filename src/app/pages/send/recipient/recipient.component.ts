@@ -27,6 +27,7 @@ import { FilterProvider } from 'src/app/providers/filter/filter';
 import { RateProvider } from 'src/app/providers/rate/rate';
 import { Tracing } from 'trace_events';
 import { WalletTransactionHistoryPage } from '../../settings/wallet-settings/wallet-settings-advanced/wallet-transaction-history/wallet-transaction-history';
+import { ClipboardProvider } from 'src/app/providers';
 
 @Component({
   selector: 'app-recipient',
@@ -59,6 +60,7 @@ export class RecipientComponent implements OnInit {
   private satToUnit: number;
   public alternativeAmount: string;
   public useSendMax: boolean;
+  public validDataFromClipboard;
 
   @Input()
   recipient: RecipientModel;
@@ -113,7 +115,8 @@ export class RecipientComponent implements OnInit {
     private logger: Logger,
     private filterProvider: FilterProvider,
     private rateProvider: RateProvider,
-    private events: EventManagerService
+    private events: EventManagerService,
+    private clipboardProvider: ClipboardProvider
   ) {
     if (this.router.getCurrentNavigation()) {
       this.navParamsData = this.router.getCurrentNavigation().extras.state;
@@ -142,9 +145,10 @@ export class RecipientComponent implements OnInit {
     }
   }
 
+
   private updateAddressHandler: any = data => {
     this.recipient.toAddress = data.value
-    // this.processInput();
+    this.processInput();
   };
   
   private updateUnitUI(): void {
@@ -352,44 +356,24 @@ export class RecipientComponent implements OnInit {
   }
 
   public async processInput() {
-    if (this.recipient.toAddress == '') this.recipient.isValid = false;
-    // const hasContacts = await this.checkIfContact();
-    // if (!hasContacts) {
-    const parsedData = this.incomingDataProvider.parseData(this.recipient.toAddress);
-    if (
-      parsedData &&
-      _.indexOf(this.validDataTypeMap, parsedData.type) != -1
-    ) {
-      const isValid = this.checkCoinAndNetwork(this.recipient.toAddress);
-      if (isValid) this.recipient.isValid = true;
-    } else if (parsedData && parsedData.type == 'BitPayCard') {
-      // this.close();
-      // this.incomingDataProvider.redir(this.recipient.to, {
-      //   activePage: 'SendPage'
-      // });
-      this.recipient.isValid = true;
-    } else if (parsedData && parsedData.type == 'PrivateKey') {
-      // this.incomingDataProvider.redir(this.recipient.to, {
-      //   activePage: 'SendPage'
-      // });
-      this.recipient.isValid = true
-    } else {
-      this.recipient.isValid = false;
+    if(this.recipient.name && this.recipient.recipientType === 'contact' || this.recipient.recipientType === 'wallet') this.recipient.isValid = true
+    else{
+      if (this.recipient.toAddress == '') this.recipient.isValid = false;
+      const parsedData = this.incomingDataProvider.parseData(this.recipient.toAddress);
+      if (
+        parsedData &&
+        _.indexOf(this.validDataTypeMap, parsedData.type) != -1
+      ) {
+        const isValid = this.checkCoinAndNetwork(this.recipient.toAddress);
+        if (isValid) this.recipient.isValid = true;
+      }
+      else if (parsedData && parsedData.type == 'PrivateKey') {
+        this.recipient.isValid = true
+      } else {
+        this.recipient.isValid = false;
+      }
     }
-    // } 
-    // else {
-    //   this.recipient.isValid = false;
-    // }
   }
-
-  // private redir() {
-  //   this.incomingDataProvider.redir(this.recipient.to, {
-  //     activePage: 'SendPage',
-  //     amount: this.navParamsData.amount,
-  //     coin: this.navParamsData.coin // TODO ???? what is this for ?
-  //   });
-  //   this.recipient.to = '';
-  // }
 
   public async checkIfContact() {
     await timer(50).toPromise();
@@ -469,7 +453,9 @@ export class RecipientComponent implements OnInit {
 
   public cleanSearch() {
     this.recipient.toAddress = '';
+    this.recipient.name = '';
     this.recipient.isValid = false;
+    this.recipient.recipientType = '';
   }
 
   public openScanner(): void {
@@ -497,17 +483,6 @@ export class RecipientComponent implements OnInit {
   }
 
   public sendMax(): void {
-    // this.useSendMax = true;
-    // this.allowSend = true;
-
-    // const maxAmount = this.txFormatProvider.satToUnit(
-    //   this.wallet.cachedStatus.availableBalanceSat,
-    //   this.wallet.coin
-    // );
-    // this.expression = this.availableUnits[this.unitIndex].isFiat
-    //   ? this.toFiat(maxAmount, this.wallet.coin).toFixed(2)
-    //   : maxAmount;
-    // this.processAmount();
     this.sendMaxEvent.emit(true);
   }
 
@@ -524,4 +499,16 @@ export class RecipientComponent implements OnInit {
       }
     });
   }
+
+  public async pasteFromClipboard() {
+    this.validDataFromClipboard = await this.clipboardProvider.getValidData(
+      this.wallet.coin
+    );
+    this.cleanSearch();
+    this.recipient.toAddress = this.validDataFromClipboard || '';
+    this.validDataFromClipboard = null;
+    this.clipboardProvider.clear();
+    this.processInput();
+  }
+
 }

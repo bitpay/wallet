@@ -32,6 +32,7 @@
       </div>
     </div>
     <div *ngIf="!shouldShowZeroState()">
+      <p>{{search}}</p>
       <app-recipient *ngFor="let recipient of listRecipient" 
       [walletId]="walletId" 
       [recipient]="recipient"
@@ -41,7 +42,7 @@
       (sendMaxEvent)="sendMax()">
       </app-recipient>
       <ion-button (click)="addNewRecipient()">Add more recipient</ion-button>
-      <ion-button (click)="continue()">Continue</ion-button>
+      <ion-button *ngIf="checkBeforeGoToConfirmPage()" (click)="continue()">Continue</ion-button>
     </div>
   </div>
 </wide-header-page>

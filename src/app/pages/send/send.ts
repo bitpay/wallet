@@ -146,7 +146,7 @@ export class SendPage {
   }
 
   ionViewDidEnter() {
-    this.setDataFromClipboard();
+    this.pasteFromClipboard();
   }
 
   ngOnDestroy() {
@@ -159,6 +159,7 @@ export class SendPage {
     this.validDataFromClipboard = await this.clipboardProvider.getValidData(
       this.wallet.coin
     );
+    console.log(this.validDataFromClipboard);
   }
 
   private SendPageRedirEventHandler: any = nextView => {
@@ -336,14 +337,14 @@ export class SendPage {
   //   return this.transferTo.hasContactsOrWallets;
   // }
 
-  private checkIfLegacy(): boolean {
-    return (
-      this.incomingDataProvider.isValidBitcoinCashLegacyAddress(this.search) ||
-      this.incomingDataProvider.isValidBitcoinCashUriWithLegacyAddress(
-        this.search
-      )
-    );
-  }
+  // private checkIfLegacy(): boolean {
+  //   return (
+  //     this.incomingDataProvider.isValidBitcoinCashLegacyAddress(this.search) ||
+  //     this.incomingDataProvider.isValidBitcoinCashUriWithLegacyAddress(
+  //       this.search
+  //     )
+  //   );
+  // }
 
   public showMoreOptions(): void {
     const optionsSheet = this.actionSheetProvider.createOptionsSheet(
@@ -394,11 +395,13 @@ export class SendPage {
     this.isShowSendMax = this.listRecipient.length === 1;
     this.isShowDelete = this.listRecipient.length > 1;
   }
+
   public continue() {
     const listFinal = this.listFinalRecipient.map(s => s.recipient);
     console.log(listFinal);
     this.goToConfirm();
   }
+
   public deleteRecipient(id) {
     this.listRecipient = this.listRecipient.filter(s => s.id !== id);
     this.isShowSendMax = this.listRecipient.length === 1;
@@ -455,8 +458,7 @@ export class SendPage {
         network: this.wallet.network,
         useSendMax: true,
         toAddress: recipient.toAddress,
-        name: recipient.name,
-        fromWalletDetails: true
+        name: recipient.name
       }
     });
   }
@@ -464,29 +466,12 @@ export class SendPage {
   public addRecipient(recipient): void {
     let recipientSelected = this.listRecipient.find(s => s.id === recipient.id);
     if (recipientSelected) {
-      // let amountToShow: string = +recipientSelected.amount
-      //   ? this.txFormatProvider.formatAmount(this.wallet.coin, +recipientSelected.amount)
-      //   : null;
-
-      // let altAmountStr = this.txFormatProvider.formatAlternativeStr(
-      //   this.wallet.coin,
-      //   ++recipientSelected.amount
-      // );
-
-      // recipientSelected.amount = +recipientSelected.amount ? +recipientSelected.amount : null;
-      // recipientSelected.amountToShow = amountToShow;
-      // recipientSelected.altAmountStr = altAmountStr;
       recipientSelected.toAddress = recipient.toAddress;
       recipientSelected.name = recipient.name;
       recipientSelected.recipientType = recipient.recipientType;
-      // recipientSelected = new RecipientModel({
-      //   amount: 
-      //   amountToShow,
-      //   altAmountStr: altAmountStr ? altAmountStr : null,
-      //   toAddress: recipient.toAddress,
-      //   recipientType: recipient.recipientType,
-      //   recipient
-      // })
     }
+  }
+  checkBeforeGoToConfirmPage(){
+    return this.listRecipient.findIndex(s => s.isValid === false) === -1;
   }
 }

@@ -5,14 +5,16 @@
 <p>To</p>
 <div class="send-header-wrapper">
   <ion-item lines="none" class="search-wrapper" [ngClass]="{'invalid': invalidAddress && search != ''}">
-    <ion-input placeholder="Click to paste address" [(ngModel)]="recipient.name || recipient.toAddress" (ngModelChange)="processInput()"></ion-input>
-    <ion-icon color="danger" *ngIf="invalidAddress && search != ''" slot="end" class="backspace-icon" name="backspace"
+    <ion-input readonly color="{{recipient.isValid ? 'success' : 'danger'}}" placeholder="Click to paste address" (click)="pasteFromClipboard()" [value]="recipient.name || recipient.toAddress" (ionChange)="processInput()"></ion-input>
+    <ion-icon color="danger" *ngIf="recipient.name || recipient.toAddress" slot="end" class="backspace-icon" name="backspace"
       (click)="cleanSearch()"></ion-icon>
     <ion-icon src="assets/img/address-book-add.svg" slot="end" class="scan-icon" (click)="openTransferToModal()">
     </ion-icon>
     <ion-icon src="assets/img/scan-ico.svg" *ngIf="isCordova" slot="end" class="scan-icon" (click)="openScanner()">
     </ion-icon>
   </ion-item>
+  <ion-text *ngIf="!recipient.isValid" color="danger"> Invalid address</ion-text>
+
 </div>
 <p>Amount</p>
 <div class="send-header-wrapper">
