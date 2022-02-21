@@ -5,44 +5,49 @@
     </ion-button>
   </ion-buttons>
   <div page-content>
-    <div>
-      <span>Available: </span>
-      <span>{{getBalance()}}</span>
-    </div>
-    <div class="prompt-user-fullscreen-container" *ngIf="shouldShowZeroState() && !isDonation">
-      <div>
-        <div class="prompt-user">
-          <div class="title-icon larger-icon">
-            <img *ngIf="wallet.coin !== 'doge'" src="assets/img/ghost-straight-face.svg" />
-            <img *ngIf="wallet.coin === 'doge'" src="assets/img/sad-doge.svg" />
+    <div class="content-wrapper">
+      <div class="available-content">
+        <span class="available-letter">Available: </span>
+        <span class="balance-letter">{{getBalance()}}</span>
+      </div>
+      <div class="prompt-user-fullscreen-container" *ngIf="shouldShowZeroState() && !isDonation">
+        <div>
+          <div class="prompt-user">
+            <div class="title-icon larger-icon">
+              <img *ngIf="wallet.coin !== 'doge'" src="assets/img/ghost-straight-face.svg" />
+              <img *ngIf="wallet.coin === 'doge'" src="assets/img/sad-doge.svg" />
+            </div>
+            <div class="title-info">
+              <span translate>Mmm...</span>
+            </div>
+            <div class="subtitle-info" *ngIf="wallet.coin !== 'xrp'; else minXrp">
+              <span translate>It appears that you do not have any money to send.</span>
+            </div>
           </div>
-          <div class="title-info">
-            <span translate>Mmm...</span>
-          </div>
-          <div class="subtitle-info" *ngIf="wallet.coin !== 'xrp'; else minXrp">
-            <span translate>It appears that you do not have any money to send.</span>
-          </div>
+  
+          <ng-template #minXrp>
+            <div class="subtitle-info">
+              <p translate>You need a minimum of 20 XRP to send funds.</p>
+            </div>
+          </ng-template>
         </div>
-
-        <ng-template #minXrp>
-          <div class="subtitle-info">
-            <p translate>You need a minimum of 20 XRP to send funds.</p>
-          </div>
-        </ng-template>
+      </div>
+      <div *ngIf="!shouldShowZeroState()">
+        <p>{{search}}</p>
+        <app-recipient *ngFor="let recipient of listRecipient" 
+        [walletId]="walletId" 
+        [recipient]="recipient"
+        (deleteEvent)="deleteRecipient($event)" 
+        [isShowSendMax]="isShowSendMax"
+        [isShowDelete]="isShowDelete" 
+        (sendMaxEvent)="sendMax()">
+        </app-recipient>
+        <div class="btn-function-group"> 
+          <ion-button class="btn-add-more" fill="outline" (click)="addNewRecipient()">Add more recipient</ion-button>
+          <ion-button *ngIf="checkBeforeGoToConfirmPage()" class="button-standard" (click)="continue()">Continue</ion-button>
+        </div>
       </div>
     </div>
-    <div *ngIf="!shouldShowZeroState()">
-      <p>{{search}}</p>
-      <app-recipient *ngFor="let recipient of listRecipient" 
-      [walletId]="walletId" 
-      [recipient]="recipient"
-      (deleteEvent)="deleteRecipient($event)" 
-      [isShowSendMax]="isShowSendMax"
-      [isShowDelete]="isShowDelete" 
-      (sendMaxEvent)="sendMax()">
-      </app-recipient>
-      <ion-button (click)="addNewRecipient()">Add more recipient</ion-button>
-      <ion-button *ngIf="checkBeforeGoToConfirmPage()" (click)="continue()">Continue</ion-button>
-    </div>
+   
   </div>
 </wide-header-page>

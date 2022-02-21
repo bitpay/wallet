@@ -118,6 +118,25 @@ export class HomePage {
       .getCardExperimentFlag()
       .then(status => (this.cardExperimentEnabled = status === 'enabled'));
     this.isCordova = this.platformProvider.isCordova;
+    this.testGoToConfirmPage();
+
+  }
+
+  testGoToConfirmPage(){
+    this.router.navigate(['/confirm'], {
+      state: {
+        amount: 100000,
+        coin: "xpi",
+        currency: "XPI",
+        fromWalletDetails: true,
+        name: "Lotus 2nd",
+        network: "livenet",
+        recipientType: "wallet",
+        toAddress: "lotus_16PSJQSw2Tzt4BFJRtF41Ht7oB58NiWdDbo4z7Dc3",
+        useSendMax: false,
+        walletId: "823a0be0-04b7-440d-9a40-6d05b20afac3"
+      }
+    });
   }
 
   private showNewFeatureSlides() {

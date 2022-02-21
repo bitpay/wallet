@@ -1,4 +1,19 @@
 page-send {
+
+  .content-wrapper{
+    padding-left: 20px;
+    padding-right: 20px;
+    .available-content{
+      font-size: 14px;
+      .available-letter{
+        color:  rgba(237, 239, 240, 0.6);
+      }
+      .balance-letter{
+        font-weight: 600;
+      }
+    }
+  }
+
   .title {
     font-weight: 500;
 
@@ -65,5 +80,19 @@ page-send {
 
   .section-header {
     margin-bottom: 0px;
+  }
+
+  .btn-function-group{
+    display: flex;
+    flex-flow: column;
+    .btn-add-more{
+      --color: rgba(126, 208, 255, 1);
+      --border-color: rgba(224, 228, 230, 0.6);
+      width: 85%;
+      margin: 5px auto 25px auto;
+      --border-radius: 100px;
+      font-size: 14px;
+      font-weight: 600;
+    }
   }
 }

@@ -3,6 +3,11 @@ page-confirm {
     height: calc(100% - 130px) !important;
   }
 
+  ion-note {
+    // margin-left: unset;
+    // margin-right: unset;
+    margin-inline: unset;
+  }
   .amount-label {
     padding-top: 1rem;
 
@@ -123,25 +128,93 @@ page-confirm {
   }
 
   .bp-list {
+    .item{
+      --inner-padding-start: 16px;
+    }
+    .list-container{
+      display: flex;
+      flex-flow: column;
+      width: 100%;
+      .row-container{
+        display: flex;
+        justify-content: space-between;
+      }
+      .row-container:nth-child(n+2){
+        padding: 16px 0;
+        margin: 0 16px;
+        .item-name{
+          font-weight: 400;
+          font-size: 16px;
+        }
+        .item-detail{
+          font-size: 16px;
+          font-weight: 600 !important;
+          text-align: end;
+          .sub-note{
+            color: rgba(237, 239, 240, 0.6);
+            font-size: 11px;
+          }
+        }
+      }
+      .row-container:nth-child(n+3) {
+        border-top: 1px solid rgba(112, 129, 138, 0.38);
+      }
+    }
+    
+    .summary-amount-info{
+      justify-content: center;
+      .total-amount{
+        margin-top: 16px;
+        margin-bottom: 4px;
+        color: rgba(255, 184, 93, 1) !important;
+        font-size: 22px;
+        font-weight: 600;
+      }
+      .total-amount-alt{
+        display: flex;
+        justify-content: center;
+        color: rgba(255, 221, 182, 1);
+        font-size: 16px;
+        font-weight: 600;
+      }
+    }
+
     .sub-title {
       color: #000000;
       font-size: 16px;
       font-weight: 500;
       line-height: 18px;
     }
+   
 
-    .item {
-
-      &.item-ios,
-      &.item-md {
-        padding-left: 19px;
-
-        .item-inner {
-          padding-top: 0px;
-          padding-bottom: 0px;
-        }
+    .custom-list {
+      --inner-padding-start: 0;
+      --padding-end: 0;
+      --inner-padding-end: 0;
+      &::part(native){
+        padding: 0;
       }
+
+      .first-row{
+        border-bottom: 1px solid rgba(112, 129, 138, 0.38);
+        padding-bottom: 17px;
+        display: flex;
+        justify-content: center;
+      }
+      // &.item-ios,
+      // &.item-md {
+      //   padding-left: 19px;
+
+        
+      // }
+      // .item-inner {
+      //   padding-top: 0px;
+      //   padding-bottom: 0px;
+      //   padding-right: 0px !important;
+      // }
     }
+    
+    
   }
 
   .background-content {
@@ -155,6 +228,9 @@ page-confirm {
 
   .note-container {
     max-width: 100px;
+    font-size: 16px !important;
+    font-weight: 600 !important;
+    color: rgba(255, 184, 93, 1) !important;
   }
 
   .wallet,

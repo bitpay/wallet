@@ -81,7 +81,7 @@ export class SendPage {
   };
 
   isDonation: boolean;
-  titlePage: string = "Send to";
+  titlePage: string ;
   dataDonation: any;
   navPramss: any;
   listRecipient: RecipientModel[] = [];
@@ -120,6 +120,7 @@ export class SendPage {
     }))
     this.walletId = this.navPramss.walletId;
     this.wallet = this.profileProvider.getWallet(this.navPramss.walletId);
+    this.titlePage = "Send " + (this.wallet.coin as String).toUpperCase();
     this.isDonation = this.navPramss.isDonation;
     if (this.isDonation) {
       this.titlePage = "Receiving Wallet";
