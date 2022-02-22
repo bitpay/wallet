@@ -6,7 +6,7 @@ page-send {
     .available-content{
       font-size: 14px;
       .available-letter{
-        color:  rgba(237, 239, 240, 0.6);
+        color:  rgba(0, 30, 46, 0.6);
       }
       .balance-letter{
         font-weight: 600;
@@ -86,8 +86,8 @@ page-send {
     display: flex;
     flex-flow: column;
     .btn-add-more{
-      --color: rgba(126, 208, 255, 1);
-      --border-color: rgba(224, 228, 230, 0.6);
+      --color: rgba(0, 101, 141, 1);
+      --border-color: rgba(0, 30, 46, 1);
       width: 85%;
       margin: 5px auto 25px auto;
       --border-radius: 100px;

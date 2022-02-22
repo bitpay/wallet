@@ -1,7 +1,7 @@
 <div class="recipient-header">
   <p class="recipient-header-title">RECIPIENT</p>
   <img *ngIf="isShowDelete" (click)="informDelete()" class="x-button"
-    src="../../../../assets/img/recipient-component/x.svg">
+    src="../../../../assets/img/recipient-component/x-{{darkThemeString}}.svg">
 </div>
 <div class="recipient-content-wrapper">
   <div class="recipient-content">
@@ -11,7 +11,7 @@
     </ion-button> -->
     <div class="transfer-to-header">
       <p class="title">Transfer to</p>
-      <img (click)="openTransferToModal()" src="../../../../assets/img/recipient-component/Union.svg">
+      <img (click)="openTransferToModal()" src="../../../../assets/img/recipient-component/Union-{{darkThemeString}}.svg">
     </div>
 
     <ion-item lines="none" class="search-address-wrapper" [ngClass]="{'invalid': invalidAddress && search != ''}">
@@ -35,8 +35,6 @@
     <ion-item lines="none" class="amount-wrapper">
       <ion-input placeholder=0 type="number" [(ngModel)]="expression" (ngModelChange)="processAmount()"></ion-input>
       <span class="bold-text">{{unit}}</span>
-      <ion-icon src="../../../../assets/img/recipient-component/x.svg" color="danger" *ngIf="invalidAddress && search != ''" slot="end" 
-        (click)="cleanSearch()"></ion-icon>
     </ion-item>
     <p class="unit-alt-text">{{recipient.altAmountStr}} {{alternativeUnit}}</p>
   </div>

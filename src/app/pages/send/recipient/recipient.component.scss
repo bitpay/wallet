@@ -1,73 +1,83 @@
-.recipient-header{
-    font-weight: 600;
-    color: rgba(237, 239, 240, 0.6);
-    display: flex;
-    justify-content: space-between;
-    .x-button{
-        cursor: pointer;
+recipient-component{
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    margin: 0;
     }
-}
-
-.recipient-content-wrapper{
-    background: linear-gradient(0deg, rgba(126, 208, 255, 0.11), rgba(126, 208, 255, 0.11)), #001E2E;
-    border-radius: 12px;
-    margin-bottom: 20px;
-    
-    .recipient-content{
-        padding-left: 16px;
-        padding-top: 18px;
-        padding-bottom: 16px;
-        padding-right: 16px;
-        .title{
-            font-weight: 600;
-            font-size: 14px;
-            color: rgba(224, 228, 230, 0.6);
-        }
-        .transfer-to-header{
-            display: flex;
-            justify-content: space-between;
-            img{
-                cursor: pointer;
-            }
-        }
-        .search-address-wrapper, .amount-wrapper{
-            --border-color: rgba(224, 228, 230, 0.6);
-            --border-width: 2px;
-            --border-style: solid;
-            --border-radius: 4px;
-            --background: transparent;
-            --highlight-color-focused: rgba(224, 228, 230, 0.6);
-            --highlight-color-valid	: rgba(224, 228, 230, 0.6);
-            --highlight-color-invalid: rgba(224, 228, 230, 0.6);
-            ion-input{
-                --placeholder-color: rgba(237, 239, 240, 0.38);
-                --color: #EDEFF0;
-                font-size: 16px;
-            }
-           .erase-icon{
-               width: 14px;
-               cursor: pointer;
-           }
-           .transfer-to-input{
-                cursor: pointer;
-           }
-        }
-        .bold-text{
-            color: #7ED0FF;
-            font-weight: 600;
-            font-size: 16px;
-        }
-        .amount-header{
-            display: flex;
-            flex-flow: row;
-            justify-content: space-between;
-        }
-        .max-text{
+    .recipient-header{
+        font-weight: 600;
+        color: rgba(0, 30, 46, 0.6);
+        display: flex;
+        justify-content: space-between;
+        .x-button{
             cursor: pointer;
         }
-        .unit-alt-text{
-            font-size: 12px;
-            color: rgba(224, 228, 230, 0.6);
+    }
+    
+    .recipient-content-wrapper{
+        background: #FAFAFB;
+        border-radius: 12px;
+        margin-bottom: 20px;
+        
+        .recipient-content{
+            padding-left: 16px;
+            padding-top: 18px;
+            padding-bottom: 16px;
+            padding-right: 16px;
+            .title{
+                font-weight: 600;
+                font-size: 14px;
+                color: rgba(0, 30, 46, 1);
+            }
+            .transfer-to-header{
+                display: flex;
+                justify-content: space-between;
+                img{
+                    cursor: pointer;
+                    color: #00658D;
+                }
+            }
+            .search-address-wrapper, .amount-wrapper{
+                --border-color: rgba(0, 30, 46, 0.38);
+                --border-width: 2px;
+                --border-style: solid;
+                --border-radius: 4px;
+                --background: transparent;
+                --highlight-color-focused: rgba(0, 30, 46, 0.38);
+                --highlight-color-valid	: rgba(0, 30, 46, 0.38);
+                --highlight-color-invalid: rgba(0, 30, 46, 0.38);
+                ion-input{
+                    --placeholder-color: rgba(0, 30, 46, 0.38);
+                    --color: #001E2E;
+                    font-size: 16px;
+                }
+               .erase-icon{
+                   width: 14px;
+                   cursor: pointer;
+               }
+               .transfer-to-input{
+                    cursor: pointer;
+               }
+            }
+            .bold-text{
+                color: #00658D;
+                font-weight: 600;
+                font-size: 16px;
+            }
+            .amount-header{
+                display: flex;
+                flex-flow: row;
+                justify-content: space-between;
+            }
+            .max-text{
+                cursor: pointer;
+            }
+            .unit-alt-text{
+                font-size: 12px;
+                color: rgba(0, 30, 46, 0.6);
+            }
         }
     }
 }

@@ -34,17 +34,17 @@
       </div>
       <div *ngIf="!shouldShowZeroState()">
         <p>{{search}}</p>
-        <app-recipient *ngFor="let recipient of listRecipient" 
+        <recipient-component *ngFor="let recipient of listRecipient" 
         [walletId]="walletId" 
         [recipient]="recipient"
         (deleteEvent)="deleteRecipient($event)" 
         [isShowSendMax]="isShowSendMax"
         [isShowDelete]="isShowDelete" 
         (sendMaxEvent)="sendMax()">
-        </app-recipient>
+        </recipient-component>
         <div class="btn-function-group"> 
           <ion-button class="btn-add-more" fill="outline" (click)="addNewRecipient()">Add more recipient</ion-button>
-          <ion-button [disabled]="!checkBeforeGoToConfirmPage()" class="button-standard" (click)="continue()">Continue</ion-button>
+          <ion-button [disabled]="checkBeforeGoToConfirmPage()" class="button-standard" (click)="continue()">Continue</ion-button>
         </div>
       </div>
     </div>

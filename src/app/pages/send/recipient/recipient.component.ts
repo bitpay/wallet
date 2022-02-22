@@ -27,12 +27,13 @@ import { FilterProvider } from 'src/app/providers/filter/filter';
 import { RateProvider } from 'src/app/providers/rate/rate';
 import { Tracing } from 'trace_events';
 import { WalletTransactionHistoryPage } from '../../settings/wallet-settings/wallet-settings-advanced/wallet-transaction-history/wallet-transaction-history';
-import { ClipboardProvider } from 'src/app/providers';
+import { ClipboardProvider, ThemeProvider } from 'src/app/providers';
 
 @Component({
-  selector: 'app-recipient',
+  selector: 'recipient-component',
   templateUrl: './recipient.component.html',
   styleUrls: ['./recipient.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class RecipientComponent implements OnInit {
   public wallet: any;
@@ -61,7 +62,9 @@ export class RecipientComponent implements OnInit {
   public alternativeAmount: string;
   public useSendMax: boolean;
   public validDataFromClipboard;
-
+  public darkThemeString: string;
+  validName = false;
+  validAmount = false;
   @Input()
   recipient: RecipientModel;
 
@@ -116,8 +119,10 @@ export class RecipientComponent implements OnInit {
     private filterProvider: FilterProvider,
     private rateProvider: RateProvider,
     private events: EventManagerService,
-    private clipboardProvider: ClipboardProvider
+    private clipboardProvider: ClipboardProvider,
+    private themeProvider: ThemeProvider
   ) {
+    this.darkThemeString = this.themeProvider.currentAppTheme === 'dark' ? 'dark' : 'light';
     if (this.router.getCurrentNavigation()) {
       this.navParamsData = this.router.getCurrentNavigation().extras.state;
     } else {
@@ -353,28 +358,34 @@ export class RecipientComponent implements OnInit {
     this.recipient.amountToShow = result;
     this.recipient.altAmountStr = this.alternativeAmount;
     this.recipient.currency = this.unit;
+    this.validAmount = result > 0;
+    this.checkRecipientValid();
   }
 
   public async processInput() {
-    if(this.recipient.name && this.recipient.recipientType === 'contact' || this.recipient.recipientType === 'wallet') this.recipient.isValid = true
+    if(this.recipient.name && this.recipient.recipientType === 'contact' || this.recipient.recipientType === 'wallet') this.validName = true
     else{
-      if (this.recipient.toAddress == '') this.recipient.isValid = false;
+      if (this.recipient.toAddress == '') this.validName = false;
       const parsedData = this.incomingDataProvider.parseData(this.recipient.toAddress);
       if (
         parsedData &&
         _.indexOf(this.validDataTypeMap, parsedData.type) != -1
       ) {
         const isValid = this.checkCoinAndNetwork(this.recipient.toAddress);
-        if (isValid) this.recipient.isValid = true;
+        if (isValid) this.validName = true;
       }
       else if (parsedData && parsedData.type == 'PrivateKey') {
-        this.recipient.isValid = true
+        this.validName = true
       } else {
-        this.recipient.isValid = false;
+        this.validName = false;
       }
     }
+    this.checkRecipientValid();
   }
 
+  checkRecipientValid(){
+    this.recipient.isValid = this.validName && this.validAmount;
+  }
   public async checkIfContact() {
     await timer(50).toPromise();
     return this.transferTo.hasContactsOrWallets;
@@ -398,10 +409,10 @@ export class RecipientComponent implements OnInit {
     }
 
     if (isValid) {
-      this.recipient.isValid = false;
+      this.validName = false;
       return true;
     } else {
-      this.recipient.isValid = true;
+      this.validName = true;
       let network = isPayPro ? data.network : addrData.network;
 
       if (this.wallet.coin === 'bch' && this.wallet.network === network) {
@@ -454,8 +465,9 @@ export class RecipientComponent implements OnInit {
   public cleanSearch() {
     this.recipient.toAddress = '';
     this.recipient.name = '';
-    this.recipient.isValid = false;
+    this.validName = false;
     this.recipient.recipientType = '';
+    this.checkRecipientValid();
   }
 
   public openScanner(): void {

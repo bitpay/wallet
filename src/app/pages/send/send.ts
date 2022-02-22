@@ -473,6 +473,6 @@ export class SendPage {
     }
   }
   checkBeforeGoToConfirmPage(){
-    return this.listRecipient.findIndex(s => s.isValid === false) === -1;
+    return this.listRecipient.findIndex(s => s.isValid === false) !== -1;
   }
 }
