@@ -156,6 +156,15 @@ page-confirm {
           }
         }
       }
+      .send-to-content{
+        .item-name{
+          font-weight: 600 !important;
+          color: rgba(204, 193, 233, 1);
+        }
+        .item-detail{
+          color: rgba(255, 184, 93, 1);
+        }
+      }
       .row-container:nth-child(n+3) {
         border-top: 1px solid rgba(112, 129, 138, 0.38);
       }
@@ -201,6 +210,13 @@ page-confirm {
         display: flex;
         justify-content: center;
       }
+
+      .first-row-send-to{
+        justify-content: space-between;
+        padding-top: 16px; 
+        padding-right: 16px;
+        padding-left: 16px;
+      }
       // &.item-ios,
       // &.item-md {
       //   padding-left: 19px;
@@ -224,6 +240,7 @@ page-confirm {
     text-overflow: ellipsis;
     white-space: nowrap;
     align-items: center;
+    padding-left: 0px
   }
 
   .note-container {

@@ -187,7 +187,7 @@ export class ConfirmPage {
     this.config = this.configProvider.get();
     this.isCordova = this.platformProvider.isCordova;
     this.hideSlideButton = false;
-    this.showMultiplesOutputs = false;
+    this.showMultiplesOutputs = true;
     this.recipients = this.navParamsData.recipients;
     this.fromMultiSend = this.navParamsData.fromMultiSend;
     this.fromSelectInputs = this.navParamsData.fromSelectInputs;

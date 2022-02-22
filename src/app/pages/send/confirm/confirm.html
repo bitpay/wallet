@@ -123,71 +123,127 @@
       </ion-note>
     </ion-item>
 
-      <ion-item lines="none" [ngClass]="{'send-to-custom': !tx.name && !toAddressName }">
+      <ion-item *ngIf="!fromMultiSend" lines="none" [ngClass]="{'send-to-custom': !tx.name && !toAddressName }">
         <ion-label>
           <div class="summary-item">
-            <span *ngIf="tx.recipientType != 'coinbase'" translate>Sending to</span>
-            <span *ngIf="tx.recipientType == 'coinbase'" translate>Transfer to</span>
+            <span *ngIf="tx.recipientType != 'coinbase'" translate>Send to</span>
           </div>
         </ion-label>
 
         <ion-note slot="end" class="address-note-custom">
           <div class="payment-proposal-to" *ngIf="!tx.recipientType">
-            <div class="background-content" *ngIf="!tx.paypro && !fromCoinbase"
-              copy-to-clipboard="{{ tx.origToAddress }}">
-              <img class="coin-img" src="assets/img/currencies/{{tx.coin}}.svg"
-                [ngClass]="{'testnet': tx.network === 'testnet'}" alt="Coin" />
-              <span *ngIf="!tx.name">{{toAddressName || (tx.origToAddress |
-                shortenedAddress)}}</span>
+            <div
+              class="background-content"
+              *ngIf="!tx.paypro && !fromCoinbase"
+              copy-to-clipboard="{{ tx.origToAddress }}"
+            >
+              <img
+                class="coin-img"
+                src="assets/img/currencies/{{tx.coin}}.svg"
+                [ngClass]="{'testnet': tx.network === 'testnet'}"
+                alt="Coin"
+              />
+              <span *ngIf="!tx.name"
+                >{{toAddressName || (tx.origToAddress |
+                shortenedAddress)}}</span
+              >
               <span class="ellipsis" *ngIf="tx.name">{{tx.name}}</span>
             </div>
 
             <div class="paypro" *ngIf="tx.paypro">
-              <ion-icon *ngIf="tx.paypro.verified" name="lock-closed" color="success"></ion-icon>
-              <ion-icon *ngIf="!tx.paypro.verified" name="lock-open" color="danger"></ion-icon>
+              <ion-icon
+                *ngIf="tx.paypro.verified"
+                name="lock-closed"
+                color="success"
+              ></ion-icon>
+              <ion-icon
+                *ngIf="!tx.paypro.verified"
+                name="lock-open"
+                color="danger"
+              ></ion-icon>
 
               <span>{{tx.paypro.host || tx.paypro.toAddress}}</span>
             </div>
 
             <div *ngIf="!tx.paypro && fromCoinbase">
-              <img class="coin-img" src="assets/img/coinbase/coinbase-icon.png" />
+              <img
+                class="coin-img"
+                src="assets/img/coinbase/coinbase-icon.png"
+              />
               <span class="ellipsis">{{ fromCoinbase.accountName }}</span>
             </div>
           </div>
 
-          <ion-row class="wallet ion-align-items-center" *ngIf="tx.recipientType == 'wallet'">
+          <ion-row
+            class="wallet ion-align-items-center"
+            *ngIf="tx.recipientType == 'wallet'"
+          >
             <ion-col>
               <coin-icon [coin]="tx.coin" [network]="tx.network"></coin-icon>
             </ion-col>
 
             <ion-col>
               <div copy-to-clipboard="{{ tx.origToAddress }}">
-                <span class="note-container ellipsis" *ngIf="!tx.name">{{tx.origToAddress}}</span>
-                <span class="note-container ellipsis" *ngIf="tx.name && !isDonation">{{tx.name}}</span>
-                <span class="note-container ellipsis" *ngIf="tx.name && isDonation">Lotus Donation</span>
+                <span class="note-container ellipsis" *ngIf="!tx.name"
+                  >{{tx.origToAddress}}</span
+                >
+                <span
+                  class="note-container ellipsis"
+                  *ngIf="tx.name && !isDonation"
+                  >{{tx.name}}</span
+                >
+                <span
+                  class="note-container ellipsis"
+                  *ngIf="tx.name && isDonation"
+                  >Lotus Donation</span
+                >
               </div>
             </ion-col>
           </ion-row>
 
-          <ion-row class="wallet ion-align-items-center" *ngIf="tx.recipientType == 'contact'"
-            (longPress)="toggleAddress()">
+          <ion-row
+            class="wallet ion-align-items-center"
+            *ngIf="tx.recipientType == 'contact'"
+            (longPress)="toggleAddress()"
+          >
             <ion-col>
-              <gravatar [name]="tx.name" [height]="40" [width]="40" [email]="tx.email" [coin]="tx.coin"
-                [network]="tx.network"></gravatar>
+              <gravatar
+                [name]="tx.name"
+                [height]="40"
+                [width]="40"
+                [email]="tx.email"
+                [coin]="tx.coin"
+                [network]="tx.network"
+              ></gravatar>
             </ion-col>
 
             <ion-col>
               <div copy-to-clipboard="{{ tx.origToAddress }}">
-                <span class="note-container ellipsis" *ngIf="tx.name && !showAddress">{{tx.name}}</span>
-                <span class="note-container ellipsis" *ngIf="tx.name && showAddress"
-                  copy-to-clipboard="{{ tx.toAddress }}">{{tx.toAddress}}</span>
+                <span
+                  class="note-container ellipsis"
+                  *ngIf="tx.name && !showAddress"
+                  >{{tx.name}}</span
+                >
+                <span
+                  class="note-container ellipsis"
+                  *ngIf="tx.name && showAddress"
+                  copy-to-clipboard="{{ tx.toAddress }}"
+                  >{{tx.toAddress}}</span
+                >
               </div>
             </ion-col>
           </ion-row>
 
-          <ion-row class="wallet ion-align-items-center" *ngIf="tx.recipientType == 'coinbase'">
+          <ion-row
+            class="wallet ion-align-items-center"
+            *ngIf="tx.recipientType == 'coinbase'"
+          >
             <ion-col>
-              <ion-icon src="assets/img/coinbase/coinbase-icon.png" width="32" slot="start">
+              <ion-icon
+                src="assets/img/coinbase/coinbase-icon.png"
+                width="32"
+                slot="start"
+              >
               </ion-icon>
             </ion-col>
 
@@ -195,26 +251,44 @@
               <span class="ellipsis">{{ fromCoinbase?.accountName }}</span>
             </ion-col>
           </ion-row>
-
-          <div class="multi-recip-title" (click)="showMultiplesOutputs = !showMultiplesOutputs" *ngIf="fromMultiSend">
-            <ion-icon class="coin-img" src="assets/img/icon-{{tx.coin}}-small.svg" alt="Coin" slot="start">
+          <div
+            class="multi-recip-title"
+            (click)="showMultiplesOutputs = !showMultiplesOutputs"
+            *ngIf="fromMultiSend"
+          >
+            <ion-icon
+              class="coin-img"
+              src="assets/img/icon-{{tx.coin}}-small.svg"
+              alt="Coin"
+              slot="start"
+            >
             </ion-icon>
-            <span class="ellipsis">{{'Multiple recipients ({recipientsCount})' | translate: {
-              recipientsCount: recipients?.length } }}</span>
+            <span class="ellipsis"
+              >{{'Multiple recipients ({recipientsCount})' | translate: {
+              recipientsCount: recipients?.length } }}</span
+            >
             <!-- <ion-button fill="clear" color="grey" slot="end"> -->
-            <ion-icon slot="icon-only" *ngIf="showMultiplesOutputs" name="arrow-up-outline"></ion-icon>
-            <ion-icon slot="icon-only" *ngIf="!showMultiplesOutputs" name="arrow-dropdown"></ion-icon>
+              <ion-icon
+                slot="icon-only"
+                *ngIf="showMultiplesOutputs"
+                name="arrow-up-outline"
+              ></ion-icon>
+              <ion-icon
+                slot="icon-only"
+                *ngIf="!showMultiplesOutputs"
+                name="arrow-dropdown"
+              ></ion-icon>
             <!-- </ion-button> -->
           </div>
         </ion-note>
       </ion-item>
 
-      <ion-item lines="none" *ngIf="!tx.name && !toAddressName" class="sub-title">
+      <!-- <ion-item lines="none" *ngIf="!tx.name && !toAddressName" class="sub-title">
         <ion-input [(ngModel)]="nameContact" class="input-contact-custom"
           placeholder="{{'Enter name to save to address book' | translate}}"></ion-input>
-      </ion-item>
+      </ion-item> -->
 
-      <div *ngIf="tx && fromMultiSend && showMultiplesOutputs">
+      <!-- <div *ngIf="tx && fromMultiSend">
         <ion-item lines="none" *ngFor="let recipient of recipients; let i = index"
           copy-to-clipboard="{{recipient.toAddress}}">
           <ion-label>
@@ -224,13 +298,7 @@
           </ion-label>
           <div slot="end">
             <div class="payment-proposal-to align-right">
-              <div class="background-content">
-                <img class="coin-img" src="assets/img/currencies/{{tx.coin}}.svg"
-                  [ngClass]="{'testnet': tx.network === 'testnet'}" alt="Coin" />
-                <span>{{recipient.contactName || ((recipient.addressToShow ||
-                  recipient.toAddress || recipient.address) |
-                  shortenedAddress)}}</span>
-              </div>
+             
             </div>
             <div class="multi-amount">
               {{recipient.amountToShow}} {{coin | uppercase}}
@@ -240,7 +308,34 @@
             </div>
           </div>
         </ion-item>
-      </div>
+      </div> -->
+      <ion-item *ngIf="tx && fromMultiSend" lines="none" class="custom-list">
+        <div class="list-container">
+          <div class="first-row first-row-send-to row-container summary-amount-info">
+            <div>
+              Send to
+            </div>
+            <div>
+              Amount
+            </div>
+          </div>
+          <div class="row-container send-to-content" *ngFor="let recipient of recipients; let i = index" copy-to-clipboard="{{recipient.toAddress}}">
+            <div class="item-name">
+              <div class="background-content">
+                <span>{{recipient.contactName || ((recipient.addressToShow ||
+                  recipient.toAddress || recipient.address) |
+                  shortenedAddress)}}</span>
+              </div>
+            </div>
+            <div class="item-detail">
+              <div>
+                {{recipient.amountToShow}} {{coin | uppercase}}
+              </div>
+            </div>
+          </div>
+        </div>
+      </ion-item>
+      
 
       <!-- <div class="line-divider" *ngIf="!coinbaseAccount"></div>
 

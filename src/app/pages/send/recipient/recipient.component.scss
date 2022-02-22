@@ -21,10 +21,14 @@
         .title{
             font-weight: 600;
             font-size: 14px;
+            color: rgba(224, 228, 230, 0.6);
         }
         .transfer-to-header{
             display: flex;
             justify-content: space-between;
+            img{
+                cursor: pointer;
+            }
         }
         .search-address-wrapper, .amount-wrapper{
             --border-color: rgba(224, 228, 230, 0.6);

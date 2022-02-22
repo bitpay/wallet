@@ -11,7 +11,7 @@
     </ion-button> -->
     <div class="transfer-to-header">
       <p class="title">Transfer to</p>
-      <img (click)="openTransferToModal()" src="../../../../assets/img/recipient-component/transferTo.svg">
+      <img (click)="openTransferToModal()" src="../../../../assets/img/recipient-component/Union.svg">
     </div>
 
     <ion-item lines="none" class="search-address-wrapper" [ngClass]="{'invalid': invalidAddress && search != ''}">
@@ -19,7 +19,7 @@
         placeholder="Paste address here" (click)="pasteFromClipboard()" [value]="recipient.name || recipient.toAddress"
         (ionChange)="processInput()">
       </ion-input>
-      <ion-icon src="../../../../assets/img/recipient-component/x.svg" *ngIf="recipient.name || recipient.toAddress"
+      <ion-icon src="../../../../assets/img/recipient-component/Subtract.svg" *ngIf="recipient.name || recipient.toAddress"
         slot="end" class="erase-icon" (click)="cleanSearch()">
       </ion-icon>
       <!-- <ion-icon src="assets/img/address-book-add.svg" slot="end" class="scan-icon" (click)="openTransferToModal()">
@@ -35,7 +35,7 @@
     <ion-item lines="none" class="amount-wrapper">
       <ion-input placeholder=0 type="number" [(ngModel)]="expression" (ngModelChange)="processAmount()"></ion-input>
       <span class="bold-text">{{unit}}</span>
-      <ion-icon color="danger" *ngIf="invalidAddress && search != ''" slot="end" class="backspace-icon" name="backspace"
+      <ion-icon src="../../../../assets/img/recipient-component/x.svg" color="danger" *ngIf="invalidAddress && search != ''" slot="end" 
         (click)="cleanSearch()"></ion-icon>
     </ion-item>
     <p class="unit-alt-text">{{recipient.altAmountStr}} {{alternativeUnit}}</p>

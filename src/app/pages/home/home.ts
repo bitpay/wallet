@@ -124,18 +124,51 @@ export class HomePage {
 
   testGoToConfirmPage(){
     this.router.navigate(['/confirm'], {
-      state: {
-        amount: 100000,
-        coin: "xpi",
-        currency: "XPI",
-        fromWalletDetails: true,
-        name: "Lotus 2nd",
-        network: "livenet",
-        recipientType: "wallet",
-        toAddress: "lotus_16PSJQSw2Tzt4BFJRtF41Ht7oB58NiWdDbo4z7Dc3",
-        useSendMax: false,
-        walletId: "823a0be0-04b7-440d-9a40-6d05b20afac3"
-      }
+      // state: {
+      //   amount: 100000,
+      //   coin: "xpi",
+      //   currency: "XPI",
+      //   fromWalletDetails: true,
+      //   name: "Lotus 2nd",
+      //   network: "livenet",
+      //   recipientType: "wallet",
+      //   toAddress: "lotus_16PSJQSw2Tzt4BFJRtF41Ht7oB58NiWdDbo4z7Dc3",
+      //   useSendMax: false,
+      //   walletId: "823a0be0-04b7-440d-9a40-6d05b20afac3"
+      // }
+      state:{
+        "walletId": "3fc119f1-005e-4967-aab5-44f20c083f9c",
+        "fromMultiSend": true,
+        "totalAmount": 3000000,
+        "recipientType": "multi",
+        "coin": "xpi",
+        "network": "livenet",
+        "useSendMax": true,
+        "recipients": [
+            {
+                "id": 1645501989124,
+                "toAddress": "lotus_16PSJQSw2Tzt4BFJRtF41Ht7oB58NiWdDbo4z7Dc3",
+                "amount": 1000000,
+                "amountToShow": 1,
+                "isValid": true,
+                "altAmountStr": "0.00",
+                "name": "Lotus 2nd",
+                "recipientType": "wallet",
+                "currency": "XPI"
+            },
+            {
+                "id": 1645501995602,
+                "toAddress": "lotus_16PSJNfrGEMTQE3gieHs3uAYngqs1EbLFCuAfJppt",
+                "amount": 2000000,
+                "amountToShow": 2,
+                "isValid": true,
+                "altAmountStr": "0.00",
+                "name": "Lotus",
+                "recipientType": "wallet",
+                "currency": "XPI"
+            }
+        ]
+    }
     });
   }
 

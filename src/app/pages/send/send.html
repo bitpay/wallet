@@ -44,10 +44,11 @@
         </app-recipient>
         <div class="btn-function-group"> 
           <ion-button class="btn-add-more" fill="outline" (click)="addNewRecipient()">Add more recipient</ion-button>
-          <ion-button *ngIf="checkBeforeGoToConfirmPage()" class="button-standard" (click)="continue()">Continue</ion-button>
+          <ion-button [disabled]="!checkBeforeGoToConfirmPage()" class="button-standard" (click)="continue()">Continue</ion-button>
         </div>
       </div>
     </div>
-   
   </div>
+  <!-- <div footer-content>
+  </div> -->
 </wide-header-page>
