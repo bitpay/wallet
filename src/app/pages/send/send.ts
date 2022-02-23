@@ -22,8 +22,8 @@ import { Logger } from '../../providers/logger/logger';
 import { PlatformProvider } from '../../providers/platform/platform';
 
 // Pages
-import { RecipientComponent } from './recipient/recipient.component';
-import { RecipientModel } from './recipient/recipient.model';
+import { RecipientComponent } from '../../components/recipient/recipient.component';
+import { RecipientModel } from '../../components/recipient/recipient.model';
 
 @Component({
   selector: 'page-send',
