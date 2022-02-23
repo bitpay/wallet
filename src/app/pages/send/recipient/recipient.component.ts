@@ -7,7 +7,6 @@ import * as _ from 'lodash';
 import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
 import { AddressProvider } from '../../../providers/address/address';
 import { AppProvider } from '../../../providers/app/app';
-import { BwcProvider } from '../../../providers/bwc/bwc';
 import { Config, ConfigProvider } from '../../../providers/config/config';
 import { Coin, CurrencyProvider } from '../../../providers/currency/currency';
 import { ErrorsProvider } from '../../../providers/errors/errors';
@@ -15,18 +14,14 @@ import { IncomingDataProvider } from '../../../providers/incoming-data/incoming-
 import { Logger } from '../../../providers/logger/logger';
 import { PlatformProvider } from '../../../providers/platform/platform';
 import { TxFormatProvider } from '../../../providers/tx-format/tx-format';
-import { WalletProvider } from '../../../providers/wallet/wallet';
-import { ModalController, NavController, NavParams } from '@ionic/angular';
+import { NavParams } from '@ionic/angular';
 import { EventManagerService } from 'src/app/providers/event-manager.service';
 import { Router } from '@angular/router';
 import { ProfileProvider } from 'src/app/providers/profile/profile';
-import { AmountPage } from '../amount/amount';
 import { timer } from 'rxjs';
 import { RecipientModel } from './recipient.model';
 import { FilterProvider } from 'src/app/providers/filter/filter';
 import { RateProvider } from 'src/app/providers/rate/rate';
-import { Tracing } from 'trace_events';
-import { WalletTransactionHistoryPage } from '../../settings/wallet-settings/wallet-settings-advanced/wallet-transaction-history/wallet-transaction-history';
 import { ClipboardProvider, ThemeProvider } from 'src/app/providers';
 
 @Component({
@@ -37,7 +32,6 @@ import { ClipboardProvider, ThemeProvider } from 'src/app/providers';
 })
 export class RecipientComponent implements OnInit {
   public wallet: any;
-  public invalidAddress: boolean;
   public search: string = '';
   public amount: string = '';
   navParamsData: any;
@@ -63,7 +57,7 @@ export class RecipientComponent implements OnInit {
   public useSendMax: boolean;
   public validDataFromClipboard;
   public darkThemeString: string;
-  validName = false;
+  validAddress = false;
   validAmount = false;
   @Input()
   recipient: RecipientModel;
@@ -363,28 +357,28 @@ export class RecipientComponent implements OnInit {
   }
 
   public async processInput() {
-    if(this.recipient.name && this.recipient.recipientType === 'contact' || this.recipient.recipientType === 'wallet') this.validName = true
+    if(this.recipient.name && this.recipient.recipientType === 'contact' || this.recipient.recipientType === 'wallet') this.validAddress = true
     else{
-      if (this.recipient.toAddress == '') this.validName = false;
+      if (this.recipient.toAddress == '') this.validAddress = false;
       const parsedData = this.incomingDataProvider.parseData(this.recipient.toAddress);
       if (
         parsedData &&
         _.indexOf(this.validDataTypeMap, parsedData.type) != -1
       ) {
         const isValid = this.checkCoinAndNetwork(this.recipient.toAddress);
-        if (isValid) this.validName = true;
+        if (isValid) this.validAddress = true;
       }
       else if (parsedData && parsedData.type == 'PrivateKey') {
-        this.validName = true
+        this.validAddress = true
       } else {
-        this.validName = false;
+        this.validAddress = false;
       }
     }
     this.checkRecipientValid();
   }
 
   checkRecipientValid(){
-    this.recipient.isValid = this.validName && this.validAmount;
+    this.recipient.isValid = this.validAddress && this.validAmount;
   }
   public async checkIfContact() {
     await timer(50).toPromise();
@@ -409,10 +403,10 @@ export class RecipientComponent implements OnInit {
     }
 
     if (isValid) {
-      this.validName = false;
+      this.validAddress = false;
       return true;
     } else {
-      this.validName = true;
+      this.validAddress = true;
       let network = isPayPro ? data.network : addrData.network;
 
       if (this.wallet.coin === 'bch' && this.wallet.network === network) {
@@ -465,7 +459,7 @@ export class RecipientComponent implements OnInit {
   public cleanSearch() {
     this.recipient.toAddress = '';
     this.recipient.name = '';
-    this.validName = false;
+    this.validAddress = false;
     this.recipient.recipientType = '';
     this.checkRecipientValid();
   }

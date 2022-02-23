@@ -5,16 +5,12 @@
 </div>
 <div class="recipient-content-wrapper">
   <div class="recipient-content">
-    <!-- <ion-button >Delete đÊ </ion-button> -->
-    <!-- <ion-button *ngIf="isShowSendMax" class="send-max" (click)="sendMax()" clear wide-header-bar-button>
-      <span translate>Send max</span>
-    </ion-button> -->
     <div class="transfer-to-header">
       <p class="title">Transfer to</p>
       <img (click)="openTransferToModal()" src="../../../../assets/img/recipient-component/Union-{{darkThemeString}}.svg">
     </div>
 
-    <ion-item lines="none" class="search-address-wrapper" [ngClass]="{'invalid': invalidAddress && search != ''}">
+    <ion-item lines="none" class="search-address-wrapper">
       <ion-input class="transfer-to-input" readonly
         placeholder="Paste address here" (click)="pasteFromClipboard()" [value]="recipient.name || recipient.toAddress"
         (ionChange)="processInput()">
@@ -22,12 +18,9 @@
       <ion-icon src="../../../../assets/img/recipient-component/Subtract.svg" *ngIf="recipient.name || recipient.toAddress"
         slot="end" class="erase-icon" (click)="cleanSearch()">
       </ion-icon>
-      <!-- <ion-icon src="assets/img/address-book-add.svg" slot="end" class="scan-icon" (click)="openTransferToModal()">
-        </ion-icon> -->
-      <!-- <ion-icon src="assets/img/scan-ico.svg" *ngIf="isCordova" slot="end" class="scan-icon" (click)="openScanner()">
-        </ion-icon> -->
+      <ion-icon src="assets/img/scan-ico.svg" *ngIf="isCordova" slot="end" class="scan-icon" (click)="openScanner()">
+        </ion-icon>
     </ion-item>
-    <!-- <ion-text *ngIf="!recipient.isValid" color="danger"> Invalid address</ion-text> -->
     <div class="amount-header">
       <p class="title">Amount</p>
       <p class="bold-text max-text" *ngIf="isShowSendMax" (click)="sendMax()">Max</p>

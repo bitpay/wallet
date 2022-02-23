@@ -95,25 +95,10 @@
             </ion-col>
           </ion-row>
 
-          <!-- <ion-row class="wallet ion-align-items-center" *ngIf="coinbaseAccount">
-          <ion-col>
-            <ion-icon src="assets/img/coinbase/coinbase-icon.png" width="32" slot="start">
-            </ion-icon>
-          </ion-col>
-
-          <ion-col>
-            <span class="note-container ellipsis">{{coinbaseAccount.name}}</span>
-          </ion-col>
-        </ion-row> -->
-
-          <ion-row class="wallet ion-align-items-center" *ngIf="!wallet && !coinbaseAccount">
+          <ion-row class="wallet ion-align-items-center" *ngIf="!wallet">
             <div translate>Select a wallet</div>
-            <!-- <div class="last-item" slot="end"> -->
-            <!-- <ion-button fill="clear" color="grey"> -->
             <ion-icon *ngIf="!isOpenSelector" name="chevron-down-outline"></ion-icon>
             <ion-icon *ngIf="isOpenSelector" name="chevron-up-outline"></ion-icon>
-            <!-- </ion-button> -->
-            <!-- </div> -->
           </ion-row>
         </ion-note>
       </ion-item>
@@ -172,22 +157,11 @@
             </ion-col>
           </ion-row>
 
-          <ion-row class="wallet ion-align-items-center" *ngIf="tx.recipientType == 'coinbase'">
-            <ion-col>
-              <ion-icon src="assets/img/coinbase/coinbase-icon.png" width="32" slot="start">
-              </ion-icon>
-            </ion-col>
-
-            <ion-col>
-              <span class="ellipsis">{{ fromCoinbase?.accountName }}</span>
-            </ion-col>
-          </ion-row>
           <div class="multi-recip-title" (click)="showMultiplesOutputs = !showMultiplesOutputs" *ngIf="fromMultiSend">
             <ion-icon class="coin-img" src="assets/img/icon-{{tx.coin}}-small.svg" alt="Coin" slot="start">
             </ion-icon>
             <span class="ellipsis">{{'Multiple recipients ({recipientsCount})' | translate: {
               recipientsCount: recipients?.length } }}</span>
-            <!-- <ion-button fill="clear" color="grey" slot="end"> -->
             <ion-icon slot="icon-only" *ngIf="showMultiplesOutputs" name="arrow-up-outline"></ion-icon>
             <ion-icon slot="icon-only" *ngIf="!showMultiplesOutputs" name="arrow-dropdown"></ion-icon>
             <!-- </ion-button> -->
@@ -195,32 +169,6 @@
         </ion-note>
       </ion-item>
 
-      <!-- <ion-item lines="none" *ngIf="!tx.name && !toAddressName" class="sub-title">
-        <ion-input [(ngModel)]="nameContact" class="input-contact-custom"
-          placeholder="{{'Enter name to save to address book' | translate}}"></ion-input>
-      </ion-item> -->
-
-      <!-- <div *ngIf="tx && fromMultiSend">
-        <ion-item lines="none" *ngFor="let recipient of recipients; let i = index"
-          copy-to-clipboard="{{recipient.toAddress}}">
-          <ion-label>
-            <div class="summary-item">
-              <span translate>Recipient {{ i + 1 }}</span>
-            </div>
-          </ion-label>
-          <div slot="end">
-            <div class="payment-proposal-to align-right">
-             
-            </div>
-            <div class="multi-amount">
-              {{recipient.amountToShow}} {{coin | uppercase}}
-            </div>
-            <div class="secondary-note" *ngIf="recipient.altAmountStr">
-              {{recipient.altAmountStr}}
-            </div>
-          </div>
-        </ion-item>
-      </div> -->
       <ion-item *ngIf="tx && fromMultiSend" lines="none" class="custom-list">
         <div class="list-container">
           <div class="first-row first-row-send-to row-container summary-amount-info">
