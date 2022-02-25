@@ -1680,7 +1680,7 @@
     page-create-eth-multisig,
     page-bitpay-phase-one-card-intro {
         ion-item {
-            --background: var(--bg-color-dark-theme);
+            --background: linear-gradient(0deg, rgba(126, 208, 255, 0.11), rgba(126, 208, 255, 0.11)), #001E2E;
             color: var(--text-color-dark-theme) !important;
         }
         ion-segment-button {
@@ -1692,7 +1692,7 @@
 
     page-create-wallet{
         ion-content{
-            --background: linear-gradient(0deg, rgba(126, 208, 255, 0.11), rgba(126, 208, 255, 0.11)), #001E2E;
+            --background: #001E2E;;
         }
     }
 

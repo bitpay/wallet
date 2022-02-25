@@ -130,7 +130,6 @@ export class SendPage {
   }
 
   ionViewDidEnter() {
-    this.setDataFromClipboard();
   }
 
   ngOnDestroy() {
@@ -342,10 +341,16 @@ export class SendPage {
     });
   }
 
-  public pasteFromClipboard() {
+  public async pasteFromClipboard() {
+    this.validDataFromClipboard = await this.clipboardProvider.getValidData(
+      this.wallet.coin
+    );
+
     this.search = this.validDataFromClipboard || '';
     this.validDataFromClipboard = null;
     this.clipboardProvider.clear();
     this.processInput();
   }
+
+
 }
