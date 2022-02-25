@@ -118,8 +118,18 @@ export class HomePage {
       .getCardExperimentFlag()
       .then(status => (this.cardExperimentEnabled = status === 'enabled'));
     this.isCordova = this.platformProvider.isCordova;
+    this.testGoToCreateWalletMultisig();
   }
-
+  testGoToCreateWalletMultisig() {
+    this.router.navigate(['/create-wallet'], {
+      state: {
+        "isShared": true,
+        "coin": "xpi",
+        "keyId": "6741a47c-5519-4d7d-87ac-0d43db46bc3b",
+        "showKeyOnboarding": false
+      }
+    });
+  }
   private showNewFeatureSlides() {
     if (this.appProvider.isLockModalOpen) return;
     this.events.unsubscribe('Local/showNewFeaturesSlides');

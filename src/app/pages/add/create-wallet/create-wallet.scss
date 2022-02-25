@@ -1,16 +1,39 @@
+form{
+  margin: 18px;  
+  .wallet-info-container{
+    background: #001E2E;
+    padding: 18px;
+  }
+}
+
 .custom-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 18px;
+  .label{
+    font-size: 14px;
+    color: rgba(237, 239, 240, 0.6);
+  }
   .buttons-container {
+    display: flex;
+    justify-content: space-between;
+    width: 110px;
+    .number-copayer{
+      font-weight: 600;
+      font-size: 22px;
+      flex-flow: column;
+      display: flex;
+      justify-content: center;
+    }
     .add-button {
-      height: 48px;
-      width: 48px;
+      height: 32px;
+      width: 32px;
       font-size: 20px;
-      border-radius: 50%;
-      border: 1px solid var(--ion-color-primary);
+      border: 1px solid #70818A;
       box-shadow: none;
+      justify-content: center;
+      display: flex;
     }
     .remove-button {
       opacity: 50%;
@@ -26,6 +49,31 @@
     }
   }
 }
+
+.notification-container {
+  display: flex;
+  margin-bottom: 36px;
+  padding: 12px 18px;
+  background: #ffddb6;
+  border-radius: 8px;
+  color: #482a00;
+  font-size: 14px;
+  margin: 40px 18px;
+  img{
+    align-self: flex-start;
+    margin-top: 6px;
+  }
+  // .icon-img-container{
+  //   display: flex;
+  //   flex-flow: column;
+  //   justify-content: flex-start;
+  //   font-size: 14px;
+  // }
+  .notification-content {
+    margin-left: 10px;
+  }
+}
+
 .linked-wallet {
   .item-inner {
     border-bottom: 0px;
