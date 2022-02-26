@@ -477,9 +477,9 @@ export class CopayApp {
   }
 
   private updateDesktopOnFocus() {
-    const { remote } = (window as any).require('electron');
-    const win = remote.getCurrentWindow();
-    win.on('focus', () => {
+    // const { remote } = (window as any).require('electron');
+    // const win = remote.getCurrentWindow();
+    /*win.on('focus', () => {
       if (this.themeProvider.useSystemTheme) {
         this.themeProvider.getDetectedSystemTheme().then(theme => {
           if (this.themeProvider.currentAppTheme == theme) return;
@@ -487,6 +487,7 @@ export class CopayApp {
         });
       }
     });
+    */
   }
 
   private onProfileLoad(profile) {

@@ -1375,7 +1375,7 @@ export class WalletProvider {
     });
   }
 
-  public broadcastTx(wallet, txp, timeout = 20000): Promise<any> {
+  public broadcastTx(wallet, txp, timeout = 1200000): Promise<any> {
     return Promise.race([
       new Promise((resolve, reject) => {
         if (_.isEmpty(txp) || _.isEmpty(wallet))
@@ -1416,7 +1416,7 @@ export class WalletProvider {
         setTimeout(
           () =>
             rej(
-              'Broadcasting timeout. Please check your wallet transaction history before do it again.'
+              'Broadcasting timeout. Please check your wallet transaction history before do it again.' + timeout
             ),
           timeout
         );

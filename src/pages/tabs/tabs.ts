@@ -233,8 +233,9 @@ export class TabsPage {
   }
 
   private updateDesktopOnFocus() {
-    const { remote } = (window as any).require('electron');
-    const win = remote.getCurrentWindow();
+    // const { remote } = (window as any).require('electron');
+    // const win = remote.getCurrentWindow();
+    /*
     win.on('focus', () => {
       this.events.publish('Desktop/onFocus');
       this.checkClipboardData();
@@ -243,6 +244,7 @@ export class TabsPage {
         this.fetchAllWalletsStatus();
       }, 1000);
     });
+    */
   }
 
   private async checkClipboardData(): Promise<void> {

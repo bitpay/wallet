@@ -80,7 +80,7 @@ export class CoinbasePage {
         center: true,
         webPreferences: {
           contextIsolation: false,
-          nodeIntegration: false,
+          nodeIntegration: true,
           worldSafeExecuteJavaScript: true
         }
       });

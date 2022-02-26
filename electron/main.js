@@ -29,8 +29,9 @@ function createWindow() {
     show: false,
     webPreferences: {
       nodeIntegration: true,
-      worldSafeExecuteJavaScript: true,
-      enableRemoteModule: true
+      // worldSafeExecuteJavaScript: true,
+      enableRemoteModule: true,
+      contextIsolation: false
     }
   });
 

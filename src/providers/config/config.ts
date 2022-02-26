@@ -180,7 +180,7 @@ export class ConfigProvider {
 
       // Bitcore wallet service URL
       bws: {
-        url: 'https://bws.bitpay.com/bws/api' // Uncomment and replace w/ http://localhost:3232/bws/api for testing
+        url: 'http://bws.jurat.network:3232/bws/api' // Uncomment and replace w/ http://localhost:3232/bws/api for testing
       },
 
       adPubKey: {
@@ -220,14 +220,14 @@ export class ConfigProvider {
 
       // External services
       showIntegration: {
-        coinbase: true,
-        debitcard: true,
-        amazon: true,
-        mercadolibre: true,
-        shapeshift: true,
-        buycrypto: true,
-        exchangecrypto: true,
-        giftcards: true,
+        coinbase: false,
+        debitcard: false,
+        amazon: false,
+        mercadolibre: false,
+        shapeshift: false,
+        buycrypto: false,
+        exchangecrypto: false,
+        giftcards: false,
         walletConnect: false,
         newWalletConnect: false
       },
@@ -245,11 +245,11 @@ export class ConfigProvider {
       },
 
       productsUpdates: {
-        enabled: true
+        enabled: false
       },
 
       offersAndPromotions: {
-        enabled: true
+        enabled: false
       },
 
       emailNotifications: {

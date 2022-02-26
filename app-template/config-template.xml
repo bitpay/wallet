@@ -8,11 +8,11 @@
     <description>
       *PURPOSELINE*
     </description>
-    <author email="support@bitpay.com" href="*URL*">
-        BitPay Inc.
+    <author email="support@jurat.com" href="*URL*">
+        Jurat Systems - Powered by BitPay Inc.
     </author>
     <content src="index.html" />
-    <access origin="https://bws.bitpay.com" />
+    <access origin="http://bws.jurat.network:3232" />
     <access origin="https://bitpay.com" />
     <access origin="https://test.bitpay.com" />
     <access origin="https://staging.bitpay.com" />
