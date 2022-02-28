@@ -293,6 +293,9 @@
                 color: var(--text-color-dark-theme) !important;
             }
         }
+        [aria-checked=true].sc-ion-alert-md .alert-radio-label.sc-ion-alert-md {
+            color: var(--text-color-dark-theme) !important;
+        }
 
         .alert-radio-group {
             .alert-radio:not([aria-checked='true']) .alert-radio-label {
@@ -309,6 +312,10 @@
         .alert-message {
             color: var(--text-color-dark-theme) !important;
         }
+    }
+
+    ion-select{
+        color: var(--text-color-dark-theme) !important;
     }
 
     .alert-ios .alert-button ion-action-sheet {
@@ -1737,6 +1744,9 @@
         ion-item {
             --background: linear-gradient(0deg, rgba(126, 208, 255, 0.11), rgba(126, 208, 255, 0.11)), #001E2E;
             color: var(--text-color-dark-theme) !important;
+            --highlight-color-focused: rgba(224, 228, 230, 0.6);
+            --highlight-color-valid	: rgba(224, 228, 230, 0.6);
+            --highlight-color-invalid: rgba(224, 228, 230, 0.6);
         }
         ion-segment-button {
             &::part(native) {

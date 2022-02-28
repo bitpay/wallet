@@ -1,6 +1,6 @@
 <wide-header-page title="{{ 'Create {coinLabel} Wallet' | translate: {coinLabel: coin.toUpperCase()} }}">
   <ion-buttons slot="end">
-    <ion-button fill="clear" wide-header-bar-button (click)="setOptsAndCreate()" [disabled]="!createForm.valid">
+    <ion-button fill="clear" wide-header-bar-button>
       <span translate>Create</span>
     </ion-button>
   </ion-buttons>
@@ -157,5 +157,10 @@
       </div>
 
     </form>
+  </div>
+  <div footer-content>
+    <ion-toolbar>
+      <ion-button class="button-standard" (click)="setOptsAndCreate()" [disabled]="!createForm.valid">Create account</ion-button>
+    </ion-toolbar>
   </div>
 </wide-header-page>
