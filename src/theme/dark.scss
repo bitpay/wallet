@@ -1122,8 +1122,8 @@
     page-copayers,
     page-txp-details,
     page-tx-details {
-        .timeline-item {
-            background-color: var(--bg-color-dark-theme);
+        .timeline-container {
+            background-color: rgba(33, 51, 62, 1);
         }
     }
 

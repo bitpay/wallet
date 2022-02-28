@@ -22,6 +22,45 @@ page-copayers {
       }
     }
   }
+
+  .account-invitaion-container{
+    display: flex;
+    flex-flow: column;
+    background: linear-gradient(0deg, rgba(126, 208, 255, 0.11), rgba(126, 208, 255, 0.11)), #001E2E;
+    border-radius: 12px;
+    margin: 32px;
+    padding: 24px 16px;
+    margin-top: 0px;
+    
+    .content{
+      display: flex;
+      flex-flow: row;
+      .account-ivitaion-info{
+        display: flex;
+        flex-flow: column;
+        padding-right: 16px;
+        .title{
+          font-weight: 600;
+          font-size: 16px;
+          color: rgba(237, 239, 240, 1);
+        }
+        .sub-title{
+          margin-top: 8px;
+          font-weight: 400;
+          font-size: 14px;
+          color: rgba(237, 239, 240, 0.6);
+        }
+      }
+     
+    }
+    .button{
+      margin-top: 32px;
+      ion-button{
+        margin-top: 0px;
+        margin-bottom: 0px;
+      }
+    }
+  }
   .white-card {
     background: white;
     padding: 2rem;
@@ -38,18 +77,21 @@ page-copayers {
   .error-msg {
     text-align: center;
   }
-
+  .timeline-container{
+    background-color: rgba(33, 51, 62, 1);
+    border-radius: 12px;
+  }
   // Timeline styles
   .timeline-item {
-    background-color: var(--color-blank);
+    background-color: transparent;
     border: 0;
     padding: 17px 0px;
 
-    &:not(:nth-child(2)) {
+    &:not(:nth-child(1)) {
       .timeline-content-icon {
         .line::before {
           content: '';
-          background: #e8e8e8;
+          background: rgba(115, 218, 165, 1);
           height: 34px;
           width: 1px;
           position: absolute;
@@ -59,11 +101,19 @@ page-copayers {
           top: 0;
         }
         .line.no-border::before {
-          height: 36px;
-          top: 2px;
+          height: 16px;
+          top: -8px;
         }
       }
     }
+
+    // &:last-child {
+    //   .timeline-content-icon {
+    //     .line::before {
+    //       background: green;
+    //          }
+    //   }
+    // }
 
     > * {
       padding-right: 0;
@@ -75,6 +125,9 @@ page-copayers {
         font-size: 25px;
         color: var(--color-dark);
       }
+    }
+    .wait-icon{
+      opacity: 0.6;
     }
     .timeline-content {
       display: flex;
@@ -97,14 +150,11 @@ page-copayers {
         }
 
         > div {
-          &:not(.no-border) {
-            border: 2px solid var(--color-success);
-          }
           border-radius: var(--icon-border-radius);
           display: flex;
-          height: 23px;
-          width: 23px;
-          font-size: 13px;
+          height: 20px;
+          width: 20px;
+          font-size: 20px;
           align-items: center;
           justify-content: center;
           font-weight: 600;
@@ -119,9 +169,15 @@ page-copayers {
 
         > .name {
           font-size: 16px;
+          color: #B6C9D8;
+          font-weight: 600;
+          opacity: 0.6;
           @media (max-width: 330px) {
             font-size: 14px;
           }
+        }
+        > .copayer-name{
+          opacity: 1;
         }
       }
     }
