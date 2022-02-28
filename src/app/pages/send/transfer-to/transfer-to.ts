@@ -23,6 +23,9 @@ import { WalletProvider } from '../../../providers/wallet/wallet';
 import { AmountPage } from '../amount/amount';
 import { ConfirmPage } from '../confirm/confirm';
 
+import { Location } from '@angular/common';
+
+
 export interface FlatWallet {
   walletId: string;
   color: string;
@@ -88,7 +91,8 @@ export class TransferToPage {
     private popupProvider: PopupProvider,
     private viewCtrl: ModalController,
     private events: EventManagerService,
-    private onGoingProcessProvider: OnGoingProcessProvider
+    private onGoingProcessProvider: OnGoingProcessProvider,
+    private location: Location
   ) {
     if (this.router.getCurrentNavigation()) {
       this.navParamsData = this.router.getCurrentNavigation().extras.state;
@@ -355,6 +359,22 @@ export class TransferToPage {
           this.dataDonation.nameReceiveLotusAddress = item.name;
           this.router.navigate(['/confirm'], //ConfirmPage
             { state: this.dataDonation });
+        }
+        else if(this.navParamsData.fromSend){
+          const recipient = {
+            recipientType: item.recipientType,
+            toAddress: addr,
+            name: item.name,
+            email: item.email,
+            id: this.navParamsData.recipientId
+          };
+          this.location.historyGo(-1);
+          this.events.publish('addRecipient', recipient);
+
+          // // this.router.navigate(['/send-page']).then(data=>{
+          // //   this.viewCtrl.dismiss();
+          // //   this.events.publish('addRecipient', recipient);
+          // })
         }
         else {
           this.router.navigate(['/amount'], {

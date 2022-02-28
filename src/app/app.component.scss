@@ -728,6 +728,11 @@ ion-app,
     }
 }
 
+.button-disabled {
+    --background: rgba(0, 30, 46, 0.12) !important;
+    color: rgba(28, 55, 69, 0.38);
+}
+
 .button-default {
     color: white;
 }
