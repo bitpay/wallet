@@ -138,6 +138,10 @@
             --background-activated: transparent;
             --color: var(--color-primary-abcpay-dark);
         }
+        &.button-disabled {
+            --background: linear-gradient(0deg, rgba(237, 239, 240, 0.12), rgba(237, 239, 240, 0.12)), #0E3245 !important;
+            color: rgba(224, 228, 230, 0.38);
+        }
     }
 
     ion-back-button {
@@ -1109,7 +1113,7 @@
         ion-note {
             .wallet {
                 .note-container {
-                    color: var(--text-color-dark-theme) !important;
+                    color: rgba(255, 184, 93, 1) !important;
                 }
             }
         }
@@ -1145,12 +1149,21 @@
             .summary-item,
             .total-amount-note,
             .secondary-note {
-                color: var(--text-color-dark-theme) !important;
+                color: rgba(237, 239, 240, 1) !important;
+            }
+
+            .sub-note{
+                color: rgba(0, 30, 46, 0.6);
             }
 
             ion-note {
                 .note-container {
-                    color: var(--text-color-dark-theme) !important;
+                    color: rgba(255, 184, 93, 1) !important;
+                }
+            }
+            .send-to-content{
+                .item-name{
+                    color: rgba(204, 193, 233, 1) !important; 
                 }
             }
         }
@@ -1334,6 +1347,17 @@
     page-multi-send,
     page-select-inputs,
     page-proposals-notifications {
+        .available-letter{
+            color:  rgba(237, 239, 240, 0.6) !important;
+        }
+        .btn-function-group{
+            --color: rgba(126, 208, 255, 1);
+            --border-color: rgba(224, 228, 230, 0.6);
+            .btn-add-more{
+            --color: rgba(126, 208, 255, 1);
+            --border-color: rgba(112, 129, 138, 1);
+            }
+        }
         .amount {
             color: var(--text-color-dark-theme) !important;
         }
@@ -1409,6 +1433,37 @@
 
         .txp-container {
             background-color: var(--bg-color-dark-theme);
+        }
+    }
+
+    recipient-component{
+        .recipient-header{
+            color: rgba(237, 239, 240, 0.6);
+        }
+        .recipient-content-wrapper{
+            background: linear-gradient(0deg, rgba(126, 208, 255, 0.11), rgba(126, 208, 255, 0.11)), #001E2E;
+            .recipient-content{
+                .title{
+                    color: rgba(224, 228, 230, 0.6);
+                }
+                .search-address-wrapper, .amount-wrapper{
+                    --border-color: rgba(224, 228, 230, 0.6);
+                    --highlight-color-focused: rgba(224, 228, 230, 0.6);
+                    --highlight-color-valid	: rgba(224, 228, 230, 0.6);
+                    --highlight-color-invalid: rgba(224, 228, 230, 0.6);
+                    ion-input{
+                        --placeholder-color: rgba(237, 239, 240, 0.38);
+                        --color: #EDEFF0;
+                    }
+                }
+                .bold-text{
+                    color: #7ED0FF;
+                }
+                .unit-alt-text{
+                    color: rgba(224, 228, 230, 0.6);
+                }
+            }
+            
         }
     }
 

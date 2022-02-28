@@ -5,49 +5,50 @@
     </ion-button>
   </ion-buttons>
   <div page-content>
-    <div class="prompt-user-fullscreen-container" *ngIf="shouldShowZeroState() && !isDonation">
-      <div>
-        <div class="prompt-user">
-          <div class="title-icon larger-icon">
-            <img *ngIf="wallet.coin !== 'doge'" src="assets/img/ghost-straight-face.svg">
-            <img *ngIf="wallet.coin === 'doge'" src="assets/img/sad-doge.svg">
+    <div class="content-wrapper">
+      <div class="available-content">
+        <span class="available-letter">Available: </span>
+        <span class="balance-letter">{{getBalance()}}</span>
+      </div>
+      <div class="prompt-user-fullscreen-container" *ngIf="shouldShowZeroState() && !isDonation">
+        <div>
+          <div class="prompt-user">
+            <div class="title-icon larger-icon">
+              <img *ngIf="wallet.coin !== 'doge'" src="assets/img/ghost-straight-face.svg" />
+              <img *ngIf="wallet.coin === 'doge'" src="assets/img/sad-doge.svg" />
+            </div>
+            <div class="title-info">
+              <span translate>Mmm...</span>
+            </div>
+            <div class="subtitle-info" *ngIf="wallet.coin !== 'xrp'; else minXrp">
+              <span translate>It appears that you do not have any money to send.</span>
+            </div>
           </div>
-          <div class="title-info">
-            <span translate>Mmm...</span>
-          </div>
-          <div class="subtitle-info" *ngIf="wallet.coin !== 'xrp'; else minXrp">
-            <span translate>It appears that you do not have any money to send.</span>
-          </div>
+  
+          <ng-template #minXrp>
+            <div class="subtitle-info">
+              <p translate>You need a minimum of 20 XRP to send funds.</p>
+            </div>
+          </ng-template>
         </div>
-
-        <ng-template #minXrp>
-          <div class="subtitle-info">
-            <p translate>You need a minimum of 20 XRP to send funds.</p>
-          </div>
-        </ng-template>
+      </div>
+      <div *ngIf="!shouldShowZeroState()">
+        <p>{{search}}</p>
+        <recipient-component *ngFor="let recipient of listRecipient" 
+        [walletId]="walletId" 
+        [recipient]="recipient"
+        (deleteEvent)="deleteRecipient($event)" 
+        [isShowSendMax]="isShowSendMax"
+        [isShowDelete]="isShowDelete" 
+        (sendMaxEvent)="sendMax()">
+        </recipient-component>
+        <div class="btn-function-group"> 
+          <ion-button class="btn-add-more" fill="outline" (click)="addNewRecipient()">Add more recipient</ion-button>
+          <ion-button [disabled]="checkBeforeGoToConfirmPage()" class="button-standard" (click)="continue()">Continue</ion-button>
+        </div>
       </div>
     </div>
-
-    <div *ngIf="!shouldShowZeroState()">
-      <ng-container *ngIf="!isDonation">
-        <div class="send-header-wrapper">
-          <ion-item lines="none" class="search-wrapper" [ngClass]="{'invalid': invalidAddress && search != ''}">
-            <ion-input placeholder="{{'Search contact or enter address' | translate}}" [(ngModel)]="search" (ngModelChange)="processInput()"></ion-input>
-            <ion-icon color="danger" *ngIf="invalidAddress && search != ''" slot="end" class="backspace-icon" name="backspace" (click)="cleanSearch()"></ion-icon>
-            <ion-icon src="assets/img/scan-ico.svg" *ngIf="isCordova" slot="end" class="scan-icon" (click)="openScanner()">
-            </ion-icon>
-          </ion-item>
-        </div>
-  
-        <div class="ion-text-center">
-          <ion-button slot="end" fill="clear" (click)="pasteFromClipboard()" translate>
-            Paste from Clipboard
-          </ion-button>
-        </div>
-      </ng-container>
-
-      <page-transfer-to [wallet]="wallet" [searchInput]="search" [dataDonation]="dataDonation" [useAsModal]="false" [fromWalletDetails]="true" #transferTo></page-transfer-to>
-
-    </div>
   </div>
+  <!-- <div footer-content>
+  </div> -->
 </wide-header-page>
