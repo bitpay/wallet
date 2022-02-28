@@ -1,9 +1,4 @@
 <wide-header-page title="{{ 'Create {coinLabel} Wallet' | translate: {coinLabel: coin.toUpperCase()} }}">
-  <ion-buttons slot="end">
-    <ion-button fill="clear" wide-header-bar-button>
-      <span translate>Create</span>
-    </ion-button>
-  </ion-buttons>
   <div page-content #content>
     <form [formGroup]="createForm">
       <div class="wallet-info-container">
