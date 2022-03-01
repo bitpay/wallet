@@ -28,7 +28,12 @@ expandable-header-primary {
   line-height: 1.2;
   font-size: 24px !important;
   margin-bottom: 1rem;
-  font-weight: 400;
+}
+
+expandable-header {
+  ion-toolbar {
+    padding-top: 0;
+  }
 }
 
 .img-container {
@@ -51,7 +56,8 @@ expandable-header-primary {
     font-weight: 700;
     padding-top: 0;
     padding-bottom: 0;
-    padding-left: 20px;
+    padding-left: 1rem;
+    --padding-start: 0
   }
 
   ion-toolbar {
@@ -81,15 +87,14 @@ ion-title {
   color: black;
   font-weight: 400;
 }
-
-ion-toolbar {
-  .ios & {
-    padding-top: 3rem; // Fix iOS 10.3
-    padding-top: calc(4px + env(safe-area-inset-top));
-
-    ion-title {
-      padding-top: 3rem; // Fix iOS 10.3
-      padding-top: env(safe-area-inset-top);
+ion-header {
+  ion-toolbar {
+    .ios & {
+      padding-top: calc(4px + env(safe-area-inset-top));
+  
+      ion-title {
+        padding-top: 0;
+      }
     }
   }
 }

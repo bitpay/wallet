@@ -17,10 +17,36 @@ ion-item-divider {
   ion-item-divider {
     margin-top: 0px;
     padding: 12.5px 0px 12.5px 20px;
-    background: #f8f8f9;
+    background: linear-gradient(0deg, rgba(0, 93, 141, 0.05), rgba(0, 93, 141, 0.05)), #FAFAFB;
     .reorder-option {
       font-size: 1.4rem;
       margin: 0 8px 0 !important;
+    }
+    ion-label {
+      font-size: 12px !important;
+      font-weight: 500;
+    }
+  }
+  ion-item {
+    background: #FAFAFB;
+    padding: 5px 0;
+    margin: 0 !important;
+    border-radius: 0;
+    border: 1px solid rgba(112, 129, 138, 0.38);
+    border-left: 0;
+    border-right: 0;
+    ion-note {
+      padding: 0;
+      margin-right: 0;
+      background: transparent;
+      font-size: 16px;
+    }
+    ion-label {
+      font-size: 16px;
+    }
+
+    &.hide-wallet {
+      margin-top: 2rem !important;
     }
   }
 }

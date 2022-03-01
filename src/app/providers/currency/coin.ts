@@ -77,9 +77,9 @@ export const availableCoins: CoinsMap<CoinOpts> = {
       maxMerchantFee: 'normal'
     },
     theme: {
-      coinColor: '#4e1b71',
-      backgroundColor: '#4e1b71',
-      gradientBackgroundColor: '#4e1b71'
+      coinColor: '#ffffff',
+      backgroundColor: '#ffffff',
+      gradientBackgroundColor: '#ffffff'
     }
   },
 

@@ -22,7 +22,6 @@ export class WalletSettingsPage {
   public wallet;
   public canSign: boolean;
   public needsBackup: boolean;
-  public hiddenBalance: boolean;
   public encryptEnabled: boolean;
   public touchIdEnabled: boolean;
   public touchIdPrevValue: boolean;
@@ -55,7 +54,6 @@ export class WalletSettingsPage {
   ionViewWillEnter() {
     this.canSign = this.wallet.canSign;
     this.needsBackup = this.wallet.needsBackup;
-    this.hiddenBalance = this.wallet.balanceHidden;
     this.encryptEnabled = this.wallet.isPrivKeyEncrypted;
 
     this.checkBiometricIdAvailable();
@@ -95,12 +93,6 @@ export class WalletSettingsPage {
     this.touchIdProvider.isAvailable().then((isAvailable: boolean) => {
       this.touchIdAvailable = isAvailable;
     });
-  }
-
-  public hiddenBalanceChange(): void {
-    this.profileProvider.toggleHideBalanceFlag(
-      this.wallet.credentials.walletId
-    );
   }
 
   public openSupportEncryptPassword(): void {

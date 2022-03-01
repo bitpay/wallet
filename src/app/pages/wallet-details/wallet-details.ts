@@ -50,6 +50,9 @@ export class WalletDetailsPage {
   private zone;
   private blockexplorerUrl: string;
   private blockexplorerUrlTestnet: string;
+  public hiddenBalance: boolean;
+  public address: string;
+  public currentTheme: string;
 
   public requiresMultipleSignatures: boolean;
   public wallet;
@@ -106,6 +109,7 @@ export class WalletDetailsPage {
     private appProvider: AppProvider,
     private location: Location
   ) {
+    this.currentTheme = this.appProvider.themeProvider.currentAppTheme;
     if (this.router.getCurrentNavigation()) {
       this.navPramss = this.router.getCurrentNavigation().extras.state;
     } else {
@@ -116,6 +120,17 @@ export class WalletDetailsPage {
     this.isCordova = this.platformProvider.isCordova;
 
     this.wallet = this.profileProvider.getWallet(this.navPramss.walletId);
+    this.walletProvider
+      .getAddress(this.wallet, undefined)
+      .then(addr => {
+        if (!addr) return;
+        const address = this.walletProvider.getAddressView(
+          this.wallet.coin,
+          this.wallet.network,
+          addr
+        );
+        this.address = address;
+    })
     this.isDarkModeEnabled = this.themeProvider.isDarkModeEnabled();
     this.showBuyCrypto =
       (this.wallet.network == 'livenet' ||
@@ -160,9 +175,27 @@ export class WalletDetailsPage {
     this.events.subscribe('Local/WalletHistoryUpdate', this.updateHistory);
   }
 
+  public openLink(url) {
+    this.externalLinkProvider.open(url);
+  }
 
+  openWalletSettings(id) {
+    this.router.navigate(['/wallet-settings'], {
+      state: {
+        walletId: id
+      }
+    });
+  }
+
+  public hiddenBalanceChange(): void {
+    this.hiddenBalance = !this.hiddenBalance;
+    this.profileProvider.toggleHideBalanceFlag(
+      this.wallet.credentials.walletId
+    );
+  }
 
   ionViewWillEnter() {
+    this.hiddenBalance = this.wallet.balanceHidden;
     this.backgroundColor = this.themeProvider.getThemeInfo().walletDetailsBackgroundStart;
     this.onResumeSubscription = this.platform.resume.subscribe(() => {
       this.profileProvider.setFastRefresh(this.wallet);
@@ -320,6 +353,7 @@ export class WalletDetailsPage {
   );
 
   public toggleBalance() {
+    this.hiddenBalance = !this.hiddenBalance;
     this.profileProvider.toggleHideBalanceFlag(
       this.wallet.credentials.walletId
     );

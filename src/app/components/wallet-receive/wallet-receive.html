@@ -1,21 +1,11 @@
 <action-sheet>
   <div *ngIf="wallet && wallet.isComplete() && !wallet.needsBackup && (!newAddressError || address)">
     <ion-row class="addr-header ion-align-items-center">
-      <ion-col class="ion-text-left">
+      <ion-col class="ion-text-left ion-no-padding">
         <span class="addr-title" translate>
           Address
         </span>
       </ion-col>
-      <div class="addr-buttons">
-        <ion-button fill="clear" *ngIf="!(wallet?.cachedStatus && wallet?.cachedStatus.wallet && wallet?.cachedStatus.wallet.singleAddress)" color="primary" class="addr-update" (click)="setAddress(true)">
-          <ion-text color="primary">
-            <span translate>
-              <ion-icon slot="icon-only" *ngIf="!loading" class="spin-icon" [ngClass]="{'spin-backwards': playAnimation}" src="assets/img/right.svg" width="12"></ion-icon>
-              <div *ngIf="loading" [ngClass]="{'spin-fast': loading}" class="spinner"></div>
-            </span>
-          </ion-text>
-        </ion-button>
-      </div>
     </ion-row>
     <div *ngIf="wallet.coin === 'bch'" class="ion-padding-bottom ion-padding-left ion-padding-right">
       <ion-segment [(ngModel)]="bchAddrFormat" (ionChange)="setQrAddress()">
@@ -28,19 +18,11 @@
       </ion-segment>
     </div>
 
-    <div class="addr-content" [ngClass]="{'blur': showingWarning || (bchAddrFormat === 'legacy' && !disclaimerAccepted)}">
-      <div class="addr-container">
-        <div class="text-address ellipsis">
-          <img *ngIf="address" class="copy-to-clip" copy-to-clipboard="{{ address }}" src="assets/img/paste-clipboard.svg" width="18" />
-          <div *ngIf="!address" [ngClass]="{'fade-in-out': playAnimation}" class="address-text">
-            <span class="address-placeholder" translate>Generating new address...</span>
-          </div>
-          <div *ngIf="address" [ngClass]="{'fade-in-out': playAnimation}" class="address-text ellipsis">
-            <span copy-to-clipboard="{{ address }}">{{ address }}</span>
-          </div>
-        </div>
-      </div>
+    <div class="addr-sub-title">
+      <img width="20" height="12" src="assets/img/icon-warning-circled.svg" />
+      {{'Depositing any other crypto asset besides {coin} to this address or doing it through any other network than ERC20 may result in the total loss of your funds. AbcPay is not responsible for any funds loss  due to the deposit of a different asset, wallet or network.' | translate: {coin: wallet.coin.toUpperCase() } }}
     </div>
+
     <div class="qr-container" *ngIf="wallet && wallet?.isComplete() && !wallet?.needsBackup" [ngClass]="{'blur': showingWarning || bchAddrFormat === 'legacy' && !disclaimerAccepted}">
       <div class="prompt-user" *ngIf="newAddressError && !address">
         <div class="title-icon larger-icon">
@@ -54,14 +36,23 @@
         </ion-button>
       </div>
       <div *ngIf="address" class="card qr-card" copy-to-clipboard="{{ address }}">
+        <p>{{ address }}</p>
         <ngx-qrcode hide-toast="true" value="{{ address }}" cssClass="aclass" [errorCorrectionLevel]="typeErrorQr.MEDIUM"></ngx-qrcode>
       </div>
-    </div>
-    <div class="line-divider"></div>
-    <div class="ion-text-center">
-      <ion-button fill="clear" class="safe-area" (click)="dismiss()">
-        {{ 'CLOSE' | translate }}
-      </ion-button>
+      <div class="action-buttons">
+        <div class="action-button">
+          <ion-button copy-to-clipboard="{{ address }}">
+            <ion-icon name="copy-outline"></ion-icon>
+          </ion-button>
+          <div class="ellipsis">{{ 'Copy' | translate }}</div> 
+        </div>
+        <div class="action-button share-button">
+          <ion-button>
+            <ion-icon name="share-outline"></ion-icon>
+          </ion-button>
+          <div class="ellipsis">{{ 'Share' | translate }}</div> 
+        </div>
+      </div>
     </div>
   </div>
 </action-sheet>

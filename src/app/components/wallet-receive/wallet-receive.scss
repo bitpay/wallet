@@ -21,9 +21,15 @@ page-choose-fee-level {
       cursor: pointer;
     }
   }
+  .addr-sub-title {
+    font-size: 14px;
+    color: rgba(28, 55, 69, 0.6);
+    padding: 0 1.5rem;
+    margin: 1rem 0;
+  }
   .addr-header {
     margin: 1rem 0;
-    padding: 0 15px;
+    padding: 0 1.5rem;
     .addr-title {
       height: 30px;
       width: 86px;
@@ -133,5 +139,38 @@ page-choose-fee-level {
   .safe-area {
     margin-bottom: calc(1.5rem + env(safe-area-inset-bottom));
     margin-bottom: -webkit-calc(1.5rem + env(safe-area-inset-bottom));
+  }
+  .qr-container {
+    padding: 0 1.5rem;
+    .qr-card {
+      border-radius: 1rem;
+      padding: 1rem 2rem 0 2rem;
+      p {
+        margin: 0;
+        font-size: 12px;
+        text-align: center;
+        color: rgba(0, 30, 46, 0.6);
+      }
+    }
+    .action-buttons {
+      margin-left: 1.5rem;
+      .action-button {
+        text-align: center;
+        ion-button {
+          --background: #D2E5F4;
+          min-width: 56px;
+          min-height: 56px;
+          ion-icon {
+            color: #0B1D28;
+          }
+        }
+        &.share-button {
+          margin-top: 2rem;
+        }
+        .ellipsis {
+          color: #0B1D28;
+        }
+      }
+    }
   }
 }

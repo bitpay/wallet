@@ -112,6 +112,34 @@
         opacity: 1 !important;
     }
 
+    page-wallet-balance {
+        .balance-container {
+            .balance-header {
+              .balance {
+                .available {
+                  color: #73DAA5;
+                }
+                .confirming {
+                  color: #FFB85D
+                }
+                .locked {
+                  color: #CCC1E9;
+                }
+                .fiat {
+                  color: rgba(237, 239, 240, 0.6);
+                }
+                .total {
+                  color: var(--color-primary-abcpay-dark);
+                }
+              }
+            }
+            .sub-title {
+                border-color: rgba(237, 239, 240, 0.38);
+                color: rgba(237, 239, 240, 0.38);
+            } 
+          }
+    }
+
     page-add-wallet,
     options-sheet {
         .bp-list ion-icon.item-img.icon.item-icon.icon-settings {
@@ -136,7 +164,7 @@
         &[fill="clear"] {
             --background: transparent;
             --background-activated: transparent;
-            --color: var(--color-primary-abcpay-dark);
+            --color: var(--text-color-dark-theme) !important;
         }
         &.button-disabled {
             --background: linear-gradient(0deg, rgba(237, 239, 240, 0.12), rgba(237, 239, 240, 0.12)), #0E3245 !important;
@@ -623,6 +651,7 @@
 
     // 3.5 - Toolbar
     ion-toolbar {
+        background: var(--bg-color-dark-theme);
         --background: var(--bg-color-dark-theme);
         color: var(--text-color-dark-theme) !important;
     }
@@ -703,7 +732,7 @@
     // 4 - Components
     action-sheet {
         .action-sheet {
-            background: var(--bg-color-dark-theme-2) !important;
+            background: linear-gradient(0deg, rgba(126, 208, 255, 0.11), rgba(126, 208, 255, 0.11)), #001E2E !important;
 
             .bp-list {
                 background: var(--bg-color-dark-theme-2) !important;
@@ -892,7 +921,6 @@
     }
 
     pin-pad {
-        background: var(--bg-pin-pad);
         ion-col {
             background: var(--color-secondary-container-abcpay-dark);
             .letters {
@@ -1240,6 +1268,19 @@
             .button-standard {
                 color: var(--text-color-dark-theme) !important;
             }
+            .action-btn {
+                ion-button {
+                    --background: var(--color-primary-abcpay-dark);
+                    color: var(--color-on-primary-abcpay-dark);
+                    ion-icon {
+                        color: var(--color-on-primary-abcpay-dark);
+                    }
+                }
+            }
+        }
+
+        .donate-card {
+            color: var(--bg-surface-color-abcpay-dark);
         }
 
         .balance-card {
@@ -1249,12 +1290,13 @@
         .tx-history {
             .tx-history-header {
                 &.item {
-                    background: #212121;
+                    background: linear-gradient(0deg, rgba(126, 208, 255, 0.08), rgba(126, 208, 255, 0.08)), #001E2E;
                 }
             }
 
             .item {
-                --background: var(--bg-color-dark-theme-2);
+                background: linear-gradient(0deg, rgba(126, 208, 255, 0.12), rgba(126, 208, 255, 0.12)), #001E2E;
+                --background: linear-gradient(0deg, rgba(126, 208, 255, 0.12), rgba(126, 208, 255, 0.12)), #001E2E;
                 color: var(--text-color-dark-theme) !important;
                 --border-color: var(--border-color-dark-theme);
 
@@ -1275,12 +1317,44 @@
                         color: var(--color-danger) !important;
                     }
                 }
+
+                ion-label {
+                    color: rgba(224, 228, 230, 0.6);
+                }
             }
         }
 
         .white-card {
-            background: var(--bg-color-dark-theme-2);
+            background: linear-gradient(0deg, rgba(126, 208, 255, 0.08), rgba(126, 208, 255, 0.08)), #001E2E;
             color: var(--text-color-dark-theme) !important;
+        }
+
+        .wrapper {
+            background: var(--bg-color-dark-theme) !important;
+        }
+
+        .header-transaction {
+            background: linear-gradient(0deg, rgba(126, 208, 255, 0.08), rgba(126, 208, 255, 0.08)), #001E2E;
+        }
+
+        .amount {
+            .received {
+              color: #73DAA5;
+            }
+      
+            .sent {
+              color: #FFB4A9;
+            }
+      
+            .immature {
+              color:#CCC1E9;
+            }
+        }
+
+        .date {
+            span {
+                color: var(--slateDark);
+            }
         }
     }
 
@@ -1348,6 +1422,24 @@
         .segment-button {
             color: var(--text-color-dark-theme) !important;
         }
+
+        .addr-sub-title {
+            color: rgba(224, 228, 230, 0.6);
+        }
+
+        .action-buttons {
+            .action-button {
+              ion-button {
+                --background: var(--color-secondary-container-abcpay-dark) !important;
+                ion-icon {
+                    color: var(--color-on-secondary-container-abcpay-dark) !important;
+                }
+              }
+              .ellipsis {
+                color: var(--color-on-secondary-container-abcpay-dark) !important;
+              }
+            }
+          }
     }
 
     page-send,
@@ -1620,6 +1712,8 @@
         .bp-list.settings-list {
 
             ion-item {
+                background: linear-gradient(0deg, rgba(126, 208, 255, 0.05), rgba(126, 208, 255, 0.05)), #001E2E;
+                --background: linear-gradient(0deg, rgba(126, 208, 255, 0.05), rgba(126, 208, 255, 0.05)), #001E2E;
                 ion-note {
                     background: var(--bg-color-dark-theme-2);
                     color: var(--text-color-dark-theme-2) !important;
@@ -2222,7 +2316,7 @@
             color: rgba(224, 228, 230, 0.38) !important;
         }
         .confirm-term-success{
-            color: #7ED0FF !important;
+            color: var(--color-primary-abcpay-dark) !important;
         }
         .checkbox-list{
             .term-container {

@@ -1,35 +1,54 @@
 page-wallet-balance {
-  .item-inner {
-    border-bottom: none !important;
+  .close-button {
+    margin: 0;
+    --padding-start: 0;
+    --padding-end: 0;
+    --color: rgba(0, 30, 46, 0.6);
+  }
+  ion-item {
+    --inner-padding-end: 0;
   }
   .balance-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    .title {
+    padding: 1rem;
+    width: 100%;
+    .balance-header {
       display: flex;
+      justify-content: space-between;
       align-items: center;
-      img,
-      > ion-icon {
-        height: 18px;
-        width: 18px;
-        margin-right: 15px;
-        padding: 0;
+      .title {
+        > div {
+          font-size: 16px;
+        }
+      }
+      .balance {
+        text-align: end;
+        .available {
+          color: var(--color-success);
+        }
+        .confirming {
+          color: var(--color-warning);
+        }
+        .locked {
+          color: var(--color-tertiary);
+        }
+        .fiat {
+          color: rgba(0, 30, 46, 0.6);
+          font-size: 14px;
+        }
+        .total {
+          font-size: 16px;
+          font-weight: 600;
+          color: var(--color-primary);
+        }
       }
     }
-    .balance {
-      text-align: end;
-      .available {
-        color: var(--color-success);
-      }
-      .confirming,
-      .locked {
-        color: var(--color-warning);
-      }
-      .fiat {
-        color: var(--color-light-grey);
-        font-size: 12.5px;
-      }
-    }
+    .sub-title {
+      padding-top: 0.5rem;
+      margin-top: 0.5rem;
+      border-top: 1px solid;
+      border-color: rgba(112, 129, 138, 0.38);
+      font-size: 14px;
+      color: rgba(0, 30, 46, 0.38);
+    } 
   }
 }
