@@ -1,6 +1,11 @@
 page-wallet-details {
   --icon-width: 36px;
 
+  .grid-wrapper {
+    display: grid;
+    grid-template-rows: max-content 2fr;
+  }
+
   .balance-card {
     overflow: hidden;
     background-color: var(--bg-color-light-theme);
@@ -206,6 +211,7 @@ page-wallet-details {
     }
 
     ion-item {
+      --color-activated: none;
       --inner-padding-bottom: 1rem;
       --padding-top: 1rem;
       font-size: 16px;
@@ -401,8 +407,11 @@ page-wallet-details {
 
   .white-card {
     background: white;
-    padding: 30px 20px;
-    border-radius: 5px;
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-radius: 1rem 1rem 0 0;
   }
 
   .top-notification {

@@ -19,22 +19,10 @@
     </div>
 
     <div class="addr-sub-title">
-      {{ 'Depositing any other crypto asset besides XPI to this address may result in the total loss of your funds.' | translate }}
+      <img width="20" height="12" src="assets/img/icon-warning-circled.svg" />
+      {{'Depositing any other crypto asset besides {coin} to this address or doing it through any other network than ERC20 may result in the total loss of your funds. AbcPay is not responsible for any funds loss  due to the deposit of a different asset, wallet or network.' | translate: {coin: wallet.coin.toUpperCase() } }}
     </div>
 
-    <!-- <div class="addr-content" [ngClass]="{'blur': showingWarning || (bchAddrFormat === 'legacy' && !disclaimerAccepted)}">
-      <div class="addr-container">
-        <div class="text-address ellipsis">
-          <img *ngIf="address" class="copy-to-clip" copy-to-clipboard="{{ address }}" src="assets/img/paste-clipboard.svg" width="18" />
-          <div *ngIf="!address" [ngClass]="{'fade-in-out': playAnimation}" class="address-text">
-            <span class="address-placeholder" translate>Generating new address...</span>
-          </div>
-          <div *ngIf="address" [ngClass]="{'fade-in-out': playAnimation}" class="address-text ellipsis">
-            <span copy-to-clipboard="{{ address }}">{{ address }}</span>
-          </div>
-        </div>
-      </div>
-    </div> -->
     <div class="qr-container" *ngIf="wallet && wallet?.isComplete() && !wallet?.needsBackup" [ngClass]="{'blur': showingWarning || bchAddrFormat === 'legacy' && !disclaimerAccepted}">
       <div class="prompt-user" *ngIf="newAddressError && !address">
         <div class="title-icon larger-icon">

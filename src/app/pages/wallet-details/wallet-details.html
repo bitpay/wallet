@@ -4,7 +4,7 @@
       <ion-back-button icon="chevron-back-outline" defaultHref="/"></ion-back-button>
     </ion-buttons>
     <ion-title>
-      <div [reveal-at-scroll-pos]="(expandableHeader.headerHeight - 200)" [scrollArea]="scrollArea">
+      <div [reveal-at-scroll-pos]="(expandableHeader.headerHeight + 200)" [scrollArea]="scrollArea">
         {{wallet?.name}}
       </div>
     </ion-title>
@@ -14,7 +14,7 @@
   <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)" pullMin="90" pullMax="160">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
-  <div class="wrapper">
+  <div class="wrapper" [ngClass]="{'grid-wrapper': shouldShowZeroState()}">
     <expandable-header class="balance-card" [scrollArea]="scrollArea" #expandableHeader>
       <expandable-header-primary class="balance-header">
 
@@ -45,7 +45,7 @@
               <img src="assets/img/currencies/{{wallet.coin}}.svg" alt="">
               <div class="wallet-name">
                 <p class="name">{{wallet?.name}}</p> 
-                <p copy-to-clipboard="{{ address }}"> {{(address | slice:0:6) +'...'+ (address | slice:-7)}} 
+                <p copy-to-clipboard="{{ address }}"> {{(address | slice:0:10) +'...'+ (address | slice:-12)}} 
                   <ion-icon name="copy-outline"></ion-icon>
                 </p>
               </div>
@@ -234,7 +234,7 @@
       Could not update transaction history
     </div>
 
-    <div class="middle-message white-card" *ngIf="updatingTxHistory && (!history[0] || updatingTxHistoryProgress>4)">
+    <div class="middle-message" *ngIf="updatingTxHistory && (!history[0] || updatingTxHistoryProgress>4)">
       <span translate>Updating transaction history. Please stand by.</span>
       <br>
       <span translate *ngIf="updatingTxHistoryProgress>4">{{updatingTxHistoryProgress}} transactions downloaded</span>
@@ -373,6 +373,13 @@
               <span *ngIf="!tx.message && addressbook && tx.outputs[0] && getContactName(tx.outputs[0].address)">
                 {{getContactName(tx.outputs[0].address)}}
               </span>
+              <br>
+              <div class="date">
+                <span *ngIf="tx.time && createdWithinPastDay(tx.time * 1000)">{{converDate(tx.time * 1000) |
+                  amTimeAgo}}</span>
+                <span *ngIf="tx.time && !createdWithinPastDay(tx.time * 1000)">{{tx.time * 1000 | amDateFormat:'MMM
+                  D, YYYY'}}</span>
+              </div>
             </div>
 
             <div class="action" *ngIf="tx.amount === 0 && wallet?.coin === 'eth'">
