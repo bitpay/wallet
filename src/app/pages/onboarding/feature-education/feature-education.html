@@ -32,7 +32,7 @@
 </ion-content>
 
 <ion-footer class="ion-no-border custom-footer">
-  <ion-toolbar *ngIf="slideEnd;else slideStart">
+  <ion-toolbar class="button-group" [ngClass]="{'show-button': slideEnd}">
     <ion-button  class="button-standard ion-no-margin-bottom" (click)="goToNextPage('SelectCurrencyPage')">
       {{'Create a new wallet' | translate}}
     </ion-button>
@@ -40,12 +40,4 @@
       {{'Import from backup' | translate}}
     </ion-button>
   </ion-toolbar>
-  <ng-template #slideStart>
-    <ion-toolbar>
-      <ion-button disabled fill="clear" class="no-background button-standard ion-no-margin-bottom" (click)="goToNextPage('SelectCurrencyPage')">
-      </ion-button>
-      <ion-button disabled fill="clear" class="no-background button-standard" (click)="goToNextPage('ImportWalletPage')">
-      </ion-button>
-    </ion-toolbar>
-  </ng-template>
 </ion-footer>

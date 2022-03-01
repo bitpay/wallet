@@ -13,48 +13,60 @@
     </ion-button>
   </ion-buttons>
   <div page-content>
-    <div *ngIf="!wallet.notAuthorized" class="copayers-header">
-      <div class="copayers-header-content">
-        <div class="title" translate>Wallet Invitation</div>
-        <div class="text" translate>Share this address with the devices joining this account.</div>
-        <div class="text" translate>Each copayer has their own recovery phrase. To recover funds stored in a Shared
-          Wallet you will need the recovery phrase from each copayer.</div>
-      </div>
-    </div>
-    <div class="qr-container" *ngIf="!wallet.notAuthorized && secret">
-
-      <div class="card qr-card" copy-to-clipboard="{{ secret }}">
-        <ngx-qrcode hide-toast="true" value="{{ secret }}" cssClass="aclass" [errorCorrectionLevel]="typeErrorQr.MEDIUM"></ngx-qrcode>
-      </div>
-
-    </div>
-
+    <!-- <div class="sub-title-for-header">
+      (Shared account) [{{wallet.m}}-{{wallet.n}}]
+    </div> -->
     <div class="white-card" *ngIf="!wallet.notAuthorized && copayers && secret">
-      <span class="title">{{'Waiting for authorized copayers to join' | translate}}</span>
-      <div class="timeline-item" *ngFor="let copayer of copayers; let i = index">
-        <div class="timeline-content">
-          <div class="timeline-content-icon">
-            <div class="line" *ngIf="copayers.length < wallet.n">
-              <ion-icon name="checkmark" slot="end" color="success"></ion-icon>
+      <!-- <span class="title">{{'Waiting for authorized copayers to join' | translate}}</span> -->
+      <div class="timeline-container">
+        <div class="timeline-item" *ngFor="let copayer of copayers; let i = index">
+          <div class="timeline-content">
+            <div class="timeline-content-icon">
+              <div class="line" *ngIf="copayers.length < wallet.n">
+                <ion-icon src="assets/img/copayer-invitation/joined.svg" slot="end"></ion-icon>
+              </div>
+            </div>
+            <div class="timeline-content-label ellipsis">
+              <div *ngIf="copayer.id == wallet.copayerId" class="name copayer-name ellipsis">{{'Me'|translate}}</div>
+              <div *ngIf="copayer.id != wallet.copayerId" class="name copayer-name  ellipsis">{{copayer.name}}</div>
             </div>
           </div>
-          <div class="timeline-content-label ellipsis">
-            <div *ngIf="copayer.id == wallet.copayerId" class="name ellipsis">{{'Me'|translate}}</div>
-            <div *ngIf="copayer.id != wallet.copayerId" class="name ellipsis">{{copayer.name}}</div>
+        </div>
+        <div class="timeline-item" *ngIf="!wallet.isComplete() && copayers.length < wallet.n">
+          <div class="timeline-content">
+            <div class="timeline-content-icon">
+              <div class="line no-border">
+                <ion-icon class="wait-icon" src="assets/img/copayer-invitation/wait.svg" slot="end"></ion-icon>
+              </div>
+            </div>
+            <div class="timeline-content-label ellipsis">
+              <div class="name ellipsis">{{'Waiting'|translate}}</div>
+            </div>
           </div>
         </div>
       </div>
-      <div class="timeline-item" *ngIf="!wallet.isComplete() && copayers.length < wallet.n">
-        <div class="timeline-content">
-          <div class="timeline-content-icon">
-            <div class="line no-border">
-              <ion-icon name="time-outline" slot="end"></ion-icon>
-            </div>
+    </div>
+
+    <div *ngIf="!wallet.notAuthorized" class="account-invitaion-container">
+      <div class="content">
+        <div class="account-ivitaion-info">
+          <div class="title">
+            Account Invitation
           </div>
-          <div class="timeline-content-label ellipsis">
-            <div class="name ellipsis">{{'Waiting'|translate}}</div>
+          <div class="sub-title" translate>
+            Share this address with the devices joining this account.
           </div>
         </div>
+        <div class="qr-code-container" *ngIf="!wallet.notAuthorized && secret" copy-to-clipboard="{{secret}}">
+          <ngx-qrcode hide-toast="true" value="{{ secret }}" cssClass="aclass"
+            [errorCorrectionLevel]="typeErrorQr.MEDIUM"></ngx-qrcode>
+        </div>
+      </div>
+
+      <div class="button">
+        <ion-button class="button-standard">
+          Share this invitation
+        </ion-button>
       </div>
     </div>
 
