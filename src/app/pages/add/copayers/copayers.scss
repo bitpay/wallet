@@ -92,28 +92,17 @@ page-copayers {
         .line::before {
           content: '';
           background: rgba(115, 218, 165, 1);
-          height: 34px;
           width: 1px;
           position: absolute;
           left: 50%;
           -webkit-transform: translateX(-50%) translateY(-100%);
           transform: translateX(-50%) translateY(-100%);
-          top: 0;
-        }
-        .line.no-border::before {
           height: 16px;
           top: -8px;
         }
+     
       }
     }
-
-    // &:last-child {
-    //   .timeline-content-icon {
-    //     .line::before {
-    //       background: green;
-    //          }
-    //   }
-    // }
 
     > * {
       padding-right: 0;
