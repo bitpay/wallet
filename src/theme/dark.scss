@@ -140,7 +140,7 @@
         }
         &.button-disabled {
             --background: linear-gradient(0deg, rgba(237, 239, 240, 0.12), rgba(237, 239, 240, 0.12)), #0E3245 !important;
-            color: rgba(224, 228, 230, 0.38);
+            --color: rgba(224, 228, 230, 0.38);
         }
     }
 
@@ -1767,6 +1767,13 @@
         .linked-wallet {
             color: var(--text-color-dark-theme) !important;
             background-color: var(--bg-color-dark-theme);
+        }
+        ion-item {
+            --background: linear-gradient(0deg, rgba(126, 208, 255, 0.11), rgba(126, 208, 255, 0.11)), #001E2E;
+            color: var(--text-color-dark-theme) !important;
+            --highlight-color-focused: rgba(224, 228, 230, 0.6);
+            --highlight-color-valid	: rgba(224, 228, 230, 0.6);
+            --highlight-color-invalid: rgba(224, 228, 230, 0.6);
         }
     }
 
