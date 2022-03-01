@@ -19,7 +19,7 @@ import { PreviousRouteService } from 'src/app/providers/previous-route/previous-
 @Component({
   selector: 'page-scan',
   templateUrl: 'scan.html',
-  styleUrls: ['/scan.scss'],
+  styleUrls: ['./scan.scss'],
   encapsulation: ViewEncapsulation.None,
   providers: [ScanProvider]
 })
@@ -42,7 +42,8 @@ export class ScanPage {
   public fromAddressbook: boolean;
   public fromImport: boolean;
   public fromJoin: boolean;
-  public fromSend: boolean;
+  public fromRecipientComponent: boolean;
+  public recipientId: string;
   public fromMultiSend: boolean;
   public fromSelectInputs: boolean;
   public fromEthMultisig: boolean;
@@ -121,7 +122,8 @@ export class ScanPage {
     this.fromAddressbook = this.navParamsData.fromAddressbook;
     this.fromImport = this.navParamsData.fromImport;
     this.fromJoin = this.navParamsData.fromJoin;
-    this.fromSend = this.navParamsData.fromSend;
+    this.fromRecipientComponent = this.navParamsData.fromRecipientComponent;
+    this.recipientId = this.navParamsData.recipientId;
     this.fromMultiSend = this.navParamsData.fromMultiSend;
     this.fromSelectInputs = this.navParamsData.fromSelectInputs;
     this.fromEthMultisig = this.navParamsData.fromEthMultisig;
@@ -248,7 +250,7 @@ export class ScanPage {
       this.events.publish('Local/BackupScan', { value: contents });
     } else if (this.fromJoin) {
       this.events.publish('Local/JoinScan', { value: contents });
-    } else if (this.fromSend) {
+    } else if (this.fromRecipientComponent) {
       this.events.publish('Local/AddressScan', { value: contents });
     } else if (this.fromMultiSend) {
       this.events.publish('Local/AddressScanMultiSend', { value: contents });

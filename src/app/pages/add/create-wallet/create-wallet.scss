@@ -1,16 +1,44 @@
+form{
+  margin: 18px;  
+  margin-bottom: 120px;
+  .wallet-info-container{
+    background: linear-gradient(0deg, rgba(126, 208, 255, 0.11), rgba(126, 208, 255, 0.11)), #001E2E;
+    padding: 18px;
+    border-radius: 12px;
+  }
+  ion-item{
+    margin-left: 0px;
+  }
+}
+
 .custom-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 18px;
+  padding-top: 18px;
+  .label{
+    font-size: 14px;
+    color: rgba(237, 239, 240, 0.6);
+  }
   .buttons-container {
+    display: flex;
+    justify-content: space-between;
+    min-width: 110px;
+    .number-copayer{
+      font-weight: 600;
+      font-size: 22px;
+      flex-flow: column;
+      display: flex;
+      justify-content: center;
+    }
     .add-button {
-      height: 48px;
-      width: 48px;
+      height: 32px;
+      width: 32px;
       font-size: 20px;
-      border-radius: 50%;
-      border: 1px solid var(--ion-color-primary);
+      border: 1px solid #70818A;
       box-shadow: none;
+      justify-content: center;
+      display: flex;
     }
     .remove-button {
       opacity: 50%;
@@ -26,6 +54,99 @@
     }
   }
 }
+
+.advance-button{
+  width: 100%;
+  --background:linear-gradient(0deg, rgba(126, 208, 255, 0.11), rgba(126, 208, 255, 0.11)), #001E2E;
+  margin: 0px;
+  margin-top: 32px;
+  --border-radius: 8px;
+  --padding-top: 16px;
+    --padding-bottom: 16px;
+    --padding-start: 16px;
+    span{
+      text-align:left;
+      width:100%;
+      font-size: 16px;
+      font-weight: 400;
+    }
+    ion-icon{
+      width: 12px;
+    }
+}
+
+.open-advance{
+  --border-radius: 8px 8px 0px 0px;
+}
+
+.show-advance-option{
+  padding: 0px 16px;
+  padding-bottom: 23px;
+  background: linear-gradient(0deg, rgba(126, 208, 255, 0.11), rgba(126, 208, 255, 0.11)), #001E2E;
+  border-radius: 0px 0px 8px 8px;
+  
+  ion-item{
+    padding-top: 23px;
+  }
+}
+
+.option-container{
+  
+  &::part(native) {
+    flex-flow: column;
+    align-items: normal;
+  }
+
+  .option-line{
+    display: flex;
+    flex-flow: row;
+    justify-content: space-between;
+    p{
+      font-size: 16px;
+      margin: 0px;
+    }
+    ion-toggle{
+      margin-top: auto;
+      margin-bottom: auto;
+    }
+  }
+
+  .option-line-info{
+    font-size: 12px;
+    font-weight: 400;
+    color:rgba(224, 228, 230, 0.6);
+    padding-bottom: 10px;
+    a{
+      padding-top: 13px;
+      font-size: 14px;
+      color: rgba(126, 208, 255, 1);
+    }
+  }
+}
+
+.notification-container {
+  display: flex;
+  padding: 12px 18px;
+  background: #ffddb6;
+  border-radius: 8px;
+  color: #482a00;
+  font-size: 14px;
+  margin-top: 18px;
+  img{
+    align-self: flex-start;
+    margin-top: 6px;
+  }
+  // .icon-img-container{
+  //   display: flex;
+  //   flex-flow: column;
+  //   justify-content: flex-start;
+  //   font-size: 14px;
+  // }
+  .notification-content {
+    margin-left: 10px;
+  }
+}
+
 .linked-wallet {
   .item-inner {
     border-bottom: 0px;

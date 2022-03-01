@@ -1,4 +1,51 @@
 page-join-wallet {
+  form{
+    margin: 18px;  
+    margin-bottom: 120px;
+    .wallet-info-container{
+      background: linear-gradient(0deg, rgba(126, 208, 255, 0.11), rgba(126, 208, 255, 0.11)), #001E2E;
+      padding: 18px;
+      border-radius: 12px;
+      padding-top: 0px;
+    }
+    ion-item{
+      margin-left: 0px;
+    }
+    .advance-button{
+      width: 100%;
+      --background:linear-gradient(0deg, rgba(126, 208, 255, 0.11), rgba(126, 208, 255, 0.11)), #001E2E;
+      margin: 0px;
+      margin-top: 32px;
+      --border-radius: 8px;
+      --padding-top: 16px;
+        --padding-bottom: 16px;
+        --padding-start: 16px;
+        span{
+          text-align:left;
+          width:100%;
+          font-size: 16px;
+          font-weight: 400;
+        }
+        ion-icon{
+          width: 12px;
+        }
+    }
+    .open-advance{
+      --border-radius: 8px 8px 0px 0px;
+    }
+    .show-advance-option{
+      padding: 0px 16px;
+      padding-bottom: 23px;
+      background: linear-gradient(0deg, rgba(126, 208, 255, 0.11), rgba(126, 208, 255, 0.11)), #001E2E;
+      border-radius: 0px 0px 8px 8px;
+      
+      ion-item{
+        padding-top: 23px;
+      }
+    }
+  }
+
+
   .scanner-icon {
     z-index: 99;
     font-size: 28px;

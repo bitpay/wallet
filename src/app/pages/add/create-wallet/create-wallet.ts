@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import * as _ from 'lodash';
@@ -28,7 +28,7 @@ import { KeyOnboardingPage } from '../../settings/key-settings/key-onboarding/ke
 
 // Slider
 import { SliderCaptchaComponent } from '../../../components/slider-captcha/slider-captcha';
-import { ModalController, NavController, NavParams } from '@ionic/angular';
+import { IonContent, ModalController, NavController, NavParams } from '@ionic/angular';
 import { EventManagerService } from 'src/app/providers/event-manager.service';
 import { Router } from '@angular/router';
 import { CopayersPage } from '../copayers/copayers';
@@ -80,6 +80,7 @@ export class CreateWalletPage implements OnInit {
   public isOpenSelector: boolean;
   public isSlpToken: boolean;
   navParamsData;
+
   constructor(
     private actionSheetProvider: ActionSheetProvider,
     private currencyProvider: CurrencyProvider,
@@ -441,6 +442,11 @@ export class CreateWalletPage implements OnInit {
 
       case 'totalCopayers':
         if (this.copayers.includes(number)) {
+          if(this.createForm.controls['requiredCopayers'].value){
+            if(number < (this.createForm.controls['requiredCopayers'].value as number)){
+              break;
+            }
+          }
           this.createForm.controls['totalCopayers'].setValue(number);
         }
         break;
@@ -502,6 +508,13 @@ export class CreateWalletPage implements OnInit {
     }
 
     return derivationPathByDefault;
+  }
+
+  public handleClickAdvanceOption(){
+    this.showAdvOpts = !this.showAdvOpts;
+    if(this.showAdvOpts){
+      // this.content.scrollToBottom(300);
+    }
   }
 
   changeSlpPath(event){

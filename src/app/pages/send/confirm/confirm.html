@@ -1,14 +1,6 @@
-<wide-header-page
-  title="{{ mainTitle }}"
-  [hasSlideButton]="!hideSlideButton && isCordova"
->
+<wide-header-page title="{{ mainTitle }}" [hasSlideButton]="!hideSlideButton && isCordova">
   <div page-content>
-    <label-tip
-      *ngIf="isSpeedUpTx"
-      type="info"
-      header="no-header"
-      class="no-arrowhead"
-    >
+    <label-tip *ngIf="isSpeedUpTx" type="info" header="no-header" class="no-arrowhead">
       <div *ngIf="wallet.coin === 'btc'" label-tip-body translate>
         A transaction using your delayed transaction inputs will be sent to your
         own wallet with a higher miner fee to speed up the last confirmation
@@ -23,460 +15,74 @@
       </div>
     </label-tip>
     <ion-list lines="none" *ngIf="tx" class="bp-list">
-      <ion-item lines="none" class="sub-title">
-        <ion-label>
-          <div class="main-label" translate>SUMMARY</div>
-        </ion-label>
-      </ion-item>
-
-      <ion-item
-        lines="none"
-        [ngClass]="{'send-to-custom': !tx.name && !toAddressName }"
-      >
-        <ion-label>
-          <div class="summary-item">
-            <span *ngIf="tx.recipientType != 'coinbase'" translate
-              >Sending to</span
-            >
-            <span *ngIf="tx.recipientType == 'coinbase'" translate
-              >Transfer to</span
-            >
-          </div>
-        </ion-label>
-
-        <ion-note slot="end" class="address-note-custom">
-          <div class="payment-proposal-to" *ngIf="!tx.recipientType">
-            <div
-              class="background-content"
-              *ngIf="!tx.paypro && !fromCoinbase"
-              copy-to-clipboard="{{ tx.origToAddress }}"
-            >
-              <img
-                class="coin-img"
-                src="assets/img/currencies/{{tx.coin}}.svg"
-                [ngClass]="{'testnet': tx.network === 'testnet'}"
-                alt="Coin"
-              />
-              <span *ngIf="!tx.name"
-                >{{toAddressName || (tx.origToAddress |
-                shortenedAddress)}}</span
-              >
-              <span class="ellipsis" *ngIf="tx.name">{{tx.name}}</span>
-            </div>
-
-            <div class="paypro" *ngIf="tx.paypro">
-              <ion-icon
-                *ngIf="tx.paypro.verified"
-                name="lock-closed"
-                color="success"
-              ></ion-icon>
-              <ion-icon
-                *ngIf="!tx.paypro.verified"
-                name="lock-open"
-                color="danger"
-              ></ion-icon>
-
-              <span>{{tx.paypro.host || tx.paypro.toAddress}}</span>
-            </div>
-
-            <div *ngIf="!tx.paypro && fromCoinbase">
-              <img
-                class="coin-img"
-                src="assets/img/coinbase/coinbase-icon.png"
-              />
-              <span class="ellipsis">{{ fromCoinbase.accountName }}</span>
-            </div>
-          </div>
-
-          <ion-row
-            class="wallet ion-align-items-center"
-            *ngIf="tx.recipientType == 'wallet'"
-          >
-            <ion-col>
-              <coin-icon [coin]="tx.coin" [network]="tx.network"></coin-icon>
-            </ion-col>
-
-            <ion-col>
-              <div copy-to-clipboard="{{ tx.origToAddress }}">
-                <span class="note-container ellipsis" *ngIf="!tx.name"
-                  >{{tx.origToAddress}}</span
-                >
-                <span
-                  class="note-container ellipsis"
-                  *ngIf="tx.name && !isDonation"
-                  >{{tx.name}}</span
-                >
-                <span
-                  class="note-container ellipsis"
-                  *ngIf="tx.name && isDonation"
-                  >Lotus Donation</span
-                >
+      <ion-item lines="none" class="custom-list">
+        <div class="list-container">
+          <div class="first-row row-container summary-amount-info">
+            <div>
+              <div class="total-amount">
+                {{totalAmountStr}}
               </div>
-            </ion-col>
-          </ion-row>
-
-          <ion-row
-            class="wallet ion-align-items-center"
-            *ngIf="tx.recipientType == 'contact'"
-            (longPress)="toggleAddress()"
-          >
-            <ion-col>
-              <gravatar
-                [name]="tx.name"
-                [height]="40"
-                [width]="40"
-                [email]="tx.email"
-                [coin]="tx.coin"
-                [network]="tx.network"
-              ></gravatar>
-            </ion-col>
-
-            <ion-col>
-              <div copy-to-clipboard="{{ tx.origToAddress }}">
-                <span
-                  class="note-container ellipsis"
-                  *ngIf="tx.name && !showAddress"
-                  >{{tx.name}}</span
-                >
-                <span
-                  class="note-container ellipsis"
-                  *ngIf="tx.name && showAddress"
-                  copy-to-clipboard="{{ tx.toAddress }}"
-                  >{{tx.toAddress}}</span
-                >
-              </div>
-            </ion-col>
-          </ion-row>
-
-          <ion-row
-            class="wallet ion-align-items-center"
-            *ngIf="tx.recipientType == 'coinbase'"
-          >
-            <ion-col>
-              <ion-icon
-                src="assets/img/coinbase/coinbase-icon.png"
-                width="32"
-                slot="start"
-              >
-              </ion-icon>
-            </ion-col>
-
-            <ion-col>
-              <span class="ellipsis">{{ fromCoinbase?.accountName }}</span>
-            </ion-col>
-          </ion-row>
-
-          <div
-            class="multi-recip-title"
-            (click)="showMultiplesOutputs = !showMultiplesOutputs"
-            *ngIf="fromMultiSend"
-          >
-            <ion-icon
-              class="coin-img"
-              src="assets/img/icon-{{tx.coin}}-small.svg"
-              alt="Coin"
-              slot="start"
-            >
-            </ion-icon>
-            <span class="ellipsis"
-              >{{'Multiple recipients ({recipientsCount})' | translate: {
-              recipientsCount: recipients?.length } }}</span
-            >
-            <!-- <ion-button fill="clear" color="grey" slot="end"> -->
-              <ion-icon
-                slot="icon-only"
-                *ngIf="showMultiplesOutputs"
-                name="arrow-up-outline"
-              ></ion-icon>
-              <ion-icon
-                slot="icon-only"
-                *ngIf="!showMultiplesOutputs"
-                name="arrow-dropdown"
-              ></ion-icon>
-            <!-- </ion-button> -->
-          </div>
-        </ion-note>
-      </ion-item>
-
-      <ion-item
-        lines="none"
-        *ngIf="!tx.name && !toAddressName"
-        class="sub-title"
-      >
-        <ion-input
-          [(ngModel)]="nameContact"
-          class="input-contact-custom"
-          placeholder="{{'Enter name to save to address book' | translate}}"
-        ></ion-input>
-      </ion-item>
-
-      <div *ngIf="tx && fromMultiSend && showMultiplesOutputs">
-        <ion-item
-          lines="none"
-          *ngFor="let recipient of recipients; let i = index"
-          copy-to-clipboard="{{recipient.toAddress}}"
-        >
-          <ion-label>
-            <div class="summary-item">
-              <span translate>Recipient {{ i + 1 }}</span>
-            </div>
-          </ion-label>
-          <div slot="end">
-            <div class="payment-proposal-to align-right">
-              <div class="background-content">
-                <img
-                  class="coin-img"
-                  src="assets/img/currencies/{{tx.coin}}.svg"
-                  [ngClass]="{'testnet': tx.network === 'testnet'}"
-                  alt="Coin"
-                />
-                <span
-                  >{{recipient.contactName || ((recipient.addressToShow ||
-                  recipient.toAddress || recipient.address) |
-                  shortenedAddress)}}</span
-                >
+              <div class="total-amount-alt">
+                {{totalAmount | satToFiat: tx.coin}}
               </div>
             </div>
-            <div class="multi-amount">
-              {{recipient.amountToShow}} {{coin | uppercase}}
-            </div>
-            <div class="secondary-note" *ngIf="recipient.altAmountStr">
-              {{recipient.altAmountStr}}
-            </div>
           </div>
-        </ion-item>
-      </div>
 
-      <div class="line-divider" *ngIf="!coinbaseAccount"></div>
-
-      <ion-item
-        button
-        *ngIf="!coinbaseAccount && wallet"
-        (click)="chooseFeeLevel()"
-        class="item-fee"
-        [ngClass]="{'warn': wallet && tx.txp[wallet.id] && tx.txp[wallet.id].feeTooHigh, 'btn-opacity': usingMerchantFee}"
-      >
-        <ion-label>
-          <div class="summary-item">
-            <span *ngIf="!merchantFeeLabel" translate>Miner fee</span>
-            <span *ngIf="merchantFeeLabel">{{ merchantFeeLabel }}</span>
-          </div>
-        </ion-label>
-        <ion-note slot="end">
-          <div class="fee-loading" *ngIf="!tx.txp[wallet.id]">
-            <div class="summary-item-detail">
-              <span class="text-bold">{{tx.feeLevelName | uppercase}}</span>
-            </div>
-            <div *ngIf="!requiredFee">...</div>
-            <div *ngIf="!requiredFee">...</div>
-            <div *ngIf="requiredFee" class="summary-item-detail">
-              {{requiredFee | satToUnit: getChain(tx.coin)}}
-            </div>
-            <div *ngIf="requiredFee" class="secondary-note fee-details">
-              {{requiredFee | satToFiat: getChain(tx.coin)}}
+          <div class="row-container">
+            <div class="item-name">Subtotal</div>
+            <div class="item-detail">
+              <span *ngIf="!fromSelectInputs">{{amount}} {{tx.coin | uppercase}}</span>
+              <span
+                *ngIf="fromSelectInputs && wallet && tx.txp[wallet.id] && tx.txp[wallet.id].fee">{{formatAmount(tx.coin,
+                tx.amount -
+                tx.txp[wallet.id].fee)}} {{tx.coin | uppercase}}</span>
             </div>
           </div>
-          <div *ngIf="tx.txp[wallet.id]" class="summary-item-detail">
-            <span class="text-bold">{{tx.feeLevelName | uppercase}}</span>
-          </div>
-          <div *ngIf="tx.txp[wallet.id]" class="summary-item-detail">
-            {{tx.txp[wallet.id].fee | satToUnit: getChain(tx.coin)}}
-          </div>
-          <div
-            *ngIf="tx.txp[wallet.id]"
-            class="secondary-note fee-details"
-            [ngStyle]="tx.txp[wallet.id].feeTooHigh === true ? { opacity: 1 } : null"
-          >
-            {{tx.txp[wallet.id].fee | satToFiat: getChain(tx.coin)}}
-            <span *ngIf="tx.txp[wallet.id].feeRatePerStr">
-              &middot;
-              <span>
-                <ion-icon
-                  *ngIf="tx.txp[wallet.id].feeTooHigh"
-                  name="warning"
-                ></ion-icon>
-                {{tx.txp[wallet.id].feeRatePerStr}}
-                <span translate> of total amount</span>
-              </span>
-            </span>
-          </div>
-        </ion-note>
-      </ion-item>
 
-      <div
-        class="line-divider"
-        *ngIf="wallet && (wallet.coin === 'eth' || isERCToken) && tx.txp[wallet.id]"
-      ></div>
-
-      <ion-item
-        button
-        detail="false"
-        *ngIf="wallet && (wallet.coin === 'eth' || isERCToken) && tx.txp[wallet.id] && !editGasPrice"
-        [ngClass]="{'not-clickable': tx.speedUpTx}"
-        (click)="editGasPrice = !editGasPrice; editGasLimit = false"
-      >
-        <ion-label>
-          <div class="summary-item">
-            <span translate>Gas Price</span>
+          <div class="row-container">
+            <div class="item-name">
+              <span *ngIf="!merchantFeeLabel" translate>Miner fee</span>
+              <span *ngIf="merchantFeeLabel">{{ merchantFeeLabel }}</span>
+            </div>
+            <div class="item-detail">
+              <div class="fee-loading" *ngIf="!tx.txp[wallet.id]">
+                <div class="summary-item-detail">
+                  <span class="text-bold">{{tx.feeLevelName | uppercase}}</span>
+                </div>
+                <div *ngIf="!requiredFee">...</div>
+                <div *ngIf="!requiredFee">...</div>
+                <div *ngIf="requiredFee" class="summary-item-detail">
+                  {{requiredFee | satToUnit: getChain(tx.coin)}}
+                </div>
+                <div *ngIf="requiredFee" class="secondary-note fee-details">
+                  {{requiredFee | satToFiat: getChain(tx.coin)}}
+                </div>
+              </div>
+              <!-- <div *ngIf="tx.txp[wallet.id]" class="summary-item-detail">
+                <span class="text-bold">{{tx.feeLevelName | uppercase}}</span>
+              </div> -->
+              <div *ngIf="tx.txp[wallet.id]" class="">
+                {{tx.txp[wallet.id].fee | satToUnit: getChain(tx.coin)}}
+              </div>
+              <div *ngIf="tx.txp[wallet.id]" class="sub-note fee-details"
+                [ngStyle]="tx.txp[wallet.id].feeTooHigh === true ? { opacity: 1 } : null">
+                {{tx.txp[wallet.id].fee | satToFiat: getChain(tx.coin)}}
+                <span *ngIf="tx.txp[wallet.id].feeRatePerStr">
+                  &middot;
+                  <span>
+                    <ion-icon *ngIf="tx.txp[wallet.id].feeTooHigh" name="warning"></ion-icon>
+                    {{tx.txp[wallet.id].feeRatePerStr}}
+                    <span translate> of total amount</span>
+                  </span>
+                </span>
+              </div>
+            </div>
           </div>
-        </ion-label>
-        <ion-note class="main-note" slot="end">
-          <span slot="start"
-            >{{tx.txp[wallet.id].gasPrice * 1e-9 | number:'1.2-2'}} (Gwei)</span
-          >
-        </ion-note>
-      </ion-item>
-
-      <ion-item
-        lines="none"
-        detail="false"
-        *ngIf="wallet && (wallet.coin === 'eth' || isERCToken) && tx.txp[wallet.id] && editGasPrice"
-      >
-        <ion-label>
-          <div class="summary-item">
-            <span translate>Gas Price</span>
-          </div>
-        </ion-label>
-        <ion-note class="main-note" slot="end">
-          <ion-row class="ion-align-items-center">
-            <ion-input
-              slot="start"
-              type="number"
-              min="requiredFeeRate ?  requiredFeeRate * 1e-9 : 1"
-              [(ngModel)]="customGasPrice"
-              required
-            ></ion-input>
-            <ion-text text-right> (Gwei)</ion-text>
-            <ion-button
-              slot="end"
-              [disabled]="requiredFeeRate ? customGasPrice < requiredFeeRate * 1e-9 : customGasPrice < 1"
-              fill="clear"
-              (click)="setGasPrice()"
-            >
-              <ion-icon name="checkmark"></ion-icon>
-            </ion-button>
-            <ion-button
-              slot="end"
-              fill="clear"
-              (click)="editGasPrice = !editGasPrice"
-            >
-              <ion-icon name="close"></ion-icon>
-            </ion-button>
-          </ion-row>
-        </ion-note>
-      </ion-item>
-
-      <div
-        class="amount-details"
-        *ngIf="(requiredFeeRate ? customGasPrice < requiredFeeRate * 1e-9: customGasPrice < 1) && editGasPrice"
-      >
-        <div
-          class="total-amount-note"
-          [ngStyle]="{'color': 'red'}"
-          *ngIf="!requiredFeeRate"
-          translate
-        >
-          The Gas Price cannot be lower than 1 Gwei
         </div>
-        <div
-          class="total-amount-note"
-          [ngStyle]="{'color': 'red'}"
-          *ngIf="requiredFeeRate"
-        >
-          {{'The Gas Price cannot be lower than the required by the merchant' |
-          translate}} ({{requiredFeeRate * 1e-9 | number:'1.2-2'}} Gwei)
-        </div>
-      </div>
-
-      <div
-        class="line-divider"
-        *ngIf="wallet && (wallet.coin === 'eth' || isERCToken) && tx.txp[wallet.id]"
-      ></div>
-
-      <ion-item
-        button
-        detail="false"
-        *ngIf="wallet && (wallet.coin === 'eth' || isERCToken) && tx.txp[wallet.id] && !editGasLimit"
-        [ngClass]="{'not-clickable': tx.sendMax || tx.speedUpTx || isERCToken}"
-        (click)="editGasLimit = !editGasLimit; editGasPrice = false"
-      >
-        <ion-label>
-          <div class="summary-item">
-            <span translate>Gas Limit</span>
-          </div>
-        </ion-label>
-        <ion-note class="main-note" slot="end">
-          <span slot="start">{{tx.txp[wallet.id].gasLimit}}</span>
-        </ion-note>
       </ion-item>
 
-      <ion-item
-        lines="none"
-        detail="false"
-        *ngIf="wallet && (wallet.coin === 'eth' || isERCToken) && tx.txp[wallet.id] && editGasLimit"
-      >
-        <ion-label>
-          <div class="summary-item">
-            <span translate>Gas Limit</span>
-          </div>
-        </ion-label>
-        <ion-note class="main-note" slot="end">
-          <ion-row class="ion-align-items-center">
-            <ion-input
-              slot="start"
-              type="number"
-              min="minAllowedGasLimit"
-              [(ngModel)]="customGasLimit"
-              required
-            ></ion-input>
-            <ion-button
-              slot="end"
-              [disabled]="customGasLimit < minAllowedGasLimit"
-              fill="clear"
-              (click)="setGasLimit()"
-            >
-              <ion-icon name="checkmark"></ion-icon>
-            </ion-button>
-            <ion-button
-              slot="end"
-              fill="clear"
-              (click)="editGasLimit = !editGasLimit"
-            >
-              <ion-icon name="close"></ion-icon>
-            </ion-button>
-          </ion-row>
-        </ion-note>
-      </ion-item>
-
-      <div
-        class="amount-details"
-        *ngIf="customGasLimit < minAllowedGasLimit && editGasLimit"
-      >
-        <div class="total-amount-note" [ngStyle]="{'color': 'red'}">
-          {{'The Gas Limit cannot be lower than' | translate}}
-          {{minAllowedGasLimit}}
-        </div>
-      </div>
-
-      <div class="line-divider" *ngIf="tx.nonce"></div>
-
-      <ion-item lines="none" *ngIf="tx.nonce">
-        <ion-label>
-          <div class="summary-item">
-            <span translate>Nonce</span>
-          </div>
-        </ion-label>
-        <ion-note class="main-note" slot="end">{{tx.nonce}}</ion-note>
-      </ion-item>
-
-      <div class="line-divider"></div>
-
-      <ion-item
-        button
-        detail="false"
-        (click)="showWallets()"
-        [ngClass]="{'not-clickable': fromWalletDetails || walletConnectRequestId}"
-      >
+      <ion-item button detail="false" (click)="showWallets()" class="row-container"
+        [ngClass]="{'not-clickable': fromWalletDetails || walletConnectRequestId}">
         <ion-label>
           <div class="summary-item">
             <span translate>Sending from</span>
@@ -485,57 +91,113 @@
         <ion-note slot="end">
           <ion-row class="wallet ion-align-items-center" *ngIf="wallet">
             <ion-col>
-              <coin-icon
-                [coin]="wallet.coin"
-                [network]="wallet.network"
-              ></coin-icon>
-            </ion-col>
-
-            <ion-col>
               <span class="note-container ellipsis">{{wallet.name}}</span>
             </ion-col>
           </ion-row>
 
-          <ion-row
-            class="wallet ion-align-items-center"
-            *ngIf="coinbaseAccount"
-          >
-            <ion-col>
-              <ion-icon
-                src="assets/img/coinbase/coinbase-icon.png"
-                width="32"
-                slot="start"
-              >
-              </ion-icon>
-            </ion-col>
-
-            <ion-col>
-              <span class="note-container ellipsis"
-                >{{coinbaseAccount.name}}</span
-              >
-            </ion-col>
-          </ion-row>
-
-          <ion-row
-            class="wallet ion-align-items-center"
-            *ngIf="!wallet && !coinbaseAccount"
-          >
+          <ion-row class="wallet ion-align-items-center" *ngIf="!wallet">
             <div translate>Select a wallet</div>
-            <!-- <div class="last-item" slot="end"> -->
-              <!-- <ion-button fill="clear" color="grey"> -->
-                <ion-icon
-                  *ngIf="!isOpenSelector"
-                  name="chevron-down-outline"
-                ></ion-icon>
-                <ion-icon
-                  *ngIf="isOpenSelector"
-                  name="chevron-up-outline"
-                ></ion-icon>
-              <!-- </ion-button> -->
-            <!-- </div> -->
+            <ion-icon *ngIf="!isOpenSelector" name="chevron-down-outline"></ion-icon>
+            <ion-icon *ngIf="isOpenSelector" name="chevron-up-outline"></ion-icon>
           </ion-row>
         </ion-note>
       </ion-item>
+
+      <ion-item *ngIf="!fromMultiSend" lines="none" [ngClass]="{'send-to-custom': !tx.name && !toAddressName }">
+        <ion-label>
+          <div class="summary-item">
+            <span translate>Sending to</span>
+          </div>
+        </ion-label>
+
+        <ion-note slot="end" class="address-note-custom">
+          <div class="note-container" *ngIf="!tx.recipientType">
+            <div copy-to-clipboard="{{ tx.origToAddress }}">
+              <span *ngIf="!tx.name">{{toAddressName || (tx.origToAddress |
+                shortenedAddress)}}</span>
+              <span class="ellipsis" *ngIf="tx.name">{{tx.name}}</span>
+            </div>
+
+            <div class="paypro" *ngIf="tx.paypro">
+              <ion-icon *ngIf="tx.paypro.verified" name="lock-closed" color="success"></ion-icon>
+              <ion-icon *ngIf="!tx.paypro.verified" name="lock-open" color="danger"></ion-icon>
+
+              <span>{{tx.paypro.host || tx.paypro.toAddress}}</span>
+            </div>
+
+            <div *ngIf="!tx.paypro && fromCoinbase">
+              <img class="coin-img" src="assets/img/coinbase/coinbase-icon.png" />
+              <span class="ellipsis">{{ fromCoinbase.accountName }}</span>
+            </div>
+          </div>
+
+          <ion-row class="wallet ion-align-items-center" *ngIf="tx.recipientType == 'wallet'">
+            <ion-col>
+              <div copy-to-clipboard="{{ tx.origToAddress }}">
+                <span class="note-container ellipsis" *ngIf="!tx.name">{{tx.origToAddress}}</span>
+                <span class="note-container ellipsis" *ngIf="tx.name && !isDonation">{{tx.name}}</span>
+                <span class="note-container ellipsis" *ngIf="tx.name && isDonation">Lotus Donation</span>
+              </div>
+            </ion-col>
+          </ion-row>
+
+          <ion-row class="wallet ion-align-items-center" *ngIf="tx.recipientType == 'contact'"
+            (longPress)="toggleAddress()">
+            <ion-col>
+              <gravatar [name]="tx.name" [height]="40" [width]="40" [email]="tx.email" [coin]="tx.coin"
+                [network]="tx.network"></gravatar>
+            </ion-col>
+
+            <ion-col>
+              <div copy-to-clipboard="{{ tx.origToAddress }}">
+                <span class="note-container ellipsis" *ngIf="tx.name && !showAddress">{{tx.name}}</span>
+                <span class="note-container ellipsis" *ngIf="tx.name && showAddress"
+                  copy-to-clipboard="{{ tx.toAddress }}">{{tx.toAddress}}</span>
+              </div>
+            </ion-col>
+          </ion-row>
+
+          <div class="multi-recip-title" (click)="showMultiplesOutputs = !showMultiplesOutputs" *ngIf="fromMultiSend">
+            <ion-icon class="coin-img" src="assets/img/icon-{{tx.coin}}-small.svg" alt="Coin" slot="start">
+            </ion-icon>
+            <span class="ellipsis">{{'Multiple recipients ({recipientsCount})' | translate: {
+              recipientsCount: recipients?.length } }}</span>
+            <ion-icon slot="icon-only" *ngIf="showMultiplesOutputs" name="arrow-up-outline"></ion-icon>
+            <ion-icon slot="icon-only" *ngIf="!showMultiplesOutputs" name="arrow-dropdown"></ion-icon>
+            <!-- </ion-button> -->
+          </div>
+        </ion-note>
+      </ion-item>
+
+      <ion-item *ngIf="tx && fromMultiSend" lines="none" class="custom-list">
+        <div class="list-container">
+          <div class="first-row first-row-send-to row-container summary-amount-info">
+            <div>
+              Send to
+            </div>
+            <div>
+              Amount
+            </div>
+          </div>
+          <div class="row-container send-to-content" *ngFor="let recipient of recipients; let i = index"
+            copy-to-clipboard="{{recipient.toAddress}}">
+            <div class="item-name">
+              <div class="background-content">
+                <span>{{recipient.name || ((recipient.addressToShow ||
+                  recipient.toAddress || recipient.address) |
+                  shortenedAddress)}}</span>
+              </div>
+            </div>
+            <div class="item-detail">
+              <div>
+                {{recipient.amountToShow}} {{coin | uppercase}}
+              </div>
+            </div>
+          </div>
+        </div>
+      </ion-item>
+
+      <div class="line-divider"></div>
 
       <ng-container *ngIf="isDonation && remaining && isShowReceive">
         <div class="line-divider"></div>
@@ -546,22 +208,14 @@
             </div>
           </ion-label>
           <ion-note slot="end">
-            <ion-row
-              class="wallet ion-align-items-center"
-              *ngIf="receiveLotusAddress"
-            >
+            <ion-row class="wallet ion-align-items-center" *ngIf="receiveLotusAddress">
               <ion-col>
-                <coin-icon
-                  [coin]="donationCoin"
-                  [network]="'livenet'"
-                ></coin-icon>
+                <coin-icon [coin]="donationCoin" [network]="'livenet'"></coin-icon>
               </ion-col>
 
               <ion-col>
                 <div copy-to-clipboard="{{ receiveLotusAddress }}">
-                  <span class="note-container ellipsis"
-                    >{{nameReceiveLotusAddress}}</span
-                  >
+                  <span class="note-container ellipsis">{{nameReceiveLotusAddress}}</span>
                 </div>
               </ion-col>
             </ion-row>
@@ -576,158 +230,29 @@
               <span translate>Lotus Receiving</span>
             </div>
           </ion-label>
-          <ion-note class="main-note" slot="end"
-            >{{receiveAmountLotus | number:'1.2-2'}} {{donationCoin |
-            uppercase}}</ion-note
-          >
+          <ion-note class="main-note" slot="end">{{receiveAmountLotus | number:'1.2-2'}} {{donationCoin |
+            uppercase}}</ion-note>
         </ion-item>
       </ng-container>
 
-      <div class="line-divider"></div>
-
-      <ion-item lines="none" *ngIf="tx.paypro && (wallet || coinbaseAccount)">
-        <ion-label>
-          <div class="summary-item">
-            <span translate>Payment Expires</span>
-          </div>
-        </ion-label>
-        <ion-note class="main-note" *ngIf="!paymentExpired" slot="end"
-          >{{remainingTimeStr}}</ion-note
-        >
-        <ion-note
-          class="main-note"
-          *ngIf="paymentExpired"
-          [ngStyle]="{'color': 'red'}"
-          slot="end"
-          >{{'Expired' | translate}}</ion-note
-        >
-      </ion-item>
-
-      <div class="summary-line"></div>
-
-      <ion-item lines="none" *ngIf="!coinbaseAccount">
-        <ion-label>
-          <div
-            class="main-label total-label"
-            [ngClass]="{'subtotal-label': !wallet?.credentials.token}"
-          >
-            <span class="title" translate>SUBTOTAL</span>
-            <ion-icon
-              src="assets/img/icon-info-blue.svg" 
-              width="22"
-              *ngIf="tx.paypro"
-              class="item-img info"
-              (click)="showSubtotalAmountSheet()"
-            >
-            </ion-icon>
-          </div>
-        </ion-label>
-        <ion-note slot="end">
-          <div
-            class="total-amount"
-            [ngClass]="{'subtotal-amount': !wallet?.credentials.token}"
-          >
-            <span *ngIf="!fromSelectInputs"
-              >{{amount}} {{tx.coin | uppercase}}</span
-            >
-            <span
-              *ngIf="fromSelectInputs && wallet && tx.txp[wallet.id] && tx.txp[wallet.id].fee"
-              >{{formatAmount(tx.coin, tx.amount -
-              tx.txp[wallet.id].fee)}} {{tx.coin | uppercase}}</span
-            >
-          </div>
-        </ion-note>
-      </ion-item>
-
-      <div class="amount-details ion-padding-bottom" *ngIf="!coinbaseAccount">
-        <div
-          class="total-amount-note"
-          [ngClass]="{'subtotal-amount-note': !wallet?.credentials.token}"
-        >
-          <span *ngIf="!fromSelectInputs"
-            >{{tx.amount | satToFiat: tx.coin}}</span
-          >
-          <span
-            *ngIf="fromSelectInputs && wallet && tx.txp[wallet.id] && tx.txp[wallet.id].fee"
-            >{{tx.amount - tx.txp[wallet.id].fee | satToFiat: tx.coin}}</span
-          >
-        </div>
-        <div
-          class="total-amount-note"
-          [ngClass]="{'subtotal-amount-note': !wallet?.credentials.token}"
-        >
-          <span translate *ngIf="tx.sendMax">Sending maximum amount</span>
-        </div>
-      </div>
-
-      <ion-item lines="none" *ngIf="totalAmountStr">
-        <ion-label>
-          <div class="main-label total-label">
-            <span translate>TOTAL</span>
-            <ion-icon src="assets/img/icon-info-blue.svg" width="22" class="item-img info" (click)="showTotalAmountSheet()">
-            </ion-icon>
-          </div>
-        </ion-label>
-        <ion-note slot="end">
-          <div class="total-amount">{{totalAmountStr}}</div>
-        </ion-note>
-      </ion-item>
-
-      <div class="amount-details ion-padding-bottom" *ngIf="totalAmount">
-        <div class="total-amount-note">
-          {{totalAmount | satToFiat: tx.coin}}
-        </div>
-      </div>
-
-      <div class="amount-details ion-padding-bottom" *ngIf="coinbaseAccount">
-        <div class="total-amount-note subtotal-amount-note">
-          <div translate>
-            Miner fee not required for payments with Coinbase accounts
-          </div>
-          <div translate>
-            You are saving {{tx.minerFee | satToUnit: tx.coin}}
-          </div>
-        </div>
-      </div>
-
-      <div class="line-divider"></div>
-
-      <ion-item
-        lines="none"
-        *ngIf="(wallet && wallet.coin !== 'xrp') || coinbaseAccount"
-        (click)="editMemo(tx.description)"
-      >
+      <ion-item lines="none"
+        (click)="editMemo(tx.description)">
         <ion-label position="stacked">{{'Memo' | translate}}</ion-label>
-        <ion-textarea
-          placeholder="{{'Enter a transaction memo' | translate}}"
-          [(ngModel)]="tx.description"
-          name="tx.description"
-          autocomplete="off"
-          autocorrect="off"
-          readonly
-        ></ion-textarea>
+        <ion-textarea placeholder="{{'Enter a transaction memo' | translate}}" [(ngModel)]="tx.description"
+          name="tx.description" autocomplete="off" autocorrect="off" readonly></ion-textarea>
       </ion-item>
     </ion-list>
   </div>
 
   <div footer-content>
-    <page-slide-to-accept
-      #slideButton
-      *ngIf="isCordova"
+    <page-slide-to-accept #slideButton *ngIf="isCordova"
       [ngClass]="{'slide-confirm-fast slide-confirm-down': hideSlideButton, 'slide-confirm-slow': !hideSlideButton}"
       [disabled]="(!wallet && !coinbaseAccount) || (wallet && !tx?.txp[wallet.id]) || paymentExpired"
-      [buttonText]="buttonText"
-      [isDogecoin]="wallet && wallet.coin == 'doge'"
-      (slideDone)="approve(tx, wallet)"
-    >
+      [buttonText]="buttonText" [isDogecoin]="wallet && wallet.coin == 'doge'" (slideDone)="approve(tx, wallet)">
     </page-slide-to-accept>
     <ion-toolbar *ngIf="!isCordova && (wallet || coinbaseAccount)">
-      <ion-button
-        expand="full"
-        class="button-footer"
-        (click)="approve(tx, wallet)"
-        [disabled]="(!wallet && !coinbaseAccount) || (wallet && !tx?.txp[wallet.id]) || paymentExpired"
-      >
+      <ion-button expand="full" class="button-footer" (click)="approve(tx, wallet)"
+        [disabled]="(!wallet && !coinbaseAccount) || (wallet && !tx?.txp[wallet.id]) || paymentExpired">
         {{buttonText}}
       </ion-button>
     </ion-toolbar>

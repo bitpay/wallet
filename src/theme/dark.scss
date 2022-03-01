@@ -166,6 +166,10 @@
             --background-activated: transparent;
             --color: var(--text-color-dark-theme) !important;
         }
+        &.button-disabled {
+            --background: linear-gradient(0deg, rgba(237, 239, 240, 0.12), rgba(237, 239, 240, 0.12)), #0E3245 !important;
+            --color: rgba(224, 228, 230, 0.38);
+        }
     }
 
     ion-back-button {
@@ -317,6 +321,9 @@
                 color: var(--text-color-dark-theme) !important;
             }
         }
+        [aria-checked=true].sc-ion-alert-md .alert-radio-label.sc-ion-alert-md {
+            color: var(--text-color-dark-theme) !important;
+        }
 
         .alert-radio-group {
             .alert-radio:not([aria-checked='true']) .alert-radio-label {
@@ -333,6 +340,10 @@
         .alert-message {
             color: var(--text-color-dark-theme) !important;
         }
+    }
+
+    ion-select{
+        color: var(--text-color-dark-theme) !important;
     }
 
     .alert-ios .alert-button ion-action-sheet {
@@ -1137,7 +1148,7 @@
         ion-note {
             .wallet {
                 .note-container {
-                    color: var(--text-color-dark-theme) !important;
+                    color: rgba(255, 184, 93, 1) !important;
                 }
             }
         }
@@ -1146,8 +1157,8 @@
     page-copayers,
     page-txp-details,
     page-tx-details {
-        .timeline-item {
-            background-color: var(--bg-color-dark-theme);
+        .timeline-container {
+            background-color: rgba(33, 51, 62, 1);
         }
     }
 
@@ -1173,12 +1184,21 @@
             .summary-item,
             .total-amount-note,
             .secondary-note {
-                color: var(--text-color-dark-theme) !important;
+                color: rgba(237, 239, 240, 1) !important;
+            }
+
+            .sub-note{
+                color: rgba(0, 30, 46, 0.6);
             }
 
             ion-note {
                 .note-container {
-                    color: var(--text-color-dark-theme) !important;
+                    color: rgba(255, 184, 93, 1) !important;
+                }
+            }
+            .send-to-content{
+                .item-name{
+                    color: rgba(204, 193, 233, 1) !important; 
                 }
             }
         }
@@ -1426,6 +1446,17 @@
     page-multi-send,
     page-select-inputs,
     page-proposals-notifications {
+        .available-letter{
+            color:  rgba(237, 239, 240, 0.6) !important;
+        }
+        .btn-function-group{
+            --color: rgba(126, 208, 255, 1);
+            --border-color: rgba(224, 228, 230, 0.6);
+            .btn-add-more{
+            --color: rgba(126, 208, 255, 1);
+            --border-color: rgba(112, 129, 138, 1);
+            }
+        }
         .amount {
             color: var(--text-color-dark-theme) !important;
         }
@@ -1501,6 +1532,37 @@
 
         .txp-container {
             background-color: var(--bg-color-dark-theme);
+        }
+    }
+
+    recipient-component{
+        .recipient-header{
+            color: rgba(237, 239, 240, 0.6);
+        }
+        .recipient-content-wrapper{
+            background: linear-gradient(0deg, rgba(126, 208, 255, 0.11), rgba(126, 208, 255, 0.11)), #001E2E;
+            .recipient-content{
+                .title{
+                    color: rgba(224, 228, 230, 0.6);
+                }
+                .search-address-wrapper, .amount-wrapper{
+                    --border-color: rgba(224, 228, 230, 0.6);
+                    --highlight-color-focused: rgba(224, 228, 230, 0.6);
+                    --highlight-color-valid	: rgba(224, 228, 230, 0.6);
+                    --highlight-color-invalid: rgba(224, 228, 230, 0.6);
+                    ion-input{
+                        --placeholder-color: rgba(237, 239, 240, 0.38);
+                        --color: #EDEFF0;
+                    }
+                }
+                .bold-text{
+                    color: #7ED0FF;
+                }
+                .unit-alt-text{
+                    color: rgba(224, 228, 230, 0.6);
+                }
+            }
+            
         }
     }
 
@@ -1774,13 +1836,22 @@
     page-create-eth-multisig,
     page-bitpay-phase-one-card-intro {
         ion-item {
-            background: var(--bg-color-dark-theme);
+            --background: linear-gradient(0deg, rgba(126, 208, 255, 0.11), rgba(126, 208, 255, 0.11)), #001E2E;
             color: var(--text-color-dark-theme) !important;
+            --highlight-color-focused: rgba(224, 228, 230, 0.6);
+            --highlight-color-valid	: rgba(224, 228, 230, 0.6);
+            --highlight-color-invalid: rgba(224, 228, 230, 0.6);
         }
         ion-segment-button {
             &::part(native) {
                 color: var(--ion-color-primary) !important;
             }
+        }
+    }
+
+    page-create-wallet{
+        ion-content{
+            --background: #001E2E;;
         }
     }
 
@@ -1790,6 +1861,13 @@
         .linked-wallet {
             color: var(--text-color-dark-theme) !important;
             background-color: var(--bg-color-dark-theme);
+        }
+        ion-item {
+            --background: linear-gradient(0deg, rgba(126, 208, 255, 0.11), rgba(126, 208, 255, 0.11)), #001E2E;
+            color: var(--text-color-dark-theme) !important;
+            --highlight-color-focused: rgba(224, 228, 230, 0.6);
+            --highlight-color-valid	: rgba(224, 228, 230, 0.6);
+            --highlight-color-invalid: rgba(224, 228, 230, 0.6);
         }
     }
 
@@ -2227,7 +2305,7 @@
     .fixscreen-modal{
         ion-backdrop{
             background: #000000;
-            opacity: 0.75;
+            opacity: 0.75 !important;
         }
     }
     disclaimer-modal{
