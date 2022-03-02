@@ -9,7 +9,7 @@ import { PlatformProvider } from './providers/platform/platform';
 import { PopupProvider } from './providers/popup/popup';
 import { ThemeProvider } from './providers/theme/theme';
 import { TouchIdProvider } from './providers/touchid/touchid';
-import { SplashScreen } from '@ionic-native/splash-screen/ngx';
+import { SplashScreen } from '@capacitor/splash-screen';
 import { EventManagerService } from './providers/event-manager.service';
 import { KeyProvider } from './providers/key/key';
 import { ProfileProvider } from './providers/profile/profile';
@@ -37,7 +37,7 @@ import { CopayersPage } from './pages/add/copayers/copayers';
   providers: [TouchIdProvider]
 })
 export class CopayApp {
-  @ViewChild('splash', {static: false}) splash: ElementRef;
+  @ViewChild('splash', { static: false }) splash: ElementRef;
   routerHidden;
   nav: NavController;
   cardIAB_Ref: InAppBrowser;
@@ -72,7 +72,6 @@ export class CopayApp {
     private themeProvider: ThemeProvider,
     private events: EventManagerService,
     private modalCtrl: ModalController,
-    private splashScreen: SplashScreen,
     private keyProvider: KeyProvider,
     private profileProvider: ProfileProvider,
     private pushNotificationsProvider: PushNotificationsProvider,
@@ -90,7 +89,7 @@ export class CopayApp {
     private addressBookProvider: AddressBookProvider,
     private router: Router,
     private imageLoaderConfig: ImageLoaderConfigService,
-    private navasd : NavController
+    private navasd: NavController
   ) {
     this.imageLoaderConfig.setFileNameCachedWithExtension(true);
     this.imageLoaderConfig.useImageTag(true);
@@ -112,6 +111,10 @@ export class CopayApp {
     this.platform
       .ready()
       .then(readySource => {
+        setTimeout(() => {
+          this.logger.debug('Hide Splash Screen');
+          SplashScreen.hide();
+        }, 1000);
         this.onPlatformReady(readySource);
       })
       .catch(e => {
@@ -243,12 +246,8 @@ export class CopayApp {
       this.openWallet(wallet, params)
     );
 
-    setTimeout(() => {
-      this.logger.debug('Hide Splash Screen');
-      this.splashScreen.hide();
-    }, 1000);
 
-    if(this.platformProvider.isCordova){
+    if (this.platformProvider.isCordova) {
       this.platform.ready().then(() => {
         setTimeout(() => {
           this.routerHidden = false;

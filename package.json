@@ -36,7 +36,8 @@
     "sign:android": "bundletool build-apks --mode=universal --bundle=./android/app/build/outputs/bundle/release/app-release.aab --output=./apks/apcpay-release.apks --ks=release.jks --ks-pass=pass:123456 --ks-key-alias=release --key-pass=pass:123456",
     "final:android-release": "npm run build:android-release && rm -rf apks && npm run generate:android-bundle && npm run sign:android",
     "final:android-apk": "cd android && ./gradlew assembleRelease && cd ..",
-    "final:android-debug": "npm run build:android && rm -rf apks && bundletool build-apks --bundle=./android/app/build/outputs/bundle/release/app-release.aab --output=./apks/apcpay-debug.apks"
+    "final:android-debug": "npm run build:android && rm -rf apks && bundletool build-apks --bundle=./android/app/build/outputs/bundle/release/app-release.aab --output=./apks/apcpay-debug.apks",
+    "final:mobile": "ionic build --prod && npx cap copy && npx cap sync"
   },
   "private": true,
   "dependencies": {
@@ -56,6 +57,7 @@
     "@capacitor/core": "^3.2.3",
     "@capacitor/ios": "^3.2.3",
     "@capacitor/project": "^1.0.28",
+    "@capacitor/splash-screen": "^1.2.2",
     "@ionic-native/clipboard": "^5.36.0",
     "@ionic-native/core": "^5.36.0",
     "@ionic-native/device": "^5.36.0",
