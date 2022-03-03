@@ -122,7 +122,7 @@ export class RecipientComponent implements OnInit {
     } else {
       this.navParamsData = history ? history.state : {};
     }
-    if(this.navParamsData.walletId){
+    if (this.navParamsData.walletId) {
       this.wallet = this.profileProvider.getWallet(this.navParamsData.walletId);
     }
     this.isCordova = this.platformProvider.isCordova;
@@ -146,10 +146,11 @@ export class RecipientComponent implements OnInit {
 
 
   private updateAddressHandler: any = data => {
-    this.recipient.toAddress = data.value
-    this.processInput();
+    if (data.recipientId === this.recipient.id) {
+      this.recipient.toAddress = data.value
+    }
   };
-  
+
   private updateUnitUI(): void {
     this.unit = this.availableUnits[this.unitIndex].shortName;
     this.alternativeUnit = this.availableUnits[this.altUnitIndex].shortName;
@@ -357,8 +358,8 @@ export class RecipientComponent implements OnInit {
   }
 
   public async processInput() {
-    if(this.recipient.name && this.recipient.recipientType === 'contact' || this.recipient.recipientType === 'wallet') this.validAddress = true
-    else{
+    if (this.recipient.name && this.recipient.recipientType === 'contact' || this.recipient.recipientType === 'wallet') this.validAddress = true
+    else {
       if (this.recipient.toAddress == '') this.validAddress = false;
       const parsedData = this.incomingDataProvider.parseData(this.recipient.toAddress);
       if (
@@ -377,7 +378,7 @@ export class RecipientComponent implements OnInit {
     this.checkRecipientValid();
   }
 
-  checkRecipientValid(){
+  checkRecipientValid() {
     this.recipient.isValid = this.validAddress && this.validAmount;
   }
   public async checkIfContact() {
@@ -465,7 +466,7 @@ export class RecipientComponent implements OnInit {
   }
 
   public openScanner(): void {
-    this.router.navigate(['/scan'], { state: { fromRecipientComponent: true} });
+    this.router.navigate(['/scan'], { state: { fromRecipientComponent: true, recipientId: this.recipient.id } });
   }
 
   public shouldShowZeroState() {
@@ -513,7 +514,6 @@ export class RecipientComponent implements OnInit {
     this.cleanSearch();
     this.recipient.toAddress = this.validDataFromClipboard || '';
     this.validDataFromClipboard = null;
-    this.clipboardProvider.clear();
     this.processInput();
   }
 
