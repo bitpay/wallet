@@ -160,6 +160,7 @@ export class ScanProvider {
   public initialize(): Promise<any> {
     return new Promise(resolve => {
       this.logger.info('Initializing scanner...');
+      (window.document.querySelector('ion-app') as HTMLElement).classList.add('cameraView');
       this.qrScanner
         .prepare()
         .then(status => {
@@ -260,6 +261,7 @@ export class ScanProvider {
   // On desktop, this fully turns off the camera (and any associated privacy lights)
   private hide() {
     this.qrScanner.hide();
+    (window.document.querySelector('ion-app') as HTMLElement).classList.remove('cameraView');
   }
 
   // Reduce QRScanner power/processing consumption by the maximum amount

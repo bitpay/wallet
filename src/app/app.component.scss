@@ -704,9 +704,10 @@ ion-app,
 .nav-decor {
     --background: transparent !important;
 }
-// ion-app.cameraView, ion-app.cameraView ion-content, ion-app.cameraView .nav-decor {
-//     --background: transparent none !important; 
-//   }
+ion-app.cameraView, ion-app.cameraView ion-content, ion-app.cameraView .nav-decor {
+    --background: transparent !important; 
+    background: transparent !important
+}
 .button-standard {
     width: 85%;
     margin: 5px auto 25px auto;
