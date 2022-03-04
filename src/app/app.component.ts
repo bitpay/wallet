@@ -243,12 +243,13 @@ export class CopayApp {
       this.openWallet(wallet, params)
     );
     await SplashScreen.hide();
+
     if (this.platformProvider.isCordova) {
       this.platform.ready().then(() => {
         setTimeout(() => {
           this.routerHidden = false;
           this.splash.nativeElement.style.display = 'none';
-        }, 2800);
+        }, this.platformProvider.isAndroid ? 2700 : 2900);
       })
     }
 
