@@ -251,7 +251,7 @@ export class ScanPage {
     } else if (this.fromJoin) {
       this.events.publish('Local/JoinScan', { value: contents });
     } else if (this.fromRecipientComponent) {
-      this.events.publish('Local/AddressScan', { value: contents });
+      this.events.publish('Local/AddressScan', { value: contents, recipientId: this.recipientId });
     } else if (this.fromMultiSend) {
       this.events.publish('Local/AddressScanMultiSend', { value: contents });
     } else if (this.fromSelectInputs) {

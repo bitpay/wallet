@@ -702,9 +702,12 @@ search-bar {
 // Set backgrounds transparent so the QR Scanner can be seen behind the app.
 ion-app,
 .nav-decor {
-    background: transparent !important;
+    --background: transparent !important;
 }
-
+ion-app.cameraView, ion-app.cameraView ion-content, ion-app.cameraView .nav-decor {
+    --background: transparent !important; 
+    background: transparent !important
+}
 .button-standard {
     width: 85%;
     margin: 5px auto 25px auto;
@@ -730,7 +733,7 @@ ion-app,
 
 .button-disabled {
     --background: rgba(0, 30, 46, 0.12) !important;
-    color: rgba(28, 55, 69, 0.38);
+    --color: rgba(28, 55, 69, 0.38);
 }
 
 .button-default {
