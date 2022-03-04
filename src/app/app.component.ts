@@ -110,11 +110,8 @@ export class CopayApp {
   initializeApp() {
     this.platform
       .ready()
-      .then(readySource => {
-        setTimeout(() => {
-          this.logger.debug('Hide Splash Screen');
-          SplashScreen.hide();
-        }, 1000);
+      .then(async readySource => {
+       
         this.onPlatformReady(readySource);
       })
       .catch(e => {
@@ -245,14 +242,13 @@ export class CopayApp {
     this.events.subscribe('OpenWallet', (wallet, params) =>
       this.openWallet(wallet, params)
     );
-
-
+    await SplashScreen.hide();
     if (this.platformProvider.isCordova) {
       this.platform.ready().then(() => {
         setTimeout(() => {
           this.routerHidden = false;
           this.splash.nativeElement.style.display = 'none';
-        }, 2900);
+        }, 2800);
       })
     }
 
