@@ -6,6 +6,10 @@ page-wallet-details {
     grid-template-rows: max-content 2fr;
   }
 
+  .wrapper {
+    background: linear-gradient(0deg, rgba(0, 93, 141, 0.05), rgba(0, 93, 141, 0.05)), #FAFAFB !important;
+  }
+
   .balance-card {
     overflow: hidden;
     background-color: var(--bg-color-light-theme);
@@ -175,12 +179,14 @@ page-wallet-details {
       }
 
       &.item {
+        padding-left: 1rem;
         min-height: 26px;
-        // background: var(--feather-dark);
         background: var(--bg-color-light-theme);
         ion-label {
           margin: 0;
-          font-size: 14px;
+          font-size: 11px;
+          text-transform: uppercase;
+          color: rgba(28, 55, 69, 0.6);
         }
 
         .item-inner {
@@ -203,19 +209,27 @@ page-wallet-details {
       }
     }
     .item-wrapper {
+      margin-bottom: 0.5rem;
       &:last-child {
-        .item-inner {
-          border-bottom: 0;
+        margin-bottom: 0;
         }
-      }
     }
+
+    // ion-item-group {
+    //   border-bottom: 1px solid #f4f4f4;
+    // }
 
     ion-item {
       --color-activated: none;
       --inner-padding-bottom: 1rem;
       --padding-top: 1rem;
+      --padding-start: 1rem;
+      --padding-end: 1rem;
       font-size: 16px;
-      --border-color: #f4f4f4;
+      --inner-border-width: 0;
+      border: 1px solid #f4f4f4;
+      border-left: 0;
+      border-right: 0;
       .item-icon {
         margin-right: 15px;
       }
@@ -230,13 +244,18 @@ page-wallet-details {
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
-      span {
-        color: var(--color-light-on-background-theme);
+      .memo {
+        font-size: 14px;
+        color: rgba(224, 228, 230, 0.6);
+        margin-top: 4px;
+        span {
+          color: rgba(0, 30, 46, 0.6);
+        }
       }
     }
 
     .amount {
-      font-weight: bold;
+      font-weight: 600;
       font-size: 16px;
       line-height: 24px;
       color: var(--ion-color-dark);
@@ -252,17 +271,15 @@ page-wallet-details {
       .immature {
         color:#CCC1E9;
       }
+
+      .pending {
+        // color: var(--color-danger);
+        opacity: 0.38;
+      }
     }
 
-    .date {
+    .tx-action {
       font-size: 14px;
-      margin-top: 8px;
-      opacity: 0.4;
-      font-weight: 300;
-      color: rgba(0, 30, 46, 0.6);
-      span {
-        font-size: 12px;
-      }
     }
 
     .proposal-container {
@@ -411,7 +428,9 @@ page-wallet-details {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    border-radius: 1rem 1rem 0 0;
+    background: linear-gradient(0deg, rgba(0, 93, 141, 0.05), rgba(0, 93, 141, 0.05)), #FAFAFB;
+    box-shadow: 0px 0px 14px rgb(0 0 0 / 2%), 0px -4px 20px rgb(0 0 0 / 10%);
+    border-radius: 24px 24px 0px 0px;
   }
 
   .top-notification {
@@ -445,6 +464,8 @@ page-wallet-details {
     width: 100%;
     padding: 1rem;
     border-radius: 16px;
+    color: #EDEFF0;
+    box-shadow: 0px 2px 6px 2px rgb(0 0 0 / 15%);
     .wallet-card-header {
       display: flex;
       justify-content: space-between;
@@ -463,6 +484,12 @@ page-wallet-details {
           img {
             width: 20px;
             height: 20px;
+          }
+          .wallet-add {
+            color: rgba(237, 239, 240, 0.6);
+            ion-icon {
+              color: #EDEFF0;
+            }
           }
         }
       }
@@ -525,52 +552,65 @@ page-wallet-details {
       display: block;
       top: 0;
       left: 0;
-      opacity: 0.6;
-      border-radius: 8px;
+      opacity: 1;
+      border-radius: 1.5rem;
+      border-top-left-radius: 50px;
+      border-bottom-left-radius: 50px;
     }
     margin: 1rem;
-    padding: 1rem;
     position: relative;
-    box-shadow: 0px 2px 6px 2px rgb(0 0 0 / 15%), 0px 1px 2px rgb(0 0 0 / 30%);
-    border-radius: 8px;
     
     .donate-title {
       position: relative;
       font-size: 14px;
-      font-weight: 600;
-    }
-    .donate-butons {
-      position: relative;
-      margin-top: 1rem;
-      text-align: end;
-      font-size: 14px;
-      font-weight: 600;
-      .about-us-btn {
-        border: 1px solid;
+      width: 62%;
+      display: flex;
+      align-items: center;
+      img {
         margin-right: 1rem;
-        border-radius: 100px;
-        font-size: 14px;
-        font-weight: 600;
-        color: #CCC1E9;
       }
-      .donate-btn {
-        --border-radius: 100px;
-        --background: #CCC1E9;
-        font-size: 14px;
-        font-weight: 600;
-        color: #332C4B;
-        min-width: 90px;
+      span {
+        color: #E0E4E6;
       }
+    }
+    .donate-info {
+      position: absolute;
+      right: 0;
+      top: 0;
+      margin-right: 5px;
+      margin-top: 5px;
     }
   }
 
   .header-transaction {
-    padding: 1.5rem 1rem 1rem 1rem;
+    box-shadow: 0px 0px 14px rgb(0 0 0 / 2%), 0px -4px 20px rgb(0 0 0 / 10%);
+    padding: 1.5rem 1rem 0 1rem;
     background: var(--bg-color-light-theme);
     color: var(--color-light-on-background-theme);
     border-radius: 24px 24px 0px 0px;
     font-weight: 600;
     font-size: 22px;
     margin-top: 1rem;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .tx-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    color: rgba(0, 30, 46, 0.6);
+    .status {
+      width: 56px;
+      margin-top: 0;
+      font-size: 12px;
+      padding: 3px;
+      background: linear-gradient(0deg, rgba(0, 101, 141, 0.08), rgba(0, 101, 141, 0.08)), #FAFAFB;
+      text-align: center;
+    }
+    .date {
+      margin: 0;
+      font-size: 12px;
+    }
   }
 }

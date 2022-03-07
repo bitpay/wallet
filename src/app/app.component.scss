@@ -518,7 +518,9 @@ ion-list {
     padding: 0 !important;
 
     ion-item {
-        --background-hover: transparent;
+        --background-hover: none;
+        --background-activated: none;
+        --background-focused: none;
 
         &.checkbox-no-animation {
             --ripple-color: transparent;
@@ -1062,7 +1064,7 @@ ion-tabs {
 
         ion-tab-button {
             --ripple-color: transparent;
-            min-height: 5.6rem;
+            min-height: 4.6rem;
             font-weight: normal;
             opacity: 0.8;
             padding: 0;
