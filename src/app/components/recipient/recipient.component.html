@@ -9,13 +9,14 @@
       <p class="title">Transfer to</p>
       <img (click)="openTransferToModal()" src="../../../../assets/img/recipient-component/Union-{{darkThemeString}}.svg">
     </div>
-
     <ion-item lines="none" class="search-address-wrapper">
-      <ion-input class="transfer-to-input" readonly
-        placeholder="Paste address here" (click)="pasteFromClipboard()" [value]="recipient.name || recipient.toAddress"
+      <ion-input class="transfer-to-input" [readonly]="recipient.name.length > 0"
+        placeholder="Paste address here"
+        [(ngModel)]="searchValue"
+        [value]="recipient.name"
         (ionChange)="processInput()">
       </ion-input>
-      <ion-icon src="../../../../assets/img/recipient-component/Subtract.svg" *ngIf="recipient.name || recipient.toAddress"
+      <ion-icon src="../../../../assets/img/recipient-component/Subtract.svg" *ngIf="searchValue && searchValue.length > 0"
         slot="end" class="erase-icon" (click)="cleanSearch()">
       </ion-icon>
       <ion-icon src="../../../../assets/img/recipient-component/qr-{{darkThemeString}}.svg" *ngIf="isCordova" slot="end" class="scan-icon" (click)="openScanner()">
