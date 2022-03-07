@@ -55,7 +55,7 @@
     <div *ngIf="!shouldShowZeroState()">
       <p>{{search}}</p>
       <recipient-component *ngFor="let recipient of listRecipient" 
-      [walletId]="walletId" 
+      [wallet]="wallet" 
       [recipient]="recipient"
       (deleteEvent)="deleteRecipient($event)" 
       [isShowSendMax]="isShowSendMax"

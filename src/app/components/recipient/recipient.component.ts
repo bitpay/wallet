@@ -31,7 +31,6 @@ import { ClipboardProvider, ThemeProvider } from 'src/app/providers';
   encapsulation: ViewEncapsulation.None
 })
 export class RecipientComponent implements OnInit {
-  public wallet: any;
   public search: string = '';
   public amount: string = '';
   navParamsData: any;
@@ -70,7 +69,7 @@ export class RecipientComponent implements OnInit {
   isShowDelete: boolean;
 
   @Input()
-  walletId: string;
+  wallet: any;
 
   @Output() deleteEvent = new EventEmitter<number>();
   @Output() sendMaxEvent = new EventEmitter<boolean>();
@@ -123,9 +122,6 @@ export class RecipientComponent implements OnInit {
     } else {
       this.navParamsData = history ? history.state : {};
     }
-    if (this.navParamsData.walletId) {
-      this.wallet = this.profileProvider.getWallet(this.navParamsData.walletId);
-    }
     this.isCordova = this.platformProvider.isCordova;
     this.expression = '';
     this.onlyIntegers = this.navParamsData.onlyIntegers
@@ -140,9 +136,6 @@ export class RecipientComponent implements OnInit {
   ngOnInit() {
     this.setAvailableUnits();
     this.updateUnitUI();
-    if (this.walletId) {
-      this.wallet = this.profileProvider.getWallet(this.walletId);
-    }
   }
 
 

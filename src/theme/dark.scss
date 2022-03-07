@@ -121,7 +121,7 @@
                   color: #73DAA5;
                 }
                 .confirming {
-                  color: #FFB85D
+                  color: var(--color-primary-abcpay-dark);
                 }
                 .locked {
                   color: #CCC1E9;
@@ -130,12 +130,11 @@
                   color: rgba(237, 239, 240, 0.6);
                 }
                 .total {
-                  color: var(--color-primary-abcpay-dark);
+                  color: #FFB85D;
                 }
               }
             }
             .sub-title {
-                border-color: rgba(237, 239, 240, 0.38);
                 color: rgba(237, 239, 240, 0.38);
             } 
           }
@@ -200,6 +199,7 @@
 
     ion-list {
         background-color: var(--bg-color-dark-theme);
+        border-color: #314d5c !important;
         ion-item {
             --color-hover: none;
             --background-hover: none;
@@ -454,7 +454,7 @@
             &.md {
                 border: 0;
                 background-color: var(--bg-color-dark-theme);
-                --background: var(--bg-color-dark-theme-5);
+                --background: linear-gradient(0deg, rgba(126, 208, 255, 0.11), rgba(126, 208, 255, 0.11)), #001E2E;;
                 --padding-start: 5px;
                 --padding-end: 5px;
                 margin: 1rem 1rem;
@@ -480,6 +480,7 @@
 
         ion-item-divider {
             background: var(--bg-color-dark-theme) !important;
+            border-color: #314d5c !important;
 
             ion-label {
                 color: var(--text-color-dark-theme-3) !important;
@@ -655,6 +656,7 @@
         background: var(--bg-color-dark-theme);
         --background: var(--bg-color-dark-theme);
         color: var(--text-color-dark-theme) !important;
+        --border-width: 0 !important;
     }
 
     .content-ios .toolbar-background-ios {
@@ -1282,6 +1284,9 @@
 
         .donate-card {
             color: var(--bg-surface-color-abcpay-dark);
+            &::before {
+                opacity: 0.6;
+            }
         }
 
         .balance-card {
@@ -1295,11 +1300,15 @@
                 }
             }
 
+            ion-item-group {
+                border-color: var(--border-color-dark-theme);
+            }
+
             .item {
-                background: linear-gradient(0deg, rgba(126, 208, 255, 0.12), rgba(126, 208, 255, 0.12)), #001E2E;
+                background: linear-gradient(0deg, rgba(126, 208, 255, 0.08), rgba(126, 208, 255, 0.08)), #001E2E;
                 --background: linear-gradient(0deg, rgba(126, 208, 255, 0.12), rgba(126, 208, 255, 0.12)), #001E2E;
                 color: var(--text-color-dark-theme) !important;
-                --border-color: var(--border-color-dark-theme);
+                border-color: #314d5c;
 
                 &.warning-background {
                     background-color: var(--bg-color-dark-theme-3);
@@ -1320,8 +1329,21 @@
                 }
 
                 ion-label {
-                    color: rgba(224, 228, 230, 0.6);
+                    color: rgba(224, 228, 230, 0.6) !important;
                 }
+            }
+        }
+
+        .tx-info {
+            .status {
+                background: var(--bg-color-dark-theme);
+                color: rgba(237, 239, 240, 0.6);
+            }
+        }
+
+        .memo {
+            span {
+                color: rgba(224, 228, 230, 0.6) !important;
             }
         }
 
@@ -1336,6 +1358,9 @@
 
         .header-transaction {
             background: linear-gradient(0deg, rgba(126, 208, 255, 0.08), rgba(126, 208, 255, 0.08)), #001E2E;
+            ion-icon {
+                color: rgba(237, 239, 240, 0.6);
+            }
         }
 
         .amount {
@@ -1344,7 +1369,9 @@
             }
       
             .sent {
-              color: #FFB4A9;
+              &.pending {
+                color: #FFB4A9 !important;
+            }
             }
       
             .immature {
@@ -1715,6 +1742,7 @@
             ion-item {
                 background: linear-gradient(0deg, rgba(126, 208, 255, 0.05), rgba(126, 208, 255, 0.05)), #001E2E;
                 --background: linear-gradient(0deg, rgba(126, 208, 255, 0.05), rgba(126, 208, 255, 0.05)), #001E2E;
+                border-color: #314d5c;
                 ion-note {
                     background: var(--bg-color-dark-theme-2);
                     color: var(--text-color-dark-theme-2) !important;

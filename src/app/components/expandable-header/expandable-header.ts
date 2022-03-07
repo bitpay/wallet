@@ -71,7 +71,7 @@ export class ExpandableHeaderComponent {
   private adjustElementOnScroll(ev) {
     if (ev) {
       this.domCtrl.write(() => {
-        return this.handleDomWrite(ev.detail.scrollTop)
+        return this.handleDomWrite(ev.detail.scrollTop - 200)
       });
     }
   }

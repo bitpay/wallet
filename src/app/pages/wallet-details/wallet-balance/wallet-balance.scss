@@ -3,7 +3,7 @@ page-wallet-balance {
     margin: 0;
     --padding-start: 0;
     --padding-end: 0;
-    --color: rgba(0, 30, 46, 0.6);
+    --color: rgba(0, 30, 46, 0.6) !important;
   }
   ion-item {
     --inner-padding-end: 0;
@@ -23,13 +23,13 @@ page-wallet-balance {
       .balance {
         text-align: end;
         .available {
-          color: var(--color-success);
+          color: #37A372;
         }
         .confirming {
-          color: var(--color-warning);
+          color: #2B9ACF;
         }
         .locked {
-          color: var(--color-tertiary);
+          color: #625A7C;
         }
         .fiat {
           color: rgba(0, 30, 46, 0.6);
@@ -38,7 +38,7 @@ page-wallet-balance {
         .total {
           font-size: 16px;
           font-weight: 600;
-          color: var(--color-primary);
+          color: #CC8000;
         }
       }
     }

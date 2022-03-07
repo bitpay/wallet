@@ -88,7 +88,6 @@ export class SendPage{
       address: 0,
       isValid: false
     }))
-    this.walletId = this.navPramss.walletId;
     this.wallet = this.profileProvider.getWallet(this.navPramss.walletId);
     this.titlePage = "Send " + (this.wallet.coin as String).toUpperCase();
     this.isDonation = this.navPramss.isDonation;
@@ -288,7 +287,7 @@ export class SendPage{
           color: this.wallet.color,
           coin: this.wallet.coin,
           network: this.wallet.network,
-          useSendMax: true,
+          useSendMax: false,
           recipients: this.listRecipient
         }
       });

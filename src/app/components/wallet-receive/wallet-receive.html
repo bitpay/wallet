@@ -7,20 +7,10 @@
         </span>
       </ion-col>
     </ion-row>
-    <div *ngIf="wallet.coin === 'bch'" class="ion-padding-bottom ion-padding-left ion-padding-right">
-      <ion-segment [(ngModel)]="bchAddrFormat" (ionChange)="setQrAddress()">
-        <ion-segment-button value="cashAddress">
-          Cash Address
-        </ion-segment-button>
-        <ion-segment-button value="legacy">
-          Legacy
-        </ion-segment-button>
-      </ion-segment>
-    </div>
 
     <div class="addr-sub-title">
       <img width="20" height="12" src="assets/img/icon-warning-circled.svg" />
-      {{'Depositing any other crypto asset besides {coin} to this address or doing it through any other network than ERC20 may result in the total loss of your funds. AbcPay is not responsible for any funds loss  due to the deposit of a different asset, wallet or network.' | translate: {coin: wallet.coin.toUpperCase() } }}
+      {{' Depositing any other crypto asset besides {coin} to this address may result in the total loss of your funds. AbcPay is not responsible for any funds loss due to the deposit of a different asset, wallet or network. ' | translate: {coin: wallet.coin.toUpperCase() } }}
     </div>
 
     <div class="qr-container" *ngIf="wallet && wallet?.isComplete() && !wallet?.needsBackup" [ngClass]="{'blur': showingWarning || bchAddrFormat === 'legacy' && !disclaimerAccepted}">
