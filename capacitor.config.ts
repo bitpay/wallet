@@ -7,7 +7,8 @@ const config: CapacitorConfig = {
   bundledWebRuntime: false,
   plugins : {
     "SplashScreen" : {
-      "launchShowDuration" : 0
+      "launchAutoHide": false,
+      "showSpinner": false
     },
     "PushNotifications" : {
       "presentationOptions" : ["badge", "sound", "alert"]
@@ -16,12 +17,13 @@ const config: CapacitorConfig = {
   cordova: {
     preferences: {
       ScrollEnabled: 'false',
-      BackupWebStorage: 'none',
-      SplashMaintainAspectRatio: 'true',
-      FadeSplashScreenDuration: '300',
-      SplashShowOnlyFirstTime: 'false',
-      SplashScreen: 'screen',
-      SplashScreenDelay: '3000'
+      BackupWebStorage: 'none'
+      // ,
+      // SplashMaintainAspectRatio: 'true',
+      // FadeSplashScreenDuration: '300',
+      // SplashShowOnlyFirstTime: 'false',
+      // SplashScreen: 'screen',
+      // SplashScreenDelay: '3000'
     }
   }
 };
