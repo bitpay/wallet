@@ -85,6 +85,8 @@ page-send {
   .btn-function-group{
     display: flex;
     flex-flow: column;
+    margin-bottom: 3rem;
+    padding-bottom: 2rem;
     .btn-add-more{
       --color: rgba(0, 101, 141, 1);
       --border-color: rgba(0, 30, 46, 1);

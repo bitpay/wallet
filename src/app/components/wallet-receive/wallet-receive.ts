@@ -152,7 +152,6 @@ export class WalletReceiveComponent extends ActionSheetParent {
 
     await timer(200).toPromise();
     this.playAnimation = false;
-    this.showCoinNetworkWarning(this.wallet.coin);
   }
 
   public setQrAddress() {
@@ -210,15 +209,4 @@ export class WalletReceiveComponent extends ActionSheetParent {
     });
   }
 
-  public showCoinNetworkWarning(coin: Coin) {
-    this.showingWarning = true;
-    const infoSheet = this.createInfoSheet('network-coin-warning', {
-      coin: coin.toUpperCase(),
-      isERCToken: this.currencyProvider.isERCToken(coin)
-    });
-    infoSheet.present();
-    infoSheet.onDidDismiss(() => {
-      this.showingWarning = false;
-    });
-  }
 }

@@ -37,6 +37,7 @@
     
     ion-toolbar {
         --background: var(--bg-color-light-theme);
+        --border-width: 0 !important;
     }
 
     ion-button {
