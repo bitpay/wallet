@@ -52,10 +52,10 @@ page-slide-to-accept {
 
   .button-slider {
     z-index: 10;
-    width: 120%;
+    width: 54px;
     border-bottom-right-radius: 45px;
     border-top-right-radius: 45px;
-    margin-left: -119%;
+    margin-left: -80px;
     height: 100%;
     background: var(--slider-bg-button) !important;
     &.doge {
@@ -68,7 +68,7 @@ page-slide-to-accept {
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 77px;
+    height: 70px;
     margin: 25px auto;
     width: 300px;
   }
@@ -148,11 +148,12 @@ page-slide-to-accept {
     }
     &__bitcoin {
       z-index: 10;
+      width: 65px;
       position: absolute;
-      right: 25px;
-      top: 20px;
+      top: 3px;
+      left: 0px;
       > img {
-        height: 36px;
+        height: 65px;
       }
       &.doge {
         top: 0px;
@@ -163,7 +164,7 @@ page-slide-to-accept {
       }
     }
     &__button-text {
-      color: var(--color-blank);
+      color:rgba(0, 52, 75, 1);
       font-size: 16px;
       font-weight: 500;
       letter-spacing: 0.03rem;

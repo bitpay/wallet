@@ -95,6 +95,7 @@
     // 1.8 - Info Sheet
     --text-color-info-sheet-dark-theme: #B8C2C7;
 
+    --slider-bg-button: rgba(126, 208, 255, 1);
     @include toolbar-button-color(var(--text-color-dark-theme));
 
     // TODO: Remove text opacity from default styles
