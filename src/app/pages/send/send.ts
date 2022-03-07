@@ -1,6 +1,6 @@
-import { Component, QueryList, ViewChildren, ViewEncapsulation } from '@angular/core';
+import { Component, ViewChild, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
-import { NavParams, Platform } from '@ionic/angular';
+import { IonContent, NavParams, Platform } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
 import * as _ from 'lodash';
 import { Subscription } from 'rxjs';
@@ -22,7 +22,6 @@ import { Logger } from '../../providers/logger/logger';
 import { PlatformProvider } from '../../providers/platform/platform';
 
 // Pages
-import { RecipientComponent } from '../../components/recipient/recipient.component';
 import { RecipientModel } from '../../components/recipient/recipient.model';
 
 @Component({
@@ -31,7 +30,7 @@ import { RecipientModel } from '../../components/recipient/recipient.model';
   styleUrls: ['./send.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class SendPage {
+export class SendPage{
   public wallet: any;
   public search: string = '';
   public amount: string = '';
@@ -39,25 +38,6 @@ export class SendPage {
   public invalidAddress: boolean;
   public validDataFromClipboard;
   private onResumeSubscription: Subscription;
-  private validDataTypeMap: string[] = [
-    'BitcoinAddress',
-    'BitcoinCashAddress',
-    'ECashAddress',
-    'LotusAddress',
-    'EthereumAddress',
-    'EthereumUri',
-    'RippleAddress',
-    'DogecoinAddress',
-    'LitecoinAddress',
-    'RippleUri',
-    'BitcoinUri',
-    'BitcoinCashUri',
-    'DogecoinUri',
-    'LitecoinUri',
-    'BitPayUri',
-    'ECashUri',
-    'LotusUri'
-  ];
   private pageMap = {
     AddressbookAddPage: '/address-book-add',
     AmountPage: '/amount',
@@ -77,7 +57,8 @@ export class SendPage {
   walletId: string;
   isShowSendMax: boolean = true;
   isShowDelete: boolean = false;
-  @ViewChildren(RecipientComponent) listFinalRecipient: QueryList<RecipientComponent>;
+  @ViewChild(IonContent) content : IonContent;
+
   constructor(
     private currencyProvider: CurrencyProvider,
     private router: Router,
@@ -267,12 +248,7 @@ export class SendPage {
     }))
     this.isShowSendMax = this.listRecipient.length === 1;
     this.isShowDelete = this.listRecipient.length > 1;
-  }
-
-  public continue() {
-    const listFinal = this.listFinalRecipient.map(s => s.recipient);
-    console.log(listFinal);
-    this.goToConfirm();
+    this.content.scrollToBottom(1000);
   }
 
   public deleteRecipient(id) {

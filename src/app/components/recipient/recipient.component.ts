@@ -57,6 +57,7 @@ export class RecipientComponent implements OnInit {
   public useSendMax: boolean;
   public validDataFromClipboard;
   public darkThemeString: string;
+  public searchValue: string;
   validAddress = false;
   validAmount = false;
   @Input()
@@ -358,15 +359,15 @@ export class RecipientComponent implements OnInit {
   }
 
   public async processInput() {
-    if (this.recipient.name && this.recipient.recipientType === 'contact' || this.recipient.recipientType === 'wallet') this.validAddress = true
+    if (this.recipient.name) this.validAddress = true
     else {
-      if (this.recipient.toAddress == '') this.validAddress = false;
-      const parsedData = this.incomingDataProvider.parseData(this.recipient.toAddress);
+      if (this.searchValue == '') this.validAddress = false;
+      const parsedData = this.incomingDataProvider.parseData(this.searchValue);
       if (
         parsedData &&
         _.indexOf(this.validDataTypeMap, parsedData.type) != -1
       ) {
-        const isValid = this.checkCoinAndNetwork(this.recipient.toAddress);
+        const isValid = this.checkCoinAndNetwork(this.searchValue);
         if (isValid) this.validAddress = true;
       }
       else if (parsedData && parsedData.type == 'PrivateKey') {
@@ -462,6 +463,7 @@ export class RecipientComponent implements OnInit {
     this.recipient.name = '';
     this.validAddress = false;
     this.recipient.recipientType = '';
+    this.searchValue = '';
     this.checkRecipientValid();
   }
 
