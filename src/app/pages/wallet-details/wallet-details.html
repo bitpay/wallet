@@ -42,10 +42,15 @@
           }">
           <div class="wallet-card-header">
             <div class="wallet-icon">
-              <img src="assets/img/currencies/{{wallet.coin}}.svg" alt="">
+              <div class="icon">
+                <img src="assets/img/currencies/{{wallet.coin}}.svg" alt="">
+                <img *ngIf="wallet?.cachedStatus && wallet?.cachedStatus.wallet && wallet?.cachedStatus.wallet?.singleAddress && isUtxoCoin()"
+                  class="audit" src="assets/img/wallet-details/wallet-audit.svg" alt="">
+              </div>
               <div class="wallet-name">
-                <p class="name">{{wallet?.name}}</p> 
-                <p class="wallet-add" copy-to-clipboard="{{ address }}"> {{(address | slice:0:10) +'...'+ (address | slice:-12)}} 
+                <p class="name">{{wallet?.name}}</p>
+                <ion-spinner *ngIf="!address" name="dots"></ion-spinner>
+                <p *ngIf="address" class="wallet-add" copy-to-clipboard="{{ address }}"> {{(address | slice:0:10) +'...'+ (address | slice:-12)}} 
                   <ion-icon name="copy-outline"></ion-icon>
                 </p>
               </div>
@@ -111,7 +116,7 @@
         </div>
       </expandable-header-primary>
       <expandable-header-footer>
-        <div class="action-buttons" [ngClass]="{'two-actions': !showBuyCrypto && !showExchangeCrypto}">
+        <div class="action-buttons" [ngClass]="{'two-actions': !showBuyCrypto && !showExchangeCrypto, 'no-margin': !wallet?.balanceHidden && !wallet?.scanning && !updateStatusError && showBalanceButton}">
 
           <div class="action-btn receive-btn" (click)="goToReceivePage()">
             <ion-button expand="block">
@@ -182,8 +187,8 @@
           width="42" src="assets/img/icon-warning-circled.svg" />
         <ng-template #ghostTongue>
           <img *ngIf="wallet.coin === 'xpi'"
-            src="assets/img/wallet-details/ghost-{{currentTheme}}.svg">
-          <img *ngIf="wallet.coin !== 'xpi'" src="assets/img/wallet-details/pond-{{currentTheme}}.svg">
+            src="assets/img/wallet-details/pond-{{currentTheme}}.svg">
+          <img *ngIf="wallet.coin !== 'xpi'" src="assets/img/wallet-details/ghost-{{currentTheme}}.svg">
         </ng-template>
       </div>
       <div class="title-info">
@@ -264,22 +269,22 @@
                 <span class="double-spend" *ngIf="tx.action == 'invalid'" translate>(possible double spend)</span>
               </div>
               <span class="tx-action"
-                *ngIf="tx.action == 'received' && (!tx.note || (tx.note && !tx.note.body)) && (!addressbook || !tx.outputs[0] || !getContactName(tx.outputs[0].address))">{{'From: ' + tx.outputs[0].address
-                | translate | slice:0:14}}</span>
+                *ngIf="tx.action == 'received' && (!tx.note || (tx.note && !tx.note.body)) && (!addressbook || !tx.outputs[0] || !getContactName(tx.outputs[0].address))">{{'From: {address}'
+                | translate: {address: tx.outputs[0].address.slice(-8)} }}</span>
               <span class="tx-action"
                 *ngIf="tx.action == 'received' && (!tx.note || (tx.note && !tx.note.body)) && addressbook && tx.outputs[0] && getContactName(tx.outputs[0].address)">
-                {{'From: ' + getContactName(tx.outputs[0].address)| translate | slice:0:14}}
+                {{'From: ' + getContactName(tx.outputs[0].address)| translate}}
               </span>
               <span class="tx-action"
-                *ngIf="tx.action == 'sent' && (!tx.note || (tx.note && !tx.note.body)) && (!addressbook || !tx.outputs[0] || !getContactName(tx.outputs[0].address)) && (!tx.customData || !tx.customData.toWalletName)">{{'To: ' + tx.addressTo | translate
-                | slice:0:12}}</span>
+                *ngIf="tx.action == 'sent' && (!tx.note || (tx.note && !tx.note.body)) && (!addressbook || !tx.outputs[0] || !getContactName(tx.outputs[0].address)) && (!tx.customData || !tx.customData.toWalletName)">{{'To: {address}' | translate: {address: tx.addressTo.slice(-8)} }}</span>
               <span class="tx-action"
                 *ngIf="tx.action == 'sent' && (!tx.note || (tx.note && !tx.note.body)) && (!addressbook || !tx.outputs[0] || !getContactName(tx.outputs[0].address)) && (tx.customData && tx.customData.toWalletName)">
-                {{ 'To: {walletName}' | translate: {walletName: tx.customData.toWalletName} | slice:0:12 }}
+                {{ 'To: {walletName}' | translate: {walletName: tx.customData.toWalletName} | translate}}
               </span>
-              <div class="memo">
-                <span *ngIf="tx.message">{{tx.message}}</span>
-              </div>
+              <span class="tx-action" *ngIf="tx.message && addressbook && tx.outputs[0] && getContactName(tx.outputs[0].address)">
+                {{'To: ' + getContactName(tx.outputs[0].address) | translate}}
+              </span>
+              <span *ngIf="tx.message" class="memo">{{tx.message}}</span>
             </div>
 
             <div class="action" *ngIf="tx.action == 'immature'">
@@ -297,16 +302,14 @@
                 <span class="double-spend" *ngIf="tx.action == 'invalid'" translate>(possible double spend)</span>
               </div>
               <span class="tx-action"
-                *ngIf="(!tx.note || (tx.note && !tx.note.body)) && (!addressbook || !tx.outputs[0] || !getContactName(tx.outputs[0].address))">{{'From: ' + tx.outputs[0].address
-                | translate | slice:0:14}}</span>
+                *ngIf="(!tx.note || (tx.note && !tx.note.body)) && (!addressbook || !tx.outputs[0] || !getContactName(tx.outputs[0].address))">{{'From: {address}'
+                | translate: {address: tx.outputs[0].address.slice(-8)} }}</span>
               <span class="tx-action"
                 *ngIf="(!tx.note || (tx.note && !tx.note.body)) && addressbook && tx.outputs[0] && getContactName(tx.outputs[0].address)">
-                {{'From: ' + getContactName(tx.outputs[0].address)| translate | slice:0:14}}
+                {{'From: ' + getContactName(tx.outputs[0].address)| translate}}
               </span>
               
-              <div class="memo">
-                <span *ngIf="tx.message">{{tx.message}}</span>
-              </div>
+              <span *ngIf="tx.message" class="memo">{{tx.message}}</span>
             </div>
 
             <div class="action"
@@ -321,16 +324,15 @@
                 *ngIf="(tx.message && (tx.note && !tx.note.body)) && (!addressbook || !tx.outputs[0] || !getContactName(tx.outputs[0].address)) && (!tx.customData || !tx.customData.toWalletName)"
                 translate>Sent</span>
               <span class="tx-action"
-                *ngIf="(!tx.note || (tx.note && !tx.note.body)) && (!addressbook || !tx.outputs[0] || !getContactName(tx.outputs[0].address)) && (!tx.customData || !tx.customData.toWalletName)">{{'To: ' + tx.addressTo | translate
-                | slice:0:12}}</span>
+                *ngIf="(!tx.note || (tx.note && !tx.note.body)) && (!addressbook || !tx.outputs[0] || !getContactName(tx.outputs[0].address)) && (!tx.customData || !tx.customData.toWalletName)">{{'To: {address}' | translate: {address: tx.addressTo.slice(-8)} }}</span>
               <span class="tx-action"
                 *ngIf="(!tx.note || (tx.note && !tx.note.body)) && (!addressbook || !tx.outputs[0] || !getContactName(tx.outputs[0].address)) && (tx.customData && tx.customData.toWalletName)">
-                {{ 'To: {walletName}' | translate: {walletName: tx.customData.toWalletName} | slice:0:12 }}
+                {{ 'To: {walletName}' | translate: {walletName: tx.customData.toWalletName} }}
               </span>
-              
-              <div class="memo">
-                <span *ngIf="tx.message">{{tx.message}}</span>
-              </div>
+              <span class="tx-action" *ngIf="tx.message && addressbook && tx.outputs[0] && getContactName(tx.outputs[0].address)">
+                {{'To: ' + getContactName(tx.outputs[0].address) | translate}}
+              </span>
+              <span *ngIf="tx.message" class="memo">{{tx.message}}</span>
             </div>
 
             <div class="action" *ngIf="tx.confirmations > 0 && tx.action == 'moved'">
@@ -338,16 +340,14 @@
               <span *ngIf="((!tx.note || (tx.note && !tx.note.body)) && !tx.message)" translate>Sent to self</span>
               <span *ngIf="!tx.note && tx.message">{{tx.message}}</span>
               
-              <div class="memo">
-                <span *ngIf="tx.message">{{tx.message}}</span>
-              </div>
+              <span *ngIf="tx.message" class="memo">{{tx.message}}</span>
             </div>
 
             <div class="action" *ngIf="tx.confirmations > 0 && tx.action == 'invalid'">
               <span class="assertive" *ngIf="!tx.message && !tx.note" translate>Invalid</span>
             </div>
 
-            <ion-note slot="end" class="ion-text-end ion-no-margin">
+            <ion-note slot="end" class="ion-text-end ion-no-margin ion-no-padding">
               <div class="tx-info">
                 <p class="status"
                   *ngIf="(tx.action == 'sent') && tx.confirmations <= 0">{{'Pending'
