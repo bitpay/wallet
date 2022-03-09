@@ -361,7 +361,10 @@ export class RecipientComponent implements OnInit {
         _.indexOf(this.validDataTypeMap, parsedData.type) != -1
       ) {
         const isValid = this.checkCoinAndNetwork(this.searchValue);
-        if (isValid) this.validAddress = true;
+        if (isValid) {
+          this.validAddress = true;
+          this.recipient.toAddress = this.searchValue;
+        }
       }
       else if (parsedData && parsedData.type == 'PrivateKey') {
         this.validAddress = true
@@ -509,6 +512,7 @@ export class RecipientComponent implements OnInit {
     this.cleanSearch();
     this.recipient.toAddress = this.validDataFromClipboard || '';
     this.validDataFromClipboard = null;
+    this.clipboardProvider.clear();
     this.processInput();
   }
 
