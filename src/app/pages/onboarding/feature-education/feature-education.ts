@@ -19,7 +19,8 @@ SwiperCore.use([Pagination]);
 @Component({
   selector: 'page-feature-education',
   templateUrl: 'feature-education.html',
-  styleUrls: ['./feature-education.scss']
+  styleUrls: ['./feature-education.scss'],
+  encapsulation : ViewEncapsulation.None
 })
 export class FeatureEducationPage {
 
