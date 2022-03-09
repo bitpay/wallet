@@ -25,8 +25,12 @@
           {{'Generate New Address' | translate}}
         </ion-button>
       </div>
-      <div *ngIf="address" class="card qr-card" copy-to-clipboard="{{ address }}">
-        <p>{{ address }}</p>
+      <div *ngIf="address" class="card qr-card">
+
+        <ion-button fill="clear" *ngIf="!(wallet?.cachedStatus && wallet?.cachedStatus.wallet && wallet?.cachedStatus.wallet.singleAddress)" class="addr-update" (click)="setAddress(true)">
+          <ion-icon slot="icon-only" src="assets/img/add-refresh-light.svg"></ion-icon>
+        </ion-button>
+        <p copy-to-clipboard="{{ address }}">{{ address }}</p>
         <ngx-qrcode hide-toast="true" value="{{ address }}" cssClass="aclass" [errorCorrectionLevel]="typeErrorQr.MEDIUM"></ngx-qrcode>
       </div>
       <div class="action-buttons">

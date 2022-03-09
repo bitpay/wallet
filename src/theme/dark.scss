@@ -1342,9 +1342,7 @@
         }
 
         .memo {
-            span {
-                color: rgba(224, 228, 230, 0.6) !important;
-            }
+            color: rgba(224, 228, 230, 0.6) !important;
         }
 
         .white-card {
@@ -1365,10 +1363,11 @@
 
         .amount {
             .received {
-              color: #73DAA5;
+              color: #73DAA5 !important;
             }
       
             .sent {
+                color: #FFB4A9 !important;
               &.pending {
                 color: #FFB4A9 !important;
             }

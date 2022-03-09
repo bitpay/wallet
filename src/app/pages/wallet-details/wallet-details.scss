@@ -107,6 +107,9 @@ page-wallet-details {
     width: 100%;
     padding: 1rem;
     margin-top: 1rem;
+    &.no-margin {
+      margin-top: 0 !important;
+    }
     &.two-actions {
       justify-content: space-around;
     }
@@ -215,10 +218,6 @@ page-wallet-details {
         }
     }
 
-    // ion-item-group {
-    //   border-bottom: 1px solid #f4f4f4;
-    // }
-
     ion-item {
       --color-activated: none;
       --inner-padding-bottom: 1rem;
@@ -244,20 +243,24 @@ page-wallet-details {
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
+      display: flex;
+      flex-direction: column;
       .memo {
         font-size: 14px;
-        color: rgba(224, 228, 230, 0.6);
-        margin-top: 4px;
-        span {
-          color: rgba(0, 30, 46, 0.6);
-        }
+        color: rgba(0, 30, 46, 0.6);
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        white-space: break-spaces;
+        text-overflow: ellipsis;
+        overflow: hidden;
+    
       }
     }
 
     .amount {
       font-weight: 600;
       font-size: 16px;
-      line-height: 24px;
       color: var(--ion-color-dark);
 
       .received {
@@ -273,13 +276,13 @@ page-wallet-details {
       }
 
       .pending {
-        // color: var(--color-danger);
         opacity: 0.38;
       }
     }
 
     .tx-action {
       font-size: 14px;
+      margin: 0.5rem 0;
     }
 
     .proposal-container {
@@ -471,9 +474,20 @@ page-wallet-details {
       justify-content: space-between;
       .wallet-icon {
         display: flex;
-        img {
-          width: 40px;
-          height: 40px;
+        .icon {
+          position: relative;
+          margin-top: 6px;
+          img {
+            width: 40px;
+            height: 40px;
+          }
+          .audit {
+            width: 16px;
+            height: 16px;
+            position: absolute;
+            bottom: 5px;
+            right: 0;
+          }
         }
         .wallet-name {
           margin-left: 1rem;
@@ -593,6 +607,9 @@ page-wallet-details {
     margin-top: 1rem;
     display: flex;
     justify-content: space-between;
+    ion-icon {
+      color: rgba(0, 30, 46, 0.6);
+    }
   }
 
   .tx-info {
@@ -607,6 +624,7 @@ page-wallet-details {
       padding: 3px;
       background: linear-gradient(0deg, rgba(0, 101, 141, 0.08), rgba(0, 101, 141, 0.08)), #FAFAFB;
       text-align: center;
+      border-radius: 5px;
     }
     .date {
       margin: 0;
