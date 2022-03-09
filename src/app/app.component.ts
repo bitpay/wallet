@@ -224,9 +224,19 @@ export class CopayApp {
         this.dynamicLinksProvider.init();
       });
 
-      // Check PIN or Fingerprint
-      this.logger.debug('Open Lock Modal');
-      this.openLockModal();
+      await SplashScreen.hide();
+
+      if (this.platformProvider.isCordova) {
+        this.platform.ready().then(() => {
+          setTimeout(() => {
+            this.routerHidden = false;
+            this.splash.nativeElement.style.display = 'none';
+            // Check PIN or Fingerprint
+            this.logger.debug('Open Lock Modal');
+            this.openLockModal();
+          }, this.platformProvider.isAndroid ? 2700 : 2900);
+        })
+      }
 
       // Clear all notifications
       this.pushNotificationsProvider.clearAllNotifications();
@@ -242,16 +252,6 @@ export class CopayApp {
     this.events.subscribe('OpenWallet', (wallet, params) =>
       this.openWallet(wallet, params)
     );
-    await SplashScreen.hide();
-
-    if (this.platformProvider.isCordova) {
-      this.platform.ready().then(() => {
-        setTimeout(() => {
-          this.routerHidden = false;
-          this.splash.nativeElement.style.display = 'none';
-        }, this.platformProvider.isAndroid ? 2700 : 2900);
-      })
-    }
 
     this.keyProvider
       .load()
