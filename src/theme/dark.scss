@@ -1204,6 +1204,18 @@
                     color: rgba(204, 193, 233, 1) !important; 
                 }
             }
+
+            .summary-amount-info{
+                .total-amount{
+                  color: rgba(255, 184, 93, 1) !important;
+                }
+                .total-amount-alt{
+                  color: rgba(255, 221, 182, 1);
+                }
+              }
+              .note-container {
+                color: rgba(255, 184, 93, 1) !important;
+              }
         }
 
         .background-button-content {
