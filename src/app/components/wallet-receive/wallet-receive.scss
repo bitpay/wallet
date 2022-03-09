@@ -73,17 +73,19 @@ page-choose-fee-level {
       }
       
       .spin-icon {
-        height: var(--spinner-height);
+        height: 18px;
       }
       .spinner {
         float: right;
         padding-bottom: 0px;
-        border: 1px solid #d0d5ef;
-        border-top: 1px solid #5b7cea;
+        border: 1px solid orange;
+        border-top: 1px solid red;
         border-radius: 50%;
-        width: var(--spinner-height);
-        height: var(--spinner-height);
+        width: 18px;
+        height: 18px;
         margin: 2px;
+        color: red;
+        background-color: red;
       }
       .spin-fast {
         animation: spin-fast 0.3s linear infinite;
@@ -144,8 +146,18 @@ page-choose-fee-level {
   .qr-container {
     padding: 0 1.5rem;
     .qr-card {
+      position: relative;
       border-radius: 1rem;
       padding: 1rem 2rem 0 2rem;
+      .addr-update {
+        --padding-start: 0;
+        --padding-end: 0;
+        width: 20px;
+        height: 20px;
+        position: absolute;
+        right: 5px;
+        top: 5px;
+      }
       p {
         margin: 0;
         font-size: 12px;
