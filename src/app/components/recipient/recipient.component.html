@@ -7,7 +7,7 @@
   <div class="recipient-content">
     <div class="transfer-to-header">
       <p class="title">Transfer to</p>
-      <img (click)="openTransferToModal()" src="../../../../assets/img/recipient-component/Union-{{darkThemeString}}.svg">
+      <img *ngIf="!token" (click)="openTransferToModal()" src="../../../../assets/img/recipient-component/Union-{{darkThemeString}}.svg">
     </div>
     <ion-item lines="none" class="search-address-wrapper">
       <ion-input class="transfer-to-input" [readonly]="recipient.name.length > 0"

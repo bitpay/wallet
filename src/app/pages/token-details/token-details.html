@@ -33,7 +33,7 @@
         </expandable-header-primary>
         <expandable-header-footer>
 
-          <div class="action-buttons" [ngClass]="{'two-actions': !showBuyCrypto && !showExchangeCrypto}">
+          <div class="action-buttons two-actions" >
 
             <div class="action-btn receive-btn" (click)="goToTokenInfo()">
               <ion-button expand="block">
@@ -92,7 +92,7 @@
       <ion-list class="tx-history">
         <ion-item-group *ngFor="let group of groupedHistory; trackBy: trackByFn; let i = index;">
 
-          <ion-item-divider (click)="viewOnBlockchain()" sticky class="tx-history-header">
+          <ion-item-divider sticky class="tx-history-header">
             <ion-label>
               <span *ngIf="isDateInCurrentMonth(getDate(group[0].time))">{{ 'Recent' | translate }} </span>
               <span *ngIf="!isDateInCurrentMonth(getDate(group[0].time))">{{getDate(group[0].time) |

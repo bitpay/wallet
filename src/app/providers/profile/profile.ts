@@ -1643,6 +1643,12 @@ export class ProfileProvider {
                     this.translate.instant('Error creating wallet')
                   );
                   return reject(msg);
+                } else if (copayerRegistered && opts.isSlpToken) {
+                  return reject(
+                    this.translate.instant(
+                      'Only one slp Token wallet can be created'
+                    )
+                  );
                 } else if (copayerRegistered) {
                   // try with account + 1
                   opts.account = opts.account ? opts.account + 1 : 1;
@@ -1944,7 +1950,7 @@ export class ProfileProvider {
             return this.addAndBindWalletClient(data.walletClient, {
               bwsurl: opts.bwsurl
             }).then(walletClient => {
-              if (opts.isImport && walletClient) this.setWalletBackup(walletClient.id)
+              if (opts.isImport && walletClient) this.setWalletBackup(walletClient.id);
               return this.setAddress(walletClient).then(data => {
                 if (this.isSupportToken(data)) {
                   const { prefix, type, hash } = this.addressProvider.decodeAddress(data);
@@ -1959,6 +1965,63 @@ export class ProfileProvider {
       });
     });
   }
+  
+
+  public createTokenWallets(opts): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this._createWallet(opts).then(data => {
+        const key = data.key;
+        const firstWalletData = data;
+
+        const newOptsDefault = _.cloneDeep(opts)
+        newOptsDefault.key = key; // Add Key
+
+        const slpOpts = _.cloneDeep(opts)
+        slpOpts.key = key; // Add Key
+        slpOpts.keyId = key.id;
+        slpOpts.keyId = key.id;
+        slpOpts.name = `${opts.name} - 1899`
+        delete slpOpts.mnemonic;
+        slpOpts.isSlpToken = true;
+        slpOpts.singleAddress = true;
+        const create2ndWallets = [this._createWallet(slpOpts)];
+        Promise.all(create2ndWallets)
+          .then(walletsData => {
+            walletsData.unshift(firstWalletData);
+            let walletClients = _.map(walletsData, 'walletClient');
+            const data = {
+              key: firstWalletData.key,
+              walletClients
+            }
+            this.addAndBindWalletClients(data)
+              .then(async (boundWalletClients) => {
+                try {
+                  for (let i = 0; i < _.size(boundWalletClients); i++) {
+                    const walletClient = boundWalletClients[i];
+                    this.setWalletBackup(walletClient.id);
+                    const address = await this.setAddress(walletClient);
+                    if (this.isSupportToken(walletClient)) {
+                      const { prefix, type, hash } = this.addressProvider.decodeAddress(address);
+                      const etoken = this.addressProvider.encodeAddress('etoken', type, hash, address);
+                      walletClient.etokenAddress = etoken;
+                    }
+                  }
+                  return resolve(boundWalletClients);
+                } catch (error) {
+                  reject(error);
+                }
+              }).catch(e => {
+                reject(e);
+              });
+          }).catch(e => {
+            reject(e);
+          });
+      }).catch(e => {
+        reject(e);
+      });
+    });
+  }
+
 
   isSupportToken(wallet): boolean {
     if (wallet && wallet.coin == 'xec' && wallet.isSlpToken) return true;
