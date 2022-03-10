@@ -100,6 +100,10 @@ export class TokenDetailsPage {
     return this.showNoTransactionsYetMsg && !this.updateStatusError;
   }
 
+  public trackByFn(index) {
+    return index;
+  }
+
   loadToken() {
     this.tokenProvider.getUtxosToken(this.wallet).then(utxos => {
       const utxoToken = _.filter(utxos, item => item.tokenId == this.token.tokenId && !item.isNonSLP);

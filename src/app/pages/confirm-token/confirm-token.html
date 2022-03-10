@@ -121,17 +121,17 @@
       #slideButton
       *ngIf="isCordova"
       [ngClass]="{'slide-confirm-fast slide-confirm-down': hideSlideButton, 'slide-confirm-slow': !hideSlideButton}"
-      [disabled]="(!wallet && !coinbaseAccount)"
+      [disabled]="(!wallet)"
       [buttonText]="buttonText"
       (slideDone)="approve(wallet)"
     >
     </page-slide-to-accept>
-    <ion-toolbar *ngIf="!isCordova && (wallet || coinbaseAccount)">
+    <ion-toolbar *ngIf="!isCordova && (wallet)">
       <ion-button
         expand="full"
         class="button-footer"
         (click)="approve(wallet)"
-        [disabled]="(!wallet && !coinbaseAccount)"
+        [disabled]="(!wallet)"
       >
         {{buttonText}}
       </ion-button>

@@ -480,7 +480,30 @@ export class ImportWalletPage {
       this.showErrorInfoSheet(title, subtitle);
       return;
     }
-    this.createSpecifyingWords(opts);
+    if ((coin == 'xec' || coin == 'xpi') && !this.importForm.value.derivationPathEnabled) {
+      this.createWalletTokensSpecifyingWords(opts);
+    } else {
+      this.createSpecifyingWords(opts);
+    }
+  }
+
+  private createWalletTokensSpecifyingWords(opts): void {
+    this.logger.debug('Creating from import');
+    opts.isImport = true;
+    this.onGoingProcessProvider.set('creatingWallet');
+    this.profileProvider
+      .createTokenWallets(opts)
+      .then(wallet => {
+        this.onGoingProcessProvider.clear();
+        if (wallet) this.finish([].concat(wallet));
+      })
+      .catch(err => {
+        this.onGoingProcessProvider.clear();
+        this.logger.error('Create: could not create wallet', err);
+        const title = this.translate.instant('Error');
+        err = this.bwcErrorProvider.msg(err);
+        this.showErrorInfoSheet(title, err);
+      });
   }
 
   private createSpecifyingWords(opts): void {
