@@ -1,8 +1,5 @@
 // import { from } from 'rxjs/observable/from';
 
-
-
-
 /* Native modules */
 export { Clipboard } from '@ionic-native/clipboard/ngx';
 export { Device } from '@ionic-native/device/ngx';
@@ -76,3 +73,4 @@ export { CustomErrorHandler } from './custom-error-handler.service';
 
 export { RedirectGuard } from './redirect.service';
 export { PreviousRouteService } from './previous-route/previous-route';
+export { TokenProvider } from './token-sevice/token-sevice';

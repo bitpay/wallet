@@ -1,6 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, NgZone, ViewChild, ViewEncapsulation } from '@angular/core';
-// import { TranslateService } from '@ngx-translate/core';
+import { ChangeDetectorRef, Component, NgZone, ViewChild, ViewEncapsulation } from '@angular/core';
 
 import * as _ from 'lodash';
 import { Subscription } from 'rxjs';
@@ -11,7 +10,6 @@ import { CopayersPage } from '../add/copayers/copayers';
 // Providers
 import { ActionSheetProvider } from '../../providers/action-sheet/action-sheet';
 import { AnalyticsProvider } from '../../providers/analytics/analytics';
-// import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
 import { Logger } from '../../providers/logger/logger';
 import { PersistenceProvider } from '../../providers/persistence/persistence';
 import { PlatformProvider } from '../../providers/platform/platform';
@@ -20,6 +18,9 @@ import { WalletProvider } from '../../providers/wallet/wallet';
 import { LoadingController, ModalController, NavController, NavParams, Platform } from '@ionic/angular';
 import { EventManagerService } from 'src/app/providers/event-manager.service';
 import { Router } from '@angular/router';
+import { TokenProvider } from 'src/app/providers/token-sevice/token-sevice';
+import { AddressProvider } from 'src/app/providers/address/address';
+import { Token } from 'src/app/providers/currency/token';
 
 interface UpdateWalletOptsI {
   walletId: string;
@@ -41,6 +42,7 @@ export class WalletsPage {
   public txpsN: number;
 
   public collapsedGroups;
+  public collapsedToken;
 
   private zone;
   private onResumeSubscription: Subscription;
@@ -49,25 +51,28 @@ export class WalletsPage {
   donationSupportCoins = [];
   navParamsData;
   isShowCreateNewWallet = false;
+  groupToken;
   constructor(
     public http: HttpClient,
     private plt: Platform,
     private router: Router,
     private profileProvider: ProfileProvider,
     private walletProvider: WalletProvider,
-    // private bwcErrorProvider: BwcErrorProvider,
     private platformProvider: PlatformProvider,
     private analyticsProvider: AnalyticsProvider,
     private logger: Logger,
     private events: EventManagerService,
     private persistenceProvider: PersistenceProvider,
-    // private translate: TranslateService,
     private modalCtrl: ModalController,
     private actionSheetProvider: ActionSheetProvider,
     private loadingCtr: LoadingController,
-    private navParams: NavParams
+    private navParams: NavParams,
+    private tokenProvider: TokenProvider,
+    private changeDetectorRef: ChangeDetectorRef,
+    private addressProvider: AddressProvider
   ) {
     this.collapsedGroups = {};
+    this.collapsedToken = {};
     this.zone = new NgZone({ enableLongStackTrace: false });
   }
 
@@ -79,7 +84,35 @@ export class WalletsPage {
     this._didEnter();
   }
 
-  ionViewWillEnter() {
+  async loadItemTokenWallet(wallet, i, j) {
+    const groupToken = await this.tokenProvider.getTokens(wallet);
+    if (!_.isEmpty(groupToken)) {
+      this.walletsGroups[i][j].tokens = groupToken ;
+      this.profileProvider.setTokensWallet(this.walletsGroups[i][j].id, groupToken);
+    }
+  }
+
+  public reloadToken(loading, wallet, i, j) {
+    setTimeout(() => {
+      try {
+        this.loadItemTokenWallet(wallet, i, j); // loading in true
+        loading.target.complete();
+      } catch {
+        loading.target.complete();
+      }
+    }, 300);
+  }
+
+  goToTokenDetails(wallet, token: Token) {
+    this.router.navigate(['/token-details'], {
+      state: {
+        walletId: wallet.credentials.walletId,
+        token: token
+      }
+    });
+  }
+
+  async ionViewWillEnter() {
     this.walletsGroups = [];
     if (this.router.getCurrentNavigation()) {
       this.navParamsData = this.router.getCurrentNavigation().extras.state ? this.router.getCurrentNavigation().extras.state : {};
@@ -101,7 +134,55 @@ export class WalletsPage {
     }
     else {
       this.walletsGroups = walletsGroups;
+      this.loadTokenDataToken(walletsGroups).then(data => {
+        this.walletsGroups = data;
+        this.changeDetectorRef.detectChanges();
+      }).catch(err => {
+        this.walletsGroups = walletsGroups;
+        this.logger.error(err);
+      })
     }
+  }
+
+  loadEtokenAddress(wallet) {
+    return this.profileProvider.setAddress(wallet).then(addr => {
+      if (!addr) return '';
+      const { prefix, type, hash } = this.addressProvider.decodeAddress(addr);
+      const etoken = this.addressProvider.encodeAddress('etoken', type, hash, addr);
+      return Promise.resolve(etoken);
+    })
+  }
+
+
+  isSupportToken(wallet): boolean {
+    if (wallet && wallet.coin == 'xec' && wallet.isSlpToken) return true;
+    return false
+  }
+
+  setTokensWallet(walletId, groupToken) {
+    return new Promise(resolve => {
+      this.profileProvider.setTokensWallet(walletId, groupToken) ;
+      resolve(true)
+    });
+  }
+
+  async loadTokenDataToken(walletsGroups) {
+    for (var i = 0; i < walletsGroups.length; i++) {
+      const walletsGroup = walletsGroups[i];
+      for (var j = 0; j < walletsGroup.length; j++) {
+        const wallet = walletsGroup[j]
+        if (this.isSupportToken(wallet)) {
+          const etokenAddress = await this.loadEtokenAddress(wallet)
+          if (etokenAddress) walletsGroups[i][j].etokenAddress = etokenAddress
+          const groupToken = await this.tokenProvider.getTokens(wallet);
+          if (!_.isEmpty(groupToken)) {
+            walletsGroups[i][j].tokens = groupToken;
+            await this.setTokensWallet(walletsGroups[i][j].id, groupToken)
+          }
+        }
+      }
+    }
+    return walletsGroups;
   }
 
   private filterLotusDonationWallet(walletGroups: any) {
@@ -269,6 +350,11 @@ export class WalletsPage {
       });
       if (this.isDonation) {
         this.walletsGroups = this.filterLotusDonationWallet(this.walletsGroups);
+      } else {
+        this.loadTokenDataToken(this.walletsGroups).then(data => {
+          this.walletsGroups = data;
+          this.changeDetectorRef.detectChanges();
+        })
       }
     },
     5000,
@@ -505,6 +591,14 @@ export class WalletsPage {
 
   public isCollapsed(keyId: string): boolean {
     return this.collapsedGroups[keyId] ? true : false;
+  }
+
+  public collapsToken(walletId: string) {
+    this.collapsedToken[walletId] = this.collapsedToken[walletId] ? false : true;
+  }
+
+  public isCollapsedToken(walletId: string): boolean {
+    return this.collapsedToken[walletId] ? true : false;
   }
 
   public addWallet(keyId): void {

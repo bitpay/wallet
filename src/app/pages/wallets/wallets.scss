@@ -5,6 +5,76 @@ page-wallets {
     justify-content: center;
   }
 
+  .token-container {
+    padding: 0 20px;
+  }
+
+  .no-token {
+    color: var(--color-light-grey);
+    text-align: center;
+    padding: 10px 0;
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  .token-container {
+    ion-item {
+      margin: 15px 0 !important; 
+      padding: 0 !important;
+      --background : transparent !important;
+    }
+    .token-item {
+      margin: 0 10px;
+    }
+    .collapse-btn {
+      margin-left: 0 !important;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 20px !important;
+      width: 20px !important;
+    }
+    ion-icon {
+      margin: 0 !important;
+      padding: 4px;
+    }
+
+    .background-content {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      align-items: center;
+    }
+
+    .address-token {
+      display: flex;
+      width: 30%;
+      &:hover {
+        cursor: pointer ;
+      }
+    }
+
+    .coin-img {
+      width: 18px;
+      height: 18px;
+      margin: 0px;
+    }
+
+    .wrap-key-token {
+      // flex: 1;
+      display: inline-flex;
+    }
+    .collapse {
+      margin: 0 4px;
+    }
+  }
+  .scroll-token {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+  }
+
   .notifications-badge {
     border-radius: 9px;
     font-size: 12px;

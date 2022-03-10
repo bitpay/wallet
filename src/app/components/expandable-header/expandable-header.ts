@@ -46,7 +46,7 @@ export class ExpandableHeaderComponent {
    * greater the value, the quicker the fade.
    */
   @Input()
-  fadeFactor: number = 2.5;
+  fadeFactor: number = 1.5;
 
   @Input()
   disableFade: boolean = false;

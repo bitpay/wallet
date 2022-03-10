@@ -53,6 +53,7 @@ export class SendPage{
   titlePage: string ;
   dataDonation: any;
   navPramss: any;
+  token;
   listRecipient: RecipientModel[] = [];
   walletId: string;
   isShowSendMax: boolean = true;
@@ -89,7 +90,9 @@ export class SendPage{
       isValid: false
     }))
     this.wallet = this.profileProvider.getWallet(this.navPramss.walletId);
+    this.token = this.navPramss.token;
     this.titlePage = "Send " + (this.wallet.coin as String).toUpperCase();
+    if(this.token) this.titlePage = `Send ${this.token.tokenInfo.name}`
     this.isDonation = this.navPramss.isDonation;
     if (this.isDonation) {
       this.titlePage = "Receiving Wallet";
@@ -175,6 +178,9 @@ export class SendPage{
 
   public getBalance() {
     const lastKnownBalance = this.wallet.lastKnownBalance;
+    if (this.token) {
+      return `${this.token.amountToken} ${this.token.tokenInfo.symbol}`
+    }
     if (this.wallet.coin === 'xrp') {
       const availableBalanceStr =
         this.wallet.cachedStatus &&
@@ -256,8 +262,21 @@ export class SendPage{
     this.isShowDelete = this.listRecipient.length > 1;
   }
 
+  private goToConfirmToken() {
+    const recipient = this.listRecipient[0];
+    this.router.navigate(['/confirm-token'], {
+      state: {
+        amount: recipient.amount,
+        toAddress: recipient.toAddress,
+        token: this.token,
+        walletId: this.wallet.credentials.walletId
+      }
+    });
+  }
+
   public goToConfirm(): void {
     let totalAmount = 0;
+    if (this.token) return this.goToConfirmToken()
     if (this.listRecipient.length === 1) {
       const recipient = this.listRecipient[0];
       this.router.navigate(['/confirm'], {

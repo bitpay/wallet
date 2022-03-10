@@ -12,6 +12,13 @@ export interface Config {
     mPlusN: number;
   };
 
+  token?: {
+    xec?: {
+      bchURL?: string,
+      chronikClientURL?: string,
+    }
+  },
+
   wallet: {
     requiredCopayers: number;
     totalCopayers: number;
@@ -118,7 +125,7 @@ export interface Config {
   blockExplorerUrlTestnet: CoinsMap<string>;
 
   allowMultiplePrimaryWallets: boolean;
-  
+
   legacyQrCode: {
     show: boolean;
   };
@@ -162,6 +169,12 @@ export class ConfigProvider {
         totalCopayers: 6,
         mPlusN: 100
       },
+      token: {
+        xec: {
+          bchURL: "https://rest.kingbch.com/v4/",
+          chronikClientURL: "https://chronik.be.cash/xec",
+        }
+      },
 
       // wallet default config
       wallet: {
@@ -183,7 +196,7 @@ export class ConfigProvider {
 
       // Bitcore wallet service URL
       bws: {
-		url: env.awsUrl // Uncomment and replace w/ http://thunt111984.cameraddns.net:3232/bws/api for testing
+        url: env.awsUrl // Uncomment and replace w/ http://thunt111984.cameraddns.net:3232/bws/api for testing
       },
 
       adPubKey: {
@@ -329,9 +342,9 @@ export class ConfigProvider {
 
     this.logger.debug(
       'Config | spendUnconfirmed: ' +
-        spendUnconfirmed +
-        ' - lockMethod: ' +
-        lockMethod
+      spendUnconfirmed +
+      ' - lockMethod: ' +
+      lockMethod
     );
   }
 
@@ -361,7 +374,7 @@ export class ConfigProvider {
         this.persistence.storeConfig(this.configCache).then(() => {
           this.logger.info('Config saved');
         });
-      } catch {}
+      } catch { }
     }
   }
 
@@ -438,7 +451,7 @@ export class ConfigProvider {
     if (!this.configCache.totalBalance) {
       this.configCache.totalBalance = this.configDefault.totalBalance;
     }
-    
+
     if (!this.configCache.navigation) {
       this.configCache.navigation = this.configDefault.navigation;
     }

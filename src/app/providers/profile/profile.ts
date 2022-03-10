@@ -21,11 +21,13 @@ import { PlatformProvider } from '../platform/platform';
 import { RateProvider } from '../rate/rate';
 import { ReplaceParametersProvider } from '../replace-parameters/replace-parameters';
 import { TxFormatProvider } from '../tx-format/tx-format';
-import { WalletOptions } from '../wallet/wallet';
+import { WalletOptions, WalletProvider } from '../wallet/wallet';
 
 // models
 import { Profile } from '../../models/profile/profile.model';
 import { DerivationPathHelperProvider } from '../derivation-path-helper/derivation-path-helper';
+import { AddressProvider } from '../address/address';
+import { Token } from 'src/app/models/tokens/tokens.model';
 
 interface WalletGroups {
   [keyId: string]: {
@@ -78,7 +80,9 @@ export class ProfileProvider {
     private keyProvider: KeyProvider,
     private derivationPathHelperProvider: DerivationPathHelperProvider,
     private errorsProvider: ErrorsProvider,
-    private rateProvider: RateProvider
+    private rateProvider: RateProvider,
+    private walletProvider: WalletProvider,
+    private addressProvider: AddressProvider
   ) {
     this.throttledBwsEvent = _.throttle((n, wallet) => {
       this.newBwsEvent(n, wallet);
@@ -205,6 +209,10 @@ export class ProfileProvider {
 
   public setWalletBackup(walletId: string): void {
     this.wallet[walletId].needsBackup = false;
+  }
+
+  public setTokensWallet(walletId: string, tokens : Token[]): void {
+    this.wallet[walletId].tokens = tokens;
   }
 
   private requiresGroupBackup(keyId: string) {
@@ -342,6 +350,7 @@ export class ProfileProvider {
     wallet.balanceHidden = await this.isBalanceHidden(wallet);
     wallet.order = await this.getWalletOrder(wallet.id);
     wallet.hidden = await this.isWalletHidden(wallet);
+    wallet.isSlpToken = wallet.credentials.isSlpToken ; 
     wallet.lastAddress = await this.persistenceProvider.getLastAddress(
       walletId
     );
@@ -1620,7 +1629,8 @@ export class ProfileProvider {
                 singleAddress: opts.singleAddress,
                 walletPrivKey: opts.walletPrivKey,
                 coin: opts.coin,
-                useNativeSegwit: opts.useNativeSegwit
+                useNativeSegwit: opts.useNativeSegwit,
+                isSlpToken: opts.isSlpToken
               },
               err => {
                 const copayerRegistered =
@@ -1934,12 +1944,45 @@ export class ProfileProvider {
             return this.addAndBindWalletClient(data.walletClient, {
               bwsurl: opts.bwsurl
             }).then(walletClient => {
-              return Promise.resolve(walletClient);
+              if (opts.isImport && walletClient) this.setWalletBackup(walletClient.id)
+              return this.setAddress(walletClient).then(data => {
+                if (this.isSupportToken(data)) {
+                  const { prefix, type, hash } = this.addressProvider.decodeAddress(data);
+                  const etoken = this.addressProvider.encodeAddress('etoken', type, hash, data);
+                  walletClient.etokenAddress = etoken
+                }
+                return Promise.resolve(walletClient);
+              })
             });
           });
         });
       });
     });
+  }
+
+  isSupportToken(wallet): boolean {
+    if (wallet && wallet.coin == 'xec' && wallet.isSlpToken) return true;
+    return false
+  }
+
+  public setAddress(wallet): Promise<string> {
+    if (!wallet || !wallet.isComplete())
+      return Promise.resolve('');
+    return this.walletProvider
+      .getAddress(wallet, false)
+      .then(addr => {
+        if (!addr) return Promise.resolve('');
+        let address = this.walletProvider.getAddressView(
+          wallet.coin,
+          wallet.network,
+          addr
+        );
+        if (!address) return Promise.resolve('');
+        return Promise.resolve(address);
+      })
+      .catch(err => {
+        return Promise.resolve('');
+      });
   }
 
   public joinWallet(opts): Promise<any> {

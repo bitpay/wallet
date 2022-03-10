@@ -97,7 +97,7 @@ export class DerivationPathHelperProvider {
       case "10605'": // for XPI
         networkName = 'livenet';
         break;
-      case "1899'": // for SLP Path only support for XPI
+      case "1899'": // for SLP Path only support for XPI and XEC
         networkName = 'livenet';
         break;
       case "2'": // for LTC
@@ -142,7 +142,7 @@ export class DerivationPathHelperProvider {
         isValid = ["3'", "1'"].indexOf(coinCode) > -1;
         break;
       case 'xec':
-        isValid = ["899'", "0'", "1'"].indexOf(coinCode) > -1;
+        isValid = ["899'", "0'", "1'"].indexOf(coinCode) > -1 || ["1899'", "0'", "1'"].indexOf(coinCode) > -1;
         break;
       case 'xpi':
         isValid = ["10605'", "0'", "1'"].indexOf(coinCode) > -1 || ["1899'", "0'", "1'"].indexOf(coinCode) > -1;

@@ -510,20 +510,21 @@ export class CreateWalletPage implements OnInit {
     return derivationPathByDefault;
   }
 
-  public handleClickAdvanceOption(){
+  public handleClickAdvanceOption() {
     this.showAdvOpts = !this.showAdvOpts;
-    if(this.showAdvOpts){
+    if (this.showAdvOpts) {
       // this.content.scrollToBottom(300);
     }
   }
 
-  changeSlpPath(event){
+  changeSlpPath(event) {
     this.isSlpToken = event.detail.checked;
-    if(event.detail.checked){
+    if (event.detail.checked) {
       this.createForm.controls['walletName'].setValue(this.createForm.controls['walletName'].value + " - 1899");
+      this.createForm.controls['singleAddress'].setValue(true);
     }
-    else{
-      this.createForm.controls['walletName'].setValue(this.createForm.controls['walletName'].value.replace("- 1899",""));
+    else {
+      this.createForm.controls['walletName'].setValue(this.createForm.controls['walletName'].value.replace("- 1899", ""));
     }
   }
 }

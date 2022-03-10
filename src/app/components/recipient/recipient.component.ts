@@ -23,6 +23,7 @@ import { RecipientModel } from './recipient.model';
 import { FilterProvider } from 'src/app/providers/filter/filter';
 import { RateProvider } from 'src/app/providers/rate/rate';
 import { ClipboardProvider, ThemeProvider } from 'src/app/providers';
+import { Token } from 'src/app/models/tokens/tokens.model';
 
 @Component({
   selector: 'recipient-component',
@@ -70,6 +71,9 @@ export class RecipientComponent implements OnInit {
 
   @Input()
   wallet: any;
+
+  @Input()
+  token: Token;
 
   @Output() deleteEvent = new EventEmitter<number>();
   @Output() sendMaxEvent = new EventEmitter<boolean>();
@@ -340,30 +344,51 @@ export class RecipientComponent implements OnInit {
     }
     let unit = this.availableUnits[this.unitIndex];
     let amount = result;
-    amount = unit.isFiat
-      ? (this.fromFiat(amount) * this.unitToSatoshi).toFixed(0)
-      : (amount * this.unitToSatoshi).toFixed(0);
-    this.recipient.amount = parseInt(amount, 10);
-    this.recipient.amountToShow = result;
-    this.recipient.altAmountStr = this.alternativeAmount;
-    this.recipient.currency = this.unit;
+    if (this.token) {
+      const decimals = _.get(this.token, 'tokenInfo.decimals', undefined);
+      const unit = Math.pow(10, decimals)
+      if (decimals && result > 0) amount = (amount * unit).toFixed(0);
+      this.recipient.amount = parseInt(amount, 10);
+    } else {
+      amount = unit.isFiat
+        ? (this.fromFiat(amount) * this.unitToSatoshi).toFixed(0)
+        : (amount * this.unitToSatoshi).toFixed(0);
+      this.recipient.amountToShow = result;
+      this.recipient.altAmountStr = this.alternativeAmount;
+      this.recipient.currency = this.unit;
+      this.recipient.amount = parseInt(amount, 10);
+    }
     this.validAmount = result > 0;
     this.checkRecipientValid();
   }
 
   public async processInput() {
-    if (this.recipient.name) this.validAddress = true
+    if (this.recipient.name) this.validAddress = true;
     else {
-      if (this.searchValue == '') this.validAddress = false;
-      const parsedData = this.incomingDataProvider.parseData(this.searchValue);
+      let address = this.searchValue;
+      let tokenAddress: string = '';
+      if (address == '') this.validAddress = false;
+      if (this.token && this.wallet.coin == 'xec') {
+        // handle etoken 
+        const { prefix, type, hash } = this.addressProvider.decodeAddress(address);
+        if (prefix == 'etoken') {
+          tokenAddress = address;
+          address = this.addressProvider.encodeAddress('ecash', type, hash, address);
+        } else {
+          this.validAddress = false;
+          return;
+        }
+      }
+      const parsedData = this.incomingDataProvider.parseData(address);
       if (
         parsedData &&
         _.indexOf(this.validDataTypeMap, parsedData.type) != -1
       ) {
-        const isValid = this.checkCoinAndNetwork(this.searchValue);
+        const isValid = this.checkCoinAndNetwork(address);
         if (isValid) {
           this.validAddress = true;
-          this.recipient.toAddress = this.searchValue;
+          this.recipient.toAddress = address;
+          if (this.token && this.wallet.coin) this.recipient.toAddress = tokenAddress;
         }
       }
       else if (parsedData && parsedData.type == 'PrivateKey') {
@@ -488,7 +513,12 @@ export class RecipientComponent implements OnInit {
   }
 
   public sendMax(): void {
-    this.sendMaxEvent.emit(true);
+    if (this.token) {
+      this.expression = this.token.amountToken;
+      this.processAmount()
+    } else {
+      this.sendMaxEvent.emit(true);
+    }
   }
 
   public goToAddressBook() {

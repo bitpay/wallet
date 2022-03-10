@@ -9,14 +9,14 @@
       <ion-button class="option-button disable-hover" (click)="showMoreOptions()">
         <ion-icon slot="icon-only" name="ellipsis-horizontal"></ion-icon>
       </ion-button>
-      <ion-button fill="clear" color="grey"  *ngIf="txpsN > 0" (click)="openProposalsNotificationsPage()">
+      <ion-button fill="clear" color="grey" *ngIf="txpsN > 0" (click)="openProposalsNotificationsPage()">
         <ion-badge color="warning" slot="icon-only" class="notifications-badge">{{ txpsN }}</ion-badge>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [forceOverscroll]="true"  scrollEvents="true" #scrollArea>
+<ion-content [forceOverscroll]="true" scrollEvents="true" #scrollArea>
   <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)" pullMin="90" pullMax="160">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
@@ -36,10 +36,11 @@
       <div *ngIf="isShowCreateNewWallet">
         <create-new-wallet></create-new-wallet>
       </div>
-    </ng-template> 
+    </ng-template>
 
     <div *ngFor="let walletGroup of walletsGroups; let i = index" class="wallets-container">
-      <div class="section-header ion-padding-top ion-padding-bottom" *ngIf="walletGroup[0]?.canSign && walletsGroups.length > 1">
+      <div class="section-header ion-padding-top ion-padding-bottom"
+        *ngIf="walletGroup[0]?.canSign && walletsGroups.length > 1">
         <ion-icon src="assets/img/settings-icons/icon-key.svg" width="15" class="item-img" slot="start">
         </ion-icon>
         <ion-label class="key-name">
@@ -65,11 +66,64 @@
         </ion-label>
       </div>
       <ion-list lines="nones" class="bp-list" [ngClass]="{ collapsed: isCollapsed(walletGroup[0]?.keyId) }">
-        <wallet-item-content *ngFor="let wallet of walletGroup" [wallet]="wallet" (click)="goToWalletDetails(wallet)"></wallet-item-content>
+        <ng-container *ngFor="let wallet of walletGroup; let j = index">
+          <wallet-item-content [wallet]="wallet" (click)="goToWalletDetails(wallet)">
+          </wallet-item-content>
+
+          <ion-infinite-scroll *ngIf="isSupportToken(wallet)" class="scroll-token" (ionInfinite)="reloadToken($event, wallet, i , j)">
+            <ion-infinite-scroll-content></ion-infinite-scroll-content>
+          </ion-infinite-scroll>
+
+          <ng-container *ngIf="isSupportToken(wallet)">
+            <div class="token-container"> 
+              <div class="section-header ion-padding-top ion-padding-bottom" >
+              <div class="wrap-key-token">
+                <ion-label class="key-name">
+                  <span>Token</span>
+                </ion-label>
+                <div class="collapse">
+                  <div class="collapse-btn" (click)="collapsToken(wallet.id)">
+                    <ion-icon *ngIf="!isCollapsedToken(wallet.id)" name="chevron-down-outline"></ion-icon>
+                    <ion-icon *ngIf="isCollapsedToken(wallet.id)" name="chevron-down-outline"></ion-icon>
+                  </div>
+                </div>
+              </div>
+                <div class="address-token" copy-to-clipboard="{{wallet.etokenAddress}}">
+                  <span class="background-content" >{{wallet.etokenAddress}}</span>
+                  <img class="coin-img" src="assets/img/paste-clipboard.svg" alt="copy" />
+              </div>
+            
+
+            </div>
+            <ng-container *ngIf="!wallet.tokens"> 
+              <div class="no-token" [ngClass]="{ collapsed: isCollapsedToken(wallet.id) }">No token available yet! </div>
+            </ng-container>
+            <ng-container *ngIf="wallet.tokens">
+              <ion-list  lines="nones token-item" class="bp-list" [ngClass]="{ collapsed: isCollapsedToken(wallet.id) }">
+                <ion-item *ngFor="let token of wallet.tokens" lines="none" (click)="goToTokenDetails(wallet, token)">
+                  <ion-icon class="item-img rectangle token-icon" src="assets/img/currencies/xec.svg" slot="start"></ion-icon>
+                  <ion-label>
+                    <div class="main-label">{{token?.tokenInfo?.symbol}}</div>
+                  </ion-label>
+                  <ion-note slot="end">
+                    <div>
+                      <div class="main-note">{{token?.amountToken}}</div>
+                    </div>
+                  </ion-note>
+                </ion-item>
+              </ion-list>
+            </ng-container>
+            </div>
+          </ng-container>
+
+        </ng-container>
       </ion-list>
-      <label-tip type="warn" class="ion-margin-top" *ngIf="walletGroup && walletGroup[0] && walletGroup[0]?.needsBackup" header="no-header">
+      <label-tip type="warn" class="ion-margin-top" *ngIf="walletGroup && walletGroup[0] && walletGroup[0]?.needsBackup"
+        header="no-header">
         <div label-tip-body>
-          <span translate>Before retrieving your wallets addresses, it's recommended that you first write down your recovery phrase and store it securely so that your wallets can be recovered in the case your device was lost or stolen.</span>
+          <span translate>Before retrieving your wallets addresses, it's recommended that you first write down your
+            recovery phrase and store it securely so that your wallets can be recovered in the case your device was lost
+            or stolen.</span>
           <br>
           <a class="label-tip-link" (click)="openBackupPage(walletGroup[0]?.keyId)" translate>Backup now</a>
         </div>

@@ -53,6 +53,7 @@ export interface WalletOptions {
   useLegacyCoinType?: boolean;
   useLegacyPurpose?: boolean;
   useNativeSegwit?: boolean;
+  isSlpToken?: boolean;
 }
 
 export interface TransactionProposal {
@@ -1601,6 +1602,20 @@ export class WalletProvider {
         {
           coin: wallet.coin,
           network: wallet.network,
+          txId
+        },
+        (err, resp) => {
+          if (err) return reject(err);
+          return resolve(resp);
+        }
+      );
+    });
+  }
+
+  public getTxDetail(wallet, txId): Promise<any> {
+    return new Promise((resolve, reject) => {
+      wallet.getTxDetail(
+        {
           txId
         },
         (err, resp) => {

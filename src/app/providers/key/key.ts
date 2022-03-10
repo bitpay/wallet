@@ -301,4 +301,24 @@ export class KeyProvider {
   public getMatchedKey(key) {
     return this.keys.find(k => this.isMatch(key, k));
   }
+
+  getMnemonic(wallet : any, password: string) {
+    try {
+      const keyId = wallet.keyId
+      const key = this.getKey(keyId)
+      const keyObj = key.toObj();
+      if (keyObj.mnemonic) return keyObj.mnemonic
+      return this._decryptMnemonic(keyObj.mnemonicEncrypted, password)
+    } catch {
+      return undefined
+    }
+  }
+
+  _decryptMnemonic(mnemonicEncrypted : string, password: string) {
+    let mnemonic = '';
+    mnemonic = this.bwcProvider
+      .getSJCL()
+      .decrypt(password, mnemonicEncrypted);
+    return mnemonic
+  }
 }

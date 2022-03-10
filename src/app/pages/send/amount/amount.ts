@@ -71,7 +71,7 @@ export class AmountPage {
   private _id: string;
   public requestingAmount: boolean;
   public wallet;
-  
+
   public cardName: string;
 
   private fromCoinbase;
@@ -96,6 +96,7 @@ export class AmountPage {
   receiveLotus: string;
   receiveAmountLotus: number;
   formatRemaining: string;
+  token;
   constructor(
     private configProvider: ConfigProvider,
     private filterProvider: FilterProvider,
@@ -121,6 +122,7 @@ export class AmountPage {
 
     this.zone = new NgZone({ enableLongStackTrace: false });
     this.isDonation = this.navParamsData.isDonation
+    this.token = this.navParamsData.token
     if (this.isDonation) {
       this.remaining = this.navParamsData.remaining;
       this.receiveAmountLotus = this.navParamsData.receiveLotus;
@@ -322,7 +324,12 @@ export class AmountPage {
         break;
       default:
         this.showSendMax = true;
-        nextPage = '/confirm';
+        if(this.navParamsData.token) {
+          nextPage = '/confirm-token';
+        } else {
+          nextPage = '/confirm';
+        }
+        
     }
     return nextPage;
   }
@@ -339,6 +346,9 @@ export class AmountPage {
     this.useSendMax = true;
     this.allowSend = true;
     if (!this.wallet) {
+      return this.finish();
+    }
+    if (this.navParamsData.token) {
       return this.finish();
     }
     const maxAmount = this.txFormatProvider.satToUnit(
@@ -608,6 +618,12 @@ export class AmountPage {
         cardName: this.cardName,
         description: this.description
       };
+    } else if (this.navParamsData.token) {
+      data = {
+        amount :this.useSendMax ? this.token.amountToken : _amount,
+        toAddress: this.toAddress,
+        token: this.navParamsData.token
+      }
     } else {
       let amount = _amount;
       amount = unit.isFiat
