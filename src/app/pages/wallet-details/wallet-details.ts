@@ -146,12 +146,10 @@ export class WalletDetailsPage {
     if (this.navPramss.clearCache) {
       this.clearHistoryCache();
     } else {
-      if (this.wallet.completeHistory) this.showHistory();
-      else
-        this.fetchTxHistory({
-          walletId: this.wallet.credentials.walletId,
-          force: true
-        });
+      this.fetchTxHistory({
+        walletId: this.wallet.credentials.walletId,
+        force: true
+      });
     }
 
     this.requiresMultipleSignatures = this.wallet.credentials.m > 1;
@@ -280,6 +278,9 @@ export class WalletDetailsPage {
 
   private groupHistory(history) {
     return history.reduce((groups, tx, txInd) => {
+      if (tx.isSlpToken) {
+        this.updateHistoryToken(tx)
+      }
       this.isFirstInGroup(txInd)
         ? groups.push([tx])
         : groups[groups.length - 1].push(tx);
@@ -302,6 +303,17 @@ export class WalletDetailsPage {
       this.groupedHistory = this.groupHistory(this.history);
     });
     if (loading) this.currentPage++;
+  }
+
+  private updateHistoryToken(tx) {
+    const token = _.find(this.wallet.tokens, item => item.tokenId == tx.tokenId);
+    if (token && token.tokenInfo) {
+      tx.amountToken = tx.amountTokenUnit / Math.pow(10, token.tokenInfo.decimals);
+      tx.symbolToken = token.tokenInfo.symbol;
+      tx.name = token.tokenInfo.name;
+      tx.isGenesis = tx.txType == 'GENESIS';
+      if (tx.txType == 'GENESIS') tx.action = 'received';
+    }
   }
 
   private setPendingTxps(txps) {
@@ -566,7 +578,7 @@ export class WalletDetailsPage {
   }
 
   public openAddresses() {
-    this.router.navigate(['/wallet-dddresses'], { // WalletAddressesPage
+    this.router.navigate(['/wallet-addresses'], { // WalletAddressesPage
       state: {
         walletId: this.wallet.credentials.walletId
       }

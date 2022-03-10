@@ -41,7 +41,7 @@
   },
   "private": true,
   "dependencies": {
-    "@abcpros/bitcore-wallet-client": "^8.25.37",
+    "@abcpros/bitcore-wallet-client": "^8.25.38",
     "@angular-builders/custom-webpack": "^13.0.0",
     "@angular/animations": "13.1.1",
     "@angular/cdk": "^12.2.13",
@@ -145,7 +145,8 @@
     "util": "^0.12.4",
     "webpack": "^5.52.1",
     "yargs": "^17.2.1",
-    "zone.js": "~0.11.4"
+    "zone.js": "~0.11.4",
+    "@abcpros/xpi-js": "^4.0.6"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~13.1.2",

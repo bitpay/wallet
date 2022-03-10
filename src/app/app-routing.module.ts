@@ -58,6 +58,9 @@ import { CustomAmountPage } from './pages/receive/custom-amount/custom-amount';
 import { AddFundsPage } from './pages/onboarding/add-funds/add-funds';
 import { CopayersPage } from './pages/add/copayers/copayers';
 import { PaperWalletPage } from './pages/paper-wallet/paper-wallet';
+import { TokenDetailsPage } from './pages/token-details/token-details';
+import { ConfirmTokenPage } from './pages/confirm-token/confirm-token';
+import { TokenInforPage } from './pages/token-info/token-info';
 
 const routes: Routes = [
   {
@@ -72,6 +75,19 @@ const routes: Routes = [
     path: 'about',
     component: AboutPage,
   },
+  {
+    path: 'token-details',
+    component: TokenDetailsPage
+  },
+  {
+    path: 'token-info',
+    component: TokenInforPage
+  },
+  {
+    path: 'confirm-token',
+    component: ConfirmTokenPage
+  },
+  
   {
     path: 'alt-curency',
     component: AltCurrencyPage,

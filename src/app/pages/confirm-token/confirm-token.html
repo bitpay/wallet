@@ -1,0 +1,140 @@
+ <wide-header-page
+  title="Confirm Token Payment"
+  [hasSlideButton]="!hideSlideButton && isCordova"
+>
+  <div page-content>
+    <ion-list lines="none" class="bp-list">
+      <ion-item lines="none" class="sub-title">
+        <ion-label>
+          <div class="main-label" translate>SUMMARY</div>
+        </ion-label>
+      </ion-item>
+
+      <ion-item lines="none" class="send-to-custom">
+        <ion-label>
+          <div class="summary-item">
+            <span translate>Sending to</span>
+          </div>
+        </ion-label>
+
+        <ion-note slot="end" class="address-note-custom">
+          <div class="payment-proposal-to" >
+            <div
+              class="background-content"
+              copy-to-clipboard="{{ sendToAddress }}"
+            >
+              <img
+                class="coin-img"
+                src="assets/img/currencies/token.svg"
+                alt="Coin"
+              />
+              <span>{{ sendToAddress }}</span >
+            </div>
+
+
+          </div>
+
+        
+        </ion-note>
+      </ion-item>
+
+      <div class="line-divider"></div>
+
+      <ion-item lines="none" class="send-to-custom">
+        <ion-label>
+          <div class="summary-item">
+            <span translate>Fee send token</span>
+          </div>
+        </ion-label>
+
+        <ion-note slot="end" >
+          <div class="summary-item-detail">
+            {{fee}} {{wallet.coin | uppercase}}
+          </div>
+        
+        </ion-note>
+      </ion-item>
+
+      <div class="line-divider"></div>
+
+      <ion-item lines="none" class="send-to-custom">
+        <ion-label>
+          <div class="summary-item">
+            <span translate>Sending from</span>
+          </div>
+        </ion-label>
+
+        <ion-note slot="end" class="address-note-custom">
+          <div class="payment-proposal-to" >
+            <div class="background-content" >
+              <img
+                class="coin-img"
+                src="assets/img/currencies/token.svg"
+                alt="Coin"
+              />
+              <span class="note-container ellipsis">{{wallet.name}} Token</span>
+            </div>
+          </div>
+        </ion-note>
+
+
+      </ion-item>
+      <div class="summary-line"></div>
+
+      <ion-item lines="none" >
+        <ion-label>
+          <div class="main-label total-label">
+            <span class="title" translate>SUBTOTAL</span>
+          </div>
+        </ion-label>
+        <ion-note slot="end">
+          <div class="total-amount" >
+            <span>{{amountTokenToSend}} {{token?.tokenInfo?.symbol | uppercase}}</span>
+          </div>
+        </ion-note>
+      </ion-item>
+
+      <ion-item lines="none">
+        <ion-label>
+          <div class="main-label total-label">
+            <span translate>TOTAL</span>
+            <ion-icon src="assets/img/icon-info-blue.svg" width="22" class="item-img info" ></ion-icon>
+          </div>
+        </ion-label>
+        <ion-note slot="end">
+          <div class="total-amount">{{amountTokenToSend}} {{token?.tokenInfo?.symbol | uppercase}}</div>
+          <div class="amount-details ion-padding-bottom">
+            <div class="total-amount-note">
+              {{fee}} {{wallet.coin}}
+            </div>
+          </div>
+        </ion-note>
+      </ion-item>
+      
+
+      
+    </ion-list>
+  </div>
+
+  <div footer-content>
+    <page-slide-to-accept
+      #slideButton
+      *ngIf="isCordova"
+      [ngClass]="{'slide-confirm-fast slide-confirm-down': hideSlideButton, 'slide-confirm-slow': !hideSlideButton}"
+      [disabled]="(!wallet && !coinbaseAccount)"
+      [buttonText]="buttonText"
+      (slideDone)="approve(wallet)"
+    >
+    </page-slide-to-accept>
+    <ion-toolbar *ngIf="!isCordova && (wallet || coinbaseAccount)">
+      <ion-button
+        expand="full"
+        class="button-footer"
+        (click)="approve(wallet)"
+        [disabled]="(!wallet && !coinbaseAccount)"
+      >
+        {{buttonText}}
+      </ion-button>
+    </ion-toolbar>
+  </div>
+</wide-header-page>

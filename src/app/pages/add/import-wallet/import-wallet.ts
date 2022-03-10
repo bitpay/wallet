@@ -117,7 +117,8 @@ export class ImportWalletPage {
       coin: ['btc'],
       derivationPath: [this.derivationPathHelperProvider.defaultBTC],
       bwsURL: [this.defaults.bws.url],
-      isMultisig: [false]
+      isMultisig: [false],
+      isSlpToken: [false]
     });
     this.events.subscribe('Local/BackupScan', this.updateWordsHandler);
     this.setForm();
@@ -351,7 +352,7 @@ export class ImportWalletPage {
           this.logger.debug('Continue anyway clicked');
 
           if (this.importForm.value.derivationPathEnabled) {
-            this.setOptsAndCreate(this.importForm.value.coin);
+            this.setOptsAndCreate(this.importForm.value.coin, this.importForm.value.isSlpToken);
           } else {
             const modal = await this.modalCtrl.create({
               component: CoinSelectorPage,
@@ -367,7 +368,7 @@ export class ImportWalletPage {
             await modal.present();
             modal.onDidDismiss().then(({ data }) => {
               if (data.selectedCoin) {
-                this.setOptsAndCreate(data.selectedCoin);
+                this.setOptsAndCreate(data.selectedCoin, this.importForm.value.isSlpToken);
               }
             });
           }
@@ -381,7 +382,7 @@ export class ImportWalletPage {
     return;
   }
 
-  public setOptsAndCreate(coin: Coin): void {
+  public setOptsAndCreate(coin: Coin, isSlpToken: boolean): void {
     const opts: Partial<WalletOptions> = {
       keyId: undefined,
       name: this.currencyProvider.getCoinName(coin),
@@ -390,8 +391,9 @@ export class ImportWalletPage {
       myName: null,
       networkName: 'livenet',
       bwsurl: this.importForm.value.bwsURL,
-      singleAddress: this.currencyProvider.isSingleAddress(coin),
-      coin: Coin[coin.toUpperCase()]
+      singleAddress: isSlpToken ? true : this.currencyProvider.isSingleAddress(coin),
+      coin: Coin[coin.toUpperCase()],
+      isSlpToken: isSlpToken
     };
 
     const words = this.importForm.value.words;
@@ -483,6 +485,7 @@ export class ImportWalletPage {
 
   private createSpecifyingWords(opts): void {
     this.logger.debug('Creating from import');
+    opts.isImport = true;
     this.onGoingProcessProvider.set('creatingWallet');
     this.profileProvider
       .createWallet(opts)
@@ -682,7 +685,7 @@ export class ImportWalletPage {
   public setDerivationPath(event) {
     const coin = event ? event.detail.value : this.prevCoin;
     this.prevCoin = coin;
-    this.isShoweTokenPath = coin.toUpperCase() === 'XPI';
+    this.isShoweTokenPath = coin.toUpperCase() === 'XPI' || coin.toUpperCase() === 'XEC';
     const defaultCoin = `default${coin.toUpperCase()}`;
     const derivationPath = this.derivationPathHelperProvider[defaultCoin];
     this.importForm.controls['derivationPath'].setValue(derivationPath);
@@ -695,6 +698,9 @@ export class ImportWalletPage {
       : `default${this.prevCoin.toUpperCase()}`;
     const derivationPath = this.derivationPathHelperProvider[defaultCoin];
     this.importForm.controls['derivationPath'].setValue(derivationPath);
+    if (this.isSlpToken) {
+      this.importForm.controls['isSlpToken'].setValue(true)
+    }
   }
 
   public changeDerivationPathValidators() {

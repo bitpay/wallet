@@ -4,6 +4,7 @@ import * as _ from 'lodash';
 
 // providers
 import { ActionSheetProvider } from '../action-sheet/action-sheet';
+import { AddressProvider } from '../address/address';
 import { AnalyticsProvider } from '../analytics/analytics';
 import { AppProvider } from '../app/app';
 import { BwcProvider } from '../bwc/bwc';
@@ -17,6 +18,7 @@ export interface RedirParams {
   activePage?: any;
   amount?: string;
   coin?: Coin;
+  token?: any,
   fromHomeCard?: boolean;
   fromFooterMenu?: boolean;
 }
@@ -38,6 +40,7 @@ export class IncomingDataProvider {
     private translate: TranslateService,
     private profileProvider: ProfileProvider,
     private persistenceProvider: PersistenceProvider,
+    private addressProvider: AddressProvider
   ) {
     this.logger.debug('IncomingDataProvider initialized');
   }
@@ -75,6 +78,16 @@ export class IncomingDataProvider {
   private isValidBitcoinCashUri(data: string): boolean {
     data = this.sanitizeUri(data);
     return !!this.bwcProvider.getBitcoreCash().URI.isValid(data);
+  }
+
+  private isValidEToken(data: string): boolean {
+    try {
+      const { prefix, type, hash } = this.addressProvider.decodeAddress(data);
+      const ecassAddess = this.addressProvider.encodeAddress('ecash', type, hash, data);
+      return this.isValidECashUri(ecassAddess);
+    } catch (err) {
+      return false
+    }
   }
 
   private isValidECashUri(data: string): boolean {
@@ -214,6 +227,15 @@ export class IncomingDataProvider {
 
     if (parsed.r) {
     } else this.goSend(address, amount, message, coin);
+  }
+
+  private handleEtoken(data: string, redirParams?: RedirParams) {
+    this.logger.debug('Incoming-data: Etoken');
+    let amountFromRedirParams =
+      redirParams && redirParams.amount ? redirParams.amount : '';
+    const coin = Coin.XEC;
+    let amount = amountFromRedirParams;
+    this.goSend(data, amount, null, coin, null, null, redirParams.token);
   }
 
   private handleECashUri(data: string, redirParams?: RedirParams): void {
@@ -487,8 +509,16 @@ export class IncomingDataProvider {
     if (redirParams && redirParams.activePage)
       this.fromFooterMenu = redirParams.fromFooterMenu;
 
+    if (redirParams.token) {
+      if (this.isValidEToken(data)) {
+        this.handleEtoken(data, redirParams);
+        return true;
+      }
+      this.logger.warn('Incoming-data: Unknown information');
+      return false;
+    }
     // Bitcoin  URI
-    if (this.isValidBitcoinUri(data)) {
+    else if (this.isValidBitcoinUri(data)) {
       // this.handleBitcoinUri(data, redirParams);
       return true;
 
@@ -844,7 +874,8 @@ export class IncomingDataProvider {
     message: string,
     coin: Coin,
     requiredFeeRate?: string,
-    destinationTag?: string
+    destinationTag?: string,
+    token?: any
   ): void {
     if (amount) {
       let stateParams = {
@@ -864,7 +895,8 @@ export class IncomingDataProvider {
       let stateParams = {
         toAddress: addr,
         description: message,
-        coin
+        coin,
+        token
       };
       let nextView = {
         name: 'AmountPage',

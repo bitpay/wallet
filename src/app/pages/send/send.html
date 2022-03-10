@@ -4,7 +4,7 @@
       <ion-back-button icon="chevron-back-outline" defaultHref="/">
       </ion-back-button>
     </ion-buttons>
-    <ion-buttons slot="end" *ngIf="showOptions(wallet?.coin) && !isDonation">
+    <ion-buttons slot="end" *ngIf="showOptions(wallet?.coin) && !isDonation && !token">
       <ion-button wide-header-bar-button fill="clear" class="option-button" (click)="showMoreOptions()">
         <ion-icon name="ellipsis-horizontal-outline"></ion-icon>
       </ion-button>
@@ -59,11 +59,12 @@
       [recipient]="recipient"
       (deleteEvent)="deleteRecipient($event)" 
       [isShowSendMax]="isShowSendMax"
-      [isShowDelete]="isShowDelete" 
+      [isShowDelete]="isShowDelete"
+      [token]="token"
       (sendMaxEvent)="sendMax()">
       </recipient-component>
       <div class="btn-function-group"> 
-        <ion-button class="btn-add-more" fill="outline" (click)="addNewRecipient()">Add more recipient</ion-button>
+        <ion-button *ngIf="!token" class="btn-add-more" fill="outline" (click)="addNewRecipient()">Add more recipient</ion-button>
         <ion-button [disabled]="checkBeforeGoToConfirmPage()" class="button-standard" (click)="goToConfirm()">Continue</ion-button>
       </div>
     </div>

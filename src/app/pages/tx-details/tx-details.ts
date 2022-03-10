@@ -19,12 +19,21 @@ import { WalletProvider } from '../../providers/wallet/wallet';
 import { EventManagerService } from 'src/app/providers/event-manager.service';
 import { ModalController, NavController, NavParams } from '@ionic/angular';
 import { Location } from '@angular/common';
+
+export interface TokenData {
+  amountToken: string,
+  tokenId: string,
+  symbolToken: string,
+  name: string
+}
+
 @Component({
   selector: 'page-tx-details',
   templateUrl: 'tx-details.html',
   styleUrls: ['tx-details.scss'],
   encapsulation: ViewEncapsulation.None
 })
+
 export class TxDetailsModal {
   private txId: string;
   private config;
@@ -42,6 +51,7 @@ export class TxDetailsModal {
   public copayerId: string;
   public txsUnsubscribedForNotifications: boolean;
   public txMemo: string;
+  public tokenData : TokenData;
 
   constructor(
     private configProvider: ConfigProvider,
@@ -71,6 +81,7 @@ export class TxDetailsModal {
     this.txId = this.navParams.data.txid;
     this.title = this.translate.instant('Transaction');
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
+    this.tokenData = this.navParams.data.tokenData;
     this.color = this.wallet.color;
     this.copayerId = this.wallet.credentials.copayerId;
     this.isShared = this.wallet.credentials.n > 1;

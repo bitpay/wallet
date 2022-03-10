@@ -240,132 +240,94 @@
       <span translate *ngIf="updatingTxHistoryProgress>4">{{updatingTxHistoryProgress}} transactions downloaded</span>
     </div>
 
-    <div *ngIf="history && history[0]" class="header-transaction">
-      Transaction History
-      <ion-icon (click)="openSearchModal()" name="search-sharp"></ion-icon>
-    </div>
-    <ion-list *ngIf="history && history[0]" class="tx-history">
-      <ion-item-group *ngFor="let group of groupedHistory; trackBy: trackByFn; let i = index;">
+    <ng-container *ngIf="history && history[0]">
+      <div class="header-transaction">
+        Transaction History
+        <ion-icon (click)="openSearchModal()" name="search-sharp"></ion-icon>
+      </div>
+      <ion-list class="tx-history">
+        <ion-item-group *ngFor="let group of groupedHistory; trackBy: trackByFn; let i = index;">
+  
+          <ion-item-divider (click)="viewOnBlockchain()" sticky class="tx-history-header">
+            <ion-label>
+              <span *ngIf="isDateInCurrentMonth(getDate(group[0].time))">{{ 'Recent' | translate }} </span>
+              <span *ngIf="!isDateInCurrentMonth(getDate(group[0].time))">{{getDate(group[0].time) |
+                amDateFormat:'MMMM'}}</span>
+            </ion-label>
+          </ion-item-divider>
+  
+          <div class="item-wrapper" *ngFor="let tx of group; trackBy: trackByFn; let i = index">
+  
+            <ion-item button detail="false" (click)="itemTapped(tx)"
+              [ngClass]="{'warning-background': canSpeedUpTx(tx), 'danger-background': tx.hasUnconfirmedInputs || tx.isRBF}">
 
-        <ion-item-divider (click)="viewOnBlockchain()" sticky class="tx-history-header">
-          <ion-label>
-            <span *ngIf="isDateInCurrentMonth(getDate(group[0].time))">{{ 'Recent' | translate }} </span>
-            <span *ngIf="!isDateInCurrentMonth(getDate(group[0].time))">{{getDate(group[0].time) |
-              amDateFormat:'MMMM'}}</span>
-          </ion-label>
-        </ion-item-divider>
+              <div class="action">
+                <div class="amount">
+                  <ng-container *ngIf="tx.action != 'invalid'">
+                    <span *ngIf="tx.action == 'received'"
+                      [ngClass]="{'received': tx.action == 'received' || tx.action == 'mined' || tx.action == 'immature' , 'sent' : tx.action == 'sent','pending' : tx.confirmations <= 0}">+</span>
+                    <span *ngIf="tx.action == 'sent'"
+                      [ngClass]="{'received': tx.action == 'received' || tx.action == 'mined' || tx.action == 'immature' , 'sent' : tx.action == 'sent','pending' : tx.confirmations <= 0}">-</span>
 
-        <div class="item-wrapper" *ngFor="let tx of group; trackBy: trackByFn; let i = index">
+                    <span  *ngIf= "!tx.isSlpToken"
+                      [ngClass]="{'received': tx.action == 'received' || tx.action == 'mined' || tx.action == 'immature', 'sent' : tx.action == 'sent','pending' : tx.confirmations <= 0}">
+                      {{tx.amount| satToUnit: wallet?.coin}}</span>
 
-          <ion-item button detail="false" (click)="itemTapped(tx)"
-            [ngClass]="{'warning-background': canSpeedUpTx(tx), 'danger-background': tx.hasUnconfirmedInputs || tx.isRBF}">
-
-            <div class="action" *ngIf="tx.confirmations <= 0 && !(tx.amount === 0 && wallet?.coin === 'eth')">
-              <div class="amount">
-                <span *ngIf="tx.action == 'received'" class="pending received">+</span>
-                <span *ngIf="tx.action == 'sent'" class="pending sent">-</span>
-                <span class="pending" [ngClass]="{'received': tx.action == 'received' || tx.action == 'mined', 'sent' : tx.action == 'sent'}" *ngIf="tx.action != 'invalid' && !(tx.amount === 0 && wallet?.coin === 'eth')">{{tx.amount |
-                      satToUnit: wallet?.coin}}</span>
-                <span class="double-spend" *ngIf="tx.action == 'invalid'" translate>(possible double spend)</span>
-              </div>
-              <span class="tx-action"
-                *ngIf="tx.action == 'received' && (!tx.note || (tx.note && !tx.note.body)) && (!addressbook || !tx.outputs[0] || !getContactName(tx.outputs[0].address))">{{'From: {address}'
-                | translate: {address: tx.outputs[0].address.slice(-8)} }}</span>
-              <span class="tx-action"
-                *ngIf="tx.action == 'received' && (!tx.note || (tx.note && !tx.note.body)) && addressbook && tx.outputs[0] && getContactName(tx.outputs[0].address)">
-                {{'From: ' + getContactName(tx.outputs[0].address)| translate}}
-              </span>
-              <span class="tx-action"
-                *ngIf="tx.action == 'sent' && (!tx.note || (tx.note && !tx.note.body)) && (!addressbook || !tx.outputs[0] || !getContactName(tx.outputs[0].address)) && (!tx.customData || !tx.customData.toWalletName)">{{'To: {address}' | translate: {address: tx.addressTo.slice(-8)} }}</span>
-              <span class="tx-action"
-                *ngIf="tx.action == 'sent' && (!tx.note || (tx.note && !tx.note.body)) && (!addressbook || !tx.outputs[0] || !getContactName(tx.outputs[0].address)) && (tx.customData && tx.customData.toWalletName)">
-                {{ 'To: {walletName}' | translate: {walletName: tx.customData.toWalletName} | translate}}
-              </span>
-              <span class="tx-action" *ngIf="tx.message && addressbook && tx.outputs[0] && getContactName(tx.outputs[0].address)">
-                {{'To: ' + getContactName(tx.outputs[0].address) | translate}}
-              </span>
-              <span *ngIf="tx.message" class="memo">{{tx.message}}</span>
-            </div>
-
-            <div class="action" *ngIf="tx.action == 'immature'">
-              <span >{{'Immature'| translate}}</span>
-            </div>
-            <div class="action" *ngIf="tx.action == 'mined'">
-              <span>{{'Mined'| translate}}</span>
-            </div>
-
-            <div class="action" *ngIf="tx.confirmations > 0 && tx.action == 'received'">
-              <div class="amount">
-                <span [ngClass]="{'received': tx.action == 'received' || tx.action == 'mined', 'sent' : tx.action == 'sent'}">+</span>
-                <span [ngClass]="{'received': tx.action == 'received' || tx.action == 'mined', 'sent' : tx.action == 'sent'}" *ngIf="tx.action != 'invalid' && !(tx.amount === 0 && wallet?.coin === 'eth')">{{tx.amount |
-                      satToUnit: wallet?.coin}}</span>
-                <span class="double-spend" *ngIf="tx.action == 'invalid'" translate>(possible double spend)</span>
-              </div>
-              <span class="tx-action"
-                *ngIf="(!tx.note || (tx.note && !tx.note.body)) && (!addressbook || !tx.outputs[0] || !getContactName(tx.outputs[0].address))">{{'From: {address}'
-                | translate: {address: tx.outputs[0].address.slice(-8)} }}</span>
-              <span class="tx-action"
-                *ngIf="(!tx.note || (tx.note && !tx.note.body)) && addressbook && tx.outputs[0] && getContactName(tx.outputs[0].address)">
-                {{'From: ' + getContactName(tx.outputs[0].address)| translate}}
-              </span>
+                      <span  *ngIf= "tx.isSlpToken"
+                      [ngClass]="{'received': tx.action == 'received' || tx.action == 'mined' || tx.action == 'immature', 'sent' : tx.action == 'sent','pending' : tx.confirmations <= 0}">
+                      {{tx.amountToken}} {{tx.symbolToken}}</span>
+                  </ng-container>
+                  <ng-container *ngIf="tx.action == 'invalid'">
+                    <span class="double-spend" translate>(possible double spend)</span>
+                  </ng-container>
+                </div>
               
-              <span *ngIf="tx.message" class="memo">{{tx.message}}</span>
-            </div>
-
-            <div class="action"
-              *ngIf="tx.confirmations > 0 && tx.action == 'sent' && !(tx.amount === 0 && wallet?.coin === 'eth')">
-              <div class="amount">
-                <span [ngClass]="{'received': tx.action == 'received' || tx.action == 'mined', 'sent' : tx.action == 'sent'}">-</span> 
-                <span [ngClass]="{'received': tx.action == 'received' || tx.action == 'mined', 'sent' : tx.action == 'sent'}" *ngIf="tx.action != 'invalid' && !(tx.amount === 0 && wallet?.coin === 'eth')">{{tx.amount |
-                      satToUnit: wallet?.coin}}</span>
-                <span class="double-spend" *ngIf="tx.action == 'invalid'" translate>(possible double spend)</span>
+                <span class="tx-action"
+                  *ngIf="tx.action == 'received' && (!tx.note || (tx.note && !tx.note.body)) && (!addressbook || !tx.outputs[0] || !getContactName(tx.outputs[0].address))">{{'From:
+                  {address}'
+                  | translate: {address: tx.outputs[0].address.slice(-8)} }}</span>
+                <span class="tx-action"
+                  *ngIf="tx.action == 'received' && (!tx.note || (tx.note && !tx.note.body)) && addressbook && tx.outputs[0] && getContactName(tx.outputs[0].address)">
+                  {{'From: ' + getContactName(tx.outputs[0].address)| translate}}
+                </span>
+                <span class="tx-action"
+                  *ngIf="tx.action == 'sent' && (!tx.note || (tx.note && !tx.note.body)) && (!addressbook || !tx.outputs[0] || !getContactName(tx.outputs[0].address)) && (!tx.customData || !tx.customData.toWalletName)">{{'To:
+                  {address}' | translate: {address: tx.addressTo.slice(-8)} }}</span>
+                <span class="tx-action"
+                  *ngIf="tx.action == 'sent' && (!tx.note || (tx.note && !tx.note.body)) && (!addressbook || !tx.outputs[0] || !getContactName(tx.outputs[0].address)) && (tx.customData && tx.customData.toWalletName)">
+                  {{ 'To: {walletName}' | translate: {walletName: tx.customData.toWalletName} | translate}}
+                </span>
+                <span class="tx-action" *ngIf="tx.message && addressbook && tx.outputs[0] && getContactName(tx.outputs[0].address)">
+                  {{'To: ' + getContactName(tx.outputs[0].address) | translate}}
+                </span>
+                <span *ngIf="tx.message" class="memo">{{tx.message}}</span>            
               </div>
-              <span class="tx-action"
-                *ngIf="(tx.message && (tx.note && !tx.note.body)) && (!addressbook || !tx.outputs[0] || !getContactName(tx.outputs[0].address)) && (!tx.customData || !tx.customData.toWalletName)"
-                translate>Sent</span>
-              <span class="tx-action"
-                *ngIf="(!tx.note || (tx.note && !tx.note.body)) && (!addressbook || !tx.outputs[0] || !getContactName(tx.outputs[0].address)) && (!tx.customData || !tx.customData.toWalletName)">{{'To: {address}' | translate: {address: tx.addressTo.slice(-8)} }}</span>
-              <span class="tx-action"
-                *ngIf="(!tx.note || (tx.note && !tx.note.body)) && (!addressbook || !tx.outputs[0] || !getContactName(tx.outputs[0].address)) && (tx.customData && tx.customData.toWalletName)">
-                {{ 'To: {walletName}' | translate: {walletName: tx.customData.toWalletName} }}
-              </span>
-              <span class="tx-action" *ngIf="tx.message && addressbook && tx.outputs[0] && getContactName(tx.outputs[0].address)">
-                {{'To: ' + getContactName(tx.outputs[0].address) | translate}}
-              </span>
-              <span *ngIf="tx.message" class="memo">{{tx.message}}</span>
-            </div>
-
-            <div class="action" *ngIf="tx.confirmations > 0 && tx.action == 'moved'">
-              <span *ngIf="(tx.message && (tx.note && !tx.note.body))" translate>Sent to self</span>
-              <span *ngIf="((!tx.note || (tx.note && !tx.note.body)) && !tx.message)" translate>Sent to self</span>
-              <span *ngIf="!tx.note && tx.message">{{tx.message}}</span>
-              
-              <span *ngIf="tx.message" class="memo">{{tx.message}}</span>
-            </div>
-
-            <div class="action" *ngIf="tx.confirmations > 0 && tx.action == 'invalid'">
-              <span class="assertive" *ngIf="!tx.message && !tx.note" translate>Invalid</span>
-            </div>
-
-            <ion-note slot="end" class="ion-text-end ion-no-margin ion-no-padding">
-              <div class="tx-info">
-                <p class="status"
-                  *ngIf="(tx.action == 'sent') && tx.confirmations <= 0">{{'Pending'
-                  | translate}}
-                </p>
-                <p class="status"
-                  *ngIf="(tx.action == 'moved') && tx.confirmations <= 0">{{'Moving'
-                  | translate}}</p>
-                <p class="status" *ngIf="tx.action == 'received' && tx.confirmations <= 0">{{'Pending' | translate}}</p>
-                <p class="date" *ngIf="tx.time && createdWithinPastDay(tx.time * 1000)">{{converDate(tx.time * 1000) |
-                  amTimeAgo}}</p>
-                <p class="date" *ngIf="tx.time && !createdWithinPastDay(tx.time * 1000)">{{tx.time * 1000 | amDateFormat:'MM/DD/YYYY'}}</p>
-              </div>
-            </ion-note>
-          </ion-item>
-        </div>
-      </ion-item-group>
-    </ion-list>
+   
+              <ion-note slot="end" class="ion-text-end ion-no-margin ion-no-padding">
+                <div class="tx-info">
+                  <ng-container *ngIf="tx.confirmations <= 0">
+                    <p class="status" *ngIf="tx.action == 'sent'">{{'Pending'| translate}}</p>
+                    <p class="status" *ngIf="tx.action == 'moved'">{{'Moving'| translate}}</p>
+                    <p class="status" *ngIf="tx.action == 'received'">{{'Pending' | translate}}</p>
+                  </ng-container>
+                  <ng-container *ngIf="tx.confirmations > 0">
+                    <p class="status" *ngIf="tx.action == 'invalid'">Invalid</p>
+                    <p class="status" *ngIf="tx.action == 'moved'">Sent to self</p>
+                  </ng-container>
+                  <p class="status" *ngIf="tx.isGenesis">Genesis</p>
+                  <p class="status" *ngIf="tx.action == 'mined'">Mined</p>
+                  <p class="status" *ngIf="tx.action == 'immature'">Immature</p>
+                  <p class="date" *ngIf="tx.time && createdWithinPastDay(tx.time * 1000)">{{converDate(tx.time * 1000) |
+                    amTimeAgo}}</p>
+                  <p class="date" *ngIf="tx.time && !createdWithinPastDay(tx.time * 1000)">{{tx.time * 1000 |
+                    amDateFormat:'MM/DD/YYYY'}}</p>
+                </div>
+              </ion-note>
+            </ion-item>
+          </div>
+        </ion-item-group>
+      </ion-list>
+    </ng-container>
 
     <ion-infinite-scroll (ionInfinite)="loadHistory($event)" *ngIf="!shouldShowZeroState()">
       <ion-infinite-scroll-content></ion-infinite-scroll-content>

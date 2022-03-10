@@ -17,6 +17,7 @@ import { AddressProvider } from 'src/app/providers/address/address';
 import { DomProvider } from 'src/app/providers/dom/dom';
 import { ConfigProvider } from 'src/app/providers/config/config';
 import { NgxQrcodeErrorCorrectionLevels } from '@techiediaries/ngx-qrcode';
+import { ProfileProvider } from 'src/app/providers/profile/profile';
 
 @Component({
   selector: 'wallet-receive',
@@ -37,10 +38,13 @@ export class WalletReceiveComponent extends ActionSheetParent {
   public bchAddrFormat: string;
   public disclaimerAccepted: boolean;
   public showingWarning: boolean;
+  public ecashFormat ;
+  public isShowEtoken;
 
   private onResumeSubscription: Subscription;
   private retryCount: number = 0;
   typeErrorQr =  NgxQrcodeErrorCorrectionLevels;
+
   constructor(
     private logger: Logger,
     private walletProvider: WalletProvider,
@@ -58,8 +62,30 @@ export class WalletReceiveComponent extends ActionSheetParent {
   ngOnInit() {
     this.wallet = this.params.wallet;
     this.bchAddrFormat = 'cashAddress';
+    this.ecashFormat = 'ecashAddress';
     this.disclaimerAccepted = false;
     this.setAddress();
+    this.isShowEtoken = this.wallet.coin == 'xec' && this.wallet.isSlpToken;
+  }
+
+  changeToTokenAddress(ecashAdress) {
+    const { prefix, type, hash } = this.addressProvider.decodeAddress(ecashAdress);
+    const etoken = this.addressProvider.encodeAddress('etoken', type, hash, ecashAdress);
+    this.updateQrAddress(etoken, null);
+  }
+  changetokenEcashAddress(eTokenAdress) {
+    const { prefix, type, hash } = this.addressProvider.decodeAddress(eTokenAdress);
+    const ecashAdress = this.addressProvider.encodeAddress('ecash', type, hash, eTokenAdress);
+    this.updateQrAddress(ecashAdress, null);
+  }
+
+  public setQrAddressToken(address) {
+    if (this.ecashFormat === 'eTokenAddress') {
+      this.changeToTokenAddress(address)
+    }
+    else {
+      this.changetokenEcashAddress(address)
+    }
   }
 
   ionViewWillLeave() {

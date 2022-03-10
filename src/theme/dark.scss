@@ -59,7 +59,8 @@
     --bg-color-dark-theme-4: rgba(56, 56, 56, 0.8);
     --bg-color-dark-theme-5: linear-gradient(0deg, rgba(126, 208, 255, 0.14), rgba(126, 208, 255, 0.14)), #001E2E;
     --bg-color-dark-theme-6: linear-gradient(
-        0deg, rgba(126, 208, 255, 0.12), rgba(126, 208, 255, 0.12)), #001E2E;   
+        0deg, rgba(126, 208, 255, 0.12), rgba(126, 208, 255, 0.12)), #001E2E;
+    --bg-color-dark-theme-7: rgb(23 54 106); 
 
     --bg-color-dark-theme-toolbar: #001E2E;
     --bg-color-dark-theme-message: #1d1d1d;
@@ -106,6 +107,9 @@
     page-home .total-amount-container .average-container .date,
     page-scan .page-scan-has-problems .header-container .subtitle,
     page-addressbook .zero-state-description,
+    token-details .balance-alt-str,
+    token-details .balance-spendable,
+    token-details .tx-history .date,
     page-wallet-details .balance-alt-str,
     page-wallet-details .balance-spendable,
     page-wallet-details .tx-history .date,
@@ -1159,16 +1163,18 @@
 
     page-copayers,
     page-txp-details,
+    token-info,
     page-tx-details {
         .timeline-container {
             background-color: rgba(33, 51, 62, 1);
         }
     }
-
+    confirm-token,
     page-confirm,
     confirm-card-purchase-page,
     page-txp-details,
     page-tx-details,
+    token-info,
     page-bitpay-card-topup,
     page-create-eth-multisig {
         .payment-proposal-to {
@@ -1239,7 +1245,7 @@
             }
         }
     }
-
+    token-details,
     page-wallet-details,
     page-coinbase-account,
     page-bitpay-card {
@@ -1286,7 +1292,7 @@
             .action-btn {
                 ion-button {
                     --background: var(--color-primary-abcpay-dark);
-                    color: var(--color-on-primary-abcpay-dark);
+                    --color: var(--color-on-primary-abcpay-dark);
                     ion-icon {
                         color: var(--color-on-primary-abcpay-dark);
                     }
@@ -1946,7 +1952,7 @@
 
         ion-item,
         ion-item.item-toggle ion-label {
-            background: var(--bg-color-dark-theme-2);
+            --background: var(--bg-color-dark-theme-2);
             color: var(--text-color-dark-theme) !important;
         }
     }
@@ -1955,7 +1961,7 @@
 
         ion-item,
         ion-item.item-toggle ion-label {
-            background: var(--bg-color-dark-theme);
+            --background: var(--bg-color-dark-theme);
         }
 
         .phone-input {

@@ -1,0 +1,88 @@
+token-info {
+  .note-container {
+    max-width: 200px;
+  }
+
+  --item-border-color: #efefef;
+  --item-label-color: #6c6c6e;
+
+  .header-container {
+    padding: 20px 0px 20px 0px;
+
+    .sending-label {
+      display: flex;
+      align-items: center;
+
+      img.sending-img {
+        margin-right: 2rem;
+        width: 40px;
+        height: 40px;
+      }
+
+      span {
+        font-size: 1.8rem;
+      }
+    }
+  }
+
+  .padded-input {
+    padding-top: 10px;
+    padding-bottom: 15px;
+  }
+
+  .last-item {
+    margin-left: auto !important;
+  }
+
+  .bp-list {
+    .sub-title {
+      color: #000000;
+      font-size: 16px;
+      font-weight: 500;
+      line-height: 18px;
+    }
+
+    .item {
+
+      &.item-ios,
+      &.item-md {
+        padding-left: 19px;
+
+        .item-inner {
+          padding-top: 0px;
+          padding-bottom: 0px;
+        }
+      }
+    }
+  }
+
+  .background-content {
+    display: flex;
+    padding: 0px 10px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    align-items: center;
+  }
+
+  .line-divider {
+    margin: 0px 17px;
+  }
+
+  .background-button-content {
+    height: 47px;
+    background-color: #edf0fe;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 200px;
+    border-radius: 21px;
+    margin: 25px auto;
+  }
+
+
+  .item.item-input span {
+    width: auto;
+  }
+
+}

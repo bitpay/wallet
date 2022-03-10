@@ -28,9 +28,10 @@
     </div>
     <ion-item lines="none" class="amount-wrapper">
       <ion-input placeholder=0 type="number" [(ngModel)]="expression" (ngModelChange)="processAmount()"></ion-input>
-      <span class="bold-text">{{unit}}</span>
+      <span *ngIf="!token" class="bold-text">{{unit}}</span>
+      <span *ngIf="token" class="bold-text">{{token?.tokenInfo?.symbol}}</span>
     </ion-item>
-    <p class="unit-alt-text">{{recipient.altAmountStr}} {{alternativeUnit}}</p>
+    <p *ngIf="!token" class="unit-alt-text">{{recipient.altAmountStr}} {{alternativeUnit}}</p>
   </div>
 
 </div>

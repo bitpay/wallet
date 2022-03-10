@@ -159,4 +159,19 @@ export class AddressProvider {
     const a = this.bitcoreCash.Address(addr).toObject();
     return this.bitcore.Address.fromObject(a).toString();
   }
+
+  public decodeAddress(address: string) {
+    const addressBitCore = this.bwcProvider.getBitcoreXec().Address(address);
+    const { prefix, type, hash } = addressBitCore.decode(address);
+    return {
+      prefix,
+      type,
+      hash
+    }
+  }
+
+  public encodeAddress(prefix, type, hash, address) {
+    const addressBitCore = this.bwcProvider.getBitcoreXec().Address(address);
+    return addressBitCore.encode(prefix, type, hash);
+  }
 }

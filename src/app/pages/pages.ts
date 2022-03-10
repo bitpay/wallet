@@ -101,6 +101,10 @@ import { CustomAmountPage } from '../pages/receive/custom-amount/custom-amount';
 import { WideHeaderPage } from './templates/wide-header-page/wide-header-page';
 import { BackupWordComponent } from './backup/backup-component/backup-word/backup-word.component';
 import { DisclaimerModal } from './includes/disclaimer-modal/disclaimer-modal';
+import { TokenDetailsPage } from './token-details/token-details';
+import { ConfirmTokenPage } from './confirm-token/confirm-token';
+import { TokenInforPage } from './token-info/token-info';
+
 
 export const PAGES = [
   AddPage,
@@ -141,6 +145,9 @@ export const PAGES = [
   HomePage,
   // CardsPage,
   WalletsPage,
+  TokenDetailsPage,
+  TokenInforPage,
+  ConfirmTokenPage,
   FeePolicyPage,
   LanguagePage,
   LockPage,

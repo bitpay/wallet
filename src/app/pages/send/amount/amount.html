@@ -67,10 +67,12 @@
               {{ '0' }}
             </span>
           </ng-template>
-          <span class="unit" [ngClass]="{'small-font': useSmallFontSize}" [hidden]="globalResult">{{unit}}</span>
+          <span *ngIf="!token" class="unit" [ngClass]="{'small-font': useSmallFontSize}" [hidden]="globalResult">{{unit}}</span>
+          <span *ngIf="token" class="unit" [ngClass]="{'small-font': useSmallFontSize}" [hidden]="globalResult">{{token?.tokenInfo?.symbol}}</span>
         </div>
-        <div class="amount" [hidden]="!globalResult">{{globalResult}} {{unit}}</div>
-        <div class="result" *ngIf="!fromBuyCrypto">&asymp;
+        <div  *ngIf="!token" class="amount" [hidden]="!globalResult">{{globalResult}} {{unit}}</div>
+        <div *ngIf="token" class="amount" [hidden]="!globalResult">{{globalResult}} {{token?.tokenInfo?.symbol}}</div>
+        <div class="result" *ngIf="!fromBuyCrypto && !token">&asymp;
           <span *ngIf="fiatCode === alternativeUnit">{{alternativeAmount || '0.00'}}</span>
           <span *ngIf="fiatCode !== alternativeUnit">{{alternativeAmount || '0'}}</span>
           {{alternativeUnit}}
@@ -78,7 +80,7 @@
       </div>
 
       <div class="amount-switcher-margin" [ngClass]="{'fix-modal-switcher': useAsModal}"
-        *ngIf="!fromBuyCrypto && !isCardTopUp">
+        *ngIf="!fromBuyCrypto && !isCardTopUp && !token">
         <div class="amount-switcher">
           <div class="switcher" (click)="changeUnit()" [hidden]="fixedUnit" tappable>
             <img class="switcher__icon" src="assets/img/icon-swap.svg">

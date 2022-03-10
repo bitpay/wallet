@@ -1,0 +1,41 @@
+<wide-header-page title="Token Info" hideBackButton="true">
+  <ion-buttons slot="start">
+    <ion-button class="close-container disable-hover" (click)="close()">
+      <ion-icon color="dark" name="close-outline"></ion-icon>
+    </ion-button>
+  </ion-buttons>
+  <div page-content>
+    <ion-list lines="none" class="bp-list">
+      <ion-item>
+        <div class="header-container">
+          <div class="sending-label">
+            <span>Token info for {{tokenInfo?.name}}</span>
+          </div>
+        </div>
+      </ion-item>
+
+      <ion-item class="sub-title">
+        <ion-label>
+          <div class="main-label" translate>DETAILS</div>
+        </ion-label>
+      </ion-item>
+
+      <ng-container *ngFor="let token of tokenShowUi">
+        <div class="line-divider"></div>
+
+        <ion-item>
+          <ion-label>
+            <div class="summary-item">
+              <span translate>{{token.name}}</span>
+            </div>
+          </ion-label>
+          <ion-note slot="end">
+            <span class="note-container ellipsis summary-item-detail">{{token?.value}}</span>
+          </ion-note>
+        </ion-item>
+
+      </ng-container>
+    </ion-list>
+
+  </div>
+</wide-header-page>
