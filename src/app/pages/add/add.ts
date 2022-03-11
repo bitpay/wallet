@@ -1,24 +1,30 @@
 import { Location } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
+import { AppProvider } from 'src/app/providers';
 import { Logger } from 'src/app/providers/logger/logger';
 
 
 @Component({
   selector: 'page-add',
   templateUrl: 'add.html',
-  styleUrls: ['add.scss']
+  styleUrls: ['add.scss'],
+  encapsulation: ViewEncapsulation.None
+
 })
 export class AddPage {
   public keyId: string;
   public isZeroState: boolean;
   navParamsData: any;
+  currentTheme;
 
   constructor(
+    private appProvider: AppProvider,
     private router: Router,
     private logger: Logger,
     private location: Location
   ) {
+    this.currentTheme = this.appProvider.themeProvider.currentAppTheme;
     if (this.router.getCurrentNavigation()) {
        this.navParamsData = this.router.getCurrentNavigation().extras.state ? this.router.getCurrentNavigation().extras.state : {};
     } else {

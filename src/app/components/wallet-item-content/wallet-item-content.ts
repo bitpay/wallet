@@ -1,15 +1,25 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ViewEncapsulation } from '@angular/core';
 import { DecimalFormatBalance } from 'src/app/providers/decimal-format.ts/decimal-format';
 
 @Component({
   selector: 'wallet-item-content',
   templateUrl: 'wallet-item-content.html',
   styleUrls: ['wallet-item-content.scss'],
+  encapsulation : ViewEncapsulation.None
 })
 export class WalletItemContent {
   @Input()
   wallet: any;
 
+  @Input()
+  coins: any;
+
+  @Input()
+  isKeyTab: any;
+
+  @Input()
+  isShowBalance: any;
+  
   getBalance(wallet, currency) {
     const lastKnownBalance = this.getLastKownBalance(wallet, currency);
     const totalBalanceStr =
@@ -24,6 +34,14 @@ export class WalletItemContent {
     )
       return '0';
     return DecimalFormatBalance(totalBalanceStr) || DecimalFormatBalance(lastKnownBalance);
+  }
+
+  getBalanceChange(unitCode) {
+    const coin = this.coins.find(ele => {
+      return ele.unitCode === unitCode;
+    });
+    const totalBalanceChange = coin.totalBalanceChange ? coin.totalBalanceChange : 0;
+    return totalBalanceChange;
   }
 
   getAlternativeBalance(wallet, currency) {

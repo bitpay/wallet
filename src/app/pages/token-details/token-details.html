@@ -15,18 +15,46 @@
   <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)" pullMin="90" pullMax="160">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
-  <div class="wrapper">
+  <div class="wrapper" [ngClass]="{'grid-wrapper': shouldShowZeroState()}">
     <expandable-header [scrollArea]="scrollArea" [fadeFactor]="1" [disableFade]="true" #expandableHeader>
       <ion-toolbar class="wide-header__title">
         <expandable-header-primary class="balance-header">
-          <div class="wallet-name">
-            {{ token?.tokenInfo?.name| translate }}
-          </div>
-          <div class="balance-content">
-            <div>
-              <div class="balance-str">
-                <balance-to-show [balance]="amountToken"></balance-to-show>
+          <div class="wallet-card" [ngClass]="{ 
+            'bg-EAT': token?.tokenInfo?.symbol == 'EAT',
+            'bg-bcPro': token?.tokenInfo?.symbol == 'bcPro',
+            'bg-Doc': token?.tokenInfo?.symbol == 'Doc',
+            'bg-ABCSLP': token?.tokenInfo?.symbol == 'ABCSLP'
+            }">
+            <div class="wallet-card-header">
+              <div class="wallet-icon">
+                <div class="icon">
+                  <img src="assets/img/currencies/{{token?.tokenInfo?.symbol}}.svg" alt="">
+                  <img *ngIf="wallet?.cachedStatus && wallet?.cachedStatus.wallet && wallet?.cachedStatus.wallet?.singleAddress"
+                    class="audit" src="assets/img/wallet-details/wallet-audit.svg" alt="">
+                </div>
+                <div class="wallet-name">
+                  <p class="name">{{token?.tokenInfo?.name}}</p>
+                  <ion-spinner *ngIf="!wallet.etokenAddress" name="dots"></ion-spinner>
+                  <p *ngIf="wallet.etokenAddress" class="wallet-add" copy-to-clipboard="{{ wallet.etokenAddress }}"> {{(wallet.etokenAddress | slice:0:10) +'...'+ (wallet.etokenAddress | slice:-12)}} 
+                    <ion-icon name="copy-outline"></ion-icon>
+                  </p>
+                </div>
               </div>
+              <div class="wallet-setting" (click)="openWalletSettings(wallet.id)">
+                <img src="assets/img/wallet-details/wallet-setting-{{currentTheme}}.svg" alt="">
+              </div>
+            </div>
+  
+            <div class="balance-content">
+              <div (tap)="updateAll(true)"
+                *ngIf="!wallet?.scanning && (wallet?.cachedStatus || wallet?.lastKnownBalance)">
+                <div class="balance-str">
+                  <ion-icon class="eye" [name]="wallet?.balanceHidden ? 'eye-outline' : 'eye-off-outline'" (click)="toggleBalance()"></ion-icon>
+                  <balance-to-show *ngIf="!wallet?.balanceHidden" [balance]="amountToken"></balance-to-show>
+                  <div *ngIf="wallet?.balanceHidden">******</div>
+                </div>
+              </div>
+    
             </div>
           </div>
         

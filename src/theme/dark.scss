@@ -1117,11 +1117,73 @@
         }
 
         .section-header {
-            border-bottom: 1px solid var(--border-color-dark-theme);
+            border-bottom: 1px solid rgba(112, 129, 138, 0.38);;
         }
 
         .collapse .item-img {
             filter: invert(1);
+        }
+
+        .header-title {
+            color: var(--bg-hight-color-abcpay-dark);
+        }
+
+        .bp-header {
+            ion-toolbar {
+                --background: var(--color-primary-container-abcpay-dark);
+                background: var(--color-primary-container-abcpay-dark);
+              }
+        }
+
+        ion-title{
+            color: var(--color-on-primary-container-abcpay-dark);
+        }
+
+        .balance {
+            background: var(--color-primary-container-abcpay-dark);
+            ion-button {
+                --color: var(--color-primary-abcpay-dark);
+            }
+            .balance-str {
+                .eye {
+                    color: #75a9c4;
+                }
+                .balance-alt-str {
+                    color: var(--color-on-primary-container-abcpay-dark);
+                }
+            }
+        }
+
+        ion-menu {
+            ion-header {
+                ion-toolbar {
+                    --background: linear-gradient(0deg, rgba(126, 208, 255, 0.14), rgba(126, 208, 255, 0.14)), #001E2E !important;
+                }
+            }
+            ion-content {
+                --background: linear-gradient(0deg, rgba(126, 208, 255, 0.05), rgba(126, 208, 255, 0.05)), #001E2E !important;
+                ion-list {
+                    ion-item {
+                        border-color: rgba(112, 129, 138, 0.38);
+                        --background: linear-gradient(0deg, rgba(126, 208, 255, 0.05), rgba(126, 208, 255, 0.05)), #001E2E !important;
+                        --color: var(--text-color-dark-theme) !important;
+                        ion-icon {
+                            &[name="checkmark-circle"] {
+                                color: var(--color-primary-abcpay-dark);
+                            }
+                    }
+                }
+            }
+            }
+            ion-footer {
+                ion-toolbar {
+                    --background: linear-gradient(0deg, rgba(126, 208, 255, 0.05), rgba(126, 208, 255, 0.05)), #001E2E !important;
+                    .key-import{
+                            border-color: #70818a;
+                            --color: #7ED0FF !important;
+                    }
+                }
+            }
         }
     }
 
@@ -2428,6 +2490,24 @@
                     color: #ffffff;
                 }
             }
+        }
+    }
+
+    wallet-item-content {
+        .secondary-note {
+            color: rgba(237, 239, 240, 0.6) !important;
+            .negative-avg {
+              color: #FFB4A9;
+            }
+            .possitive-avg {
+              color: #2fcfa4;
+            }
+        }
+        .secondary-label {
+            color: rgba(237, 239, 240, 0.6) !important;
+        }
+        .wallet-hidden {
+            color: rgba(237, 239, 240, 0.6);
         }
     }
 }

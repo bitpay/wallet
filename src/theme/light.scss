@@ -70,6 +70,8 @@
                 --padding-start: 5px;
                 --padding-end: 5px;
                 margin: 1rem 1rem;
+                box-shadow: 0px 1px 4px 1px rgba(0, 0, 0, 0.1);
+                border-radius: 8px;
                 &::part(native) {
                     border-radius: 8px;
                 }
