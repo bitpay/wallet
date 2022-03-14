@@ -1,14 +1,4 @@
 page-wallets {
-  @mixin center {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .token-container {
-    padding: 0 20px;
-  }
-
   .no-token {
     color: var(--color-light-grey);
     text-align: center;
@@ -18,14 +8,37 @@ page-wallets {
   }
 
   .token-container {
+    background: linear-gradient(0deg, rgba(126, 208, 255, 0.05), rgba(126, 208, 255, 0.05)), #001E2E;
+    position: relative;
+    top: -20px;
+    margin: 0 1rem;
+    border-radius: 0 0 8px 8px;
     ion-item {
-      margin: 15px 0 !important; 
+      background: linear-gradient(0deg, rgba(126, 208, 255, 0.05), rgba(126, 208, 255, 0.05)), #001E2E;
+      --padding-start: 0;
+      --border-color: rgba(112, 129, 138, 0.38);
       padding: 0 !important;
+      margin: 0 !important;
       --background : transparent !important;
+      &:last-child {
+        --border-color: transparent;
+      }
+      ion-icon {
+        padding: 0;
+        margin: 1rem 0.5rem 1rem 0 !important;
+        width: 32px;
+        height: 32px;
+      }
+      ion-note {
+        margin-right: 0;
+      }
     }
+
     .token-item {
-      margin: 0 10px;
+      margin: 0 1rem;
+      background: linear-gradient(0deg, rgba(126, 208, 255, 0.05), rgba(126, 208, 255, 0.05)), #001E2E;
     }
+
     .collapse-btn {
       margin-left: 0 !important;
       display: flex;
@@ -33,22 +46,25 @@ page-wallets {
       align-items: center;
       height: 20px !important;
       width: 20px !important;
-    }
-    ion-icon {
-      margin: 0 !important;
-      padding: 4px;
+      background: none !important;
+      ion-icon {
+        padding: 0;
+      }
     }
 
     .background-content {
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      align-items: center;
+      margin-right: 5px;
+    }
+
+    .no-border {
+      border-bottom: 0;
     }
 
     .address-token {
       display: flex;
-      width: 30%;
+      align-items: center;
+      color: rgba(224, 228, 230, 0.6);
+      font-size: 12px;
       &:hover {
         cursor: pointer ;
       }
@@ -61,13 +77,25 @@ page-wallets {
     }
 
     .wrap-key-token {
-      // flex: 1;
-      display: inline-flex;
+      display: flex;
+      align-items: center;
+      color: rgba(182, 201, 216, 0.6);
+      .key-name {
+        margin-left: 0;
+        font-weight: 600;
+        letter-spacing: 0.1px;
+      }
     }
+
     .collapse {
       margin: 0 4px;
     }
   }
+
+  .collapsed {
+    display: none;
+  }
+
   .scroll-token {
     position: absolute;
     top: 0;
@@ -85,379 +113,150 @@ page-wallets {
     color: #fff;
   }
 
-  .toolbar-title-ios {
-    text-align: center;
-  }
-
   .wallets-list {
     margin-top: 12px;
-  }
-  .key-name {
-    flex: 1;
-  }
-
-  .title {
-    font-weight: 500;
-
-    >img {
-      margin-right: 7px;
-    }
-  }
-
-  .error {
-    color: var(--color-danger);
-  }
-
-  page-wallet-activity,
-  page-txp {
-    @media (max-width: 350px) {
-      .item-title {
-        font-size: 13px;
-      }
-
-      ion-note .date {
-        font-size: 11.5px;
-      }
-    }
-  }
-
-  page-txp:first-child,
-  page-wallet-activity:first-child {
-    & .item-ios {
-      border-top: 0.55px solid #f4f4f4;
-    }
-  }
-
-  page-txp:last-child,
-  page-wallet-activity:last-child {
-    border: 0;
-
-    & .item-inner {
-      border: 0 !important;
-    }
   }
 
   .no-header {
     margin-top: 2.6rem;
   }
 
-  // Styles for integrations
-  .sliding-container {
-    border-radius: 5px;
-    display: block;
-  }
-
-  .wallets ion-item-sliding.item-wrapper {
-    button.item.item-block .item-inner {
-      align-items: start;
-    }
-  }
-
-  .wallets ion-item-sliding.reorder-active {
-    box-shadow: none;
-
-    button.item.item-block {
-      box-shadow: 0 5px 18px 0 rgba(0, 0, 0, 0.06);
-      transform: scale3d(1.05, 1.05, 1.05);
-      transition: box-shadow 300ms ease, transform 300ms ease;
-    }
-  }
-
-  ion-item-sliding.item-wrapper {
-    --gift-card-item-side-padding: 4%;
-    --gift-card-item-height: 59px;
-
-    background: none;
-    padding-left: var(--gift-card-item-side-padding);
-    padding-right: var(--gift-card-item-side-padding);
-
-    ion-item-options {
-      border-bottom: 0;
-      margin-top: 1px;
-      height: var(--gift-card-item-height) + 16px;
-
-      &[side*='right'] {
-        padding-right: var(--gift-card-item-side-padding);
-      }
-
-      &[side*='left'] {
-        padding-left: var(--gift-card-item-side-padding);
-      }
-
-      button.button {
-        border-radius: 5px;
-        font-weight: 400;
-        min-width: 73px;
-        padding: 15px;
-
-        .archive {
-          &__icon {
-            font-size: 20px;
-            margin-top: -1px;
-          }
-
-          &__text {
-            font-size: 13px;
-          }
-        }
-      }
-    }
-
-    button.item.item-block {
-      font-size: 16px;
-      box-shadow: 0 5px 18px 0 rgba(0, 0, 0, 0.03);
-
-      .item-inner {
-        height: var(--gift-card-item-height) + 16px;
-
-        ion-label {
-
-          &.label-ios,
-          &.label-md {
-            display: flex;
-            height: var(--gift-card-item-height);
-            align-items: center;
-            margin: 0;
-          }
-        }
-      }
-    }
-  }
-
-  ion-item-sliding.card-item-sliding {
-    padding-bottom: 1rem;
-
-    button.item.item-block {
-      border-radius: 5px;
-
-      .item-inner {
-        border: 0;
-      }
-    }
-  }
-
-  .buy-crypto-button {
-    @include center;
-    background: #f4f5fb;
-    color: #5f7bf7;
-    border-radius: 7px;
-    cursor: pointer;
-    font-size: 18px;
-    font-weight: 500;
-    text-align: center;
-    width: 92%;
-    margin: 15px auto;
-    margin-top: 0;
-    height: 73px;
-  }
-
-  ion-fab {
-    ion-icon.icon {
-      font-size: 0;
-    }
-
-    width: 100px;
-    border-radius: 30px;
-
-    button {
-      padding: 0px 50px 0px 55px;
-      border-radius: 30px;
-
-      .fab-text {
-        margin-left: 5px;
-        font-weight: 500;
-        font-size: 16px;
-      }
-    }
-  }
-
-  @media only screen and (device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) {
-    ion-fab[right] {
-      right: env(safe-area-inset-bottom);
-    }
-
-    ion-fab[bottom] {
-      bottom: env(safe-area-inset-bottom);
-    }
-  }
-
-  @keyframes bounce-card {
-    0% {
-      transform: translateY(0);
-    }
-
-    10% {
-      transform: translateY(0);
-    }
-
-    30% {
-      transform: translateY(40px);
-    }
-
-    50% {
-      transform: translateY(0);
-    }
-
-    57% {
-      transform: translateY(5px);
-    }
-
-    64% {
-      transform: translateY(0);
-    }
-
-    100% {
-      transform: translateY(0);
-    }
-  }
-
   .wallets-container {
-    .wallet-wrapper {
-      ion-item-sliding:last-child {
-        padding-bottom: 2rem;
-        margin-bottom: -2rem;
-      }
-    }
-
     .bp-list ion-item {
       cursor: pointer;
+      --inner-padding-end: 0;
+      --padding-top: 2px;
+      --padding-bottom: 2px;
     }
   }
 
-  .section-header {
-    margin-right: 12px;
-    border-bottom: 1px solid #e0e0e0;
+  .section-header {    
+    margin: 0;
+    padding: 1rem;
+    padding-top: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(112, 129, 138, 0.38);
   }
 
-  .collapse {
-    white-space: nowrap;
-    display: flex;
-    align-items: center;
-
-    .legacy-tag {
-      color: lightgrey;
-      text-transform: uppercase;
-      font-size: 12px;
+  .bp-header {
+    ion-toolbar {
+      --background: var(--color-primary);
+      --border-width: 0 !important;
+      background: var(--color-primary);
+    }
+    ion-button {
+      --padding-start: 0;
+      --padding-end: 0;
+      margin: 0;
+      width: 24px;
+      height: 24px;
+    }
+    ion-title{
+      font-size: 16px !important;
+      font-weight: 600 !important;
+      color: #ffffff;
     }
 
-    .collapse-btn {
-      cursor: pointer;
-      background: #f6f6f7;
-      border-radius: 50px;
-      height: 25px;
-      width: 25px;
-      margin-left: 15px;
+    .key-setting {
+      margin: 0 1rem;
+    }
 
-      ion-icon {
-        width: 18px;
-        margin-left: 3px;
-        margin-top: 6px;
-        text-align: center;
-        vertical-align: text-bottom;
-      }
+    .key-notifications {
+      margin: 0 1rem;
     }
   }
 
-  .collapsed {
-    display: none;
+  .header-title {
+    color: var(--color-light-on-background-theme);
+    margin: 1.5rem 1rem 0 1rem;
+    font-weight: 600;
+    font-size: 22px;
   }
 
-  .sliding-container {
-    height: auto;
-
-    .wallet-wrapper:first-child .item.item-block {
-      border-top-left-radius: 5px;
-      border-top-right-radius: 5px;
-    }
-
-    .wallet-wrapper:last-child .item.item-block {
-      border-bottom-left-radius: 5px;
-      border-bottom-right-radius: 5px;
-
-      .item-inner {
-        border: 0;
-      }
-    }
-
-    .item-inner {
-      text-align: right;
-      margin: 0 2px 0 0;
-    }
-
-    .action {
-      &.button.button-default {
-        padding: 0;
-      }
-
-      &--receive {
-        background-color: #edf7f9;
-
-        &.activated,
-        &:hover:not(.disable-hover) {
-          background-color: #e8f4f7;
+  ion-menu {
+    ion-header {
+      ion-toolbar {
+        .back-btn {
+          --color: rgba(0, 30, 46, 0.6);
+          --padding-start: 0;
+          --padding-end: 0;
+          margin: 4px 0 4px 1rem;
         }
-      }
-
-      &--send {
-        background-color: #eff1fe;
-
-        &.activated,
-        &:hover:not(.disable-hover) {
-          background-color: #e9ebf9;
-        }
-      }
-
-      &__icon {
-        img {
-          height: 35px;
-        }
-      }
-
-      &__text {
-        color: #434d59;
-        font-size: 14px;
-        font-weight: 500;
-        margin-top: 3px;
-      }
-    }
-
-    &.wallets {
-      button.item.item-block {
-        div.item-inner {
-          display: flex;
-          align-items: center;
+        ion-title {
+          font-size: 16px;
+          color: var(--color-light-on-background-theme);
         }
       }
     }
-
-    ion-reorder {
-      flex-basis: 60px;
-      margin-left: 3px;
-
-      ion-icon {
-        margin-bottom: 2px;
+    ion-content{
+      --background: var(--bg-color-inner-item-light-theme) !important;
+      ion-list {
+        ion-item {
+          --padding-start: 1rem;
+          --padding-top: 0.5rem;
+          --padding-bottom: 0.5rem;
+          --color: var(--color-light-on-background-theme);
+          --background: var(--bg-color-inner-item-light-theme) !important;
+          border-bottom: 1px solid rgba(112, 129, 138, 0.16);
+          font-size: 14px;
+          ion-icon {
+            &[name="checkmark-circle"] {
+              width: 20px;
+              height: 20px;
+              color: var(--color-primary);
+              margin-right: 1rem;
+            }
+          }
+        }
       }
     }
-
-    label-tip {
-      margin-top: 12px;
-      width: calc(92% - 10px);
-      left: calc(4% + 5px);
-    }
-  }
-
-  .zero-state-coinbase {
-    background-color: rgba(22, 82, 240, 0.7);
-    overflow: hidden;
-    width: 100%;
-    height: 90px;
-
-    .zero-state-image {
+    ion-footer {
       text-align: center;
+      ion-toolbar {
+        --background: var(--bg-color-inner-item-light-theme) !important;
+        .key-import {
+          font-size: 14px;
+          font-weight: 600;
+          border: 1px solid #819098;
+        border-radius: 2rem;
+        padding: 0 1.5rem;
+        }
+      }
+    }
+  }
 
-      img {
-        width: 160px;
-        margin-top: -7px;
+  .balance {
+    text-align: center;
+    padding: 1.5rem 0;
+    background: var(--color-primary);
+    ion-button {
+      border: 1px solid #70818a;
+      border-radius: 2rem;
+      font-size: 14px;
+      font-weight: 600;
+      margin-top: 1rem;
+      color: #7ED0FF !important;
+    }
+    .balance-str {
+      display: flex;
+      justify-content: center;
+      .eye {
+        color: #75b3d1;
+        width: 22px;
+        height: 22px;
+      }
+      .balance-alt-str {
+        margin-left: 0.5rem;
+        font-size: 22px;
+        font-weight: 600;
+        color: var(--swiper-pagination-bullet);
+        margin-right: 5px;
+      }
+      
+      .unit {
+        margin-top: 5px;
+        font-size: 14px;
+        color: rgba(195, 231, 255, 0.6);
       }
     }
   }
@@ -466,5 +265,18 @@ page-wallets {
     font-size: 18px;
     text-align: center;
     color: var(--ion-color-primary);
+  }
+
+  .key-edit {
+    padding: 8px 1rem !important;
+  }
+
+  .edit {
+    --padding-start: 0 !important;
+    --padding-top: 0 !important;
+    --padding-bottom: 0 !important;
+    --inner-padding-end: 0 !important;
+    border: 1px solid #7ED0FF;
+    border-radius: 4px;
   }
 }

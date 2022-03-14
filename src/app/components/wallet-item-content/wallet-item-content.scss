@@ -1,11 +1,61 @@
-ion-item {
-  .item-inner {
-    border-bottom: 0px !important;
+wallet-item-content {
+  .wallet-warning {
+    color: var(--color-danger);
+  }
+  
+  .key-tab {
+      margin: 1rem 0.5rem 1rem 3px;
+      padding: 0;
+      width: 35px;
+      height: 35px;
+  }
+
+.wallet-for-address-book{
+  --background: transparent !important;
+  border-bottom: 1px solid rgba(112, 129, 138, 0.38) !important;
+  .main-label{
+    font-size: 16px;
+
+  }
+  .secondary-note {
+    font-size: 11px;  
+    color: rgba(237, 239, 240, 0.6);
   }
 }
-.wallet-warning {
-  color: var(--color-danger);
-  ion-label {
-    white-space: inherit;
+
+  .secondary-note {
+    font-size: 12px !important;
+    color: rgba(0, 30, 46, 0.6) !important;
+    .negative-avg {
+      color: var(--color-danger);
+      border-radius: 50vh;
+      padding-right: 10px;
+      padding-left: 10px;
+      font-size: 11px;
+    }
+    .possitive-avg {
+      color: #37A372;
+      border-radius: 50vh;
+      padding-right: 10px;
+      padding-left: 10px;
+      font-size: 11px;
+    }
   }
+  .secondary-label {
+    color: rgba(0, 30, 46, 0.6) !important;
+    .secondary-label-multisign {
+      background: #051E2E;
+      color: rgba(237, 239, 240, 0.6);
+      padding: 2px 6px;
+      border-radius: 8px;
+      margin-left: 4px;
+      letter-spacing: 0.4px;
+    }
+  }
+
+  .wallet-hidden {
+    font-size: 14px;
+    color: rgba(0, 30, 46, 0.6);
+  }
+  
 }

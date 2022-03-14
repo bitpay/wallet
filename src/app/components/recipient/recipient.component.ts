@@ -397,6 +397,7 @@ export class RecipientComponent implements OnInit {
         this.validAddress = false;
       }
     }
+    
     this.checkRecipientValid();
   }
 
@@ -528,6 +529,7 @@ export class RecipientComponent implements OnInit {
   public openTransferToModal(): void {
     this.router.navigate(['/transfer-to-modal'], {
       state: {
+        completeHistory: this.wallet.completeHistory,
         walletId: this.wallet.id,
         fromSend: true,
         recipientId: this.recipient.id

@@ -406,4 +406,17 @@ export class TokenDetailsPage {
         res.present();
       })
   }
+
+  openWalletSettings(id) {
+
+  }
+
+  updateAll(id) {
+
+  }
+
+  toggleBalance() {
+
+  }
+  
 }
