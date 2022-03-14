@@ -128,10 +128,6 @@ export class TransferToPage {
       ...new Map(this.navParamsData.completeHistory.filter(item => item.action === 'sent').map((item) => [item["addressTo"], item])).values(),
     ] as Array<any>;
     let contacts = [];
-    // let walletList = [...this.walletList[this.wallet.coin]]
-    // historyTmp.forEach(historyEle => {
-     
-    // });
     for(let historyEle of historyTmp){
       if (historyEle.customData && historyEle.customData.toWalletName) {
         contacts.push({
