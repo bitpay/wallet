@@ -51,6 +51,7 @@ export class WalletsPage {
   private onResumeSubscription: Subscription;
   private onPauseSubscription: Subscription;
   public showReorder: boolean = false;
+  listEToken = ['ABCSLP', 'EAT', 'DoC', 'bcPro'];
   isDonation;
   donationSupportCoins = [];
   navParamsData;
@@ -145,6 +146,11 @@ export class WalletsPage {
         token: token
       }
     });
+  }
+
+  setIconToken(token) {
+    const isValid = this.listEToken.includes(token?.tokenInfo?.symbol);
+    return isValid ? `assets/img/currencies/${token?.tokenInfo?.symbol}.svg` : 'assets/img/currencies/xec.svg';
   }
 
   async ionViewWillEnter() {

@@ -1,11 +1,11 @@
-<ion-header [translucent]="true" class="bp-header">
+<ion-header class="bp-header">
   <ion-toolbar>
     <ion-buttons slot="start">
       <ion-back-button icon="chevron-back-outline" defaultHref="/"></ion-back-button>
     </ion-buttons>
     <ion-title>
-      <div [reveal-at-scroll-pos]="expandableHeader.headerHeight" [scrollArea]="scrollArea">
-        {{ token?.tokenInfo?.name}}
+      <div [reveal-at-scroll-pos]="(expandableHeader.headerHeight + 200)" [scrollArea]="scrollArea">
+        {{token?.tokenInfo?.name}}
       </div>
     </ion-title>
   </ion-toolbar>
@@ -19,10 +19,10 @@
     <expandable-header [scrollArea]="scrollArea" [fadeFactor]="1" [disableFade]="true" #expandableHeader>
       <ion-toolbar class="wide-header__title">
         <expandable-header-primary class="balance-header">
-          <div class="wallet-card" [ngClass]="{ 
+          <div class="wallet-card background_default" [ngClass]="{ 
             'bg-EAT': token?.tokenInfo?.symbol == 'EAT',
             'bg-bcPro': token?.tokenInfo?.symbol == 'bcPro',
-            'bg-Doc': token?.tokenInfo?.symbol == 'Doc',
+            'bg-DoC': token?.tokenInfo?.symbol == 'DoC',
             'bg-ABCSLP': token?.tokenInfo?.symbol == 'ABCSLP'
             }">
             <div class="wallet-card-header">

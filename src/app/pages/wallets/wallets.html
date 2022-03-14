@@ -126,7 +126,7 @@
                 <ng-container *ngIf="wallet.tokens">
                   <ion-list class="token-item bp-list" [ngClass]="{ collapsed: isCollapsedToken(wallet.id) }">
                     <ion-item *ngFor="let token of wallet.tokens" (click)="goToTokenDetails(wallet, token)">
-                      <ion-icon class="item-img rectangle token-icon" src="assets/img/currencies/{{token?.tokenInfo?.symbol}}.svg" slot="start"></ion-icon>
+                      <ion-icon class="item-img rectangle token-icon" [src]="setIconToken(token)" slot="start"></ion-icon>
                       <ion-label>
                         <div class="main-label">{{token?.tokenInfo?.name}}</div>
                         <div class="secondary-label" *ngIf="wallet?.cachedStatus">
