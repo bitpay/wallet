@@ -20,7 +20,7 @@ export class WalletItemContent {
   isKeyTab: any;
 
   @Input()
-  isShowBalance: any;
+  isShowBalance: any = true;
   
   getBalance(wallet, currency) {
     const lastKnownBalance = this.getLastKownBalance(wallet, currency);
