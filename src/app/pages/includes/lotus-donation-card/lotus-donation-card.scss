@@ -1,9 +1,11 @@
 .message {
   &-background {
     width: 90%;
-    border-radius: 12px;
+    border-radius: 8px;
     background-color: #f9f9fb;
-    margin: 20px auto 0 auto;
+    background: url(../../../../assets/img/bg-donate-card.svg) no-repeat;
+    background-size: cover;
+    margin: 1rem 1rem 2rem 1rem;
     &.no-margin {
       margin-top: 0;
     }
@@ -21,8 +23,10 @@
     }
   }
   &-icon {
-    padding: 0 15px;
     display: flex;
+    position: absolute;
+    right: 0;
+    top: -1rem;
     img {
       width: 18px;
       height: 18px;
@@ -31,8 +35,10 @@
 
   &-title {
     text-align: left;
-    font-size: 18px;
-    font-weight: 700;
+    font-size: 22px;
+    width: 65%;
+    margin: 1rem 0 0 1rem;
+    font-weight: 600;
   }
 
   &-body {
@@ -75,15 +81,17 @@
 }
 
 .message-background--donate {
-  margin-bottom: 40px;
-  padding-top: 15px;
   .message-icon {
     img {
-      margin-left: 7px;
+      width: 100px;
+      height: 100px;
     }
   }
   .message-body {
-    padding-top: 20px;
+    font-size: 14px;
+    color: rgba(237, 239, 240, 0.6);
+    width: 80%;
+    padding-top: 1rem;
     a{
       cursor: pointer;
     }
@@ -96,6 +104,8 @@
 .message-content {
   .title-container {
     align-items: center;
+    position: relative;
+    display: flex;
   }
 }
 .icon-svg {
@@ -110,10 +120,24 @@
     margin-bottom: 5px;
   }
 }
+
 .icons-row {
   padding: 22px 0;
 }
+
 .opacity-low {
   opacity: 0.42;
 }
 
+.donate-btn {
+  text-align: end;
+  ion-button {
+    --border-radius: 100px;
+    --background: #7ED0FF;
+    --color: #00344B;
+    min-width: 110px;
+    height: 40px;
+    margin-bottom: 1rem;
+    margin-right: 1rem;
+  }
+}

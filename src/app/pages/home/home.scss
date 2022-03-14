@@ -31,15 +31,35 @@ button.bitpay-id-login {
   align-items: center;
 }
 .total-amount-container {
-  margin: 20px 0px 10px 20px;
+  background: #0E3244;
+  margin: 1rem;
+  display: flex;
+  justify-content: space-between;
   .section-header {
-    margin-left: 0px;
+    color: rgba(237, 239, 240, 0.6);
+    font-size: 14px;
+    font-weight: 400;
+    margin: 0;
   }
+  .total-amount {
+    padding: 1rem;
+  }
+
+  .img-total-amount {
+    img {
+      height: 100%;
+    }
+  }
+
   .total-amount-value {
     color: #000000;
-    font-size: 38px;
-    line-height: 56px;
-    font-weight: 700;
+    font-size: 32px;
+    line-height: 40px;
+    font-weight: 400;
+    margin-top: 4px;
+    .iso-code {
+      font-size: 14px;
+    }
     ion-spinner {
       margin-left: 15px;
       * {
@@ -52,29 +72,23 @@ button.bitpay-id-login {
     text-align: center;
     height: 21px;
     .negative-avg {
-      color: #cf2f32;
-      background-color: rgba(207, 47, 60, 0.1);
+      color: #FFB4A9;
       border-radius: 50vh;
-      padding-right: 10px;
-      padding-left: 10px;
     }
     .possitive-avg {
-      color: #2fcfa4;
-      background-color: rgba(47, 207, 164, 0.1);
+      color: #73DAA5;
       border-radius: 50vh;
-      padding-right: 10px;
-      padding-left: 10px;
     }
     .average {
       font-size: 14px;
       line-height: 19px;
       height: 21px;
-      font-weight: 500;
+      font-weight: 400;
     }
     .date {
-      font-weight: 500;
-      color: #434d5a;
-      opacity: 50%;
+      font-size: 14px;
+      font-weight: 400;
+      color: #94A3AC;
       margin-left: 10px;
     }
   }
@@ -199,4 +213,21 @@ button.bitpay-id-login {
 .wide-header__title{
   padding-top: 0;
   padding-bottom: 0;
+}
+
+.exchange-rate {
+  justify-content: flex-start !important;
+  align-items: baseline;
+  margin: 2rem 1rem 0 1rem;
+  .exchange-rate-title {
+    font-size: 22px;
+    font-weight: 600;
+    color: #EDEFF0;
+  }
+  .date-label {
+    background: none;
+    font-size: 14px;
+    color: #94A3AC;
+    padding-left: 0.5rem;
+  }
 }
