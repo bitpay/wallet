@@ -9,3 +9,19 @@ ion-item {
     white-space: inherit;
   }
 }
+
+.wallet-for-address-book{
+  --background: transparent !important;
+  border-bottom: 1px solid rgba(112, 129, 138, 0.38) !important;
+  .main-label{
+    font-size: 16px;
+
+  }
+  .secondary-note {
+    font-size: 11px;  
+    color: rgba(237, 239, 240, 0.6);
+  }
+}
+// .wallet-for-address-book:last-child{
+//   border-bottom: unset !important;
+// }

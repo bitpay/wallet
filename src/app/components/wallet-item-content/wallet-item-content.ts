@@ -9,7 +9,9 @@ import { DecimalFormatBalance } from 'src/app/providers/decimal-format.ts/decima
 export class WalletItemContent {
   @Input()
   wallet: any;
-
+  @Input()
+  isCustomForAddressBook = false;
+  
   getBalance(wallet, currency) {
     const lastKnownBalance = this.getLastKownBalance(wallet, currency);
     const totalBalanceStr =
