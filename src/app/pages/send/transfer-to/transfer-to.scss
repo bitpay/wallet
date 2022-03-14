@@ -1,3 +1,83 @@
+.custom-list{
+  background: linear-gradient(0deg, rgba(126, 208, 255, 0.05), rgba(126, 208, 255, 0.05)), #001E2E;
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 32px;
+  justify-content: flex-start;
+  ion-item{
+    width: 108px;
+    --background: transparent;
+    background-color: unset !important;
+    --inner-padding-end: 0;
+    --padding-start: 0;
+    --padding-end: 0;
+    margin: 0.5rem 0.5rem;
+
+    .recent-contact-container{
+      display: flex;
+      flex-flow: column;
+      align-items: center;
+      width: 100%;
+      .contact-logo-container{
+        width: 40px;
+        height: 40px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: #B6C9D8;
+        border-radius: 50px;
+        margin-bottom: 4px;
+        .contact-logo-content{
+          color: rgba(33, 51, 62, 1);
+          font-size: 14px;
+          font-weight: 600;
+        }
+      }
+      .account-logo-custom{
+        background: #CCC1E9;
+      }
+      .main-label{
+        width: 100%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        text-align: center;
+      }
+    }
+  }
+}
+
+.wallets-container{
+  margin-bottom: 1rem;
+}
+
+ion-segment{
+  background-color: rgba(0, 76, 108, 1);
+  border-radius: 24px 24px 0 0;
+  padding: 16px 0px;
+  color: #C3E7FF;
+  
+  ion-segment-button{
+    color: white;
+    --ripple-color: transparent;
+    opacity: 0.6;
+    --color-hover: unset !important;
+  }
+  .segment-button-checked{
+    border-radius: 0px;
+    color: #C3E7FF;;
+    opacity: 1;
+    &::part(indicator-background) {
+      background: transparent;
+      box-shadow: unset;
+    }
+    .segment-button-indicator-background{
+      background: transparent;
+      box-shadow: none;
+    }
+  }
+}
+
 .show-more {
   display: flex;
   text-align: center;
@@ -11,18 +91,34 @@
 .key-divider {
   display: flex;
   align-items: center;
-  padding: 20px 0;
-  margin: 0 25px;
   color: var(--color-grey);
-  border-bottom: 1px solid rgba(155, 163, 174, 0.2);
+
+  background: linear-gradient(0deg, rgba(126, 208, 255, 0.12), rgba(126, 208, 255, 0.12)), #001E2E;
   span {
-    margin-left: 10px;
+    padding: 8px 10px 8px 16px;
+    width: 100%;
+    font-size: 12px;
+    color: rgba(237, 239, 240, 0.6);
   }
   ion-icon{
     width: 16px;
     margin: 0;
     padding: 0;
   }
+}
+
+.contact-container{
+  margin-bottom: 10px;
+}
+
+.contact-name{
+  padding: 16px;
+  padding-left: 0px;
+  margin-left: 16px;
+  color: rgba(237, 239, 240, 1);
+  font-weight: 600;
+  font-size: 16px;
+  border-bottom: 1px solid rgba(112, 129, 138, 0.38) !important;
 }
 .no-wallet {
   text-align: center;

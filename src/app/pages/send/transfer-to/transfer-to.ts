@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { AfterContentInit, Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
 
@@ -17,13 +17,14 @@ import { Logger } from '../../../providers/logger/logger';
 import { PlatformProvider } from '../../../providers/platform/platform';
 import { PopupProvider } from '../../../providers/popup/popup';
 import { ProfileProvider } from '../../../providers/profile/profile';
-import { WalletProvider } from '../../../providers/wallet/wallet';
+import { TransactionProposal, WalletOptions, WalletProvider } from '../../../providers/wallet/wallet';
 
 // Pages
 import { AmountPage } from '../amount/amount';
 import { ConfirmPage } from '../confirm/confirm';
 
 import { Location } from '@angular/common';
+import { ExternalizeLinks } from 'src/app/directives/externalize-links/externalize-links';
 
 
 export interface FlatWallet {
@@ -43,7 +44,11 @@ export interface FlatWallet {
   isComplete: () => boolean;
   getAddress: () => Promise<string>;
 }
-
+interface UpdateWalletOptsI {
+  walletId: string;
+  force?: boolean;
+  alsoUpdateHistory?: boolean;
+}
 @Component({
   selector: 'page-transfer-to',
   templateUrl: 'transfer-to.html',
@@ -56,6 +61,7 @@ export class TransferToPage {
   public walletList = {} as CoinsMap<FlatWallet[]>;
   public availableCoins: Coin[];
   public contactsList = [];
+  public contactsGroup= [];
   public filteredContactsList = [];
   public filteredWallets = [];
   public walletsByKeys = [];
@@ -80,6 +86,12 @@ export class TransferToPage {
   private currentContactsPage: number = 0;
   navParamsData;
 
+  public history = [];
+
+  public listRecentTransaction = [];
+
+  public showContactTab: boolean = true;
+
   constructor(
     private currencyProvider: CurrencyProvider,
     private router: Router,
@@ -97,7 +109,7 @@ export class TransferToPage {
     if (this.router.getCurrentNavigation()) {
       this.navParamsData = this.router.getCurrentNavigation().extras.state;
     } else {
-      this.navParamsData =  history ? history.state : undefined;
+      this.navParamsData = history ? history.state : undefined;
     }
     this.availableCoins = this.currencyProvider.getAvailableCoins();
     for (const coin of this.availableCoins) {
@@ -108,6 +120,68 @@ export class TransferToPage {
       this.platformProvider.isIOS || this.platformProvider.isAndroid
         ? 700
         : 100;
+
+  }
+
+  public getListRecentTransaction() {
+    let historyTmp = [
+      ...new Map(this.navParamsData.completeHistory.filter(item => item.action === 'sent').map((item) => [item["addressTo"], item])).values(),
+    ] as Array<any>;
+    let contacts = [];
+    for(let historyEle of historyTmp){
+      if (historyEle.customData && historyEle.customData.toWalletName) {
+        contacts.push({
+          name: historyEle.customData.toWalletName,
+          isAccount: true,
+          getAddress: () => Promise.resolve(historyEle.addressTo),
+        });
+      } else if (this.filteredContactsList.find(s => s.address === historyEle.addressTo)) {
+        contacts.push(this.contactsList.find(s => s.address === historyEle.addressTo));
+      }
+      if(contacts.length >= 6) break;
+    }
+    this.listRecentTransaction = contacts;
+  }
+
+  private fetchTxHistory(opts: UpdateWalletOptsI) {
+    if (!opts.walletId) {
+      this.logger.error('Error no walletId in update History');
+      return;
+    }
+
+    const progressFn = ((_, newTxs) => {
+      let args = {
+        walletId: opts.walletId,
+        finished: false,
+        progress: newTxs
+      };
+      this.events.publish('Local/WalletHistoryUpdate', args);
+    }).bind(this);
+
+    // Fire a startup event, to allow UI to show the spinner
+    this.events.publish('Local/WalletHistoryUpdate', {
+      walletId: opts.walletId,
+      finished: false
+    });
+    this.walletProvider
+      .fetchTxHistory(this.wallet, progressFn, opts)
+      .then(txHistory => {
+        this.wallet.completeHistory = txHistory;
+        this.events.publish('Local/WalletHistoryUpdate', {
+          walletId: opts.walletId,
+          finished: true
+        });
+      })
+      .catch(err => {
+        if (err != 'HISTORY_IN_PROGRESS') {
+          this.logger.warn('WalletHistoryUpdate ERROR', err);
+          this.events.publish('Local/WalletHistoryUpdate', {
+            walletId: opts.walletId,
+            finished: false,
+            error: err
+          });
+        }
+      });
   }
 
   @Input()
@@ -207,6 +281,7 @@ export class TransferToPage {
     setTimeout(() => {
       this.updateContactsList();
       this.updatingContactsList = false;
+      this.getListRecentTransaction();
     }, delayTime || 700);
   }
 
@@ -240,9 +315,17 @@ export class TransferToPage {
             (this.currentContactsPage + 1) * this.CONTACTS_SHOW_LIMIT
           )
         );
-        this.filteredContactsList = _.clone(shortContactsList);
+        this.filteredContactsList = _.clone(contactsList);
         this.contactsShowMore =
           this.contactsList.length > shortContactsList.length;
+        
+        this.contactsGroup = _.values(_.groupBy(_.map(this.filteredContactsList, contact => {
+            return {
+              firstLetter: contact.name[0],
+              ...contact
+            }
+          }), 'firstLetter'));
+        this.getListRecentTransaction();
       });
   }
 
@@ -289,6 +372,9 @@ export class TransferToPage {
     this.updateContactsList();
   }
 
+  public segmentChanged(index){
+    this.showContactTab = index === 1;
+  }
   public processInput(): void {
     if (this.search && this.search.trim() != '') {
       this.searchWallets();
@@ -349,7 +435,7 @@ export class TransferToPage {
             name: item.name,
             email: item.email
           };
-          this.router.navigate(['/select-inputs']).then(data=>{
+          this.router.navigate(['/select-inputs']).then(data => {
             this.viewCtrl.dismiss();
             this.events.publish('addRecipient', recipient);
           })
@@ -360,7 +446,7 @@ export class TransferToPage {
           this.router.navigate(['/confirm'], //ConfirmPage
             { state: this.dataDonation });
         }
-        else if(this.navParamsData.fromSend){
+        else if (this.navParamsData.fromSend) {
           const recipient = {
             recipientType: item.recipientType,
             toAddress: addr,

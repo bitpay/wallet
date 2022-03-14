@@ -10,6 +10,19 @@ wallet-item-content {
       height: 35px;
   }
 
+.wallet-for-address-book{
+  --background: transparent !important;
+  border-bottom: 1px solid rgba(112, 129, 138, 0.38) !important;
+  .main-label{
+    font-size: 16px;
+
+  }
+  .secondary-note {
+    font-size: 11px;  
+    color: rgba(237, 239, 240, 0.6);
+  }
+}
+
   .secondary-note {
     font-size: 12px !important;
     color: rgba(0, 30, 46, 0.6) !important;

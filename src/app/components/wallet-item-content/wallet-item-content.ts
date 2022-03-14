@@ -10,6 +10,8 @@ import { DecimalFormatBalance } from 'src/app/providers/decimal-format.ts/decima
 export class WalletItemContent {
   @Input()
   wallet: any;
+  @Input()
+  isCustomForAddressBook = false;
 
   @Input()
   coins: any;
@@ -18,7 +20,7 @@ export class WalletItemContent {
   isKeyTab: any;
 
   @Input()
-  isShowBalance: any;
+  isShowBalance: any = true;
   
   getBalance(wallet, currency) {
     const lastKnownBalance = this.getLastKownBalance(wallet, currency);
