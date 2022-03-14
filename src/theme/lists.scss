@@ -1,63 +1,106 @@
 .item {
-    &.warn {
-      background-color: rgb(255, 242, 244);
-      --background: rgb(255, 242, 244);
-  
-      ion-note {
-        color: rgb(229, 108, 123);
-      }
+  &.warn {
+    background-color: rgb(255, 242, 244);
+    --background: rgb(255, 242, 244);
+
+    ion-note {
+      color: rgb(229, 108, 123);
     }
   }
-  
-  .bp-list {
-    &.top-padding {
-      margin-top: 40px;
-    }
-    ion-item:not(.align-with-button) {
-      padding-left: 0px !important;
-    }
-  
-    ion-item-divider {
-      margin-top: 25px;
-      font-weight: 500;
+}
+
+.bp-list {
+  &.top-padding {
+    margin-top: 40px;
+  }
+  ion-item:not(.align-with-button) {
+    padding-left: 0px !important;
+  }
+
+  ion-item-divider {
+    margin-top: 25px;
+    font-weight: 500;
+    font-size: 18px !important;
+    padding-left: 20px;
+    background: white;
+
+    ion-label {
+      color: #353535 !important;
       font-size: 18px !important;
-      padding-left: 20px;
-      background: white;
-  
-      ion-label {
-        color: #353535 !important;
-        font-size: 18px !important;
-        font-weight: 500;
-        margin-bottom: 0;
-        margin-top: 0;
-      }
-    }
-  
-    &__divider-button.item-button.button {
-      height: 22px;
+      font-weight: 500;
       margin-bottom: 0;
       margin-top: 0;
-  
-      ion-icon {
-        color: #4a4a4a;
-        font-size: 20px;
-        margin-bottom: 0;
-        margin-top: 0;
-        opacity: 0.8;
-      }
     }
-  
-    ion-icon,
-    ion-note ion-icon{
-        margin: 1rem 0;
-        justify-content: center;
-        padding: 7px;
-        &[src] {
-          width: 35px;
-          height: 35px;
+  }
+
+  &__divider-button.item-button.button {
+    height: 22px;
+    margin-bottom: 0;
+    margin-top: 0;
+
+    ion-icon {
+      color: #4a4a4a;
+      font-size: 20px;
+      margin-bottom: 0;
+      margin-top: 0;
+      opacity: 0.8;
+    }
+  }
+
+  ion-icon,
+  ion-note ion-icon{
+      margin: 1rem 0;
+      justify-content: center;
+      padding: 7px;
+      &[src] {
+        width: 35px;
+        height: 35px;
+      }
+      .gravatar-img {
+        width: 40px;
+      }
+      &_pax {
+        background-color: #b2d434;
+      }
+      &_gusd {
+        background-color: #caf5fe;
+      }
+      &_busd {
+        background-color: #f3ba2d;
+      }
+      &_dai {
+        background-color: #ff9e2f;
+      }
+      &_wbtc {
+        background-color: #000000;
+      }
+      &_doge {
+        background-color: #d8c172;
+      }
+      &_ltc {
+        background-color: #a6a9aa;
+      }
+      &_xec {
+        background-color: #016cbf;
+      }
+      &_xpi {
+        background-color: #ffffff;
+      }
+      &.background {
+        &_btc {
+          background-color: #f7931a;
         }
-        .gravatar-img {
-          width: 40px;
+        &_bch {
+          background-color: #2fcf6e;
+        }
+        &_eth {
+          background-color: #6b71d6;
+        }
+        &_xrp {
+          background-color: #000000;
+        }
+        &_usdc {
+          background-color: #a9caeb;
         }
         &_pax {
           background-color: #b2d434;
@@ -78,7 +121,7 @@
           background-color: #d8c172;
         }
         &_ltc {
-          background-color: #a6a9aa;
+          background-color: #2962ff;
         }
         &_xec {
           background-color: #016cbf;
@@ -86,217 +129,172 @@
         &_xpi {
           background-color: #ffffff;
         }
-        &.background {
-          &_btc {
-            background-color: #f7931a;
-          }
-          &_bch {
-            background-color: #2fcf6e;
-          }
-          &_eth {
-            background-color: #6b71d6;
-          }
-          &_xrp {
-            background-color: #000000;
-          }
-          &_usdc {
-            background-color: #a9caeb;
-          }
-          &_pax {
-            background-color: #b2d434;
-          }
-          &_gusd {
-            background-color: #caf5fe;
-          }
-          &_busd {
-            background-color: #f3ba2d;
-          }
-          &_dai {
-            background-color: #ff9e2f;
-          }
-          &_wbtc {
-            background-color: #000000;
-          }
-          &_doge {
-            background-color: #d8c172;
-          }
-          &_ltc {
-            background-color: #2962ff;
-          }
-          &_xec {
-            background-color: #016cbf;
-          }
-          &_xpi {
-            background-color: #ffffff;
-          }
-      }
     }
-  
-    .item {
+  }
+
+  .item {
+    border: 0;
+
+    &.item-ios,
+    &.item-md {
       border: 0;
-  
-      &.item-ios,
-      &.item-md {
+
+      &.item-block,
+      &:last-child {
         border: 0;
-  
-        &.item-block,
-        &:last-child {
-          border: 0;
-        }
-  
-        .item-inner {
-          border: none;
-          padding-top: 4px;
-          padding-bottom: 4px;
-          margin-left: 0px;
-        }
-  
-        &.item-ios {
-          font-size: 16px;
-        }
+      }
+
+      .item-inner {
+        border: none;
+        padding-top: 4px;
+        padding-bottom: 4px;
+        margin-left: 0px;
+      }
+
+      &.item-ios {
+        font-size: 16px;
       }
     }
-  
-    ion-item-divider {
-      .reorder-option {
-        padding-right: 8px !important;
-      }
+  }
+
+  ion-item-divider {
+    .reorder-option {
+      padding-right: 8px !important;
     }
-  
-    .main-label {
-      font-weight: 600;
-      font-size: 14px;
-      line-height: 20px;
-      color: black;
-    }
-  
-    .secondary-label {
-      font-size: 12px;
-      color: #828991;
-      font-weight: 400;
-    }
-  
-    .main-note {
-      color: black;
-      font-weight: 600;
-      font-size: 14px;
-      line-height: 24px;
-      text-align: end;
-    }
-    .secondary-note {
-      color: #565d6d;
-      font-weight: 400;
-      font-size: 14px;
-      line-height: 25px;
-      text-align: end;
-      opacity: 50%;
-    }
-  
-    .summary-item {
-      font-size: 16px;
-      line-height: 24px;
-      font-weight: 400;
-      display: flex;
-      align-items: center;
-      color: rgba(0, 30, 46, 1);
-    }
-  
-    .summary-item-detail {
-      color: #000000;
-      font-size: 16px;
-      line-height: 25px;
-      text-align: right;
-      font-weight: 400;
-      text-align: end;
-    }
-  
-    .summary-line {
-      box-sizing: border-box;
-      height: 1px;
-      margin: 0px 19px;
-      border: 0.5px dashed #979797;
-      opacity: 0.33;
-    }
-  
-    .main-label.total-label {
-      display: flex;
-      color: #000000;
-      font-size: 16px;
-      font-weight: 500;
-      align-items: center;
-    }
-    .subtotal-label {
-      .title {
-        opacity: 0.5;
-      }
-    }
-    .total-amount {
-      color: #000000;
-      font-size: 24px;
-      font-weight: 500;
-      line-height: 30px;
-      text-align: right;
-    }
-    .subtotal-amount {
+  }
+
+  .main-label {
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 20px;
+    color: #001E2E;
+  }
+
+  .secondary-label {
+    font-size: 12px;
+    color: #828991;
+    font-weight: 400;
+  }
+
+  .main-note {
+    color: #001E2E;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 24px;
+    text-align: end;
+  }
+  .secondary-note {
+    color: #565d6d;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 25px;
+    text-align: end;
+  }
+
+  .summary-item {
+    font-size: 16px;
+    line-height: 24px;
+    font-weight: 400;
+    display: flex;
+    align-items: center;
+    color: rgba(0, 30, 46, 1);
+  }
+
+  .summary-item-detail {
+    color: #000000;
+    font-size: 16px;
+    line-height: 25px;
+    text-align: right;
+    font-weight: 400;
+    text-align: end;
+  }
+
+  .summary-line {
+    box-sizing: border-box;
+    height: 1px;
+    margin: 0px 19px;
+    border: 0.5px dashed #979797;
+    opacity: 0.33;
+  }
+
+  .main-label.total-label {
+    display: flex;
+    color: #000000;
+    font-size: 16px;
+    font-weight: 500;
+    align-items: center;
+  }
+  .subtotal-label {
+    .title {
       opacity: 0.5;
     }
-    .amount-details {
-      padding-right: 19px;
+  }
+  .total-amount {
+    color: #000000;
+    font-size: 24px;
+    font-weight: 500;
+    line-height: 30px;
+    text-align: right;
+  }
+  .subtotal-amount {
+    opacity: 0.5;
+  }
+  .amount-details {
+    padding-right: 19px;
+  }
+  .total-amount-note {
+    color: #000000;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 25px;
+    text-align: end;
+  }
+  .subtotal-amount-note {
+    opacity: 50%;
+  }
+  coin-icon {
+    margin: 0px !important;
+  }
+}
+
+.bp-list.settings-list {
+  ion-item{
+    margin: 0 1rem !important;
+    padding: 12px 0 12px 22px;
+    border-bottom: 0;
+
+    &::part(native) {
+      .item-inner {
+        padding-right: 0 !important;
+      }
     }
-    .total-amount-note {
-      color: #000000;
-      font-weight: 500;
-      font-size: 14px;
-      line-height: 25px;
-      text-align: end;
+
+    ion-note {
+      background: #f4f5fb;
+      color: #565d6d;
+      font-weight: 300;
+      padding: 6px 10px;
+      border-radius: 4px;
+      font-size: 16px;
+      margin-right: 1rem;
     }
-    .subtotal-amount-note {
-      opacity: 50%;
+
+    ion-note.wallet-warning {
+      background: none;
+      color: #e56c7b;
     }
-    coin-icon {
-      margin: 0px !important;
+
+    ion-label {
+      padding: 6px 1rem;
+    }
+
+    &:last-child {
+      &:after {
+        width: 100%;
+      }
     }
   }
-  
-  .bp-list.settings-list {
-    ion-item{
-      margin: 0 1rem !important;
-      padding: 12px 0 12px 22px;
-      border-bottom: 0;
-
-      &::part(native) {
-        .item-inner {
-          padding-right: 0 !important;
-        }
-      }
-
-      ion-note {
-        background: #f4f5fb;
-        color: #565d6d;
-        font-weight: 300;
-        padding: 6px 10px;
-        border-radius: 4px;
-        font-size: 16px;
-        margin-right: 1rem;
-      }
-  
-      ion-note.wallet-warning {
-        background: none;
-        color: #e56c7b;
-      }
-
-      ion-label {
-        padding: 6px 1rem;
-      }
-  
-      &:last-child {
-        &:after {
-          width: 100%;
-        }
-      }
-    }
-    coin-icon {
-      margin: 0px !important;
-    }
+  coin-icon {
+    margin: 0px !important;
   }
-  
+}
