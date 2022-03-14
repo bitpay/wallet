@@ -1,133 +1,170 @@
-<ion-header [translucent]="true" class="bp-header">
-  <ion-toolbar>
-    <ion-title>
-      <div [reveal-at-scroll-pos]="expandableHeader.headerHeight" [scrollArea]="scrollArea">
-        {{ 'Wallets' | translate }}
-      </div>
-    </ion-title>
-    <ion-buttons slot="end" class="settings-button" *ngIf="walletsGroups && walletsGroups[0]">
-      <ion-button class="option-button disable-hover" (click)="showMoreOptions()">
-        <ion-icon slot="icon-only" name="ellipsis-horizontal"></ion-icon>
+<ion-menu side="start" menuId="first" contentId="main-content">
+  <ion-header>
+    <ion-toolbar translucent>
+      <ion-button class="back-btn" fill="clear" slot="start" (click)="closeMenu()">
+        <ion-icon name="chevron-back"></ion-icon>
       </ion-button>
-      <ion-button fill="clear" color="grey" *ngIf="txpsN > 0" (click)="openProposalsNotificationsPage()">
-        <ion-badge color="warning" slot="icon-only" class="notifications-badge">{{ txpsN }}</ion-badge>
+      <ion-title>{{'Your keys' | translate}}</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content>
+    <ion-list lines="none">
+      <ion-reorder-group disabled={{showReorder}} (ionItemReorder)="reorderAccounts($event)">
+        <ion-item *ngFor="let walletGroup of walletsGroups" (click)="getKeySelected(walletGroup[0]?.keyId)">
+          <ion-icon [style]="keySelected[0]?.keyId === walletGroup[0]?.keyId ? '' : 'color: transparent;'" name="checkmark-circle" slot="start"></ion-icon>
+          <ion-label>{{ getWalletGroup(walletGroup[0]?.keyId).name }}</ion-label>
+          <ion-buttons slot="end">
+            <ion-button>
+              <ion-icon src="assets/img/key-edit-{{currentTheme}}.svg"></ion-icon>
+            </ion-button>
+            <ion-reorder>
+              <ion-button (click)="closeMenu()">
+                <ion-icon src="assets/img/key-drag-{{currentTheme}}.svg"></ion-icon>
+              </ion-button>
+            </ion-reorder>
+          </ion-buttons>
+        </ion-item>
+      </ion-reorder-group>
+    </ion-list>
+  </ion-content>
+  <ion-footer class="ion-no-border">
+    <ion-toolbar>
+      <ion-button class="key-import" fill=clear (click)="addKey()">
+        {{'Create or Import a Key' | translate}}
       </ion-button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header>
+    </ion-toolbar>
+  </ion-footer>
+</ion-menu>
 
-<ion-content [forceOverscroll]="true" scrollEvents="true" #scrollArea>
-  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)" pullMin="90" pullMax="160">
-    <ion-refresher-content></ion-refresher-content>
-  </ion-refresher>
-  <div class="wrapper">
-    <expandable-header [scrollArea]="scrollArea" [fadeFactor]="5" [disableFade]="true" #expandableHeader>
-      <ion-toolbar class="wide-header__title">
-        <expandable-header-primary>
-          {{ 'Wallets' | translate }}
-        </expandable-header-primary>
-      </ion-toolbar>
-    </expandable-header>
-
-    <ng-container *ngIf="!isDonation;else donation">
-      <create-new-wallet *ngIf="!walletsGroups || !walletsGroups[0]"></create-new-wallet>
-    </ng-container>
-    <ng-template #donation>
-      <div *ngIf="isShowCreateNewWallet">
-        <create-new-wallet></create-new-wallet>
-      </div>
-    </ng-template>
-
-    <div *ngFor="let walletGroup of walletsGroups; let i = index" class="wallets-container">
-      <div class="section-header ion-padding-top ion-padding-bottom"
-        *ngIf="walletGroup[0]?.canSign && walletsGroups.length > 1">
-        <ion-icon src="assets/img/settings-icons/icon-key.svg" width="15" class="item-img" slot="start">
-        </ion-icon>
-        <ion-label class="key-name">
-          <span>{{ getWalletGroup(walletGroup[0]?.keyId).name }}</span>
-        </ion-label>
-        <div class="collapse">
-          <div *ngIf="!walletGroup[0]?.canAddNewAccount" class="legacy-tag">Legacy</div>
-          <div *ngIf="walletGroup[0]?.canAddNewAccount" (click)="addWallet(walletGroup[0]?.keyId)">
-            <ion-icon src="assets/img/plus-gray.svg" width="15" class="item-img">
-            </ion-icon>
-          </div>
-          <div class="collapse-btn" *ngIf="walletsGroups.length > 1" (click)="collapseGroup(walletGroup[0]?.keyId)">
-            <ion-icon *ngIf="!isCollapsed(walletGroup[0]?.keyId)" name="chevron-down-outline"></ion-icon>
-            <ion-icon *ngIf="isCollapsed(walletGroup[0]?.keyId)" name="chevron-down-outline"></ion-icon>
-          </div>
+<div class="ion-page" id="main-content">
+  <ion-header *ngIf="!(!walletsGroups || !walletsGroups[0])" [translucent]="true" class="bp-header">
+    <ion-toolbar>
+      <ion-buttons slot="start" class="ion-no-margin">
+        <ion-button class="key-setting" (click)="openWalletGroupSettings(keySelected[0].keyId)">
+          <ion-icon slot="icon-only" src="assets/img/key-setting-{{currentTheme}}.svg"></ion-icon>
+        </ion-button>
+        <ion-button class="key-list" (click)="openMenu()">
+          <ion-icon slot="icon-only" src="assets/img/key-list-{{currentTheme}}.svg"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+      <ion-title>
+          {{ keyNameSelected }}
+      </ion-title>
+      <ion-buttons slot="end" class="settings-button" *ngIf="walletsGroups && walletsGroups[0]">
+        <ion-button class="key-add" (click)="addKey()">
+          <ion-icon slot="icon-only" src="assets/img/key-add-{{currentTheme}}.svg"></ion-icon>
+        </ion-button>
+        <ion-button class="key-notifications" (click)="addKey()">
+          <ion-icon slot="icon-only" src="assets/img/key-notifications-{{currentTheme}}.svg"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
+  
+  <ion-content>
+    <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)" pullMin="90" pullMax="160">
+      <ion-refresher-content></ion-refresher-content>
+    </ion-refresher>
+    <div class="wrapper">
+      <div *ngIf="!(!walletsGroups || !walletsGroups[0])" class="balance">
+        <div class="balance-str" [style]="!isShowBalance ? 'align-items: baseline' : 'align-items: center'">
+          <ion-icon class="eye" [name]="!isShowBalance ? 'eye-outline' : 'eye-off-outline'" (click)="isShowBalance = !isShowBalance"></ion-icon>
+          <span class="balance-alt-str">
+            {{isShowBalance ? totalBalanceKey : '******'}}
+          </span>
+          <span *ngIf="isShowBalance" class="unit">
+            USD
+          </span>
         </div>
+        <ion-button fill=clear (click)="addWallet(keySelected[0]?.keyId)">
+          {{'Create a new account' | translate}}
+        </ion-button>
       </div>
-      <div class="section-header ion-padding-top ion-padding-bottom" *ngIf="walletGroup[0]?.keyId == 'read-only'">
-        <ion-icon src="assets/img/settings-icons/icon-read-only.svg" width="20" class="item-img" slot="start">
-        </ion-icon>
-        <ion-label class="key-name">
-          <span translate>Read Only Wallets</span>
-        </ion-label>
-      </div>
-      <ion-list lines="nones" class="bp-list" [ngClass]="{ collapsed: isCollapsed(walletGroup[0]?.keyId) }">
-        <ng-container *ngFor="let wallet of walletGroup; let j = index">
-          <wallet-item-content [wallet]="wallet" (click)="goToWalletDetails(wallet)">
-          </wallet-item-content>
-
-          <ion-infinite-scroll *ngIf="isSupportToken(wallet)" class="scroll-token" (ionInfinite)="reloadToken($event, wallet, i , j)">
-            <ion-infinite-scroll-content></ion-infinite-scroll-content>
-          </ion-infinite-scroll>
-
-          <ng-container *ngIf="isSupportToken(wallet)">
-            <div class="token-container"> 
-              <div class="section-header ion-padding-top ion-padding-bottom" >
-              <div class="wrap-key-token">
-                <ion-label class="key-name">
-                  <span>Token</span>
-                </ion-label>
-                <div class="collapse">
-                  <div class="collapse-btn" (click)="collapsToken(wallet.id)">
-                    <ion-icon *ngIf="!isCollapsedToken(wallet.id)" name="chevron-down-outline"></ion-icon>
-                    <ion-icon *ngIf="isCollapsedToken(wallet.id)" name="chevron-down-outline"></ion-icon>
+  
+      <div class="wallets-container">
+        <div class="header-title">
+          {{'Accounts' | translate}}
+        </div>
+        <div class="section-header ion-padding-top ion-padding-bottom" *ngIf="keySelected[0]?.keyId == 'read-only'">
+          <ion-icon src="assets/img/settings-icons/icon-read-only.svg" width="20" class="item-img" slot="start">
+          </ion-icon>
+          <ion-label class="key-name">
+            <span translate>Read Only Wallets</span>
+          </ion-label>
+        </div>
+        <ion-list lines="nones" class="bp-list">
+          <div class="wallet-item" *ngFor="let wallet of keySelected; let j = index">
+            <wallet-item-content [coins]="coins" [isKeyTab]="true" [wallet]="wallet" [isShowBalance]="isShowBalance" (click)="goToWalletDetails(wallet)">
+            </wallet-item-content>
+  
+            <ion-infinite-scroll *ngIf="isSupportToken(wallet)" class="scroll-token" (ionInfinite)="reloadToken($event, wallet , j)">
+              <ion-infinite-scroll-content></ion-infinite-scroll-content>
+            </ion-infinite-scroll>
+  
+            <ng-container *ngIf="isSupportToken(wallet)">
+              <div class="token-container"> 
+                <div class="section-header ion-padding-top ion-padding-bottom" [ngClass]="{'no-border': isCollapsedToken(wallet.id)}">
+                  <div class="wrap-key-token">
+                    <ion-label class="key-name">
+                      <span>eToken</span>
+                    </ion-label>
+                    <div class="collapse">
+                      <div class="collapse-btn" (click)="collapsToken(wallet.id)">
+                        <ion-icon *ngIf="!isCollapsedToken(wallet.id)" name="chevron-up-outline"></ion-icon>
+                        <ion-icon *ngIf="isCollapsedToken(wallet.id)" name="chevron-down-outline"></ion-icon>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="address-token" copy-to-clipboard="{{wallet.etokenAddress}}">
+                      <span class="background-content" >{{wallet.etokenAddress | slice:-8}}</span>
+                      <ion-icon class="coin-img" name="copy-outline"></ion-icon>
                   </div>
                 </div>
+                <ng-container *ngIf="!wallet.tokens"> 
+                  <div class="no-token" [ngClass]="{ collapsed: isCollapsedToken(wallet.id) }">No token available yet! </div>
+                </ng-container>
+                <ng-container *ngIf="wallet.tokens">
+                  <ion-list class="token-item bp-list" [ngClass]="{ collapsed: isCollapsedToken(wallet.id) }">
+                    <ion-item *ngFor="let token of wallet.tokens" (click)="goToTokenDetails(wallet, token)">
+                      <ion-icon class="item-img rectangle token-icon" [src]="setIconToken(token)" slot="start"></ion-icon>
+                      <ion-label>
+                        <div class="main-label">{{token?.tokenInfo?.name}}</div>
+                        <div class="secondary-label" *ngIf="wallet?.cachedStatus">
+                          {{token?.tokenInfo?.symbol}}
+                        </div>
+                      </ion-label>
+                      <ion-note slot="end">
+                        <div>
+                          <div class="main-note">{{token?.amountToken}}</div>
+                        </div>
+                      </ion-note>
+                    </ion-item>
+                  </ion-list>
+                </ng-container>
               </div>
-                <div class="address-token" copy-to-clipboard="{{wallet.etokenAddress}}">
-                  <span class="background-content" >{{wallet.etokenAddress}}</span>
-                  <img class="coin-img" src="assets/img/paste-clipboard.svg" alt="copy" />
-              </div>
-            
-
-            </div>
-            <ng-container *ngIf="!wallet.tokens"> 
-              <div class="no-token" [ngClass]="{ collapsed: isCollapsedToken(wallet.id) }">No token available yet! </div>
             </ng-container>
-            <ng-container *ngIf="wallet.tokens">
-              <ion-list  lines="nones token-item" class="bp-list" [ngClass]="{ collapsed: isCollapsedToken(wallet.id) }">
-                <ion-item *ngFor="let token of wallet.tokens" lines="none" (click)="goToTokenDetails(wallet, token)">
-                  <ion-icon class="item-img rectangle token-icon" src="assets/img/currencies/xec.svg" slot="start"></ion-icon>
-                  <ion-label>
-                    <div class="main-label">{{token?.tokenInfo?.symbol}}</div>
-                  </ion-label>
-                  <ion-note slot="end">
-                    <div>
-                      <div class="main-note">{{token?.amountToken}}</div>
-                    </div>
-                  </ion-note>
-                </ion-item>
-              </ion-list>
-            </ng-container>
-            </div>
-          </ng-container>
-
-        </ng-container>
-      </ion-list>
-      <label-tip type="warn" class="ion-margin-top" *ngIf="walletGroup && walletGroup[0] && walletGroup[0]?.needsBackup"
-        header="no-header">
-        <div label-tip-body>
-          <span translate>Before retrieving your wallets addresses, it's recommended that you first write down your
-            recovery phrase and store it securely so that your wallets can be recovered in the case your device was lost
-            or stolen.</span>
-          <br>
-          <a class="label-tip-link" (click)="openBackupPage(walletGroup[0]?.keyId)" translate>Backup now</a>
+  
+          </div>
+        </ion-list>
+        <label-tip type="warn" class="ion-margin-top" *ngIf="keySelected && keySelected[0] && keySelected[0]?.needsBackup"
+          header="no-header">
+          <div label-tip-body>
+            <span translate>Before retrieving your wallets addresses, it's recommended that you first write down your
+              recovery phrase and store it securely so that your wallets can be recovered in the case your device was lost
+              or stolen.</span>
+            <br>
+            <a class="label-tip-link" (click)="openBackupPage(keySelected[0]?.keyId)" translate>Backup now</a>
+          </div>
+        </label-tip>
+      </div>
+      <ng-container *ngIf="!isDonation;else donation">
+        <create-new-wallet *ngIf="!walletsGroups || !walletsGroups[0]"></create-new-wallet>
+      </ng-container>
+      <ng-template #donation>
+        <div *ngIf="isShowCreateNewWallet">
+          <create-new-wallet></create-new-wallet>
         </div>
-      </label-tip>
+      </ng-template>
     </div>
-  </div>
-</ion-content>
+  </ion-content>
+</div>

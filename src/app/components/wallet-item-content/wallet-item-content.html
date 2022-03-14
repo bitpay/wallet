@@ -1,25 +1,38 @@
-<ion-item lines="none" [ngClass]="{'wallet-disabled': !wallet?.isComplete() || wallet?.needsBackup, 'wallet-for-address-book': isCustomForAddressBook} ">
-  <coin-icon *ngIf="!isCustomForAddressBook" [coin]="wallet.coin" [network]="wallet.network" slot="start"></coin-icon>
+<ion-item lines="none" [ngClass]="{'wallet-disabled': !wallet?.isComplete() || wallet?.needsBackup, 'wallet-for-address-book': isCustomForAddressBook}">
+  <ion-icon *ngIf="isKeyTab && !isCustomForAddressBook" [coin]="wallet.coin" [network]="wallet.network" class="key-tab" [ngClass]="{'testnet': wallet.network === 'testnet' }" src="assets/img/currencies/{{wallet.coin}}.svg" slot="start">
+  </ion-icon>
+  <coin-icon *ngIf="!isKeyTab" [coin]="wallet.coin" [network]="wallet.network" slot="start"></coin-icon>
   <ion-label>
     <div class="main-label">{{ wallet?.name }}</div>
-    <div *ngIf="wallet?.credentials?.n > 1 || (!wallet?.credentials?.n && wallet?.n > 1) || !wallet?.isComplete() || (wallet?.isComplete() && wallet?.needsBackup)" class="secondary-label">
-      <span *ngIf="wallet?.credentials?.n > 1">({{ wallet?.credentials?.m }}/{{ wallet?.credentials?.n }})</span>
-      <span *ngIf="!wallet?.credentials?.n && wallet?.n > 1">({{ wallet?.m }}/{{ wallet?.n }})</span>
-      <span *ngIf="!wallet?.isComplete()"> - <span class="wallet-warning">{{ 'Incomplete' | translate }}</span></span>
-      <span *ngIf="wallet?.isComplete() && wallet?.needsBackup" class="wallet-warning backup-msg"> {{'Needs Backup' | translate}}</span>
+    <div class="secondary-label">
+      {{wallet?.coin | uppercase}}
+      <ng-container *ngIf="wallet?.credentials?.n > 1 || (!wallet?.credentials?.n && wallet?.n > 1) || !wallet?.isComplete() || (wallet?.isComplete() && wallet?.needsBackup)" class="secondary-label">
+        <span class="secondary-label-multisign" *ngIf="wallet?.credentials?.n > 1">Multisign {{ wallet?.credentials?.m }}-{{ wallet?.credentials?.n }}</span>
+        <span class="secondary-label-multisign" *ngIf="!wallet?.credentials?.n && wallet?.n > 1">Multisign {{ wallet?.m }}-{{ wallet?.n }}</span>
+      </ng-container>
     </div>
+    
   </ion-label>
   <ion-note slot="end">
-    <div>
-      <div *ngIf="!wallet?.balanceHidden">
-        <div class="main-note">{{ getBalance(wallet, wallet?.coin.toUpperCase()) }}</div>
-        <div class="secondary-note" *ngIf="wallet?.cachedStatus">
-          {{ getAlternativeBalance(wallet, wallet?.coin.toUpperCase()) }}
-          {{ wallet?.cachedStatus.alternativeIsoCode }}
+    <ng-container *ngIf="(wallet?.isComplete() && wallet?.needsBackup) || !wallet?.isComplete();else showBalance">
+      <div>
+        <div class="secondary-note">
+          <span *ngIf="!wallet?.isComplete()">{{ 'waiting for copayers' | translate }}</span>
+          <span *ngIf="wallet?.isComplete() && wallet?.needsBackup" class="wallet-warning backup-msg"> {{'Needs Backup' | translate}}</span>
         </div>
       </div>
-    </div>
-    <div *ngIf="wallet?.balanceHidden">
+    </ng-container>
+    <ng-template #showBalance>
+      <div *ngIf="!wallet?.balanceHidden">
+        <div class="main-note">{{ isShowBalance ? getBalance(wallet, wallet?.coin.toUpperCase()) : '******'}}</div>
+        <div class="secondary-note" *ngIf="wallet?.cachedStatus">
+          <span *ngIf="getBalance(wallet, wallet?.coin.toUpperCase()) > '0'" [ngClass]="getBalanceChange(wallet.coin) > 0 ? 'possitive-avg' : 'negative-avg'" class="average">
+          <span *ngIf="getBalanceChange(wallet.coin) > 0">+</span>{{ getBalanceChange(wallet.coin) | number:'1.2-2' }}%</span>
+          <span *ngIf="(getBalance(wallet, wallet?.coin.toUpperCase()) > '0') && isShowBalance">~</span> {{ isShowBalance ? '$'+getAlternativeBalance(wallet, wallet?.coin.toUpperCase()) : '******'}}
+        </div>
+      </div>
+    </ng-template>
+    <div class="wallet-hidden" *ngIf="wallet?.balanceHidden">
       [<span translate>Hidden</span>]
     </div>
   </ion-note>
