@@ -134,26 +134,32 @@
   <page-lotus-donation-card></page-lotus-donation-card>
 
   <div *ngIf="showTotalBalance" class="total-amount-container">
-    <div class="section-header" translate>Total cash value</div>
-    <div class="total-amount-value">
-      <span *ngIf="totalBalanceAlternative">
-        {{ totalBalanceAlternative | number:'1.2-2'}} {{totalBalanceAlternativeIsoCode}}
-      </span>
-      <span *ngIf="fetchingStatus">
-        <ion-spinner color="primary"></ion-spinner>
-      </span>
-    </div>
-    <div class="average-container">
-      <div *ngIf="totalBalanceChange || totalBalanceChange === 0" [ngClass]="totalBalanceChange >= 0 ? 'possitive-avg' : 'negative-avg'">
-        <span class="average"><span *ngIf="totalBalanceChange > 0">+</span>{{ totalBalanceChange | number: '1.2-2' }}%</span>
+    <div class="total-amount">
+      <div class="section-header" translate>Total cash value</div>
+      <div class="total-amount-value">
+        <span *ngIf="totalBalanceAlternative">
+          {{ totalBalanceAlternative | number:'1.2-2'}} <span class="iso-code">{{totalBalanceAlternativeIsoCode}}</span>
+        </span>
+        <span *ngIf="fetchingStatus">
+          <ion-spinner color="primary"></ion-spinner>
+        </span>
       </div>
-      <span *ngIf="totalBalanceChange || totalBalanceChange === 0" class="date" translate>Last day</span>
+      <div class="average-container">
+        <div *ngIf="totalBalanceChange || totalBalanceChange === 0" [ngClass]="totalBalanceChange >= 0 ? 'possitive-avg' : 'negative-avg'">
+          <span class="average"><span *ngIf="totalBalanceChange > 0">+</span>{{ totalBalanceChange | number: '1.2-2' }}%</span>
+        </div>
+        <span *ngIf="totalBalanceChange || totalBalanceChange === 0" class="date" translate>(1D)</span>
+      </div>
     </div>
+    <div class="img-total-amount">
+      <img src="../../../assets/img/home-abc-ic.svg" alt="">
+    </div>
+    
   </div>
 
-  <div class="section-header">
-    <div translate>Exchange Rates</div>
-    <div translate class="date-label">1D</div>
+  <div class="section-header exchange-rate">
+    <div class="exchange-rate-title" translate>Exchange Rates</div>
+    <div translate class="date-label">(1D)</div>
   </div>
   <exchange-rates #exchangeRates></exchange-rates>
 </ion-content>

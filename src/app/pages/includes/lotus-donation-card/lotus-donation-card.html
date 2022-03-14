@@ -1,13 +1,14 @@
 <div class="message-background message-background--donate">
   <div class="message-content">
-    <ion-row class="title-container">
-      <div class="message-icon"><img src="assets/img/lotus-donation.png" /></div>
-      <div class="message-title" translate>Lotus Donation Program</div>
-    </ion-row>
-    <div class="message-body">Lotus is a new and growing network. It focuses on building a working currency and bringing money to the unbanked. Support us with the Donation Program. Visit <a (click)="openLink('https://givelotus.org')">givelotus.org</a> for more information.</div>
-    <div>
-      <div class="line-divider"></div>
-      <span class="message-button" (click)="donationLotus()">Donate</span>
+    <div class="title-container">
+      <div class="message-title" translate>Lotus Donation Programme</div>
+      <div class="message-icon"><img src="assets/img/logo-donate-card.svg" /></div>
+    </div>
+    <div class="message-body" translate>We is a new and growing network. It focuses on building a working currency and bringing money to unbanked.</div>
+    <div class="donate-btn">
+      <ion-button (click)="donationLotus()">
+        {{ 'Donate' | translate }}
+      </ion-button>
     </div>
   </div>
 </div>

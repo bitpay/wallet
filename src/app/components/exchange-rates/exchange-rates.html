@@ -1,6 +1,6 @@
 <ion-list lines="none" class="bp-list">
   <div *ngFor="let coin of coins">
-    <ion-item button (click)="goToPricePage(coin)">
+    <ion-item detail="false" button (click)="goToPricePage(coin)">
       <ion-icon src="assets/img/currencies/{{coin.unitCode}}.svg" class="item-img" slot="start">
       </ion-icon>
       <ion-label>
