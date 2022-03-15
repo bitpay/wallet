@@ -3,21 +3,15 @@
   height: 21px;
   float: right;
   &.negative-avg {
-    color: #cf2f32;
-    background-color: rgba(207, 47, 60, 0.1);
+    color: #FFB4A9;
     border-radius: 50vh;
-    padding-right: 10px;
-    padding-left: 10px;
   }
   &.possitive-avg {
-    color: #2fcfa4;
-    background-color: rgba(47, 207, 164, 0.1);
+    color: #73DAA5;
     border-radius: 50vh;
-    padding-right: 10px;
-    padding-left: 10px;
   }
   .average {
-    font-size: 14px;
+    font-size: 12px;
     line-height: 19px;
     height: 21px;
     font-weight: 500;
@@ -41,10 +35,16 @@
   padding-top: 0;
   padding-bottom: 0;
   ion-item:not(.align-with-button){
+    --padding-start: 0.5rem;
+    --padding-end: 0;
+    --inner-padding-end: 1rem;
     padding-left: 0;
     ion-icon {
       width: 35px;
       height: 35px;
+    }
+    ion-note {
+      margin: 0;
     }
   }
 }

@@ -235,11 +235,10 @@
         </ion-item>
       </ng-container>
 
-      <ion-item lines="none"
-        (click)="editMemo(tx.description)">
+      <ion-item lines="none">
         <ion-label position="stacked">{{'Memo' | translate}}</ion-label>
         <ion-textarea placeholder="{{'Enter a transaction memo' | translate}}" [(ngModel)]="tx.description"
-          name="tx.description" autocomplete="off" autocorrect="off" readonly></ion-textarea>
+          name="tx.description" autocomplete="off" autocorrect="off"></ion-textarea>
       </ion-item>
     </ion-list>
   </div>

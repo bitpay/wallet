@@ -5,7 +5,7 @@
       <div class="sub-header">Let check your wrote down the phrase correctly. Please select each word in the numbered order.</div>
       <div class="word-guess-conatiner">
         <div class="word-guess-title">
-          Word #{{countWord+1}}
+          Word #{{countWord+1 > 12 ? 12 : countWord+1}}
         </div>
         <div class="word-guess-content" *ngIf="randomListFinal && randomListFinal.length === 3">
             <ion-button *ngFor="let word of randomListFinal" (click)="checkWord(word)">

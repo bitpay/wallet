@@ -100,7 +100,6 @@ export class BackupKeyPage {
           this.showNoRecoveryPhraseError();
           return;
         }
-        this.showSafeguardMessage();
         this.setFlow();
       })
       .catch(err => {
@@ -163,12 +162,5 @@ export class BackupKeyPage {
       isBlur: false,
       isCorrect: true
     }))
-  }
-
-  public showSafeguardMessage(): void {
-    const infoSheet = this.actionSheetProvider.createInfoSheet(
-      'backup-safeguard-warning'
-    );
-    infoSheet.present();
   }
 }

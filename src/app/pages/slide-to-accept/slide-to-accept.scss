@@ -52,12 +52,14 @@ page-slide-to-accept {
 
   .button-slider {
     z-index: 10;
-    width: 54px;
+    width: 110%;
     border-bottom-right-radius: 45px;
     border-top-right-radius: 45px;
-    margin-left: -80px;
+    margin-left: -119%;
     height: 100%;
-    background: var(--slider-bg-button) !important;
+    // background: var(--slider-bg-button) !important;
+    background: rgba(0, 30, 46, 0.7);
+    transform: translateX(0px);
     &.doge {
       background: linear-gradient(180deg, #d8c172 0%, #bb9f32 100%) !important;
     }
@@ -68,7 +70,7 @@ page-slide-to-accept {
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 70px;
+    height: 60px;
     margin: 25px auto;
     width: 300px;
   }
@@ -148,12 +150,11 @@ page-slide-to-accept {
     }
     &__bitcoin {
       z-index: 10;
-      width: 65px;
       position: absolute;
-      top: 3px;
-      left: 0px;
+      right: 6px;
+      top: 9px;
       > img {
-        height: 65px;
+        height: 40px;
       }
       &.doge {
         top: 0px;
@@ -164,9 +165,9 @@ page-slide-to-accept {
       }
     }
     &__button-text {
-      color:rgba(0, 52, 75, 1);
-      font-size: 16px;
-      font-weight: 500;
+      color: #001E2E;
+      font-size: 14px;
+      font-weight: 600;
       letter-spacing: 0.03rem;
       z-index: 1;
       width: 50%;
@@ -174,7 +175,7 @@ page-slide-to-accept {
       display: inline-block;
       clear: both;
       overflow: hidden;
-      text-align: center;
+      text-align: right;
     }
 
     &__status-text {
@@ -230,3 +231,4 @@ page-slide-to-accept {
     }
   }
 }
+

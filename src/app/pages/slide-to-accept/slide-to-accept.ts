@@ -87,8 +87,9 @@ export class SlideToAcceptPage implements AfterViewInit, OnChanges {
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
-    public renderer: Renderer2
-  ) { }
+    public renderer: Renderer2,
+  ) {
+  }
 
   ngAfterViewInit() {
     setTimeout(() => {
@@ -102,7 +103,7 @@ export class SlideToAcceptPage implements AfterViewInit, OnChanges {
         top: buttonConstraints.top,
         width: buttonConstraints.width
       };
-      this.containerWidth = this.htmlContainerElem.clientWidth;
+      this.containerWidth = this.htmlContainerElem.clientWidth + 10;
       const subtract = this.containerWidth < 800 ? 75 : 200;
       this.xMax = this.containerWidth - subtract;
     }, 0);
@@ -135,7 +136,7 @@ export class SlideToAcceptPage implements AfterViewInit, OnChanges {
       if (
         xDisplacement >= 0 &&
         xDisplacement <
-        this.containerWidth - (this.origin.width * 30) / 100 + 30 &&
+          this.containerWidth - (this.origin.width * 30) / 100 + 30 &&
         this.isPressed
       ) {
         // Set element styles
@@ -160,35 +161,39 @@ export class SlideToAcceptPage implements AfterViewInit, OnChanges {
   }
 
   resetButton() {
+    // Only reset if button sliding is not done yet
     if (!this.slideButtonDone || this.isDisabled) {
-      this.resetAllElementProcess();
+      this.isConfirm = false;
+      // Reset state variables
+      // Resets button position
+      let posCss = {
+        transform: 'translateX(0px)',
+        '-webkit-transform': 'translateX(0px)'
+      };
+      this.renderer.setStyle(
+        this.htmlButtonElem,
+        'transform',
+        posCss['transform']
+      );
+      this.renderer.setStyle(
+        this.htmlButtonElem,
+        '-webkit-transform',
+        posCss['-webkit-transform']
+      );
+      this.renderer.setStyle(this.htmlTextElem, 'opacity', '1');
+      this.renderer.setStyle(this.htmlArrowElem, 'opacity', '1');
+      this.ngAfterViewInit();
     } else if (this.slideButtonDone && !this.isDisabled) {
-      this.resetAllElementProcess();
+      this.isConfirm = true;
       this.slideButtonDone = false;
       this.slideDone.emit(true);
     }
   }
 
-  resetAllElementProcess() {
-    // Reset state variables
-    // Resets button position
-    let posCss = {
-      transform: 'translateX(-8px)',
-      '-webkit-transform': 'translateX(-8px)'
-    };
-    this.renderer.setStyle(
-      this.htmlButtonElem,
-      'transform',
-      posCss['transform']
-    );
-    this.renderer.setStyle(
-      this.htmlButtonElem,
-      '-webkit-transform',
-      posCss['-webkit-transform']
-    );
-    this.renderer.setStyle(this.htmlTextElem, 'opacity', '1');
-    this.renderer.setStyle(this.htmlArrowElem, 'opacity', '1');
-    this.ngAfterViewInit();
+  isConfirmed(boolean) {
+    if (!boolean) {
+      this.resetButton();
+    }
   }
 
   public toggleAnimation(): void {
