@@ -102,13 +102,13 @@ export class CreateWalletPage implements OnInit {
     private persistenceProvider: PersistenceProvider,
     private errorsProvider: ErrorsProvider,
     private router: Router,
-    ) {
-      if (this.router.getCurrentNavigation()) {
-         this.navParamsData = this.router.getCurrentNavigation().extras.state ? this.router.getCurrentNavigation().extras.state : {};
-      } else {
-        this.navParamsData = history ? history.state : {};
-      }
-      if (_.isEmpty(this.navParamsData) && this.navParams && !_.isEmpty(this.navParams.data)) this.navParamsData = this.navParams.data;
+  ) {
+    if (this.router.getCurrentNavigation()) {
+      this.navParamsData = this.router.getCurrentNavigation().extras.state ? this.router.getCurrentNavigation().extras.state : {};
+    } else {
+      this.navParamsData = history ? history.state : {};
+    }
+    if (_.isEmpty(this.navParamsData) && this.navParams && !_.isEmpty(this.navParams.data)) this.navParamsData = this.navParams.data;
 
     this.okText = this.translate.instant('Ok');
     this.cancelText = this.translate.instant('Cancel');
@@ -143,11 +143,11 @@ export class CreateWalletPage implements OnInit {
       coin: [null, Validators.required]
     });
     this.createForm.controls['coin'].setValue(this.coin);
-    
+
     if (this.coin === 'ltc')
       this.createForm.controls['useNativeSegwit'].setValue(true);
-    
-      this.showKeyOnboarding = this.navParamsData.showKeyOnboarding;
+
+    this.showKeyOnboarding = this.navParamsData.showKeyOnboarding;
 
     this.setTotalCopayers(this.tc);
     this.updateRCSelect(this.tc);
@@ -244,6 +244,7 @@ export class CreateWalletPage implements OnInit {
     };
 
     const setSeed = this.createForm.value.selectedSeed == 'set';
+    opts['setSeed'] = setSeed;
     if (setSeed) {
       const words = this.createForm.value.recoveryPhrase || '';
       if (
@@ -346,7 +347,7 @@ export class CreateWalletPage implements OnInit {
   async showKeyOnboardingSlides(opts) {
     this.logger.debug('Showing key onboarding');
     const modal = await this.modalCtrl.create({
-      component: KeyOnboardingPage, 
+      component: KeyOnboardingPage,
       componentProps: null,
       showBackdrop: false,
       backdropDismiss: false
@@ -371,28 +372,38 @@ export class CreateWalletPage implements OnInit {
           this.profileProvider.setBackupGroupFlag(wallet.credentials.keyId);
           this.profileProvider.setWalletBackup(wallet.credentials.walletId);
         }
-        this.router.navigate(['']).then(() => {
-          this.events.publish('Local/FetchWallets');
-          setTimeout(() => {
-            if (wallet.isComplete()) {
-              this.router.navigate(['/wallet-details'], {
-                state: { walletId: wallet.credentials.walletId}
-              });
-            } else {
-              const copayerModal = this.modalCtrl.create( {
-                component:  CopayersPage,
-                componentProps: {
-                  walletId: wallet.credentials.walletId
-                },
-                  cssClass: 'wallet-details-modal'
-                
-              }).then(rs=>{
-                rs.present();
-              });
-              
+        if (!opts['setSeed'] && !this.keyId) {
+          this.router.navigate(['/recovery-key'], {
+            state: {
+              keyId: wallet.keyId,
+              isOnboardingFlow: false,
+              hideBackButton: true
             }
-          }, 1000);
-        });
+          });
+        } else {
+          this.router.navigate(['']).then(() => {
+            this.events.publish('Local/FetchWallets');
+            setTimeout(() => {
+              if (wallet.isComplete()) {
+                this.router.navigate(['/wallet-details'], {
+                  state: { walletId: wallet.credentials.walletId }
+                });
+              } else {
+                const copayerModal = this.modalCtrl.create({
+                  component: CopayersPage,
+                  componentProps: {
+                    walletId: wallet.credentials.walletId
+                  },
+                  cssClass: 'wallet-details-modal'
+
+                }).then(rs => {
+                  rs.present();
+                });
+
+              }
+            }, 1000);
+          });
+        }
       })
       .catch(err => {
         this.onGoingProcessProvider.clear();
@@ -442,8 +453,8 @@ export class CreateWalletPage implements OnInit {
 
       case 'totalCopayers':
         if (this.copayers.includes(number)) {
-          if(this.createForm.controls['requiredCopayers'].value){
-            if(number < (this.createForm.controls['requiredCopayers'].value as number)){
+          if (this.createForm.controls['requiredCopayers'].value) {
+            if (number < (this.createForm.controls['requiredCopayers'].value as number)) {
               break;
             }
           }
@@ -457,12 +468,12 @@ export class CreateWalletPage implements OnInit {
     this.isOpenSelector = true;
     const eligibleWallets = this.keyId
       ? this.profileProvider.getWalletsFromGroup({
-          keyId: this.keyId,
-          hasFunds: true,
-          coin: 'eth',
-          m: 1,
-          n: 1
-        })
+        keyId: this.keyId,
+        hasFunds: true,
+        coin: 'eth',
+        m: 1,
+        n: 1
+      })
       : [];
 
     const walletSelector = this.actionSheetProvider.createInfoSheet(
