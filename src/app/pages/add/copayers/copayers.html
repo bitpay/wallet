@@ -1,4 +1,5 @@
-<wide-header-page subTitle="(Shared account)" title="{{ wallet.name }} [{{wallet.m}}-{{wallet.n}}]" hideBackButton="true">
+<wide-header-page subTitle="(Shared account)" title="{{ wallet.name }} [{{wallet.m}}-{{wallet.n}}]"
+  hideBackButton="true">
   <ion-buttons slot="start">
     <ion-button class="close-container disable-hover" (click)="close()">
       <ion-icon color="dark" name="close-outline"></ion-icon>
@@ -61,12 +62,12 @@
       </div>
 
       <div class="button">
-        <ion-button *ngIf="isCordova && !wallet.notAuthorized"  (click)="shareAddress()" class="button-standard">
-          {{ 'Share this invitation' | translate }}        
+        <ion-button *ngIf="isCordova && !wallet.notAuthorized" (click)="shareAddress()" class="button-standard">
+          {{ 'Share this invitation' | translate }}
         </ion-button>
       </div>
     </div>
-    
+
     <div class="ion-padding error-msg" *ngIf="wallet.notAuthorized">
       <h3 class="assertive" translate>Wallet incomplete and broken</h3>
       <div translate>Delete it and create a new one</div>
