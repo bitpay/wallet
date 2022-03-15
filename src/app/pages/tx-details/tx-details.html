@@ -7,16 +7,27 @@
   <div page-content>
     <ion-list lines="none" *ngIf="btx" class="bp-list">
       <ion-item>
+       
         <div class="header-container">
-          <div class="amount-label" *ngIf="!(btx.amount === 0 && wallet.coin === 'eth')">
-            <div class="amount">
-              {{btx.amountValueStr}} {{btx.amountUnitStr | uppercase}}
+          <ng-container *ngIf="!btx.tokenId">
+            <div class="amount-label" *ngIf="!(btx.amount === 0 && wallet.coin === 'eth')">
+              <div class="amount">
+                {{btx.amountValueStr}} {{btx.amountUnitStr | uppercase}}
+              </div>
+              <div class="alternative">
+                <span *ngIf="!btx.fiatRateStr">...</span>
+                <span *ngIf="btx.fiatRateStr">{{btx.fiatRateStr}}</span>
+              </div>
             </div>
-            <div class="alternative">
-              <span *ngIf="!btx.fiatRateStr">...</span>
-              <span *ngIf="btx.fiatRateStr">{{btx.fiatRateStr}}</span>
+          </ng-container>
+          <ng-container *ngIf="btx.tokenId">
+            <div class="amount-label" *ngIf="!(btx.amountToken === 0 )">
+              <div class="amount">
+                {{btx.amountToken}} {{btx.symbolToken | uppercase}}
+              </div>
             </div>
-          </div>
+          </ng-container>
+
           <div class="sending-label" *ngIf="btx.amount === 0 && wallet.coin === 'eth'">
             <span>{{'Interaction with contract' | translate}}</span>
           </div>
@@ -48,7 +59,7 @@
           <div class="summary-item-detail">
             {{btx.feeStr}}
           </div>
-          <div class="secondary-note fee-details">
+          <div class="secondary-note fee-details" *ngIf="!btx.tokenId">
             {{btx.feeFiatStr}}
             <span *ngIf="btx.feeRateStr">
               &middot;
@@ -58,6 +69,19 @@
                 </span>
               </span>
             </span>
+          </div>
+        </ion-note>
+      </ion-item>
+
+      <ion-item *ngIf="btx.action == 'received' && btx.inputAddresses">
+        <ion-label>
+          <div class="summary-item">
+            <span translate>From to</span>
+          </div>
+        </ion-label>
+        <ion-note class="payment-proposal-to" slot="end">
+          <div class="background-content" copy-to-clipboard="{{btx.inputAddresses[0]}}">
+            <span>{{btx.inputAddresses[0] | shortenedAddress }}</span>
           </div>
         </ion-note>
       </ion-item>

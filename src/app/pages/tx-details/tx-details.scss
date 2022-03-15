@@ -181,6 +181,9 @@ page-tx-details {
     display: flex;
     justify-content: center;
     align-items: center;
+    &:hover {
+      cursor: pointer;
+    }
     &.align-right {
       margin-left: auto;
     }

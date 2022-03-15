@@ -118,6 +118,7 @@ export class TxFormatProvider {
     // New transaction output format. Fill tx.amount and tx.toAmount for
     // backward compatibility.
     if (tx.outputs && tx.outputs.length) {
+      if (tx.tokenId) tx.outputs = [tx.outputs[0]];
       var outputsNr = tx.outputs.length;
 
       if (tx.action != 'received') {
