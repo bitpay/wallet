@@ -241,6 +241,7 @@ export class JoinWalletPage {
     };
 
     const setSeed = this.joinForm.value.selectedSeed == 'set';
+    opts['setSeed'] = setSeed;
     if (setSeed) {
       const words = this.joinForm.value.recoveryPhrase;
       if (
@@ -344,25 +345,36 @@ export class JoinWalletPage {
         this.onGoingProcessProvider.clear();
         this.walletProvider.updateRemotePreferences(wallet);
         this.pushNotificationsProvider.updateSubscription(wallet);
-        this.router.navigate(['']).then(() => {
-          setTimeout(() => {
-            if (wallet.isComplete()) {
-              this.router.navigate(['/wallet-details'], {
-                state: { walletId: wallet.credentials.walletId }
-              });
-            } else {
-              const copayerModal = this.modalCtrl.create({
-                component: CopayersPage,
-                componentProps: {
-                  walletId: wallet.credentials.walletId
-                },
-                cssClass: 'wallet-details-modal'
-              }).then(rs => {
-                rs.present();
-              });
+        if (!opts['setSeed'] && !this.keyId) {
+          this.router.navigate(['/recovery-key'], {
+            state: {
+              keyId: wallet.keyId,
+              isOnboardingFlow: false,
+              hideBackButton: true
             }
-          }, 1000);
-        });
+          });
+        }
+        else {
+          this.router.navigate(['']).then(() => {
+            setTimeout(() => {
+              if (wallet.isComplete()) {
+                this.router.navigate(['/wallet-details'], {
+                  state: { walletId: wallet.credentials.walletId }
+                });
+              } else {
+                const copayerModal = this.modalCtrl.create({
+                  component: CopayersPage,
+                  componentProps: {
+                    walletId: wallet.credentials.walletId
+                  },
+                  cssClass: 'wallet-details-modal'
+                }).then(rs => {
+                  rs.present();
+                });
+              }
+            }, 1000);
+          });
+        }
       })
       .catch(err => {
         this.onGoingProcessProvider.clear();
