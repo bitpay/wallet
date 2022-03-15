@@ -58,7 +58,12 @@ expandable-header {
     padding-top: 0;
     padding-bottom: 0;
     padding-left: 1rem;
-    --padding-start: 0
+    --padding-start: 0;
+    .sub-title-header{
+      color: rgba(237, 239, 240, 0.6);
+      font-size: 14px;
+      margin-top: 4px;
+    }
   }
 
   ion-toolbar {

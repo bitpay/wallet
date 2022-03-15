@@ -22,13 +22,13 @@ page-copayers {
       }
     }
   }
-
+ 
   .account-invitaion-container{
     display: flex;
     flex-flow: column;
     background: linear-gradient(0deg, rgba(126, 208, 255, 0.11), rgba(126, 208, 255, 0.11)), #001E2E;
     border-radius: 12px;
-    margin: 32px;
+    margin: 2rem 1rem;
     padding: 24px 16px;
     margin-top: 0px;
     
@@ -51,7 +51,10 @@ page-copayers {
           color: rgba(237, 239, 240, 0.6);
         }
       }
-     
+      .aclass{
+        height: 125px;
+        width: 125px;
+      }
     }
     .button{
       margin-top: 32px;
@@ -63,7 +66,8 @@ page-copayers {
   }
   .white-card {
     background: white;
-    padding: 2rem;
+    padding: 2rem 1rem;
+    padding-top: 9px;
     .title {
       font-size: 16px;
       font-weight: 500;

@@ -3260,6 +3260,9 @@ msgstr "Share this invitation with the Copayers who join this wallet."
 msgid "Share this invitation with your copayers"
 msgstr "Share this invitation with your copayers"
 
+msgid "Share this invitation"
+msgstr "Share this invitation"
+
 msgid "Share with friends"
 msgstr "Share with friends"
 

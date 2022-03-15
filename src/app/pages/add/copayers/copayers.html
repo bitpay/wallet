@@ -1,4 +1,4 @@
-<wide-header-page title="{{ wallet.name }} [{{wallet.m}}-{{wallet.n}}]" hideBackButton="true">
+<wide-header-page subTitle="(Shared account)" title="{{ wallet.name }} [{{wallet.m}}-{{wallet.n}}]" hideBackButton="true">
   <ion-buttons slot="start">
     <ion-button class="close-container disable-hover" (click)="close()">
       <ion-icon color="dark" name="close-outline"></ion-icon>
@@ -13,11 +13,8 @@
     </ion-button>
   </ion-buttons>
   <div page-content>
-    <!-- <div class="sub-title-for-header">
-      (Shared account) [{{wallet.m}}-{{wallet.n}}]
-    </div> -->
+
     <div class="white-card" *ngIf="!wallet.notAuthorized && copayers && secret">
-      <!-- <span class="title">{{'Waiting for authorized copayers to join' | translate}}</span> -->
       <div class="timeline-container">
         <div class="timeline-item" *ngFor="let copayer of copayers; let i = index">
           <div class="timeline-content">
@@ -64,16 +61,16 @@
       </div>
 
       <div class="button">
-        <ion-button class="button-standard">
-          Share this invitation
+        <ion-button *ngIf="isCordova && !wallet.notAuthorized"  (click)="shareAddress()" class="button-standard">
+          {{ 'Share this invitation' | translate }}        
         </ion-button>
       </div>
     </div>
 
-    <button class="share-button" *ngIf="isCordova && !wallet.notAuthorized" ion-button clear (click)="shareAddress()">
+    <!-- <button class="share-button" *ngIf="isCordova && !wallet.notAuthorized" ion-button clear (click)="shareAddress()">
       {{ 'Share this invitation with your copayers' | translate }}
       &rarr;
-    </button>
+    </button> -->
 
     <div class="ion-padding error-msg" *ngIf="wallet.notAuthorized">
       <h3 class="assertive" translate>Wallet incomplete and broken</h3>

@@ -25,6 +25,9 @@
             <img [src]="img" />
           </div>
           {{title}}
+          <div *ngIf="subTitle && subTitle.length > 0" class="sub-title-header">
+            {{subTitle}}
+          </div>
         </expandable-header-primary>
       </ion-toolbar>
     </expandable-header>

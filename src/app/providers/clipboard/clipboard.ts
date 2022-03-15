@@ -52,7 +52,7 @@ export class ClipboardProvider {
       } catch (error) {
         return Promise.reject('Not supported for this device');
       }
-      return text;
+      return Promise.resolve(text);
     }
   }
 
