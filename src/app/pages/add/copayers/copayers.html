@@ -66,12 +66,7 @@
         </ion-button>
       </div>
     </div>
-
-    <!-- <button class="share-button" *ngIf="isCordova && !wallet.notAuthorized" ion-button clear (click)="shareAddress()">
-      {{ 'Share this invitation with your copayers' | translate }}
-      &rarr;
-    </button> -->
-
+    
     <div class="ion-padding error-msg" *ngIf="wallet.notAuthorized">
       <h3 class="assertive" translate>Wallet incomplete and broken</h3>
       <div translate>Delete it and create a new one</div>
