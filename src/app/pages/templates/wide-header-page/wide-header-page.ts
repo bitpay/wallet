@@ -18,6 +18,9 @@ export class WideHeaderPage {
   title: string;
 
   @Input()
+  subTitle: string;
+
+  @Input()
   img: string;
 
   @Input()

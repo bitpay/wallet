@@ -35,12 +35,17 @@ export class CopyToClipboard {
   }
 
   private copyBrowser() {
-    let textarea = this.dom.createElement('textarea');
-    this.dom.body.appendChild(textarea);
-    textarea.value = this.value;
-    textarea.select();
-    this.dom.execCommand('copy');
-    this.dom.body.removeChild(textarea);
+    if(!navigator.clipboard){
+      let textarea = this.dom.createElement('textarea');
+      this.dom.body.appendChild(textarea);
+      textarea.value = this.value;
+      textarea.select();
+      this.dom.execCommand('copy');
+      this.dom.body.removeChild(textarea);
+    }
+    else{
+      navigator.clipboard.writeText(this.value);
+    }
   }
 
   public copy() {
