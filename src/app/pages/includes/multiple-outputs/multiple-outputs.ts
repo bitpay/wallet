@@ -35,21 +35,33 @@ export class MultipleOutputsPage {
     this._tx = tx;
     this._misunderstoodOutputsMsg = tx.misunderstoodOutputs
       ? this.translate.instant(
-          'There are some misunderstood outputs, please view on blockchain.'
-        )
+        'There are some misunderstood outputs, please view on blockchain.'
+      )
       : undefined;
+    if (this._tx.tokenId) this._tx.hasMultiplesOutputs = false;
     this.tx.outputs.forEach(output => {
       const outputAddr = output.toAddress ? output.toAddress : output.address;
       this.coin = this._tx.coin
         ? this._tx.coin
         : this.addressProvider.getCoinAndNetwork(outputAddr, this._tx.network)
-            .coin;
+          .coin;
 
-      const addressToShow = this.walletProvider.getAddressView(
+      let addressToShow = this.walletProvider.getAddressView(
         this.coin,
         this._tx.network,
         outputAddr
       );
+      let etokenAddress;
+      if (this._tx.tokenId && this._tx.coin == 'xec') {
+        try {
+          const { prefix, type, hash } = this.addressProvider.decodeAddress(addressToShow);
+          etokenAddress = this.addressProvider.encodeAddress('etoken', type, hash, addressToShow);
+        } catch (error) {
+          etokenAddress = undefined;
+        }
+      }
+      if (etokenAddress) addressToShow = etokenAddress;
+
       output.addressToShow =
         addressToShow == 'false' ? 'Unparsed address' : addressToShow;
       this.addressBookProvider
@@ -57,6 +69,7 @@ export class MultipleOutputsPage {
         .then(contact => {
           output.contactName = contact;
         });
+
     });
   }
 
