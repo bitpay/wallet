@@ -8,6 +8,7 @@ import moment from "moment";
 import { Subscription } from "rxjs";
 import { Token } from "src/app/models/tokens/tokens.model";
 import { ActionSheetProvider } from "src/app/providers/action-sheet/action-sheet";
+import { AddressProvider } from "src/app/providers/address/address";
 import { AppProvider } from "src/app/providers/app/app";
 import { BwcErrorProvider } from "src/app/providers/bwc-error/bwc-error";
 import { ErrorsProvider } from "src/app/providers/errors/errors";
@@ -201,8 +202,22 @@ export class TokenDetailsPage {
     }, 300);
   }
 
+  updateAddressToShowToken(tx) {
+    const outputAddr = tx.outputs[0].address;
+    let addressToShow = this.walletProvider.getAddressView(
+      this.wallet.coin,
+      this.wallet.network,
+      outputAddr,
+      true
+    );
+    return addressToShow;
+  }
+
   private updateHistoryToken(tx) {
     const tokenInfo = this.token.tokenInfo
+    if (tx.action == 'sent') {
+      tx.addressTo = this.updateAddressToShowToken(tx)
+    }
     tx.amountToken = tx.amountTokenUnit / Math.pow(10, tokenInfo.decimals);
     tx.symbolToken = tokenInfo.symbol;
     tx.name = tokenInfo.name;
@@ -212,7 +227,7 @@ export class TokenDetailsPage {
 
   private groupHistory(history) {
     return history.reduce((groups, tx, txInd) => {
-      this.updateHistoryToken(tx)
+      this.updateHistoryToken(tx);
       this.isFirstInGroup(txInd)
         ? groups.push([tx])
         : groups[groups.length - 1].push(tx);
@@ -291,7 +306,6 @@ export class TokenDetailsPage {
       (this.currentPage + 1) * HISTORY_SHOW_LIMIT
     );
     this.zone.run(() => {
-    
       this.groupedHistory = this.groupHistory(this.history);
     });
     if (loading) this.currentPage++;
