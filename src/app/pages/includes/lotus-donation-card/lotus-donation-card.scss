@@ -35,19 +35,22 @@
 
   &-title {
     text-align: left;
-    font-size: 22px;
+    font-size: 16px;
     width: 65%;
     margin: 1rem 0 0 1rem;
     font-weight: 600;
   }
 
   &-body {
-    color: grey;
+    color: rgba(237, 239, 240, 0.6);;
     font-weight: 400;
+    width: 78%;
     text-align: left;
     white-space: normal;
-    font-size: 16px;
-    padding: 10px 15px 20px 15px;
+    font-size: 12px;
+    padding: 1rem 1rem 20px 1rem;
+    letter-spacing: 0.4px;
+    line-height: 16px;
     &-adv {
       padding: 0px 15px 7px 0px;
     }
@@ -85,15 +88,6 @@
     img {
       width: 100px;
       height: 100px;
-    }
-  }
-  .message-body {
-    font-size: 14px;
-    color: rgba(237, 239, 240, 0.6);
-    width: 80%;
-    padding-top: 1rem;
-    a{
-      cursor: pointer;
     }
   }
 }
@@ -136,8 +130,11 @@
     --background: #7ED0FF;
     --color: #00344B;
     min-width: 110px;
-    height: 40px;
+    height: 35px;
+    font-size: 14px;
+    font-weight: 600;
     margin-bottom: 1rem;
     margin-right: 1rem;
+    margin-top: 0;
   }
 }

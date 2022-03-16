@@ -15,6 +15,7 @@ import { SearchBarComponent } from './search-bar/search-bar';
 import { SliderCaptchaComponent } from './slider-captcha/slider-captcha';
 import { WalletItemContent } from './wallet-item-content/wallet-item-content';
 import { RecipientComponent } from './recipient/recipient.component'
+import { WalletDetailCardComponent } from './wallet-detail-card/wallet-detail-card.component';
 export const COMPONENTS = [
   ActionCardComponent,
   ActionCardV4Component,
@@ -32,5 +33,6 @@ export const COMPONENTS = [
   PriceChart,
   SliderCaptchaComponent,
   NotificationComponent,
-  RecipientComponent
+  RecipientComponent,
+  WalletDetailCardComponent
 ];

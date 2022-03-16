@@ -28,7 +28,7 @@
         <div class="secondary-note" *ngIf="wallet?.cachedStatus">
           <ng-container *ngIf="!isCustomForAddressBook">
             <span *ngIf="getBalance(wallet, wallet?.coin.toUpperCase()) > '0'" [ngClass]="getBalanceChange(wallet.coin) > 0 ? 'possitive-avg' : 'negative-avg'" class="average">
-            <span *ngIf="getBalanceChange(wallet.coin) > 0">+</span>{{ getBalanceChange(wallet.coin) | number:'1.2-2' }}%</span>
+            <span *ngIf="getBalanceChange(wallet.coin) > 0">+</span>{{ getBalanceChange(wallet.coin) | number:'1.2-2' }}</span>
           </ng-container>
           <span *ngIf="(getBalance(wallet, wallet?.coin.toUpperCase()) > '0') && isShowBalance">~</span> {{ isShowBalance ? '$'+getAlternativeBalance(wallet, wallet?.coin.toUpperCase()) : '******'}}
         </div>

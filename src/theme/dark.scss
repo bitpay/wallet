@@ -1410,7 +1410,31 @@
 
                 ion-label {
                     color: rgba(224, 228, 230, 0.6) !important;
+                    &.tx-history-header-label {
+                        color: #EDEFF0 !important;
+                        .label-multisign {
+                            color: rgba(237, 239, 240, 0.6);
+                        }
+                    }
                 }
+            }
+
+            .item-tx-history {
+                border-color: #33505f;
+            }
+
+            .locked-balance {
+                --background: linear-gradient(0deg, rgba(126, 208, 255, 0.08), rgba(126, 208, 255, 0.08)), #001E2E;
+            }
+        }
+
+        .accept-btn {
+            --color: var(--color-primary-abcpay-dark) !important;
+        }
+
+        .pending-amount {
+            .total-alt-locked-amount, span {
+                color: rgba(237, 239, 240, 0.38) !important;
             }
         }
 
