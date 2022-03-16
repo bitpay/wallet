@@ -146,7 +146,9 @@ export class BackupKeyPage {
         words: this.mnemonicWordsConverted,
         keys: this.keys,
         keyId: this.keyId,
-        isOnboardingFlow: this.navParamsData.isOnboardingFlow
+        walletId: this.navParamsData.walletId,
+        isOnboardingFlow: this.navParamsData.isOnboardingFlow,
+        isNewSharedWallet: this.navParamsData.isNewSharedWallet
       }
     });
   }

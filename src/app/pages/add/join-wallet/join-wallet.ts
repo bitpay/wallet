@@ -350,7 +350,9 @@ export class JoinWalletPage {
             state: {
               keyId: wallet.keyId,
               isOnboardingFlow: false,
-              hideBackButton: true
+              hideBackButton: true,
+              walletId: wallet.credentials.walletId,
+              isNewSharedWallet: true
             }
           });
         }

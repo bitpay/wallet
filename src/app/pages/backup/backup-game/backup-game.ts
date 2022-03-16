@@ -14,6 +14,8 @@ import { Router } from '@angular/router';
 import { SwiperOptions } from 'swiper';
 
 import { BackupWordModel } from '../backup-component/backup-word/backup-word.model';
+import { ModalController } from '@ionic/angular';
+import { CopayersPage } from '../../add/copayers/copayers';
 @Component({
   selector: 'page-backup-game',
   templateUrl: 'backup-game.html',
@@ -52,6 +54,7 @@ export class BackupGamePage {
     private persistenceProvider: PersistenceProvider,
     private events: EventManagerService,
     private router: Router,
+    private modalCtrl: ModalController,
     private location: Location) {
     if (this.router.getCurrentNavigation()) {
       this.navParamsData = this.router.getCurrentNavigation().extras.state ? this.router.getCurrentNavigation().extras.state : {};
@@ -179,7 +182,17 @@ export class BackupGamePage {
       'correct-recovery-prhase'
     );
     infoSheet.present();
-    infoSheet.onDidDismiss(() => {
+    infoSheet.onDidDismiss(async () => {
+      if(this.navParamsData.isNewSharedWallet){
+        const copayerModal = await this.modalCtrl.create({
+          component: CopayersPage,
+          componentProps: {
+            walletId: this.navParamsData.walletId
+          },
+          cssClass: 'wallet-details-modal'
+        });
+        await copayerModal.present();
+      }
       this.router.navigate(['']).then(() => {
         this.events.publish('Local/FetchWallets');
       });

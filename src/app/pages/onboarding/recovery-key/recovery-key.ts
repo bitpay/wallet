@@ -72,7 +72,9 @@ export class RecoveryKeyPage {
             this.router.navigate(['/backup-key'], {
               state: {
                 keyId: this.navParamsData.keyId,
-                isOnboardingFlow: this.isOnboardingFlow
+                isOnboardingFlow: this.isOnboardingFlow,
+                walletId: this.navParamsData.walletId,
+                isNewSharedWallet: this.navParamsData.isNewSharedWallet
               }
             });
           }
@@ -81,7 +83,9 @@ export class RecoveryKeyPage {
         this.router.navigate(['/backup-key'], {
           state: {
             keyId: this.navParamsData.keyId,
-            isOnboardingFlow: this.isOnboardingFlow
+            isOnboardingFlow: this.isOnboardingFlow,
+            walletId: this.navParamsData.walletId,
+            isNewSharedWallet: this.navParamsData.isNewSharedWallet
           }
         });
       }
