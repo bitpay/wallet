@@ -33,53 +33,8 @@
           </a>
         </div>
 
-        <div class="wallet-card" [ngClass]="{ 
-          'bg-bch': wallet.coin == 'bch',
-          'bg-xec': wallet.coin == 'xec',
-          'bg-xpi': wallet.coin == 'xpi',
-          'bg-doge': wallet.coin == 'doge',
-          'bg-ltc': wallet.coin == 'ltc'
-          }">
-          <div class="wallet-card-header">
-            <div class="wallet-icon">
-              <div class="icon">
-                <img src="assets/img/currencies/{{wallet.coin}}.svg" alt="">
-                <img *ngIf="wallet?.cachedStatus && wallet?.cachedStatus.wallet && wallet?.cachedStatus.wallet?.singleAddress && isUtxoCoin()"
-                  class="audit" src="assets/img/wallet-details/wallet-audit.svg" alt="">
-              </div>
-              <div class="wallet-name">
-                <p class="name">{{wallet?.name}}</p>
-                <ion-spinner *ngIf="!address" name="dots"></ion-spinner>
-                <p *ngIf="address" class="wallet-add" copy-to-clipboard="{{ address }}"> {{(address | slice:0:10) +'...'+ (address | slice:-12)}} 
-                  <ion-icon name="copy-outline"></ion-icon>
-                </p>
-              </div>
-            </div>
-            <div class="wallet-setting" (click)="openWalletSettings(wallet.id)">
-              <img src="assets/img/wallet-details/wallet-setting-{{currentTheme}}.svg" alt="">
-            </div>
-          </div>
-
-          <div class="balance-content">
-            <div (tap)="updateAll(true)"
-              *ngIf="!wallet?.scanning && !walletNotRegistered && (wallet?.cachedStatus || wallet?.lastKnownBalance)">
-              <div class="balance-str">
-                <ion-icon class="eye" [name]="wallet?.balanceHidden ? 'eye-outline' : 'eye-off-outline'" (click)="toggleBalance()"></ion-icon>
-                <balance-to-show *ngIf="!wallet?.balanceHidden" [balance]="getBalance()"></balance-to-show>
-                <div *ngIf="wallet?.balanceHidden">******</div>
-                <img *ngIf="wallet.coin === 'xrp'" width="21" (click)="openBalanceDetails()"
-                  src="assets/img/icon-info-blue.svg">
-              </div>
-              <div class="balance-alt-str" *ngIf="wallet?.cachedStatus && wallet?.cachedStatus.totalBalanceAlternative && !wallet?.balanceHidden">
-                ~ {{getAlternativeBalance()}} {{wallet?.cachedStatus.alternativeIsoCode}}
-              </div>
-              <div class="balance-alt-str" *ngIf="wallet?.balanceHidden">
-                ******
-              </div>
-            </div>
-  
-          </div>
-        </div>
+        <!-- wallet card -->
+        <wallet-detail-card [wallet]="wallet" [address]="address" [walletNotRegistered]="walletNotRegistered"></wallet-detail-card>
 
         <div class="balance-scanning" *ngIf="!updateStatusError && wallet?.scanning">
           <div>
@@ -146,33 +101,46 @@
         </div>
       </expandable-header-footer>
     </expandable-header>
-    <ion-list lines="none" *ngIf="wallet && wallet?.isComplete() && !walletNotRegistered && txps && txps[0]"
-      class="tx-history">
+    <ion-list *ngIf="wallet && wallet?.isComplete() && !walletNotRegistered && txps && txps[0]"
+      class="tx-history tx-history-multisign">
       <ion-item-divider *ngIf="wallet?.incorrectDerivation">
-        <ion-label>
+        <ion-label class="tx-history-header-label">
           <span translate>
             WARNING: Key derivation is not working on this device/wallet?. Actions cannot be performed on this wallet?.
           </span>
         </ion-label>
       </ion-item-divider>
       <ion-item-divider class="tx-history-header tx-history-header--large">
-        <ion-label>
-          <span *ngIf="requiresMultipleSignatures" translate>Pending Proposals</span>
-          <span *ngIf="!requiresMultipleSignatures" translate>Unsent transactions</span>
-        </ion-label>
-        <ion-badge class="txps-badge" *ngIf="txps.length > 0" (click)="openProposalsNotificationsPage()"
-          color="primary">{{txps.length}}</ion-badge>
+        <div class="item-tx-history">
+          <ion-label class="tx-history-header-label">
+            <span *ngIf="requiresMultipleSignatures" translate>Pending Proposals</span>
+            <span *ngIf="!requiresMultipleSignatures" translate>Unsent transactions</span>
+            <div>
+              <span class="label-multisign" *ngIf="wallet?.credentials?.n > 1">Waiting for <span class="num-credentials">{{wallet?.m}} </span> signatures</span>
+              <span class="label-multisign" *ngIf="!wallet?.credentials?.n && wallet?.n > 1">Waiting for <span class="num-credentials">{{wallet?.m}} </span> signatures</span>
+            </div>
+          </ion-label>
+          <ion-button class="accept-btn" fill="clear" slot="end" (click)="openProposalsNotificationsPage()">
+            {{'Accept Now' | translate}}
+          </ion-button>
+        </div>
+        <!-- <ion-badge class="txps-badge" *ngIf="txps.length > 0" (click)="openProposalsNotificationsPage()"
+          color="primary">{{txps.length}}</ion-badge> -->
       </ion-item-divider>
       <div *ngFor="let txp of txpsPending;  let i=index">
         <page-txp *ngIf="i<=2" [tx]="txp" [addressbook]="addressbook"></page-txp>
       </div>
-      <ion-item *ngIf="wallet?.cachedStatus && wallet?.cachedStatus.lockedBalanceSat" class="locked-balance"
-        (click)="openBalanceDetails()">
-        <span translate>Total Locked Balance</span>
+      <ion-item *ngIf="wallet?.cachedStatus && wallet?.cachedStatus.lockedBalanceSat" class="locked-balance">
+        <ion-label slot="start">
+          <img src="assets/img/wallet-details/wallet-lock-{{currentTheme}}.svg" alt="">
+          <div class="pending-amount">
+            <span class="total-locked-amount">{{wallet?.cachedStatus.lockedBalanceStr}}</span>
+            <div class="total-alt-locked-amount">{{wallet?.cachedStatus.lockedBalanceAlternative}}
+              {{wallet?.cachedStatus.alternativeIsoCode}}</div>
+          </div>
+        </ion-label>
         <ion-note slot="end">
-          <span class="total-locked-amount">{{wallet?.cachedStatus.lockedBalanceStr}}</span>
-          <div class="total-alt-locked-amount">{{wallet?.cachedStatus.lockedBalanceAlternative}}
-            {{wallet?.cachedStatus.alternativeIsoCode}}</div>
+          <img (click)="openBalanceDetails()" src="assets/img/wallet-details/wallet-info-{{currentTheme}}.svg" alt="">
         </ion-note>
       </ion-item>
     </ion-list>
@@ -281,25 +249,41 @@
                     <span class="double-spend" translate>(possible double spend)</span>
                   </ng-container>
                 </div>
+
+                <ng-container *ngIf="tx.action == 'mined' || tx.action == 'immature' ">
+                  <span class="tx-action" >From : Coinbase</span>
+                </ng-container>
               
-                <span class="tx-action"
-                  *ngIf="tx.action == 'received' && (!tx.note || (tx.note && !tx.note.body)) && (!addressbook || !tx.outputs[0] || !getContactName(tx.outputs[0].address))">{{'From:
-                  {address}'
-                  | translate: {address: tx.outputs[0].address.slice(-8)} }}</span>
-                <span class="tx-action"
-                  *ngIf="tx.action == 'received' && (!tx.note || (tx.note && !tx.note.body)) && addressbook && tx.outputs[0] && getContactName(tx.outputs[0].address)">
-                  {{'From: ' + getContactName(tx.outputs[0].address)| translate}}
-                </span>
-                <span class="tx-action"
-                  *ngIf="tx.action == 'sent' && (!tx.note || (tx.note && !tx.note.body)) && (!addressbook || !tx.outputs[0] || !getContactName(tx.outputs[0].address)) && (!tx.customData || !tx.customData.toWalletName)">{{'To:
-                  {address}' | translate: {address: tx.addressTo.slice(-8)} }}</span>
-                <span class="tx-action"
-                  *ngIf="tx.action == 'sent' && (!tx.note || (tx.note && !tx.note.body)) && (!addressbook || !tx.outputs[0] || !getContactName(tx.outputs[0].address)) && (tx.customData && tx.customData.toWalletName)">
-                  {{ 'To: {walletName}' | translate: {walletName: tx.customData.toWalletName} | translate}}
-                </span>
-                <span class="tx-action" *ngIf="tx.message && addressbook && tx.outputs[0] && getContactName(tx.outputs[0].address)">
-                  {{'To: ' + getContactName(tx.outputs[0].address) | translate}}
-                </span>
+                <ng-container *ngIf="tx.action == 'received'">
+                  <ng-container *ngIf="tx.inputAddresses && tx.inputAddresses[0]">
+                    <span class="tx-action"
+                      *ngIf="(!tx.note || (tx.note && !tx.note.body)) && (!addressbook || !tx.inputAddresses[0] || !getContactName(tx.inputAddresses[0]))">{{'From:
+                      {address}'
+                      | translate: {address: tx.inputAddresses[0].slice(-8)} }}</span>
+                    <span class="tx-action"
+                      *ngIf="(!tx.note || (tx.note && !tx.note.body)) && addressbook && tx.inputAddresses[0] && getContactName(tx.inputAddresses[0])">
+                      {{'From: ' + getContactName(tx.inputAddresses[0])| translate}}
+                    </span>
+                  </ng-container>
+                
+                  <ng-container *ngIf="!tx.inputAddresses || !tx.inputAddresses[0]">
+                    <span class="tx-action" >From : unknown sender</span>
+                  </ng-container>
+                
+                </ng-container>
+                <ng-container *ngIf="tx.action == 'sent'">
+                  <span class="tx-action"
+                    *ngIf="(!tx.note || (tx.note && !tx.note.body)) && (!addressbook || !tx.outputs[0] || !getContactName(tx.outputs[0].address)) && (!tx.customData || !tx.customData.toWalletName)">{{'To:
+                    {address}' | translate: {address: tx.addressTo.slice(-8)} }}</span>
+                  <span class="tx-action"
+                    *ngIf="(!tx.note || (tx.note && !tx.note.body)) && (!addressbook || !tx.outputs[0] || !getContactName(tx.outputs[0].address)) && (tx.customData && tx.customData.toWalletName)">
+                    {{ 'To: {walletName}' | translate: {walletName: tx.customData.toWalletName} | translate}}
+                  </span>
+                  <span class="tx-action" *ngIf="tx.message && addressbook && tx.outputs[0] && getContactName(tx.outputs[0].address)">
+                    {{'To: ' + getContactName(tx.outputs[0].address) | translate}}
+                  </span>
+                </ng-container>
+                
                 <span *ngIf="tx.message" class="memo">{{tx.message}}</span>            
               </div>
    

@@ -19,6 +19,7 @@ import { WalletProvider } from '../../providers/wallet/wallet';
 import { EventManagerService } from 'src/app/providers/event-manager.service';
 import { ModalController, NavController, NavParams } from '@ionic/angular';
 import { Location } from '@angular/common';
+import { PersistenceProvider } from 'src/app/providers/persistence/persistence';
 
 export interface TokenData {
   amountToken: string,
@@ -72,9 +73,10 @@ export class TxDetailsModal {
     private filter: FilterProvider,
     private rateProvider: RateProvider,
     private location: Location,
-    private viewCtrl: ModalController
+    private viewCtrl: ModalController,
+    private persistenceProvider: PersistenceProvider
   ) { }
-
+  
   ngOnInit() {
     this.events.subscribe('bwsEvent', this.bwsEventHandler);
     this.config = this.configProvider.get();
@@ -212,19 +214,52 @@ export class TxDetailsModal {
       leading: true
     }
   );
+  
+  async updateInputAddress(txId: string) {
+    let inputAddresses = [];
+    try {
+      const txDetail = await this.walletProvider.getTxDetail(this.wallet, txId);
+      if (txDetail) inputAddresses = txDetail.inputAddresses;
+    } catch (error) {
+      inputAddresses = [];
+    }
+    return inputAddresses;
+  }
+
+  async updateStorageTxhistory(txid: string, inputAddresses: string[]) {
+    try {
+      const walletId = this.navParams.data.walletId;
+      const history = await this.walletProvider.getSavedTxs(walletId);
+      if (!history) return ;
+      const historyByTxId = _.find(history, item => item.txid == txid);
+      if (historyByTxId) {
+        historyByTxId.inputAddresses = inputAddresses;
+        const historyToSave = JSON.stringify(history);
+        return await this.persistenceProvider.setTxHistory(walletId, historyToSave);
+      }
+    } catch (error) { }
+  }
 
   private updateTx(opts?): void {
     opts = opts ? opts : {};
     if (!opts.hideLoading) this.onGoingProcess.set('loadingTxInfo');
     this.walletProvider
       .getTx(this.wallet, this.txId)
-      .then(tx => {
+      .then(async tx => {
         this.retryGetTx = 0;
         if (!opts.hideLoading) this.onGoingProcess.clear();
 
         this.btx = this.txFormatProvider.processTx(this.wallet.coin, tx);
         this.btx.network = this.wallet.credentials.network;
         this.btx.coin = this.wallet.coin;
+
+        if (!this.btx.inputAddresses || _.size(this.btx.inputAddresses) == 0) {
+          const inputAddresses = await this.updateInputAddress(this.btx.txid);
+          if (inputAddresses) {
+            this.btx.inputAddresses = inputAddresses;
+            await this.updateStorageTxhistory(this.btx.txid, inputAddresses);
+          }
+        }
         const chain = this.currencyProvider
           .getChain(this.wallet.coin)
           .toLowerCase();
@@ -248,25 +283,30 @@ export class TxDetailsModal {
         }
 
         if (this.btx.action != 'invalid') {
-          if (this.btx.action == 'sent'){
-            this.title = this.translate.instant('Sent');
-            this.isNegative = true;
-          }
-          if (this.btx.action == 'received'){
-            this.title = this.translate.instant('Received');
-            this.isNegative = false;
-          }
-          if (this.btx.action == 'moved'){
-            this.title = this.translate.instant('Sent to self');
-            this.isNegative = false;
-          }
-          if (this.btx.action == 'immature'){
-            this.title = this.translate.instant('Immature');
-            this.isNegative = false;
-          }
-          if (this.btx.action == 'mined'){
-            this.title = this.translate.instant('Mined');
-            this.isNegative = false;
+        
+          if (this.btx.isGenesis) {
+            this.title = this.translate.instant('Genesis');
+          } else {
+            if (this.btx.action == 'sent'){
+              this.title = this.translate.instant('Sent');
+              this.isNegative = true;
+            }
+            if (this.btx.action == 'received'){
+              this.title = this.translate.instant('Received');
+              this.isNegative = false;
+            }
+            if (this.btx.action == 'moved'){
+              this.title = this.translate.instant('Sent to self');
+              this.isNegative = false;
+            }
+            if (this.btx.action == 'immature'){
+              this.title = this.translate.instant('Immature');
+              this.isNegative = false;
+            }
+            if (this.btx.action == 'mined'){
+              this.title = this.translate.instant('Mined');
+              this.isNegative = false;
+            }
           }
         }
 

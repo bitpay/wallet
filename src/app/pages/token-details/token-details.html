@@ -17,75 +17,33 @@
   </ion-refresher>
   <div class="wrapper" [ngClass]="{'grid-wrapper': shouldShowZeroState()}">
     <expandable-header [scrollArea]="scrollArea" [fadeFactor]="1" [disableFade]="true" #expandableHeader>
-      <ion-toolbar class="wide-header__title">
-        <expandable-header-primary class="balance-header">
-          <div class="wallet-card background_default" [ngClass]="{ 
-            'bg-EAT': token?.tokenInfo?.symbol == 'EAT',
-            'bg-bcPro': token?.tokenInfo?.symbol == 'bcPro',
-            'bg-DoC': token?.tokenInfo?.symbol == 'DoC',
-            'bg-ABCSLP': token?.tokenInfo?.symbol == 'ABCSLP'
-            }">
-            <div class="wallet-card-header">
-              <div class="wallet-icon">
-                <div class="icon">
-                  <img src="assets/img/currencies/{{token?.tokenInfo?.symbol}}.svg" alt="">
-                  <img *ngIf="wallet?.cachedStatus && wallet?.cachedStatus.wallet && wallet?.cachedStatus.wallet?.singleAddress"
-                    class="audit" src="assets/img/wallet-details/wallet-audit.svg" alt="">
-                </div>
-                <div class="wallet-name">
-                  <p class="name">{{token?.tokenInfo?.name}}</p>
-                  <ion-spinner *ngIf="!wallet.etokenAddress" name="dots"></ion-spinner>
-                  <p *ngIf="wallet.etokenAddress" class="wallet-add" copy-to-clipboard="{{ wallet.etokenAddress }}"> {{(wallet.etokenAddress | slice:0:10) +'...'+ (wallet.etokenAddress | slice:-12)}} 
-                    <ion-icon name="copy-outline"></ion-icon>
-                  </p>
-                </div>
-              </div>
-              <div class="wallet-setting" (click)="openWalletSettings(wallet.id)">
-                <img src="assets/img/wallet-details/wallet-setting-{{currentTheme}}.svg" alt="">
-              </div>
-            </div>
-  
-            <div class="balance-content">
-              <div (tap)="updateAll(true)"
-                *ngIf="!wallet?.scanning && (wallet?.cachedStatus || wallet?.lastKnownBalance)">
-                <div class="balance-str">
-                  <ion-icon class="eye" [name]="wallet?.balanceHidden ? 'eye-outline' : 'eye-off-outline'" (click)="toggleBalance()"></ion-icon>
-                  <balance-to-show *ngIf="!wallet?.balanceHidden" [balance]="amountToken"></balance-to-show>
-                  <div *ngIf="wallet?.balanceHidden">******</div>
-                </div>
-              </div>
-    
-            </div>
-          </div>
-        
-        </expandable-header-primary>
-        <expandable-header-footer>
-
-          <div class="action-buttons two-actions" >
-
-            <div class="action-btn receive-btn" (click)="goToTokenInfo()">
-              <ion-button expand="block">
-                <ion-icon slot="start" name="information-outline"></ion-icon>
-                {{ 'Info' | translate }}
-              </ion-button>
-            </div>
-  
-            <div class="action-btn send-btn" (click)="goToSendPage()">
-              <ion-button expand="block">
-                <ion-icon slot="start" name="arrow-up-outline"></ion-icon>
-                {{ 'Send' | translate }}
-              </ion-button>
-            </div>
-  
+      <expandable-header-primary class="balance-header">
+        <!-- wallet card -->
+        <wallet-detail-card [isToken]="true" [wallet]="wallet" [amountToken]="amountToken" [token]="token"></wallet-detail-card>
+      </expandable-header-primary>
+      <expandable-header-footer>
+        <div class="action-buttons two-actions" >
+          <div class="action-btn receive-btn" (click)="goToReceivePage()">
+            <ion-button expand="block">
+              <ion-icon slot="start" name="arrow-down-outline"></ion-icon>
+              {{ 'Receive' | translate }}
+            </ion-button>
           </div>
 
-          <ion-spinner color="primary" name="crescent" *ngIf="shouldShowSpinner()"></ion-spinner>
-        </expandable-header-footer>
-      </ion-toolbar>
+          <div class="action-btn send-btn" (click)="goToSendPage()">
+            <ion-button expand="block">
+              <ion-icon slot="start" name="arrow-up-outline"></ion-icon>
+              {{ 'Send' | translate }}
+            </ion-button>
+          </div>
+
+        </div>
+        <ion-spinner color="primary" name="crescent" *ngIf="shouldShowSpinner()"></ion-spinner>
+      </expandable-header-footer>
     </expandable-header>
     <div class="prompt-user activity-fix white-card" *ngIf="shouldShowZeroState()">
       <div class="title-icon larger-icon">
-        <img *ngIf="wallet.coin !== 'doge' && wallet.coin !== 'xpi'" src="assets/img/ghost-tongue-out.svg">
+        <img *ngIf="wallet.coin !== 'doge' && wallet.coin !== 'xpi'" src="assets/img/wallet-details/ghost-{{currentTheme}}.svg">
         <img *ngIf="wallet.coin === 'xpi'"
           [src]="selectedTheme === 'dark' ? 'assets/img/frog-dark.svg' : 'assets/img/frog-light.svg'">
       </div>
@@ -140,7 +98,10 @@
                     [ngClass]="{'received': tx.action == 'received' || tx.action == 'mined' || tx.action == 'immature', 'sent' : tx.action == 'sent','pending' : tx.confirmations <= 0}">
                     {{tx.amountToken}} {{tx.symbolToken}}</span>
                 </div>
-                <span class="tx-action"*ngIf="tx.action == 'received'">{{'From: {address}' | translate: {address: tx.outputs[0].address.slice(-8)} }}</span>
+                <ng-container *ngIf="tx.action == 'received'">
+                  <span *ngIf="tx.inputAddresses && tx.inputAddresses[0]" class="tx-action" >{{'From: {address}' | translate: {address: tx.inputAddresses[0].slice(-8)} }}</span>
+                  <span *ngIf="!tx.inputAddresses || !tx.inputAddresses[0]" class="tx-action" >From : unknown sender</span>
+                </ng-container >
                 <span class="tx-action" *ngIf="tx.action == 'sent' ">{{'To: {address}' | translate: {address: tx.addressTo.slice(-8)} }}</span>
               </div>
 

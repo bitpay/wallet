@@ -565,9 +565,18 @@ export class WalletProvider {
     });
   }
 
-  public getAddressView(coin: Coin, network: string, address: string): string {
+  public getAddressView(coin: Coin, network: string, address: string, isEtoken?: boolean): string {
     if (coin != 'bch' && coin != 'xec') return address;
-    const protoAddr = this.getProtoAddress(coin, network, address);
+    let protoAddr = this.getProtoAddress(coin, network, address);
+    if (isEtoken && coin == 'xec') {
+      try {
+        const { prefix, type, hash } = this.addressProvider.decodeAddress(protoAddr);
+        const etokenAddress = this.addressProvider.encodeAddress('etoken', type, hash, protoAddr);
+        if (etokenAddress) protoAddr = etokenAddress;
+      } catch (error) {
+        protoAddr = 'false';
+      }
+    }
     return protoAddr;
   }
 
@@ -675,7 +684,7 @@ export class WalletProvider {
     });
   }
 
-  private getSavedTxs(walletId: string): Promise<any> {
+  public getSavedTxs(walletId: string): Promise<any> {
     return new Promise((resolve, reject) => {
       this.persistenceProvider
         .getTxHistory(walletId)

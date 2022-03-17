@@ -49,18 +49,9 @@ export class MultipleOutputsPage {
       let addressToShow = this.walletProvider.getAddressView(
         this.coin,
         this._tx.network,
-        outputAddr
+        outputAddr,
+        this._tx.tokenId ? true : false
       );
-      let etokenAddress;
-      if (this._tx.tokenId && this._tx.coin == 'xec') {
-        try {
-          const { prefix, type, hash } = this.addressProvider.decodeAddress(addressToShow);
-          etokenAddress = this.addressProvider.encodeAddress('etoken', type, hash, addressToShow);
-        } catch (error) {
-          etokenAddress = undefined;
-        }
-      }
-      if (etokenAddress) addressToShow = etokenAddress;
 
       output.addressToShow =
         addressToShow == 'false' ? 'Unparsed address' : addressToShow;
