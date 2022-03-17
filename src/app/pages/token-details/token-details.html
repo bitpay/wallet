@@ -98,7 +98,10 @@
                     [ngClass]="{'received': tx.action == 'received' || tx.action == 'mined' || tx.action == 'immature', 'sent' : tx.action == 'sent','pending' : tx.confirmations <= 0}">
                     {{tx.amountToken}} {{tx.symbolToken}}</span>
                 </div>
-                <span class="tx-action"*ngIf="tx.action == 'received'">{{'From: {address}' | translate: {address: tx.outputs[0].address.slice(-8)} }}</span>
+                <ng-container *ngIf="tx.action == 'received'">
+                  <span *ngIf="tx.inputAddresses && tx.inputAddresses[0]" class="tx-action" >{{'From: {address}' | translate: {address: tx.inputAddresses[0].slice(-8)} }}</span>
+                  <span *ngIf="!tx.inputAddresses || !tx.inputAddresses[0]" class="tx-action" >From : unknown sender</span>
+                </ng-container >
                 <span class="tx-action" *ngIf="tx.action == 'sent' ">{{'To: {address}' | translate: {address: tx.addressTo.slice(-8)} }}</span>
               </div>
 

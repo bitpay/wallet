@@ -305,9 +305,23 @@ export class WalletDetailsPage {
     if (loading) this.currentPage++;
   }
 
+  updateAddressToShowToken(tx) {
+    const outputAddr = tx.outputs[0].address;
+    let addressToShow = this.walletProvider.getAddressView(
+      this.wallet.coin,
+      this.wallet.network,
+      outputAddr,
+      true
+    );
+    return addressToShow;
+  }
+
   private updateHistoryToken(tx) {
     const token = _.find(this.wallet.tokens, item => item.tokenId == tx.tokenId);
     if (token && token.tokenInfo) {
+      if (tx.action == 'sent') {
+        tx.addressTo = this.updateAddressToShowToken(tx)
+      }
       tx.amountToken = tx.amountTokenUnit / Math.pow(10, token.tokenInfo.decimals);
       tx.symbolToken = token.tokenInfo.symbol;
       tx.name = token.tokenInfo.name;

@@ -249,25 +249,41 @@
                     <span class="double-spend" translate>(possible double spend)</span>
                   </ng-container>
                 </div>
+
+                <ng-container *ngIf="tx.action == 'mined' || tx.action == 'immature' ">
+                  <span class="tx-action" >From : Coinbase</span>
+                </ng-container>
               
-                <span class="tx-action"
-                  *ngIf="tx.action == 'received' && (!tx.note || (tx.note && !tx.note.body)) && (!addressbook || !tx.outputs[0] || !getContactName(tx.outputs[0].address))">{{'From:
-                  {address}'
-                  | translate: {address: tx.outputs[0].address.slice(-8)} }}</span>
-                <span class="tx-action"
-                  *ngIf="tx.action == 'received' && (!tx.note || (tx.note && !tx.note.body)) && addressbook && tx.outputs[0] && getContactName(tx.outputs[0].address)">
-                  {{'From: ' + getContactName(tx.outputs[0].address)| translate}}
-                </span>
-                <span class="tx-action"
-                  *ngIf="tx.action == 'sent' && (!tx.note || (tx.note && !tx.note.body)) && (!addressbook || !tx.outputs[0] || !getContactName(tx.outputs[0].address)) && (!tx.customData || !tx.customData.toWalletName)">{{'To:
-                  {address}' | translate: {address: tx.addressTo.slice(-8)} }}</span>
-                <span class="tx-action"
-                  *ngIf="tx.action == 'sent' && (!tx.note || (tx.note && !tx.note.body)) && (!addressbook || !tx.outputs[0] || !getContactName(tx.outputs[0].address)) && (tx.customData && tx.customData.toWalletName)">
-                  {{ 'To: {walletName}' | translate: {walletName: tx.customData.toWalletName} | translate}}
-                </span>
-                <span class="tx-action" *ngIf="tx.message && addressbook && tx.outputs[0] && getContactName(tx.outputs[0].address)">
-                  {{'To: ' + getContactName(tx.outputs[0].address) | translate}}
-                </span>
+                <ng-container *ngIf="tx.action == 'received'">
+                  <ng-container *ngIf="tx.inputAddresses && tx.inputAddresses[0]">
+                    <span class="tx-action"
+                      *ngIf="(!tx.note || (tx.note && !tx.note.body)) && (!addressbook || !tx.inputAddresses[0] || !getContactName(tx.inputAddresses[0]))">{{'From:
+                      {address}'
+                      | translate: {address: tx.inputAddresses[0].slice(-8)} }}</span>
+                    <span class="tx-action"
+                      *ngIf="(!tx.note || (tx.note && !tx.note.body)) && addressbook && tx.inputAddresses[0] && getContactName(tx.inputAddresses[0])">
+                      {{'From: ' + getContactName(tx.inputAddresses[0])| translate}}
+                    </span>
+                  </ng-container>
+                
+                  <ng-container *ngIf="!tx.inputAddresses || !tx.inputAddresses[0]">
+                    <span class="tx-action" >From : unknown sender</span>
+                  </ng-container>
+                
+                </ng-container>
+                <ng-container *ngIf="tx.action == 'sent'">
+                  <span class="tx-action"
+                    *ngIf="(!tx.note || (tx.note && !tx.note.body)) && (!addressbook || !tx.outputs[0] || !getContactName(tx.outputs[0].address)) && (!tx.customData || !tx.customData.toWalletName)">{{'To:
+                    {address}' | translate: {address: tx.addressTo.slice(-8)} }}</span>
+                  <span class="tx-action"
+                    *ngIf="(!tx.note || (tx.note && !tx.note.body)) && (!addressbook || !tx.outputs[0] || !getContactName(tx.outputs[0].address)) && (tx.customData && tx.customData.toWalletName)">
+                    {{ 'To: {walletName}' | translate: {walletName: tx.customData.toWalletName} | translate}}
+                  </span>
+                  <span class="tx-action" *ngIf="tx.message && addressbook && tx.outputs[0] && getContactName(tx.outputs[0].address)">
+                    {{'To: ' + getContactName(tx.outputs[0].address) | translate}}
+                  </span>
+                </ng-container>
+                
                 <span *ngIf="tx.message" class="memo">{{tx.message}}</span>            
               </div>
    
