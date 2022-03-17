@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
 import * as _ from 'lodash';
 import { ConfigProvider, CurrencyProvider, EventManagerService, Logger } from '../../providers';
@@ -25,6 +25,7 @@ export interface Card {
   selector: 'exchange-rates',
   templateUrl: 'exchange-rates.html',
   styleUrls: ['exchange-rates.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class ExchangeRates {
   public isFiatIsoCodeSupported: boolean;

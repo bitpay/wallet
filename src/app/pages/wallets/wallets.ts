@@ -163,9 +163,7 @@ export class WalletsPage {
     if (_.isEmpty(this.navParamsData) && this.navParams && !_.isEmpty(this.navParamsData)) this.navParamsData = this.navParamsData;
     this.isDonation = this.navParamsData.isDonation;
     this.getWalletsGroups();
-    if(this.keySelected.length === 0) {
-      this.initKeySelected();
-    }
+    this.initKeySelected();
   }
 
   private getWalletsGroups() {
@@ -237,9 +235,15 @@ export class WalletsPage {
   }
 
   private initKeySelected() {
-    this.totalBalanceKey = this.getTotalBalanceKey(this.walletsGroups[0]);
-    this.keySelected = this.walletsGroups[0];
-    this.keyNameSelected = this.getWalletGroup(this.keySelected[0].keyId).name;
+    if (this.walletsGroups.length !== 0) {
+      if (this.keySelected.length === 0) {
+        this.totalBalanceKey = this.getTotalBalanceKey(this.walletsGroups[0]);
+        this.keySelected = this.walletsGroups[0];
+        this.keyNameSelected = this.getWalletGroup(this.keySelected[0].keyId).name;
+      }
+    } else {
+      this.keySelected = [];
+    }
   }
 
   public openWalletGroupSettings(keyId: string): void {
@@ -262,7 +266,7 @@ export class WalletsPage {
 
   private getTotalBalanceKey(key) {
     const totalBalanceAlternative = key.reduce((result, wallet) => {
-      if(wallet.cachedStatus && wallet.cachedStatus.totalBalanceAlternative){
+      if(wallet.cachedStatus && wallet.cachedStatus.totalBalanceAlternative && wallet.network !== 'testnet'){
           result += parseFloat(wallet.cachedStatus.totalBalanceAlternative);
       }
       return result;

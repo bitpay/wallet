@@ -187,6 +187,31 @@ export class TokenDetailsPage {
     }
   );
 
+  public goToReceivePage() {
+    if (this.wallet && this.wallet.isComplete() && this.wallet.needsBackup) {
+      const needsBackup = this.actionSheetProvider.createNeedsBackup();
+      needsBackup.present();
+      needsBackup.onDidDismiss(data => {
+        if (data === 'goToBackup') this.goToBackup();
+      });
+    } else {
+      const params = {
+        wallet: this.wallet
+      };
+      const receive = this.actionSheetProvider.createWalletReceive(params);
+      receive.present();
+      receive.onDidDismiss(data => {
+        if (data) this.showErrorInfoSheet(data);
+      });
+    }
+  }
+
+  public goToBackup(): void {
+    this.router.navigate(['/backup-key'], {
+      state: { keyId: this.wallet.credentials.keyId }
+    });
+  }
+
   public loadHistory(loading) {
     if (
       this.history &&

@@ -1,51 +1,54 @@
-.average-container {
-  text-align: center;
-  height: 21px;
-  float: right;
-  &.negative-avg {
-    color: #FFB4A9;
-    border-radius: 50vh;
-  }
-  &.possitive-avg {
-    color: #73DAA5;
-    border-radius: 50vh;
-  }
-  .average {
-    font-size: 12px;
-    line-height: 19px;
+exchange-rates {
+  .average-container {
+    text-align: center;
     height: 21px;
-    font-weight: 500;
+    float: right;
+    &.negative-avg {
+      color: #BA1B1B;
+      border-radius: 50vh;
+    }
+    &.possitive-avg {
+      color: #37A372;
+      border-radius: 50vh;
+    }
+    .average {
+      font-size: 12px;
+      line-height: 19px;
+      height: 21px;
+      font-weight: 500;
+    }
+  }
+  
+  .estimate-product {
+    margin: 0;
+    text-align: right;
+    padding-right: 20px;
+    font-style: italic;
+    font-size: smaller;
+    color: #bd9452;
+  }
+  
+  .estimate-sign {
+    font-size: smaller;
+    color: #bd9452;
+  }
+  .bp-list {
+    padding-top: 0;
+    padding-bottom: 0;
+    ion-item:not(.align-with-button){
+      --padding-start: 0.5rem;
+      --padding-end: 0;
+      --inner-padding-end: 1rem;
+      padding-left: 0;
+      ion-icon {
+        width: 35px;
+        height: 35px;
+      }
+      ion-note {
+        margin: 0;
+      }
+    }
   }
 }
 
-.estimate-product {
-  margin: 0;
-  text-align: right;
-  padding-right: 20px;
-  font-style: italic;
-  font-size: smaller;
-  color: #bd9452;
-}
-
-.estimate-sign {
-  font-size: smaller;
-  color: #bd9452;
-}
-.bp-list {
-  padding-top: 0;
-  padding-bottom: 0;
-  ion-item:not(.align-with-button){
-    --padding-start: 0.5rem;
-    --padding-end: 0;
-    --inner-padding-end: 1rem;
-    padding-left: 0;
-    ion-icon {
-      width: 35px;
-      height: 35px;
-    }
-    ion-note {
-      margin: 0;
-    }
-  }
-}
 
