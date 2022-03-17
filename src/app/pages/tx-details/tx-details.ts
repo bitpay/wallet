@@ -20,6 +20,7 @@ import { EventManagerService } from 'src/app/providers/event-manager.service';
 import { ModalController, NavController, NavParams } from '@ionic/angular';
 import { Location } from '@angular/common';
 import { PersistenceProvider } from 'src/app/providers/persistence/persistence';
+import { AppProvider } from 'src/app/providers';
 
 export interface TokenData {
   amountToken: string,
@@ -54,7 +55,7 @@ export class TxDetailsModal {
   public txMemo: string;
   public tokenData: TokenData;
   public isNegative: boolean;
-
+  public currentTheme;
   constructor(
     private configProvider: ConfigProvider,
     private currencyProvider: CurrencyProvider,
@@ -74,13 +75,14 @@ export class TxDetailsModal {
     private rateProvider: RateProvider,
     private location: Location,
     private viewCtrl: ModalController,
-    private persistenceProvider: PersistenceProvider
+    private persistenceProvider: PersistenceProvider,
+    private appProvider: AppProvider,
   ) { }
   
   ngOnInit() {
     this.events.subscribe('bwsEvent', this.bwsEventHandler);
     this.config = this.configProvider.get();
-
+    this.currentTheme = this.appProvider.themeProvider.currentAppTheme;
     this.txId = this.navParams.data.txid;
     this.title = this.translate.instant('Transaction');
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
