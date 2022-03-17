@@ -135,7 +135,8 @@
                       </ion-label>
                       <ion-note slot="end">
                         <div>
-                          <div class="main-note">{{token?.amountToken}}</div>
+                          <div *ngIf="!wallet?.balanceHidden" class="main-note">{{token?.amountToken}}</div>
+                          <div *ngIf="wallet?.balanceHidden" class="main-note">******</div>
                         </div>
                       </ion-note>
                     </ion-item>

@@ -954,6 +954,13 @@
             background-color: var(--bg-color-dark-theme-2);
             color: var(--text-color-dark-theme) !important;
         }
+
+        .donate-btn {
+            ion-button {
+                --background: var(--color-primary-abcpay-dark) !important;
+                color: #00344B;
+            }
+        }
     }
 
     incoming-data-menu {
@@ -1084,13 +1091,36 @@
             }
         }
 
-        .section-header .date-label {
-            background-color: var(--bg-color-dark-theme-2);
+        .section-header {
+            color: rgba(237, 239, 240, 0.6) !important;
+            .date-label {
+                background-color: var(--bg-color-dark-theme-2);
+            }
+        }
+
+        .date-label, .date {
+            color: #94A3AC !important;
         }
 
         .message {
             &-background {
                 background-color: var(--bg-color-dark-theme-message);
+            }
+        }
+
+        .exchange-rate-title {
+            color: #EDEFF0 !important;
+        }
+
+        .total-amount-container {
+            background: #0E3244;
+            .average-container {
+                .negative-avg {
+                    color: #FFB4A9 !important;
+                }
+                .possitive-avg {
+                    color: #73DAA5 !important;
+                }
             }
         }
     }
@@ -1376,7 +1406,7 @@
         .tx-history {
             .tx-history-header {
                 &.item {
-                    background: linear-gradient(0deg, rgba(126, 208, 255, 0.08), rgba(126, 208, 255, 0.08)), #001E2E;
+                    background: linear-gradient(0deg, rgba(126, 208, 255, 0.08), rgba(126, 208, 255, 0.08)), #001E2E !important;
                 }
             }
 
@@ -1410,7 +1440,31 @@
 
                 ion-label {
                     color: rgba(224, 228, 230, 0.6) !important;
+                    &.tx-history-header-label {
+                        color: #EDEFF0 !important;
+                        .label-multisign {
+                            color: rgba(237, 239, 240, 0.6);
+                        }
+                    }
                 }
+            }
+
+            .item-tx-history {
+                border-color: #33505f !important;
+            }
+
+            .locked-balance {
+                --background: linear-gradient(0deg, rgba(126, 208, 255, 0.08), rgba(126, 208, 255, 0.08)), #001E2E;
+            }
+        }
+
+        .accept-btn {
+            --color: var(--color-primary-abcpay-dark) !important;
+        }
+
+        .pending-amount {
+            .total-alt-locked-amount, span {
+                color: rgba(237, 239, 240, 0.38) !important;
             }
         }
 
@@ -2510,4 +2564,17 @@
             color: rgba(237, 239, 240, 0.6);
         }
     }
+
+    exchange-rates {
+        .average-container {
+            &.negative-avg {
+              color: #FFB4A9;
+            }
+            &.possitive-avg {
+              color: #73DAA5;
+            }
+        }
+    }
+
+
 }

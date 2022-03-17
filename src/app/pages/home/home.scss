@@ -31,12 +31,12 @@ button.bitpay-id-login {
   align-items: center;
 }
 .total-amount-container {
-  background: #0E3244;
+  background: #FAFAFB;
   margin: 1rem;
   display: flex;
   justify-content: space-between;
   .section-header {
-    color: rgba(237, 239, 240, 0.6);
+    color: rgba(0, 30, 46, 0.6);
     font-size: 14px;
     font-weight: 400;
     margin: 0;
@@ -72,11 +72,11 @@ button.bitpay-id-login {
     text-align: center;
     height: 21px;
     .negative-avg {
-      color: #FFB4A9;
+      color: #BA1B1B;
       border-radius: 50vh;
     }
     .possitive-avg {
-      color: #73DAA5;
+      color: #37A372;
       border-radius: 50vh;
     }
     .average {
@@ -88,7 +88,7 @@ button.bitpay-id-login {
     .date {
       font-size: 14px;
       font-weight: 400;
-      color: #94A3AC;
+      color: rgba(0, 30, 46, 0.6);
       margin-left: 10px;
     }
   }
@@ -222,12 +222,12 @@ button.bitpay-id-login {
   .exchange-rate-title {
     font-size: 22px;
     font-weight: 600;
-    color: #EDEFF0;
+    color: #001E2E;
   }
   .date-label {
     background: none;
     font-size: 14px;
-    color: #94A3AC;
+    color: rgba(0, 30, 46, 0.6);;
     padding-left: 0.5rem;
   }
 }

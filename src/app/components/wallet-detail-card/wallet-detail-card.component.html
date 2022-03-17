@@ -1,0 +1,111 @@
+<ng-container *ngIf="!isToken;else tokenCard">
+  <div class="wallet-card" [ngClass]="{ 
+    'bg-bch': wallet.coin == 'bch',
+    'bg-xec': wallet.coin == 'xec',
+    'bg-xpi': wallet.coin == 'xpi',
+    'bg-doge': wallet.coin == 'doge',
+    'bg-ltc': wallet.coin == 'ltc'
+    }">
+    <div class="wallet-card-header">
+      <div class="wallet-icon">
+        <div class="icon">
+          <img src="assets/img/currencies/{{wallet.coin}}.svg" alt="">
+        </div>
+        <div class="wallet-name">
+          <p class="name">{{wallet?.name}}</p>
+          <div class="wallet-info">
+            <span *ngIf="wallet?.cachedStatus && wallet?.cachedStatus.wallet && wallet?.cachedStatus.wallet?.singleAddress && isUtxoCoin()">Auditable</span>
+            <ng-container *ngIf="wallet?.credentials?.n > 1 || (!wallet?.credentials?.n && wallet?.n > 1) || !wallet?.isComplete() || (wallet?.isComplete() && wallet?.needsBackup)" class="secondary-label">
+              <span class="secondary-label-multisign" *ngIf="wallet?.credentials?.n > 1">Multisign {{ wallet?.credentials?.m }}-{{ wallet?.credentials?.n }}</span>
+              <span class="secondary-label-multisign" *ngIf="!wallet?.credentials?.n && wallet?.n > 1">Multisign {{ wallet?.m }}-{{ wallet?.n }}</span>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+      <!-- <div class="wallet-setting" (click)="openWalletSettings(wallet.id)">
+        <img src="assets/img/wallet-details/wallet-setting-{{currentTheme}}.svg" alt="">
+      </div> -->
+    </div>
+  
+    <div class="balance-content">
+      <div (tap)="updateAll(true)"
+        *ngIf="!wallet?.scanning && !walletNotRegistered && (wallet?.cachedStatus || wallet?.lastKnownBalance)">
+        <div class="balance-str">
+          <balance-to-show *ngIf="!wallet?.balanceHidden" [balance]="getBalance()"></balance-to-show>
+          <div *ngIf="wallet?.balanceHidden">******</div>
+          <ion-icon class="eye" [name]="wallet?.balanceHidden ? 'eye-outline' : 'eye-off-outline'" (click)="toggleBalance()"></ion-icon>
+        </div>
+        <div class="balance-alt-str" *ngIf="wallet?.cachedStatus && wallet?.cachedStatus.totalBalanceAlternative && !wallet?.balanceHidden">
+          ~ {{getAlternativeBalance()}} {{wallet?.cachedStatus.alternativeIsoCode}}
+        </div>
+        <div class="balance-alt-str" *ngIf="wallet?.balanceHidden">
+          ******
+        </div>
+      </div>
+  
+    </div>
+
+    <div class="wallet-address">
+      <ion-spinner *ngIf="!address" name="dots"></ion-spinner>
+      <p *ngIf="address" class="wallet-add" copy-to-clipboard="{{ address }}"> {{(address | slice:-8)}} 
+        <ion-icon name="copy-outline"></ion-icon>
+      </p>
+    </div>
+  </div>
+</ng-container>
+
+<ng-template #tokenCard>
+  <div class="wallet-card bg-default" [ngClass]="{ 
+    'bg-EAT': token?.tokenInfo?.symbol == 'EAT',
+    'bg-bcPro': token?.tokenInfo?.symbol == 'bcPro',
+    'bg-DoC': token?.tokenInfo?.symbol == 'DoC',
+    'bg-ABCSLP': token?.tokenInfo?.symbol == 'ABCSLP'
+    }">
+    <div class="wallet-card-header">
+      <div class="wallet-icon">
+        <div class="icon">
+          <img src="assets/img/currencies/{{token?.tokenInfo?.symbol}}.svg" alt="">
+        </div>
+        <div class="wallet-name">
+          <p class="name">{{token?.tokenInfo?.name}}</p>
+          <div class="wallet-info">
+            <span *ngIf="wallet?.cachedStatus && wallet?.cachedStatus.wallet && wallet?.cachedStatus.wallet?.singleAddress && isUtxoCoin()">Auditable</span>
+            <ng-container *ngIf="wallet?.credentials?.n > 1 || (!wallet?.credentials?.n && wallet?.n > 1) || !wallet?.isComplete() || (wallet?.isComplete() && wallet?.needsBackup)" class="secondary-label">
+              <span class="secondary-label-multisign" *ngIf="wallet?.credentials?.n > 1">Multisign {{ wallet?.credentials?.m }}-{{ wallet?.credentials?.n }}</span>
+              <span class="secondary-label-multisign" *ngIf="!wallet?.credentials?.n && wallet?.n > 1">Multisign {{ wallet?.m }}-{{ wallet?.n }}</span>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+      <div class="wallet-setting" (click)="goToTokenInfo()">
+        <ion-icon name="information-outline"></ion-icon>
+      </div>
+    </div>
+
+    <div class="balance-content">
+      <div (tap)="updateAll(true)"
+        *ngIf="!wallet?.scanning && (wallet?.cachedStatus || wallet?.lastKnownBalance)">
+        <div class="balance-str">
+          <balance-to-show *ngIf="!wallet?.balanceHidden" [balance]="amountToken"></balance-to-show>
+          <div *ngIf="wallet?.balanceHidden">******</div>
+          <ion-icon class="eye" [name]="wallet?.balanceHidden ? 'eye-outline' : 'eye-off-outline'" (click)="toggleBalance()"></ion-icon>
+        </div>
+        <div class="balance-alt-str" *ngIf="!wallet?.balanceHidden">
+          ~ 0.00 USD
+        </div>
+        <div class="balance-alt-str" *ngIf="wallet?.balanceHidden">
+          ******
+        </div>
+      </div>
+
+    </div>
+
+    <div class="wallet-address">
+      <ion-spinner *ngIf="!wallet?.etokenAddress" name="dots"></ion-spinner>
+      <p *ngIf="wallet?.etokenAddress" class="wallet-add" copy-to-clipboard="{{ wallet?.etokenAddress }}"> {{(wallet?.etokenAddress | slice:-8)}} 
+        <ion-icon name="copy-outline"></ion-icon>
+      </p>
+    </div>
+  </div>
+</ng-template>
+
