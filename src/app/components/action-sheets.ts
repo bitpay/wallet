@@ -6,6 +6,7 @@ import { IncomingDataMenuComponent } from './incoming-data-menu/incoming-data-me
 import { INFO_SHEET_COMPONENTS } from './info-sheet/info-sheet';
 import { MemoComponent } from './memo-component/memo-component';
 import { MinerFeeWarningComponent } from './miner-fee-warning/miner-fee-warning';
+import { MultisignInfoComponent } from './multisign-info/multisign-info.component';
 import { NeedsBackupComponent } from './needs-backup/needs-backup';
 import { OptionsSheetComponent } from './options-sheet/options-sheet';
 import { PhoneSheet } from './phone-sheet/phone-sheet';
@@ -28,4 +29,5 @@ export const ACTION_SHEET_COMPONENTS = [
   EncryptPasswordComponent,
   MinerFeeWarningComponent,
   FooterMenuComponent,
+  MultisignInfoComponent
 ];

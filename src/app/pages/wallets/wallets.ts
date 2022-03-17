@@ -235,11 +235,33 @@ export class WalletsPage {
   }
 
   private initKeySelected() {
+    let keyChange = this.profileProvider.keyChange;
+    let walletChange = this.profileProvider.walletChange;
     if (this.walletsGroups.length !== 0) {
       if (this.keySelected.length === 0) {
         this.totalBalanceKey = this.getTotalBalanceKey(this.walletsGroups[0]);
         this.keySelected = this.walletsGroups[0];
         this.keyNameSelected = this.getWalletGroup(this.keySelected[0].keyId).name;
+      }
+      if (keyChange.isStatus && keyChange.keyId) {
+        const walletsGroups = this.profileProvider.orderedWalletsByGroup;
+        const newAddWallet = walletsGroups.find((item) => {
+          return item[0].keyId == keyChange.keyId;
+        })
+        this.totalBalanceKey = this.getTotalBalanceKey(newAddWallet);
+        this.keySelected = newAddWallet;
+        this.keyNameSelected = this.getWalletGroup(this.keySelected[0].keyId).name;
+        this.profileProvider.keyChange.isStatus = false;
+      }
+      if (walletChange.isStatus && walletChange.keyId) {
+        const walletsGroups = this.profileProvider.orderedWalletsByGroup;
+        const newAddWallet = walletsGroups.find((item) => {
+          return item[0].keyId == walletChange.keyId;
+        })
+        this.totalBalanceKey = this.getTotalBalanceKey(newAddWallet);
+        this.keySelected = newAddWallet;
+        this.keyNameSelected = this.getWalletGroup(this.keySelected[0].keyId).name;
+        this.profileProvider.walletChange.isStatus = false;
       }
     } else {
       this.keySelected = [];
@@ -735,6 +757,14 @@ export class WalletsPage {
         keyId
       },
     })
+  }
+
+  public openSettingPage() {
+    this.router.navigate(['/tabs/setting']);
+  }
+
+  public openAddressBookPage() {
+    this.router.navigate(['/tabs/address-book']);
   }
 }
 

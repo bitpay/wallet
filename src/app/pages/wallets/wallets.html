@@ -40,7 +40,7 @@
   <ion-header *ngIf="!(!walletsGroups || !walletsGroups[0])" [translucent]="true" class="bp-header">
     <ion-toolbar>
       <ion-buttons slot="start" class="ion-no-margin">
-        <ion-button class="key-setting" (click)="openWalletGroupSettings(keySelected[0].keyId)">
+        <ion-button class="key-setting" (click)="openSettingPage()">
           <ion-icon slot="icon-only" src="assets/img/key-setting-{{currentTheme}}.svg"></ion-icon>
         </ion-button>
         <ion-button class="key-list" (click)="openMenu()">
@@ -51,8 +51,9 @@
           {{ keyNameSelected }}
       </ion-title>
       <ion-buttons slot="end" class="settings-button" *ngIf="walletsGroups && walletsGroups[0]">
-        <ion-button class="key-add" (click)="addKey()">
-          <ion-icon slot="icon-only" src="assets/img/key-add-{{currentTheme}}.svg"></ion-icon>
+        <ion-button class="key-add" (click)="openAddressBookPage()">
+          <!-- <ion-icon slot="icon-only" src="assets/img/key-add-{{currentTheme}}.svg"></ion-icon> -->
+          <ion-icon class="address-book" name="book-outline"></ion-icon>
         </ion-button>
         <ion-button class="key-notifications" (click)="addKey()">
           <ion-icon slot="icon-only" src="assets/img/key-notifications-{{currentTheme}}.svg"></ion-icon>

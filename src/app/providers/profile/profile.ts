@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { EventEmitter, Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import * as _ from 'lodash';
 import { timer } from 'rxjs';
@@ -49,6 +49,14 @@ export interface WalletBindTypeOpts {
   providedIn: 'root'
 })
 export class ProfileProvider {
+  public keyChange = {
+    isStatus : false,
+    keyId: ''
+  };
+  public walletChange = {
+    isStatus : false,
+    keyId: ''
+  };
   public walletsGroups: WalletGroups = {}; // TODO walletGroups Class
   public wallet: any = {};
   public profile: Profile;
@@ -173,6 +181,10 @@ export class ProfileProvider {
       this.setWalletGroupOrder(newWalletKeyId, index);
       this.setOrderedWalletsByGroup(); // Update Ordered Wallet List
     });
+    this.keyChange = {
+      isStatus: true,
+      keyId: newWalletKeyId
+    }
   }
 
   public setWalletGroupName(keyId: string, name: string): void {
@@ -1939,6 +1951,10 @@ export class ProfileProvider {
   }
 
   public createWallet(opts) {
+    this.walletChange = {
+      isStatus: true,
+      keyId: opts.keyId
+    };
     return this.keyProvider.handleEncryptedWallet(opts.keyId).then(password => {
       opts.password = password;
       return this._createWallet(opts).then(data => {

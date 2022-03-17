@@ -14,17 +14,15 @@
         <div class="wallet-name">
           <p class="name">{{wallet?.name}}</p>
           <div class="wallet-info">
-            <span *ngIf="wallet?.cachedStatus && wallet?.cachedStatus.wallet && wallet?.cachedStatus.wallet?.singleAddress && isUtxoCoin()">Auditable</span>
-            <ng-container *ngIf="wallet?.credentials?.n > 1 || (!wallet?.credentials?.n && wallet?.n > 1) || !wallet?.isComplete() || (wallet?.isComplete() && wallet?.needsBackup)" class="secondary-label">
+            <span *ngIf="wallet?.cachedStatus && wallet?.cachedStatus.wallet && wallet?.cachedStatus.wallet?.singleAddress && isUtxoCoin()" class="audit-table" >Auditable</span>
+            <div (click)="goToMultisignInfo()" *ngIf="wallet?.credentials?.n > 1 || (!wallet?.credentials?.n && wallet?.n > 1) || !wallet?.isComplete() || (wallet?.isComplete() && wallet?.needsBackup)" class="secondary-label">
               <span class="secondary-label-multisign" *ngIf="wallet?.credentials?.n > 1">Multisign {{ wallet?.credentials?.m }}-{{ wallet?.credentials?.n }}</span>
               <span class="secondary-label-multisign" *ngIf="!wallet?.credentials?.n && wallet?.n > 1">Multisign {{ wallet?.m }}-{{ wallet?.n }}</span>
-            </ng-container>
+              <img src="assets/img/wallet-details/wallet-info-{{currentTheme}}.svg">
+            </div>
           </div>
         </div>
       </div>
-      <!-- <div class="wallet-setting" (click)="openWalletSettings(wallet.id)">
-        <img src="assets/img/wallet-details/wallet-setting-{{currentTheme}}.svg" alt="">
-      </div> -->
     </div>
   
     <div class="balance-content">
@@ -64,21 +62,22 @@
     <div class="wallet-card-header">
       <div class="wallet-icon">
         <div class="icon">
-          <img src="assets/img/currencies/{{token?.tokenInfo?.symbol}}.svg" alt="">
+          <img [src]="setIconToken(token)" alt="">
         </div>
         <div class="wallet-name">
           <p class="name">{{token?.tokenInfo?.name}}</p>
           <div class="wallet-info">
-            <span *ngIf="wallet?.cachedStatus && wallet?.cachedStatus.wallet && wallet?.cachedStatus.wallet?.singleAddress && isUtxoCoin()">Auditable</span>
-            <ng-container *ngIf="wallet?.credentials?.n > 1 || (!wallet?.credentials?.n && wallet?.n > 1) || !wallet?.isComplete() || (wallet?.isComplete() && wallet?.needsBackup)" class="secondary-label">
+            <span class="audit-table" *ngIf="wallet?.cachedStatus && wallet?.cachedStatus.wallet && wallet?.cachedStatus.wallet?.singleAddress && isUtxoCoin()">Auditable</span>
+            <div (click)="goToMultisignInfo()" *ngIf="wallet?.credentials?.n > 1 || (!wallet?.credentials?.n && wallet?.n > 1) || !wallet?.isComplete() || (wallet?.isComplete() && wallet?.needsBackup)" class="secondary-label">
               <span class="secondary-label-multisign" *ngIf="wallet?.credentials?.n > 1">Multisign {{ wallet?.credentials?.m }}-{{ wallet?.credentials?.n }}</span>
               <span class="secondary-label-multisign" *ngIf="!wallet?.credentials?.n && wallet?.n > 1">Multisign {{ wallet?.m }}-{{ wallet?.n }}</span>
-            </ng-container>
+              <img src="assets/img/wallet-details/wallet-info-{{currentTheme}}.svg">
+            </div>
           </div>
         </div>
       </div>
       <div class="wallet-setting" (click)="goToTokenInfo()">
-        <ion-icon name="information-outline"></ion-icon>
+        <ion-icon src="assets/img/wallet-details/wallet-info-{{currentTheme}}.svg"></ion-icon>
       </div>
     </div>
 

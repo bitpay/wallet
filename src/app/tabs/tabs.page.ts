@@ -26,6 +26,7 @@ export class TabsPage {
   appName: string;
   tabs;
   NETWORK = 'livenet';
+  currentTheme;
   public txpsN: number;
   public clipboardBadge: number;
   public clipboardData: string;
@@ -56,6 +57,7 @@ export class TabsPage {
     private themeProvider: ThemeProvider,
     private clipboardProvider: ClipboardProvider
   ) {
+    this.currentTheme = this.appProvider.themeProvider.currentAppTheme;
     this.persistenceProvider.getNetwork().then((network: string) => {
       if (network) {
         this.NETWORK = network;

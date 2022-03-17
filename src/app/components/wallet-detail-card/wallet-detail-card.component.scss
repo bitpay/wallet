@@ -29,7 +29,7 @@ wallet-detail-card {
         }
         .wallet-name {
           margin-left: 0.5rem;
-          max-width: 240px;
+          min-width: 240px;
           p {
             margin: 0;
           }
@@ -38,14 +38,31 @@ wallet-detail-card {
             height: 20px;
           }
           .wallet-info {
-            span {
+            display: flex;
+            align-items: baseline;
+            .audit-table {
               background: rgba(0, 30, 46, 0.24);
-              padding: 2px 4px;
+              padding: 0 4px;
               color: rgba(237, 239, 240, 0.6);
               border-radius: 6px;
               font-size: 12px;
               letter-spacing: 0.4px;
               margin-right: 5px;
+            }
+            .secondary-label {
+              display: flex;
+              align-items: center;
+              background: rgba(0, 30, 46, 0.24);
+              color: rgba(237, 239, 240, 0.6);
+              padding: 0 4px;
+              border-radius: 6px;
+              font-size: 12px;
+              letter-spacing: 0.4px;
+              img {
+                margin-left: 5px;
+                width: 16px;
+                height: 16px;
+              }
             }
           }
         }

@@ -64,7 +64,7 @@
       Could not update transaction history
     </div>
 
-    <div class="middle-message white-card" *ngIf="updatingTxHistory && (!history[0] || updatingTxHistoryProgress>4)">
+    <div class="middle-message" *ngIf="updatingTxHistory && (!history[0] || updatingTxHistoryProgress>4)">
       <span translate>Updating transaction history. Please stand by.</span>
       <br>
       <span translate *ngIf="updatingTxHistoryProgress>4">{{updatingTxHistoryProgress}} transactions downloaded</span>

@@ -7,6 +7,7 @@ import { IncomingDataMenuComponent } from 'src/app/components/incoming-data-menu
 import { InfoSheetComponent } from 'src/app/components/info-sheet/info-sheet';
 import { MemoComponent } from 'src/app/components/memo-component/memo-component';
 import { MinerFeeWarningComponent } from 'src/app/components/miner-fee-warning/miner-fee-warning';
+import { MultisignInfoComponent } from 'src/app/components/multisign-info/multisign-info.component';
 import { NeedsBackupComponent } from 'src/app/components/needs-backup/needs-backup';
 import { OptionsSheetComponent } from 'src/app/components/options-sheet/options-sheet';
 import { PhoneSheet } from 'src/app/components/phone-sheet/phone-sheet';
@@ -176,6 +177,11 @@ export class ActionSheetProvider {
 
   public createNeedsBackup(): NeedsBackupComponent {
     return this.setupSheet<NeedsBackupComponent>(NeedsBackupComponent, null)
+      .instance;
+  }
+
+  public createMultisignInfo(): MultisignInfoComponent {
+    return this.setupSheet<MultisignInfoComponent>(MultisignInfoComponent, null)
       .instance;
   }
 
