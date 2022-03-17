@@ -7,4 +7,25 @@ page-multiple-outputs {
   .misunderstood-msg {
     font-size: 1.6rem;
   }
+  .payment-proposal-to{
+    background: unset;
+    color: #001e2e;
+    font-weight: 600;
+    height: fit-content;
+    justify-content: flex-end;
+    max-width: unset;
+    font-size: 16px;
+  }
+  .no-margin{
+    margin: 0 !important;
+  }
+  .tx-detail-list{
+    margin-top: 0px;
+    margin-bottom: 0px;
+    .list-content-container{
+      ion-item{
+        margin: 0 1rem !important;
+      }
+    }
+  }
 }

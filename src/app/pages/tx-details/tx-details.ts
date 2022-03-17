@@ -51,7 +51,8 @@ export class TxDetailsModal {
   public copayerId: string;
   public txsUnsubscribedForNotifications: boolean;
   public txMemo: string;
-  public tokenData : TokenData;
+  public tokenData: TokenData;
+  public isNegative: boolean;
 
   constructor(
     private configProvider: ConfigProvider,
@@ -72,8 +73,8 @@ export class TxDetailsModal {
     private rateProvider: RateProvider,
     private location: Location,
     private viewCtrl: ModalController
-  ) {}
-  
+  ) { }
+
   ngOnInit() {
     this.events.subscribe('bwsEvent', this.bwsEventHandler);
     this.config = this.configProvider.get();
@@ -106,7 +107,7 @@ export class TxDetailsModal {
   converDate(number) {
     return new Date(number);
   }
-  
+
   ngOnDestroy() {
     this.events.unsubscribe('bwsEvent', this.bwsEventHandler);
   }
@@ -247,16 +248,26 @@ export class TxDetailsModal {
         }
 
         if (this.btx.action != 'invalid') {
-          if (this.btx.action == 'sent')
+          if (this.btx.action == 'sent'){
             this.title = this.translate.instant('Sent');
-          if (this.btx.action == 'received')
+            this.isNegative = true;
+          }
+          if (this.btx.action == 'received'){
             this.title = this.translate.instant('Received');
-          if (this.btx.action == 'moved')
+            this.isNegative = false;
+          }
+          if (this.btx.action == 'moved'){
             this.title = this.translate.instant('Sent to self');
-          if (this.btx.action == 'immature')
+            this.isNegative = false;
+          }
+          if (this.btx.action == 'immature'){
             this.title = this.translate.instant('Immature');
-          if (this.btx.action == 'mined')
+            this.isNegative = false;
+          }
+          if (this.btx.action == 'mined'){
             this.title = this.translate.instant('Mined');
+            this.isNegative = false;
+          }
         }
 
         this.updateMemo();
@@ -404,9 +415,9 @@ export class TxDetailsModal {
   }
 
   getFiatStr(fiat) {
-    return this.btx.coin == 'xpi' || this.btx.coin == 'xec' 
-    ? parseFloat((fiat.rate * this.btx.amountValueStr.replace(',','')).toFixed(4)).toString()
-    : this.filter.formatFiatAmount(parseFloat((fiat.rate * this.btx.amountValueStr.replace(',','')).toFixed(2)));
+    return this.btx.coin == 'xpi' || this.btx.coin == 'xec'
+      ? parseFloat((fiat.rate * this.btx.amountValueStr.replace(',', '')).toFixed(4)).toString()
+      : this.filter.formatFiatAmount(parseFloat((fiat.rate * this.btx.amountValueStr.replace(',', '')).toFixed(2)));
   }
 
   close() {
