@@ -23,10 +23,10 @@
       </expandable-header-primary>
       <expandable-header-footer>
         <div class="action-buttons two-actions" >
-          <div class="action-btn receive-btn" (click)="goToTokenInfo()">
+          <div class="action-btn receive-btn" (click)="goToReceivePage()">
             <ion-button expand="block">
-              <ion-icon slot="start" name="information-outline"></ion-icon>
-              {{ 'Info' | translate }}
+              <ion-icon slot="start" name="arrow-down-outline"></ion-icon>
+              {{ 'Receive' | translate }}
             </ion-button>
           </div>
 
@@ -43,7 +43,7 @@
     </expandable-header>
     <div class="prompt-user activity-fix white-card" *ngIf="shouldShowZeroState()">
       <div class="title-icon larger-icon">
-        <img *ngIf="wallet.coin !== 'doge' && wallet.coin !== 'xpi'" src="assets/img/ghost-tongue-out.svg">
+        <img *ngIf="wallet.coin !== 'doge' && wallet.coin !== 'xpi'" src="assets/img/wallet-details/ghost-{{currentTheme}}.svg">
         <img *ngIf="wallet.coin === 'xpi'"
           [src]="selectedTheme === 'dark' ? 'assets/img/frog-dark.svg' : 'assets/img/frog-light.svg'">
       </div>

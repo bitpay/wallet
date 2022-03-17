@@ -39,6 +39,7 @@
     width: 65%;
     margin: 1rem 0 0 1rem;
     font-weight: 600;
+    color: #EDEFF0;
   }
 
   &-body {
@@ -127,8 +128,8 @@
   text-align: end;
   ion-button {
     --border-radius: 100px;
-    --background: #7ED0FF;
-    --color: #00344B;
+    --background: var(--color-primary);
+    --color: #EDEFF0;
     min-width: 110px;
     height: 35px;
     font-size: 14px;

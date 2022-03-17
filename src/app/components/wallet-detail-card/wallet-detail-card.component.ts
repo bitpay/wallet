@@ -3,6 +3,8 @@ import { Router } from '@angular/router';
 import { AppProvider, CurrencyProvider, EventManagerService, ProfileProvider } from 'src/app/providers';
 import { DecimalFormatBalance } from 'src/app/providers/decimal-format.ts/decimal-format';
 import * as _ from 'lodash';
+import { TokenInforPage } from 'src/app/pages/token-info/token-info';
+import { ModalController } from '@ionic/angular';
 
 const MIN_UPDATE_TIME = 2000;
 
@@ -38,6 +40,7 @@ export class WalletDetailCardComponent implements OnInit {
     private appProvider: AppProvider,
     private currencyProvider: CurrencyProvider,
     private events: EventManagerService,
+    private modalCtrl: ModalController,
     private profileProvider: ProfileProvider,
     private router: Router
   ) {
@@ -108,6 +111,19 @@ export class WalletDetailCardComponent implements OnInit {
         walletId: id
       }
     });
+  }
+
+  public goToTokenInfo() {
+    this.modalCtrl.create(
+      {
+        component: TokenInforPage,
+        componentProps: {
+          walletId: this.wallet.credentials.walletId,
+          tokenInfo: this.token.tokenInfo
+        }
+      }).then(res => {
+        res.present();
+      })
   }
 
 }

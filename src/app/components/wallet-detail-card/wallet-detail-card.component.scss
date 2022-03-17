@@ -45,6 +45,7 @@ wallet-detail-card {
               border-radius: 6px;
               font-size: 12px;
               letter-spacing: 0.4px;
+              margin-right: 5px;
             }
           }
         }
@@ -130,7 +131,7 @@ wallet-detail-card {
         background: url(../../../assets/img/wallet-details/bg-xec.svg) no-repeat;
         background-size: cover;
       }
-      &_default {
+      &-default {
         background: url(../../../assets/img/wallet-details/bg-xec.svg) no-repeat;
         background-size: cover;
       }
@@ -150,6 +151,13 @@ wallet-detail-card {
       color: #edeff0;
       width: 16px;
       height: 16px;
+    }
+  }
+
+  .wallet-setting {
+    ion-icon {
+      width: 20px;
+      height: 20px;
     }
   }
 }

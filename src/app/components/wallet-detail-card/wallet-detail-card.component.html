@@ -55,7 +55,7 @@
 </ng-container>
 
 <ng-template #tokenCard>
-  <div class="wallet-card background_default" [ngClass]="{ 
+  <div class="wallet-card bg-default" [ngClass]="{ 
     'bg-EAT': token?.tokenInfo?.symbol == 'EAT',
     'bg-bcPro': token?.tokenInfo?.symbol == 'bcPro',
     'bg-DoC': token?.tokenInfo?.symbol == 'DoC',
@@ -77,9 +77,9 @@
           </div>
         </div>
       </div>
-      <!-- <div class="wallet-setting" (click)="openWalletSettings(wallet.id)">
-        <img src="assets/img/wallet-details/wallet-setting-{{currentTheme}}.svg" alt="">
-      </div> -->
+      <div class="wallet-setting" (click)="goToTokenInfo()">
+        <ion-icon name="information-outline"></ion-icon>
+      </div>
     </div>
 
     <div class="balance-content">
@@ -90,7 +90,7 @@
           <div *ngIf="wallet?.balanceHidden">******</div>
           <ion-icon class="eye" [name]="wallet?.balanceHidden ? 'eye-outline' : 'eye-off-outline'" (click)="toggleBalance()"></ion-icon>
         </div>
-        <div class="balance-alt-str" *ngIf="wallet?.balanceHidden">
+        <div class="balance-alt-str" *ngIf="!wallet?.balanceHidden">
           ~ 0.00 USD
         </div>
         <div class="balance-alt-str" *ngIf="wallet?.balanceHidden">
