@@ -1,12 +1,15 @@
 page-coinbase-tx-details,
 page-tx-details {
-  .note-container {
-    max-width: 200px;
+  .custom-icon{
+    width: 16px;
   }
   --item-border-color: #efefef;
   --item-label-color: #6c6c6e;
   .header-container {
-    padding: 20px 0px 20px 0px;
+    padding: 24px 0px;
+    display: flex;
+    justify-content: center;
+    width: 100%;
     .sending-label {
       display: flex;
       align-items: center;
@@ -115,11 +118,12 @@ page-tx-details {
     }
   }
   .amount-label {
-    padding-top: 1rem;
     .amount {
       display: flex;
-      font-size: 2.2rem;
-      justify-content: space-between;
+      font-size: 22px;
+      font-weight: 600;
+      justify-content: center;
+      color: rgba(0, 108, 68, 1);
       img.sending-img {
         width: auto;
         height: 40px;
@@ -132,6 +136,9 @@ page-tx-details {
       div {
         display: flex;
       }
+    }
+    .negative-amount{
+      color: rgba(186, 27, 27, 1);
     }
     .alternative {
       margin-top: 0.5rem;
@@ -173,7 +180,6 @@ page-tx-details {
   }
 
   .payment-proposal-to {
-    padding: 10px;
     height: 39px;
     max-width: 200px;
     border-radius: 19.5px;
@@ -363,5 +369,61 @@ page-tx-details {
       width: 20px;
       height: 20px;
     }
+  }
+  .view-blockchain-button{
+    font-weight: 600;
+  }
+  .tx-detail-list{
+    background: rgba(250, 250, 251, 1);
+    border-radius: 16px;
+    margin: 1rem;
+    
+    .amount-item{
+      margin-bottom: 0 !important;
+      margin-top: 0 !important;
+    }
+    ion-item{
+      box-shadow: unset !important;
+      --background: transparent;
+      background: transparent;
+      background-color: unset !important;
+    }
+    .summary-item{
+      color: rgba(0, 30, 46, 0.6);
+    }
+    ion-label, ion-note{
+      align-self: center;
+    }
+    ion-label{
+      flex: 0 0 fit-content;
+    }
+    ion-note{
+      padding-top: 0;
+      padding-bottom: 0;
+      flex-grow: 1;
+      margin-left: 32px;
+      margin-right: 0;
+      overflow: hidden;
+    }
+    ion-textarea{
+      margin: 0;
+      flex: 2;
+      justify-content: flex-end;
+      .native-textarea{
+        padding: 0;
+      }
+      .textarea-wrapper{
+        width: 100%;
+        text-align: right;
+      }
+    }
+    .summary-item-detail, .secondary-note{
+      color: rgba(0, 30, 46, 1);
+      font-weight: 600;
+      font-size: 16px;
+    }
+  }
+  .memo-custom{
+    --highlight-background: transparent;
   }
 }

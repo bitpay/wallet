@@ -1,18 +1,25 @@
-<wide-header-page title="{{title | translate}}" hideBackButton="true">
+<wide-header-page hideToolbar="true" hideBackButton="true">
   <ion-buttons slot="start">
-    <ion-button class="close-container disable-hover" (click)="close()">
-      <ion-icon color="dark" name="close-outline"></ion-icon>
+    <ion-button class="disable-hover" (click)="close()">
+      <ion-icon class="custom-icon" src="assets/img/close-{{currentTheme}}.svg"></ion-icon>
+    </ion-button>
+  </ion-buttons>
+  <ion-buttons slot="end">
+    <ion-button class="disable-hover" (click)="close()">
+      <ion-icon class="custom-icon" src="assets/img/share-{{currentTheme}}.svg"></ion-icon>
     </ion-button>
   </ion-buttons>
   <div page-content>
-    <ion-list lines="none" *ngIf="btx" class="bp-list">
-      <ion-item>
-       
+    <ion-list lines="none" *ngIf="btx" class="bp-list tx-detail-list">
+      <ion-item class="amount-item">
         <div class="header-container">
           <ng-container *ngIf="!btx.tokenId">
             <div class="amount-label" *ngIf="!(btx.amount === 0 && wallet.coin === 'eth')">
-              <div class="amount">
-                {{btx.amountValueStr}} {{btx.amountUnitStr | uppercase}}
+              <div *ngIf="isNegative" class="amount negative-amount">
+                -{{btx.amountValueStr}} {{btx.amountUnitStr | uppercase}}
+              </div>
+              <div *ngIf="!isNegative" class="amount">
+                +{{btx.amountValueStr}} {{btx.amountUnitStr | uppercase}}
               </div>
               <div class="alternative">
                 <span *ngIf="!btx.fiatRateStr">...</span>
@@ -22,8 +29,11 @@
           </ng-container>
           <ng-container *ngIf="btx.tokenId">
             <div class="amount-label" *ngIf="!(btx.amountToken === 0 )">
-              <div class="amount">
-                {{btx.amountToken}} {{btx.symbolToken | uppercase}}
+              <div *ngIf="isNegative" class="amount negative-amount">
+                - {{btx.amountToken}} {{btx.symbolToken | uppercase}}
+              </div>
+              <div *ngIf="!isNegative" class="amount">
+                + {{btx.amountToken}} {{btx.symbolToken | uppercase}}
               </div>
             </div>
           </ng-container>
@@ -33,29 +43,24 @@
           </div>
         </div>
       </ion-item>
-
-      <label-tip class="low-fees" type="warn" *ngIf="wallet.coin === 'btc' && btx.action == 'received' && btx.lowAmount">
+      <div class="line-divider"></div>
+      <label-tip class="low-fees" type="warn"
+        *ngIf="wallet.coin === 'btc' && btx.action == 'received' && btx.lowAmount">
         <span label-tip-title translate>Amount Too Low To Spend</span>
         <div label-tip-body translate>
-          This transaction amount is too small compared to current Bitcoin network fees. Spending these funds will need a Bitcoin network fee cost comparable to the funds itself.
+          This transaction amount is too small compared to current Bitcoin network fees. Spending these funds will need
+          a Bitcoin network fee cost comparable to the funds itself.
           <br>
           <a class="label-tip-link" (click)="readMore()" translate>Learn More</a>
         </div>
       </label-tip>
-
-      <ion-item class="sub-title">
-        <ion-label>
-          <div class="main-label" translate>DETAILS</div>
-        </ion-label>
-      </ion-item>
-
       <ion-item *ngIf="btx && btx.feeStr && btx.action != 'received'">
-        <ion-label>
+        <ion-label slot="start" class="ion-text-wrap ion-align-self-start">
           <div class="summary-item">
             <span translate>Miner fee</span>
           </div>
         </ion-label>
-        <ion-note slot="end">
+        <ion-note class="ion-text-end" slot="end">
           <div class="summary-item-detail">
             {{btx.feeStr}}
           </div>
@@ -79,8 +84,8 @@
             <span translate>From to</span>
           </div>
         </ion-label>
-        <ion-note class="payment-proposal-to" slot="end">
-          <div class="background-content" copy-to-clipboard="{{btx.inputAddresses[0]}}">
+        <ion-note class="secondary-note" slot="end">
+          <div copy-to-clipboard="{{btx.inputAddresses[0]}}">
             <span>{{btx.inputAddresses[0] | shortenedAddress }}</span>
           </div>
         </ion-note>
@@ -95,31 +100,32 @@
 
       <div class="line-divider" *ngIf="btx.action === 'sent'"></div>
 
-      <page-multiple-outputs *ngIf="btx.action === 'sent'" [tx]="btx" (openBlockChainEvent)="viewOnBlockchain()"></page-multiple-outputs>
+      <page-multiple-outputs *ngIf="btx.action === 'sent'" [tx]="btx" (openBlockChainEvent)="viewOnBlockchain()">
+      </page-multiple-outputs>
 
       <div class="line-divider" *ngIf="btx.creatorName && isShared"></div>
 
       <ion-item *ngIf="btx.creatorName && isShared">
-        <ion-label>
+        <ion-label slot="start">
           <div class="summary-item">
             <span translate>Created by</span>
           </div>
         </ion-label>
         <ion-note slot="end">
-          <span class="note-container ellipsis summary-item-detail">{{btx.creatorName}}</span>
+          <span class="ellipsis summary-item-detail">{{btx.creatorName}}</span>
         </ion-note>
       </ion-item>
 
       <div class="line-divider"></div>
 
       <ion-item>
-        <ion-label>
+        <ion-label slot="start">
           <div class="summary-item">
             <span translate>Date</span>
           </div>
         </ion-label>
         <ion-note slot="end">
-          <span class="note-container ellipsis summary-item-detail">
+          <span class="ellipsis summary-item-detail">
             <time>{{ (btx.ts || btx.createdOn || btx.time) * 1000 | amDateFormat:'MM/DD/YYYY hh:mm a'}}</time>
           </span>
         </ion-note>
@@ -128,7 +134,7 @@
       <div class="line-divider" *ngIf="btx.nonce"></div>
 
       <ion-item *ngIf="btx.nonce">
-        <ion-label>
+        <ion-label slot="start">
           <div class="summary-item">
             <span translate>Nonce</span>
           </div>
@@ -143,7 +149,7 @@
       <div class="line-divider"></div>
 
       <ion-item>
-        <ion-label>
+        <ion-label slot="start" class="ion-align-self-start">
           <div class="summary-item">
             <span translate>Confirmations</span>
           </div>
@@ -158,10 +164,10 @@
               {{btx.feeRate}}
             </span>
           </div>
-          <span class="note-container ellipsis summary-item-detail" *ngIf="btx.confirmations>0 && !btx.safeConfirmed">
+          <span class="ellipsis summary-item-detail" *ngIf="btx.confirmations>0 && !btx.safeConfirmed">
             {{btx.confirmations}}
           </span>
-          <span class="note-container ellipsis summary-item-detail" *ngIf="btx.safeConfirmed">
+          <span class="ellipsis summary-item-detail" *ngIf="btx.safeConfirmed">
             {{btx.safeConfirmed}}
           </span>
         </ion-note>
@@ -169,23 +175,25 @@
 
       <div class="line-divider"></div>
 
-      <ion-item>
-        <ion-label class="summary-item" position="stacked">
+      <ion-item class="memo-custom">
+        <ion-label slot="start" class="summary-item">
           {{'Memo' | translate}}
         </ion-label>
-        <ion-textarea class="ion-text-left summary-item-detail" placeholder="{{'Enter a transaction memo' | translate}}" (ionBlur)="saveMemoInfo()" [(ngModel)]="txMemo" name="tx.description" autocomplete="off" autocorrect="off"></ion-textarea>
+        <ion-textarea slot="end" class="ion-text-left summary-item-detail"
+          placeholder="{{'Enter a transaction memo' | translate}}" (ionBlur)="saveMemoInfo()" [(ngModel)]="txMemo"
+          name="tx.description" autocomplete="off" autocorrect="off"></ion-textarea>
       </ion-item>
 
       <div class="line-divider"></div>
 
       <ion-item>
-        <ion-label>
+        <ion-label slot="start">
           <div class="summary-item">
             <span translate>Transaction ID</span>
           </div>
         </ion-label>
         <ion-note slot="end" copy-to-clipboard="{{ btx.txid }}">
-          <span class="note-container ellipsis summary-item-detail">
+          <span class="ellipsis summary-item-detail">
             <time>{{ btx.txid }}</time>
           </span>
         </ion-note>
@@ -193,7 +201,8 @@
 
       <ion-item *ngIf="txsUnsubscribedForNotifications">
         <ion-label>{{'Notify me if confirmed' | translate}}</ion-label>
-        <ion-toggle checked="false" *ngIf="!btx.confirmations || btx.confirmations == 0" [(ngModel)]="txNotification.value" (ionChange)="txConfirmNotificationChange()"></ion-toggle>
+        <ion-toggle checked="false" *ngIf="!btx.confirmations || btx.confirmations == 0"
+          [(ngModel)]="txNotification.value" (ionChange)="txConfirmNotificationChange()"></ion-toggle>
       </ion-item>
 
       <div class="line-divider" *ngIf="actionList && actionList[0]"></div>
@@ -202,7 +211,9 @@
         <ion-item detail="false">
           <div>{{'Timeline' | translate}}</div>
         </ion-item>
-        <div class="timeline-item" [ngClass]="{'action-created' : a.type == 'created' || a.type == 'accept', 'action-rejected' : a.type == 'reject'}" *ngFor="let a of actionList; let i = index">
+        <div class="timeline-item"
+          [ngClass]="{'action-created' : a.type == 'created' || a.type == 'accept', 'action-rejected' : a.type == 'reject'}"
+          *ngFor="let a of actionList; let i = index">
           <div class="timeline-content">
             <div class="timeline-content-icon">
               <div class="rejected" *ngIf="a.type === 'reject'">!</div>
@@ -219,18 +230,11 @@
           </div>
         </div>
       </div>
-
-      <div class="line-divider"></div>
-
-      <ion-row class="ion-justify-content-center background-button-content">
-        <div class="background-content">
-          <ion-button fill="clear" (click)="viewOnBlockchain()">
-            {{'View on blockchain' | translate}}
-          </ion-button>
-        </div>
-      </ion-row>
-
     </ion-list>
-
+    <ion-row class="ion-justify-content-center">
+      <ion-button class="view-blockchain-button" fill="clear" (click)="viewOnBlockchain()">
+        {{'View on blockchain' | translate}}
+      </ion-button>
+    </ion-row>
   </div>
 </wide-header-page>

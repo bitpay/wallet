@@ -105,7 +105,7 @@ export const availableCoins: CoinsMap<CoinOpts> = {
       paymentCode: 'BIP73',
       protocolPrefix: { livenet: 'ecash', testnet: 'ectest' },
       ratesApi: 'https://aws.abcpay.cash/bws/api/v3/fiatrates/xec',
-      blockExplorerUrls: 'explorer.bitcoinabc.org/',
+      blockExplorerUrls: 'explorer.be.cash/',
       blockExplorerUrlsTestnet: 'texplorer.bitcoinabc.org/'
     },
     feeInfo: {

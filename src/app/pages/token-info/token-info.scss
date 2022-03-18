@@ -8,7 +8,9 @@ token-info {
 
   .header-container {
     padding: 20px 0px 20px 0px;
-
+    width: 100%;
+    display: flex;
+    justify-content: center;
     .sending-label {
       display: flex;
       align-items: center;
@@ -85,4 +87,53 @@ token-info {
     width: auto;
   }
 
+  .tx-detail-list{
+    background: rgba(250, 250, 251, 1);
+    border-radius: 16px;
+    margin: 1rem;
+    .amount-item{
+      margin-bottom: 0 !important;
+      margin-top: 0 !important;
+    }
+    ion-item{
+      box-shadow: unset !important;
+      --background: transparent;
+      background: transparent;
+      background-color: unset !important;
+    }
+    .summary-item{
+      color: rgba(0, 30, 46, 0.6);
+    }
+    ion-label, ion-note{
+      align-self: center;
+    }
+    ion-label{
+      flex: 0 0 fit-content;
+    }
+    ion-note{
+      padding-top: 0;
+      padding-bottom: 0;
+      flex-grow: 1;
+      margin-left: 32px;
+      margin-right: 0;
+      overflow: hidden;
+    }
+    ion-textarea{
+      margin: 0;
+      flex: 2;
+      justify-content: flex-end;
+      .native-textarea{
+        padding: 0;
+      }
+      .textarea-wrapper{
+        width: 100%;
+        text-align: right;
+      }
+    }
+    .summary-item-detail, .secondary-note{
+      color: rgba(0, 30, 46, 1);
+      font-weight: 600;
+      font-size: 16px;
+    }
+  }
 }

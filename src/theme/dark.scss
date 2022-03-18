@@ -1328,6 +1328,24 @@
             background-color: var(--bg-color-dark-theme-2);
         }
     }
+    token-info,
+    page-tx-details{
+        .tx-detail-list{
+            background: linear-gradient(0deg, rgba(126, 208, 255, 0.11), rgba(126, 208, 255, 0.11)), #001E2E;
+            .note-container{
+                color: #edeff0 !important
+            }
+            .amount{
+                color: rgba(115, 218, 165, 1);
+            }
+            .negative-amount{
+                color: rgba(255, 180, 169, 1);
+            }
+        }
+        .view-blockchain-button{
+            color: #7ED0FF
+        }
+    }
 
     page-bitpay-card-topup {
         ion-content {

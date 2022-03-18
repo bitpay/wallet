@@ -20,6 +20,7 @@ import { EventManagerService } from 'src/app/providers/event-manager.service';
 import { ModalController, NavController, NavParams } from '@ionic/angular';
 import { Location } from '@angular/common';
 import { PersistenceProvider } from 'src/app/providers/persistence/persistence';
+import { AppProvider } from 'src/app/providers';
 
 export interface TokenData {
   amountToken: string,
@@ -52,8 +53,9 @@ export class TxDetailsModal {
   public copayerId: string;
   public txsUnsubscribedForNotifications: boolean;
   public txMemo: string;
-  public tokenData : TokenData;
-
+  public tokenData: TokenData;
+  public isNegative: boolean;
+  public currentTheme;
   constructor(
     private configProvider: ConfigProvider,
     private currencyProvider: CurrencyProvider,
@@ -73,13 +75,14 @@ export class TxDetailsModal {
     private rateProvider: RateProvider,
     private location: Location,
     private viewCtrl: ModalController,
-    private persistenceProvider: PersistenceProvider
+    private persistenceProvider: PersistenceProvider,
+    private appProvider: AppProvider,
   ) { }
   
   ngOnInit() {
     this.events.subscribe('bwsEvent', this.bwsEventHandler);
     this.config = this.configProvider.get();
-
+    this.currentTheme = this.appProvider.themeProvider.currentAppTheme;
     this.txId = this.navParams.data.txid;
     this.title = this.translate.instant('Transaction');
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
@@ -108,7 +111,7 @@ export class TxDetailsModal {
   converDate(number) {
     return new Date(number);
   }
-  
+
   ngOnDestroy() {
     this.events.unsubscribe('bwsEvent', this.bwsEventHandler);
   }
@@ -282,19 +285,30 @@ export class TxDetailsModal {
         }
 
         if (this.btx.action != 'invalid') {
+        
           if (this.btx.isGenesis) {
             this.title = this.translate.instant('Genesis');
           } else {
-            if (this.btx.action == 'sent')
+            if (this.btx.action == 'sent'){
               this.title = this.translate.instant('Sent');
-            if (this.btx.action == 'received')
+              this.isNegative = true;
+            }
+            if (this.btx.action == 'received'){
               this.title = this.translate.instant('Received');
-            if (this.btx.action == 'moved')
+              this.isNegative = false;
+            }
+            if (this.btx.action == 'moved'){
               this.title = this.translate.instant('Sent to self');
-            if (this.btx.action == 'immature')
+              this.isNegative = false;
+            }
+            if (this.btx.action == 'immature'){
               this.title = this.translate.instant('Immature');
-            if (this.btx.action == 'mined')
+              this.isNegative = false;
+            }
+            if (this.btx.action == 'mined'){
               this.title = this.translate.instant('Mined');
+              this.isNegative = false;
+            }
           }
         }
 
@@ -443,9 +457,9 @@ export class TxDetailsModal {
   }
 
   getFiatStr(fiat) {
-    return this.btx.coin == 'xpi' || this.btx.coin == 'xec' 
-    ? parseFloat((fiat.rate * this.btx.amountValueStr.replace(',','')).toFixed(4)).toString()
-    : this.filter.formatFiatAmount(parseFloat((fiat.rate * this.btx.amountValueStr.replace(',','')).toFixed(2)));
+    return this.btx.coin == 'xpi' || this.btx.coin == 'xec'
+      ? parseFloat((fiat.rate * this.btx.amountValueStr.replace(',', '')).toFixed(4)).toString()
+      : this.filter.formatFiatAmount(parseFloat((fiat.rate * this.btx.amountValueStr.replace(',', '')).toFixed(2)));
   }
 
   close() {
