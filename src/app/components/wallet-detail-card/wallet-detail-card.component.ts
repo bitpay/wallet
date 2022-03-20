@@ -137,7 +137,7 @@ export class WalletDetailCardComponent implements OnInit {
     const receive = this.actionSheetProvider.createMultisignInfo();
       receive.present();
       receive.onDidDismiss(data => {
-        if (data) console.log('AHIHIHI');
+        if (data) console.log('close action multisig');
       });
   }
 }
