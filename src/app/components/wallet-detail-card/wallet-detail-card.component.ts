@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
-import { AppProvider, CurrencyProvider, EventManagerService, ProfileProvider } from 'src/app/providers';
+import { ActionSheetProvider, AppProvider, CurrencyProvider, EventManagerService, ProfileProvider } from 'src/app/providers';
 import { DecimalFormatBalance } from 'src/app/providers/decimal-format.ts/decimal-format';
 import * as _ from 'lodash';
 import { TokenInforPage } from 'src/app/pages/token-info/token-info';
@@ -35,9 +35,11 @@ export class WalletDetailCardComponent implements OnInit {
 
   public currentTheme: string;
   public hiddenBalance: boolean;
+  private listEToken = ['EAT', 'DoC', 'bcPro'];
 
   constructor(
     private appProvider: AppProvider,
+    private actionSheetProvider: ActionSheetProvider,
     private currencyProvider: CurrencyProvider,
     private events: EventManagerService,
     private modalCtrl: ModalController,
@@ -126,4 +128,16 @@ export class WalletDetailCardComponent implements OnInit {
       })
   }
 
+  public setIconToken(token) {
+    const isValid = this.listEToken.includes(token?.tokenInfo?.symbol);
+    return isValid ? `assets/img/currencies/${token?.tokenInfo?.symbol}.svg` : 'assets/img/currencies/xec.svg';
+  }
+
+  public goToMultisignInfo() {
+    const receive = this.actionSheetProvider.createMultisignInfo();
+      receive.present();
+      receive.onDidDismiss(data => {
+        if (data) console.log('close action multisig');
+      });
+  }
 }

@@ -87,6 +87,15 @@ token-details {
     background-color: var(--ion-color-danger);
   }
 
+  .middle-message {
+    height: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+
   .tx-history {
     .tx-history-header {
       height: 3rem;

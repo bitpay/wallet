@@ -40,7 +40,7 @@
   <ion-header *ngIf="!(!walletsGroups || !walletsGroups[0])" [translucent]="true" class="bp-header">
     <ion-toolbar>
       <ion-buttons slot="start" class="ion-no-margin">
-        <ion-button class="key-setting" (click)="openWalletGroupSettings(keySelected[0].keyId)">
+        <ion-button class="key-setting" (click)="openSettingPage()">
           <ion-icon slot="icon-only" src="assets/img/key-setting-{{currentTheme}}.svg"></ion-icon>
         </ion-button>
         <ion-button class="key-list" (click)="openMenu()">
@@ -51,8 +51,8 @@
           {{ keyNameSelected }}
       </ion-title>
       <ion-buttons slot="end" class="settings-button" *ngIf="walletsGroups && walletsGroups[0]">
-        <ion-button class="key-add" (click)="addKey()">
-          <ion-icon slot="icon-only" src="assets/img/key-add-{{currentTheme}}.svg"></ion-icon>
+        <ion-button class="key-add" (click)="openAddressBookPage()">
+          <ion-icon class="address-book" name="book-outline"></ion-icon>
         </ion-button>
         <ion-button class="key-notifications" (click)="addKey()">
           <ion-icon slot="icon-only" src="assets/img/key-notifications-{{currentTheme}}.svg"></ion-icon>
@@ -94,12 +94,8 @@
         </div>
         <ion-list lines="nones" class="bp-list">
           <div class="wallet-item" *ngFor="let wallet of keySelected; let j = index">
-            <wallet-item-content [coins]="coins" [isKeyTab]="true" [wallet]="wallet" [isShowBalance]="isShowBalance" (click)="goToWalletDetails(wallet)">
+            <wallet-item-content [isKeyTab]="true" [wallet]="wallet" [isShowBalance]="isShowBalance" (click)="goToWalletDetails(wallet)">
             </wallet-item-content>
-  
-            <ion-infinite-scroll *ngIf="isSupportToken(wallet)" class="scroll-token" (ionInfinite)="reloadToken($event, wallet , j)">
-              <ion-infinite-scroll-content></ion-infinite-scroll-content>
-            </ion-infinite-scroll>
   
             <ng-container *ngIf="isSupportToken(wallet)">
               <div class="token-container"> 
@@ -126,7 +122,7 @@
                 <ng-container *ngIf="wallet.tokens">
                   <ion-list class="token-item bp-list" [ngClass]="{ collapsed: isCollapsedToken(wallet.id) }">
                     <ion-item *ngFor="let token of wallet.tokens" (click)="goToTokenDetails(wallet, token)">
-                      <ion-icon class="item-img rectangle token-icon" [src]="setIconToken(token)" slot="start"></ion-icon>
+                      <img class="item-img rectangle token-icon" [src]="setIconToken(token)" slot="start">
                       <ion-label>
                         <div class="main-label">{{token?.tokenInfo?.name}}</div>
                         <div class="secondary-label" *ngIf="wallet?.cachedStatus">
@@ -135,7 +131,7 @@
                       </ion-label>
                       <ion-note slot="end">
                         <div>
-                          <div *ngIf="!wallet?.balanceHidden" class="main-note">{{token?.amountToken}}</div>
+                          <div *ngIf="!wallet?.balanceHidden" class="main-note">{{DecimalFormatBalance(token?.amountToken)}}</div>
                           <div *ngIf="wallet?.balanceHidden" class="main-note">******</div>
                         </div>
                       </ion-note>

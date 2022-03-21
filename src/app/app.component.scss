@@ -1061,7 +1061,9 @@ ion-tabs {
 
     ion-tab-bar {
         padding: 1rem 0px;
-
+        display: flex;
+        justify-content: space-around;
+        border: 0;
         ion-tab-button {
             --ripple-color: transparent;
             min-height: 4.6rem;
@@ -1074,6 +1076,24 @@ ion-tabs {
             &.tab-selected {
                 opacity: 1;
                 margin-bottom: 5px;
+            }
+
+            ion-icon {
+                width: 32px;
+                height: 32px;
+            }
+
+            .scan-container {
+                background: #b6c9d8;
+                width: 56px;
+                height: 56px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                border-radius: 16px;
+                position: absolute;
+                top: 0px;
+
             }
         }
     }

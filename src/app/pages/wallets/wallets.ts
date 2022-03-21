@@ -51,14 +51,13 @@ export class WalletsPage {
   private onResumeSubscription: Subscription;
   private onPauseSubscription: Subscription;
   public showReorder: boolean = false;
-  listEToken = ['ABCSLP', 'EAT', 'DoC', 'bcPro'];
+  listEToken = ['EAT', 'DoC', 'bcPro'];
   isDonation;
   donationSupportCoins = [];
   navParamsData;
   isShowCreateNewWallet = false;
   groupToken;
   currentTheme;
-  coins = [];
   totalBalanceKey;
   isShowBalance = true;
   isEditKeyName = false;
@@ -92,24 +91,6 @@ export class WalletsPage {
     this.collapsedGroups = {};
     this.collapsedToken = {};
     this.zone = new NgZone({ enableLongStackTrace: false });
-    for (const coin of availableChains) {
-      const {
-        backgroundColor,
-        gradientBackgroundColor
-      } = this.currencyProvider.getTheme(coin as Coin);
-      const card = {
-        unitCode: coin,
-        historicalRates: [],
-        currentPrice: 0,
-        totalBalanceChange: 0,
-        totalBalanceChangeAmount: 0,
-        backgroundColor,
-        gradientBackgroundColor,
-        name: this.currencyProvider.getCoinName(coin as Coin)
-      };
-      this.coins.push(card);
-    }
-    this.getPrices();
   }
 
   getWalletGroup(name: string) {
@@ -186,35 +167,6 @@ export class WalletsPage {
     }
   }
 
-  public getPrices() {
-    // TODO: Add a new endpoint in BWS that
-    // provides JUST  the current prices and the delta.
-    this.rateProvider
-      .fetchHistoricalRates('USD', DateRanges.Day)
-      .then(response => {
-        _.forEach(this.coins, (coin, index: number) => {
-          if (response[coin.unitCode])
-            this.update(index, response[coin.unitCode]);
-        });
-        err => {
-          this.logger.error('Error getting rates:', err);
-        };
-      });
-  }
-
-  private update(i: number, values: ExchangeRate[]) {
-    if (!values[0] || !_.last(values)) {
-      this.logger.warn('No exchange rate data');
-      return;
-    }
-    const lastRate = _.last(values).rate;
-    this.coins[i].currentPrice = values[0].rate;
-    this.coins[i].totalBalanceChangeAmount =
-      this.coins[i].currentPrice - lastRate;
-    this.coins[i].totalBalanceChange =
-      (this.coins[i].totalBalanceChangeAmount * 100) / lastRate;
-  }
-
   openMenu() {
     this.menu.open('first');
   }
@@ -235,11 +187,33 @@ export class WalletsPage {
   }
 
   private initKeySelected() {
+    let keyChange = this.profileProvider.keyChange;
+    let walletChange = this.profileProvider.walletChange;
     if (this.walletsGroups.length !== 0) {
       if (this.keySelected.length === 0) {
         this.totalBalanceKey = this.getTotalBalanceKey(this.walletsGroups[0]);
         this.keySelected = this.walletsGroups[0];
         this.keyNameSelected = this.getWalletGroup(this.keySelected[0].keyId).name;
+      }
+      if (keyChange.isStatus && keyChange.keyId) {
+        const walletsGroups = this.profileProvider.orderedWalletsByGroup;
+        const newAddWallet = walletsGroups.find((item) => {
+          return item[0].keyId == keyChange.keyId;
+        })
+        this.totalBalanceKey = this.getTotalBalanceKey(newAddWallet);
+        this.keySelected = newAddWallet;
+        this.keyNameSelected = this.getWalletGroup(this.keySelected[0].keyId).name;
+        this.profileProvider.keyChange.isStatus = false;
+      }
+      if (walletChange.isStatus && walletChange.keyId) {
+        const walletsGroups = this.profileProvider.orderedWalletsByGroup;
+        const newAddWallet = walletsGroups.find((item) => {
+          return item[0].keyId == walletChange.keyId;
+        })
+        this.totalBalanceKey = this.getTotalBalanceKey(newAddWallet);
+        this.keySelected = newAddWallet;
+        this.keyNameSelected = this.getWalletGroup(this.keySelected[0].keyId).name;
+        this.profileProvider.walletChange.isStatus = false;
       }
     } else {
       this.keySelected = [];
@@ -272,6 +246,10 @@ export class WalletsPage {
       return result;
     }, 0)
     return DecimalFormatBalance(totalBalanceAlternative);
+  }
+
+  public DecimalFormatBalance(amount) {
+    return DecimalFormatBalance(amount);
   }
 
   public addKey(): void {
@@ -735,6 +713,14 @@ export class WalletsPage {
         keyId
       },
     })
+  }
+
+  public openSettingPage() {
+    this.router.navigate(['/tabs/setting']);
+  }
+
+  public openAddressBookPage() {
+    this.router.navigate(['/tabs/address-book']);
   }
 }
 

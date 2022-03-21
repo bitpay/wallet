@@ -37,6 +37,16 @@ page-wallets {
     .token-item {
       margin: 0 1rem;
       background: linear-gradient(0deg, rgba(126, 208, 255, 0.05), rgba(126, 208, 255, 0.05)), #001E2E;
+      ion-item {
+        --inner-padding-top: 11px;
+        --inner-padding-bottom: 11px;
+        .token-icon {
+          margin: 0;
+          margin-right: 0.5rem;
+          width: 32px;
+          height: 32px;
+        }
+      }
     }
 
     .collapse-btn {
@@ -165,6 +175,10 @@ page-wallets {
 
     .key-notifications {
       margin: 0 1rem;
+    }
+    
+    .address-book {
+      color: #6a9ab4;
     }
   }
 
