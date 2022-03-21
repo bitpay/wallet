@@ -35,7 +35,7 @@ export class WalletDetailCardComponent implements OnInit {
 
   public currentTheme: string;
   public hiddenBalance: boolean;
-  private listEToken = ['ABCSLP', 'EAT', 'DoC', 'bcPro'];
+  private listEToken = ['EAT', 'DoC', 'bcPro'];
 
   constructor(
     private appProvider: AppProvider,

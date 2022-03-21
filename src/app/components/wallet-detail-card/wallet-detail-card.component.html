@@ -87,7 +87,6 @@
         <div class="balance-str">
           <balance-to-show *ngIf="!wallet?.balanceHidden" [balance]="amountToken"></balance-to-show>
           <div *ngIf="wallet?.balanceHidden">******</div>
-          <!-- <ion-icon class="eye" [name]="wallet?.balanceHidden ? 'eye-outline' : 'eye-off-outline'" (click)="toggleBalance()"></ion-icon> -->
         </div>
         <div class="balance-alt-str" *ngIf="!wallet?.balanceHidden">
           ~ 0.00 USD

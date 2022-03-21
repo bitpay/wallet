@@ -52,7 +52,6 @@
       </ion-title>
       <ion-buttons slot="end" class="settings-button" *ngIf="walletsGroups && walletsGroups[0]">
         <ion-button class="key-add" (click)="openAddressBookPage()">
-          <!-- <ion-icon slot="icon-only" src="assets/img/key-add-{{currentTheme}}.svg"></ion-icon> -->
           <ion-icon class="address-book" name="book-outline"></ion-icon>
         </ion-button>
         <ion-button class="key-notifications" (click)="addKey()">
@@ -97,10 +96,6 @@
           <div class="wallet-item" *ngFor="let wallet of keySelected; let j = index">
             <wallet-item-content [isKeyTab]="true" [wallet]="wallet" [isShowBalance]="isShowBalance" (click)="goToWalletDetails(wallet)">
             </wallet-item-content>
-  
-            <!-- <ion-infinite-scroll *ngIf="isSupportToken(wallet)" class="scroll-token" (ionInfinite)="reloadToken($event, wallet , j)">
-              <ion-infinite-scroll-content></ion-infinite-scroll-content>
-            </ion-infinite-scroll> -->
   
             <ng-container *ngIf="isSupportToken(wallet)">
               <div class="token-container"> 

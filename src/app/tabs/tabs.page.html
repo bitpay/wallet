@@ -5,7 +5,6 @@
       <ion-icon src="assets/img/tab-home-{{currentTheme}}.svg"></ion-icon>
     </ion-tab-button>
 
-    <!-- *ngIf="navigationType === 'scan' && isCordova" -->
     <ion-tab-button tab="scan">
       <div class="scan-container">
         <ion-icon src="assets/img/tab-scan-{{currentTheme}}.svg"></ion-icon>
@@ -16,14 +15,6 @@
       <ion-icon src="assets/img/tab-wallet-{{currentTheme}}.svg"></ion-icon>
       <ion-badge color="warning" class="custom-badge-number">{{ txpsN }}</ion-badge>
     </ion-tab-button>
-
-    <!-- <ion-tab-button tab="address-book">
-      <ion-icon name="book-outline"></ion-icon>
-    </ion-tab-button>
-
-    <ion-tab-button tab="setting">
-      <ion-icon name="settings"></ion-icon>
-    </ion-tab-button> -->
   </ion-tab-bar>
 
 </ion-tabs>
