@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { TranslateService } from '@ngx-translate/core';
@@ -13,7 +13,8 @@ import { ProfileProvider } from 'src/app/providers/profile/profile';
 @Component({
   selector: 'page-advanced',
   templateUrl: 'advanced.html',
-  styleUrls: ['advanced.scss']
+  styleUrls: ['advanced.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class AdvancedPage {
   public spendUnconfirmed: boolean;

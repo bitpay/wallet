@@ -297,14 +297,14 @@
 
     ion-toggle {
         --background: var(--bg-color-dark-theme-3);
-        --background-checked: var(--toggle-background-active-dark-theme);
+        --background-checked: var(--toggle-background-active-dark-theme) !important;
 
         &::before {
-                background-color: var(--bg-color-dark-theme-3);
-            }
+            background-color: var(--bg-color-dark-theme-3);
+        }
 
         --handle-background: var(--toggle-color-dark-theme);
-        --handle-background-checked: var(--toggle-checked-color-dark-theme);
+        --handle-background-checked: var(--toggle-checked-color-dark-theme) !important;
     }
 
     .alert-ios {
@@ -411,6 +411,11 @@
         }
     }
 
+    .energized,
+    a.energized {
+        color: #FFB4A9;
+    }
+
     .gravatar-img {
         filter: invert(1);
     }
@@ -458,12 +463,15 @@
             &.md {
                 border: 0;
                 background-color: var(--bg-color-dark-theme);
-                --background: linear-gradient(0deg, rgba(126, 208, 255, 0.11), rgba(126, 208, 255, 0.11)), #001E2E;;
+                --background: linear-gradient(0deg, rgba(126, 208, 255, 0.11), rgba(126, 208, 255, 0.11)), #001E2E;
                 --padding-start: 5px;
                 --padding-end: 5px;
                 margin: 1rem 1rem;
                 &::part(native) {
                     border-radius: 8px;
+                }
+                &::part(detail-icon) {
+                    filter: brightness(0) saturate(100%) invert(71%) sepia(7%) saturate(485%) hue-rotate(155deg) brightness(88%) contrast(87%);
                 }
             }
 
@@ -502,6 +510,57 @@
 
         .total-amount {
             color: var(--text-color-dark-theme) !important;
+        }
+
+        &.settings-list {
+            ion-item {
+                background: linear-gradient(0deg, rgba(126, 208, 255, 0.05), rgba(126, 208, 255, 0.05)), #001E2E !important;
+                --background: linear-gradient(0deg, rgba(126, 208, 255, 0.05), rgba(126, 208, 255, 0.05)), #001E2E !important;
+                ion-label {
+                    color: #FFF;
+                    &.color-danger {
+                        color: #FFB4A9 !important;
+                    }
+                }
+                ion-note {
+                    background: transparent;
+                    color: rgba(237, 239, 240, 0.6);
+                }
+                ion-radio {
+                    --color-checked: var(--color-primary-abcpay-dark);
+                }
+                ion-icon {
+                    color: #555a60 !important;
+                }
+                &.create-button {
+                    ion-label {
+                        color: var(--color-primary-abcpay-dark) !important;
+                    }
+                }
+                .copayer {
+                    color: #FFF;
+                }
+                .pk {
+                    color: rgba(237, 239, 240, 0.6) !important;
+                }
+            }
+            ion-item-divider {
+                ion-label {
+                    color: rgba(237, 239, 240, 0.6) !important;
+                }
+                ion-icon[name="help-circle"] {
+                    color: rgba(237, 239, 240, 0.6) !important;
+                }
+            }
+            label-tip {
+                background: var(--bg-color-dark-theme) !important;
+                div[label-tip-body] {
+                    color: rgba(237, 239, 240, 0.6);
+                }
+                .label-tip-link {
+                    color: var(--color-primary-abcpay-dark);
+                }
+            }
         }
     }
 
@@ -1147,7 +1206,24 @@
         }
 
         .section-header {
-            border-bottom: 1px solid rgba(112, 129, 138, 0.38);;
+            border-color: rgba(112, 129, 138, 0.38);
+        }
+
+        .token-container {
+            background: linear-gradient(0deg, rgba(126, 208, 255, 0.05), rgba(126, 208, 255, 0.05)), #001E2E;
+            ion-item {
+                --border-color: rgba(112, 129, 138, 0.38);
+                background: linear-gradient(0deg, rgba(126, 208, 255, 0.05), rgba(126, 208, 255, 0.05)), #001E2E !important;
+            }
+            .token-item {
+                background: linear-gradient(0deg, rgba(126, 208, 255, 0.05), rgba(126, 208, 255, 0.05)), #001E2E;
+            }
+            .address-token {
+                color: rgba(224, 228, 230, 0.6);
+            }
+            .wrap-key-token {
+                color: rgba(182, 201, 216, 0.6);
+            }
         }
 
         .collapse .item-img {
@@ -1252,6 +1328,19 @@
             }
         }
     }
+
+    page-key-qr-export,
+    page-extended-private-key {
+        .container {
+            ion-icon {
+                color: #482A00;
+            }
+            .warning-message {
+                color: #482A00;  
+            }
+        }
+    }
+
 
     page-copayers,
     page-txp-details,
@@ -1844,46 +1933,6 @@
         }
     }
 
-    // 5.4 - Tab Settings
-    page-settings,
-    page-about,
-    page-add-wallet {
-        .bp-list {
-            ion-note {
-                background: var(--bg-color-dark-theme-2) !important;
-                color: var(--text-color-dark-theme-2) !important;
-            }
-
-            ion-icon {
-                color: #555a60 !important;
-            }
-
-            .icon-qrcode {
-                filter: invert(1) !important;
-            }
-        }
-    }
-
-    page-alt-currency,
-    page-country-selector,
-    page-key-settings,
-    page-wallet-information,
-    page-wallet-addresses,
-    page-wallet-settings {
-        .bp-list.settings-list {
-
-            ion-item {
-                background: linear-gradient(0deg, rgba(126, 208, 255, 0.05), rgba(126, 208, 255, 0.05)), #001E2E;
-                --background: linear-gradient(0deg, rgba(126, 208, 255, 0.05), rgba(126, 208, 255, 0.05)), #001E2E;
-                border-color: #314d5c;
-                ion-note {
-                    background: var(--bg-color-dark-theme-2);
-                    color: var(--text-color-dark-theme-2) !important;
-                }
-            }
-        }
-    }
-
     page-addressbook-add,
     page-join-wallet {
         ion-item {
@@ -1898,9 +1947,23 @@
         }
     }
 
-    page-wallet-addresses {
-        button.item {
-            background: var(--bg-color-dark-theme);
+    page-wallet-addresses,
+    page-wallet-transaction-history {
+        ion-item {
+            background: linear-gradient(0deg, rgba(126, 208, 255, 0.05), rgba(126, 208, 255, 0.05)), #001E2E;
+            --background: linear-gradient(0deg, rgba(126, 208, 255, 0.05), rgba(126, 208, 255, 0.05)), #001E2E;
+            ion-label {
+                color: var(--color-primary-abcpay-dark) !important;
+            }
+        }
+        .explanation {
+            color: rgba(237, 239, 240, 0.6) !important;
+        }
+        .label-clear-cache {
+            color: #FFB4A9 !important;
+        }
+        .label-export {
+            color: var(--color-primary-abcpay-dark) !important;
         }
     }
 
@@ -2249,10 +2312,34 @@
     }
 
     page-session-log {
+        ion-toolbar {
+            background: linear-gradient(0deg, rgba(126, 208, 255, 0.11), rgba(126, 208, 255, 0.11)), #001E2E !important;
+            --background: linear-gradient(0deg, rgba(126, 208, 255, 0.11), rgba(126, 208, 255, 0.11)), #001E2E !important;
+        }
+        ion-range {
+            &::part(knob) {
+                background: var(--color-primary-abcpay-dark);
+              }
+            &::part(tick-active) {
+              background: #FFF;
+            }
+            &::part(tick) {
+              background: var(--color-primary-abcpay-dark);
+            }
+            &::part(bar-active) {
+              background: var(--color-primary-abcpay-dark);
+            }
+            &::part(bar) {
+              background: rgba(126, 208, 255, 0.38);;
+            }
+          }
         .filter-container {
             .labels {
                 color: var(--text-color-dark-theme) !important;
             }
+        }
+        .info-color {
+            color: var(--color-primary-abcpay-dark);
         }
     }
 
@@ -2576,5 +2663,103 @@
         }
     }
 
+    page-search-tx-modal {
+        .close-tx-modal {
+            ion-icon {
+                color: rgba(237, 239, 240, 0.6);
+            }
+        }
+        .search-container {
+            border-color: rgba(237, 239, 240, 0.6);
+            ion-icon {
+                color: rgba(237, 239, 240, 0.6);
+            }
+            .search-tx-modal {
+                --placeholder-color: #FFFFFF;
+                --color: #EDEFF0;
+            }
+        }
+        .tx-history {
+            .tx-history-header {
+                &.item {
+                    background: linear-gradient(0deg, rgba(126, 208, 255, 0.08), rgba(126, 208, 255, 0.08)), #001E2E !important;
+                }
+            }
+
+            ion-item-group {
+                border-color: var(--border-color-dark-theme);
+            }
+
+            .item {
+                background: linear-gradient(0deg, rgba(126, 208, 255, 0.08), rgba(126, 208, 255, 0.08)), #001E2E;
+                --background: linear-gradient(0deg, rgba(126, 208, 255, 0.12), rgba(126, 208, 255, 0.12)), #001E2E;
+                color: var(--text-color-dark-theme) !important;
+                border-color: #314d5c;
+
+                &.warning-background {
+                    background-color: var(--bg-color-dark-theme-3);
+
+                    ion-note>.amount>.received,
+                    .action {
+                        color: var(--color-warning) !important;
+                    }
+                }
+
+                &.danger-background {
+                    background-color: var(--bg-color-dark-theme-3);
+
+                    ion-note>.amount>.received,
+                    .action {
+                        color: var(--color-danger) !important;
+                    }
+                }
+
+                ion-label {
+                    color: rgba(224, 228, 230, 0.6) !important;
+                    &.tx-history-header-label {
+                        color: #EDEFF0 !important;
+                        .label-multisign {
+                            color: rgba(237, 239, 240, 0.6);
+                        }
+                    }
+                }
+            }
+
+            .item-tx-history {
+                border-color: #33505f !important;
+            }
+
+            .locked-balance {
+                --background: linear-gradient(0deg, rgba(126, 208, 255, 0.08), rgba(126, 208, 255, 0.08)), #001E2E;
+            }
+
+            .amount {
+                .received {
+                  color: #73DAA5 !important;
+                }
+          
+                .sent {
+                    color: #FFB4A9 !important;
+                  &.pending {
+                    color: #FFB4A9 !important;
+                }
+                }
+          
+                .immature {
+                  color:#CCC1E9;
+                }
+            }
+    
+            .date {
+                span {
+                    color: var(--slateDark);
+                }
+            }
+
+            .memo {
+                color: rgba(224, 228, 230, 0.6) !important;
+            }
+        }
+    }
 
 }

@@ -1,62 +1,70 @@
 page-search-tx-modal {
+  ion-toolbar {
+    --padding-start: 0 !important;
+    --padding-end: 0 !important;
+    padding: 0 1rem !important;
+    ion-buttons {
+      .close-tx-modal {
+        border-radius: 50%;
+        box-shadow: none;
+        --padding-start: 0;
+        --padding-end: 0;
+        margin: 0;
+        ion-icon {
+          color: rgba(28, 55, 69, 0.6);
+        }
+      }
+    }
+  }
+
+  .search-container {
+    --background: linear-gradient(0deg, rgba(0, 93, 141, 0.05), rgba(0, 93, 141, 0.05)), #FAFAFB;
+    background-color: linear-gradient(0deg, rgba(0, 93, 141, 0.05), rgba(0, 93, 141, 0.05)), #FAFAFB;
+    --padding-top: 0;
+    --padding-end: 0;
+    --padding-bottom: 0;
+    --inner-padding-end: 0;
+    border: 1px solid rgba(28, 55, 69, 0.6);
+    border-radius: 4px;
+    padding: 0;
+    margin: 0.8rem 1rem 2rem 1rem;
+    max-height: 42px;
+    display: flex;
+    .search-tx-modal {
+      --placeholder-color: #001E2E;
+      --color: #001E2E;
+      font-size: 14px;
+      letter-spacing: 0.5px;
+    }
+
+    ion-icon {
+      margin: 0;
+      margin-right: 1rem;
+      width: 24px;
+      height: 24px;
+      color: rgba(28, 55, 69, 0.6);
+    }
+  }
+
   .tx-history {
-    .tx-history-header {
-      &--large {
-        &.item {
-          margin-bottom: 3px;
-
-          ion-label {
-            font-size: 15px;
-          }
-        }
-      }
-
-      &.item {
-        min-height: 26px;
-
-        ion-label {
-          margin: 0;
-          font-size: 14px;
-        }
-
-        .item-inner {
-          padding: 0 !important;
-        }
-      }
-    }
-
-    .item-wrapper {
-      &:last-child {
-        .item-inner {
-          border-bottom: 0;
-        }
-      }
-    }
-
-    .item {
+    ion-item {
+      --color-activated: none;
+      --inner-padding-bottom: 1rem;
+      --padding-top: 1rem;
+      --padding-start: 1rem;
+      --padding-end: 1rem;
       font-size: 16px;
-      padding-left: 19px;
-
+      --inner-border-width: 0;
+      border: 1px solid #f4f4f4;
+      border-left: 0;
+      border-right: 0;
       .item-icon {
         margin-right: 15px;
       }
-
-      .item-inner {
-        background-image: none;
-        padding: 11px 10px 11px 0;
-        margin-left: 3px;
-        border-bottom: 1px solid var(--color-light);
-      }
-    }
-
-    .icon-services {
-      border-radius: 50%;
-      box-shadow: none;
-      border: 1px solid #d7d7d7;
     }
 
     img {
-      width: 35px;
+      width: var(--icon-width);
     }
 
     .action {
@@ -64,32 +72,84 @@ page-search-tx-modal {
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
-    }
-
-    .amount {
-      color: var(--color-dark);
-      font-size: 16px;
-
-      .received {
-        color: var(--color-success);
+      display: flex;
+      flex-direction: column;
+      margin-right: 2rem;
+      .memo {
+        font-size: 14px;
+        color: rgba(0, 30, 46, 0.6);
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        white-space: break-spaces;
+        text-overflow: ellipsis;
+        overflow: hidden;
+    
       }
     }
 
-    .date {
+    .amount {
+      font-weight: 600;
+      font-size: 16px;
+      color: var(--ion-color-dark);
+
+      .received {
+        color: #37A372;
+      }
+
+      .sent {
+        color: var(--color-danger);
+      }
+
+      .immature {
+        color:#CCC1E9;
+      }
+
+      .pending {
+        opacity: 0.38;
+      }
+    }
+
+    .tx-action {
       font-size: 14px;
-      margin-top: 8px;
+      margin: 0.5rem 0;
+      letter-spacing: 0.4px;
     }
 
-    .txs-count {
-      color: var(--color-grey);
-      text-align: center;
-      font-size: 12px;
-      padding-top: 0.5rem;
+    .proposal-container {
+      .item .item-inner {
+        padding: 0 10px 0 0;
+      }
+
+      .date {
+        margin-top: 0px;
+      }
     }
 
-    .icon-more {
-      padding: 0 !important;
-      margin: 0 !important;
+    .item-img {
+      img {
+        width: 40px;
+        height: 40px;
+      }
     }
+
+    .item-wrapper {
+      margin-bottom: 0.5rem;
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+
+  .txs-count {
+    color: var(--color-grey);
+    text-align: center;
+    font-size: 12px;
+    padding-top: 0.5rem;
+  }
+
+  .icon-more {
+    padding: 0 !important;
+    margin: 0 !important;
   }
 }

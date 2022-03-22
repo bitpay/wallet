@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import * as _ from 'lodash';
@@ -19,7 +19,8 @@ import { WalletDetailsPage } from '../../../../wallet-details/wallet-details';
 @Component({
   selector: 'page-wallet-transaction-history',
   templateUrl: 'wallet-transaction-history.html',
-  styleUrls: ['wallet-transaction-history.scss']
+  styleUrls: ['wallet-transaction-history.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class WalletTransactionHistoryPage {
   public wallet;

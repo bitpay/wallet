@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectorRef, Component, ViewEncapsulation } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 
 import * as _ from 'lodash';
@@ -41,7 +41,8 @@ import { NewFeaturePage } from '../new-feature/new-feature';
       ])
     ])
   ],
-  styleUrls: ['settings.scss']
+  styleUrls: ['settings.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class SettingsPage {
   public appName: string;

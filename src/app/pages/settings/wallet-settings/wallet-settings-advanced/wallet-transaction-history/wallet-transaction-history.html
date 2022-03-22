@@ -1,22 +1,24 @@
 <wide-header-page title="{{'Transaction History' | translate}}">
   <div page-content>
-    <ion-list lines="none">
-      <ion-button class="button-standard" *ngIf="!isCordova" (click)="downloadCSV()" [disabled]="!csvReady">
-        <span *ngIf="csvReady" translate>Export to file</span>
-        <span *ngIf="!csvReady && !err">
-          {{'preparing...' | translate}}
-        </span>
-        <span *ngIf="!csvReady && err">
-          {{err}}
-        </span>
-      </ion-button>
+    <ion-list class="settings-list bp-list">
+      <ion-item class="item-end" *ngIf="!isCordova" (click)="downloadCSV()" [disabled]="!csvReady">
+        <ion-label class="label-export">
+          <span *ngIf="csvReady" translate>Export to file</span>
+          <span *ngIf="!csvReady && !err">
+            {{'preparing...' | translate}}
+          </span>
+          <span class="label-clear-cache" *ngIf="!csvReady && err">
+            {{err}}
+          </span>
+        </ion-label>
+      </ion-item>
 
       <div class="explanation" translate>
         The transaction history and every new incoming transaction are cached in the app. Clearing the cache cleans up the transaction history and synchronizes again from the server.
       </div>
-      <ion-button class="button-standard" color="danger" (click)="clearTransactionHistory()">
-        <span translate>Clear cache</span>
-      </ion-button>
+      <ion-item class="item-start" (click)="clearTransactionHistory()">
+        <ion-label class="label-clear-cache" translate>Clear cache</ion-label>
+      </ion-item>
     </ion-list>
   </div>
 </wide-header-page>

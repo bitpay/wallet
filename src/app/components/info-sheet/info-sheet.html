@@ -124,6 +124,13 @@
       <span sheet-button-text translate>GOT IT</span>
     </info-sheet-template>
 
+    <info-sheet-template *ngSwitchCase="'delete-key'" type="danger">
+      <span sheet-title-text translate>Permanently delete?</span>
+      <span sheet-text>All accounts using this key are permanently deleted. <span>This action cannot be reversed</span></span>
+      <span sheet-button-text translate>Cancel</span>
+      <span sheet-second-button-text translate>Delete</span>
+    </info-sheet-template>
+
     <info-sheet-template *ngSwitchCase="'copied-gift-card-claim-code'" type="success">
       <span sheet-title-text style="word-break: break-all;">{{'Copied: {claimCode}' | translate: params }}</span>
       <span sheet-text>

@@ -57,7 +57,6 @@ export class TabsPage {
     private themeProvider: ThemeProvider,
     private clipboardProvider: ClipboardProvider
   ) {
-    this.currentTheme = this.appProvider.themeProvider.currentAppTheme;
     this.persistenceProvider.getNetwork().then((network: string) => {
       if (network) {
         this.NETWORK = network;
@@ -116,6 +115,7 @@ export class TabsPage {
   }
 
   ngOnInit() {
+    this.currentTheme = this.appProvider.themeProvider.currentAppTheme;
     this.subscribeEvents();
     this.onResumeSubscription = this.plt.resume.subscribe(() => {
       this.subscribeEvents();
@@ -131,6 +131,12 @@ export class TabsPage {
 
     this.checkCardEnabled();
     this.checkClipboardData();
+  }
+
+  ionViewDidEnter() {
+    this.appProvider.themeProvider.getDetectedSystemTheme().then(theme => {
+      this.currentTheme = theme;
+    });
   }
 
   ngOnDestroy() {

@@ -1,5 +1,5 @@
 import { Location } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -13,7 +13,8 @@ import { ProfileProvider } from '../../../../providers/profile/profile';
 @Component({
   selector: 'page-extended-private-key',
   templateUrl: 'extended-private-key.html',
-  styleUrls: ['extended-private-key.scss']
+  styleUrls: ['extended-private-key.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class ExtendedPrivateKeyPage {
   public walletsGroup;

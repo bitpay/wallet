@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Logger } from '../../../../../providers/logger/logger';
 
@@ -20,7 +20,8 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'page-wallet-addresses',
   templateUrl: 'wallet-addresses.html',
-  styleUrls: ['wallet-addresses.scss']
+  styleUrls: ['wallet-addresses.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class WalletAddressesPage {
   public wallet;
@@ -34,7 +35,6 @@ export class WalletAddressesPage {
   public allUtxosSum: string;
   public minFee: string;
   public minFeePer: string;
-  public showInfo: boolean;
 
   private UNUSED_ADDRESS_LIMIT: number;
   private BALANCE_ADDRESS_LIMIT: number;

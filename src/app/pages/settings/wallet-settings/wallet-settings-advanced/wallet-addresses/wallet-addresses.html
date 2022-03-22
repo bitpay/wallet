@@ -1,25 +1,20 @@
-<wide-header-page title="{{'Wallet Addresses' | translate}}">
+<wide-header-page title="{{'Account Addresses' | translate}}">
   <div page-content>
     <div class="explanation">
       <span translate>
         Each bitcoin wallet can generate billions of addresses from your 12-word recovery phrase. A new address is automatically generated and shown each time you receive a payment.
       </span>
-      <a (click)="showInfo = !showInfo" *ngIf="!showInfo" translate>Why?</a>
 
-      <div *ngIf="showInfo">
+      <div class="explanation-sub">
         <br>
         <span translate>
-          It's a good idea to avoid reusing addresses - this both protects your privacy and keeps your bitcoins secure against hypothetical attacks by quantum computers.</span>
-        <a (click)="showInfo = !showInfo" translate>Hide</a>
+          It's a good idea to avoid reusing addresses - this both protects your privacy and keeps your bitcoins secure against hypothetical attacks by quantum computers.
+        </span>
       </div>
     </div>
 
-    <ion-button class="button-standard" (click)="scan()">
-      <span translate>Scan addresses for funds</span>
-    </ion-button>
-
-    <ion-item button *ngIf="viewAll" (click)="viewAllAddresses()">
-      <ion-label class="info" translate>View all addresses</ion-label>
+    <ion-item lines="none" button class="scan-item" (click)="scan()">
+      <ion-label translate>Scan addresses for funds</ion-label>
     </ion-item>
 
     <div class="loading" *ngIf="loading">
@@ -27,29 +22,29 @@
       <span translate>Loading addresses...</span>
     </div>
 
-    <ion-list lines="none" *ngIf="!loading" class="settings-list bp-list">
+    <ion-list *ngIf="!loading" class="settings-list bp-list">
       <div *ngIf="allUtxosNb">
-        <ion-item-divider>
+        <ion-item-divider class="item-end">
           <ion-label>
             {{'Wallet Inputs' | translate}}
           </ion-label>
         </ion-item-divider>
 
-        <ion-item>
+        <ion-item class="item-wallet-input">
           <ion-label>
             <h3 translate>Total wallet inputs</h3>
             <p class="info">{{allUtxosNb}} [{{allUtxosSum}}]</p>
           </ion-label>
         </ion-item>
 
-        <ion-item>
+        <ion-item class="item-wallet-input">
           <ion-label>
             <h3 translate> Low amount inputs </h3>
             <p class="info">{{lowUtxosNb}} [{{ lowUtxosSum }}]</p>
           </ion-label>
         </ion-item>
 
-        <ion-item>
+        <ion-item class="item-wallet-input">
           <ion-label>
             <h3 translate>Approximate Bitcoin network fee to transfer wallet's balance (with normal priority)</h3>
             <p class="info">{{minFeePer}} [{{minFee}}]</p>
@@ -58,7 +53,7 @@
       </div>
 
       <div *ngIf="latestWithBalance && latestWithBalance[0]">
-        <ion-item-divider>
+        <ion-item-divider class="item-end">
           <ion-label>
             {{'Addresses with balance' | translate}}
           </ion-label>
@@ -72,7 +67,7 @@
       </div>
 
       <div *ngIf="latestUnused && latestUnused[0]">
-        <ion-item-divider>
+        <ion-item-divider class="item-end">
           <ion-label>
             {{'Unused addresses' | translate}}
           </ion-label>

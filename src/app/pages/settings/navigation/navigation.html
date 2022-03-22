@@ -1,8 +1,8 @@
 <wide-header-page title="{{ 'Navigation' | translate }}">
   <div page-content>
-    <ion-list lines="none"  class="settings-list bp-list">
+    <ion-list class="settings-list bp-list">
       <ion-radio-group [(ngModel)]="selectedNavigationType">
-        <ion-item *ngFor="let n of availableNavigationTypes | keys">
+        <ion-item disabled="true" *ngFor="let n of availableNavigationTypes | keys">
           <ion-label>
             {{ n.value.name }}
           </ion-label>

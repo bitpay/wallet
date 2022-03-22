@@ -50,7 +50,7 @@ action-sheet{
       }
   
       .sheet-btn-group {
-        color: #01F2FF;
+        color: var(--color-primary);
         font-size: 16px;
         border-top: 1px solid #ebebeb;
         cursor: pointer;
@@ -58,30 +58,30 @@ action-sheet{
   
   
         .sheet-btn {
-          color: #01F2FF;
+          color: var(--color-primary);
           flex-grow: 1;
           padding-top: 15px;
           margin-right: 10px;
         }
   
         .sheet-btn.blue {
-          color: #5476eb;
+          color: var(--color-primary);
         }
   
         .sheet-btn.yellow {
-          color: #fdb455;
+          color: var(--color-warning);
         }
   
         .sheet-btn.red {
-          color: #df5264;
+          color: var(--color-danger);
         }
   
         .sheet-btn.default {
-          color: #464c5e;
+          color: var(--color-primary);
         }
   
         .sheet-second-btn {
-          color: #464c5e;
+          color: var(--color-primary);
           padding-top: 15px;
         }
   

@@ -1,2 +1,16 @@
 page-advanced {
+    label-tip {
+        margin: 0 !important;
+        padding: 0.5rem 1rem !important;
+        width: 100%;
+        div [label-tip-body] {
+            font-size: 12px;
+            letter-spacing: 0.4px;
+            color: rgba(0, 30, 46, 0.6);
+        }
+    }
+
+    .label-primary {
+        color: var(--color-primary) !important;
+    }
 }

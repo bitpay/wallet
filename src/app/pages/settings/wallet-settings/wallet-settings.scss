@@ -1,63 +1,27 @@
-.assertive {
-  color: var(--color-danger);
-
-  ion-label {
-    white-space: inherit;
+page-wallet-settings {
+  .assertive {
+    color: var(--color-danger);
   }
-}
-
-.item-text {
-  font-size: 12.5px;
-}
-
-ion-item-divider {
-  padding-left: 16px;
-}
-
-ion-list {
-  border-bottom: 1px solid #e5eaee;
-}
-
-.bp-list {
-  ion-item-divider {
-    border-top: 1px solid #e5eaee;
-    margin-top: 0px;
-    padding: 12.5px 0px 12.5px 20px;
-    background: linear-gradient(0deg, rgba(0, 93, 141, 0.05), rgba(0, 93, 141, 0.05)), #FAFAFB;
-    .reorder-option {
-      font-size: 1.4rem;
-      margin: 0 8px 0 !important;
-    }
-    ion-label {
-      font-size: 11px !important;
-      font-weight: 600;
-      text-transform: uppercase;
-    }
+  
+  .item-text {
+    font-size: 12.5px;
   }
-  ion-item {
-    background: #FAFAFB;
-    padding: 5px 0;
+
+  label-tip {
+    background: linear-gradient(0deg, rgba(0, 93, 141, 0.05), rgba(0, 93, 141, 0.05)), #FAFAFB !important;
     margin: 0 !important;
-    border-radius: 0;
-    border-top: 1px solid #e5eaee;
-    border-left: 0;
-    border-right: 0;
-    ion-note {
-      padding: 0;
-      margin-right: 0;
-      background: transparent;
-      font-size: 16px;
-    }
-    ion-label {
-      font-size: 16px;
-    }
-
-    &.hide-wallet {
-      margin-top: 2rem !important;
+    padding: 0.5rem 1rem 1rem 1rem;
+    width: 100%;
+    div[label-tip-body] {
+      font-size: 12px !important;
+      line-height: 16px;
+      letter-spacing: 0.4px;
+      color: rgba(0, 30, 46, 0.6);
     }
   }
-}
-
-.item-without-title {
-  margin-top: 0;
+  
+  .item-without-title {
+    margin-top: 0;
+  }
+  
 }

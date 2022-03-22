@@ -716,11 +716,11 @@ export class WalletsPage {
   }
 
   public openSettingPage() {
-    this.router.navigate(['/tabs/setting']);
+    this.router.navigate(['/setting']);
   }
 
   public openAddressBookPage() {
-    this.router.navigate(['/tabs/address-book']);
+    this.router.navigate(['/addressbook']);
   }
 }
 

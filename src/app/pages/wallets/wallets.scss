@@ -8,15 +8,15 @@ page-wallets {
   }
 
   .token-container {
-    background: linear-gradient(0deg, rgba(126, 208, 255, 0.05), rgba(126, 208, 255, 0.05)), #001E2E;
+    background: linear-gradient(0deg, rgba(0, 101, 141, 0.08), rgba(0, 101, 141, 0.08)), #FAFAFB;
     position: relative;
     top: -20px;
     margin: 0 1rem;
     border-radius: 0 0 8px 8px;
     ion-item {
-      background: linear-gradient(0deg, rgba(126, 208, 255, 0.05), rgba(126, 208, 255, 0.05)), #001E2E;
+      background: linear-gradient(0deg, rgba(0, 101, 141, 0.08), rgba(0, 101, 141, 0.08)), #FAFAFB !important;
       --padding-start: 0;
-      --border-color: rgba(112, 129, 138, 0.38);
+      --border-color: rgba(112, 129, 138, 0.16);
       padding: 0 !important;
       margin: 0 !important;
       --background : transparent !important;
@@ -36,10 +36,11 @@ page-wallets {
 
     .token-item {
       margin: 0 1rem;
-      background: linear-gradient(0deg, rgba(126, 208, 255, 0.05), rgba(126, 208, 255, 0.05)), #001E2E;
+      background: linear-gradient(0deg, rgba(0, 101, 141, 0.08), rgba(0, 101, 141, 0.08)), #FAFAFB !important;
       ion-item {
         --inner-padding-top: 11px;
         --inner-padding-bottom: 11px;
+        box-shadow: none !important;
         .token-icon {
           margin: 0;
           margin-right: 0.5rem;
@@ -74,7 +75,7 @@ page-wallets {
     .address-token {
       display: flex;
       align-items: center;
-      color: rgba(224, 228, 230, 0.6);
+      color: rgba(28, 55, 69, 0.6);
       font-size: 12px;
       &:hover {
         cursor: pointer ;
@@ -90,7 +91,7 @@ page-wallets {
     .wrap-key-token {
       display: flex;
       align-items: center;
-      color: rgba(182, 201, 216, 0.6);
+      color: rgba(28, 55, 69, 0.6);
       .key-name {
         margin-left: 0;
         font-weight: 600;
@@ -146,7 +147,7 @@ page-wallets {
     padding: 1rem;
     padding-top: 16px;
     padding-bottom: 12px;
-    border-bottom: 1px solid rgba(112, 129, 138, 0.38);
+    border-bottom: 1px solid rgba(112, 129, 138, 0.16);
   }
 
   .bp-header {
