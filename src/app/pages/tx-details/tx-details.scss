@@ -1,5 +1,8 @@
 page-coinbase-tx-details,
 page-tx-details {
+  .address-custom-letter-spacing{
+    letter-spacing: 0.4px;
+  }
   .ellipsis{
     font-size: 16px;
   }
@@ -399,7 +402,7 @@ page-tx-details {
       align-self: center;
     }
     ion-label{
-      flex: 0 0 fit-content;
+      flex: 0 0 auto;
     }
     ion-note{
       padding-top: 0;
