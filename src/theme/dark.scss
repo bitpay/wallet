@@ -1330,6 +1330,9 @@
     }
     token-info,
     page-tx-details{
+        .payment-proposal-to{
+            background-color: unset;
+        }
         .tx-detail-list{
             background: linear-gradient(0deg, rgba(126, 208, 255, 0.11), rgba(126, 208, 255, 0.11)), #001E2E;
             .note-container{
