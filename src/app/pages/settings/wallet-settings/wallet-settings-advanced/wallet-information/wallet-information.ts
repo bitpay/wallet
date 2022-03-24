@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
 import * as _ from 'lodash';
 
@@ -10,7 +10,8 @@ import { ProfileProvider } from '../../../../../providers/profile/profile';
 @Component({
   selector: 'page-wallet-information',
   templateUrl: 'wallet-information.html',
-  styleUrls: ['wallet-information.scss']
+  styleUrls: ['wallet-information.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class WalletInformationPage {
   public wallet;

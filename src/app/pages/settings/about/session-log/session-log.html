@@ -1,14 +1,14 @@
 <wide-header-page title="{{'Session Log' | translate}}">
   <ion-buttons slot="end">
     <ion-button filll="clear" wide-header-bar-button (click)="showOptionsMenu()">
-      <ion-icon slot="icon-only" name="ellipsis-vertical"></ion-icon>
+      <ion-icon slot="icon-only" name="share-outline"></ion-icon>
     </ion-button>
   </ion-buttons>
   <div page-content>
     <div *ngIf="filteredLogs && filteredLogs.length == 0" class="no-entries-message">
       <span translate>No entries for this log level.</span>
     </div>
-    <ion-list lines="none" class="bp-list">
+    <ion-list *ngIf="filteredLogs && filteredLogs.length > 0" lines="none" class="settings-list bp-list">
       <ion-item class="log-entry">
         <div *ngIf="filteredLogs && filteredLogs.length > 0">
           <div *ngFor="let l of filteredLogs">
@@ -27,7 +27,7 @@
         <div class="labels">
           <div *ngFor="let option of logOptions | keys" [ngClass]="{'info-label': option.value.weight==3}">{{option.value.label}}</div>
         </div>
-        <ion-range min="1" max="4" step="1" snaps="true" ticks="true" color="secondary" [(ngModel)]="filterValue" (ionChange)="setOptionSelected(filterValue)"></ion-range>
+        <ion-range min="1" max="4" step="1" snaps="true" ticks="true" color="primary" [(ngModel)]="filterValue" (ionChange)="setOptionSelected(filterValue)"></ion-range>
       </div>
     </ion-toolbar>
   </div>

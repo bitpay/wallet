@@ -1,27 +1,59 @@
-.add-icon {
-  font-size: 1.7rem !important;
-  margin: 0 !important;
-  padding: 20px !important;
-}
-.loading {
-  display: flex;
-  justify-content: center;
-  padding: 30px;
-  span {
-    margin: auto 10px auto 10px;
+page-wallet-addresses {
+  ion-list {
+    margin-bottom: 3rem;
   }
-}
-
-ion-item {
-  h3{
-    font-size: 16px;
+  .add-icon {
+    font-size: 1.7rem !important;
+    margin: 0 !important;
+    padding: 20px !important;
   }
-  .info {
-    color: var(--ion-color-primary) !important;
-    margin-top: 1px;
+  .loading {
+    display: flex;
+    justify-content: center;
+    padding: 30px;
+    span {
+      margin: auto 10px auto 10px;
+    }
   }
-}
-.explanation {
-  padding: 16px;
-  font-size: 14px;
+  
+  ion-item {
+    ion-label {
+      h3, h4 {
+        padding: 0;
+        font-size: 16px !important;
+        font-weight: 400 !important;
+        color: #001E2E;
+        letter-spacing: 0.5px;
+      }
+      p {
+        color: rgba(0, 30, 46, 0.6) !important;
+        line-height: 20px !important;
+        letter-spacing: 0.25px;
+      }
+    }
+    &.scan-item {
+      border: 1px solid rgba(112, 129, 138, 0.16);
+      border-right: 0;
+      border-left: 0;
+      ion-label {
+        color: var(--color-primary) !important;
+      }
+    }
+    &.item-wallet-input {
+      ion-label {
+        display: flex;
+        justify-content: space-between;
+      }
+    }
+  }
+  .explanation {
+    padding: 0 1rem 1rem 1rem;
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: 0.25px;
+    color: rgba(0, 30, 46, 0.6);
+    &-sub {
+      padding: 0;
+    }
+  }
 }

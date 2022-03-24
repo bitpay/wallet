@@ -1,46 +1,21 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-back-button icon="chevron-back-outline" defaultHref= "/"></ion-back-button>
-    </ion-buttons>
-    <ion-title [reveal-at-scroll-pos]="expandableHeader.headerHeight" [scrollArea]="scrollArea" class="bp-title">
-      <!-- <div > -->
-        {{ 'Display Currency' | translate }}
-      <!-- </div> -->
-    </ion-title>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content scrollEvents="true" #scrollArea>
-  <expandable-header [scrollArea]="scrollArea" [fadeFactor]="5" [disableFade]="true" #expandableHeader>
-    <ion-toolbar class="wide-header__title">
-      <expandable-header-primary>
-        {{ 'Display Currency' | translate }}
-      </expandable-header-primary>
-    </ion-toolbar>
-  </expandable-header>
-
-  <ion-item lines="none" class="search-container ">
-    <ion-input class="ion-padding-start ion-padding-end search-wrapper" placeholder="{{'Search currency' | translate}}" [(ngModel)]="searchedAltCurrency" (ngModelChange)="findCurrency()"></ion-input>
-  </ion-item>
-  <!-- <ion-list lines="none" class="settings-list bp-list">
-    <ion-item *ngFor="let lastUsedAltCurrency of lastUsedAltCurrencyList" (click)="save(lastUsedAltCurrency)">
-      {{ lastUsedAltCurrency.name }}
-      <span class="currency" slot="end">{{lastUsedAltCurrency.isoCode}}</span>
-    </ion-item>
-  </ion-list>
-  <div class="line-divider"></div>
-  <div *ngIf="altCurrencyList[0] && lastUsedAltCurrencyList[0]" class="ion-padding"></div> -->
-  <ion-list lines="none" class="settings-list bp-list">
-    <ion-item *ngFor="let alt of altCurrencyList" (click)="save(alt)">
-      {{ alt.name }}
-      <ion-note slot="end">{{alt.isoCode}}</ion-note>
-    </ion-item>
-  </ion-list>
-
-  <ion-spinner color="primary" class="loading" *ngIf="!altCurrencyList[0]" name="crescent"></ion-spinner>
-
-  <ion-infinite-scroll (ionInfinite)="loadAltCurrencies($event)">
-    <ion-infinite-scroll-content></ion-infinite-scroll-content>
-  </ion-infinite-scroll>
-</ion-content>
+<wide-header-page title="{{ 'Display Currency' | translate }}">
+  <div page-content>
+    <ion-list class="settings-list bp-list">
+      <ion-radio-group [value]="currentCurrency">
+        <ion-item *ngFor="let alt of altCurrencyList" (click)="save(alt)">
+          <ion-label>
+            {{ alt.name }}
+          </ion-label>
+          <ion-note slot="end">{{alt.isoCode}}</ion-note>
+          <ion-radio slot="end" [value]="alt.isoCode"></ion-radio>
+        </ion-item>
+      </ion-radio-group>
+    </ion-list>
+  
+    <ion-spinner color="primary" class="loading" *ngIf="!altCurrencyList[0]" name="crescent"></ion-spinner>
+  
+    <ion-infinite-scroll (ionInfinite)="loadAltCurrencies($event)">
+      <ion-infinite-scroll-content></ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+  </div>
+</wide-header-page>

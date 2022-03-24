@@ -304,6 +304,11 @@ export class CopayApp {
     await this.persistenceProvider.setTempMdesCertOnlyFlag('disabled');
 
     this.addressBookProvider.migrateOldContacts();
+    this.setNavigationDefault();
+  }
+
+  private setNavigationDefault() {
+    this.themeProvider.setActiveNavigationType('scan');
   }
 
   private async openWallet(wallet, params) {

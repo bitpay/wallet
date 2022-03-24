@@ -197,25 +197,27 @@ label-tip {
 
 // Header
 // --------------------------------------------------
-ion-header.bp-header ion-toolbar {
-    ion-title {
-        padding: 0;
-        font-size: 18px;
-        font-weight: 700;
+ion-header.bp-header{
+    background: var(--bg-color-light-theme);
+    ion-toolbar {
+        ion-title {
+            padding: 0;
+            font-size: 18px;
+            font-weight: 700;
+        }
     }
-}
+} 
 
 ion-header ion-toolbar {
     padding-top: env(safe-area-inset-top);
 }
 
 .wide-header__title {
+    --padding-start: 1rem;
     color: var(--text-color);
-    font-size: 25px;
-    font-weight: 700;
-    // padding-top: 10px;
-    // padding-bottom: 10px;
-    padding-left: 20px;
+    font-size: 24px;
+    font-weight: 400;
+    padding: 0;
     background: var(--background-color);
 }
 
@@ -333,6 +335,18 @@ ion-refresher.refresher-active {
 
 ion-spinner * {
     stroke: var(--color-light);
+}
+
+ion-toggle {
+    &.ios {
+        width: 40px;
+        height: 21px;
+        padding: 0;
+        --handle-background-checked: var(--color-primary);
+        --handle-width: 18px;
+        --handle-height: 18px;
+        --background-checked: #9bc1d1;
+    }
 }
 
 .header-ios .toolbar-background-ios {
@@ -595,7 +609,7 @@ a.positive {
 
 .energized,
 a.energized {
-    color: var(--color-warning);
+    color: var(--color-danger);
 }
 
 .assertive,

@@ -61,6 +61,7 @@ import { PaperWalletPage } from './pages/paper-wallet/paper-wallet';
 import { TokenDetailsPage } from './pages/token-details/token-details';
 import { ConfirmTokenPage } from './pages/confirm-token/confirm-token';
 import { TokenInforPage } from './pages/token-info/token-info';
+import { SettingsPage } from './pages/settings/settings';
 
 const routes: Routes = [
   {
@@ -317,6 +318,10 @@ const routes: Routes = [
     path: 'address-book-add',
     component: AddressbookAddPage,
   },
+  {
+    path: 'setting',
+    component: SettingsPage
+  }
 ];
 
 @NgModule({

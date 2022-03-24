@@ -82,7 +82,8 @@ export type InfoSheetType =
   | 'sync-wallets'
   | 'testnet-warning-1'
   | 'multisig-instantiation'
-  | 'join-wallet-warning';
+  | 'join-wallet-warning'
+  | 'delete-key';
 
 export type OptionsSheetType =
   | 'wallet-options'

@@ -1,19 +1,19 @@
 <wide-header-page title="{{'Export Key' | translate}}">
   <div page-content>
     <div class="container">
-      <h3 translate>Warning!</h3>
+      <ion-icon name="information-circle"></ion-icon>
       <div class="warning-message">
         <p translate>
           Your Key is all that is needed to access your funds. Be sure to protect your key and store it only on secure devices. AbcPay does not have access to your keys, so you alone are responsible for your keys. If you share key access with external services, you take responsibility for the risk of theft or breach.
         </p>
-        <p>
+        <p class="title-message">
           {{ 'You can import this Key into other devices through the {appName} scanner' | translate: {appName: appName} }}
         </p>
       </div>
-      <div *ngIf="!keysEncrypted">
-        <ngx-qrcode *ngIf="code" hide-toast="true" value="{{code}}" cssClass="aclass" [errorCorrectionLevel]="typeErrorQr.MEDIUM"></ngx-qrcode>
-        <span *ngIf="walletsGroup && code">{{ walletsGroup.name }}</span>
-      </div>
+    </div>
+    <div class="container_qrcode" *ngIf="!keysEncrypted">
+      <ngx-qrcode *ngIf="code" hide-toast="true" value="{{code}}" cssClass="aclass" [errorCorrectionLevel]="typeErrorQr.MEDIUM"></ngx-qrcode>
+      <span class="key-name" *ngIf="walletsGroup && code">{{ walletsGroup.name }}</span>
     </div>
   </div>
 </wide-header-page>

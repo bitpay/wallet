@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 import { Logger } from '../../../providers/logger/logger';
 
 // native
@@ -17,7 +17,8 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'page-alt-currency',
   templateUrl: 'alt-currency.html',
-  styleUrls: ['alt-currency.scss']
+  styleUrls: ['alt-currency.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class AltCurrencyPage {
   public completeAlternativeList;

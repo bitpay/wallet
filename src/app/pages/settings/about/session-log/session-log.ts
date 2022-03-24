@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 
 // providers
@@ -15,7 +15,8 @@ import { ActionSheetController } from '@ionic/angular';
 @Component({
   selector: 'page-session-log',
   templateUrl: 'session-log.html',
-  styleUrls: ['session-log.scss']
+  styleUrls: ['session-log.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class SessionLogPage {
   private config;

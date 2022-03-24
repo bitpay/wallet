@@ -111,6 +111,10 @@ page-wallet-details {
     padding: 1rem !important;
   }
 
+  .energized {
+    color: var(--color-warning) !important;
+  }
+
   .tx-history {
     .tx-history-header {
       height: 3rem;

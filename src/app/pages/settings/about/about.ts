@@ -100,15 +100,4 @@ export class AboutPage {
     this.router.navigate(['/send-feedback']);
   }
 
-  // adding this for testing purposes
-  public async wipeBitPayAccounts() {
-    this.tapped++;
-    if (this.tapped >= 10) {
-      await this.persistenceProvider.removeAllBitPayAccounts(
-        this.bitpayProvider.getEnvironment().network
-      );
-      alert('removed accounts');
-      this.tapped = 0;
-    }
-  }
 }

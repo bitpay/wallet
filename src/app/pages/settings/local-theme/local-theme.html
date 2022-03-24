@@ -1,6 +1,6 @@
 <wide-header-page title="{{ 'Themes' | translate }}">
   <div page-content>
-    <ion-list lines="none" class="settings-list bp-list">
+    <ion-list class="settings-list bp-list">
       <ion-radio-group [value]="selectedTheme">
         <ion-item *ngFor="let t of availableThemes | keys">
           <ion-label>

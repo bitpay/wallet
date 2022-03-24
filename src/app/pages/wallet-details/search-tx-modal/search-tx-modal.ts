@@ -116,7 +116,7 @@ export class SearchTxModalPage {
     setTimeout(() => {
       this.currentTxHistoryPage++;
       this.showHistory();
-      loading.complete();
+      loading.target.complete();
     }, 100);
   }
 
@@ -137,5 +137,11 @@ export class SearchTxModalPage {
 
   public createdWithinPastDay(time): boolean {
     return this.timeProvider.withinPastDay(time);
+  }
+
+  public getContactName(address: string) {
+    const existsContact = _.find(this.addressbook, c => c.address === address);
+    if (existsContact) return existsContact.name;
+    return null;
   }
 }
