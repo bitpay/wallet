@@ -1,5 +1,8 @@
 page-coinbase-tx-details,
 page-tx-details {
+  .ellipsis{
+    font-size: 16px;
+  }
   .custom-icon{
     width: 16px;
   }
@@ -143,6 +146,7 @@ page-tx-details {
     .alternative {
       margin-top: 0.5rem;
       color: var(--color-light-grey);
+      text-align: center;
     }
   }
   // button.item {
@@ -407,8 +411,9 @@ page-tx-details {
     }
     ion-textarea{
       margin: 0;
-      flex: 2;
+      flex: 1 1 100%;
       justify-content: flex-end;
+      margin-left: 32px;
       .native-textarea{
         padding: 0;
       }

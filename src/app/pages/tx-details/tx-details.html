@@ -79,14 +79,14 @@
       </ion-item>
 
       <ion-item *ngIf="btx.action == 'received' && btx.inputAddresses && btx.inputAddresses.length > 0 ">
-        <ion-label>
+        <ion-label slot="start">
           <div class="summary-item">
-            <span translate>From to</span>
+            <span translate>Send from</span>
           </div>
         </ion-label>
         <ion-note class="secondary-note" slot="end">
-          <div copy-to-clipboard="{{btx.inputAddresses[0]}}">
-            <span>{{btx.inputAddresses[0] | shortenedAddress }}</span>
+          <div class="ellipsis" copy-to-clipboard="{{btx.inputAddresses[0]}}">
+            <span>{{btx.inputAddresses[0].slice(-8) }}</span>
           </div>
         </ion-note>
       </ion-item>
