@@ -83,7 +83,9 @@ export type InfoSheetType =
   | 'testnet-warning-1'
   | 'multisig-instantiation'
   | 'join-wallet-warning'
-  | 'delete-key';
+  | 'delete-key'
+  | 'reset-all-setting'
+  | 'help-and-support';
 
 export type OptionsSheetType =
   | 'wallet-options'
@@ -196,8 +198,12 @@ export class ActionSheetProvider {
     ).instance;
   }
 
-  public createEncryptPasswordComponent(): EncryptPasswordComponent {
-    return this.setupSheet<EncryptPasswordComponent>(EncryptPasswordComponent)
+  public createEncryptPasswordComponent(params?): EncryptPasswordComponent {
+    return this.setupSheet<EncryptPasswordComponent>(
+      EncryptPasswordComponent,
+      null,
+      params
+      )
       .instance;
   }
 

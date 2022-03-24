@@ -213,10 +213,10 @@ export class SendFeedbackPage {
     infoSheet.present();
     infoSheet.onDidDismiss(async option => {
       if (!option) {
-        this.openExternalLink(externalLink);
+        this.openExternalLink('https://t.me/AbcPay');
       } else {
         // Click on Get Help
-        this.openExternalLink('https://t.me/AbcPay');
+        this.openExternalLink(externalLink);
       }
     });
   }

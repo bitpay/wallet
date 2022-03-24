@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { TranslateService } from '@ngx-translate/core';
 import * as _ from 'lodash';
+import { ActionSheetProvider } from 'src/app/providers';
 import { AppProvider } from 'src/app/providers/app/app';
 import { ConfigProvider } from 'src/app/providers/config/config';
 import { Logger } from 'src/app/providers/logger/logger';
@@ -23,6 +24,7 @@ export class AdvancedPage {
   public wallets;
 
   constructor(
+    private actionSheetProvider: ActionSheetProvider,
     private configProvider: ConfigProvider,
     private profileProvider: ProfileProvider,
     private router: Router,
@@ -73,12 +75,13 @@ export class AdvancedPage {
   }
 
   public resetAllSettings() {
-    const title = this.translate.instant('Reset All Settings');
-    const message = this.translate.instant(
-      'Do you want to reset all settings to default value?'
+    const infoSheet = this.actionSheetProvider.createInfoSheet(
+      'reset-all-setting',
+      { secondBtnGroup: true }
     );
-    this.popupProvider.ionicConfirm(title, message).then(ok => {
-      if (!ok) return;
+    infoSheet.present();
+    infoSheet.onDidDismiss(option => {
+      if (!option) return;
       this.configProvider.reset();
       window.location.reload();
       if (this.platformProvider.isCordova) this.splashScreen.show();

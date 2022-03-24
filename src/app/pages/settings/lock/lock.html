@@ -1,10 +1,10 @@
 <wide-header-page title="{{'Lock App'|translate}}">
   <div page-content>
     <ion-list class="settings-list bp-list">
-      <ion-radio-group>
+      <ion-radio-group [value]="lockOptions?.method">
         <ion-item *ngFor="let opt of options">
           <ion-label>{{opt.label}}</ion-label>
-          <ion-radio (click)="select(opt.method)" [value]="opt.method" checked="{{opt.enabled}}" disabled="{{opt.disabled}}"></ion-radio>
+          <ion-radio (click)="select(opt.method)" [value]="opt.method" disabled="{{opt.disabled}}"></ion-radio>
         </ion-item>
       </ion-radio-group>
     </ion-list>

@@ -7,6 +7,10 @@ page-wallet-settings {
     font-size: 12.5px;
   }
 
+  ion-list.ios {
+    margin-bottom: 5rem;
+  }
+
   label-tip {
     background: linear-gradient(0deg, rgba(0, 93, 141, 0.05), rgba(0, 93, 141, 0.05)), #FAFAFB !important;
     margin: 0 !important;

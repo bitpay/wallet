@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
 import * as _ from 'lodash';
-import { ActionSheetProvider } from 'src/app/providers';
+import { ActionSheetProvider, PersistenceProvider } from 'src/app/providers';
 
 // providers
 import { AppProvider } from '../../../providers/app/app';
@@ -62,6 +62,7 @@ export class KeySettingsPage {
     private modalCtrl: ModalController,
     private errorsProvider: ErrorsProvider,
     private onGoingProcessProvider: OnGoingProcessProvider,
+    private persistanceProvider: PersistenceProvider,
     private pushNotificationsProvider: PushNotificationsProvider,
     private bwcErrorProvider: BwcErrorProvider,
     private popupProvider: PopupProvider,
@@ -111,27 +112,28 @@ export class KeySettingsPage {
 
   public encryptChange(): void {
     const val = this.encryptEnabled;
+    const key = this.keyProvider.getKey(this.keyId);
 
     this.profileProvider.removeProfileLegacy();
 
     if (val && !this.walletsGroup.isPrivKeyEncrypted) {
       this.logger.debug('Encrypting private key for', this.walletsGroup.name);
-      this.keyProvider
-        .encrypt(this.keyId)
-        .then(() => {
-          const key = this.keyProvider.getKey(this.keyId);
+      this.profileProvider.showEncryptPasswordInfoModalSmall({isEncryptPasswordSmall: true}).then((password) => {
+        console.log(password);
+        try {
+          this.keyProvider.encryptPrivateKey(key, password);
           const replaceKey = true;
           this.keyProvider.addKey(key, replaceKey);
           this.profileProvider.walletsGroups[
             this.keyId
           ].isPrivKeyEncrypted = true;
           this.logger.debug('Key encrypted');
-        })
-        .catch(err => {
+        } catch (error) {
           this.encryptEnabled = false;
           const title = this.translate.instant('Could not encrypt wallet');
-          this.showErrorInfoSheet(err, title);
-        });
+          this.showErrorInfoSheet(error, title);
+        }
+      })
     } else if (!val && this.walletsGroup.isPrivKeyEncrypted) {
       this.keyProvider
         .decrypt(this.keyId)
@@ -190,19 +192,54 @@ export class KeySettingsPage {
   }
 
   public openWalletGroupDelete(): void {
-    this.router.navigate(['/key-delete'], {
-      state: {
-        keyId: this.keyId
-      }
+    const infoSheet = this.actionSheetProvider.createInfoSheet(
+      'delete-key',
+      { secondBtnGroup: true }
+    );
+    infoSheet.present();
+    infoSheet.onDidDismiss(option => {
+      if (!option) return;
+      this.deleteWalletGroup();
     });
   }
 
-  // public openWalletGroupDelete(): void {
-  //   const infoSheet = this.actionSheetProvider.createInfoSheet(
-  //     'delete-key'
-  //   );
-  //   infoSheet.present();
-  // }
+  private deleteWalletGroup(): void {
+    this.onGoingProcessProvider.set('deletingWallet');
+    this.profileProvider.removeProfileLegacy();
+    const opts = {
+      keyId: this.keyId,
+      showHidden: true
+    };
+    const wallets = this.profileProvider.getWalletsFromGroup(opts);
+    this.profileProvider
+      .deleteWalletGroup(this.keyId, wallets)
+      .then(async () => {
+        this.onGoingProcessProvider.clear();
+
+        const keyInUse = this.profileProvider.isKeyInUse(this.keyId);
+
+        if (!keyInUse) {
+          wallets.forEach(wallet => {
+            this.pushNotificationsProvider.unsubscribe(wallet);
+            this.persistanceProvider.removeLastKnownBalance(wallet.id);
+            this.configProvider.removeBwsFor(wallet.credentials.walletId);
+          });
+          this.keyProvider.removeKey(this.keyId);
+          this.router.navigate(['/tabs/wallets'], { state: {setDefaultKeySelect: true}, replaceUrl: true });
+        } else {
+          this.logger.warn('Key was not removed. Still in use');
+          this.router.navigate(['/tabs/wallets'], { state: {setDefaultKeySelect: true}, replaceUrl: true },);
+        }
+      })
+      .catch(err => {
+        this.onGoingProcessProvider.clear();
+        this.logger.warn('Could not remove all wallet data: ', err);
+        this.popupProvider.ionicAlert(
+          this.translate.instant('Error'),
+          err.message || err
+        );
+      });
+  }
 
   public openQrExport(): void {
     this.router.navigate(['/key-qr-export'], {

@@ -1,5 +1,5 @@
 <div class="confirm-sheet">
-  <div class="sheet-title">
+  <div *ngIf="isShowTitle === 'true'" class="sheet-title">
     <div class="title-icon">
       <img *ngIf="type === 'success'" src="assets/img/green-check-circled.svg">
       <img *ngIf="type === 'info'" src="assets/img/icon-info-blue.svg">
@@ -10,15 +10,29 @@
     </div>
     <ng-content select="[sheet-title-text]"></ng-content>
   </div>
-  <div class="sheet-text">
+  <div [ngClass]="{'no-show-title': isShowTitle === 'false'}" class="sheet-text">
     <ng-content select="[sheet-text]"></ng-content>
   </div>
-  <div class="sheet-btn-group">
+  <div class="sheet-input">
+    <ng-content select="[sheet-input]"></ng-content>
+  </div>
+  <div class="sheet-input-second">
+    <ng-content select="[sheet-input-second]"></ng-content>
+  </div>
+  <div *ngIf="sheetSecondBtnGroup === 'false'" class="sheet-btn-group">
     <div class="sheet-btn" [ngClass]="{blue: type === 'info' || type === 'love', yellow: type === 'warning', red: type === 'danger'}" (click)="dismiss(true)">
       <ng-content select="[sheet-button-text]"></ng-content>
     </div>
     <div class="sheet-second-btn" [ngClass]="{primary: type == 'danger'}" (click)="dismiss(false)">
       <ng-content select="[sheet-second-button-text]"></ng-content>
+    </div>
+  </div>
+  <div *ngIf="sheetSecondBtnGroup === 'true'" class="sheet-second-btn-group">
+    <div class="sheet-third-btn" [ngClass]="{blue: type === 'info' || type === 'love', yellow: type === 'warning', red: type === 'danger'}" (click)="dismiss(false)">
+      <ng-content select="[sheet-third-button-text]"></ng-content>
+    </div>
+    <div class="sheet-fourth-btn" [ngClass]="{primary: type == 'danger'}" (click)="dismiss(true)">
+      <ng-content select="[sheet-fourth-button-text]"></ng-content>
     </div>
   </div>
 </div>

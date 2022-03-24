@@ -93,7 +93,7 @@ export class SessionLogPage {
     await actionSheet.present();
   }
 
-  private showWarningModal(): void {
+  public showWarningModal(): void {
     const infoSheet = this.actionSheetProvider.createInfoSheet(
       'sensitive-info'
     );

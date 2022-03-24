@@ -18,10 +18,20 @@ export class InfoSheetTemplate {
   @Input()
   type: AlertType | any = AlertType.info;
 
+  @Input()
+  sheetSecondBtnGroup: any = 'false';
+
+  @Input()
+  isShowTitle: any = 'true';
+
   private dismissSubject = new Subject<void>();
   public onDismiss = this.dismissSubject.asObservable();
 
   dismiss(option) {
     this.dismissSubject.next(option);
+  }
+
+  ahihi(a) {
+    console.log(typeof a + '~~~~~~~~~~~~~~~~~~~~~' + a)
   }
 }

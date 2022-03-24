@@ -109,13 +109,13 @@
       <span sheet-button-text translate>OK</span>
     </info-sheet-template>
 
-    <info-sheet-template *ngSwitchCase="'sensitive-info'" type="warning">
+    <info-sheet-template *ngSwitchCase="'sensitive-info'" type="danger" sheetSecondBtnGroup="true">
       <span sheet-title-text translate>Sensitive Data</span>
       <span sheet-text translate>
         The information you are about to share/export may contain sensitive data such us wallet IDs, addresses, balances, etc. Please be sure you trust the person or entity with whom you are sharing this information.
       </span>
-      <span sheet-button-text translate>I understand</span>
-      <span sheet-second-button-text translate>Go Back</span>
+      <span sheet-third-button-text translate>Cancel</span>
+      <span sheet-fourth-button-text translate>I understand</span>
     </info-sheet-template>
 
     <info-sheet-template *ngSwitchCase="'copy-to-clipboard'" type="success">
@@ -124,11 +124,24 @@
       <span sheet-button-text translate>GOT IT</span>
     </info-sheet-template>
 
-    <info-sheet-template *ngSwitchCase="'delete-key'" type="danger">
+    <info-sheet-template *ngSwitchCase="'delete-key'" sheetSecondBtnGroup={{params?.secondBtnGroup}} type="danger">
       <span sheet-title-text translate>Permanently delete?</span>
-      <span sheet-text>All accounts using this key are permanently deleted. <span>This action cannot be reversed</span></span>
-      <span sheet-button-text translate>Cancel</span>
-      <span sheet-second-button-text translate>Delete</span>
+      <span sheet-text>All accounts using this key are permanently deleted. <span class="text-danger">This action cannot be reversed</span></span>
+      <span sheet-third-button-text  translate>Cancel</span>
+      <span sheet-fourth-button-text translate>Delete</span>
+    </info-sheet-template>
+
+    <info-sheet-template *ngSwitchCase="'reset-all-setting'" sheetSecondBtnGroup={{params?.secondBtnGroup}} type="danger">
+      <span sheet-title-text translate>Reset All Settings</span>
+      <span sheet-text>Do you want to reset all settings to default value?</span>
+      <span sheet-third-button-text  translate>Cancel</span>
+      <span sheet-fourth-button-text translate>Ok</span>
+    </info-sheet-template>
+
+    <info-sheet-template *ngSwitchCase="'help-and-support'" isShowTitle={{params?.isShowTitle}} sheetSecondBtnGroup={{params?.secondBtnGroup}}>
+      <span sheet-text>Help and support information is avalable at the website</span>
+      <span sheet-third-button-text  translate>Cancel</span>
+      <span sheet-fourth-button-text translate>Open</span>
     </info-sheet-template>
 
     <info-sheet-template *ngSwitchCase="'copied-gift-card-claim-code'" type="success">
@@ -292,22 +305,22 @@
       <span sheet-button-text translate>OK</span>
     </info-sheet-template>
 
-    <info-sheet-template *ngSwitchCase="'request-feature'" type="info">
+    <info-sheet-template *ngSwitchCase="'request-feature'" sheetSecondBtnGroup='true'>
       <span sheet-title-text translate>Request a new feature</span>
       <span sheet-text translate>
         If you need immediate help with a problem you are having, then get help by contacting our support team.
       </span>
-      <span sheet-button-text translate>Get help</span>
-      <span sheet-second-button-text translate>Request feature</span>
+      <span sheet-third-button-text translate>Get help</span>
+      <span sheet-fourth-button-text translate>Request feature</span>
     </info-sheet-template>
 
-    <info-sheet-template *ngSwitchCase="'report-issue'" type="info">
+    <info-sheet-template *ngSwitchCase="'report-issue'" sheetSecondBtnGroup='true'>
       <span sheet-title-text translate>Report an issue</span>
       <span sheet-text translate>
         Found something broken? Please report it as a bug. If you need immediate help with a problem you are having, then get help by contacting our support team.
       </span>
-      <span sheet-button-text translate>Get help</span>
-      <span sheet-second-button-text translate>Report issue</span>
+      <span sheet-third-button-text translate>Get help</span>
+      <span sheet-fourth-button-text translate>Report issue</span>
     </info-sheet-template>
 
     <info-sheet-template *ngSwitchCase="'new-key'" type="warning">

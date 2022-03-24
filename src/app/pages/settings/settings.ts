@@ -26,6 +26,7 @@ import { ModalController } from '@ionic/angular';
 import { EventManagerService } from 'src/app/providers/event-manager.service';
 import { Router } from '@angular/router';
 import { NewFeaturePage } from '../new-feature/new-feature';
+import { ActionSheetProvider } from 'src/app/providers';
 
 @Component({
   selector: 'page-settings',
@@ -77,6 +78,7 @@ export class SettingsPage {
   useLegacyQrCode;
   constructor(
     private app: AppProvider,
+    private actionSheetProvider: ActionSheetProvider,
     private language: LanguageProvider,
     private externalLinkProvider: ExternalLinkProvider,
     public profileProvider: ProfileProvider,
@@ -301,7 +303,7 @@ export class SettingsPage {
     this.router.navigate(['/share']);
   }
 
-  public openHelpExternalLink(): void {
+  public openHelpExternal(): void {
     this.analyticsProvider.logEvent('help', {});
     const url = 'https://t.me/AbcPay'
     const optIn = true;
@@ -311,14 +313,18 @@ export class SettingsPage {
     );
     const okText = this.translate.instant('Open');
     const cancelText = this.translate.instant('Go Back');
-    this.externalLinkProvider.open(
-      url,
-      optIn,
-      title,
-      message,
-      okText,
-      cancelText
+    const infoSheet = this.actionSheetProvider.createInfoSheet(
+      'help-and-support',
+      { secondBtnGroup: true,
+        isShowTitle: false
+      }
     );
+    infoSheet.present();
+    infoSheet.onDidDismiss(option => {
+      if (!option) return;
+      this.externalLinkProvider.open(url);
+    });
+    
   }
 
   async openPinModal(action) {

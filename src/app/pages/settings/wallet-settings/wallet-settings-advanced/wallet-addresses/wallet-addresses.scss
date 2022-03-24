@@ -32,6 +32,8 @@ page-wallet-addresses {
       }
     }
     &.scan-item {
+      --padding-top: 5px;
+      --padding-bottom: 5px;
       border: 1px solid rgba(112, 129, 138, 0.16);
       border-right: 0;
       border-left: 0;
