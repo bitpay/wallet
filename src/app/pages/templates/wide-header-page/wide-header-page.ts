@@ -36,6 +36,9 @@ export class WideHeaderPage {
   hideTopTitle: boolean | any;
 
   @Input()
+  onlyTopTitle: boolean | any;
+
+  @Input()
   hasSlideButton: boolean | any;
 
   @ViewChild(IonToolbar)

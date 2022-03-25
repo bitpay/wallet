@@ -11,6 +11,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { NavController, NavParams } from '@ionic/angular';
+import { AppProvider } from 'src/app/providers';
 
 @Component({
   selector: 'page-slide-to-accept',
@@ -27,6 +28,9 @@ export class SlideToAcceptPage implements AfterViewInit, OnChanges {
 
   @Input()
   isDogecoin: boolean;
+
+  @Input()
+  isTxpDetail: boolean;
 
   @Input()
   set disabled(disabled: boolean) {
@@ -82,13 +86,17 @@ export class SlideToAcceptPage implements AfterViewInit, OnChanges {
 
   public isConfirm: boolean = false;
   public animation: boolean;
+  public currentTheme: string;
+
   textStyle;
   bitcoinStyle;
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
     public renderer: Renderer2,
+    private appProvider: AppProvider
   ) {
+    this.currentTheme = this.appProvider.themeProvider.currentAppTheme;
   }
 
   ngAfterViewInit() {
@@ -103,7 +111,7 @@ export class SlideToAcceptPage implements AfterViewInit, OnChanges {
         top: buttonConstraints.top,
         width: buttonConstraints.width
       };
-      this.containerWidth = this.htmlContainerElem.clientWidth + 10;
+      this.containerWidth = this.htmlContainerElem.clientWidth < 210 ? 210 : this.htmlContainerElem.clientWidth  + 10;
       const subtract = this.containerWidth < 800 ? 75 : 200;
       this.xMax = this.containerWidth - subtract;
     }, 0);
