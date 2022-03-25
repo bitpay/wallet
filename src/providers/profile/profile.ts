@@ -1096,7 +1096,7 @@ export class ProfileProvider {
   }
 
   private _importFile(str: string, opts): Promise<any> {
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
       opts = opts ? opts : {};
       opts['bp_partner'] = this.appProvider.info.name;
       opts['bp_partner_version'] = this.appProvider.info.version;
@@ -1170,6 +1170,16 @@ export class ProfileProvider {
         return reject(
           'Backup format not recognized. If you are using a Copay Beta backup and version is older than 0.10, please see: https://github.com/bitpay/copay/issues/4730#issuecomment-244522614'
         );
+      }
+
+      // check if custom token
+      if (!this.coinSupported(credentials.coin) && credentials.token) {
+        const customTokens = [];
+        customTokens.push({
+          ...credentials.token,
+          ...{ symbol: credentials.token.symbol.toLowerCase() }
+        });
+        await this.currencyProvider.addCustomToken(customTokens);
       }
 
       client.fromString(JSON.stringify(credentials));
