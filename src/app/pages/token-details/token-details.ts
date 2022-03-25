@@ -7,6 +7,7 @@ import _ from "lodash";
 import moment from "moment";
 import { Subscription } from "rxjs";
 import { Token } from "src/app/models/tokens/tokens.model";
+import { AddressBookProvider } from "src/app/providers";
 import { ActionSheetProvider } from "src/app/providers/action-sheet/action-sheet";
 import { AddressProvider } from "src/app/providers/address/address";
 import { AppProvider } from "src/app/providers/app/app";
@@ -21,6 +22,7 @@ import { TokenProvider } from "src/app/providers/token-sevice/token-sevice";
 import { WalletProvider } from "src/app/providers/wallet/wallet";
 import { TokenInforPage } from "../token-info/token-info";
 import { TxDetailsModal } from "../tx-details/tx-details";
+import { SearchTxModalPage } from "../wallet-details/search-tx-modal/search-tx-modal";
 const HISTORY_SHOW_LIMIT = 10;
 const MIN_UPDATE_TIME = 1000;
 
@@ -53,6 +55,8 @@ export class TokenDetailsPage {
   public updatingTxHistory: boolean;
   public updateTxHistoryError: boolean;
   public updatingTxHistoryProgress: number = 0;
+  public addressbook = [];
+
   constructor(
     public http: HttpClient,
     private router: Router,
@@ -69,7 +73,9 @@ export class TokenDetailsPage {
     private timeProvider : TimeProvider,
     private walletProvider: WalletProvider,
     private actionSheetProvider: ActionSheetProvider,
-    private appProvider: AppProvider
+    private appProvider: AppProvider,
+    private addressbookProvider: AddressBookProvider,
+
   ) {
     this.currentTheme = this.appProvider.themeProvider.currentAppTheme;
     this.zone = new NgZone({ enableLongStackTrace: false });
@@ -81,6 +87,16 @@ export class TokenDetailsPage {
     }
     this.wallet = this.profileProvider.getWallet(this.navPramss.walletId);
     this.token = this.navPramss.token;
+
+    this.addressbookProvider
+      .list(this.wallet.network)
+      .then(ab => {
+        this.addressbook = ab;
+      })
+      .catch(err => {
+        this.logger.error(err);
+      });
+
   }
 
   subscribeEvents() {
@@ -141,6 +157,24 @@ export class TokenDetailsPage {
         walletId: this.wallet.id,
         token : this.token
       }
+    });
+  }
+
+  public async openSearchModal(): Promise<void> {
+    const modal = await this.modalCtrl.create({
+      component: SearchTxModalPage,
+      componentProps: {
+        addressbook: this.addressbook,
+        completeHistory: this.wallet.completeHistory,
+        wallet: this.wallet
+      },
+      showBackdrop: false,
+      backdropDismiss: true
+    })
+    await modal.present();
+    modal.onDidDismiss().then(({ data }) => {
+      if (!data || !data.txid) return;
+      this.goToTxDetails(data);
     });
   }
 

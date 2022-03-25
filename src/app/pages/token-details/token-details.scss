@@ -107,10 +107,61 @@ token-details {
         color: #444444;
       }
 
-      &--large {
+      &.item {
+        padding-left: 1rem;
+        min-height: 26px;
+        background: var(--bg-color-light-theme);
         ion-label {
-          font-size: 15px;
+          margin: 0;
+          font-size: 11px;
+          text-transform: uppercase;
+          color: rgba(28, 55, 69, 0.6);
         }
+      }
+
+      &--large {
+        background: #FAFAFB !important;
+        --inner-padding-end: 0;
+        padding: 1rem 1rem 0 1rem;
+        height: auto !important;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+        .tx-history-header-label {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: flex-start;
+          text-transform: none !important;
+          font-size: 16px !important;
+          color: #001E2E;
+          .label-multisign {
+            text-transform: none;
+            color: rgba(0, 30, 46, 0.6);
+            font-size: 14px;
+            .num-credentials {
+              color: #f8b95d;
+            }
+          }
+        }
+
+        .accept-btn {
+          --background: transparent;
+          --color: var(--color-primary);
+          border: 1px solid #70818a;
+          border-radius: 20px;
+          min-width: 120px;
+          height: 35px;
+          font-size: 14px;
+          font-weight: 600;
+        }
+
+        .item-tx-history {
+          width: 100%;
+          display: flex;
+          border-bottom: 1px solid #e4e7e9;
+          padding-bottom: 10px;
+        }
+
       }
 
       ion-label {
@@ -119,11 +170,12 @@ token-details {
         align-items: center;
       }
 
-      .txps-badge {
-        margin-right: 2rem;
-        ion-badge {
-          --background: unset;
-        }
+    }
+
+    .txps-badge {
+      margin-right: 2rem;
+      ion-badge {
+        --background: unset;
       }
     }
 
@@ -138,6 +190,9 @@ token-details {
       border: 1px solid #f4f4f4;
       border-left: 0;
       border-right: 0;
+      .item-icon {
+        margin-right: 15px;
+      }
     }
 
     img {
@@ -151,6 +206,7 @@ token-details {
       white-space: nowrap;
       display: flex;
       flex-direction: column;
+      margin-right: 2rem;
       .memo {
         font-size: 14px;
         color: rgba(0, 30, 46, 0.6);
@@ -189,6 +245,7 @@ token-details {
     .tx-action {
       font-size: 14px;
       margin: 0.5rem 0;
+      letter-spacing: 0.4px;
     }
 
     .proposal-container {
@@ -205,6 +262,13 @@ token-details {
       img {
         width: 40px;
         height: 40px;
+      }
+    }
+
+    .item-wrapper {
+      margin-bottom: 0.5rem;
+      &:last-child {
+        margin-bottom: 0;
       }
     }
   }
