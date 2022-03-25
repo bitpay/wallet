@@ -38,16 +38,6 @@
         </ion-note>
       </ion-item>
 
-      <ion-item-divider class="item-end" *ngIf="canSign">
-        <ion-label>
-          {{'Privacy' | translate}}
-        </ion-label>
-      </ion-item-divider>
-      <ion-item class="item-end">
-        <ion-label>{{'Hide Balance' | translate }}</ion-label>
-        <ion-toggle checked="{{false}}" (ionChange)="hiddenBalanceKey()"></ion-toggle>
-      </ion-item>
-
       <ion-item-divider class="item-end container-account" *ngIf="canSign">
         <ion-label>
           {{'Contained Accounts' | translate}}
