@@ -6,8 +6,13 @@
       <ion-back-button *ngIf="!isCustomBack" icon="chevron-back-outline" defaultHref="/">
       </ion-back-button>
     </ion-buttons>
-    <ion-title *ngIf="!hideTopTitle">
+    <ion-title *ngIf="!hideTopTitle && !onlyTopTitle">
       <div [reveal-at-scroll-pos]="expandableHeader.headerHeight" [scrollArea]="scrollArea">
+        {{title}}
+      </div>
+    </ion-title>
+    <ion-title class="ion-no-padding onlyTopTitle-custom" *ngIf="onlyTopTitle">
+      <div class="ion-text-center"> 
         {{title}}
       </div>
     </ion-title>

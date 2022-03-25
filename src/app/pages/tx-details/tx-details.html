@@ -30,10 +30,10 @@
           <ng-container *ngIf="btx.tokenId">
             <div class="amount-label" *ngIf="!(btx.amountToken === 0 )">
               <div *ngIf="isNegative" class="amount negative-amount">
-                - {{btx.amountToken}} {{btx.symbolToken | uppercase}}
+                - {{btx.amountToken}} {{btx.symbolToken}}
               </div>
               <div *ngIf="!isNegative" class="amount">
-                + {{btx.amountToken}} {{btx.symbolToken | uppercase}}
+                + {{btx.amountToken}} {{btx.symbolToken}}
               </div>
             </div>
           </ng-container>

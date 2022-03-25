@@ -977,6 +977,9 @@ msgstr "Create {coinLabel} Wallet"
 msgid "Created"
 msgstr "Created"
 
+msgid "Created Date"
+msgstr "Created Date"
+
 msgid "Created by"
 msgstr "Created by"
 

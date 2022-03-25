@@ -1312,18 +1312,49 @@
     }
 
     page-txp-details {
+        .line::before {
+            background: rgba(237, 239, 240, 0.38) !important;
+        }
         .proposal-deletion {
             background-color: var(--bg-color-dark-theme);
+        }
+        .delete-button{
+            --color: #FFB4A9 !important;
+            color: #FFB4A9 !important;
+        }
+        .reject-note{
+            color: #FFB4A9 !important;
+        }
+        .accept-note{
+            color: #73DAA5 !important;
+        }
+        .proposal-deletion-help{
+            color: rgba(237, 239, 240, 0.6) !important;
         }
 
         .proposal-rejection {
             background-color: var(--bg-color-dark-theme);
         }
 
-        ion-note {
-            .wallet {
-                .note-container {
-                    color: rgba(255, 184, 93, 1) !important;
+        .tx-detail-list{
+            background: linear-gradient(0deg, rgba(126, 208, 255, 0.11), rgba(126, 208, 255, 0.11)), #001E2E;
+        }
+        .timeline-container{
+            --background: linear-gradient(0deg, rgba(126, 208, 255, 0.11), rgba(126, 208, 255, 0.11)), #001E2E;
+            .timeline-cover{
+                .timeline-header{
+                    color: rgba(237, 239, 240, 0.6);
+                }
+                .timeline-content-label{
+                    .action{
+                        color: #EDEFF0;
+                    }
+                    .name{
+                        color: rgba(237, 239, 240, 0.6);
+                    }
+                }
+                .time-content{
+                    color: rgba(237, 239, 240, 0.6);
                 }
             }
         }
@@ -1418,20 +1449,27 @@
         }
     }
     token-info,
-    page-tx-details{
+    page-tx-details,
+    page-txp-details{
         .payment-proposal-to{
             background-color: unset;
         }
         .tx-detail-list{
             background: linear-gradient(0deg, rgba(126, 208, 255, 0.11), rgba(126, 208, 255, 0.11)), #001E2E;
             .note-container{
-                color: #edeff0 !important
+                color: #edeff0 !important;
             }
             .amount{
                 color: rgba(115, 218, 165, 1);
             }
             .negative-amount{
                 color: rgba(255, 180, 169, 1);
+            }
+            .amount-gold{
+                color: #FFB85D !important;         
+            }
+            .alternative{
+                color: rgba(237, 239, 240, 0.6);
             }
         }
         .view-blockchain-button{
