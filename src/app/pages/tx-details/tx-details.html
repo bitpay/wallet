@@ -205,20 +205,31 @@
           [(ngModel)]="txNotification.value" (ionChange)="txConfirmNotificationChange()"></ion-toggle>
       </ion-item>
 
-      <div class="line-divider" *ngIf="actionList && actionList[0]"></div>
 
-      <div *ngIf="actionList && actionList[0] && !wallet.credentials.multisigEthInfo">
-        <ion-item detail="false">
-          <div>{{'Timeline' | translate}}</div>
-        </ion-item>
+    </ion-list>
+
+    <ion-item detail="false" class="timeline-container" lines="none"
+      *ngIf="actionList && actionList[0] && !wallet.credentials.multisigEthInfo">
+      <div class="timeline-cover" style="width: 100%;">
+        <span class="timeline-header">{{'Timeline' | translate}}</span>
         <div class="timeline-item"
           [ngClass]="{'action-created' : a.type == 'created' || a.type == 'accept', 'action-rejected' : a.type == 'reject'}"
           *ngFor="let a of actionList; let i = index">
           <div class="timeline-content">
             <div class="timeline-content-icon">
-              <div class="rejected" *ngIf="a.type === 'reject'">!</div>
-              <img src="assets/img/icon-broadcasted.svg" *ngIf="a.type === 'broadcasted'">
-              <div class="line" *ngIf="a.type !== 'reject' && a.type !== 'broadcasted'">{{actionList.length - i}}</div>
+              <div class="rejected" *ngIf="a.type == 'failed'"></div>
+              <div class="line" *ngIf="a.type === 'reject'">
+                <img src="assets/img/txp-details/rejected-{{currentTheme}}.svg">
+              </div>
+              <div class="line" *ngIf="a.type === 'accept'">
+                <img src="assets/img/txp-details/accepted-{{currentTheme}}.svg">
+              </div>
+              <div class="line" *ngIf="a.type === 'created'">
+                <img src="assets/img/txp-details/created-{{currentTheme}}.svg">
+              </div>
+              <div class="line" *ngIf="a.type === 'broadcasted'">
+                <img src="assets/img/icon-broadcasted.svg">
+              </div>
             </div>
             <div class="timeline-content-label">
               <div class="action ellipsis">{{a.description}}</div>
@@ -230,7 +241,9 @@
           </div>
         </div>
       </div>
-    </ion-list>
+    </ion-item>
+
+
     <ion-row class="ion-justify-content-center">
       <ion-button class="view-blockchain-button" fill="clear" (click)="viewOnBlockchain()">
         {{'View on blockchain' | translate}}

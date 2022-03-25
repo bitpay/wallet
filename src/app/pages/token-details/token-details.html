@@ -73,9 +73,10 @@
     <ng-container *ngIf="history && history[0]">
       <div  class="header-transaction">
         Transaction History
+        <ion-icon (click)="openSearchModal()" name="search-sharp"></ion-icon>
       </div>
 
-      <ion-list lines="none" class="bp-list tx-history">
+      <ion-list lines="none" class="tx-history">
         <ion-item-group *ngFor="let group of groupedHistory; trackBy: trackByFn; let i = index;">
 
           <ion-item-divider sticky class="tx-history-header">
