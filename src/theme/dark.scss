@@ -378,9 +378,10 @@
 
     search-bar {
         background: var(--bg-color-dark-theme);
+        border-color: #2B4552;
 
         ion-input {
-            background: var(--bg-color-dark-theme-message);
+            background: var(--bg-color-dark-theme);
             color: var(--text-color-dark-theme) !important;
         }
     }
@@ -1981,7 +1982,6 @@
         }
     }
 
-    page-addressbook-add,
     page-join-wallet {
         ion-item {
             --background: var(--bg-color-dark-theme);
@@ -1989,9 +1989,62 @@
         }
     }
 
+    page-addressbook-add {
+        .add-address-book-container {
+            .slide-title {
+                h3 {
+                    color: #E0E4E6 !important;
+                }
+            }
+            background: linear-gradient(0deg, rgba(126, 208, 255, 0.11), rgba(126, 208, 255, 0.11)), #001E2E;
+            ion-item {
+                --background: linear-gradient(0deg, rgba(126, 208, 255, 0.11), rgba(126, 208, 255, 0.11)), #001E2E !important;
+                border-color: rgba(237, 239, 240, 0.38);
+                ion-input {
+                    background: linear-gradient(0deg, rgba(126, 208, 255, 0.11), rgba(126, 208, 255, 0.11)), #001E2E;
+                    color: #EDEFF0;
+                }
+            }
+
+            .footer {
+                ion-button {
+                    color: var(--color-primary-abcpay-dark) !important;
+                    &[disabled] {
+                        color: rgba(224, 228, 230, 0.38) !important;
+                    }
+                }
+            }
+        }
+    }
+
     page-addressbook {
         .zero-state-icon {
             background-color: var(--bg-color-dark-theme-3);
+        }
+        .add-button {
+            ion-icon {
+                color: rgba(237, 239, 240, 0.6) !important;
+            }
+        }
+    }
+
+    page-addressbook-view {
+        ion-item {
+            ion-label {
+                color: rgba(237, 239, 240, 0.6) !important;
+                .comment {
+                    color: #EDEFF0 !important;
+
+                }
+            }
+            &.btn-send-container {
+                ion-label {
+                    color: var(--color-primary-abcpay-dark) !important;
+                    &.text-danger {
+                        color: #FFB4A9 !important;
+                    }
+                }
+            }
         }
     }
 

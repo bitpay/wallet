@@ -1,7 +1,7 @@
 <wide-header-page title="{{'Address Book'|translate}}">
   <ion-buttons *ngIf="!isEmptyList" slot="end">
-    <ion-button fill="clear" wide-header-bar-button (click)="addEntry()">
-      <span translate>New contact</span>
+    <ion-button class="add-button" fill="clear" wide-header-bar-button (click)="addEntry()">
+      <ion-icon slot="icon-only" name="add"></ion-icon>
     </ion-button>
   </ion-buttons>
   <div page-content>
@@ -12,20 +12,26 @@
       <div class="zero-state-heading" translate>No contacts yet</div>
       <div class="zero-state-description" translate>Get started by adding your first one.</div>
       <ion-button class="button-standard" (click)="addEntry()">
-        {{'New contact' | translate}}
+        {{'Add new contact' | translate}}
       </ion-button>
     </div>
 
-    <ion-list lines="none" class="bp-list ion-margin-top">
-      <ion-item button class="ion-padding-bottom" *ngFor="let entry of (filteredAddressbook | async)" (click)="viewEntry(entry)">
-        <div class="start">
-          <gravatar [name]="entry.name" [height]="40" [width]="40" [email]="entry.email" [coin]="entry.coin" [network]="entry.network"></gravatar>
+    <ion-list class="settings-list bp-list ion-margin-top">
+        <div *ngFor="let entry of (filteredAddressbook | async)">
+          <ion-item-divider *ngIf="entry?.key" class="item-end">
+            <ion-label>
+              {{entry?.key | translate}}
+            </ion-label>
+          </ion-item-divider>
+          <ion-item *ngFor="let item of entry.contact" detail="false" button class="ion-padding-bottom" (click)="viewEntry(item)">
+            <ion-label>
+              <div class="item-title">{{ item.name }}</div>
+            </ion-label>
+            <div>
+              <coin-icon [coin]="item.coin" [network]="item.network" [noBackground]="true"></coin-icon>
+            </div>
+          </ion-item>
         </div>
-        <ion-label>
-          <div class="item-title">{{ entry.name }}</div>
-          <div class="item-subtitle">{{ entry.address }}</div>
-        </ion-label>
-      </ion-item>
     </ion-list>
   </div>
 </wide-header-page>

@@ -1,5 +1,5 @@
 import { Location } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { ActionSheetProvider } from 'src/app/providers/action-sheet/action-sheet';
@@ -13,7 +13,8 @@ import { PopupProvider } from '../../../../providers/popup/popup';
 @Component({
   selector: 'page-addressbook-view',
   templateUrl: 'view.html',
-  styleUrls: ['view.scss']
+  styleUrls: ['view.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class AddressbookViewPage {
   public contact;
@@ -85,36 +86,24 @@ export class AddressbookViewPage {
     })
   }
 
-  private remove(): void {
-    const title = this.translate.instant('Warning!');
-    const message = this.translate.instant(
-      'Are you sure you want to delete this contact?'
+  public remove(): void {
+    const infoSheet = this.actionSheetProvider.createInfoSheet(
+      'delete-contact',
+      { secondBtnGroup: true }
     );
-    this.popupProvider.ionicConfirm(title, message, null, null).then(res => {
-      if (!res) return;
+    infoSheet.present();
+    infoSheet.onDidDismiss(option => {
+      if (!option) return;
       this.addressBookProvider
         .remove(this.address, this.network, this.coin)
         .then(() => {
           this.events.publish('Local/AddressBook/Changed');
-          this.location.back();
+          this.router.navigate(['/addressbook']); 
         })
         .catch(err => {
           this.popupProvider.ionicAlert(this.translate.instant('Error'), err);
           return;
         });
-    });
-  }
-
-  public showMoreOptions(): void {
-    const optionsSheet = this.actionSheetProvider.createOptionsSheet(
-      'address-book',
-      { coin: this.coin.toUpperCase() }
-    );
-    optionsSheet.present();
-
-    optionsSheet.onDidDismiss(option => {
-      if (option == 'send-to-contact') this.sendTo();
-      if (option == 'delete-contact') this.remove();
     });
   }
 }
