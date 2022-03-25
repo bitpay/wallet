@@ -30,8 +30,4 @@ export class InfoSheetTemplate {
   dismiss(option) {
     this.dismissSubject.next(option);
   }
-
-  ahihi(a) {
-    console.log(typeof a + '~~~~~~~~~~~~~~~~~~~~~' + a)
-  }
 }

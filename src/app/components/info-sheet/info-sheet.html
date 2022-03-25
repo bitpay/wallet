@@ -124,22 +124,29 @@
       <span sheet-button-text translate>GOT IT</span>
     </info-sheet-template>
 
+    <info-sheet-template *ngSwitchCase="'delete-contact'" sheetSecondBtnGroup={{params?.secondBtnGroup}} type="danger">
+      <span sheet-title-text translate>Delete Contact</span>
+      <span sheet-text translate>Are you sure you want to delete this contact?</span>
+      <span sheet-third-button-text  translate>Cancel</span>
+      <span sheet-fourth-button-text translate>Ok</span>
+    </info-sheet-template>
+
     <info-sheet-template *ngSwitchCase="'delete-key'" sheetSecondBtnGroup={{params?.secondBtnGroup}} type="danger">
       <span sheet-title-text translate>Permanently delete?</span>
-      <span sheet-text>All accounts using this key are permanently deleted. <span class="text-danger">This action cannot be reversed</span></span>
-      <span sheet-third-button-text  translate>Cancel</span>
+      <span sheet-text translate>All accounts using this key are permanently deleted. <span class="text-danger" translate>This action cannot be reversed</span></span>
+      <span sheet-third-button-text translate>Cancel</span>
       <span sheet-fourth-button-text translate>Delete</span>
     </info-sheet-template>
 
     <info-sheet-template *ngSwitchCase="'reset-all-setting'" sheetSecondBtnGroup={{params?.secondBtnGroup}} type="danger">
       <span sheet-title-text translate>Reset All Settings</span>
-      <span sheet-text>Do you want to reset all settings to default value?</span>
+      <span sheet-text translate>Do you want to reset all settings to default value?</span>
       <span sheet-third-button-text  translate>Cancel</span>
       <span sheet-fourth-button-text translate>Ok</span>
     </info-sheet-template>
 
     <info-sheet-template *ngSwitchCase="'help-and-support'" isShowTitle={{params?.isShowTitle}} sheetSecondBtnGroup={{params?.secondBtnGroup}}>
-      <span sheet-text>Help and support information is avalable at the website</span>
+      <span sheet-text translate>Help and support information is avalable at the website</span>
       <span sheet-third-button-text  translate>Cancel</span>
       <span sheet-fourth-button-text translate>Open</span>
     </info-sheet-template>
