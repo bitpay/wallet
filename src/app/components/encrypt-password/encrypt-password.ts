@@ -1,4 +1,4 @@
-import { Component, ComponentRef, NgZone } from '@angular/core';
+import { Component, ComponentRef, NgZone, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AnimationController } from '@ionic/angular';
 import { InfoSheetType } from 'src/app/providers/action-sheet/action-sheet';
@@ -11,6 +11,7 @@ import { ActionSheetParent } from '../action-sheet/action-sheet-parent';
   selector: 'encrypt-password',
   templateUrl: 'encrypt-password.html',
   styleUrls: ['encrypt-password.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class EncryptPasswordComponent extends ActionSheetParent {
   public encryptPasswordForm: FormGroup;

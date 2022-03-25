@@ -84,7 +84,7 @@
       </ion-item-divider>
       <ion-item *ngFor="let pk of pubKeys; let i=index" copy-to-clipboard="{{pk}}">
         <ion-text>
-          <p class="ion-no-margin copayer">Copayer {{i}}</p>
+          <p class="ion-no-margin copayer" translate>Copayer {{i}}</p>
           <p class="ion-text-wrap ion-no-margin pk">
             {{pk}}
           </p>
@@ -94,7 +94,7 @@
         </ion-note>
       </ion-item>
       <ion-item-divider class="item-end" *ngIf="balanceByAddress">
-        <ion-label>
+        <ion-label translate>
           Balance By Address
         </ion-label>
       </ion-item-divider>

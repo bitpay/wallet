@@ -295,6 +295,10 @@
         }
     }
 
+    .text-danger {
+        color: #FFB4A9 !important;
+    }
+
     ion-toggle {
         --background: var(--bg-color-dark-theme-3);
         --background-checked: var(--toggle-background-active-dark-theme) !important;
@@ -462,7 +466,7 @@
             &.ios,
             &.md {
                 border: 0;
-                background-color: var(--bg-color-dark-theme);
+                background: linear-gradient(0deg, rgba(126, 208, 255, 0.11), rgba(126, 208, 255, 0.11)), #001E2E;
                 --background: linear-gradient(0deg, rgba(126, 208, 255, 0.11), rgba(126, 208, 255, 0.11)), #001E2E;
                 --padding-start: 5px;
                 --padding-end: 5px;
@@ -516,6 +520,7 @@
             ion-item {
                 background: linear-gradient(0deg, rgba(126, 208, 255, 0.05), rgba(126, 208, 255, 0.05)), #001E2E !important;
                 --background: linear-gradient(0deg, rgba(126, 208, 255, 0.05), rgba(126, 208, 255, 0.05)), #001E2E !important;
+                --border-color: #2B4552;
                 ion-label {
                     color: #FFF;
                     &.color-danger {
@@ -543,6 +548,23 @@
                 .pk {
                     color: rgba(237, 239, 240, 0.6) !important;
                 }
+                &:last-child {
+                    border-bottom: 1px solid #2B4552 !important;
+                    --border-color: transparent;
+                }
+              
+                &:first-child {
+                    border-top: 1px solid #2B4552 !important;
+                }
+            }
+            .item-start {
+                border-top: 1px solid #2B4552 !important;
+                --border-color: transparent;
+            }
+            
+            .item-end {
+                border-bottom: 1px solid #2B4552 !important;
+                --border-color: transparent;
             }
             ion-item-divider {
                 ion-label {
@@ -853,19 +875,23 @@
                     }
 
                     .sheet-text {
-                        color: var(--text-color-info-sheet-dark-theme) !important;
+                        color: rgba(237, 239, 240, 0.6) !important;
                     }
 
                     .sheet-btn-group {
-                        border-top: 1px solid var(--border-color-dark-theme);
-                        color: #00FFD3;
+                        border-color: var(--border-color-dark-theme);
+                        color: var(--color-primary-abcpay-dark) !important;
 
                         .sheet-btn.default,
                         .sheet-second-btn {
-                            color: var(--text-color-dark-theme-2) !important;
+                            color: var(--color-primary-abcpay-dark) !important;
                         }
                     }
                 }
+            }
+
+            .sheet-second-btn-group {
+                color: var(--color-primary-abcpay-dark) !important;
             }
         }
     }
@@ -1050,7 +1076,7 @@
     miner-fee-warning {
         action-sheet {
             .action-sheet-bottom {
-                background: var(--bg-color-dark-theme) !important;
+                background: linear-gradient(0deg, rgba(126, 208, 255, 0.11), rgba(126, 208, 255, 0.11)), #001E2E !important;
 
                 .encrypt-password,
                 .miner-fee {
@@ -1099,17 +1125,39 @@
                                     padding: 0;
                                 }
                             }
+                        }
+                    }
+                }
 
-                            ion-button {
-                                ion-icon {
-                                    &[name="eye-off"] {
-                                      color: rgba(237, 239, 240, 0.6);
-                                    }
-                                    &[name="alert"] {
-                                      color: var(--color-danger);
-                                    }
-                                  }
-                            }
+                ion-button {
+                    ion-icon {
+                        color: rgba(237, 239, 240, 0.6) !important;
+                        &[name="alert"] {
+                          color: #FFB4A9;
+                        }
+                      }
+                }
+
+                .encrypt-password-small {
+                    .slide-title {
+                        h3 {
+                            color: var(--bg-surface-color-abcpay-dark) !important;
+                        }
+                    }
+                    .info-encrypt {
+                        color: rgba(237, 239, 240, 0.6) !important;
+                    }
+                    .submit-btn {
+                        color: var(--color-primary-abcpay-dark) !important;
+                        &[disabled] {
+                            color: rgba(224, 228, 230, 0.38) !important;
+                        }
+                    }
+                    ion-item {
+                        --background: linear-gradient(0deg, rgba(126, 208, 255, 0.11), rgba(126, 208, 255, 0.11)), #001E2E !important;
+                        border-color: rgba(237, 239, 240, 0.38) !important;
+                        ion-input {
+                            color: var(--text-color-dark-theme)
                         }
                     }
                 }
@@ -2024,6 +2072,14 @@
         .label-export {
             color: var(--color-primary-abcpay-dark) !important;
         }
+        ion-label {
+            h3, h4 {
+                color: #EDEFF0 !important;
+            }
+            .info {
+                color: rgba(237, 239, 240, 0.6) !important;
+            }
+        }
     }
 
     page-scan {
@@ -2376,17 +2432,14 @@
             --background: linear-gradient(0deg, rgba(126, 208, 255, 0.11), rgba(126, 208, 255, 0.11)), #001E2E !important;
         }
         ion-range {
-            &::part(knob) {
-                background: var(--color-primary-abcpay-dark);
-              }
             &::part(tick-active) {
               background: #FFF;
             }
             &::part(tick) {
-              background: var(--color-primary-abcpay-dark);
+              background: var(--color-primary-abcpay-dark) !important;
             }
             &::part(bar-active) {
-              background: var(--color-primary-abcpay-dark);
+              background: var(--color-primary-abcpay-dark) !important;
             }
             &::part(bar) {
               background: rgba(126, 208, 255, 0.38);;
@@ -2399,6 +2452,12 @@
         }
         .info-color {
             color: var(--color-primary-abcpay-dark);
+        }
+        ion-icon[name="share-outline"] {
+            color: rgba(237, 239, 240, 0.6);
+        }
+        .no-entries-message {
+            background: var(--bg-color-dark-theme) !important;
         }
     }
 

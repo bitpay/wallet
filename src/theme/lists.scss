@@ -269,7 +269,7 @@
     --inner-padding-top: 1rem !important;
     --inner-padding-end: 1rem !important;
     --inner-padding-bottom: 1rem !important;
-    --border-color: rgba(112, 129, 138, 0.16);
+    --border-color: #DAE0E5;
     border-bottom: 0 !important;
     margin: 0 !important;
     padding: 0 !important;
@@ -310,7 +310,7 @@
     }
 
     &:last-child {
-      border-bottom: 1px solid rgba(112, 129, 138, 0.16) !important;
+      border-bottom: 1px solid #DAE0E5 !important;
       --border-color: transparent;
       &:after {
         width: 100%;
@@ -318,7 +318,7 @@
     }
 
     &:first-child {
-      border-top: 1px solid rgba(112, 129, 138, 0.16) !important;
+      border-top: 1px solid #DAE0E5 !important;
     }
 
     &.create-button {
@@ -344,12 +344,12 @@
   }
 
   .item-start {
-    border-top: 1px solid rgba(112, 129, 138, 0.16) !important;
+    border-top: 1px solid #DAE0E5 !important;
     --border-color: transparent;
   }
 
   .item-end {
-    border-bottom: 1px solid rgba(112, 129, 138, 0.16) !important;
+    border-bottom: 1px solid #DAE0E5 !important;
     --border-color: transparent;
   }
 

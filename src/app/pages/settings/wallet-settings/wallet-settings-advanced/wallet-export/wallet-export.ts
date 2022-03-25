@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { Logger } from '../../../../../providers/logger/logger';
@@ -24,7 +24,8 @@ import { Location } from '@angular/common';
 @Component({
   selector: 'page-wallet-export',
   templateUrl: 'wallet-export.html',
-  styleUrls: ['wallet-export.scss']
+  styleUrls: ['wallet-export.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class WalletExportPage {
   public wallet;

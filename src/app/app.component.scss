@@ -760,15 +760,15 @@ form {
     ion-item {
         margin-left: 20px;
 
-        &::part(native) {
-            padding-left: 0 !important;
-        }
-
         ion-label[position="stacked"] {
             --color: #999 !important;
         }
     }
 }
+
+.text-danger {
+    color: var(--color-danger) !important;
+  }
 
 .button-secondary {
     --background: #ededed;
