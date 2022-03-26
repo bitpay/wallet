@@ -178,8 +178,8 @@ export class AddressbookAddPage extends ActionSheetParent{
         network: this.addressBookAdd.value.network,
         coin: this.addressBookAdd.value.coin
       })
-      .then(() => {
-        this.confirm('successful')
+      .then((rs) => {
+        this.confirm(rs);
       })
       .catch(err => {
         this.confirm(err)

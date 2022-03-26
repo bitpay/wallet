@@ -56,7 +56,7 @@ page-addressbook-add {
     }
     .footer {
       display: flex;
-      justify-content: end;
+      justify-content: flex-end;
       .button-standard {
         --padding-start: 0;
         --padding-end: 0;

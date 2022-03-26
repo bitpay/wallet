@@ -6,6 +6,7 @@ import { AddressBookProvider, Contact } from 'src/app/providers/address-book/add
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { ActionSheetProvider } from 'src/app/providers';
+import { LoadingController } from '@ionic/angular';
 
 @Component({
   selector: 'page-addressbook',
@@ -17,6 +18,7 @@ export class AddressbookPage {
   public addressbook: Contact[];
   public filteredAddressbook: Subject<any>;
   public addressBookSortAlpha: any = [];
+  private navParamsData: any;
 
   public isEmptyList: boolean;
   public migratingContacts: boolean;
@@ -25,27 +27,31 @@ export class AddressbookPage {
     private actionSheetProvider: ActionSheetProvider,
     public router: Router,
     private addressbookProvider: AddressBookProvider,
-    private location: Location
+    private loadingCtr: LoadingController
   ) {
+    if (this.router.getCurrentNavigation()) {
+      this.navParamsData = this.router.getCurrentNavigation().extras.state ? this.router.getCurrentNavigation().extras.state : {};
+    } else {
+      this.navParamsData =  history ? history.state : undefined;
+    }
     this.addressbook = [];
     this.filteredAddressbook = new Subject<[]>();
-    this.location.subscribe(val => {
-      if (val.pop) {
-        setTimeout(async () => {
-              await this.initAddressbook().catch();
-            }, 100);
-      }
-    });
   }
 
-  ionViewDidEnter() {
+  ionViewWillEnter() {
+    const loading = this.loadingCtr.create({
+      message: 'Please wait...'
+    })
+    loading.then(loadingEl => loadingEl.present());
     this.migratingContacts = false;
     this.addressbookProvider.migratingContactsSubject.subscribe(_migrating => {
       this.migratingContacts = _migrating;
     });
-    setTimeout(async () => {
-      await this.initAddressbook().catch();
-    }, 100);
+    this.initAddressbook().then(() => {
+      setTimeout(() => {
+        loading.then(loadingEl => loadingEl.dismiss());
+      },300)
+    })
   }
 
   sortAddressBookAlpha() {
@@ -76,12 +82,13 @@ export class AddressbookPage {
     const testnetContacts = await this.addressbookProvider.list('testnet');
     if (testnetContacts) this.addressbook.push(...testnetContacts);
     this.isEmptyList = _.isEmpty(this.addressbook);
-    if (!this.isEmptyList)
+    if (!this.isEmptyList) {
       this.sortAddressBookAlpha();
       this.filteredAddressbook.next(this.addressBookSortAlpha);
+    }
   }
 
-  public addEntry(): void {
+  public addEntry() {
     this.showAddContactModal();
   }
 
@@ -89,7 +96,9 @@ export class AddressbookPage {
     const addContactModal = this.actionSheetProvider.createAddContactComponent(params);
     addContactModal.present({ maxHeight: '48%%', minHeight: '48%%' });
     addContactModal.onDidDismiss((rs) => {
-      this.initAddressbook();
+      if (rs) setTimeout(async () => {
+        await this.initAddressbook().catch();
+      }, 100);
     });
   }
 

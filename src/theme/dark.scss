@@ -977,16 +977,10 @@
     }
 
     page-fingerprint {
-        ion-content {
-            background-color: var(--bg-color-dark-theme) !important;
-        }
-
-        .fingerprint-header {
-            border-bottom: 1px solid var(--border-color-dark-theme);
-            background-color: var(--bg-color-dark-theme-2);
-
-            .title {
-                color: var(--text-color-dark-theme) !important;
+        .fingerprint-button {
+            ion-button {
+                background: var(--color-primary-abcpay-dark) !important;
+                color: var(--color-on-primary-abcpay-dark) !important;
             }
         }
     }
@@ -2024,6 +2018,14 @@
         .add-button {
             ion-icon {
                 color: rgba(237, 239, 240, 0.6) !important;
+            }
+        }
+        .zero-state {
+            .zero-state-heading {
+                color: #EDEFF0;
+            }
+            .zero-state-description {
+                color: rgba(237, 239, 240, 0.6);
             }
         }
     }

@@ -98,7 +98,7 @@ export class AddressbookViewPage {
         .remove(this.address, this.network, this.coin)
         .then(() => {
           this.events.publish('Local/AddressBook/Changed');
-          this.router.navigate(['/addressbook']); 
+          this.router.navigate(['/addressbook'], {state: {isReload: true}}); 
         })
         .catch(err => {
           this.popupProvider.ionicAlert(this.translate.instant('Error'), err);

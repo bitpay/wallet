@@ -21,7 +21,6 @@
   
       <ion-item lines="none" *ngIf="this.addressBookAdd.get('address').valid && coins.length>1">
         <ion-label position="stacked" translate>Coin</ion-label>
-        <!-- <ion-input formControlName="coin" type="text" [value]="addressBookAdd.value.coin"></ion-input> -->
         <ion-select formControlName="coin" [disabled]="coins.length === 1" (ionChange)="analizeAddress(addressBookAdd.value.address, addressBookAdd.value.network, addressBookAdd.value.coin)">
           <ion-select-option *ngFor="let _coin of coins" [value]="_coin">{{_coin}}</ion-select-option>
         </ion-select>
