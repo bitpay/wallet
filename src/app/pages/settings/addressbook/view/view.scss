@@ -1,36 +1,39 @@
-.contact-view-header {
-  margin: 20px auto;
-  width: 100px;
-  padding: 10px;
-}
-.btn-send {
-  color: var(--ion-color-primary);
-}
-.btn-remove {
-  color: var(--ion-color-danger);
-}
-.comment {
-  color: var(--color-light-grey);
-  padding-top: 10px;
-}
-.btn-send-container {
-  display: flex;
-  justify-content: center;
-  margin-top: 3rem;
-  .btn-send-custom {
-    color: white;
-    background-color: #f39c11;
-    padding: 20px 45px;
-    border-radius: 20px;
-    opacity: 0.85;
+page-addressbook-view {
+  ion-list {
+    margin-top: 1rem;
   }
-  .btn-send-custom:hover {
-    background-color: #f39c11;
-    opacity: 1;
+  ion-item {
+    ion-label {
+      font-weight: 400;
+      font-size: 14px !important;
+      line-height: 20px;
+      letter-spacing: 0.25px;
+      color: rgba(0, 30, 46, 0.6) !important;
+      .comment {
+        font-weight: 400;
+        font-size: 16px !important;
+        line-height: 24px;
+        letter-spacing: 0.5px;
+        color: #001E2E;
+        margin-bottom: 4px;
+      }
+    }
   }
-}
-ion-note {
-  margin: 0;
-  color: var(--color-light-grey);
-  font-size: 15px;
+
+  .btn-container {
+    margin: 0.5rem 0 !important;
+    .btn-send-container {
+      border: 1px solid #DAE0E5 !important;
+      border-left: 0 !important;
+      border-right: 0 !important;
+      ion-label {
+        font-size: 16px !important;
+        line-height: 24px !important;
+        color: var(--color-primary) !important;
+        &.text-danger {
+          color: #BA1B1B !important;
+        }
+      }
+    }
+  }
 }

@@ -8,7 +8,7 @@ import { TouchIdProvider } from 'src/app/providers/touchid/touchid';
 @Component({
   selector: 'page-fingerprint',
   templateUrl: 'fingerprint.html',
-  styleUrls: ['/fingerprint.scss'],
+  styleUrls: ['fingerprint.scss'],
   encapsulation: ViewEncapsulation.None
 
 })

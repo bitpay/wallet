@@ -104,7 +104,7 @@ action-sheet{
         margin: 1rem 0;
         cursor: pointer;
         display: flex;
-        justify-content: end;
+        justify-content: flex-end !important;
 
         .sheet-third-btn {
           font-size: 14px;

@@ -1,81 +1,31 @@
 page-fingerprint {
   ion-content {
-    background-color: var(--color-blank) !important;
-
-    .scroll-content {
+    height: 100%;
+    .fingerprint-container {
       display: flex;
       flex-direction: column;
-      padding-top: 0 !important;
-    }
-  }
-
-  .fingerprint-header {
-    border-bottom: 1px solid #eaeaea;
-    position: relative;
-    background-color: var(--color-light);
-    flex-grow: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    @media (max-height: 600px) {
-      padding-bottom: 25px;
-    }
-
-    .title {
-      height: 100%;
-      display: flex;
-      justify-content: center;
       align-items: center;
-      font-size: 22px;
-    }
-
-    .icon-container {
-      position: absolute;
-      text-align: center;
-      width: 100%;
-      border-radius: 50%;
-      line-height: 0;
-      bottom: 42 * -1px;
-
-      .app-icon {
-        width: 42 * 2px;
-        height: 42 * 2px;
-      }
-    }
-  }
-
-  .fingerprint-bottom {
-    flex-grow: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    .button-standard {
-      .button-inner {
-        display: flex;
-
-        ion-icon {
-          margin-left: 1rem;
+      justify-content: center;
+      height: 100%;
+      background: url(../../../assets/img/bg-lock-screen-light.svg) no-repeat;
+      background-size: cover;
+      .fingerprint-button {
+        width: 100%;
+        .button-standard  {
+          font-weight: 600 !important;
+          font-size: 14px !important;
+          line-height: 20px;
+          letter-spacing: 0.1px;
+          background: #00658D !important;
+          box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.3), 0px 2px 6px 2px rgba(0, 0, 0, 0.15);
+          border-radius: 100px;
+          color: #FFF;
         }
       }
+      &.fingerprint-bg-dark {
+        background: url(../../../assets/img/bg-lock-screen-dark.svg) no-repeat !important;
+        background-size: cover !important;
+      }
     }
-  }
-
-  .made-with-custom {
-    font-family: 'Lobster';
-    font-size: 14px;
-    position: fixed;
-    bottom: 0;
-    right: 16px;
-
-    img {
-      position: relative;
-      top: 11px;
-    }
-  }
-
-  .white-theme {
-    color: white;
   }
 }

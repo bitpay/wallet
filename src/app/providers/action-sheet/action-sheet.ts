@@ -14,6 +14,7 @@ import { PhoneSheet } from 'src/app/components/phone-sheet/phone-sheet';
 import { WalletReceiveComponent } from 'src/app/components/wallet-receive/wallet-receive';
 import { WalletSelectorComponent } from 'src/app/components/wallet-selector/wallet-selector';
 import { WalletTabOptionsComponent } from 'src/app/components/wallet-tab-options/wallet-tab-options';
+import { AddressbookAddPage } from 'src/app/pages/settings/addressbook/add/add';
 import { DomProvider } from '../dom/dom';
 
 
@@ -85,7 +86,8 @@ export type InfoSheetType =
   | 'join-wallet-warning'
   | 'delete-key'
   | 'reset-all-setting'
-  | 'help-and-support';
+  | 'help-and-support'
+  | 'delete-contact';
 
 export type OptionsSheetType =
   | 'wallet-options'
@@ -201,6 +203,15 @@ export class ActionSheetProvider {
   public createEncryptPasswordComponent(params?): EncryptPasswordComponent {
     return this.setupSheet<EncryptPasswordComponent>(
       EncryptPasswordComponent,
+      null,
+      params
+      )
+      .instance;
+  }
+
+  public createAddContactComponent(params?): AddressbookAddPage {
+    return this.setupSheet<AddressbookAddPage>(
+      AddressbookAddPage,
       null,
       params
       )
