@@ -1,10 +1,34 @@
-.item-without-title {
-  margin-top: 0;
-}
-
-ion-text {
-  padding-left: 1rem;
-  .pk{
-    word-break: break-word;
+page-wallet-information {
+  ion-list {
+    margin: 1rem 0 5rem 0;
+    ion-text {
+      padding-left: 0;
+      .copayer {
+        color: #001E2E;
+        font-size: 16px;
+        letter-spacing: 0.5px;
+        line-height: 24px;
+      }
+    }
+  
+    ion-note {
+      ion-icon {
+        width: 23px;
+        height: 23px;
+      }
+      &.copy-copayer {
+        display: flex;
+        align-self: baseline;
+      }
+    }
+  
+    .pk{
+      margin-top: 0.5rem;
+      word-break: break-word;
+      color: rgba(0, 30, 46, 0.6);
+      font-size: 16px;
+      letter-spacing: 0.5px;
+      line-height: 24px;
+    }
   }
 }

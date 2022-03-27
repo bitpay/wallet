@@ -1,8 +1,8 @@
-<wide-header-page title="{{'Wallet Information' | translate}}">
+<wide-header-page title="{{'Account Information' | translate}}">
   <div page-content>
-    <ion-list lines="none" class="settings-list bp-list">
+    <ion-list class="settings-list bp-list">
       <ion-item>
-        <ion-label slot="start" translate>Name (at creation)</ion-label>
+        <ion-label translate>Name (at creation)</ion-label>
         <ion-note slot="end">
           {{walletName}}
         </ion-note>
@@ -14,12 +14,14 @@
         </ion-note>
       </ion-item>
       <ion-item copy-to-clipboard="{{walletId}}">
-        <ion-text>
-          <p>Wallet Id</p>
-          <p class="ion-text-wrap">
-            {{walletId}}
-          </p>
-        </ion-text>
+        <ion-label>
+          Account ID
+          <br>
+          <div class="pk">{{walletId}}</div>
+        </ion-label>
+        <ion-note slot="end">
+          <ion-icon name="copy-outline"></ion-icon>
+        </ion-note>
       </ion-item>
       <ion-item *ngIf="linkedEthWalletName">
         <ion-label translate>Linked Ethereum Wallet</ion-label>
@@ -58,39 +60,41 @@
           <ion-label translate>No private key</ion-label>
         </ion-note>
       </ion-item>
-      <ion-item>
+      <ion-item class="item-end">
         <ion-label translate>Account</ion-label>
         <ion-note slot="end">
           #{{account}}
         </ion-note>
       </ion-item>
-      <ion-item-divider *ngIf="copayers">
+      <ion-item-divider class="item-end" *ngIf="copayers">
         <ion-label>
           Copayers
         </ion-label>
       </ion-item-divider>
-      <ion-item *ngFor="let copayer of copayers">
+      <ion-item class="item-end" *ngFor="let copayer of copayers">
         <ion-label>{{copayer.name}}</ion-label>
         <ion-note *ngIf="copayer.id == copayerId" slot="end">
           ({{'Me' | translate}})
         </ion-note>
       </ion-item>
-      <ion-item-divider>
+      <ion-item-divider class="item-end">
         <ion-label>
           {{'Extended Public Keys' | translate}}
         </ion-label>
       </ion-item-divider>
       <ion-item *ngFor="let pk of pubKeys; let i=index" copy-to-clipboard="{{pk}}">
         <ion-text>
-          <p>Copayer {{i}}</p>
+          <p class="ion-no-margin copayer" translate>Copayer {{i}}</p>
           <p class="ion-text-wrap ion-no-margin pk">
             {{pk}}
           </p>
-          <p class="ion-text-wrap ion-no-margin" *ngIf="i == 0">({{rootPath}})</p>
         </ion-text>
+        <ion-note class="copy-copayer" slot="end">
+          <ion-icon name="copy-outline"></ion-icon>
+        </ion-note>
       </ion-item>
-      <ion-item-divider *ngIf="balanceByAddress">
-        <ion-label>
+      <ion-item-divider class="item-end" *ngIf="balanceByAddress">
+        <ion-label translate>
           Balance By Address
         </ion-label>
       </ion-item-divider>

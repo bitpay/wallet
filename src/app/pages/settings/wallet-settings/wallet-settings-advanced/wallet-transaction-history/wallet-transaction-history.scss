@@ -1,4 +1,15 @@
-.explanation {
-  padding: 16px;
-  font-size: 14px;
+page-wallet-transaction-history {
+  .explanation {
+    padding: 16px;
+    font-size: 14px;
+    line-height: 20px;
+    color: rgba(0, 30, 46, 0.6);
+    letter-spacing: 0.25px;
+  }
+  .label-clear-cache {
+    color: var(--color-danger) !important;
+  }
+  .label-export {
+    color: var(--color-primary) !important;
+  }
 }

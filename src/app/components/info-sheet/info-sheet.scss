@@ -16,8 +16,9 @@ action-sheet{
       .sheet-title {
         align-items: center;
         color: #060606;
-        font-size: 19px;
-        font-weight: 500;
+        font-size: 24px;
+        font-weight: 400;
+        line-height: 32px;
         display: flex;
         justify-content: flex-start;
   
@@ -29,20 +30,25 @@ action-sheet{
         }
   
         .title-icon {
-          padding-right: 15px;
           display: flex;
           align-self: center;
           img {
+            padding-right: 15px;
             max-width: 40px;
           }
         }
       }
   
       .sheet-text {
-        font-size: 16px;
-        color: #4F6168;
-        font-weight: 300;
-        padding: 25px 0px;
+        font-size: 14px;
+        color: rgba(0, 30, 46, 0.6);
+        font-weight: 400;
+        padding: 16px 0px;
+        line-height: 20px;
+        letter-spacing: 0.25px;
+        &.no-show-title {
+          padding-top: 0;
+        }
       }
   
       .text-address {
@@ -50,43 +56,69 @@ action-sheet{
       }
   
       .sheet-btn-group {
-        color: #01F2FF;
-        font-size: 16px;
-        border-top: 1px solid #ebebeb;
+        color: var(--color-primary);
+        margin: 1rem 0;
         cursor: pointer;
         display: flex;
   
   
         .sheet-btn {
-          color: #01F2FF;
+          color: var(--color-primary);
           flex-grow: 1;
-          padding-top: 15px;
           margin-right: 10px;
+          font-size: 14px;
+          line-height: 20px;
+          font-weight: 600;
         }
   
         .sheet-btn.blue {
-          color: #5476eb;
+          color: var(--color-primary);
         }
   
         .sheet-btn.yellow {
-          color: #fdb455;
+          color: var(--color-warning);
         }
   
         .sheet-btn.red {
-          color: #df5264;
+          color: var(--color-danger);
         }
   
         .sheet-btn.default {
-          color: #464c5e;
+          color: var(--color-primary);
         }
   
         .sheet-second-btn {
-          color: #464c5e;
-          padding-top: 15px;
+          color: var(--color-primary);
+          font-size: 14px;
+          line-height: 20px;
+          font-weight: 600;
         }
   
         .sheet-second-btn.primary {
           color: var(--color-primary);
+        }
+      }
+      
+      .sheet-second-btn-group {
+        color: var(--color-primary);
+        margin: 1rem 0;
+        cursor: pointer;
+        display: flex;
+        justify-content: flex-end !important;
+
+        .sheet-third-btn {
+          font-size: 14px;
+          line-height: 20px;
+          font-weight: 600;
+          letter-spacing: 0.1px;
+        }
+
+        .sheet-fourth-btn {
+          margin-left: 32px;
+          font-size: 14px;
+          line-height: 20px;
+          font-weight: 600;
+          letter-spacing: 0.1px;
         }
       }
     }

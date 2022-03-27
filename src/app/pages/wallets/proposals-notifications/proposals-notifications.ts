@@ -20,6 +20,7 @@ import { WalletProvider } from '../../../providers/wallet/wallet';
 import { Location } from '@angular/common';
 // pages
 import { FinishModalPage } from '../../finish/finish';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'page-proposals-notifications',
@@ -46,6 +47,7 @@ export class ProposalsNotificationsPage {
   private isElectron: boolean;
   private walletId: string;
   private multisigContractAddress: string;
+  navParamsData;
   canGoBack;
   constructor(
     private plt: Platform,
@@ -64,12 +66,19 @@ export class ProposalsNotificationsPage {
     private navParams: NavParams,
     private location: Location,
     private errorsProvider: ErrorsProvider,
-    private routerOutlet: IonRouterOutlet
+    private routerOutlet: IonRouterOutlet,
+    private router: Router,
+
   ) {
+    if (this.router.getCurrentNavigation()) {
+      this.navParamsData = this.router.getCurrentNavigation().extras.state;
+    } else {
+      this.navParamsData = history ? history.state : {};
+    }
     this.zone = new NgZone({ enableLongStackTrace: false });
     this.isElectron = this.platformProvider.isElectron;
-    this.walletId = this.navParams.data.walletId;
-    this.multisigContractAddress = this.navParams.data.multisigContractAddress;
+    this.walletId = this.navParamsData.walletId;
+    this.multisigContractAddress = this.navParamsData.multisigContractAddress;
     this.isCordova = this.platformProvider.isCordova;
     this.buttonText = this.translate.instant('Sign selected proposals');
 

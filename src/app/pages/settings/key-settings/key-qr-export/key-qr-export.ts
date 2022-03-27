@@ -1,5 +1,5 @@
 import { Location } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { NgxQrcodeErrorCorrectionLevels } from '@techiediaries/ngx-qrcode';
@@ -15,7 +15,8 @@ import { ProfileProvider } from '../../../../providers/profile/profile';
 @Component({
   selector: 'page-key-qr-export',
   templateUrl: 'key-qr-export.html',
-  styleUrls: ['key-qr-export.scss']
+  styleUrls: ['key-qr-export.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class KeyQrExportPage {
   public walletsGroup;

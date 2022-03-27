@@ -63,6 +63,7 @@ import { ConfirmTokenPage } from './pages/confirm-token/confirm-token';
 import { TokenInforPage } from './pages/token-info/token-info';
 import { SelectInputsSendPage } from './pages/send/send-select-inputs/send-select-inputs';
 import { AccountsPage } from './pages/accounts/accounts';
+import { SettingsPage } from './pages/settings/settings';
 
 const routes: Routes = [
   {
@@ -327,6 +328,10 @@ const routes: Routes = [
     path: 'address-book-add',
     component: AddressbookAddPage,
   },
+  {
+    path: 'setting',
+    component: SettingsPage
+  }
 ];
 
 @NgModule({

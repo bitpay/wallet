@@ -37,11 +37,11 @@
   }
 
   &-bottom {
-    border-radius: 10px 10px 0px 0px !important;
+    border-radius: 28px 28px 0px 0px !important;
     bottom: 0;
     padding: 0;
     transform: translateY(calc(100% + 8px));
-    background: linear-gradient(0deg, rgba(0, 101, 141, 0.11), rgba(0, 101, 141, 0.11)), #FAFAFB;
+    background: linear-gradient(0deg, rgba(0, 101, 141, 0.11), rgba(0, 101, 141, 0.11)), #FAFAFB !important;
   }
 }
 

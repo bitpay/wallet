@@ -1,3 +1,26 @@
-.warning-message {
-  margin-top: 10px;
+page-wallet-export {
+  .warning-message {
+    margin-top: 10px;
+  }
+  .include-private-item {
+    --padding-start: 1rem !important;
+    --padding-end: 1rem !important;
+    --inner-padding-end: 0;
+    --padding-top: 6px;
+    --padding-bottom: 6px;
+    ion-label {
+      font-size: 16px !important;
+      line-height: 24px;
+      letter-spacing: 0.5px;
+      color: #001E2E !important;
+    }
+    ion-checkbox {
+      margin: 0;
+    }
+  }
+  ion-button {
+    line-height: 20px;
+    letter-spacing: 0.1px;
+    font-weight: 600 !important;
+  }
 }

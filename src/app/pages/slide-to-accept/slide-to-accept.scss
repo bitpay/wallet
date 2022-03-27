@@ -64,6 +64,17 @@ page-slide-to-accept {
       background: linear-gradient(180deg, #d8c172 0%, #bb9f32 100%) !important;
     }
   }
+  .custom-txp-detail{
+    background: rgba(255, 255, 255, 1);
+    .slide__bitcoin{
+          right: 15px;
+          top: 16px;
+          img{
+            height: 25px;
+          }
+      }
+    }
+  
 
   @mixin center-vertically {
     border-radius: 38px;

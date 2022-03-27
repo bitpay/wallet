@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 import { EventManagerService } from 'src/app/providers/event-manager.service';
 import { Logger } from 'src/app/providers/logger/logger';
 import { ThemeProvider } from 'src/app/providers/theme/theme';
@@ -6,7 +6,8 @@ import { ThemeProvider } from 'src/app/providers/theme/theme';
 @Component({
   selector: 'page-local-theme',
   templateUrl: 'local-theme.html',
-  styleUrls: ['local-theme.scss']
+  styleUrls: ['local-theme.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class LocalThemePage {
   public availableThemes;

@@ -25,9 +25,7 @@
     background: white;
 
     ion-label {
-      color: #353535 !important;
-      font-size: 18px !important;
-      font-weight: 500;
+      color: #353535;
       margin-bottom: 0;
       margin-top: 0;
     }
@@ -90,6 +88,13 @@
 
   .item {
     border: 0;
+
+    &.ios::part(detail-icon) {
+      background: url(../assets/img/chevron_right.svg) no-repeat !important;
+      font-size: 22px;
+      opacity: 1;
+      margin-left: 0.5rem;
+    }
 
     &.item-ios,
     &.item-md {
@@ -215,9 +220,17 @@
 
 .bp-list.settings-list {
   ion-item{
-    margin: 0 1rem !important;
-    padding: 12px 0 12px 22px;
-    border-bottom: 0;
+    --padding-start: 1rem !important;
+    --padding-end: 0 !important;
+    --inner-padding-top: 1rem !important;
+    --inner-padding-end: 1rem !important;
+    --inner-padding-bottom: 1rem !important;
+    --border-color: #DAE0E5;
+    border-bottom: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
 
     &::part(native) {
       .item-inner {
@@ -226,13 +239,13 @@
     }
 
     ion-note {
-      background: #f4f5fb;
       color: #565d6d;
       font-weight: 300;
-      padding: 6px 10px;
+      padding: 0 !important;
       border-radius: 4px;
       font-size: 16px;
-      margin-right: 1rem;
+      margin: 0 !important;
+      letter-spacing: 0.5px;
     }
 
     ion-note.wallet-warning {
@@ -241,15 +254,61 @@
     }
 
     ion-label {
-      padding: 6px 1rem;
+      padding: 0;
+      font-size: 16px;
+      font-weight: 400;
+      color: #001E2E;
+      letter-spacing: 0.5px;
+    }
+
+    ion-radio {
+      margin: 0;
     }
 
     &:last-child {
+      border-bottom: 1px solid #DAE0E5 !important;
+      --border-color: transparent;
       &:after {
         width: 100%;
       }
     }
+
+    &:first-child {
+      border-top: 1px solid #DAE0E5 !important;
+    }
+
+    &.create-button {
+      ion-label {
+        color: var(--color-primary) !important;
+      }
+    }
   }
+
+  ion-item-divider {
+    margin-top: 0px;
+    padding: 2rem 1rem 0.8rem 1rem;
+    background: linear-gradient(0deg, rgba(0, 93, 141, 0.05), rgba(0, 93, 141, 0.05)), #FAFAFB;
+    ion-label {
+      color: rgba(0, 30, 46, 0.6) !important;
+      font-size: 11px !important;
+      font-weight: 600 !important;
+      text-transform: uppercase;
+    }
+    &:first-child {
+      margin-top: 0.5rem;
+    }
+  }
+
+  .item-start {
+    border-top: 1px solid #DAE0E5 !important;
+    --border-color: transparent;
+  }
+
+  .item-end {
+    border-bottom: 1px solid #DAE0E5 !important;
+    --border-color: transparent;
+  }
+
   coin-icon {
     margin: 0px !important;
   }

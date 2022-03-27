@@ -1,5 +1,5 @@
 import { Location } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
@@ -8,6 +8,7 @@ import {
   Validators
 } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ActionSheetParent } from 'src/app/components/action-sheet/action-sheet-parent';
 import { EventManagerService } from 'src/app/providers/event-manager.service';
 
 // providers
@@ -25,9 +26,10 @@ import { AddressValidator } from '../../../../validators/address';
 @Component({
   selector: 'page-addressbook-add',
   templateUrl: 'add.html',
-  styleUrls: ['add.scss']
+  styleUrls: ['add.scss'],
+  encapsulation: ViewEncapsulation.None
 })
-export class AddressbookAddPage {
+export class AddressbookAddPage extends ActionSheetParent{
   public addressBookAdd: FormGroup;
   public isCordova: boolean;
   public appName: string;
@@ -53,6 +55,7 @@ export class AddressbookAddPage {
     private platformProvider: PlatformProvider,
     private popupProvider: PopupProvider
   ) {
+    super();
     if (this.router.getCurrentNavigation()) {
        this.navParamsData = this.router.getCurrentNavigation().extras.state ? this.router.getCurrentNavigation().extras.state : {};
     } else {
@@ -165,21 +168,26 @@ export class AddressbookAddPage {
   }
 
   public save(): void {
+    const name = this.addressBookAdd.value.name.charAt(0).toUpperCase() + this.addressBookAdd.value.name.slice(1);
     this.ab
       .add({
-        name: this.addressBookAdd.value.name,
+        name: name,
         email: this.addressBookAdd.value.email,
         address: this.parseAddress(this.addressBookAdd.value.address),
         tag: this.addressBookAdd.value.tag,
         network: this.addressBookAdd.value.network,
         coin: this.addressBookAdd.value.coin
       })
-      .then(() => {
-        this.location.back();
+      .then((rs) => {
+        this.confirm(rs);
       })
       .catch(err => {
-        this.popupProvider.ionicAlert('Error', err);
+        this.confirm(err)
       });
+  }
+
+  public confirm(password: string): void {
+    this.dismiss(password);
   }
 
   private parseAddress(str: string): string {

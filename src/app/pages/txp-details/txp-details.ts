@@ -14,6 +14,7 @@ import { PopupProvider } from '../../providers/popup/popup';
 import { ProfileProvider } from '../../providers/profile/profile';
 import { TxFormatProvider } from '../../providers/tx-format/tx-format';
 import { WalletProvider } from '../../providers/wallet/wallet';
+import { AppProvider } from 'src/app/providers';
 
 // pages
 import { FinishModalPage } from '../finish/finish';
@@ -50,7 +51,7 @@ export class TxpDetailsPage {
   public isCordova: boolean;
 
   private executionPending: boolean;
-
+  public currentTheme;
   constructor(
     private navParams: NavParams,
     private platformProvider: PlatformProvider,
@@ -67,7 +68,8 @@ export class TxpDetailsPage {
     private translate: TranslateService,
     private modalCtrl: ModalController,
     private bwcErrorProvider: BwcErrorProvider,
-    private errorsProvider: ErrorsProvider
+    private errorsProvider: ErrorsProvider,
+    private appProvider: AppProvider,
   ) {
     this.showMultiplesOutputs = false;
     let config = this.configProvider.get().wallet;
@@ -111,6 +113,7 @@ export class TxpDetailsPage {
   }
 
   ngOnInit() {
+    this.currentTheme = this.appProvider.themeProvider.currentAppTheme;
     this.events.subscribe('bwsEvent', this.bwsEventHandler);
     this.displayFeeValues();
     this.initActionList();

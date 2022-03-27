@@ -1,65 +1,82 @@
 <wide-header-page title="{{'Account Settings' | translate}}">
   <div page-content>
-    <ion-list lines="none" class="settings-list bp-list">
-      <ion-item button (click)="openWalletName()">
+    <ion-list class="settings-list bp-list">
+      <ion-item class="item-end" button (click)="openWalletName()">
         <ion-label slot="start" translate>Rename Account</ion-label>
         <ion-note slot="end">
           {{wallet && wallet.name}}
         </ion-note>
       </ion-item>
-      <ion-item-divider *ngIf="canSign && touchIdAvailable">
+
+      <ion-item-divider class="item-end">
+        <ion-label>
+          {{'Privacy' | translate}}
+        </ion-label>
+      </ion-item-divider>
+      <ion-item class="item-end" detail="false">
+        <ion-label>{{'Hide Account' | translate }}</ion-label>
+        <ion-toggle checked="{{wallet?.hidden}}" (ionChange)="hiddenWalletChange(wallet.id)"></ion-toggle>
+      </ion-item>
+      <label-tip class="info" type="info" header="no-header">
+        <div label-tip-body translate>
+          The wallet won't be removed from this device. You can hide it whenever you need it.
+        </div>
+      </label-tip>
+      <ion-item class="item-end item-start" detail="false">
+        <ion-label>{{'Hide Balance' | translate}}</ion-label>
+        <ion-toggle [(ngModel)]="hiddenBalance" (ionChange)="hiddenBalanceChange()"></ion-toggle>
+      </ion-item>
+
+      <ion-item-divider *ngIf="canSign && touchIdAvailable" class="item-end">
         <ion-label>
           {{'Security' | translate}}
         </ion-label>
       </ion-item-divider>
       <div *ngIf="canSign && touchIdAvailable">
-        <ion-item>
+        <ion-item class="item-end" detail="false">
           <ion-label [ngClass]="{'disabled': needsBackup}">{{'Request Biometric Authentication'| translate}}</ion-label>
           <ion-toggle [(ngModel)]="touchIdEnabled" (ionChange)="touchIdChange()"></ion-toggle>
         </ion-item>
       </div>
-      <ion-item-divider>
+
+      <ion-item-divider class="item-end">
         <ion-label>
           {{'Advanced' | translate}}
         </ion-label>
       </ion-item-divider>
       <ion-item button (click)="openWalletInformation()">
-        <ion-label>
-          <span translate>Information</span>
+        <ion-label translate>
+          Information
         </ion-label>
       </ion-item>
-      <ion-item detail class="hide-wallet with-label no-border">
-        <ion-label>{{'Hide Wallet' | translate }}</ion-label>
-        <ion-toggle checked="{{wallet?.hidden}}" (ionChange)="hiddenWalletChange(wallet.id)"></ion-toggle>
-      </ion-item>
       <ion-item button (click)="openWalletAddresses()">
-        <ion-label>
-          <span translate>Addresses</span>
+        <ion-label translate>
+          Addresses
         </ion-label>
       </ion-item>
       <ion-item button (click)="openExportWallet()">
-        <ion-label>
-          <span translate>Export Wallet</span>
+        <ion-label translate>
+          Export Account
         </ion-label>
       </ion-item>
       <ion-item button (click)="openWalletServiceUrl()">
-        <ion-label>
-          <span>Wallet Service URL</span>
+        <ion-label translate="">
+          Account Service URL
         </ion-label>
       </ion-item>
       <ion-item button (click)="openTransactionHistory()">
-        <ion-label>
-          <span translate>Transaction History</span>
+        <ion-label translate>
+          Transaction History
         </ion-label>
       </ion-item>
       <ion-item button (click)="openDuplicateWallet()" *ngIf="showDuplicateWallet">
-        <ion-label>
-          <span translate>Duplicate to BCH</span>
+        <ion-label translate>
+          Duplicate to BCH
         </ion-label>
       </ion-item>
       <ion-item button *ngIf="!canSign" (click)="openWalletGroupDelete()">
-        <ion-label>
-          <span translate>Delete</span>
+        <ion-label translate>
+          Delete
         </ion-label>
       </ion-item>
     </ion-list>

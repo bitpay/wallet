@@ -1,19 +1,49 @@
 <wide-header-page title="{{'Payment Proposal'|translate}}"
   [hasSlideButton]="(tx && !tx.removed) && (tx && tx.pendingForUs && canSign && !paymentExpired) && isCordova"
-  [hideBackButton]="true">
+  [hideBackButton]="true" [onlyTopTitle]="true" [hideToolbar]="true">
+
   <ion-buttons slot="start">
-    <ion-button class="close-container disable-hover" (click)="close()">
-      <ion-icon color="dark" name="close-outline"></ion-icon>
+    <ion-button class="disable-hover button-custom" (click)="close()">
+      <ion-icon slot="start" class="custom-icon" src="assets/img/close-{{currentTheme}}.svg"></ion-icon>
+    </ion-button>
+  </ion-buttons>
+
+  <ion-buttons slot="end">
+    <ion-button class="delete-button button-custom"
+      [ngClass]="{'hidden': !((tx && !tx.removed) && isShared && (tx && tx.pendingForUs) && !paymentExpired && !tx.multisigContractAddress)}"
+      fill="clear" (click)="reject()" [disabled]="loading">
+      {{'Reject' | translate}}
     </ion-button>
   </ion-buttons>
 
   <div page-content>
-    <div class="line-divider" *ngIf="tx"></div>
-    <ion-list *ngIf="tx" class="bp-list" lines="none">
-      <ion-item>
+    <ion-row class="ion-justify-content-center ion-align-items-center">
+      <ng-container
+        *ngIf="tx && !tx.pendingForUs && isShared && !paymentExpired && !tx.multisigContractAddress && tx.statusForUs === 'rejected'">
+        <ion-col size="auto" class="note-custom ion-align-items-center">
+          <ion-icon src="assets/img/txp-details/rejected-label-{{currentTheme}}.svg">
+          </ion-icon>
+          <ion-note class="reject-note">
+            I've rejected this!
+          </ion-note>
+        </ion-col>
+      </ng-container>
+      <ng-container
+        *ngIf="tx && !tx.pendingForUs && isShared && !paymentExpired && !tx.multisigContractAddress && tx.statusForUs === 'accepted'">
+        <ion-col size="auto" class="note-custom ion-align-items-center">
+          <ion-icon src="assets/img/txp-details/accepted-label-{{currentTheme}}.svg">
+          </ion-icon>
+          <ion-note class="accept-note">
+            I've accepted this!
+          </ion-note>
+        </ion-col>
+      </ng-container>
+    </ion-row>
+    <ion-list *ngIf="tx" class="bp-list tx-detail-list" lines="none">
+      <ion-item class="amount-item">
         <div class="header-container">
           <div class="amount-label">
-            <div class="amount">
+            <div class="amount amount-gold">
               {{tx.amountValueStr}} {{tx.amountUnitStr | uppercase}}
             </div>
             <div class="alternative" *ngIf="tx.alternativeAmountStr">{{tx.alternativeAmountStr}}</div>
@@ -26,12 +56,14 @@
       <div *ngIf="tx && tx.removed" class="box-notification warning ion-text-wrap">
         <span translate>The payment was removed by creator</span>
       </div>
+
       <div class="line-divider" *ngIf="tx && tx.status != 'pending'"></div>
 
       <div *ngIf="tx && tx.status != 'pending'">
         <div class="ion-text-center box-notification info" *ngIf="tx && tx.status == 'accepted'">
           <div class="ion-text-wrap" translate>Payment accepted, but not yet broadcasted</div>
-          <ion-button class="ion-margin" fill="outline" size="small" slot="start" (click)="broadcast()" [disabled]="loading">
+          <ion-button class="ion-margin" fill="outline" size="small" slot="start" (click)="broadcast()"
+            [disabled]="loading">
             <ion-icon name="cloud-upload"></ion-icon>
             <span translate>Broadcast Payment</span>
           </ion-button>
@@ -44,14 +76,62 @@
         </div>
       </div>
 
-      <ion-item class="sub-title">
-        <ion-label>
-          <div class="main-label" translate>DETAILS</div>
+      <div class="line-divider line-divider-full" *ngIf="tx.creatorName && isShared"></div>
+
+      <ion-item *ngIf="tx.creatorName && isShared">
+        <ion-label slot="start">
+          <div class="summary-item">
+            <span translate>Created by</span>
+          </div>
         </ion-label>
+        <ion-note class="note-custom" slot="end">
+          <span class="ellipsis summary-item-detail">{{tx.creatorName}}</span>
+        </ion-note>
       </ion-item>
 
+      <div class="line-divider" *ngIf="tx && tx.ts || tx.createdOn"></div>
+
+      <ion-item *ngIf="tx && tx.ts || tx.createdOn">
+        <ion-label slot="start">
+          <div class="summary-item">
+            <span translate>Created Date</span>
+          </div>
+        </ion-label>
+        <ion-note class="note-custom" slot="end">
+          <span class="ellipsis summary-item-detail">
+            <time>{{ (tx.ts || tx.createdOn ) * 1000 | amDateFormat:'MM/DD/YYYY hh:mm a'}}</time>
+          </span>
+        </ion-note>
+      </ion-item>
+
+      <div class="line-divider"></div>
+
+
+      <page-multiple-outputs [tx]="tx"></page-multiple-outputs>
+
+      <div class="line-divider"></div>
+
+      <ion-item>
+        <ion-label slot="start">
+          <div class="summary-item">
+            <span translate>Sending from</span>
+          </div>
+        </ion-label>
+        <ion-note slot="end">
+          <ion-row class="ion-align-items-center wallet" *ngIf="wallet">
+            <ion-col class="col-custom">
+              <span class="ellipsis summary-item-detail">{{wallet.name}}</span>
+            </ion-col>
+          </ion-row>
+        </ion-note>
+      </ion-item>
+
+
+      <div class="line-divider" *ngIf="tx && tx.feeStr && tx.action != 'received' && !(isShared && tx.coin === 'eth')">
+      </div>
+
       <ion-item *ngIf="tx && tx.feeStr && tx.action != 'received' && !(isShared && tx.coin === 'eth')">
-        <ion-label>
+        <ion-label slot="start">
           <div class="summary-item">
             <span translate>Miner fee</span>
             <b>{{tx.feeLevelName}}</b>
@@ -75,73 +155,11 @@
         </ion-note>
       </ion-item>
 
-      <div class="line-divider" *ngIf="(tx && !tx.removed) && isShared && (tx && tx.pendingForUs) && !paymentExpired">
-      </div>
-
-      <div class="ion-padding proposal-rejection"
-        *ngIf="(tx && !tx.removed) && isShared && (tx && tx.pendingForUs) && !paymentExpired && !tx.multisigContractAddress">
-        <ion-button fill="clear" color="danger" (click)="reject()" [disabled]="loading">
-          {{'Reject Payment Proposal'| translate}}
-        </ion-button>
-      </div>
-
-      <div class="line-divider"></div>
-
-
-      <page-multiple-outputs [tx]="tx"></page-multiple-outputs>
-
-      <div class="line-divider"></div>
-
-      <ion-item>
-        <ion-label>
-          <div class="summary-item">
-            <span translate>Sending from</span>
-          </div>
-        </ion-label>
-        <ion-note slot="end">
-          <ion-row class="ion-align-items-center wallet" *ngIf="wallet">
-            <ion-col>
-              <coin-icon [coin]="wallet.coin" [network]="wallet.network"></coin-icon>
-            </ion-col>
-            <ion-col>
-              <span slot="" class="note-container ellipsis">{{wallet.name}}</span>
-            </ion-col>
-          </ion-row>
-        </ion-note>
-      </ion-item>
-
-      <div class="line-divider" *ngIf="tx.creatorName && isShared"></div>
-
-      <ion-item *ngIf="tx.creatorName && isShared">
-        <ion-label>
-          <div class="summary-item">
-            <span translate>Created by</span>
-          </div>
-        </ion-label>
-        <ion-note slot="end">
-          <span class="note-container ellipsis summary-item-detail">{{tx.creatorName}}</span>
-        </ion-note>
-      </ion-item>
-
-      <div class="line-divider" *ngIf="tx && tx.ts || tx.createdOn"></div>
-
-      <ion-item *ngIf="tx && tx.ts || tx.createdOn">
-        <ion-label>
-          <div class="summary-item">
-            <span translate>Time</span>
-          </div>
-        </ion-label>
-        <ion-note slot="end">
-          <span class="note-container ellipsis summary-item-detail">
-            <time>{{ (tx.ts || tx.createdOn ) * 1000 | amDateFormat:'MM/DD/YYYY hh:mm a'}}</time>
-          </span>
-        </ion-note>
-      </ion-item>
 
       <div class="line-divider" *ngIf="tx && tx.message"></div>
 
       <ion-item *ngIf="tx && tx.message">
-        <ion-label>
+        <ion-label slot="start">
           <div class="summary-item">
             <span translate>Memo</span>
           </div>
@@ -158,7 +176,7 @@
       <div *ngIf="tx && tx.paypro">
         <ion-item-divider>{{'Payment request' | translate}}</ion-item-divider>
         <ion-item *ngIf="paymentExpired">
-          <ion-label>
+          <ion-label slot="start">
             {{'Expired'|translate}}
           </ion-label>
           <ion-note color="danger" slot="end">
@@ -166,7 +184,7 @@
           </ion-note>
         </ion-item>
         <ion-item *ngIf="!paymentExpired">
-          <ion-label>
+          <ion-label slot="start">
             {{'Expires'|translate}}
           </ion-label>
           <ion-note slot="end">
@@ -180,50 +198,57 @@
           </div>
         </ion-item>
       </div>
+    </ion-list>
 
-      <div class="line-divider" *ngIf="actionList && actionList[0]"></div>
-
-      <div *ngIf="actionList && actionList[0]">
-        <ion-item>
-          <div style="width: 100%;">
-            <span>{{'Timeline' | translate}}</span>
-            <div class="timeline-item" [ngClass]="{'action-created' : a.type == 'created' || a.type == 'accept', 'action-rejected' : a.type == 'reject' || a.type == 'failed'}" *ngFor="let a of actionList; let i = index">
-              <div class="timeline-content">
-                <div class="timeline-content-icon">
-                  <div class="rejected" *ngIf="a.type === 'reject' || a.type == 'failed'">!</div>
-                  <div class="line" *ngIf="a.type !== 'reject' && a.type !== 'failed'">{{actionList.length - i}}</div>
-                </div>
-                <div class="timeline-content-label">
-                  <div class="action ellipsis">{{a.description}}</div>
-                  <div *ngIf="tx.coin !== 'eth'" class="name ellipsis">{{a.by}}</div>
-                </div>
-                <ion-note class="ellipsis">
-                  <time>{{ converDate(a.time * 1000) | amTimeAgo}}</time>
-                </ion-note>
+    <ion-item lines="none" class="timeline-container" *ngIf="actionList && actionList[0]">
+      <div class="timeline-cover" style="width: 100%;">
+        <span class="timeline-header">{{'Timeline' | translate}}</span>
+        <div class="timeline-item"
+          [ngClass]="{'action-created' : a.type == 'created' || a.type == 'accept', 'action-rejected' : a.type == 'reject' || a.type == 'failed'}"
+          *ngFor="let a of actionList; let i = index">
+          <div class="timeline-content">
+            <div class="timeline-content-icon">
+              <div class="rejected" *ngIf="a.type == 'failed'"></div>
+              <div class="line" *ngIf="a.type === 'reject'">
+                <img src="assets/img/txp-details/rejected-{{currentTheme}}.svg">
+              </div>
+              <div class="line" *ngIf="a.type === 'accept'">
+                <img src="assets/img/txp-details/accepted-{{currentTheme}}.svg">
+              </div>
+              <div class="line" *ngIf="a.type === 'created'">
+                <img src="assets/img/txp-details/created-{{currentTheme}}.svg">
               </div>
             </div>
+            <div class="timeline-content-label">
+              <div class="action ellipsis">{{a.description}}</div>
+              <div *ngIf="tx.coin !== 'eth'" class="name ellipsis">{{a.by}}</div>
+            </div>
+            <ion-note class="ellipsis">
+              <time class="time-content">{{ converDate(a.time * 1000) | amTimeAgo}}</time>
+            </ion-note>
           </div>
-        </ion-item>
+        </div>
       </div>
+    </ion-item>
 
+    <div class="delete-payment-container">
+      <ion-button class="delete-button" fill="clear" (click)="remove()" [disabled]="loading">
+        {{'Delete Payment Proposal' | translate}}
+      </ion-button>
       <div class="ion-padding proposal-deletion"
         *ngIf="(((tx && !tx.removed) && (tx && tx.canBeRemoved)) || (tx && tx.status == 'accepted' && !tx.broadcastedOn)) && (!isShared || !tx.multisigContractAddress)">
         <div class="proposal-deletion-help" *ngIf="isShared" translate>
           * A payment proposal can be deleted if 1) you are the creator, and no other copayer has signed, or 2) 10
           minutes have passed since the proposal was created.
         </div>
-        <ion-button  fill="clear" color="danger" (click)="remove()" [disabled]="loading">
-          {{'Delete Payment Proposal' | translate}}
-        </ion-button>
       </div>
-
-    </ion-list>
+    </div>
   </div>
 
   <div footer-content>
     <page-slide-to-accept #slideButton
       *ngIf="(tx && !tx.removed) && (tx && tx.pendingForUs && canSign && !paymentExpired) && isCordova && !(isShared && tx.coin === 'eth')"
-      [buttonText]="buttonText" [isDogecoin]="tx && tx.coin == 'doge'" (slideDone)="onConfirm()">
+      [buttonText]="buttonText" [isDogecoin]="tx && tx.coin == 'doge'" [isTxpDetail]="true" (slideDone)="onConfirm()">
     </page-slide-to-accept>
     <ion-toolbar
       *ngIf="(tx && !tx.removed) && (tx && tx.pendingForUs && canSign && !paymentExpired) && (!isCordova || isShared && tx.coin === 'eth')">

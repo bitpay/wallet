@@ -8,8 +8,12 @@ import { Component, Input } from '@angular/core';
 export class CoinIconComponent {
   @Input()
   coin: string;
+
   @Input()
   network: string;
+
+  @Input()
+  noBackground: boolean;
 
   constructor() {}
 }

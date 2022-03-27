@@ -20,14 +20,6 @@
         </expandable-header-primary>
       </ion-toolbar>
     </expandable-header>
-    <div class="subtitle-container" *ngIf="wallets && canSign">
-      <div class="subtitle">
-        {{'This key contains {walletsLength} wallets' | translate: { walletsLength: wallets.length } }}.
-      </div>
-      <div class="onboarding-modal" (click)="showKeyOnboardingSlides()">
-        <ion-icon name="help-circle"></ion-icon>
-      </div>
-    </div>
 
     <label-tip class="no-arrowhead" *ngIf="!canSign" type="warn">
       <span label-tip-title translate>No Private Key</span>
@@ -36,117 +28,112 @@
       </div>
     </label-tip>
 
-    <ion-list lines="none" class="settings-list bp-list">
-      <ion-item button (click)="openWalletGroupName()">
+    <ion-list class="settings-list bp-list">
+      <ion-item button class="item-end" (click)="openWalletGroupName()">
         <ion-label>
-          <div translate>Key Name</div>
+          <div translate>Rename Key</div>
         </ion-label>
         <ion-note slot="end">
           {{walletsGroup?.name}}
         </ion-note>
       </ion-item>
 
-      <ion-item-divider lines="none" *ngIf="canSign">
+      <ion-item-divider class="item-end" *ngIf="canSign">
         <ion-label>
-          {{'Wallets' | translate}}
+          {{'Privacy' | translate}}
         </ion-label>
-        <ion-button slot="end" fill="clear" class="reorder-option" *ngIf="!showReorder && wallets?.length > 1" (click)="reorder()">
-          <img src="assets/img/sort.svg">
-        </ion-button>
-        <ion-button slot="end" fill="clear" class="reorder-option" *ngIf="showReorder" (click)="reorder()">
-          {{'Done' | translate}}
-        </ion-button>
       </ion-item-divider>
-      <ion-reorder-group disabled="{{!showReorder}}" (ionItemReorder)="reorderAccounts($event)">
-        <ion-item button class="wallets-list" *ngFor="let wallet of wallets" (click)="openWalletSettings(wallet.id)">
-          <coin-icon [coin]="wallet.coin" [network]="wallet.network" slot="start"></coin-icon>
-          <ion-label>
-            <div class="main-label">
-              {{wallet.name}}
-            </div>
-          </ion-label>
-          <ion-note *ngIf="wallet.hidden" slot="end">
-            {{'Hidden'|translate}}
-          </ion-note>
-          <ion-reorder slot="end"></ion-reorder>
-        </ion-item>
-      </ion-reorder-group>
-      <ion-item detail="false" class="create-button" *ngIf="wallets && wallets[0].canAddNewAccount" (click)="goToAddPage()">
+      <ion-item class="item-end">
+        <ion-label>{{'Hide Balance' | translate }}</ion-label>
+        <ion-toggle checked="{{false}}" (ionChange)="hiddenBalanceKey()"></ion-toggle>
+      </ion-item>
+
+      <ion-item-divider class="item-end container-account" *ngIf="canSign">
+        <ion-label>
+          {{'Contained Accounts' | translate}}
+        </ion-label>
+        <ion-icon (click)="openLink('https://givelotus.org')" slot="end" name="help-circle"></ion-icon>
+      </ion-item-divider>
+      <ion-item button *ngFor="let wallet of wallets" (click)="openWalletSettings(wallet.id)">
+        <coin-icon [coin]="wallet.coin" [network]="wallet.network" [noBackground]="true" slot="start"></coin-icon>
+        <ion-label>
+          <div class="main-label">
+            {{wallet.name}}
+          </div>
+        </ion-label>
+        <ion-note *ngIf="wallet.hidden" slot="end">
+          {{'Hidden'|translate}}
+        </ion-note>
+        <ion-reorder slot="end"></ion-reorder>
+      </ion-item>
+      <ion-item button class="create-button item-end" *ngIf="wallets && wallets[0].canAddNewAccount" (click)="goToAddPage()">
         <ion-label>
           {{'Create a new wallet' | translate }}
         </ion-label>
       </ion-item>
 
-      <ion-item-divider lines="none" *ngIf="canSign || touchIdAvailable">
+      <ion-item-divider class="item-end" *ngIf="canSign || touchIdAvailable">
         <ion-label>
           {{'Security' | translate}}
         </ion-label>
-        </ion-item-divider>
-      <ion-item button lines="none" *ngIf="canSign" (click)="openBackupSettings()" [ngClass]="{warn: needsBackup}">
+      </ion-item-divider>
+      <ion-item button *ngIf="canSign" (click)="openBackupSettings()" [ngClass]="{warn: needsBackup}">
         <ion-label>
-          <span translate>Backup</span>
+          <span translate>Backup Phrase</span>
         </ion-label>
         <ion-note *ngIf="needsBackup" class="wallet-warning" slot="end">
           {{'Needs backup' | translate}}
         </ion-note>
       </ion-item>
 
-      <div *ngIf="canSign && !needsBackup">
-        <ion-item lines="none" class="with-label no-border">
+      <ng-container *ngIf="canSign && !needsBackup">
+        <ion-item class="no-border item-end">
           <ion-label>{{'Request Encrypt Password' | translate}}</ion-label>
           <ion-toggle [(ngModel)]="encryptEnabled" (ionChange)="encryptChange()"></ion-toggle>
         </ion-item>
-        <label-tip type="info">
-          <span label-tip-title translate>Password Not Recoverable</span>
+        <label-tip>
           <div label-tip-body>
-            <span translate>This password cannot be recovered. If this password is lost, funds can only be recovered by reimporting your 12-word recovery phrase.</span>
-            <br>
-            <a class="label-tip-link" (click)="openSupportEncryptPassword()" translate>Learn More</a>
+            <span translate>This password cannot be recovered. If this password is lost, funds can onlybe recovered by your 12-word recovery phrase. </span>
+            <span class="label-tip-link" (click)="openSupportEncryptPassword()" translate>Learn More</span>
           </div>
         </label-tip>
-      </div>
-
-      <ion-item lines="none" button fill="clear" *ngIf="encryptEnabled && derivationStrategy !== 'BIP45'" (click)="openClearEncryptPasswordPage()">
-        <ion-label>
-          <span translate>Clear Encrypt Password</span>
-        </ion-label>
-      </ion-item>
+      </ng-container>
 
       <div *ngIf="touchIdAvailable">
-        <ion-item lines="none">
+        <ion-item>
           <ion-label [ngClass]="{'disabled': needsBackup}">{{'Request Fingerprint'| translate}}</ion-label>
           <ion-toggle [(ngModel)]="touchIdEnabled" (ionChange)="touchIdChange()"></ion-toggle>
         </ion-item>
       </div>
 
 
-      <ion-item-divider lines="none" *ngIf="canSign">
+      <ion-item-divider class="item-end" *ngIf="canSign">
         <ion-label>
           {{'Advanced' | translate}}
         </ion-label>
       </ion-item-divider>
             
-      <ion-item button lines="none" *ngIf="!needsBackup" (click)="syncWallets()">
+      <ion-item detail="false" class="create-button" button *ngIf="!needsBackup" (click)="syncWallets()">
         <ion-label>
           <span translate>Sync wallets across devices</span>
         </ion-label>
       </ion-item>
       
-      <ion-item button lines="none" *ngIf="!needsBackup && canSign && !isDeletedSeed" (click)="openQrExport()">
+      <ion-item button *ngIf="!needsBackup && canSign && !isDeletedSeed" (click)="openQrExport()">
         <ion-label>
           <span translate>Export Key</span>
         </ion-label>
       </ion-item>
 
-      <ion-item button lines="none" *ngIf="!needsBackup && canSign" (click)="openWalletGroupExtendedPrivateKey()">
+      <ion-item button *ngIf="!needsBackup && canSign" (click)="openWalletGroupExtendedPrivateKey()">
         <ion-label>
           <span translate>Extended Private Key</span>
         </ion-label>
       </ion-item>
 
-      <ion-item button lines="none" *ngIf="canSign" (click)="openWalletGroupDelete()">
-        <ion-label>
-          <span translate>Delete</span>
+      <ion-item detail="false" button *ngIf="canSign" (click)="openWalletGroupDelete()">
+        <ion-label class="color-danger" translate>
+          Delete Key
         </ion-label>
       </ion-item>
     </ion-list>

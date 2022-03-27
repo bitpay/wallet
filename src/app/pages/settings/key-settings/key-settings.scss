@@ -1,75 +1,54 @@
-.subtitle-container {
-  display: flex;
-  justify-content: space-between;
-  padding-left: 20px;
-  .subtitle {
-    font-size: 16px;
-    padding: 0;
-    margin-top: 10px;
-    font-weight: 100;
-  }
-  .onboarding-modal {
-    font-size: 25px;
-    cursor: pointer;
-    color: var(--color-light-grey);
-    margin-right: 2rem;
-  }
-}
-
-.item-text {
-  font-size: 12.5px;
-}
-
-ion-item-divider {
-  padding-left: 16px;
-}
-
-.settings-color-block {
-  display: inline-block;
-  width: 15px;
-  height: 15px;
-  border-radius: 50%;
-  float: left;
-  margin: 1rem;
-  background-color: var(--ion-color-primary);
-}
-
-.item-without-title {
-  margin-top: 0;
-}
-
-.icon-wallet {
-  margin-right: 0px;
-}
-
-ion-icon {
-  width: 36px;
-  height: 36px;
-}
-
-.bp-list {
-  ion-item-divider {
-    margin-top: 0px;
-    padding: 12.5px 0px 12.5px 20px;
-    background: #f8f8f9;
-    .reorder-option {
-      font-size: 14px;
-      margin: 0 8px 0 !important;
+page-key-settings {
+  coin-icon[slot='start'] {
+    margin: 0px !important;
+    ion-icon {
+      margin: 0;
+      padding: 0;
+      margin-right: 1rem;
     }
   }
-}
 
-.wallets-list {
-  padding: 7px 0 7px 22px !important;
-}
+  .bp-list {
+    .main-label {
+      font-weight: 400 !important;
+      font-size: 16px !important;
+      line-height: 23px !important;
+      color: #001E2E;
+    }
+  }
 
-.create-button {
-  background: white;
-  color: var(--ion-color-primary);
-  margin-left: -12px;
-  text-align: center;
-}
+  label-tip {
+    margin: 0 !important;
+    padding: 0.5rem 1rem 0 1rem !important;
+    width: 100%;
+    div [label-tip-body] {
+      font-size: 12px;
+      color: rgba(0, 30, 46, 0.6);
+    }
+    .label-header {
+      margin: 0 !important;
+    }
+    .label-tip-link {
+      color: var(--color-primary);
+    }
+  }
 
-coin-icon[slot='start'] {
-  margin: 0px !important;
+  ion-list {
+    margin: 2rem 0 !important;
+  }
+
+  .container-account {
+    --inner-padding-end: 0;
+    ion-icon {
+      color: rgba(0, 30, 46, 0.6);
+      padding: 0 !important;
+      margin: 0 !important;
+      width: 24px;
+      height: 24px;
+    }
+  }
+
+  .color-danger {
+    color: var(--color-danger) !important;
+  }
 }

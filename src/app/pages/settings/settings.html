@@ -1,7 +1,7 @@
-<ion-header [translucent]="true" class="wide-header ion-no-border" class="bp-header">
+<ion-header [translucent]="true" class="bp-header">
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button></ion-back-button>
+      <ion-back-button icon="chevron-back-outline" defaultHref="/"></ion-back-button>
     </ion-buttons>
     <ion-title [reveal-at-scroll-pos]="expandableHeader.headerHeight" [scrollArea]="scrollArea">
         {{ 'Settings' | translate }}
@@ -19,50 +19,16 @@
       </ion-toolbar>
     </expandable-header>
 
-    <ion-list lines="none" class="bp-list">
-      <!-- TODO: Disable login account bitpay  -->
-      <!-- <ng-container *ngIf="isCordova && !isCopay">
-        <ion-item button (click)="openBitPayIdPage()">
-
-          <ion-icon *ngIf="!bitPayIdUserInfo" class="icon-login" slot="start">
-            <img src="assets/img/bitpay-card/icon-bitpay-user.svg" width="60">
-          </ion-icon>
-          <ion-icon *ngIf="bitPayIdUserInfo && !bitPayIdUserInfo?.givenName" class="icon-login" slot="start">
-            <img src="assets/img/bitpay-card/icon-bitpay.svg" width="60">
-          </ion-icon>
-          <ion-icon *ngIf="bitPayIdUserInfo && bitPayIdUserInfo?.givenName" class="icon-login" slot="start">
-            <span class="icon-bitpay-id">
-              {{accountInitials}}
-            </span>
-          </ion-icon>
-
-          <ion-label>
-            <span class="main-label">
-              <span *ngIf="!bitPayIdUserInfo" translate>Log in or Sign Up</span>
-              <span class="bitpay-name" *ngIf="bitPayIdUserInfo && !bitPayIdUserInfo?.givenName">
-                <span translate>BitPay Account</span>
-                <div class="bitpay-email">{{ bitPayIdUserInfo?.email }}</div>
-              </span>
-              <span class="bitpay-name" *ngIf="bitPayIdUserInfo && bitPayIdUserInfo?.givenName">  
-                {{ bitPayIdUserInfo?.givenName }} {{ bitPayIdUserInfo?.familyName }}
-                <div class="bitpay-email">{{ bitPayIdUserInfo?.email }}</div>
-              </span>
-            </span>
-          </ion-label>
-        </ion-item>
-      </ng-container> -->
-
-      <ion-item-divider button (click)="mdesFlag()"> 
+    <ion-list class="settings-list bp-list">
+      <ion-item-divider class="item-end" button (click)="mdesFlag()"> 
         <ion-label>
           {{ 'General' | translate }}
         </ion-label>
       </ion-item-divider>
 
       <ion-item button (click)="openWhatsNew()" *ngIf="featureList && featureList.features.length > 0">
-        <ion-icon src="assets/img/settings-icons/icon-info.svg" class="icon-settings" slot="start">
-        </ion-icon>
-        <ion-label>
-          <span class="main-label" translate>What's new</span>
+        <ion-label translate>
+          What's new
         </ion-label>
         <ion-note slot="end">
           {{appVersion}}
@@ -70,9 +36,8 @@
       </ion-item>
       
       <ion-item button (click)="openThemePage()">
-        <ion-icon class="icon-settings ionic-icon" name="color-palette" slot="start"></ion-icon>
         <ion-label>
-          <div class="main-label">{{ 'Theme' | translate }}</div>
+          {{ 'Theme' | translate }}
         </ion-label>
         <ion-note *ngIf="appTheme" slot="end">
           {{ appTheme }}
@@ -80,9 +45,8 @@
       </ion-item>
 
       <ion-item button (click)="openNavigationPage()" *ngIf="isCordova">
-        <ion-icon src="assets/img/settings-icons/icon-hand.svg" class="icon-settings" slot="start">
-        </ion-icon><ion-label>
-          <div class="main-label">{{ 'Navigation' | translate }}</div>
+        <ion-label>
+          {{ 'Navigation' | translate }}
         </ion-label>
         <ion-note *ngIf="navigation" slot="end">
           {{ navigation }}
@@ -90,10 +54,8 @@
       </ion-item>
 
       <ion-item button (click)="openAltCurrencyPage()">
-        <ion-icon src="assets/img/settings-icons/icon-currency.svg" class="icon-settings" slot="start">
-        </ion-icon>
         <ion-label>
-          <div class="main-label">{{ 'Display Currency' | translate }}</div>
+          {{ 'Display Currency' | translate }}
         </ion-label>
         <ion-note *ngIf="selectedAlternative" slot="end">
           {{ selectedAlternative.name }}
@@ -101,21 +63,17 @@
       </ion-item>
 
       <ion-item button (click)="openLanguagePage()">
-        <ion-icon src="assets/img/settings-icons/icon-language.svg" class="icon-settings" slot="start">
-        </ion-icon>
         <ion-label>
-          <span class="main-label" translate>Language</span>
+          {{ 'Language' | translate }}
         </ion-label>
         <ion-note *ngIf="currentLanguageName" slot="end">
           {{ currentLanguageName }}
         </ion-note>
       </ion-item>
 
-      <ion-item *ngIf="isCordova" (click)="openLockPage()">
-        <ion-icon src="assets/img/settings-icons/icon-lock.svg" class="icon-settings" slot="start">
-        </ion-icon>
+      <ion-item button *ngIf="isCordova" (click)="openLockPage()">
         <ion-label>
-          <div class="main-label">{{ 'Lock App' | translate }}</div>
+          {{ 'Lock App' | translate }}
         </ion-label>
         <ion-note *ngIf="lockMethod === 'disabled'" slot="end">
           {{ 'Disabled' | translate }}
@@ -127,85 +85,34 @@
           {{ 'Biometric' | translate }}
         </ion-note>
       </ion-item>
-      <!--TODO: Enable notification if later we need it-->
-      <!-- <ion-item button (click)="openNotificationsPage()">
-        <ion-icon class="icon-settings" slot="start">
-          <img src="assets/img/settings-icons/icon-notifications.svg" />
-        </ion-icon>
-        <span class="main-label" translate>Notifications</span>
-      </ion-item> -->
-
-      <ion-item >
-        <ion-icon class="icon-settings ionic-icon" name="eye" slot="start"></ion-icon>
+      <ion-item class="item-end">
         <ion-label>
-          <div class="main-label">
-            {{'Show Portfolio Value' | translate}}
-          </div>
+          {{ 'Show Portfolio Value' | translate }}
         </ion-label>
-        <ion-toggle color="primary" slot="end" [(ngModel)]="showTotalBalance" (ionChange)="toggleShowBalanceFlag()"></ion-toggle>
+        <ion-toggle slot="end" [(ngModel)]="showTotalBalance" (ionChange)="toggleShowBalanceFlag()"></ion-toggle>
       </ion-item>
       
-      <ion-item-divider *ngIf="walletsGroups && walletsGroups[0]">
+      <ion-item-divider class="item-end" *ngIf="walletsGroups && walletsGroups[0]">
         <ion-label>
-          {{ 'Crypto Wallets & Keys' | translate }}
+          {{ 'Your Keys' | translate }}
         </ion-label>
-        <ion-button fill="clear" class="reorder-option" slot="end" *ngIf="!showReorder && walletsGroups?.length > 1" (click)="reorder()">
-          <img src="assets/img/sort.svg">
-        </ion-button>
-        <ion-button fill="clear" class="reorder-option" slot="end" *ngIf="showReorder" (click)="reorder()">
-          {{'Done' | translate}}
-        </ion-button>
       </ion-item-divider>
 
-      <ion-item button (click)="openAddressBookPage()">
-        <ion-icon src="assets/img/settings-icons/icon-address-book.svg" class="icon-settings" slot="start">
-        </ion-icon>
-        <span class="main-label" translate>Address Book</span>
-      </ion-item>
-
-      <ion-item button (click)="openFeePolicyPage()">
-        <ion-icon src="assets/img/settings-icons/icon-fee-policy.svg" class="icon-settings" slot="start">
-        </ion-icon>
-        <span class="main-label" translate>Network Fee Policies</span>
-      </ion-item>
-      
-      <ion-item >
-        <ion-icon src="assets/img/settings-icons/icon-qrcode.svg" class="icon-settings icon-qrcode" style="opacity: 0.3;" slot="start">
-        </ion-icon>
+      <ion-item button *ngFor="let walletsGroup of walletsGroups; let i = index" (click)="openWalletGroupSettings(walletsGroup[0].keyId)">
         <ion-label>
-          <div class="main-label">
-            {{'Use Basic QR Code' | translate}}
-          </div>
+          {{profileProvider.getWalletGroup(walletsGroup[0].keyId).name}}
         </ion-label>
-        <ion-toggle [(ngModel)]="useLegacyQrCode" (ionChange)="toggleQrCodeLegacyFlag()" disabled></ion-toggle>
+        <ion-note *ngIf="walletsGroup.length == 1" slot="end">
+          {{'{walletsGroupLength} Wallet' | translate:{walletsGroupLength: walletsGroup.length} }}
+        </ion-note>
+        <ion-note *ngIf="walletsGroup.length > 1" slot="end">
+          {{'{walletsGroupLength} Wallets' | translate:{walletsGroupLength: walletsGroup.length} }}
+        </ion-note>
       </ion-item>
-
-      <ion-reorder-group disabled="{{!showReorder}}" (ionItemReorder)="reorderAccounts($event)">
-        <ion-item *ngFor="let walletsGroup of walletsGroups; let i = index" (click)="openWalletGroupSettings(walletsGroup[0].keyId)">
-          <ion-icon src="assets/img/settings-icons/icon-key.svg" class="icon-settings" slot="start">
-          </ion-icon>
-          <ion-label>
-            <div class="main-label">
-              <span>{{profileProvider.getWalletGroup(walletsGroup[0].keyId).name}}</span>
-            </div>
-          </ion-label>
-          <ion-note *ngIf="walletsGroup.length == 1" slot="end">
-            {{'{walletsGroupLength} Wallet' | translate:{walletsGroupLength: walletsGroup.length} }}
-          </ion-note>
-          <ion-note *ngIf="walletsGroup.length > 1" slot="end">
-            {{'{walletsGroupLength} Wallets' | translate:{walletsGroupLength: walletsGroup.length} }}
-          </ion-note>
-          <ion-reorder slot="end"></ion-reorder>
-        </ion-item>
-      </ion-reorder-group>
 
       <ion-item button (click)="openWalletGroupSettings(readOnlyWalletsGroup[0].keyId)" *ngIf="readOnlyWalletsGroup && readOnlyWalletsGroup.length > 0">
-        <ion-icon src="assets/img/settings-icons/icon-read-only.svg" class="icon-settings" slot="start">
-        </ion-icon>
         <ion-label>
-          <div class="main-label" translate>
-            Read Only
-          </div>
+          {{'Read Only' | translate}}
         </ion-label>
         <ion-note *ngIf="readOnlyWalletsGroup.length == 1" slot="end">
           {{'{walletsGroupLength} Wallet' | translate:{walletsGroupLength: readOnlyWalletsGroup.length} }}
@@ -215,40 +122,46 @@
         </ion-note>
       </ion-item>
 
-      <ion-item detail="false" class="create-button ion-text-center ion-justify-content-center" *ngIf="walletsGroups && walletsGroups[0]" (click)="goToAddView()">
+      <ion-item button class="create-button ion-text-start ion-justify-content-start item-end" *ngIf="walletsGroups && walletsGroups[0]" (click)="goToAddView()">
         <ion-label>
           {{ 'Create or Import a Key' | translate }}
         </ion-label>
       </ion-item>
 
-      <ion-item-divider button (click)="mdesCertOnlyFlag()">
+      <ion-item-divider class="item-end" button (click)="mdesCertOnlyFlag()">
         <ion-label>
-          {{ 'More' | translate }}
+          {{ 'Other' | translate }}
         </ion-label>
       </ion-item-divider>
 
+      <ion-item button (click)="openAddressBookPage()">
+        <ion-label>
+          {{'Address Book' | translate}}
+        </ion-label>
+      </ion-item>
+
+      <ion-item button (click)="openFeePolicyPage()">
+        <ion-label>
+          {{'Network Fee Policies' | translate}}
+        </ion-label>
+      </ion-item>
+
       <ion-item button (click)="openAdvancedPage()">
-        <ion-icon src="assets/img/settings-icons/icon-advanced.svg" class="icon-settings" slot="start">
-        </ion-icon>
-        <span class="main-label" translate>Advanced</span>
+        <ion-label>
+          {{'Advanced' | translate}}
+        </ion-label>
       </ion-item>
 
-      <ion-item button (click)="openHelpExternalLink()">
-        <ion-icon src="assets/img/settings-icons/icon-help-support.svg" class="icon-settings" slot="start">
-        </ion-icon>
-        <span class="main-label" translate>Help &amp; Support</span>
+      <ion-item button (click)="openHelpExternal()">
+        <ion-label translate="">
+          Help &amp; Support
+        </ion-label>
       </ion-item>
 
-      <ion-item *ngIf="isCordova" (click)="openSharePage()">
-        <ion-icon src="assets/img/settings-icons/icon-heart.svg" class="icon-settings" slot="start">
-        </ion-icon>
-        <span class="main-label" translate>Share</span> {{ appName }}
-      </ion-item>
-
-      <ion-item button (click)="openAboutPage()">
-        <ion-icon src="assets/img/settings-icons/icon-info.svg" class="icon-settings" slot="start">
-        </ion-icon>
-        <span class="main-label" translate>About {{ appName }}</span>
+      <ion-item class="item-end" button (click)="openAboutPage()">
+        <ion-label>
+          {{'About ' + appName | translate}} 
+        </ion-label>
       </ion-item>
     </ion-list>
   </div>

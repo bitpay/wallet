@@ -1,10 +1,31 @@
-.container {
-  h3 {
-    color: var(--color-danger);
+page-extended-private-key {
+  .container {
+    display: flex;
+    border-radius: 8px;
+    padding: 1rem;
+    margin: 1rem;
+    background: #FFDDB6;
+    .warning-message {
+      flex: 2;
+      letter-spacing: 0.25px;
+      margin-left: 1rem;
+      line-height: 20px;
+      font-size: 14px;
+      p {
+        margin: 0 !important;
+      }
+      .title-message {
+        margin-top: 1rem !important;
+      }
+    }
+
+    ion-icon {
+      width: 26px;
+      height: 26px;
+    }
   }
-  text-align: center;
-  .warning-message {
-    line-height: 18px;
-    padding: 0 10px;
+  .button-standard {
+    font-weight: 600 !important;
+    letter-spacing: 0.1px;
   }
 }

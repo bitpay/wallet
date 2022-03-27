@@ -1,6 +1,6 @@
 <wide-header-page title="{{isZeroState ? ('Create Key' | translate) : ('Add Wallet'  | translate) }}">
   <div page-content>
-    <ion-list lines="none" class="settings-list bp-list">
+    <ion-list lines="none" class="bp-list">
       <ion-item button class="list-button" (click)="goToAddWalletPage()">
         <ion-icon *ngIf="isZeroState" src="assets/img/add-wallet/key-{{currentTheme}}.svg" slot="start">
         </ion-icon>

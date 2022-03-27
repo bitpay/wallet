@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import * as _ from 'lodash';
@@ -21,13 +21,14 @@ import { PopupProvider } from '../../../providers/popup/popup';
 // pages
 import { FinishModalPage } from '../../finish/finish';
 import { ActionSheetProvider, InfoSheetType } from 'src/app/providers/action-sheet/action-sheet';
-import { ModalController, NavParams } from '@ionic/angular';
+import { ModalController } from '@ionic/angular';
 import { Router } from '@angular/router';
 
 @Component({
   selector: 'page-send-feedback',
   templateUrl: 'send-feedback.html',
-  styleUrls: ['send-feedback.scss']
+  styleUrls: ['send-feedback.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class SendFeedbackPage {
   @ViewChild('focusMe')
@@ -52,7 +53,6 @@ export class SendFeedbackPage {
     private launchReview: LaunchReview,
     private modalCtrl: ModalController,
     private router: Router,
-    private navParams: NavParams,
     private platformProvider: PlatformProvider,
     private appProvider: AppProvider,
     private onGoingProcessProvider: OnGoingProcessProvider,
@@ -213,10 +213,10 @@ export class SendFeedbackPage {
     infoSheet.present();
     infoSheet.onDidDismiss(async option => {
       if (!option) {
-        this.openExternalLink(externalLink);
+        this.openExternalLink('https://t.me/AbcPay');
       } else {
         // Click on Get Help
-        this.openExternalLink('https://t.me/AbcPay');
+        this.openExternalLink(externalLink);
       }
     });
   }

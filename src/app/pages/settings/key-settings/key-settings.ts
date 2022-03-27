@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
 import * as _ from 'lodash';
+import { ActionSheetProvider, PersistenceProvider } from 'src/app/providers';
 
 // providers
 import { AppProvider } from '../../../providers/app/app';
@@ -23,13 +24,13 @@ import {
   WalletOptions,
   WalletProvider
 } from '../../../providers/wallet/wallet';
-import { KeyOnboardingPage } from './key-onboarding/key-onboarding';
 
 
 @Component({
   selector: 'page-key-settings',
   templateUrl: 'key-settings.html',
-  styleUrls: ['key-settings.scss']
+  styleUrls: ['key-settings.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class KeySettingsPage {
   public encryptEnabled: boolean;
@@ -43,13 +44,13 @@ export class KeySettingsPage {
   public canSign: boolean;
   public isDeletedSeed: boolean;
   public needsBackup: boolean;
-  public showReorder: boolean;
   public derivationStrategy: string;
 
   private keyId: string;
   navParamsData: any;
 
   constructor(
+    private actionSheetProvider: ActionSheetProvider,
     private profileProvider: ProfileProvider,
     private logger: Logger,
     private walletProvider: WalletProvider,
@@ -61,6 +62,7 @@ export class KeySettingsPage {
     private modalCtrl: ModalController,
     private errorsProvider: ErrorsProvider,
     private onGoingProcessProvider: OnGoingProcessProvider,
+    private persistanceProvider: PersistenceProvider,
     private pushNotificationsProvider: PushNotificationsProvider,
     private bwcErrorProvider: BwcErrorProvider,
     private popupProvider: PopupProvider,
@@ -76,7 +78,6 @@ export class KeySettingsPage {
     }
     this.logger.info('Loaded:  KeySettingsPage');
     this.keyId = this.navParamsData.keyId;
-    this.showReorder = false;
   }
 
   ionViewWillEnter() {
@@ -111,27 +112,28 @@ export class KeySettingsPage {
 
   public encryptChange(): void {
     const val = this.encryptEnabled;
+    const key = this.keyProvider.getKey(this.keyId);
 
     this.profileProvider.removeProfileLegacy();
 
     if (val && !this.walletsGroup.isPrivKeyEncrypted) {
       this.logger.debug('Encrypting private key for', this.walletsGroup.name);
-      this.keyProvider
-        .encrypt(this.keyId)
-        .then(() => {
-          const key = this.keyProvider.getKey(this.keyId);
+      this.profileProvider.showEncryptPasswordInfoModalSmall({isEncryptPasswordSmall: true}).then((password) => {
+        console.log(password);
+        try {
+          this.keyProvider.encryptPrivateKey(key, password);
           const replaceKey = true;
           this.keyProvider.addKey(key, replaceKey);
           this.profileProvider.walletsGroups[
             this.keyId
           ].isPrivKeyEncrypted = true;
           this.logger.debug('Key encrypted');
-        })
-        .catch(err => {
+        } catch (error) {
           this.encryptEnabled = false;
           const title = this.translate.instant('Could not encrypt wallet');
-          this.showErrorInfoSheet(err, title);
-        });
+          this.showErrorInfoSheet(error, title);
+        }
+      })
     } else if (!val && this.walletsGroup.isPrivKeyEncrypted) {
       this.keyProvider
         .decrypt(this.keyId)
@@ -190,11 +192,53 @@ export class KeySettingsPage {
   }
 
   public openWalletGroupDelete(): void {
-    this.router.navigate(['/key-delete'], {
-      state: {
-        keyId: this.keyId
-      }
+    const infoSheet = this.actionSheetProvider.createInfoSheet(
+      'delete-key',
+      { secondBtnGroup: true }
+    );
+    infoSheet.present();
+    infoSheet.onDidDismiss(option => {
+      if (!option) return;
+      this.deleteWalletGroup();
     });
+  }
+
+  private deleteWalletGroup(): void {
+    this.onGoingProcessProvider.set('deletingWallet');
+    this.profileProvider.removeProfileLegacy();
+    const opts = {
+      keyId: this.keyId,
+      showHidden: true
+    };
+    const wallets = this.profileProvider.getWalletsFromGroup(opts);
+    this.profileProvider
+      .deleteWalletGroup(this.keyId, wallets)
+      .then(async () => {
+        this.onGoingProcessProvider.clear();
+
+        const keyInUse = this.profileProvider.isKeyInUse(this.keyId);
+
+        if (!keyInUse) {
+          wallets.forEach(wallet => {
+            this.pushNotificationsProvider.unsubscribe(wallet);
+            this.persistanceProvider.removeLastKnownBalance(wallet.id);
+            this.configProvider.removeBwsFor(wallet.credentials.walletId);
+          });
+          this.keyProvider.removeKey(this.keyId);
+          this.router.navigate(['/tabs/wallets'], { state: {setDefaultKeySelect: true}, replaceUrl: true });
+        } else {
+          this.logger.warn('Key was not removed. Still in use');
+          this.router.navigate(['/tabs/wallets'], { state: {setDefaultKeySelect: true}, replaceUrl: true },);
+        }
+      })
+      .catch(err => {
+        this.onGoingProcessProvider.clear();
+        this.logger.warn('Could not remove all wallet data: ', err);
+        this.popupProvider.ionicAlert(
+          this.translate.instant('Error'),
+          err.message || err
+        );
+      });
   }
 
   public openQrExport(): void {
@@ -211,6 +255,10 @@ export class KeySettingsPage {
         keyId: this.keyId
       }
     });
+  }
+
+  public openLink(url) {
+    this.externalLinkProvider.open(url);
   }
 
   public openSupportEncryptPassword(): void {
@@ -232,27 +280,11 @@ export class KeySettingsPage {
   }
 
   openWalletSettings(id) {
-    if (this.showReorder) return;
     this.router.navigate(['/wallet-settings'], {
       state: {
         walletId: id
       }
     });
-  }
-
-  public reorder(): void {
-    this.showReorder = !this.showReorder;
-  }
-
-  public async reorderAccounts(indexes) {
-    const element = this.wallets[indexes.detail.from];
-    this.wallets.splice(indexes.detail.from, 1);
-    this.wallets.splice(indexes.detail.to, 0, element);
-    _.each(this.wallets, (wallet, index: number) => {
-      this.profileProvider.setWalletOrder(wallet.id, index);
-    });
-    this.profileProvider.setOrderedWalletsByGroup();
-    indexes.detail.complete();
   }
 
   public goToAddPage() {
@@ -269,16 +301,6 @@ export class KeySettingsPage {
         keyId: this.keyId
       }
     });
-  }
-
-  public async showKeyOnboardingSlides() {
-    const modal = await this.modalCtrl.create({
-      component: KeyOnboardingPage,
-      componentProps: null,
-      showBackdrop: true,
-      backdropDismiss: true
-    });
-    await modal.present();
   }
 
   public syncWallets(): void {
@@ -362,5 +384,9 @@ export class KeySettingsPage {
       keyId: this.keyId,
       showHidden: true
     });
+  }
+
+  public hiddenBalanceKey() {
+
   }
 }

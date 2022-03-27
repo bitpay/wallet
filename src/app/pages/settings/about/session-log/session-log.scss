@@ -1,36 +1,97 @@
-.info-color {
-  color: var(--color-info);
-}
-.log-entry {
-  font-size: 12px;
-  line-height: 18px;
-  border: none;
-  padding-left: 0px !important;
-}
-.log-timestamp {
-  font-weight: bold;
-}
-.log-level {
-  font-weight: bold;
-}
-.filter-container {
-  padding: 0 20px;
-  .labels {
-    color: black;
-    display: flex;
+page-session-log {
+  .info-color {
+    color: var(--color-primary);
     font-size: 14px;
-    justify-content: space-between;
-    .info-label {
-      margin-right: -10px;
+    line-height: 20px;
+    letter-spacing: 0.25px;
+  }
+  .log-entry {
+    font-size: 12px;
+    line-height: 18px;
+    border: none;
+    padding-left: 0px !important;
+  }
+  .log-timestamp {
+    font-weight: bold;
+  }
+  .log-level {
+    font-weight: bold;
+    
+  }
+  .energized {
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: 0.25px;
+  }
+
+  ion-list {
+    margin-bottom: 3rem;
+  }
+  
+  ion-footer {
+    ion-toolbar {
+      --background: linear-gradient(0deg, rgba(0, 101, 141, 0.11), rgba(0, 101, 141, 0.11)), #FAFAFB !important;
+      height: 92px;
+      .filter-container {
+        padding: 1rem;
+        padding-bottom: 0;
+        .labels {
+          color: #001E2E;
+          display: flex;
+          font-size: 12px;
+          font-weight: 600;
+          justify-content: space-between;
+        }
+        ion-range {
+          padding: 0px 0 6px 0;
+          &::part(knob) {
+            left: calc(50% - 20px / 2);
+            top: calc(50% - 20px / 2);
+            width: 20px;
+            height: 20px;
+          }
+          &::part(tick-active) {
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            top: 21px;
+            background: #FFF;
+            z-index: 9;
+          }
+          &::part(tick) {
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            top: 21px;
+            background: var(--color-primary);
+            z-index: 9;
+          }
+          &::part(bar-active) {
+            height: 6px;
+          }
+          &::part(bar) {
+            height: 6px;
+            background: #8bb7ca;
+          }
+        }
+      }
     }
   }
-}
 
-.no-entries-message {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
+  ion-icon[name="share-outline"] {
+    width: 24px;
+    height: 24px;
+    color: rgba(0, 30, 46, 0.6);
+  }
+  
+  .no-entries-message {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background: #fafafb !important;
+    padding: 1rem;
+  }
 }

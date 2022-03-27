@@ -822,6 +822,14 @@ export class ProfileProvider {
     });
   }
 
+  public showEncryptPasswordInfoModalSmall(params?): Promise<any> {
+    const encryptPasswordModal = this.actionSheetProvider.createEncryptPasswordComponent(params);
+    encryptPasswordModal.present({ maxHeight: '48%%', minHeight: '48%%' });
+    return new Promise(resolve => {
+      encryptPasswordModal.onDidDismiss(password => resolve(password));
+    });
+  }
+
   private addAndBindWalletClients(data, opts?): Promise<any> {
     opts = opts || {};
 

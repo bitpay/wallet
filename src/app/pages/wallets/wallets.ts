@@ -86,6 +86,11 @@ export class WalletsPage {
     private currencyProvider: CurrencyProvider,
     private rateProvider: RateProvider
   ) {
+    if (this.router.getCurrentNavigation()) {
+      this.navParamsData = this.router.getCurrentNavigation().extras.state ? this.router.getCurrentNavigation().extras.state : {};
+   } else {
+     this.navParamsData =  history ? history.state : undefined;
+   }
     const availableChains = this.currencyProvider.getAvailableChains();
     this.currentTheme = this.appProvider.themeProvider.currentAppTheme;
     this.collapsedGroups = {};
@@ -189,7 +194,7 @@ export class WalletsPage {
   private initKeySelected() {
     let keyChange = this.profileProvider.keyChange;
     let walletChange = this.profileProvider.walletChange;
-    if (this.walletsGroups.length !== 0) {
+    if (this.walletsGroups.length !== 0 || this.navParamsData.setDefaultKeySelect) {
       if (this.keySelected.length === 0) {
         this.totalBalanceKey = this.getTotalBalanceKey(this.walletsGroups[0]);
         this.keySelected = this.walletsGroups[0];
@@ -716,11 +721,11 @@ export class WalletsPage {
   }
 
   public openSettingPage() {
-    this.router.navigate(['/tabs/setting']);
+    this.router.navigate(['/setting']);
   }
 
   public openAddressBookPage() {
-    this.router.navigate(['/tabs/address-book']);
+    this.router.navigate(['/addressbook']);
   }
 }
 
