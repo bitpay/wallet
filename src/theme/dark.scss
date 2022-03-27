@@ -60,7 +60,11 @@
     --bg-color-dark-theme-5: linear-gradient(0deg, rgba(126, 208, 255, 0.14), rgba(126, 208, 255, 0.14)), #001E2E;
     --bg-color-dark-theme-6: linear-gradient(
         0deg, rgba(126, 208, 255, 0.12), rgba(126, 208, 255, 0.12)), #001E2E;
+
+        
     --bg-color-dark-theme-7: rgb(23 54 106); 
+
+    --bg-color-dark-theme-8: linear-gradient(0deg, rgba(126, 208, 255, 0.11), rgba(126, 208, 255, 0.11)), #001E2E ;
 
     --bg-color-dark-theme-toolbar: #001E2E;
     --bg-color-dark-theme-message: #1d1d1d;
@@ -95,6 +99,8 @@
 
     // 1.8 - Info Sheet
     --text-color-info-sheet-dark-theme: #B8C2C7;
+
+    --text-grey: rgba(237, 239, 240, 0.6);
 
     --slider-bg-button: rgba(126, 208, 255, 1);
     @include toolbar-button-color(var(--text-color-dark-theme));
@@ -131,7 +137,7 @@
                   color: #CCC1E9;
                 }
                 .fiat {
-                  color: rgba(237, 239, 240, 0.6);
+                  color: var(--text-grey)
                 }
                 .total {
                   color: #FFB85D;
@@ -458,7 +464,7 @@
             &.md {
                 border: 0;
                 background-color: var(--bg-color-dark-theme);
-                --background: linear-gradient(0deg, rgba(126, 208, 255, 0.11), rgba(126, 208, 255, 0.11)), #001E2E;;
+                --background: var(--bg-color-dark-theme-8);;
                 --padding-start: 5px;
                 --padding-end: 5px;
                 margin: 1rem 1rem;
@@ -739,7 +745,7 @@
     // 4 - Components
     action-sheet {
         .action-sheet {
-            background: linear-gradient(0deg, rgba(126, 208, 255, 0.11), rgba(126, 208, 255, 0.11)), #001E2E !important;
+            background: var(--bg-color-dark-theme-8) !important;
 
             .bp-list {
                 background: var(--bg-color-dark-theme-2) !important;
@@ -1014,7 +1020,7 @@
                     }
 
                     .info-encrypt {
-                        color: rgba(237, 239, 240, 0.6);
+                        color: var(--text-grey)
                     }
 
                     .encrypt-password-form {
@@ -1044,7 +1050,7 @@
                             ion-button {
                                 ion-icon {
                                     &[name="eye-off"] {
-                                      color: rgba(237, 239, 240, 0.6);
+                                      color: var(--text-grey)
                                     }
                                     &[name="alert"] {
                                       color: var(--color-danger);
@@ -1127,17 +1133,26 @@
 
     // 5.15 Price Page
     price-page {
+        .price-wraper {
+            background: var(--bg-color-dark-theme-8);
+        }
+        ion-toolbar.footer-price {
+            --background: linear-gradient(0deg, rgba(126, 208, 255, 0.08), rgba(126, 208, 255, 0.08)), #001E2E;
+        }
+
         .total-amount-container {
             .total-amount-value {
                 color: var(--text-color-dark-theme) !important;
             }
         }
 
-        .labels {
-            .inactive {
-                color: var(--text-color-dark-theme) !important;
+        .active {
+            ion-button {
+              --color: var(--color-primary-abcpay-dark) !important;
             }
-        }
+            background: linear-gradient(0deg, rgba(126, 208, 255, 0.14), rgba(126, 208, 255, 0.14)),
+            #001E2E;
+          }
     }
 
     // 5.2 - Tab Wallets
@@ -1331,7 +1346,7 @@
     token-info,
     page-tx-details{
         .tx-detail-list{
-            background: linear-gradient(0deg, rgba(126, 208, 255, 0.11), rgba(126, 208, 255, 0.11)), #001E2E;
+            background: var(--bg-color-dark-theme-8);
             .note-container{
                 color: #edeff0 !important
             }
@@ -1461,7 +1476,7 @@
                     &.tx-history-header-label {
                         color: #EDEFF0 !important;
                         .label-multisign {
-                            color: rgba(237, 239, 240, 0.6);
+                            color: var(--text-grey)
                         }
                     }
                 }
@@ -1489,7 +1504,7 @@
         .tx-info {
             .status {
                 background: var(--bg-color-dark-theme);
-                color: rgba(237, 239, 240, 0.6);
+                color: var(--text-grey)
             }
         }
 
@@ -1509,7 +1524,7 @@
         .header-transaction {
             background: linear-gradient(0deg, rgba(126, 208, 255, 0.08), rgba(126, 208, 255, 0.08)), #001E2E;
             ion-icon {
-                color: rgba(237, 239, 240, 0.6);
+                color: var(--text-grey)
             }
         }
 
@@ -1621,8 +1636,40 @@
           }
     }
 
+    page-send-select-inputs {
+     ion-label {
+         color: var(--text-color-dark-theme);
+     }
+
+     .address {
+         color: var(--text-grey)
+     }
+
+     .disabled {
+         color: var(--text-grey)
+     }
+
+     ion-list {
+         background: var(--bg-color-dark-theme-8);
+         --background: var(--bg-color-dark-theme-8);
+     }
+
+     .content-list {
+         .label-address {
+             border-bottom: 1px solid var(--text-grey);
+         }
+
+         .select-inputs-header {
+             border-bottom: 1px solid var(--text-grey);
+         }
+     }
+
+ }
+    
+
     page-send,
     page-multi-send,
+    page-send-select-inputs,
     page-select-inputs,
     page-proposals-notifications {
         .available-letter{
@@ -1716,10 +1763,10 @@
 
     recipient-component{
         .recipient-header{
-            color: rgba(237, 239, 240, 0.6);
+            color: var(--text-grey)
         }
         .recipient-content-wrapper{
-            background: linear-gradient(0deg, rgba(126, 208, 255, 0.11), rgba(126, 208, 255, 0.11)), #001E2E;
+            background: var(--bg-color-dark-theme-8);
             .recipient-content{
                 .title{
                     color: rgba(224, 228, 230, 0.6);
@@ -1739,9 +1786,13 @@
                 }
                 .unit-alt-text{
                     color: rgba(224, 228, 230, 0.6);
+                    
                 }
             }
             
+        }
+        .item-title {
+            color: rgba(237, 239, 240, 0.6);
         }
     }
 
@@ -2001,7 +2052,7 @@
             .item-title {
                 color: var(--text-color-dark-theme) !important;
                 span {
-                    color: rgba(237, 239, 240, 0.6);
+                    color: var(--text-grey)
                 }
             }
 
@@ -2016,7 +2067,7 @@
     page-create-eth-multisig,
     page-bitpay-phase-one-card-intro {
         ion-item {
-            --background: linear-gradient(0deg, rgba(126, 208, 255, 0.11), rgba(126, 208, 255, 0.11)), #001E2E;
+            --background: var(--bg-color-dark-theme-8);
             color: var(--text-color-dark-theme) !important;
             --highlight-color-focused: rgba(224, 228, 230, 0.6);
             --highlight-color-valid	: rgba(224, 228, 230, 0.6);
@@ -2043,7 +2094,7 @@
             background-color: var(--bg-color-dark-theme);
         }
         ion-item {
-            --background: linear-gradient(0deg, rgba(126, 208, 255, 0.11), rgba(126, 208, 255, 0.11)), #001E2E;
+            --background: var(--bg-color-dark-theme-8);
             color: var(--text-color-dark-theme) !important;
             --highlight-color-focused: rgba(224, 228, 230, 0.6);
             --highlight-color-valid	: rgba(224, 228, 230, 0.6);
@@ -2179,7 +2230,7 @@
             background: var(--bg-color-dark-theme);
         }
         .sub-header{
-            color: rgba(237, 239, 240, 0.6);
+            color: var(--text-grey)
         }
 
         .word-alignment{
@@ -2192,7 +2243,7 @@
                 color: var(--text-color-dark-theme);
 
                 .word-number{
-                    color: rgba(237, 239, 240, 0.6);
+                    color: var(--text-grey)
                 }
 
                 .dash-line {
@@ -2579,7 +2630,7 @@
             color: rgba(237, 239, 240, 0.6) !important;
         }
         .wallet-hidden {
-            color: rgba(237, 239, 240, 0.6);
+            color: var(--text-grey)
         }
     }
 

@@ -30,7 +30,7 @@ import { RecipientModel } from '../../components/recipient/recipient.model';
   styleUrls: ['./send.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class SendPage{
+export class SendPage {
   public wallet: any;
   public search: string = '';
   public amount: string = '';
@@ -50,7 +50,7 @@ export class SendPage{
   };
 
   isDonation: boolean;
-  titlePage: string ;
+  titlePage: string;
   dataDonation: any;
   navPramss: any;
   token;
@@ -58,7 +58,7 @@ export class SendPage{
   walletId: string;
   isShowSendMax: boolean = true;
   isShowDelete: boolean = false;
-  @ViewChild(IonContent) content : IonContent;
+  @ViewChild(IonContent) content: IonContent;
 
   constructor(
     private currencyProvider: CurrencyProvider,
@@ -92,10 +92,10 @@ export class SendPage{
     this.wallet = this.profileProvider.getWallet(this.navPramss.walletId);
     this.token = this.navPramss.token;
     this.titlePage = "Send " + (this.wallet.coin as String).toUpperCase();
-    if(this.token) this.titlePage = `Send ${this.token.tokenInfo.name}`
+    if (this.token) this.titlePage = `Send ${this.token.tokenInfo.name}`
     this.isDonation = this.navPramss.isDonation;
     if (this.isDonation) {
-      this.titlePage = "Receiving Wallet";
+      this.titlePage = "Send Donation";
       this.dataDonation = this.navPramss;
       this.wallet.donationCoin = this.navPramss.donationCoin;
     } else {
@@ -105,9 +105,6 @@ export class SendPage{
     this.events.subscribe('SendPageRedir', this.SendPageRedirEventHandler);
     this.events.subscribe('Desktop/onFocus', () => {
       this.setDataFromClipboard();
-    });
-    this.events.subscribe('addRecipient', newRecipient => {
-      this.addRecipient(newRecipient);
     });
     this.onResumeSubscription = this.plt.resume.subscribe(() => {
       this.setDataFromClipboard();
@@ -156,7 +153,7 @@ export class SendPage{
     );
   }
 
-  
+
 
   public showOptions(coin: Coin) {
     return (
@@ -235,7 +232,7 @@ export class SendPage{
           });
       if (option == 'select-inputs')
         this.router
-          .navigate(['/select-inputs'], { // SelectInputsPage
+          .navigate(['/send-select-inputs'], { // SelectInputsPage
             state: { walletId: this.wallet.id }
           })
           .then(() => {
@@ -274,9 +271,32 @@ export class SendPage{
     });
   }
 
+  private goToConfirmDonation() {
+    const recipient = this.listRecipient[0];
+    this.router.navigate(['/confirm'], {
+      state: {
+        amount: recipient.amount,
+        coin: this.wallet.coin,
+        currency: recipient.currency,
+        fromWalletDetails: true,
+        useSendMax: false,
+        network: this.wallet.network,
+        recipientType: recipient.recipientType,
+        walletId: this.wallet.credentials.walletId,
+        toAddress: this.dataDonation.toAddress,
+        isDonation: true,
+        remaining: this.dataDonation.remaining,
+        donationCoin: this.dataDonation.donationCoin,
+        receiveLotusAddress: recipient.toAddress,
+        nameReceiveLotusAddress: recipient.name
+      }
+    });
+  }
+
   public goToConfirm(): void {
     let totalAmount = 0;
-    if (this.token) return this.goToConfirmToken()
+    if (this.token) return this.goToConfirmToken();
+    if (this.isDonation) return this.goToConfirmDonation();
     if (this.listRecipient.length === 1) {
       const recipient = this.listRecipient[0];
       this.router.navigate(['/confirm'], {
@@ -330,15 +350,7 @@ export class SendPage{
     });
   }
 
-  public addRecipient(recipient): void {
-    let recipientSelected = this.listRecipient.find(s => s.id === recipient.id);
-    if (recipientSelected) {
-      recipientSelected.toAddress = recipient.toAddress;
-      recipientSelected.name = recipient.name;
-      recipientSelected.recipientType = recipient.recipientType;
-    }
-  }
-  checkBeforeGoToConfirmPage(){
+  checkBeforeGoToConfirmPage() {
     return this.listRecipient.findIndex(s => s.isValid === false) !== -1;
   }
 }

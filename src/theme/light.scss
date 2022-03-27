@@ -8,8 +8,9 @@
 
     // 1 - Definitions
     // 1.1 - Backgrounds
-    --bg-color-light-theme: #eef2f6;
+    --bg-color-light-content-theme: linear-gradient(0deg, rgba(0, 93, 141, 0.05), rgba(0, 93, 141, 0.05)), #FAFAFB;;
     --bg-color-inner-item-light-theme: #FAFAFB;
+    --bg-color-light-theme: #eef2f6;
 
     // 1.2 - Text
     // 1.3 - Borders
@@ -27,17 +28,26 @@
 
     // 2 - General
     ion-content {
-        background: var(--bg-color-light-theme);
-        --background: var(--bg-color-light-theme);
+        background: var(--bg-color-light-content-theme);
+        --background: var(--bg-color-light-content-theme);
     }
 
     ion-list {
         background: var(--bg-color-light-theme);
     }
+
+    
     
     ion-toolbar {
-        --background: var(--bg-color-light-theme);
+        --background: var(--bg-color-light-content-theme);
+        background: var(--bg-color-light-content-theme);
         --border-width: 0 !important;
+    }
+
+    price-page {
+        ion-toolbar.footer-price {
+            --background: linear-gradient(0deg, rgba(0, 101, 141, 0.08), rgba(0, 101, 141, 0.08)), #FAFAFB;
+        }
     }
 
     ion-button {
@@ -45,6 +55,18 @@
             --background-activated: none;
             --background: none;
             --color: var(--color-primary);
+        }
+    }
+    page-send,
+    page-send-select-inputs {
+        ion-list {
+            background: var(--bg-color-inner-item-light-theme)
+        }
+        ion-back-button  {
+            --color: var(--color-light-theme)
+        }
+        .option-button {
+            --color: var(--color-light-theme) !important;
         }
     }
 

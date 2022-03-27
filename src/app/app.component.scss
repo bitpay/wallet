@@ -100,6 +100,7 @@ ion-alert.alert-top {
 
 ion-alert {
     z-index: 99999 !important;
+
     .alert-wrapper {
         color: black;
 
@@ -213,9 +214,7 @@ ion-header ion-toolbar {
     color: var(--text-color);
     font-size: 25px;
     font-weight: 700;
-    // padding-top: 10px;
-    // padding-bottom: 10px;
-    padding-left: 20px;
+    padding-left: 1rem;
     background: var(--background-color);
 }
 
@@ -706,10 +705,14 @@ ion-app,
 .nav-decor {
     --background: transparent !important;
 }
-ion-app.cameraView, ion-app.cameraView ion-content, ion-app.cameraView .nav-decor {
-    --background: transparent !important; 
+
+ion-app.cameraView,
+ion-app.cameraView ion-content,
+ion-app.cameraView .nav-decor {
+    --background: transparent !important;
     background: transparent !important
 }
+
 .button-standard {
     width: 85%;
     margin: 5px auto 25px auto;
@@ -1064,6 +1067,7 @@ ion-tabs {
         display: flex;
         justify-content: space-around;
         border: 0;
+
         ion-tab-button {
             --ripple-color: transparent;
             min-height: 4.6rem;
@@ -1277,9 +1281,11 @@ page-session-log {
     40% {
         opacity: 1;
     }
+
     77% {
         opacity: 1;
     }
+
     100% {
         opacity: 0;
     }
@@ -1289,9 +1295,11 @@ page-session-log {
     50% {
         opacity: 1;
     }
+
     80% {
         opacity: 1;
     }
+
     100% {
         opacity: 0;
     }
@@ -1301,9 +1309,11 @@ page-session-log {
     65% {
         opacity: 1;
     }
+
     83% {
         opacity: 1;
     }
+
     100% {
         opacity: 0;
     }
@@ -1313,9 +1323,11 @@ page-session-log {
     65% {
         opacity: 1;
     }
+
     86% {
         opacity: 1;
     }
+
     100% {
         opacity: 0;
     }
@@ -1325,6 +1337,7 @@ page-session-log {
     75% {
         opacity: 1;
     }
+
     100% {
         opacity: 0;
     }
@@ -1334,9 +1347,11 @@ page-session-log {
     75% {
         opacity: 1;
     }
+
     87% {
         opacity: 0;
     }
+
     100% {
         opacity: 0;
     }
@@ -1344,287 +1359,376 @@ page-session-log {
 
 @keyframes ASplashScreen {
     0% {
-        transform: translate(4px,-7px) rotate(50deg);
+        transform: translate(4px, -7px) rotate(50deg);
     }
+
     2% {
-        transform: translate(4px,-6px) rotate(40deg);
+        transform: translate(4px, -6px) rotate(40deg);
     }
+
     4% {
-        transform: translate(2px,-5px) rotate(30deg);
+        transform: translate(2px, -5px) rotate(30deg);
     }
+
     6% {
         transform: rotate(0deg);
     }
+
     8% {
-        transform: translate(2px,5px) rotate(-30deg);
+        transform: translate(2px, 5px) rotate(-30deg);
     }
+
     10% {
-        transform: translate(4px,7px) rotate(-50deg);
+        transform: translate(4px, 7px) rotate(-50deg);
     }
+
     12% {
-        transform: translate(6px,8px) rotate(-70deg);
+        transform: translate(6px, 8px) rotate(-70deg);
     }
+
     14% {
-        transform: translate(6px,8px) rotate(-65deg);
+        transform: translate(6px, 8px) rotate(-65deg);
     }
+
     16% {
-        transform: translate(6px,8px) rotate(-60deg);
+        transform: translate(6px, 8px) rotate(-60deg);
     }
+
     18% {
-        transform: translate(4px,7px) rotate(-50deg);
+        transform: translate(4px, 7px) rotate(-50deg);
     }
+
     20% {
-        transform: translate(2px,3px) rotate(-20deg);
+        transform: translate(2px, 3px) rotate(-20deg);
     }
+
     22% {
-        transform: translate(1px,2px) rotate(-10deg);
+        transform: translate(1px, 2px) rotate(-10deg);
     }
+
     24% {
         transform: rotate(0deg);
     }
-    80%{
+
+    80% {
         opacity: 1;
     }
+
     100% {
         opacity: 0;
         transform: rotate(0deg);
     }
 }
+
 @keyframes BSplashScreen {
     0% {
         transform: translate(13px, 7px) rotate(60deg);
     }
+
     2% {
         transform: translate(13px, 9px) rotate(72deg);
     }
+
     4% {
         transform: translate(13px, 12px) rotate(82deg);
     }
+
     6% {
         transform: translate(13px, 16px) rotate(100deg);
     }
+
     8% {
         transform: translate(6px, 25px) rotate(155deg);
     }
+
     10% {
         transform: translate(-13px, 19.5px) rotate(245deg);
     }
+
     12% {
         transform: translate(-8px, 2px) rotate(325deg);
     }
+
     14% {
         transform: translate(-8px, 2px) rotate(330deg);
     }
+
     16% {
         transform: translate(-6px, 1px) rotate(335deg);
     }
+
     18% {
         transform: translate(-5px, 0px) rotate(340deg);
     }
+
     20% {
         transform: translate(-4px, 0px) rotate(345deg);
     }
+
     22% {
         transform: translate(-2px, 0px) rotate(355deg);
     }
+
     25% {
         transform: rotate(360deg);
     }
-    80%{
+
+    80% {
         opacity: 1;
     }
+
     100% {
         opacity: 0;
         transform: rotate(360deg);
     }
 }
+
 @keyframes CSplashScreen {
     0% {
-        transform: translate(39px,3px) rotate(190deg);
+        transform: translate(39px, 3px) rotate(190deg);
     }
+
     2% {
-        transform: translate(39px,3px) rotate(180deg);
+        transform: translate(39px, 3px) rotate(180deg);
     }
+
     4% {
-        transform: translate(39px,-3px) rotate(170deg);
+        transform: translate(39px, -3px) rotate(170deg);
     }
+
     6% {
-        transform: translate(37px,-10px) rotate(150deg);
+        transform: translate(37px, -10px) rotate(150deg);
     }
+
     8% {
-        transform: translate(33px,-15px) rotate(130deg);
+        transform: translate(33px, -15px) rotate(130deg);
     }
+
     10% {
-        transform: translate(28px,-18px) rotate(115deg);
+        transform: translate(28px, -18px) rotate(115deg);
     }
+
     12% {
-        transform: translate(20px,-20px) rotate(90deg);
+        transform: translate(20px, -20px) rotate(90deg);
     }
+
     14% {
-        transform: translate(15px,-19px) rotate(75deg);
+        transform: translate(15px, -19px) rotate(75deg);
     }
+
     16% {
-        transform: translate(7px,-15px) rotate(50deg);
+        transform: translate(7px, -15px) rotate(50deg);
     }
+
     18% {
-        transform: translate(5px,-12px) rotate(40deg);
+        transform: translate(5px, -12px) rotate(40deg);
     }
+
     20% {
-        transform: translate(3px,-10px) rotate(30deg);
+        transform: translate(3px, -10px) rotate(30deg);
     }
+
     22% {
-        transform: translate(2px,-7px) rotate(20deg);
+        transform: translate(2px, -7px) rotate(20deg);
     }
+
     24% {
         transform: rotate(0deg);
     }
+
     82% {
         opacity: 1;
     }
+
     100% {
         opacity: 0;
         transform: rotate(0deg);
     }
 }
+
 @keyframes PSplashScreen {
     0% {
-        transform: translate(5px,-26px) rotate(205deg);
+        transform: translate(5px, -26px) rotate(205deg);
     }
+
     2% {
-        transform: translate(4px,-26px) rotate(200deg);
+        transform: translate(4px, -26px) rotate(200deg);
     }
+
     4% {
-        transform: translate(3px,-26px) rotate(195deg);
+        transform: translate(3px, -26px) rotate(195deg);
     }
+
     6% {
-        transform: translate(-13px,-19px) rotate(115deg);
+        transform: translate(-13px, -19px) rotate(115deg);
     }
+
     8% {
-        transform: translate(-14px,-16px) rotate(100deg);
+        transform: translate(-14px, -16px) rotate(100deg);
     }
+
     10% {
-        transform: translate(-14px,-12px) rotate(85deg);
+        transform: translate(-14px, -12px) rotate(85deg);
     }
+
     12% {
-        transform: translate(-13px,-8px) rotate(65deg);
+        transform: translate(-13px, -8px) rotate(65deg);
     }
+
     14% {
-        transform: translate(-10px,-4px) rotate(45deg);
+        transform: translate(-10px, -4px) rotate(45deg);
     }
+
     16% {
-        transform: translate(-8px,-2px) rotate(35deg);
+        transform: translate(-8px, -2px) rotate(35deg);
     }
+
     18% {
-        transform: translate(-7px,-1px) rotate(25deg);
+        transform: translate(-7px, -1px) rotate(25deg);
     }
+
     20% {
-        transform: translate(-4px,-1px) rotate(15deg);
+        transform: translate(-4px, -1px) rotate(15deg);
     }
+
     22% {
-        transform: translate(-3px,0px) rotate(10deg);
+        transform: translate(-3px, 0px) rotate(10deg);
     }
+
     24% {
         transform: rotate(0deg);
     }
+
     84% {
         opacity: 1;
     }
+
     100% {
         opacity: 0;
         transform: rotate(0deg);
     }
 }
+
 @keyframes PASplashScreen {
     0% {
-        transform: translate(0px,3px) rotate(340deg);
+        transform: translate(0px, 3px) rotate(340deg);
     }
+
     2% {
-        transform: translate(0px,1px) rotate(350deg);
+        transform: translate(0px, 1px) rotate(350deg);
     }
+
     4% {
-        transform: translate(0px,-2px) rotate(10deg);
+        transform: translate(0px, -2px) rotate(10deg);
     }
+
     6% {
-        transform: translate(2px,-6px) rotate(40deg);
+        transform: translate(2px, -6px) rotate(40deg);
     }
+
     8% {
-        transform: translate(6px,-9px) rotate(70deg);
+        transform: translate(6px, -9px) rotate(70deg);
     }
+
     10% {
-        transform: translate(10px,-10px) rotate(100deg);
+        transform: translate(10px, -10px) rotate(100deg);
     }
+
     12% {
-        transform: translate(19px,-2px) rotate(170deg);
+        transform: translate(19px, -2px) rotate(170deg);
     }
+
     14% {
-        transform: translate(14px,8px) rotate(240deg);
+        transform: translate(14px, 8px) rotate(240deg);
     }
+
     16% {
-        transform: translate(11px,9px) rotate(260deg);
+        transform: translate(11px, 9px) rotate(260deg);
     }
+
     18% {
-        transform: translate(7px,9px) rotate(280deg);
+        transform: translate(7px, 9px) rotate(280deg);
     }
+
     20% {
-        transform: translate(5px,8px) rotate(300deg);
+        transform: translate(5px, 8px) rotate(300deg);
     }
+
     22% {
-        transform: translate(0px,3px) rotate(340deg);
+        transform: translate(0px, 3px) rotate(340deg);
     }
+
     25% {
         transform: rotate(360deg);
     }
+
     84% {
         opacity: 1;
     }
+
     100% {
         opacity: 0;
         transform: rotate(360deg);
     }
 }
+
 @keyframes YSplashScreen {
     0% {
-        transform: translate(23px,-23px) rotate(270deg);
+        transform: translate(23px, -23px) rotate(270deg);
     }
+
     2% {
-        transform: translate(20px,-35px) rotate(240deg);
+        transform: translate(20px, -35px) rotate(240deg);
     }
+
     4% {
-        transform: translate(-15px,-40px) rotate(138deg);
+        transform: translate(-15px, -40px) rotate(138deg);
     }
+
     6% {
-        transform: translate(-20px,-13px) rotate(65deg);
+        transform: translate(-20px, -13px) rotate(65deg);
     }
+
     8% {
-        transform: translate(-19px,-10px) rotate(55deg);
+        transform: translate(-19px, -10px) rotate(55deg);
     }
+
     10% {
-        transform: translate(-16px,-7px) rotate(45deg);
+        transform: translate(-16px, -7px) rotate(45deg);
     }
+
     12% {
-        transform: translate(-13px,-4px) rotate(35deg);
+        transform: translate(-13px, -4px) rotate(35deg);
     }
+
     14% {
-        transform: translate(-12px,-3px) rotate(30deg);
+        transform: translate(-12px, -3px) rotate(30deg);
     }
+
     16% {
-        transform: translate(-10px,-2px) rotate(25deg);
+        transform: translate(-10px, -2px) rotate(25deg);
     }
+
     18% {
-        transform: translate(-8px,-2px) rotate(20deg);
+        transform: translate(-8px, -2px) rotate(20deg);
     }
+
     20% {
-        transform: translate(-6px,-1px) rotate(15deg);
+        transform: translate(-6px, -1px) rotate(15deg);
     }
+
     22% {
-        transform: translate(-4px,-1px) rotate(10deg);
+        transform: translate(-4px, -1px) rotate(10deg);
     }
+
     24% {
         transform: rotate(0deg);
     }
+
     84% {
         opacity: 1;
     }
+
     100% {
         opacity: 0;
         transform: rotate(0deg);
@@ -1725,5 +1829,69 @@ page-session-log {
     #layer3 {
         opacity: 1;
         animation: 3s vaultSplashScreen;
+    }
+}
+
+ion-toolbar.header {
+    &.bg {
+        &-bch {
+            background: url("../assets/img/wallet-details/bg-bch.svg") no-repeat 10% !important;
+            --background: url("../assets/img/wallet-details/bg-bch.svg") no-repeat 10% !important;
+            background-size: cover !important;
+        }
+
+        &-xec {
+            background: url("../assets/img/wallet-details/bg-xec.svg") no-repeat 10% !important;
+            --background: url("../assets/img/wallet-details/bg-xec.svg") no-repeat 10% !important;
+            background-size: cover !important;
+        }
+
+        &-xpi {
+            background: url("../assets/img/wallet-details/bg-xpi.svg") no-repeat 10% !important;
+            --background: url("../assets/img/wallet-details/bg-xpi.svg") no-repeat 10% !important;
+            background-size: cover !important;
+        }
+
+        &-doge {
+            background: url("../assets/img/wallet-details/bg-doge.svg") no-repeat 10% !important;
+            --background: url("../assets/img/wallet-details/bg-doge.svg") no-repeat 10% !important;
+            background-size: cover !important;
+        }
+
+        &-ltc {
+            background: url("../assets/img/wallet-details/bg-ltc.svg") no-repeat 10% !important;
+            --background: url("../assets/img/wallet-details/bg-ltc.svg") no-repeat 10% !important;
+            background-size: cover !important;
+        }
+
+        &-bcPro {
+            background: url("../assets/img/wallet-details/bg-xec.svg") no-repeat 10% !important;
+            --background: url("../assets/img/wallet-details/bg-xec.svg") no-repeat 10% !important;
+            background-size: cover !important;
+        }
+
+        &-EAT {
+            background: url("../assets/img/wallet-details/bg-xec.svg") no-repeat 10% !important;
+            --background: url("../assets/img/wallet-details/bg-xec.svg") no-repeat 10% !important;
+            background-size: cover !important;
+        }
+
+        &-ABCSLP {
+            background: url("../assets/img/wallet-details/bg-xec.svg") no-repeat 10% !important;
+            --background: url("../assets/img/wallet-details/bg-xec.svg") no-repeat 10% !important;
+            background-size: cover !important;
+        }
+
+        &-DoC {
+            background: url("../assets/img/wallet-details/bg-xec.svg") no-repeat 10% !important;
+            --background: url("../assets/img/wallet-details/bg-xec.svg") no-repeat 10% !important;
+            background-size: cover !important;
+        }
+
+        &-default {
+            background: url("../assets/img/wallet-details/bg-xec.svg") no-repeat 10% !important;
+            --background: url("../assets/img/wallet-details/bg-xec.svg") no-repeat 10% !important;
+            background-size: cover !important;
+        }
     }
 }

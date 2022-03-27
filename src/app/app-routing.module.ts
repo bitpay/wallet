@@ -61,6 +61,8 @@ import { PaperWalletPage } from './pages/paper-wallet/paper-wallet';
 import { TokenDetailsPage } from './pages/token-details/token-details';
 import { ConfirmTokenPage } from './pages/confirm-token/confirm-token';
 import { TokenInforPage } from './pages/token-info/token-info';
+import { SelectInputsSendPage } from './pages/send/send-select-inputs/send-select-inputs';
+import { AccountsPage } from './pages/accounts/accounts';
 
 const routes: Routes = [
   {
@@ -74,6 +76,10 @@ const routes: Routes = [
   {
     path: 'about',
     component: AboutPage,
+  },
+  {
+    path: 'accounts-page',
+    component: AccountsPage
   },
   {
     path: 'token-details',
@@ -292,6 +298,10 @@ const routes: Routes = [
   {
     path: 'select-inputs',
     component: SelectInputsPage,
+  },
+  {
+    path: 'send-select-inputs',
+    component: SelectInputsSendPage,
   },
   {
     path: 'transfer-to-modal',

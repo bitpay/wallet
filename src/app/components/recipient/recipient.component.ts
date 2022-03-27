@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, SimpleChange, ViewChild, ViewEncapsulation } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import * as _ from 'lodash';
 
@@ -14,7 +14,7 @@ import { IncomingDataProvider } from '../../providers/incoming-data/incoming-dat
 import { Logger } from '../../providers/logger/logger';
 import { PlatformProvider } from '../../providers/platform/platform';
 import { TxFormatProvider } from '../../providers/tx-format/tx-format';
-import { NavParams } from '@ionic/angular';
+import { ModalController, NavParams } from '@ionic/angular';
 import { EventManagerService } from 'src/app/providers/event-manager.service';
 import { Router } from '@angular/router';
 import { ProfileProvider } from 'src/app/providers/profile/profile';
@@ -24,6 +24,7 @@ import { FilterProvider } from 'src/app/providers/filter/filter';
 import { RateProvider } from 'src/app/providers/rate/rate';
 import { ClipboardProvider, ThemeProvider } from 'src/app/providers';
 import { Token } from 'src/app/models/tokens/tokens.model';
+import { TransferToModalPage } from 'src/app/pages/send/transfer-to-modal/transfer-to-modal';
 
 @Component({
   selector: 'recipient-component',
@@ -60,6 +61,12 @@ export class RecipientComponent implements OnInit {
   public searchValue: string;
   validAddress = false;
   validAmount = false;
+  isSelectedTotalAmout: boolean = false;
+  remaining: number;
+  isShowReceiveLotus: boolean;
+  receiveLotus: string;
+  receiveAmountLotus: number;
+  formatRemaining: string;
   @Input()
   recipient: RecipientModel;
 
@@ -75,8 +82,17 @@ export class RecipientComponent implements OnInit {
   @Input()
   token: Token;
 
-  @Output() deleteEvent = new EventEmitter<number>();
-  @Output() sendMaxEvent = new EventEmitter<boolean>();
+  @Input()
+  amountFromSelectedInput?: number;
+
+  @Input()
+  isShowSelectInput?: boolean;
+
+  @Input()
+  isDonation?: boolean;
+
+  @Output() deleteEvent? = new EventEmitter<number>();
+  @Output() sendMaxEvent? = new EventEmitter<boolean>();
 
   private validDataTypeMap: string[] = [
     'BitcoinAddress',
@@ -118,7 +134,8 @@ export class RecipientComponent implements OnInit {
     private rateProvider: RateProvider,
     private events: EventManagerService,
     private clipboardProvider: ClipboardProvider,
-    private themeProvider: ThemeProvider
+    private themeProvider: ThemeProvider,
+    private modalCtrl: ModalController,
   ) {
     this.darkThemeString = this.themeProvider.currentAppTheme === 'dark' ? 'dark' : 'light';
     if (this.router.getCurrentNavigation()) {
@@ -135,11 +152,29 @@ export class RecipientComponent implements OnInit {
     this.config = this.configProvider.get();
     this.fixedUnit = this.navParamsData.fixedUnit;
     this.events.subscribe('Local/AddressScan', this.updateAddressHandler);
+    this.isDonation = this.navParamsData.isDonation;
+    if (this.isDonation) {
+      this.remaining = this.navParamsData.remaining;
+      this.receiveAmountLotus = this.navParamsData.receiveLotus;
+      const coin = _.get(this.navParams, 'data.donationCoin', 'xpi');
+      const precision = this.currencyProvider.getPrecision(coin as Coin).unitToSatoshi;
+      this.formatRemaining = this.txFormatProvider.formatAmount(coin, precision * this.remaining);
+    }
   }
 
   ngOnInit() {
     this.setAvailableUnits();
     this.updateUnitUI();
+  }
+
+  ngOnChanges(changes: { [property: string]: SimpleChange }) {
+    if (this.isSelectedTotalAmout) {
+      const currentAmountInput = _.get(changes, 'amountFromSelectedInput.currentValue', undefined)
+      if (!_.isUndefined(currentAmountInput)) {
+        this.expression = this.amountFromSelectedInput;
+        this.processAmount()
+      }
+    }
   }
 
 
@@ -291,6 +326,13 @@ export class RecipientComponent implements OnInit {
     );
   }
 
+  changeSelectedAmount(event) {
+    if (this.isSelectedTotalAmout) {
+      this.expression = this.amountFromSelectedInput;
+      this.processAmount()
+    }
+  }
+
   private toFiat(val: number, coin?: Coin): number {
     if (
       !this.rateProvider.getRate(
@@ -336,10 +378,16 @@ export class RecipientComponent implements OnInit {
           this.alternativeAmount = result ? 'N/A' : null;
           this.allowSend = false;
         }
+        if (this.isDonation) {
+          this.handleReceiveLotus(result);
+        }
       } else {
         this.alternativeAmount = this.filterProvider.formatFiatAmount(
           this.toFiat(result)
         );
+        if (this.isDonation) {
+          this.handleReceiveLotus(this.toFiat(result));
+        }
       }
     }
     let unit = this.availableUnits[this.unitIndex];
@@ -397,12 +445,17 @@ export class RecipientComponent implements OnInit {
         this.validAddress = false;
       }
     }
-    
+
     this.checkRecipientValid();
   }
 
   checkRecipientValid() {
-    this.recipient.isValid = this.validAddress && this.validAmount;
+    if (this.isShowReceiveLotus) {
+      this.recipient.isValid = this.validAddress && this.validAmount;
+    } else {
+      this.recipient.isValid = this.validAmount;
+    }
+
   }
   public async checkIfContact() {
     await timer(50).toPromise();
@@ -526,15 +579,25 @@ export class RecipientComponent implements OnInit {
     this.router.navigate(['/addressbook'], { state: { fromSend: true, recipientId: this.recipient.id } });
   }
 
-  public openTransferToModal(): void {
-    this.router.navigate(['/transfer-to-modal'], {
-      state: {
+  public async openTransferToModal(): Promise<void> {
+    const modal = await this.modalCtrl.create({
+      component: TransferToModalPage,
+      componentProps: {
         completeHistory: this.wallet.completeHistory,
-        walletId: this.wallet.id,
+        walletId: this.wallet.credentials.walletId,
+        recipientId: this.recipient.id,
         fromSend: true,
-        recipientId: this.recipient.id
       }
     });
+    modal.onDidDismiss().then((recipient) => {
+      if (recipient.data && recipient.data.id == this.recipient.id) {
+        this.recipient.toAddress = recipient.data.toAddress;
+        this.recipient.name = recipient.data.name;
+        this.recipient.recipientType = recipient.data.recipientType;
+      }
+    });
+
+    return await modal.present();
   }
 
   public async pasteFromClipboard() {
@@ -546,6 +609,42 @@ export class RecipientComponent implements OnInit {
     this.validDataFromClipboard = null;
     this.clipboardProvider.clear();
     this.processInput();
+  }
+
+  private handleReceiveLotus(amountDonation) {
+    this.receiveLotus = '';
+    const availableUnit = this.availableUnits[this.unitIndex].isFiat ? this.availableUnits[this.altUnitIndex].id : this.availableUnits[this.unitIndex].id;
+    const minMoneydonation = this.fromSatToFiat(this.rateProvider.fromFiat(this.navParamsData.minMoneydonation, 'USD', availableUnit));
+    const remaining = this.navParamsData.remaining;
+    const receiveLotus = this.navParamsData.receiveLotus;
+    this.isShowReceiveLotus = amountDonation >= minMoneydonation && remaining >= receiveLotus;
+    if (this.isShowReceiveLotus) {
+      this.receiveLotus = `You will receive ${receiveLotus} Lotus`;
+    } else if (amountDonation <= minMoneydonation && amountDonation != 0) {
+      this.receiveLotus = `You will receive 0 Lotus`;
+    } else if (amountDonation >= minMoneydonation && remaining < receiveLotus) {
+      this.receiveLotus = `Due to high demand, we are running out of Lotus today and unable to give you back. Come back another day or proceed anyway.`;
+    }
+  }
+
+  private fromSatToFiat(val: number, coin?: Coin): number {
+    const availableUnit = this.availableUnits[this.unitIndex].isFiat ? this.availableUnits[this.altUnitIndex].id : this.availableUnits[this.unitIndex].id;
+    if (
+      !this.rateProvider.getRate(
+        this.fiatCode,
+        coin || availableUnit
+      )
+    )
+      return undefined;
+
+    const rateProvider = this.rateProvider
+      .toFiat(
+        val,
+        this.fiatCode,
+        coin || availableUnit
+      )
+    if (_.isNil(rateProvider)) return undefined;
+    return parseFloat(rateProvider.toString());
   }
 
 }

@@ -1,59 +1,90 @@
 .card-title {
   font-weight: 700;
+  margin: 1rem;
+  text-transform: uppercase;
+  font-size: 24px;
+  line-height: 32px;
 }
+ion-title {
+  text-transform: uppercase;
+}
+.price-wraper {
+  margin: 1rem;
+  overflow: hidden;
+  border-radius: 12px;
+  background: var(--bg-color-inner-item-light-theme);
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.02), 0px 4px 10px rgba(0, 0, 0, 0.04);
+}
+
 .total-amount-container {
-  margin: 2rem 0 1rem 2.5em;
+  padding: 1rem;
+
   .section-header {
     margin: 0;
   }
+
   .total-amount-value {
     transition: opacity 350ms ease 0s;
     color: #000000;
-    font-size: 28px;
-    line-height: 56px;
+    font-size: 22px;
+    line-height: 28px;
     font-weight: 500;
   }
-  .average-container {
-    text-align: center;
-    height: 21px;
-    width: 80px;
-  }
+
   .negative-avg {
     color: #cf2f32;
-    background-color: rgba(207, 47, 60, 0.1);
     border-radius: 50vh;
   }
+
   .possitive-avg {
     color: #2fcfa4;
-    background-color: rgba(47, 207, 164, 0.1);
     border-radius: 50vh;
   }
+
   .average {
     font-size: 14px;
-    line-height: 19px;
-    height: 21px;
+    line-height: 20px;
     font-weight: 500;
   }
+
   .percent {
-    margin-left: 0.3rem;
+    margin-left: .5rem;
     background-color: transparent;
     transition: opacity 350ms ease 0s;
-    font-size: 20px;
-    line-height: 56px;
+    font-size: 14px;
+    line-height: 20px;
     font-weight: 500;
   }
 }
+
 .labels {
   display: flex;
   justify-content: space-evenly;
   font-weight: 500;
-  padding: 1rem 2rem 1rem 2rem;
-  .active {
-    color: #4f6ef7;
-    background-color: rgba(79, 110, 247, 0.2);
-  }
+  padding: 0.5rem 1rem 0.5rem 1rem;
+}
+
+
+.footer-price {
+  margin-top: -45px;
+
+  .active,
   .inactive {
-    background-color: transparent;
-    color: grey;
+    ion-button {
+      font-size: 12px;
+    }
+  }
+  .active {
+    ion-button {
+      --color: var(--color-primary) !important;
+    }
+    background: linear-gradient(0deg, rgba(0, 101, 141, 0.14), rgba(0, 101, 141, 0.14)), #FAFAFB;
+  }
+
+  .inactive {
+    ion-button {
+      --color: grey !important;
+    }
+    background: transparent;
   }
 }

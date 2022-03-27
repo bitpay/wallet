@@ -786,7 +786,7 @@ export class WalletDetailsPage {
   public handleDonation() {
     this.walletProvider.getDonationInfo().then((data: any) => {
       if (_.isEmpty(data)) throw new Error("No data Remaning");
-      this.router.navigate(['/amount'], {
+      this.router.navigate(['/send-page'], {
         state: {
           toAddress: _.get(_.find(data.donationToAddresses, item => item.coin == this.wallet.coin), 'address', ''),
           donationSupportCoins: data.donationSupportCoins,
