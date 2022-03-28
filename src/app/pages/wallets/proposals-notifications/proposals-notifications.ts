@@ -402,7 +402,6 @@ export class ProposalsNotificationsPage {
       this.txpsToSign = [];
       for (let i = 0; i < txpsByWallet.txps.length; i++) {
         txpsByWallet.txps[i].checked = true;
-        // this.txpsToSign.push(txpsByWallet.txps[i]);
       }
     })
   }
