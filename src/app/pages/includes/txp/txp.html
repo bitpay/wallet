@@ -1,4 +1,4 @@
-<ion-item button class="proposal-container" (click)="openTxpModal(tx)">
+<ion-item detail="false" button class="proposal-container" (click)="openTxpModal(tx)">
   <ion-label>
     <div class="left-part">
       <div *ngIf="!tx.merchant" class="proposal-title">
@@ -17,7 +17,7 @@
         </span>
         <div class="item-subtitle">
           <span *ngIf="tx.creatorName">
-            <span translate>Created by</span>
+            <span translate>Created by </span>
             <span>{{tx.creatorName}}</span>
           </span>
         </div>

@@ -11,7 +11,8 @@
     <ion-list lines="none">
       <ion-reorder-group disabled={{showReorder}} (ionItemReorder)="reorderAccounts($event)">
         <ion-item *ngFor="let walletGroup of walletsGroups" (click)="getKeySelected(walletGroup[0]?.keyId)">
-          <ion-icon [style]="keySelected[0]?.keyId === walletGroup[0]?.keyId ? '' : 'color: transparent;'" name="checkmark-circle" slot="start"></ion-icon>
+          <ion-icon [style]="keySelected[0]?.keyId === walletGroup[0]?.keyId ? '' : 'color: transparent;'"
+            name="checkmark-circle" slot="start"></ion-icon>
           <ion-label>{{ getWalletGroup(walletGroup[0]?.keyId).name }}</ion-label>
           <ion-buttons slot="end">
             <ion-button>
@@ -48,19 +49,20 @@
         </ion-button>
       </ion-buttons>
       <ion-title>
-          {{ keyNameSelected }}
+        {{ keyNameSelected }}
       </ion-title>
       <ion-buttons slot="end" class="settings-button" *ngIf="walletsGroups && walletsGroups[0]">
         <ion-button class="key-add" (click)="openAddressBookPage()">
           <ion-icon class="address-book" name="book-outline"></ion-icon>
         </ion-button>
-        <ion-button class="key-notifications" (click)="addKey()">
-          <ion-icon slot="icon-only" src="assets/img/key-notifications-{{currentTheme}}.svg"></ion-icon>
+        <ion-button slot="icon-only" class="key-notifications" (click)="openProposalsNotificationsPage()">
+          <img *ngIf="txpsN > 0" class="custom-notification-icon" src="assets/img/wallet-details/notification-{{currentTheme}}.svg" />
+          <ion-icon src="assets/img/key-notifications-{{currentTheme}}.svg"></ion-icon>
         </ion-button>
       </ion-buttons>
     </ion-toolbar>
   </ion-header>
-  
+
   <ion-content>
     <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)" pullMin="90" pullMax="160">
       <ion-refresher-content></ion-refresher-content>
@@ -68,7 +70,8 @@
     <div class="wrapper">
       <div *ngIf="!(!walletsGroups || !walletsGroups[0])" class="balance">
         <div class="balance-str" [style]="!isShowBalance ? 'align-items: baseline' : 'align-items: center'">
-          <ion-icon class="eye" [name]="!isShowBalance ? 'eye-outline' : 'eye-off-outline'" (click)="isShowBalance = !isShowBalance"></ion-icon>
+          <ion-icon class="eye" [name]="!isShowBalance ? 'eye-outline' : 'eye-off-outline'"
+            (click)="isShowBalance = !isShowBalance"></ion-icon>
           <span class="balance-alt-str">
             {{isShowBalance ? totalBalanceKey : '******'}}
           </span>
@@ -80,7 +83,7 @@
           {{'Create a new account' | translate}}
         </ion-button>
       </div>
-  
+
       <div class="wallets-container">
         <div class="header-title">
           {{'Accounts' | translate}}
@@ -94,12 +97,14 @@
         </div>
         <ion-list lines="nones" class="bp-list">
           <div class="wallet-item" *ngFor="let wallet of keySelected; let j = index">
-            <wallet-item-content [isKeyTab]="true" [wallet]="wallet" [isShowBalance]="isShowBalance" (click)="goToWalletDetails(wallet)">
+            <wallet-item-content [isKeyTab]="true" [wallet]="wallet" [isShowBalance]="isShowBalance"
+              (click)="goToWalletDetails(wallet)">
             </wallet-item-content>
-  
+
             <ng-container *ngIf="isSupportToken(wallet)">
-              <div class="token-container"> 
-                <div class="section-header ion-padding-top ion-padding-bottom" [ngClass]="{'no-border': isCollapsedToken(wallet.id)}">
+              <div class="token-container">
+                <div class="section-header ion-padding-top ion-padding-bottom"
+                  [ngClass]="{'no-border': isCollapsedToken(wallet.id)}">
                   <div class="wrap-key-token">
                     <ion-label class="key-name">
                       <span>eToken</span>
@@ -112,12 +117,13 @@
                     </div>
                   </div>
                   <div class="address-token" copy-to-clipboard="{{wallet.etokenAddress}}">
-                      <span class="background-content" >{{wallet.etokenAddress | slice:-8}}</span>
-                      <ion-icon class="coin-img" name="copy-outline"></ion-icon>
+                    <span class="background-content">{{wallet.etokenAddress | slice:-8}}</span>
+                    <ion-icon class="coin-img" name="copy-outline"></ion-icon>
                   </div>
                 </div>
-                <ng-container *ngIf="!wallet.tokens"> 
-                  <div class="no-token" [ngClass]="{ collapsed: isCollapsedToken(wallet.id) }">No token available yet! </div>
+                <ng-container *ngIf="!wallet.tokens">
+                  <div class="no-token" [ngClass]="{ collapsed: isCollapsedToken(wallet.id) }">No token available yet!
+                  </div>
                 </ng-container>
                 <ng-container *ngIf="wallet.tokens">
                   <ion-list class="token-item bp-list" [ngClass]="{ collapsed: isCollapsedToken(wallet.id) }">
@@ -131,7 +137,8 @@
                       </ion-label>
                       <ion-note slot="end">
                         <div>
-                          <div *ngIf="!wallet?.balanceHidden" class="main-note">{{DecimalFormatBalance(token?.amountToken)}}</div>
+                          <div *ngIf="!wallet?.balanceHidden" class="main-note">
+                            {{DecimalFormatBalance(token?.amountToken)}}</div>
                           <div *ngIf="wallet?.balanceHidden" class="main-note">******</div>
                         </div>
                       </ion-note>
@@ -140,14 +147,15 @@
                 </ng-container>
               </div>
             </ng-container>
-  
+
           </div>
         </ion-list>
-        <label-tip type="warn" class="ion-margin-top" *ngIf="keySelected && keySelected[0] && keySelected[0]?.needsBackup"
-          header="no-header">
+        <label-tip type="warn" class="ion-margin-top"
+          *ngIf="keySelected && keySelected[0] && keySelected[0]?.needsBackup" header="no-header">
           <div label-tip-body>
             <span translate>Before retrieving your wallets addresses, it's recommended that you first write down your
-              recovery phrase and store it securely so that your wallets can be recovered in the case your device was lost
+              recovery phrase and store it securely so that your wallets can be recovered in the case your device was
+              lost
               or stolen.</span>
             <br>
             <a class="label-tip-link" (click)="openBackupPage(keySelected[0]?.keyId)" translate>Backup now</a>

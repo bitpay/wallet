@@ -1,8 +1,7 @@
 <div #slideButtonContainer class="slide__listener" [ngClass]="{'show': !isDisabled}">
-  <button class="button-slider" [ngClass]="{'animation': animation, 'custom-txp-detail':isTxpDetail}" #slideButton ion-button icon-right large (touchstart)="activateButton($event)" (touchmove)="dragButton($event)" (touchend)="resetButton()" [disabled]="isDisabled">
+  <button class="button-slider" [ngClass]="{'animation': animation}" #slideButton ion-button icon-right large (touchstart)="activateButton($event)" (touchmove)="dragButton($event)" (touchend)="resetButton()" [disabled]="isDisabled">
     <div class="slide__bitcoin" [ngStyle]="bitcoinStyle">
-      <img *ngIf="!isTxpDetail" src="../../../assets/img/slide-to-accept/logo.svg">
-      <img *ngIf="isTxpDetail" src="assets/img/txp-details/check-{{currentTheme}}.svg">
+      <img src="../../../assets/img/slide-to-accept/logo.svg">
     </div>
   </button>
   <div #slideText id="button-text" class="slide__button-text" (touchstart)="toggleAnimation()" (touchmove)="toggleAnimation()" [ngStyle]="textStyle">

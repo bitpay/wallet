@@ -1,4 +1,23 @@
 page-proposals-notifications {
+  ion-item-divider{
+    background: unset;
+    border-bottom: unset;
+    padding: 1rem 1rem 1rem 1rem;
+    box-shadow: 0px -2px 16px rgb(0 0 0 / 6%), 0px 2px 16px rgb(0 0 0 / 6%), 0px 0px 4px rgb(0 0 0 / 3%);
+    margin-top: 20px;
+  }
+  .wallet-card-container{
+    background: var(--bg-color-light-theme);
+    margin-bottom: 10px;
+    .wallet-card-content-container{
+      margin-bottom: 15px;
+    }
+  }
+  .wallet-name-label{
+    font-size: 16px;
+    color: #001E2E;
+    font-weight: 600;
+  }
   .select-all {
     display: flex;
     .multi-sign {
@@ -31,6 +50,7 @@ page-proposals-notifications {
       .item-inner {
         border-bottom: none;
       }
+      --inner-border-width: 0;
     }
     display: flex;
     align-items: center;
