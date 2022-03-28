@@ -4,6 +4,7 @@ import { Logger } from '../../providers/logger/logger';
 // providers
 import { BwcProvider } from '../bwc/bwc';
 import { CurrencyProvider } from '../currency/currency';
+import { InvoiceProvider } from '../invoice/invoice';
 import { OnGoingProcessProvider } from '../on-going-process/on-going-process';
 
 @Injectable()
@@ -12,7 +13,8 @@ export class PayproProvider {
     private logger: Logger,
     private bwcProvider: BwcProvider,
     private currencyProvider: CurrencyProvider,
-    private onGoingProcessProvider: OnGoingProcessProvider
+    private onGoingProcessProvider: OnGoingProcessProvider,
+    private invoiceProvider: InvoiceProvider
   ) {
     this.logger.debug('PayproProvider initialized');
   }
@@ -85,6 +87,18 @@ export class PayproProvider {
         }
       });
     if (!disableLoader) this.onGoingProcessProvider.clear();
+    // workaround for getting invoice exchange rates
+    if (payDetails && !payDetails.exchangeRates) {
+      const invoiceId = payDetails.payProUrl.split('i/')[1];
+      const network = payDetails.payProUrl.includes('test')
+        ? 'testnet'
+        : 'livenet';
+      const invoice = await this.invoiceProvider.getBitPayInvoiceWithNetwork(
+        invoiceId,
+        network
+      );
+      payDetails.exchangeRates = invoice.exchangeRates;
+    }
     this.logger.info('PayPro Details: SUCCESS', JSON.stringify(payDetails));
     return payDetails;
   }

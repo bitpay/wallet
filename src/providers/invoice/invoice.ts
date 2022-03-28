@@ -54,6 +54,19 @@ export class InvoiceProvider {
     return res.data;
   }
 
+  public async getBitPayInvoiceWithNetwork(id: string, network: string) {
+    const host = network === 'testnet' ? 'test.bitpay.com' : 'bitpay.com';
+    const res: any = await this.http
+      .get(`https://${host}/invoices/${id}`)
+      .toPromise()
+      .catch(err => {
+        this.logger.error('BitPay Get Invoice: ERROR ' + err.error.message);
+        throw err.error.message;
+      });
+    this.logger.info('BitPay Get Invoice: SUCCESS');
+    return res.data;
+  }
+
   public emailIsValid(email: string): boolean {
     const validEmail = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
       email
