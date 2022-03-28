@@ -30,9 +30,6 @@ export class SlideToAcceptPage implements AfterViewInit, OnChanges {
   isDogecoin: boolean;
 
   @Input()
-  isTxpDetail: boolean;
-
-  @Input()
   set disabled(disabled: boolean) {
     this.isDisabled = disabled !== undefined ? disabled : false;
   }
