@@ -9,6 +9,9 @@
   -webkit-box-orient: vertical;
 }
 .proposal-container {
+  --inner-padding-bottom: 1rem;
+  --inner-padding-top: 1rem;
+
   .left-part{
     display: flex;
     flex-flow: column;
@@ -35,11 +38,4 @@ ion-note {
   .date {
     font-size: 14px;
   }
-}
-.content-list{
-  ion-item:last-child {   
-    .item-inner {
-        border-bottom: 0px;
-    }
-}
 }

@@ -36,7 +36,7 @@
               </ion-note>
             </ion-item>
             <div class="txp-container" *ngFor="let txp of txpsByWallet.txps">
-              <ion-checkbox (click)="txpSelectionChange(txp)" *ngIf="walletIdSelectedToSign && txp.walletId == walletIdSelectedToSign && txp.statusForUs === 'pending'" [(ngModel)]="txp.checked"></ion-checkbox>
+              <ion-checkbox (ionChange)="txpSelectionChange(txp)" *ngIf="walletIdSelectedToSign && txp.walletId == walletIdSelectedToSign && txp.statusForUs === 'pending'" [(ngModel)]="txp.checked"></ion-checkbox>
               <page-txp [ngClass]="{'with-checkbox': walletIdSelectedToSign && txp.walletId == walletIdSelectedToSign && txp.statusForUs === 'pending'}" [tx]="txp" [addressbook]="addressbook" [noOpenModal]="walletIdSelectedToSign && txp.walletId == walletIdSelectedToSign && txp.statusForUs === 'pending'"></page-txp>
             </div>
           </div>
