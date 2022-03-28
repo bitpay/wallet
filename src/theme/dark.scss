@@ -1798,6 +1798,9 @@
     page-multi-send,
     page-select-inputs,
     page-proposals-notifications {
+        .wallet-name-label{
+            color: #FFFFFF;
+        }
         .available-letter{
             color:  rgba(237, 239, 240, 0.6) !important;
         }
@@ -1820,8 +1823,7 @@
         }
 
         .recipient {
-            background-color: var(--bg-color-dark-theme);
-
+            
             ion-label {
                 color: var(--text-color-dark-theme) !important;
             }
@@ -1835,7 +1837,7 @@
 
         .content-list {
             .item {
-                background-color: var(--bg-color-dark-theme);
+                --background: linear-gradient(0deg, rgba(126, 208, 255, 0.11), rgba(126, 208, 255, 0.11)), #001E2E;
 
                 .item-inner {
                     border-bottom: 1px solid var(--border-color-dark-theme);

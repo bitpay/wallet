@@ -28,9 +28,18 @@
 ion-note {
   text-align: end;
   .amount {
+    padding-bottom: 10px;
+    font-size: 16px;
     color: var(--color-dark);
   }
   .date {
-    font-size: 12.5px;
+    font-size: 14px;
   }
+}
+.content-list{
+  ion-item:last-child {   
+    .item-inner {
+        border-bottom: 0px;
+    }
+}
 }

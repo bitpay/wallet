@@ -77,8 +77,10 @@ export class ProposalsNotificationsPage {
     }
     this.zone = new NgZone({ enableLongStackTrace: false });
     this.isElectron = this.platformProvider.isElectron;
-    this.walletId = this.navParamsData.walletId;
-    this.multisigContractAddress = this.navParamsData.multisigContractAddress;
+    if(this.navParamsData){
+      this.walletId = this.navParamsData.walletId;
+      this.multisigContractAddress = this.navParamsData.multisigContractAddress;
+    }
     this.isCordova = this.platformProvider.isCordova;
     this.buttonText = this.translate.instant('Sign selected proposals');
 
