@@ -46,7 +46,10 @@ export class AccountsPage {
   isDonation;
   donationSupportCoins = [];
   navParamsData;
-  isShowCreateNewWallet = false;
+  public isShowCreateNewWallet = false;
+  public network: string ;
+  public coin: string ;
+  public titlePage : string = 'Send from';
   constructor(
     public http: HttpClient,
     private plt: Platform,
@@ -84,23 +87,31 @@ export class AccountsPage {
     if (this.isDonation) {
       this.walletProvider.getDonationInfo().then((data: any) => {
         this.donationSupportCoins = data.donationSupportCoins;
-        this.walletsGroups = this.filterLotusDonationWallet(walletsGroups);
+        this.walletsGroups = this.filterValidWallet(walletsGroups);
       });
     }
     else {
-      this.walletsGroups = walletsGroups;
+      this.walletsGroups = this.filterValidWallet(walletsGroups);
     }
   }
 
-  private filterLotusDonationWallet(walletGroups: any) {
+  private filterValidWallet(walletGroups: any) {
     const walletsGroup = [];
     walletGroups.forEach((el: any) => {
       const wallet = el.filter(wallet => {
-        return wallet.isComplete() && !wallet.needsBackup && _.some(this.donationSupportCoins, (item: any) => item.network == wallet.network && item.coin == wallet.coin);
+        if (this.isDonation) {
+          return wallet.isComplete() && !wallet.needsBackup && _.some(this.donationSupportCoins, (item: any) => item.network == wallet.network && item.coin == wallet.coin);
+        } else {
+          if (this.network && this.coin) {
+            return wallet.isComplete() && !wallet.needsBackup && this.network == wallet.network && this.coin == wallet.coin;
+          } else {
+            return wallet.isComplete() && !wallet.needsBackup;
+          }
+        }
       })
       walletsGroup.push(wallet);
     })
-    this.isShowCreateNewWallet = _.isEmpty(walletsGroup) || _.isEmpty(walletsGroup[0]);
+    this.isShowCreateNewWallet = _.isEmpty(walletsGroup);
     return walletsGroup;
   }
 
@@ -204,6 +215,9 @@ export class AccountsPage {
     }
     if (_.isEmpty(this.navParamsData) && this.navParams && !_.isEmpty(this.navParamsData)) this.navParamsData = this.navParamsData;
     this.isDonation = this.navParamsData.isDonation;
+    if(this.isDonation) this.titlePage = "Accounts";
+    this.coin = this.navParamsData.coin;
+    this.network = this.navParamsData.network;
     this.getWalletsGroups();
   }
 
@@ -377,14 +391,15 @@ export class AccountsPage {
     });
   }
 
-  public async goToWalletDetails(wallet) {
+  public async goToSendPage(wallet) {
     if (this.isDonation) {
       return this.handleDonation(wallet);
     }
     if (wallet.isComplete()) {
-      this.router.navigate(['/wallet-details'], {
+      this.router.navigate(['/send-page'], {
         state: {
-          walletId: wallet.credentials.walletId
+          walletId: wallet.credentials.walletId,
+          toAddress: this.navParamsData.toAddress,
         }
       });
     } else {

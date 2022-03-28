@@ -1,56 +1,54 @@
 <action-sheet>
-  <ion-list lines="none" class="bp-list" *ngIf="type === 'bitcoinAddress' || type === 'ethereumAddress' || type === 'rippleAddress' || type === 'dogecoinAddress' || type === 'litecoinAddress'">
-    <ion-item-divider *ngIf="coinName">{{'{coinName} Address' | translate: { coinName: coinName } }}</ion-item-divider>
-    <ion-item>
-      {{data}}
-      <ion-icon slot="start" src="assets/img/icon-{{coin}}-small.svg" alt="Coin">
-      </ion-icon>
-    </ion-item>
-    <ion-item button (click)="close('AddressbookAddPage', data)">
-      <ion-icon slot="start" src="assets/img/icon-contacts.svg">
-      </ion-icon>
-      <span translate>Add as a contact</span>
-    </ion-item>
-    <ion-item button (click)="close('AmountPage', data)">
-      <ion-icon slot="start" src="assets/img/icon-send-alt.svg">
-      </ion-icon>
-      <span translate>Send payment to this address</span>
-    </ion-item>
-    <ion-item button copy-to-clipboard="{{ data }}">
-      <ion-icon slot="start" src="assets/img/icon-paperclip.svg">
-      </ion-icon>
-      <span translate>Copy to clipboard</span>
-    </ion-item>
-  </ion-list>
+  <ng-container *ngIf="type != 'privateKey' && type != 'text'; else nomalType">
+    <ion-list lines="none" class="bp-list">
+      <div class="title">
+        <span>{{'Scanned address'}}</span>
+      </div>
+      <div class="address">
+        <span> {{data}}</span>
+      </div>
+      <div class="group-btn">
+        <ion-buttons>
+          <ion-button copy-to-clipboard="{{ data }}" slot="start" fill="clear">
+            {{"Copy" | translate}}
+          </ion-button>
+          <ion-button slot="end" fill="clear" (click)="close('SendPage', data)">
+            {{"Send" | translate}}
+          </ion-button>
+        </ion-buttons>
+      </div>
+    </ion-list>
+  </ng-container>
+  <ng-template #nomalType>
+    <ion-list lines="none" class="bp-list" *ngIf="type === 'text'">
+      <ion-item-divider>{{'Text' | translate}}</ion-item-divider>
+      <ion-item>
+        {{data}}
+      </ion-item>
+      <ion-item button copy-to-clipboard="{{ data }}">
+        <ion-icon slot="start" src="assets/img/icon-paperclip.svg">
+        </ion-icon>
+        <span translate>Copy to clipboard</span>
+      </ion-item>
+    </ion-list>
 
-  <ion-list lines="none" class="bp-list" *ngIf="type === 'text'">
-    <ion-item-divider>{{'Text' | translate}}</ion-item-divider>
-    <ion-item>
-      {{data}}
-    </ion-item>
-    <ion-item button copy-to-clipboard="{{ data }}">
-      <ion-icon slot="start" src="assets/img/icon-paperclip.svg">
-      </ion-icon>
-      <span translate>Copy to clipboard</span>
-    </ion-item>
-  </ion-list>
+    <ion-list lines="none" class="bp-list" *ngIf="type === 'privateKey'">
+      <ion-item-divider>{{'Private Key' | translate}}</ion-item-divider>
+      <ion-item>{{data}}</ion-item>
+      <ion-item button (click)="close('PaperWalletPage', data)">
+        <ion-icon slot="start" src="assets/img/icon-import.svg">
+        </ion-icon>
+        <span translate>Sweep paper wallet</span>
+      </ion-item>
+      <ion-item button *ngIf="!fromHomeCard" copy-to-clipboard="{{ data }}">
+        <ion-icon slot="start" src="assets/img/icon-paperclip.svg">
+        </ion-icon>
+        <span translate>Copy to clipboard</span>
+      </ion-item>
+    </ion-list>
 
-  <ion-list lines="none" class="bp-list" *ngIf="type === 'privateKey'">
-    <ion-item-divider>{{'Private Key' | translate}}</ion-item-divider>
-    <ion-item>{{data}}</ion-item>
-    <ion-item button (click)="close('PaperWalletPage', data)">
-      <ion-icon slot="start" src="assets/img/icon-import.svg">
-      </ion-icon>
-      <span translate>Sweep paper wallet</span>
-    </ion-item>
-    <ion-item button *ngIf="!fromHomeCard" copy-to-clipboard="{{ data }}">
-      <ion-icon slot="start" src="assets/img/icon-paperclip.svg">
-      </ion-icon>
-      <span translate>Copy to clipboard</span>
-    </ion-item>
-  </ion-list>
-
-  <ion-button  fill="clear" color="danger" class="button-standard" (click)="close(null, null)">
-    {{'Close' | translate}}
-  </ion-button>
+    <ion-button fill="clear" color="danger" class="button-standard" (click)="close(null, null)">
+      {{'Close' | translate}}
+    </ion-button>
+  </ng-template>
 </action-sheet>

@@ -1050,10 +1050,25 @@
     }
 
     incoming-data-menu {
-        img {
-            filter: invert(0.7);
-        }
-    }
+     img {
+         filter: invert(0.7);
+     }
+
+     .title {
+         color: var(--bg-surface-color-abcpay-dark);
+     }
+
+     .address {
+         color: var(--bg-surface-color-abcpay-dark);
+         opacity: .6;
+     }
+
+     .group-btn {
+         ion-button {
+             color: var(--color-primary-abcpay-dark)
+         }
+     }
+ }
 
     page-finish {
         .bg-none {

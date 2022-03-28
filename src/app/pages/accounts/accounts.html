@@ -2,7 +2,7 @@
   <ion-toolbar>
     <ion-title>
       <div [reveal-at-scroll-pos]="expandableHeader.headerHeight" [scrollArea]="scrollArea">
-        {{ 'Accounts' | translate }}
+        {{ titlePage| translate }}
       </div>
     </ion-title>
     <ion-buttons slot="start">
@@ -17,7 +17,7 @@
     <expandable-header [scrollArea]="scrollArea" [fadeFactor]="5" [disableFade]="true" #expandableHeader>
       <ion-toolbar class="wide-header__title">
         <expandable-header-primary>
-          <span class="expandable-header-primary"> {{ 'Accounts' | translate }} </span>
+          <span class="expandable-header-primary"> {{ titlePage | translate }} </span>
         </expandable-header-primary>
       </ion-toolbar>
     </expandable-header>
@@ -41,7 +41,7 @@
         </ion-label>
       </div>
       <ion-list lines="nones" class="bp-list">
-        <wallet-item-content *ngFor="let wallet of walletGroup" [wallet]="wallet" (click)="goToWalletDetails(wallet)">
+        <wallet-item-content *ngFor="let wallet of walletGroup" [wallet]="wallet" (click)="goToSendPage(wallet)">
         </wallet-item-content>
       </ion-list>
       <label-tip type="warn" class="ion-margin-top" *ngIf="walletGroup && walletGroup[0] && walletGroup[0]?.needsBackup"

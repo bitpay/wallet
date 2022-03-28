@@ -160,11 +160,16 @@ export class RecipientComponent implements OnInit {
       const precision = this.currencyProvider.getPrecision(coin as Coin).unitToSatoshi;
       this.formatRemaining = this.txFormatProvider.formatAmount(coin, precision * this.remaining);
     }
+   
   }
 
   ngOnInit() {
     this.setAvailableUnits();
     this.updateUnitUI();
+    if (this.recipient && this.recipient.toAddress) {
+      this.searchValue = this.recipient.toAddress;
+      this.processInput();
+    }
   }
 
   ngOnChanges(changes: { [property: string]: SimpleChange }) {
@@ -180,7 +185,8 @@ export class RecipientComponent implements OnInit {
 
   private updateAddressHandler: any = data => {
     if (data.recipientId === this.recipient.id) {
-      this.recipient.toAddress = data.value
+      this.searchValue = data.value;
+      this.processInput();
     }
   };
 
@@ -450,13 +456,17 @@ export class RecipientComponent implements OnInit {
   }
 
   checkRecipientValid() {
-    if (this.isShowReceiveLotus) {
-      this.recipient.isValid = this.validAddress && this.validAmount;
+    if (!this.isDonation) {
+      this.recipient.isValid = this.validAddress && this.validAmount
     } else {
-      this.recipient.isValid = this.validAmount;
+      if (this.isShowReceiveLotus) {
+        this.recipient.isValid = this.validAddress && this.validAmount;
+      } else {
+        this.recipient.isValid = this.validAmount;
+      }
     }
-
   }
+  
   public async checkIfContact() {
     await timer(50).toPromise();
     return this.transferTo.hasContactsOrWallets;

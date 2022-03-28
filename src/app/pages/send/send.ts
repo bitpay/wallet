@@ -58,6 +58,7 @@ export class SendPage {
   walletId: string;
   isShowSendMax: boolean = true;
   isShowDelete: boolean = false;
+  toAddress: string = '';
   @ViewChild(IonContent) content: IonContent;
 
   constructor(
@@ -84,8 +85,9 @@ export class SendPage {
     } else {
       this.navPramss = history ? history.state : {};
     }
+    this.toAddress = this.navPramss.toAddress;
     this.listRecipient.push(new RecipientModel({
-      toAddress: '',
+      toAddress: !_.isEmpty(this.toAddress) ? this.toAddress : '',
       address: 0,
       isValid: false
     }))
