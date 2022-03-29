@@ -150,9 +150,9 @@ page-wallet-details {
           justify-content: center;
           align-items: flex-start;
           text-transform: none !important;
+          font-size: 20px !important;
           color: #001E2E;
           font-weight: 600;
-          font-size: 22px !important;
           .label-multisign {
             text-transform: none;
             color: rgba(0, 30, 46, 0.6);
@@ -163,7 +163,14 @@ page-wallet-details {
           }
         }
 
-        .detail-btn {
+        .accept-btn {
+          --background: transparent;
+          --color: var(--color-primary);
+          border: 1px solid #70818a;
+          border-radius: 20px;
+          min-width: 100px;
+          height: 35px;
+          font-size: 14px;
           font-weight: 600;
           font-size: 14px;
         }
@@ -171,7 +178,8 @@ page-wallet-details {
         .item-tx-history {
           width: 100%;
           display: flex;
-          padding-bottom: 10px;
+          border-bottom: 1px solid #e4e7e9;
+          padding-bottom: 1rem;
         }
 
       }

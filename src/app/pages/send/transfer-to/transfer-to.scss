@@ -48,10 +48,20 @@
       }
     }
   }
+  
 }
 .wallet-item-content-container{
   background: #FAFAFB;
+  &:last-child{
+    ::ng-deep ion-item{
+      border-bottom: none !important;
+    }
+    .contact-name{
+      border-bottom: none !important;
+    }
+  }
 }
+
 .wallets-container{
   margin-bottom: 1rem;
 }
@@ -82,6 +92,10 @@ ion-segment{
   }
 }
 
+ion-note{
+  padding-top: 0;
+  padding-bottom: 0;
+}
 .show-more {
   display: flex;
   text-align: center;
@@ -96,6 +110,7 @@ ion-segment{
   display: flex;
   align-items: center;
   color: var(--color-grey);
+  background: linear-gradient(0deg, rgba(0, 101, 141, 0.11), rgba(0, 101, 141, 0.11)), #FAFAFB;
 
   span {
     padding: 8px 10px 8px 16px;
@@ -110,15 +125,11 @@ ion-segment{
   }
 }
 
-.contact-container{
-  margin-bottom: 10px;
-}
-
 .contact-name{
   padding: 16px;
   padding-left: 0px;
   margin-left: 16px;
-  color: rgba(237, 239, 240, 1);
+  color: #001E2E;
   font-weight: 600;
   font-size: 16px;
   border-bottom: 1px solid rgba(112, 129, 138, 0.38) !important;

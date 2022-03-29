@@ -1,4 +1,7 @@
 page-confirm {
+  .ellipsis{
+    display: block !important;
+  }
   ion-content {
     height: calc(100% - 130px) !important;
   }
@@ -146,6 +149,8 @@ page-confirm {
         .item-name{
           font-weight: 400;
           font-size: 16px;
+          flex: 0 0 auto;
+          margin-right: 32px;
         }
         .item-detail{
           font-size: 16px;
@@ -179,6 +184,7 @@ page-confirm {
         color: rgba(204, 128, 0, 1) !important;
         font-size: 22px;
         font-weight: 600;
+        text-align: center;
       }
       .total-amount-alt{
         display: flex;
@@ -186,6 +192,7 @@ page-confirm {
         color: rgba(255, 184, 93, 1);
         font-size: 16px;
         font-weight: 600;
+        text-align: center;
       }
     }
 
@@ -248,6 +255,8 @@ page-confirm {
     font-size: 16px !important;
     font-weight: 600 !important;
     color: rgba(204, 128, 0, 1) !important;
+    display: flex;
+    justify-content: flex-end;
   }
 
   .wallet,

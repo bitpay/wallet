@@ -1681,7 +1681,7 @@
             }
         }
 
-        .detail-btn {
+        .accept-btn {
             --color: var(--color-primary-abcpay-dark) !important;
         }
 
@@ -3038,6 +3038,9 @@
     }
 
     page-transfer-to{
+        .contact-name{
+            color: #EDEFF0;
+        }
         .custom-list{
             background: linear-gradient(0deg, rgba(126, 208, 255, 0.05), rgba(126, 208, 255, 0.05)), #001E2E;
         }
@@ -3054,7 +3057,7 @@
             }
         }
         .key-name{
-            color: #EDEFF0;
+            color: rgba(237, 239, 240, 0.6);
         }
         .wallet-item-content-container{
             background: linear-gradient(0deg, rgba(126, 208, 255, 0.05), rgba(126, 208, 255, 0.05)), #001E2E;
