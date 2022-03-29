@@ -385,8 +385,4 @@ export class KeySettingsPage {
       showHidden: true
     });
   }
-
-  public hiddenBalanceKey() {
-
-  }
 }
