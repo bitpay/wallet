@@ -35,7 +35,7 @@
       <div class="key-divider">
         <span>{{ contacts[0].firstLetter | uppercase}}</span>
       </div>
-      <div class="contact-container" *ngFor="let contact of contacts">
+      <div class="wallet-item-content-container" *ngFor="let contact of contacts">
         <div class="contact-name" (click)="close(contact)">
           {{contact.name}}
         </div>
