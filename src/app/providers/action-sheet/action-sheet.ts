@@ -186,8 +186,8 @@ export class ActionSheetProvider {
       .instance;
   }
 
-  public createMultisignInfo(): MultisignInfoComponent {
-    return this.setupSheet<MultisignInfoComponent>(MultisignInfoComponent, null)
+  public createMultisignInfo(params): MultisignInfoComponent {
+    return this.setupSheet<MultisignInfoComponent>(MultisignInfoComponent, null, params)
       .instance;
   }
 

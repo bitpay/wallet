@@ -4,17 +4,16 @@ multisign-info {
         .title {
             line-height: 32px;
             margin: 0;
+            color: #001E2E;
         }
         .sub-title {
-            color: rgba(237, 239, 240, 0.6);
-            span {
-               color: #EDEFF0;
-            }
+            color: rgba(0, 30, 46, 0.6);
         }
         .action-btn {
             text-align: end;
             ion-button {
-                color: var(--color-primary);
+                color: #00658D;
+                font-weight: 600;
             }
         }
     }

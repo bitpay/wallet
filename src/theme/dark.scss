@@ -1485,7 +1485,7 @@
             }
 
             .sub-note{
-                color: rgba(0, 30, 46, 0.6);
+                color: rgba(237, 239, 240, 0.6) !important;
             }
 
             ion-note {
@@ -2921,6 +2921,20 @@
             }
             &.possitive-avg {
               color: #73DAA5;
+            }
+        }
+    }
+
+    multisign-info{
+        .title{
+            color: #EDEFF0 !important;
+        }
+        .sub-title {
+            color: rgba(237, 239, 240, 0.6) !important;
+        }
+        .action-btn {
+            ion-button {
+                color: #7ED0FF !important;
             }
         }
     }
