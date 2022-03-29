@@ -8,6 +8,7 @@ import { PopupProvider } from '../../../../../providers/popup/popup';
 import { ProfileProvider } from '../../../../../providers/profile/profile';
 import { TxFormatProvider } from '../../../../../providers/tx-format/tx-format';
 import { WalletProvider } from '../../../../../providers/wallet/wallet';
+import { AppProvider } from 'src/app/providers';
 
 // pages
 import { WalletDetailsPage } from '../../../../wallet-details/wallet-details';
@@ -38,6 +39,7 @@ export class WalletAddressesPage {
   public isShowWalletInpus: boolean;
   public isShowAddressBalance: boolean;
   public isShowUnsedAddress: boolean;
+  public currentTheme: string;
 
   private UNUSED_ADDRESS_LIMIT: number;
   private BALANCE_ADDRESS_LIMIT: number;
@@ -54,6 +56,7 @@ export class WalletAddressesPage {
     private popupProvider: PopupProvider,
     private modalCtrl: ModalController,
     private txFormatProvider: TxFormatProvider,
+    private appProvider: AppProvider,
     private translate: TranslateService
   ) {
     if (this.router.getCurrentNavigation()) {
@@ -69,6 +72,7 @@ export class WalletAddressesPage {
     this.isShowWalletInpus = true;
     this.isShowAddressBalance = true;
     this.isShowUnsedAddress = true;
+    this.currentTheme = this.appProvider.themeProvider.currentAppTheme;
   }
 
   ionViewWillEnter() {

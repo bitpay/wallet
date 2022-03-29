@@ -28,8 +28,8 @@
           <ion-label>
             {{'Account Inputs' | translate}}
           </ion-label>
-          <ion-icon slot="end" *ngIf="isShowWalletInpus" src="assets/img/chevron-up.svg" class="up-down-icon" (click)="handleClickShowWallInputs()"></ion-icon>
-          <ion-icon slot="end" *ngIf="!isShowWalletInpus" src="assets/img/chevron-down.svg" class="up-down-icon" (click)="handleClickShowWallInputs()"></ion-icon>
+          <ion-icon slot="end" *ngIf="isShowWalletInpus" src="assets/img/chevron-up-{{currentTheme}}.svg" class="up-down-icon" (click)="handleClickShowWallInputs()"></ion-icon>
+          <ion-icon slot="end" *ngIf="!isShowWalletInpus" src="assets/img/chevron-down-{{currentTheme}}.svg" class="up-down-icon" (click)="handleClickShowWallInputs()"></ion-icon>
         </ion-item-divider>
 
         <div *ngIf="isShowWalletInpus">
@@ -87,8 +87,8 @@
           <ion-label>
             {{'Addresses with balance' | translate}}
           </ion-label>
-          <ion-icon slot="end" *ngIf="isShowAddressBalance" src="assets/img/chevron-up.svg" class="up-down-icon" (click)="handleClickAddessBalance()"></ion-icon>
-          <ion-icon slot="end" *ngIf="!isShowAddressBalance" src="assets/img/chevron-down.svg" class="up-down-icon" (click)="handleClickAddessBalance()"></ion-icon>
+          <ion-icon slot="end" *ngIf="isShowAddressBalance" src="assets/img/chevron-up-{{currentTheme}}.svg" class="up-down-icon" (click)="handleClickAddessBalance()"></ion-icon>
+          <ion-icon slot="end" *ngIf="!isShowAddressBalance" src="assets/img/chevron-down-{{currentTheme}}.svg" class="up-down-icon" (click)="handleClickAddessBalance()"></ion-icon>
         </ion-item-divider>
         <div *ngIf="isShowAddressBalance">
           <ion-item *ngFor="let w of latestWithBalance" copy-to-clipboard="{{w.address}}">
@@ -106,8 +106,8 @@
           <ion-label>
             {{'Unused addresses' | translate}}
           </ion-label>
-          <ion-icon slot="end" *ngIf="isShowUnsedAddress" src="assets/img/chevron-up.svg" class="up-down-icon" (click)="handleClickUnsedAdress()"></ion-icon>
-          <ion-icon slot="end" *ngIf="!isShowUnsedAddress" src="assets/img/chevron-down.svg" class="up-down-icon" (click)="handleClickUnsedAdress()"></ion-icon>
+          <ion-icon slot="end" *ngIf="isShowUnsedAddress" src="assets/img/chevron-up-{{currentTheme}}.svg" class="up-down-icon" (click)="handleClickUnsedAdress()"></ion-icon>
+          <ion-icon slot="end" *ngIf="!isShowUnsedAddress" src="assets/img/chevron-down-{{currentTheme}}.svg" class="up-down-icon" (click)="handleClickUnsedAdress()"></ion-icon>
         </ion-item-divider>
         <div *ngIf="isShowUnsedAddress">
           <ion-item *ngFor="let u of latestUnused" copy-to-clipboard="{{u.address}}">
