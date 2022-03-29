@@ -104,10 +104,10 @@ export class PricePage {
   }
 
   public setPrice(points: { date?: number; price?: number } = {}) {
-    const { date, price = this.card.currentPrice } = points;
+    const { date = this.card.currentTime, price = this.card.currentPrice } = points;
     const displayDate = date
       ? this.formatDate(date)
-      : this.card.unitCode.toUpperCase();
+      :  undefined
     const minPrice = this.card.historicalRates[
       this.card.historicalRates.length - 1
     ].rate;
@@ -123,7 +123,7 @@ export class PricePage {
       this.fiatIsoCode,
       customPrecision
     )}`;
-    document.getElementById('displayDate').textContent = `${displayDate}`;
+    if (displayDate) document.getElementById('displayDate').textContent = `${displayDate}`;
     document.getElementById(
       'averagePriceAmount'
     ).textContent = `${this.formatCurrencyPipe.transform(
@@ -186,6 +186,7 @@ export class PricePage {
 
   private updateValues() {
     this.card.currentPrice = this.card.historicalRates[0].rate;
+    this.card.currentTime = this.card.historicalRates[0].ts;
     const minPrice = this.card.historicalRates[
       this.card.historicalRates.length - 1
     ].rate;
@@ -220,7 +221,7 @@ export class PricePage {
   }
 
   public goToDonation(){
-    this.router.navigate(['/wallets'], {
+    this.router.navigate(['/accounts-page'], {
       state: {
         isDonation: true
       }

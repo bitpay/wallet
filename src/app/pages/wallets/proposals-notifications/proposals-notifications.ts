@@ -77,8 +77,10 @@ export class ProposalsNotificationsPage {
     }
     this.zone = new NgZone({ enableLongStackTrace: false });
     this.isElectron = this.platformProvider.isElectron;
-    this.walletId = this.navParamsData.walletId;
-    this.multisigContractAddress = this.navParamsData.multisigContractAddress;
+    if (this.navParamsData) {
+      this.walletId = this.navParamsData.walletId;
+      this.multisigContractAddress = this.navParamsData.multisigContractAddress;
+    }
     this.isCordova = this.platformProvider.isCordova;
     this.buttonText = this.translate.instant('Sign selected proposals');
 
@@ -129,7 +131,7 @@ export class ProposalsNotificationsPage {
   private updateDesktopOnFocus() {
     const { remote } = (window as any).require('electron');
     const win = remote.getCurrentWindow();
-  // todo check function in run isElectron app
+    // todo check function in run isElectron app
     // win.on('focus', () => {
     //   if (
     //     this.navCtrl.getActive() &&
@@ -202,7 +204,7 @@ export class ProposalsNotificationsPage {
           });
 
           if (
-            this.canGoBack &&  
+            this.canGoBack &&
             !this.txpsPending[0] &&
             !this.txpsAccepted[0] &&
             !this.txpsRejected[0]
@@ -396,13 +398,11 @@ export class ProposalsNotificationsPage {
   }
 
   public selectAll(txpsByWallet): void {
-    this.zone.run(() => {
+    this.zone.run(()=>{
       this.txpsToSign = [];
-
-      txpsByWallet.txps.forEach(txp => {
-        this.txpsToSign.push(txp);
-        txp.checked = true;
-      });
-    });
+      for (let i = 0; i < txpsByWallet.txps.length; i++) {
+        txpsByWallet.txps[i].checked = true;
+      }
+    })
   }
 }

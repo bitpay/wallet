@@ -1,0 +1,26 @@
+incoming-data-menu {
+  .title {
+    padding: 1rem;
+    font-size: 24px;
+    line-height: 32px;
+    color: var(--color-light-on-surface-theme);
+  }
+
+  .address {
+    font-size: 14px;
+    color: var(--color-light-on-surface-theme);
+    padding: 0 1rem 1rem 1rem;
+    opacity: 0.6;
+    line-height: 20px;
+  }
+
+  .group-btn {
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    ion-button {
+      margin-right: 5px;
+    }
+  }
+}

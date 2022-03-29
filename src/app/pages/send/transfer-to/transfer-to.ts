@@ -1,6 +1,6 @@
 import { AfterContentInit, Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
-import { ModalController } from '@ionic/angular';
+import { ModalController, NavParams } from '@ionic/angular';
 
 import * as _ from 'lodash';
 import { EventManagerService } from 'src/app/providers/event-manager.service';
@@ -17,14 +17,8 @@ import { Logger } from '../../../providers/logger/logger';
 import { PlatformProvider } from '../../../providers/platform/platform';
 import { PopupProvider } from '../../../providers/popup/popup';
 import { ProfileProvider } from '../../../providers/profile/profile';
-import { TransactionProposal, WalletOptions, WalletProvider } from '../../../providers/wallet/wallet';
+import { WalletProvider } from '../../../providers/wallet/wallet';
 
-// Pages
-import { AmountPage } from '../amount/amount';
-import { ConfirmPage } from '../confirm/confirm';
-
-import { Location } from '@angular/common';
-import { ExternalizeLinks } from 'src/app/directives/externalize-links/externalize-links';
 
 
 export interface FlatWallet {
@@ -61,7 +55,7 @@ export class TransferToPage {
   public walletList = {} as CoinsMap<FlatWallet[]>;
   public availableCoins: Coin[];
   public contactsList = [];
-  public contactsGroup= [];
+  public contactsGroup = [];
   public filteredContactsList = [];
   public filteredWallets = [];
   public walletsByKeys = [];
@@ -79,7 +73,7 @@ export class TransferToPage {
   public itemTapped: boolean = false;
 
   private _delayTimeOut: number = 700;
-  private _fromSelectInputs: boolean;
+  private _fromSend: boolean;
   private _fromMultiSend: boolean;
 
   private CONTACTS_SHOW_LIMIT: number = 10;
@@ -104,13 +98,15 @@ export class TransferToPage {
     private viewCtrl: ModalController,
     private events: EventManagerService,
     private onGoingProcessProvider: OnGoingProcessProvider,
-    private location: Location
+    private navParams: NavParams,
   ) {
     if (this.router.getCurrentNavigation()) {
       this.navParamsData = this.router.getCurrentNavigation().extras.state;
     } else {
       this.navParamsData = history ? history.state : undefined;
     }
+    if (this.navParams && !_.isEmpty(this.navParams.data)) this.navParamsData = this.navParams.data;
+
     this.availableCoins = this.currencyProvider.getAvailableCoins();
     for (const coin of this.availableCoins) {
       this.wallets[coin] = this.profileProvider.getWallets({ coin });
@@ -128,7 +124,7 @@ export class TransferToPage {
       ...new Map(this.navParamsData.completeHistory.filter(item => item.action === 'sent').map((item) => [item["addressTo"], item])).values(),
     ] as Array<any>;
     let contacts = [];
-    for(let historyEle of historyTmp){
+    for (let historyEle of historyTmp) {
       if (historyEle.customData && historyEle.customData.toWalletName) {
         contacts.push({
           name: historyEle.customData.toWalletName,
@@ -138,7 +134,7 @@ export class TransferToPage {
       } else if (this.filteredContactsList.find(s => s.address === historyEle.addressTo)) {
         contacts.push(this.contactsList.find(s => s.address === historyEle.addressTo));
       }
-      if(contacts.length >= 6) break;
+      if (contacts.length >= 6) break;
     }
     this.listRecentTransaction = contacts;
   }
@@ -242,12 +238,12 @@ export class TransferToPage {
   }
 
   @Input()
-  set fromSelectInputs(fromSelectInputs: boolean) {
-    this._fromSelectInputs = fromSelectInputs;
+  set fromSend(fromSend: boolean) {
+    this._fromSend = fromSend;
   }
 
-  get fromSelectInputs() {
-    return this._fromSelectInputs;
+  get fromSend() {
+    return this._fromSend;
   }
 
   @Input()
@@ -318,13 +314,13 @@ export class TransferToPage {
         this.filteredContactsList = _.clone(contactsList);
         this.contactsShowMore =
           this.contactsList.length > shortContactsList.length;
-        
+
         this.contactsGroup = _.values(_.groupBy(_.map(this.filteredContactsList, contact => {
-            return {
-              firstLetter: contact.name[0],
-              ...contact
-            }
-          }), 'firstLetter'));
+          return {
+            firstLetter: contact.name[0],
+            ...contact
+          }
+        }), 'firstLetter'));
         this.getListRecentTransaction();
       });
   }
@@ -372,7 +368,7 @@ export class TransferToPage {
     this.updateContactsList();
   }
 
-  public segmentChanged(index){
+  public segmentChanged(index) {
     this.showContactTab = index === 1;
   }
   public processInput(): void {
@@ -427,40 +423,14 @@ export class TransferToPage {
           return;
         }
         this.logger.debug('Got address:' + addr + ' | ' + item.name);
-
-        if (this._fromSelectInputs) {
-          const recipient = {
-            recipientType: item.recipientType,
-            toAddress: addr,
-            name: item.name,
-            email: item.email
-          };
-          this.router.navigate(['/select-inputs']).then(data => {
-            this.viewCtrl.dismiss();
-            this.events.publish('addRecipient', recipient);
-          })
-
-        } else if (this.dataDonation && this.dataDonation.isDonation) {
-          this.dataDonation.receiveLotusAddress = addr;
-          this.dataDonation.nameReceiveLotusAddress = item.name;
-          this.router.navigate(['/confirm'], //ConfirmPage
-            { state: this.dataDonation });
-        }
-        else if (this.navParamsData.fromSend) {
-          const recipient = {
+        if (this.navParamsData.fromSend) {
+          this.viewCtrl.dismiss({
             recipientType: item.recipientType,
             toAddress: addr,
             name: item.name,
             email: item.email,
             id: this.navParamsData.recipientId
-          };
-          this.location.historyGo(-1);
-          this.events.publish('addRecipient', recipient);
-
-          // // this.router.navigate(['/send-page']).then(data=>{
-          // //   this.viewCtrl.dismiss();
-          // //   this.events.publish('addRecipient', recipient);
-          // })
+          });
         }
         else {
           this.router.navigate(['/amount'], {

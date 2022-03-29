@@ -20,7 +20,7 @@ export class LotusDonationCard {
   }
 
   public donationLotus() {
-    this.router.navigateByUrl('/tabs/wallets', {
+    this.router.navigateByUrl('/accounts-page', {
       state: {
         isDonation: true
       }

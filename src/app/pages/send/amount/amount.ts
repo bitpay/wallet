@@ -444,7 +444,7 @@ export class AmountPage {
       this.receiveLotus = `You will receive ${receiveLotus} Lotus`;
     } else if (amountDonation <= minMoneydonation && amountDonation != 0) {
       this.receiveLotus = `You will receive 0 Lotus`;
-    } else if (amountDonation >= minMoneydonation && remaining <= receiveLotus && remaining == 0) {
+    } else if (amountDonation >= minMoneydonation && remaining < receiveLotus) {
       this.receiveLotus = `Due to high demand, we are running out of Lotus today and unable to give you back. Come back another day or proceed anyway.`;
     }
   }

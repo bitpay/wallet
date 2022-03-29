@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 import { Coin, CurrencyProvider } from 'src/app/providers/currency/currency';
 import { PlatformProvider } from 'src/app/providers/platform/platform';
 import { ActionSheetParent } from '../action-sheet/action-sheet-parent';
@@ -6,6 +6,8 @@ import { ActionSheetParent } from '../action-sheet/action-sheet-parent';
 @Component({
   selector: 'incoming-data-menu',
   templateUrl: 'incoming-data-menu.html',
+  styleUrls: ['./incoming-data-menu.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class IncomingDataMenuComponent extends ActionSheetParent {
   public data: string;

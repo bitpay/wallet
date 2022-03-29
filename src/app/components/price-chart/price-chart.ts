@@ -25,9 +25,9 @@ export class PriceChart {
         }
       ],
       chart: {
-        type: 'line',
+        type: 'area',
         stacked: false,
-        height: 350,
+        height: 475,
         toolbar: {
           show: false
         },
@@ -57,11 +57,12 @@ export class PriceChart {
         }
       },
       tooltip: {
+        theme: 'drak',
         followCursor: true,
         shared: false,
         x: {
           show: false
-        }
+        },
       },
       grid: {
         padding: {
@@ -83,6 +84,9 @@ export class PriceChart {
         }
       },
       xaxis: {
+        tooltip: {
+          enabled: false
+        },
         labels: {
           show: false
         },
@@ -108,14 +112,21 @@ export class PriceChart {
       stroke: {
         colors: [color],
         curve: 'straight',
-        width: 2
+        width: 1
       },
       theme: {
         monochrome: {
           enabled: true,
           color
         }
-      }
+      },
+      fill : {
+        colors: [color],
+        gradient: {
+          gradientToColors: [color],
+          opacityTo: 0.2,
+        }
+      },
     };
   }
 }

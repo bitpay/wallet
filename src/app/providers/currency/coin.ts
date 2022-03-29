@@ -78,8 +78,8 @@ export const availableCoins: CoinsMap<CoinOpts> = {
     },
     theme: {
       coinColor: '#ffffff',
-      backgroundColor: '#ffffff',
-      gradientBackgroundColor: '#ffffff'
+      backgroundColor: '#FF1B9C',
+      gradientBackgroundColor: '#FF1B9C'
     }
   },
 
@@ -116,8 +116,8 @@ export const availableCoins: CoinsMap<CoinOpts> = {
     },
     theme: {
       coinColor: '#016cbf',
-      backgroundColor: '#016cbf',
-      gradientBackgroundColor: '#016cbf'
+      backgroundColor: '#0080CA',
+      gradientBackgroundColor: '#0080CA'
     }
   },
 
@@ -153,9 +153,9 @@ export const availableCoins: CoinsMap<CoinOpts> = {
       maxMerchantFee: 'normal'
     },
     theme: {
-      coinColor: '#2fcf6e',
-      backgroundColor: '#2fcf6e',
-      gradientBackgroundColor: '#2fcf6e'
+      coinColor: '#2FCF6E',
+      backgroundColor: '#2FCF6E',
+      gradientBackgroundColor: '#2FCF6E'
     }
   },
 
@@ -192,8 +192,8 @@ export const availableCoins: CoinsMap<CoinOpts> = {
     },
     theme: {
       coinColor: '#d8c172',
-      backgroundColor: '#d8c172',
-      gradientBackgroundColor: '#d8c172'
+      backgroundColor: '#BA9F33',
+      gradientBackgroundColor: '#BA9F33'
     }
   },
 
@@ -230,8 +230,8 @@ export const availableCoins: CoinsMap<CoinOpts> = {
     },
     theme: {
       coinColor: '#f7931a',
-      backgroundColor: '#f7921a',
-      gradientBackgroundColor: '#f7921a'
+      backgroundColor: '#BEBEBE',
+      gradientBackgroundColor: '#BEBEBE'
     }
   },
 };

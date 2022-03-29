@@ -11,56 +11,6 @@ ion-icon {
     border-radius: 12px;
     justify-content: center;
   }
-  &.background {
-    &_btc {
-      background-color: #f7931a;
-    }
-    &_bch {
-      background-color: #2fcf6e;
-    }
-    &_xec {
-      background-color: #016cbf;
-    }
-    &_eth {
-      background-color: #6b71d6;
-    }
-    &_xrp {
-      background-color: #000000;
-    }
-    &_usdc {
-      background-color: #2775ca;
-    }
-    &_pax {
-      background-color: #e6f3f9;
-    }
-    &_gusd {
-      background-color: #00ddfa;
-    }
-    &_busd {
-      background-color: #f3ba2d;
-    }
-    &_dai {
-      background-color: #ff9e2f;
-    }
-    &_wbtc {
-      background-color: #000000;
-    }
-    &_doge {
-      background-color: #d8c172;
-    }
-    &_ltc {
-      background-color: #a6a9aa;
-    }
-    &_xpi {
-      background-color: #ffffff;
-    }
-    &_transparent {
-      background-color: transparent;
-    }
-    &_default {
-      background-color: #e6f8e9;
-    }
-  }
 }
 .ion-logo-usd:before {
   padding: 8px 11.5px;

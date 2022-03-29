@@ -50,6 +50,10 @@ page-wallet-addresses {
         justify-content: space-between;
       }
     }
+
+    .network-fee-title {
+      line-height: 42px;
+    }
   }
   .explanation {
     padding: 0 1rem 1rem 1rem;
@@ -62,3 +66,5 @@ page-wallet-addresses {
     }
   }
 }
+
+

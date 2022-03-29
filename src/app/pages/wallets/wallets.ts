@@ -266,6 +266,10 @@ export class WalletsPage {
     })
   }
 
+  public openProposalsNotificationsPage(): void {
+    this.router.navigate(['/proposals-notifications']);
+  }
+
   loadEtokenAddress(wallet) {
     return this.profileProvider.setAddress(wallet).then(addr => {
       if (!addr) return '';

@@ -1,5 +1,15 @@
 <ion-header [translucent]="true" class="bp-header">
-  <ion-toolbar>
+  <ion-toolbar class="header" [ngClass]="{ 
+    'bg-bch': wallet.coin == 'bch',
+    'bg-xec': wallet.coin == 'xec',
+    'bg-xpi': wallet.coin == 'xpi',
+    'bg-doge': wallet.coin == 'doge',
+    'bg-ltc': wallet.coin == 'ltc',
+    'bg-EAT': token?.tokenInfo?.symbol == 'EAT',
+    'bg-bcPro': token?.tokenInfo?.symbol == 'bcPro',
+    'bg-DoC': token?.tokenInfo?.symbol == 'DoC',
+    'bg-ABCSLP': token?.tokenInfo?.symbol == 'ABCSLP'
+    }">
     <ion-buttons slot="start">
       <ion-back-button icon="chevron-back-outline" defaultHref="/">
       </ion-back-button>
@@ -30,7 +40,7 @@
       <span class="available-letter">Available: </span>
       <span class="balance-letter">{{getBalance()}}</span>
     </div>
-    <div class="prompt-user-fullscreen-container" *ngIf="shouldShowZeroState() && !isDonation">
+    <div class="prompt-user-fullscreen-container" *ngIf="shouldShowZeroState()">
       <div>
         <div class="prompt-user">
           <div class="title-icon larger-icon">
@@ -41,7 +51,8 @@
             <span translate>Mmm...</span>
           </div>
           <div class="subtitle-info" *ngIf="wallet.coin !== 'xrp'; else minXrp">
-            <span translate>It appears that you do not have any money to send.</span>
+            <span *ngIf="!isDonation" translate>It appears that you do not have any money to send.</span>
+            <span *ngIf="isDonation" translate>It appears that you do not have any money to donate.</span>
           </div>
         </div>
 
@@ -58,15 +69,20 @@
       [wallet]="wallet" 
       [recipient]="recipient"
       (deleteEvent)="deleteRecipient($event)" 
-      [isShowSendMax]="isShowSendMax"
+      [isShowSendMax]="isShowSendMax && !isDonation"
       [isShowDelete]="isShowDelete"
       [token]="token"
       (sendMaxEvent)="sendMax()">
       </recipient-component>
-      <div class="btn-function-group"> 
-        <ion-button *ngIf="!token" class="btn-add-more" fill="outline" (click)="addNewRecipient()">Add more recipient</ion-button>
-        <ion-button [disabled]="checkBeforeGoToConfirmPage()" class="button-standard" (click)="goToConfirm()">Continue</ion-button>
-      </div>
     </div>
   </div>
 </ion-content>
+
+<ion-footer class="ion-no-border footer" *ngIf="!shouldShowZeroState()">
+  <ion-toolbar>
+    <div class="btn-function-group"> 
+      <ion-button *ngIf="!token && !isDonation" class="btn-add-more" fill="outline" (click)="addNewRecipient()">{{'Add more recipient' | translate}}</ion-button>
+      <ion-button [disabled]="checkBeforeGoToConfirmPage()" class="button-standard" (click)="goToConfirm()">{{'Continue' | translate}}</ion-button>
+    </div>
+  </ion-toolbar>
+</ion-footer>

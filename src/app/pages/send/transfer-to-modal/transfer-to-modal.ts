@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { ModalController, NavParams } from '@ionic/angular';
+import _ from 'lodash';
 import { ProfileProvider } from 'src/app/providers/profile/profile';
 
 @Component({
@@ -9,20 +11,28 @@ import { ProfileProvider } from 'src/app/providers/profile/profile';
 export class TransferToModalPage {
   public search: string = '';
   public wallet;
-  public fromSelectInputs: boolean;
+  public fromSend: boolean;
   public fromMultiSend: boolean;
-  navPramss;
+  navParamsData;
   constructor(
     private router: Router,
-    private profileProvider: ProfileProvider
+    private profileProvider: ProfileProvider,
+    private navParams: NavParams,
+    private viewCtrl: ModalController
   ) {
     if (this.router.getCurrentNavigation()) {
-      this.navPramss = this.router.getCurrentNavigation().extras.state;
+      this.navParamsData = this.router.getCurrentNavigation().extras.state;
     } else {
-      this.navPramss = history ? history.state : {};
+      this.navParamsData = history ? history.state : {};
     }
-    this.wallet = this.profileProvider.getWallet(this.navPramss.walletId);
-    this.fromSelectInputs = this.navPramss.fromSelectInputs;
-    this.fromMultiSend = this.navPramss.fromMultiSend;
+    if (this.navParams && !_.isEmpty(this.navParams.data)) this.navParamsData = this.navParams.data;
+
+    this.wallet = this.profileProvider.getWallet(this.navParamsData.walletId);
+    this.fromSend = this.navParamsData.fromSend;
+    this.fromMultiSend = this.navParamsData.fromMultiSend;
+  }
+
+  back() {
+    this.viewCtrl.dismiss({});
   }
 }

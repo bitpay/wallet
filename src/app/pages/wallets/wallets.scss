@@ -1,4 +1,10 @@
 page-wallets {
+
+.custom-notification-icon {
+  position: absolute;
+  bottom: 13px;
+  left: 11px;
+}
   .no-token {
     color: var(--color-light-grey);
     text-align: center;
@@ -176,6 +182,7 @@ page-wallets {
 
     .key-notifications {
       margin: 0 1rem;
+      --overflow: visible;
     }
     
     .address-book {

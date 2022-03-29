@@ -87,6 +87,7 @@ export type InfoSheetType =
   | 'delete-key'
   | 'reset-all-setting'
   | 'help-and-support'
+  | 'invalid-qr'
   | 'delete-contact';
 
 export type OptionsSheetType =
@@ -141,7 +142,7 @@ export class ActionSheetProvider {
       params
     ).instance;
   }
-
+  
   public createInfoSheet(type: InfoSheetType, params?): InfoSheetComponent {
     return this.setupSheet<InfoSheetComponent>(InfoSheetComponent, type, params)
       .instance;

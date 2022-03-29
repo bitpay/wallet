@@ -10,7 +10,7 @@ export class RecipientModel {
     public currency?: string;
     constructor(data) {
         this.id = Date.now();
-        this.toAddress = data.to || "";
+        this.toAddress = data.toAddress || "";
         this.amount = data.amount || 0;
         this.amountToShow = data.amountToShow || "";
         this.isValid = data.isValid || false;

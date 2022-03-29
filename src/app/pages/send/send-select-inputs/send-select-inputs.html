@@ -1,0 +1,86 @@
+<ion-header [translucent]="true" class="bp-header">
+  <ion-toolbar class="header" [ngClass]="{ 
+    'bg-bch': wallet.coin == 'bch',
+    'bg-xec': wallet.coin == 'xec',
+    'bg-xpi': wallet.coin == 'xpi',
+    'bg-doge': wallet.coin == 'doge',
+    'bg-ltc': wallet.coin == 'ltc'
+    }">
+    <ion-buttons slot="start">
+      <ion-back-button icon="chevron-back-outline" defaultHref="/">
+      </ion-back-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+    </ion-buttons>
+    <ion-title>
+      <div [reveal-at-scroll-pos]="expandableHeader.headerHeight" [scrollArea]="scrollArea">
+        <span>{{titlePage | translate}}</span><span class=>{{subTitle | translate}}</span>
+      </div>
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content scrollEvents="true" #scrollArea>
+  <expandable-header [scrollArea]="scrollArea" [fadeFactor]="5" [disableFade]="true" #expandableHeader>
+    <ion-toolbar class="wide-header__title" tappable>
+      <expandable-header-primary>
+        <span class="title">{{titlePage | translate}}</span><span class="sub-title"> {{ subTitle | translate}}</span>
+      </expandable-header-primary>
+    </ion-toolbar>
+  </expandable-header>
+
+  <div class="content-wrapper">
+    <div class="available-content">
+      <span class="available-letter">Available: </span>
+      <span class="balance-letter">{{getBalance()}}</span>
+    </div>
+
+      <recipient-component *ngFor="let recipient of listRecipient" 
+      [wallet]="wallet" 
+      [recipient]="recipient"
+      [isShowSendMax]="isShowSendMax"
+      [isShowDelete]="isShowDelete"
+      [amountFromSelectedInput]="totalAmount"
+      [isShowSelectInput]="true">
+      </recipient-component>
+
+    <ion-list class="content-list">
+      <div class="select-inputs-header">
+        <div class="title-choose-input">
+          <div class="name" >Choose the account inputs</div> 
+          <ion-button slot='end' fill='clear' (click)="reverseInputs()" [ngClass]="{'reverse': !reverse}">
+            <img src="assets/img/order-{{currentTheme}}.svg">
+          </ion-button>
+        </div>
+        <div class="total-amount-wrapper">
+          <ion-checkbox slot="start" (ionChange)="selectInputTotal($event)" [indeterminate]="indeterminateState" [checked]="checkParentChecked"  (click)="skipIonChange=false" ></ion-checkbox>
+          <div class="name-total">Total selected:</div>
+          <div class="total-amount"> {{totalAmount}} {{wallet.coin | uppercase}}</div>
+        </div>
+      </div>
+      <ion-item  lines="none" *ngIf="inputs?.length == 0">
+        <div class="warning">
+          <small>{{'No available inputs.' | translate}}</small>
+        </div>
+      </ion-item>
+      <div class="item-wrapper" *ngFor="let input of inputs; let i = index">
+        <ion-item lines="none" >
+          <ion-checkbox slot="start" (ionChange)="selectInput(input, $event)" (click)="skipIonChange=false" [checked]="input.checked"></ion-checkbox>
+          <ion-label class="label-address">
+            <div class="address">
+              {{input.address | shortenedAddress}}
+            </div>
+            <div class="amount">
+              {{input.amount}} {{wallet.coin | uppercase}}
+            </div>
+          </ion-label>
+        </ion-item>
+      </div>
+    </ion-list>
+  </div>
+</ion-content>
+
+<ion-footer class="ion-no-border footer">
+  <ion-toolbar>
+    <ion-button [disabled]="!checkBeforeGoToConfirmPage()" class="button-standard" (click)="goToConfirm()">Continue</ion-button>
+  </ion-toolbar>
+</ion-footer>

@@ -1,15 +1,20 @@
 page-send {
 
-  .content-wrapper{
-    padding-left: 20px;
-    padding-right: 20px;
-    padding-bottom: 30px;
-    .available-content{
+  ion-title {
+    color: var(--color-light-theme);
+  }
+
+  .content-wrapper {
+    padding: 0 1rem 1rem 1rem;
+
+    .available-content {
       font-size: 14px;
-      .available-letter{
-        color:  rgba(0, 30, 46, 0.6);
+
+      .available-letter {
+        color: rgba(0, 30, 46, 0.6);
       }
-      .balance-letter{
+
+      .balance-letter {
         font-weight: 600;
       }
     }
@@ -83,12 +88,12 @@ page-send {
     margin-bottom: 0px;
   }
 
-  .btn-function-group{
+  .btn-function-group {
     display: flex;
     flex-flow: column;
-    margin-bottom: 3rem;
-    padding-bottom: 2rem;
-    .btn-add-more{
+    padding-top: 1rem;
+
+    .btn-add-more {
       --color: rgba(0, 101, 141, 1);
       --border-color: rgba(0, 30, 46, 1);
       width: 85%;
@@ -99,4 +104,5 @@ page-send {
       --border-width: 1px;
     }
   }
+  
 }

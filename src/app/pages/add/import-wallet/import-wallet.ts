@@ -1,4 +1,4 @@
-import { Component, OnChanges, OnInit } from '@angular/core';
+import { Component, OnChanges, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -27,10 +27,12 @@ import { EventManagerService } from 'src/app/providers/event-manager.service';
 import { Router } from '@angular/router';
 import _ from 'lodash';
 import { DisclaimerModal } from '../../includes/disclaimer-modal/disclaimer-modal';
+import { AppProvider } from 'src/app/providers';
 @Component({
   selector: 'page-import-wallet',
   templateUrl: 'import-wallet.html',
-  styleUrls: ['import-wallet.scss']
+  styleUrls: ['import-wallet.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class ImportWalletPage {
   private reader: FileReader;
@@ -55,6 +57,8 @@ export class ImportWalletPage {
   public isShoweTokenPath: boolean;
   public isSlpToken = false;
   public prevCoin: string;
+  public currentTheme: string;
+
   navParamsData;
 
   constructor(
@@ -77,7 +81,8 @@ export class ImportWalletPage {
     private modalCtrl: ModalController,
     private bwcErrorProvider: BwcErrorProvider,
     private errorsProvider: ErrorsProvider,
-    private router: Router
+    private router: Router,
+    private appProvider: AppProvider
   ) {
     if (this.router.getCurrentNavigation()) {
       this.navParamsData = this.router.getCurrentNavigation().extras.state
@@ -86,6 +91,7 @@ export class ImportWalletPage {
     } else {
       this.navParamsData = history ? history.state : {};
     }
+    this.currentTheme = this.appProvider.themeProvider.currentAppTheme;
     this.okText = this.translate.instant('Ok');
     this.cancelText = this.translate.instant('Cancel');
     this.reader = new FileReader();
@@ -103,8 +109,8 @@ export class ImportWalletPage {
 
     this.keyId = this.navParamsData?.keyId; // re-import option
     this.title = !this.keyId
-      ? this.translate.instant('Import Wallet')
-      : this.translate.instant('Re-Import Wallets');
+      ? this.translate.instant('Import Key')
+      : this.translate.instant('Re-Import Keys');
     this.formFile = null;
 
     this.importForm = this.form.group({
@@ -145,6 +151,10 @@ export class ImportWalletPage {
 
   public getCoinName(coin: Coin | any) {
     return this.currencyProvider.getCoinName(coin);
+  }
+  
+  public handleClickAdvanceOption() {
+    this.showAdvOpts = !this.showAdvOpts;
   }
 
   public selectTab(tab: string): void {

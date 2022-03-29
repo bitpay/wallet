@@ -122,6 +122,20 @@ action-sheet{
         }
       }
     }
+    .custom-sheet {
+      .sheet-btn-group {
+        justify-content: flex-start;
+        flex-direction: row-reverse;
+      }
+      .sheet-btn {
+        flex-grow : unset !important;
+        padding: 0 1rem;
+
+        &.red {
+          color: inherit !important;
+        }
+      }
+    }
   
     @media only screen and (device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) {
       padding-bottom: 20px;

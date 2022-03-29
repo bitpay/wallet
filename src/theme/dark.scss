@@ -60,7 +60,11 @@
     --bg-color-dark-theme-5: linear-gradient(0deg, rgba(126, 208, 255, 0.14), rgba(126, 208, 255, 0.14)), #001E2E;
     --bg-color-dark-theme-6: linear-gradient(
         0deg, rgba(126, 208, 255, 0.12), rgba(126, 208, 255, 0.12)), #001E2E;
+
+        
     --bg-color-dark-theme-7: rgb(23 54 106); 
+
+    --bg-color-dark-theme-8: linear-gradient(0deg, rgba(126, 208, 255, 0.11), rgba(126, 208, 255, 0.11)), #001E2E ;
 
     --bg-color-dark-theme-toolbar: #001E2E;
     --bg-color-dark-theme-message: #1d1d1d;
@@ -95,6 +99,8 @@
 
     // 1.8 - Info Sheet
     --text-color-info-sheet-dark-theme: #B8C2C7;
+
+    --text-grey: rgba(237, 239, 240, 0.6);
 
     --slider-bg-button: rgba(126, 208, 255, 1);
     @include toolbar-button-color(var(--text-color-dark-theme));
@@ -131,7 +137,7 @@
                   color: #CCC1E9;
                 }
                 .fiat {
-                  color: rgba(237, 239, 240, 0.6);
+                  color: var(--text-grey)
                 }
                 .total {
                   color: #FFB85D;
@@ -217,7 +223,7 @@
 
     form {
         ion-item {
-            border-bottom: 1px solid var(--border-color-dark-theme) !important;
+            border-color: var(--border-color-dark-theme) !important;
         }
     }
 
@@ -821,7 +827,7 @@
     // 4 - Components
     action-sheet {
         .action-sheet {
-            background: linear-gradient(0deg, rgba(126, 208, 255, 0.11), rgba(126, 208, 255, 0.11)), #001E2E !important;
+            background: var(--bg-color-dark-theme-8) !important;
 
             .bp-list {
                 background: var(--bg-color-dark-theme-2) !important;
@@ -1044,10 +1050,25 @@
     }
 
     incoming-data-menu {
-        img {
-            filter: invert(0.7);
-        }
-    }
+     img {
+         filter: invert(0.7);
+     }
+
+     .title {
+         color: var(--bg-surface-color-abcpay-dark);
+     }
+
+     .address {
+         color: var(--bg-surface-color-abcpay-dark);
+         opacity: .6;
+     }
+
+     .group-btn {
+         ion-button {
+             color: var(--color-primary-abcpay-dark)
+         }
+     }
+ }
 
     page-finish {
         .bg-none {
@@ -1094,7 +1115,7 @@
                     }
 
                     .info-encrypt {
-                        color: rgba(237, 239, 240, 0.6);
+                        color: var(--text-grey)
                     }
 
                     .encrypt-password-form {
@@ -1127,6 +1148,9 @@
                 ion-button {
                     ion-icon {
                         color: rgba(237, 239, 240, 0.6) !important;
+                        &[name="eye-off"] {
+                            color: var(--text-grey)
+                          }
                         &[name="alert"] {
                           color: #FFB4A9;
                         }
@@ -1229,17 +1253,26 @@
 
     // 5.15 Price Page
     price-page {
+        .price-wraper {
+            background: var(--bg-color-dark-theme-8);
+        }
+        ion-toolbar.footer-price {
+            --background: linear-gradient(0deg, rgba(126, 208, 255, 0.08), rgba(126, 208, 255, 0.08)), #001E2E;
+        }
+
         .total-amount-container {
             .total-amount-value {
                 color: var(--text-color-dark-theme) !important;
             }
         }
 
-        .labels {
-            .inactive {
-                color: var(--text-color-dark-theme) !important;
+        .active {
+            ion-button {
+              --color: var(--color-primary-abcpay-dark) !important;
             }
-        }
+            background: linear-gradient(0deg, rgba(126, 208, 255, 0.14), rgba(126, 208, 255, 0.14)),
+            #001E2E;
+          }
     }
 
     // 5.2 - Tab Wallets
@@ -1498,7 +1531,7 @@
             background-color: unset;
         }
         .tx-detail-list{
-            background: linear-gradient(0deg, rgba(126, 208, 255, 0.11), rgba(126, 208, 255, 0.11)), #001E2E;
+            background: var(--bg-color-dark-theme-8);
             .note-container{
                 color: #edeff0 !important;
             }
@@ -1634,7 +1667,7 @@
                     &.tx-history-header-label {
                         color: #EDEFF0 !important;
                         .label-multisign {
-                            color: rgba(237, 239, 240, 0.6);
+                            color: var(--text-grey)
                         }
                     }
                 }
@@ -1662,7 +1695,7 @@
         .tx-info {
             .status {
                 background: var(--bg-color-dark-theme);
-                color: rgba(237, 239, 240, 0.6);
+                color: var(--text-grey)
             }
         }
 
@@ -1682,7 +1715,7 @@
         .header-transaction {
             background: linear-gradient(0deg, rgba(126, 208, 255, 0.08), rgba(126, 208, 255, 0.08)), #001E2E;
             ion-icon {
-                color: rgba(237, 239, 240, 0.6);
+                color: var(--text-grey)
             }
         }
 
@@ -1794,10 +1827,45 @@
           }
     }
 
+    page-send-select-inputs {
+     ion-label {
+         color: var(--text-color-dark-theme);
+     }
+
+     .address {
+         color: var(--text-grey)
+     }
+
+     .disabled {
+         color: var(--text-grey)
+     }
+
+     ion-list {
+         background: var(--bg-color-dark-theme-8);
+         --background: var(--bg-color-dark-theme-8);
+     }
+
+     .content-list {
+         .label-address {
+             border-bottom: 1px solid var(--text-grey);
+         }
+
+         .select-inputs-header {
+             border-bottom: 1px solid var(--text-grey);
+         }
+     }
+
+ }
+    
+
     page-send,
     page-multi-send,
+    page-send-select-inputs,
     page-select-inputs,
     page-proposals-notifications {
+        .wallet-name-label{
+            color: #FFFFFF;
+        }
         .available-letter{
             color:  rgba(237, 239, 240, 0.6) !important;
         }
@@ -1820,8 +1888,7 @@
         }
 
         .recipient {
-            background-color: var(--bg-color-dark-theme);
-
+            
             ion-label {
                 color: var(--text-color-dark-theme) !important;
             }
@@ -1835,7 +1902,7 @@
 
         .content-list {
             .item {
-                background-color: var(--bg-color-dark-theme);
+                --background: linear-gradient(0deg, rgba(126, 208, 255, 0.11), rgba(126, 208, 255, 0.11)), #001E2E;
 
                 .item-inner {
                     border-bottom: 1px solid var(--border-color-dark-theme);
@@ -1883,16 +1950,16 @@
         }
 
         .txp-container {
-            background-color: var(--bg-color-dark-theme);
+            background: linear-gradient(0deg, rgba(126, 208, 255, 0.11), rgba(126, 208, 255, 0.11)), #001E2E;
         }
     }
 
     recipient-component{
         .recipient-header{
-            color: rgba(237, 239, 240, 0.6);
+            color: var(--text-grey)
         }
         .recipient-content-wrapper{
-            background: linear-gradient(0deg, rgba(126, 208, 255, 0.11), rgba(126, 208, 255, 0.11)), #001E2E;
+            background: var(--bg-color-dark-theme-8);
             .recipient-content{
                 .title{
                     color: rgba(224, 228, 230, 0.6);
@@ -1912,9 +1979,13 @@
                 }
                 .unit-alt-text{
                     color: rgba(224, 228, 230, 0.6);
+                    
                 }
             }
             
+        }
+        .item-title {
+            color: rgba(237, 239, 240, 0.6);
         }
     }
 
@@ -2219,7 +2290,7 @@
             .item-title {
                 color: var(--text-color-dark-theme) !important;
                 span {
-                    color: rgba(237, 239, 240, 0.6);
+                    color: var(--text-grey)
                 }
             }
 
@@ -2234,7 +2305,7 @@
     page-create-eth-multisig,
     page-bitpay-phase-one-card-intro {
         ion-item {
-            --background: linear-gradient(0deg, rgba(126, 208, 255, 0.11), rgba(126, 208, 255, 0.11)), #001E2E;
+            --background: var(--bg-color-dark-theme-8);
             color: var(--text-color-dark-theme) !important;
             --highlight-color-focused: rgba(224, 228, 230, 0.6);
             --highlight-color-valid	: rgba(224, 228, 230, 0.6);
@@ -2242,7 +2313,25 @@
         }
         ion-segment-button {
             &::part(native) {
-                color: var(--ion-color-primary) !important;
+                color: #EDEFF0 !important;
+            }
+        }
+        .advance-button{
+            --background: linear-gradient(0deg, rgba(126, 208, 255, 0.11), rgba(126, 208, 255, 0.11)), #001E2E;
+            span{
+                color: #EDEFF0;
+            }
+        }
+        .show-advance-option{
+            background: linear-gradient(0deg, rgba(126, 208, 255, 0.11), rgba(126, 208, 255, 0.11)), #001E2E;
+            ion-list{
+                background: linear-gradient(0deg, rgba(126, 208, 255, 0.11), rgba(126, 208, 255, 0.11)), #001E2E;
+                ion-item{
+                    border-color: rgba(237, 239, 240, 0.38);
+                    ion-label{
+                        color: rgba(237, 239, 240, 0.6);
+                    }
+                }
             }
         }
     }
@@ -2261,7 +2350,7 @@
             background-color: var(--bg-color-dark-theme);
         }
         ion-item {
-            --background: linear-gradient(0deg, rgba(126, 208, 255, 0.11), rgba(126, 208, 255, 0.11)), #001E2E;
+            --background: var(--bg-color-dark-theme-8);
             color: var(--text-color-dark-theme) !important;
             --highlight-color-focused: rgba(224, 228, 230, 0.6);
             --highlight-color-valid	: rgba(224, 228, 230, 0.6);
@@ -2397,7 +2486,7 @@
             background: var(--bg-color-dark-theme);
         }
         .sub-header{
-            color: rgba(237, 239, 240, 0.6);
+            color: var(--text-grey)
         }
 
         .word-alignment{
@@ -2410,7 +2499,7 @@
                 color: var(--text-color-dark-theme);
 
                 .word-number{
-                    color: rgba(237, 239, 240, 0.6);
+                    color: var(--text-grey)
                 }
 
                 .dash-line {
@@ -2828,7 +2917,7 @@
             }
         }
         .wallet-hidden {
-            color: rgba(237, 239, 240, 0.6);
+            color: var(--text-grey)
         }
     }
 

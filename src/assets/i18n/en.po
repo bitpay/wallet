@@ -1852,6 +1852,9 @@ msgstr "Import"
 msgid "Import Wallet"
 msgstr "Import Wallet"
 
+msgid "Import Key"
+msgstr "Import Key"
+
 msgid "Import Words"
 msgstr "Import Words"
 
@@ -2839,6 +2842,9 @@ msgstr "Random"
 
 msgid "Re-Import Wallets"
 msgstr "Re-Import Wallets"
+
+msgid "Re-Import Keys"
+msgstr "Re-Import Keys"
 
 msgid "Read Only"
 msgstr "Read Only"
