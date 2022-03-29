@@ -84,7 +84,7 @@ export class TransferToPage {
 
   public listRecentTransaction = [];
 
-  public showContactTab: boolean = true;
+  public showContactTab: boolean = false;
 
   constructor(
     private currencyProvider: CurrencyProvider,

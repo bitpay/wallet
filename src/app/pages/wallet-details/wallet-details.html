@@ -115,13 +115,9 @@
           <ion-label class="tx-history-header-label">
             <span *ngIf="requiresMultipleSignatures" translate>Pending Proposals</span>
             <span *ngIf="!requiresMultipleSignatures" translate>Unsent transactions</span>
-            <div>
-              <span class="label-multisign" *ngIf="wallet?.credentials?.n > 1">Waiting for <span class="num-credentials">{{wallet?.m}} </span> signatures</span>
-              <span class="label-multisign" *ngIf="!wallet?.credentials?.n && wallet?.n > 1">Waiting for <span class="num-credentials">{{wallet?.m}} </span> signatures</span>
-            </div>
           </ion-label>
           <ion-button class="accept-btn" fill="clear" slot="end" (click)="openProposalsNotificationsPage()">
-            {{'Accept Now' | translate}}
+            {{'Details' | translate}}
           </ion-button>
         </div>
         <!-- <ion-badge class="txps-badge" *ngIf="txps.length > 0" (click)="openProposalsNotificationsPage()"
