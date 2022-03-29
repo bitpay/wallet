@@ -162,7 +162,7 @@
               {{requiredFee | satToUnit: getChain(tx.coin)}}
             </div>
             <div *ngIf="requiredFee" class="secondary-note fee-details">
-              {{requiredFee | satToFiat: getChain(tx.coin)}}
+              {{requiredFee | satToFiat: getChain(tx.coin):tx.paypro && tx.paypro.exchangeRates}}
             </div>
           </div>
           <div *ngIf="tx.txp[wallet.id]" class="summary-item-detail">
@@ -172,7 +172,7 @@
             {{tx.txp[wallet.id].fee | satToUnit: getChain(tx.coin)}}
           </div>
           <div *ngIf="tx.txp[wallet.id]" class="secondary-note fee-details" [ngStyle]="tx.txp[wallet.id].feeTooHigh === true ? { opacity: 1 } : null">
-            {{tx.txp[wallet.id].fee | satToFiat: getChain(tx.coin)}}
+            {{tx.txp[wallet.id].fee | satToFiat: getChain(tx.coin):tx.paypro && tx.paypro.exchangeRates}}
             <span *ngIf="tx.txp[wallet.id].feeRatePerStr">
               &middot;
               <span>
@@ -409,7 +409,7 @@
 
       <div class="amount-details" padding-bottom *ngIf="!coinbaseAccount && !currencyProvider.isCustomERCToken(tx.coin)">
         <div class="total-amount-note" [ngClass]="{'subtotal-amount-note': !wallet?.credentials.token}">
-          <span *ngIf="!fromSelectInputs && !fromReplaceByFee">{{tx.amount | satToFiat: tx.coin}}</span>
+          <span *ngIf="!fromSelectInputs && !fromReplaceByFee">{{tx.amount | satToFiat: tx.coin:tx.paypro && tx.paypro.exchangeRates}}</span>
           <span *ngIf="(fromSelectInputs || fromReplaceByFee) && wallet && tx.txp[wallet.id] && tx.txp[wallet.id].fee">{{tx.amount - tx.txp[wallet.id].fee | satToFiat: tx.coin}}</span>
         </div>
         <div class="total-amount-note" [ngClass]="{'subtotal-amount-note': !wallet?.credentials.token}">
@@ -436,7 +436,7 @@
 
       <div class="amount-details" *ngIf="totalAmount" padding-bottom>
         <div class="total-amount-note">
-          {{totalAmount | satToFiat: tx.coin}}
+          {{totalAmount | satToFiat: tx.coin:tx.paypro && tx.paypro.exchangeRates}}
         </div>
       </div>
 
