@@ -51,7 +51,7 @@
         <div class="key-divider" *ngIf="walletsByKey && walletsByKey[0]">
           <span>{{ walletsByKey[0].walletGroupName }}</span>
         </div>
-        <div *ngFor="let wallet of walletsByKey">
+        <div class="wallet-item-content-container" *ngFor="let wallet of walletsByKey">
           <wallet-item-content [isCustomForAddressBook]="true" [wallet]="wallet" (click)="close(wallet)"></wallet-item-content>
         </div>
       </div>

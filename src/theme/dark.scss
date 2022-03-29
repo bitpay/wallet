@@ -473,7 +473,6 @@
             &.ios,
             &.md {
                 border: 0;
-                background: linear-gradient(0deg, rgba(126, 208, 255, 0.11), rgba(126, 208, 255, 0.11)), #001E2E;
                 --background: linear-gradient(0deg, rgba(126, 208, 255, 0.11), rgba(126, 208, 255, 0.11)), #001E2E;
                 --padding-start: 5px;
                 --padding-end: 5px;
@@ -3035,6 +3034,36 @@
             .memo {
                 color: rgba(224, 228, 230, 0.6) !important;
             }
+        }
+    }
+
+    page-transfer-to{
+        .custom-list{
+            background: linear-gradient(0deg, rgba(126, 208, 255, 0.05), rgba(126, 208, 255, 0.05)), #001E2E;
+        }
+        ion-segment{
+            background: linear-gradient(0deg, rgba(126, 208, 255, 0.05), rgba(126, 208, 255, 0.05)), #001E2E;
+            ion-segment-button{
+                color: #EDEFF0 !important;
+            }
+        }
+        .key-divider{
+            background: linear-gradient(0deg, rgba(126, 208, 255, 0.11), rgba(126, 208, 255, 0.11)), #001E2E;
+            span{
+                color: rgba(224, 228, 230, 0.6) !important;
+            }
+        }
+        .key-name{
+            color: #EDEFF0;
+        }
+        .wallet-item-content-container{
+            background: linear-gradient(0deg, rgba(126, 208, 255, 0.05), rgba(126, 208, 255, 0.05)), #001E2E;
+        }
+    }
+
+    page-transfer-to-modal{
+        .header-title{
+            color: #EDEFF0 !important;
         }
     }
 
