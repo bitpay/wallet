@@ -134,7 +134,7 @@ export class WalletDetailCardComponent implements OnInit {
   }
 
   public goToMultisignInfo() {
-    const receive = this.actionSheetProvider.createMultisignInfo();
+    const receive = this.actionSheetProvider.createMultisignInfo(this.wallet);
       receive.present();
       receive.onDidDismiss(data => {
         if (data) console.log('close action multisig');

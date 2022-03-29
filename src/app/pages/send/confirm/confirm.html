@@ -18,11 +18,11 @@
       <ion-item lines="none" class="custom-list">
         <div class="list-container">
           <div class="first-row row-container summary-amount-info">
-            <div>
-              <div class="total-amount">
+            <div class="ellipsis">
+              <div class="total-amount ellipsis">
                 {{totalAmountStr}}
               </div>
-              <div class="total-amount-alt">
+              <div class="total-amount-alt ellipsis">
                 {{totalAmount | satToFiat: tx.coin}}
               </div>
             </div>
@@ -30,7 +30,7 @@
 
           <div class="row-container">
             <div class="item-name">Subtotal</div>
-            <div class="item-detail">
+            <div class="item-detail ellipsis">
               <span *ngIf="!fromSelectInputs">{{amount}} {{tx.coin | uppercase}}</span>
               <span
                 *ngIf="fromSelectInputs && wallet && tx.txp[wallet.id] && tx.txp[wallet.id].fee">{{formatAmount(tx.coin,
@@ -44,7 +44,7 @@
               <span *ngIf="!merchantFeeLabel" translate>Miner fee</span>
               <span *ngIf="merchantFeeLabel">{{ merchantFeeLabel }}</span>
             </div>
-            <div class="item-detail">
+            <div class="item-detail ellipsis">
               <div class="fee-loading" *ngIf="!tx.txp[wallet.id]">
                 <div class="summary-item-detail">
                   <span class="text-bold">{{tx.feeLevelName | uppercase}}</span>
@@ -61,10 +61,10 @@
               <!-- <div *ngIf="tx.txp[wallet.id]" class="summary-item-detail">
                 <span class="text-bold">{{tx.feeLevelName | uppercase}}</span>
               </div> -->
-              <div *ngIf="tx.txp[wallet.id]" class="">
+              <div *ngIf="tx.txp[wallet.id]" class="ellipsis">
                 {{tx.txp[wallet.id].fee | satToUnit: getChain(tx.coin)}}
               </div>
-              <div *ngIf="tx.txp[wallet.id]" class="sub-note fee-details"
+              <div *ngIf="tx.txp[wallet.id]" class="sub-note fee-details ellipsis"
                 [ngStyle]="tx.txp[wallet.id].feeTooHigh === true ? { opacity: 1 } : null">
                 {{tx.txp[wallet.id].fee | satToFiat: getChain(tx.coin)}}
                 <span *ngIf="tx.txp[wallet.id].feeRatePerStr">
@@ -83,12 +83,12 @@
 
       <ion-item button detail="false" (click)="showWallets()" class="row-container"
         [ngClass]="{'not-clickable': fromWalletDetails || walletConnectRequestId}">
-        <ion-label>
+        <ion-label slot="start">
           <div class="summary-item">
             <span translate>Sending from</span>
           </div>
         </ion-label>
-        <ion-note slot="end">
+        <ion-note class="ellipsis" slot="end">
           <ion-row class="wallet ion-align-items-center" *ngIf="wallet">
             <ion-col>
               <span class="note-container ellipsis">{{wallet.name}}</span>
@@ -104,17 +104,16 @@
       </ion-item>
 
       <ion-item *ngIf="!fromMultiSend" lines="none" [ngClass]="{'send-to-custom': !tx.name && !toAddressName }">
-        <ion-label>
+        <ion-label slot="start">
           <div class="summary-item">
             <span translate>Sending to</span>
           </div>
         </ion-label>
 
-        <ion-note slot="end" class="address-note-custom">
-          <div class="note-container" *ngIf="!tx.recipientType">
+        <ion-note slot="end" class="address-note-custom ellipsis">
+          <div class="note-container ellipsis" *ngIf="!tx.recipientType">
             <div copy-to-clipboard="{{ tx.origToAddress }}">
-              <span *ngIf="!tx.name">{{toAddressName || (tx.origToAddress |
-                shortenedAddress)}}</span>
+              <span *ngIf="!tx.name">{{toAddressName || (tx.origToAddress.slice(-8))}}</span>
               <span class="ellipsis" *ngIf="tx.name">{{tx.name}}</span>
             </div>
 
@@ -188,8 +187,8 @@
                   shortenedAddress)}}</span>
               </div>
             </div>
-            <div class="item-detail">
-              <div>
+            <div class="item-detail ellipsis">
+              <div class="ellipsis">
                 {{recipient.amountToShow}} {{coin | uppercase}}
               </div>
             </div>
@@ -202,12 +201,12 @@
       <ng-container *ngIf="isDonation && remaining && isShowReceive">
         <div class="line-divider"></div>
         <ion-item lines="none">
-          <ion-label>
+          <ion-label slot="start">
             <div class="summary-item">
               <span translate>Receiving account</span>
             </div>
           </ion-label>
-          <ion-note slot="end">
+          <ion-note slot="end" class="ellipsis">
             <ion-row class="wallet ion-align-items-center" *ngIf="receiveLotusAddress">
               <ion-col>
                 <coin-icon [coin]="donationCoin" [network]="'livenet'"></coin-icon>
@@ -225,18 +224,18 @@
         <div class="line-divider"></div>
 
         <ion-item lines="none">
-          <ion-label>
+          <ion-label slot="start">
             <div class="summary-item">
               <span translate>Lotus Receiving</span>
             </div>
           </ion-label>
-          <ion-note class="main-note" slot="end">{{receiveAmountLotus | number:'1.2-2'}} {{donationCoin |
+          <ion-note class="main-note ellipsis" slot="end">{{receiveAmountLotus | number:'1.2-2'}} {{donationCoin |
             uppercase}}</ion-note>
         </ion-item>
       </ng-container>
 
       <ion-item lines="none">
-        <ion-label position="stacked">{{'Memo' | translate}}</ion-label>
+        <ion-label class="no-margin-left" position="stacked">{{'Memo' | translate}}</ion-label>
         <ion-textarea placeholder="{{'Enter a transaction memo' | translate}}" [(ngModel)]="tx.description"
           name="tx.description" autocomplete="off" autocorrect="off"></ion-textarea>
       </ion-item>

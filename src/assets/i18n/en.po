@@ -2287,6 +2287,9 @@ msgstr "Multiple recipients ({recipientsCount})"
 msgid "Multisig contract address not found."
 msgstr "Multisig contract address not found."
 
+msgid "Multisign {m} - {n}"
+msgstr "Multisign {m} - {n}"
+
 msgid "Name"
 msgstr "Name"
 
@@ -5819,6 +5822,9 @@ msgstr ""
 
 #~ msgid "This wallet is waiting for authorized users/devices to join."
 #~ msgstr "This wallet is waiting for authorized users/devices to join."
+
+#~ msgid "This account requires {m} copayers to sign a transaction (out of {n} copayers total)."
+#~ msgstr "This account requires {m} copayers to sign a transaction (out of {n} copayers total)."
 
 #~ msgid "Wallet Color"
 #~ msgstr "Wallet Color"
