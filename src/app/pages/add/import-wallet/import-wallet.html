@@ -1,57 +1,41 @@
-<ion-header>
-  <ion-toolbar>
-    <!-- <ion-buttons slot="start">
-      <ion-back-button defaultHref="logout"></ion-back-button>    
-    </ion-buttons> -->
-    <ion-buttons slot="start">
-      <ion-back-button icon="chevron-back-outline"></ion-back-button>
-    </ion-buttons>
-    <ion-title class="bp-title">{{ title }}</ion-title>
-    <ion-buttons slot="end">
-      <ion-button (click)="import()" [disabled]="!importForm.valid">
-        <span translate>Import</span>
-      </ion-button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header>
+<wide-header-page title="{{ title }}">
+  <div page-content #content>
+    <div class="import-part-custom" [attr.padding]="isIOS ? '' : null">
+      <ion-segment mode="md" [(ngModel)]="selectedTab" color="primary" (ionChange)="selectTab(selectedTab)"
+        [ngClass]="{'remove-padding-bottom': selectedTab !== 'words'}">
+        <ion-segment-button value="words">
+          {{ 'Recovery Phrase' | translate }}
+        </ion-segment-button>
+        <ion-segment-button value="file">
+          {{ 'File/Text' | translate }}
+        </ion-segment-button>
+      </ion-segment>
+    </div>
 
-<ion-content forceOverflow="false">
-  <div [attr.padding]="isIOS ? '' : null">
-    <ion-segment [(ngModel)]="selectedTab" color="primary" (ionChange)="selectTab(selectedTab)">
-      <ion-segment-button value="words">
-        {{ 'Recovery Phrase' | translate }}
-      </ion-segment-button>
-      <ion-segment-button value="file">
-        {{ 'File/Text' | translate }}
-      </ion-segment-button>
-    </ion-segment>
-  </div>
+    <form [formGroup]="importForm">
+      <ion-list lines="none" *ngIf="selectedTab == 'words'">
+        <ion-item class="text-area-ion-item-custom">
+          <ion-label position="stacked">{{'Type the recovery phrase' | translate}}</ion-label>
+          <ion-textarea
+            placeholder="Enter your recovery phrase (12 words) in the correct order. Separate each word with a single space only ( no commas or any other punctuation)."
+            formControlName="words" [value]="importForm.value.words" autocapitalize="none" rows="6">
+          </ion-textarea>
+          <ion-icon class="scanner-icon" src="assets/img/recipient-component/qr-{{currentTheme}}.svg" slot="end"
+            (click)="openScanner()"></ion-icon>
+        </ion-item>
+      </ion-list>
 
-  <form [formGroup]="importForm">
-    <ion-list *ngIf="selectedTab == 'words'">
-      <ion-item>
-        <ion-label position="stacked">{{'Type the recovery phrase' | translate}}</ion-label>
-        <ion-textarea formControlName="words" [value]="importForm.value.words" autocapitalize="none" auto-grow="true">
-        </ion-textarea>
-        <ion-icon *ngIf="isCordova" class="scanner-icon" name="scan" slot="end" (click)="openScanner()"></ion-icon>
-      </ion-item>
-      <label-tip *ngIf="selectedTab == 'words'" type="info" header="no-header" class="no-arrowhead">
-        <div label-tip-body translate>Enter your recovery phrase (usually 12-words) in the correct order. Separate each word with a single space only (no commas or any other punctuation). For backup phrases in non-English languages: Some words may include special symbols (ñ, è, っ, etc.), so be sure to spell all the words correctly. </div>
-      </label-tip>
-    </ion-list>
-   
-
-   
-    <ion-list *ngIf="selectedTab == 'file'">
-        <ion-item class="hide-validation" *ngIf="!isSafari && !isCordova">
-          <ion-input class="upload-hidden" type="file" accept="json" [(ngModel)]="formFile" (change)="fileChangeEvent($event)" formControlName="file"></ion-input>
+      <ion-list lines="none" class="file-ion-list-custom" *ngIf="selectedTab == 'file'">
+        <ion-item class="hide-border file-ion-item-custom" *ngIf="!isSafari && !isCordova">
+          <ion-input class="upload-hidden" type="file" accept="json" [(ngModel)]="formFile"
+            (change)="fileChangeEvent($event)" formControlName="file"></ion-input>
           <div item-content class="upload-ui">
             <div class="empty-message">{{'Choose a backup file from your computer' | translate}}&hellip;</div>
             <div class="filled-message">{{prettyFileName}}</div>
           </div>
         </ion-item>
 
-        <ion-item *ngIf="isSafari || isCordova">
+        <ion-item class="file-ion-item-custom" *ngIf="isSafari || isCordova">
           <ion-label position="floating">{{'Paste the backup plain text code' | translate}}</ion-label>
           <ion-textarea formControlName="backupText" rows="7" [value]="importForm.value.backupText"></ion-textarea>
         </ion-item>
@@ -60,63 +44,91 @@
           <ion-label position="floating">{{'Password' | translate}}</ion-label>
           <ion-input type="password" formControlName="filePassword"></ion-input>
         </ion-item>
-    </ion-list>
-
-    <ion-button class="button-standard button-secondary" (click)="showAdvOpts = !showAdvOpts">
-      <span *ngIf="!showAdvOpts">{{'Show advanced options' | translate}}</span>
-      <span *ngIf="showAdvOpts">{{'Hide advanced options' | translate}}</span>
-    </ion-button>
-
-    <div class="custom-option" *ngIf="showAdvOpts">
-      <ion-list>
-        <ion-item>
-          <ion-label position="floating">Wallet Service URL</ion-label>
-          <ion-input type="text" formControlName="bwsURL"></ion-input>
-        </ion-item>
       </ion-list>
 
-      <ion-list lines="none" *ngIf="selectedTab == 'words'">
-        <ion-item>
-          <ion-label>{{'Specify derivation path' | translate}}</ion-label>
-          <ion-toggle formControlName="derivationPathEnabled" (ionChange)="changeDerivationPathValidators();"></ion-toggle>
-        </ion-item>
+      <ion-button size="large" slot="start" class="advance-button" (click)="handleClickAdvanceOption()"
+        [ngClass]="{'open-advance': showAdvOpts}">
+        <ng-container *ngIf="!showAdvOpts; else elseBlock">
+          <span>{{'Show advanced options' | translate}}</span>
+          <ion-icon slot="end" src="assets/img/chevron-down-{{currentTheme}}.svg"></ion-icon>
+        </ng-container>
+        <ng-template #elseBlock>
+          <span *ngIf="showAdvOpts">{{'Hide advanced options' | translate}}</span>
+          <ion-icon slot="end" src="assets/img/chevron-up-{{currentTheme}}.svg"></ion-icon>
+        </ng-template>
+      </ion-button>
 
-        <ion-item *ngIf="importForm.value.derivationPathEnabled">
-          <ion-label position="floating">{{'Coin' | translate}}</ion-label>
-          <ion-select okText="{{okText}}" cancelText="{{cancelText}}" formControlName="coin" (ionChange)="setDerivationPath($event)">
-            <div *ngFor="let coin of availableCoins">
-              <ion-select-option value="{{coin}}"> {{ getCoinName(coin) }} ({{ coin.toUpperCase() }})</ion-select-option>
+      <div *ngIf="showAdvOpts" class="line-divider"></div>
+
+      <div class="show-advance-option" *ngIf="showAdvOpts">
+        <ion-list lines="none">
+          <ion-item>
+            <ion-label position="floating">Wallet Service URL</ion-label>
+            <ion-input type="text" formControlName="bwsURL"></ion-input>
+          </ion-item>
+        </ion-list>
+
+        <div *ngIf="selectedTab == 'words'" class="line-divider line-divider-inside-form"></div>
+
+        <ion-list class="final-list-custom" lines="none" *ngIf="selectedTab == 'words'">
+          <ion-item>
+            <ion-label>{{'Specify derivation path' | translate}}</ion-label>
+            <ion-toggle formControlName="derivationPathEnabled" (ionChange)="changeDerivationPathValidators();">
+            </ion-toggle>
+          </ion-item>
+
+          <ion-item *ngIf="importForm.value.derivationPathEnabled">
+            <ion-label position="floating">{{'Coin' | translate}}</ion-label>
+            <ion-select mode="ios" okText="{{okText}}" cancelText="{{cancelText}}" formControlName="coin"
+              (ionChange)="setDerivationPath($event)">
+              <div *ngFor="let coin of availableCoins">
+                <ion-select-option value="{{coin}}"> {{ getCoinName(coin) }} ({{ coin.toUpperCase() }})
+                </ion-select-option>
+              </div>
+            </ion-select>
+          </ion-item>
+          <ion-item *ngIf="isShoweTokenPath">
+            <ion-label>
+              eToken Path
+            </ion-label>
+            <ion-toggle (ionChange)="setDerivationPathForXpiSlpToken($event)"></ion-toggle>
+          </ion-item>
+
+          <ion-item *ngIf="importForm.value.derivationPathEnabled">
+            <ion-label position="floating">{{'Derivation path' | translate}}</ion-label>
+            <ion-input type="text" formControlName="derivationPath" [value]="importForm.value.derivationPath">
+            </ion-input>
+          </ion-item>
+
+          <ion-item
+            *ngIf="importForm.value.derivationPathEnabled && importForm.value.derivationPath === this.derivationPathHelperProvider.defaultBTC">
+            <ion-label>{{'Shared Wallet' | translate}}</ion-label>
+            <ion-toggle formControlName="isMultisig"></ion-toggle>
+          </ion-item>
+
+          <div class="line-divider line-divider-inside-form"></div>
+
+          <ion-item class="with-label">
+            <ion-label position="floating">{{'Password' | translate}}</ion-label>
+            <ion-input type="password" formControlName="passphrase"></ion-input>
+          </ion-item>
+
+          <label-tip type="info" header="no-header">
+            <div label-tip-body translate>
+              This field is only for users who, in previous versions (it's not supported anymore), set a password to
+              protect their recovery phrase. This field is not for your encrypt password.
             </div>
-          </ion-select>
-        </ion-item>
-        <ion-item *ngIf="isShoweTokenPath">
-          <ion-label>
-            eToken Path
-          </ion-label>
-          <ion-toggle (ionChange)="setDerivationPathForXpiSlpToken($event)"></ion-toggle>
-        </ion-item>
+          </label-tip>
 
-        <ion-item *ngIf="importForm.value.derivationPathEnabled">
-          <ion-label position="floating">{{'Derivation path' | translate}}</ion-label>
-          <ion-input type="text" formControlName="derivationPath" [value]="importForm.value.derivationPath"></ion-input>
-        </ion-item>
+        </ion-list>
+      </div>
+    </form>
+  </div>
 
-        <ion-item *ngIf="importForm.value.derivationPathEnabled && importForm.value.derivationPath === this.derivationPathHelperProvider.defaultBTC">
-          <ion-label>{{'Shared Wallet' | translate}}</ion-label>
-          <ion-checkbox formControlName="isMultisig"></ion-checkbox>
-        </ion-item>
-
-        <ion-item class="with-label">
-          <ion-label position="floating">{{'Password' | translate}}</ion-label>
-          <ion-input type="password" formControlName="passphrase"></ion-input>
-        </ion-item>
-
-        <label-tip type="info" header="no-header">
-          <div label-tip-body translate>
-            This field is only for users who, in previous versions (it's not supported anymore), set a password to protect their recovery phrase. This field is not for your encrypt password.
-          </div>
-        </label-tip>
-      </ion-list>
-    </div>
-  </form>
-</ion-content>
+  <div footer-content>
+    <ion-toolbar>
+      <ion-button class="button-standard" (click)="import()" [disabled]="!importForm.valid">Import
+      </ion-button>
+    </ion-toolbar>
+  </div>
+</wide-header-page>

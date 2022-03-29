@@ -223,7 +223,7 @@
 
     form {
         ion-item {
-            border-bottom: 1px solid var(--border-color-dark-theme) !important;
+            border-color: var(--border-color-dark-theme) !important;
         }
     }
 
@@ -2310,7 +2310,25 @@
         }
         ion-segment-button {
             &::part(native) {
-                color: var(--ion-color-primary) !important;
+                color: #EDEFF0 !important;
+            }
+        }
+        .advance-button{
+            --background: linear-gradient(0deg, rgba(126, 208, 255, 0.11), rgba(126, 208, 255, 0.11)), #001E2E;
+            span{
+                color: #EDEFF0;
+            }
+        }
+        .show-advance-option{
+            background: linear-gradient(0deg, rgba(126, 208, 255, 0.11), rgba(126, 208, 255, 0.11)), #001E2E;
+            ion-list{
+                background: linear-gradient(0deg, rgba(126, 208, 255, 0.11), rgba(126, 208, 255, 0.11)), #001E2E;
+                ion-item{
+                    border-color: rgba(237, 239, 240, 0.38);
+                    ion-label{
+                        color: rgba(237, 239, 240, 0.6);
+                    }
+                }
             }
         }
     }
