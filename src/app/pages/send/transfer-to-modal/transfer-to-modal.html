@@ -1,6 +1,11 @@
-<wide-header-page #wideHeaderPage title="{{'Select recipient' | translate}}" (back)="back()" [isCustomBack]='true'>
+<wide-header-page #wideHeaderPage [hideToolbar]="true" (back)="back()" [isCustomBack]='true'>
   <div page-content>
-    <ion-searchbar [scrollArea]="wideHeaderPage?.scrollArea" placeholder="{{'Search Wallets or Contacts' | translate}}" [(ngModel)]="search"></ion-searchbar>
+    <div class="header-container">
+      <div class="header-title">
+        {{'Select recipient' | translate}}
+      </div>
+      <ion-icon src="assets/img/search-{{currentTheme}}.svg"></ion-icon>
+    </div>
     <page-transfer-to [wallet]="wallet" [searchInput]="search" [useAsModal]="true" [fromMultiSend]="fromMultiSend"  [fromSend]="fromSend"></page-transfer-to>
   </div>
 </wide-header-page>

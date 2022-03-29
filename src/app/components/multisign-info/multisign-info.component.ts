@@ -11,10 +11,12 @@ import { InfoSheetComponent } from '../info-sheet/info-sheet';
   encapsulation: ViewEncapsulation.None,
 })
 export class MultisignInfoComponent extends ActionSheetParent {
-
+  public wallet: any;
   constructor() {
     super();
    }
-
+   ngOnInit() {
+    this.wallet = this.params;
+  }
 
 }

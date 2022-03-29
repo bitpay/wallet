@@ -1,2 +1,14 @@
 page-transfer-to-modal {
+    .header-container{
+        display: flex;
+        flex-flow: row;
+        justify-content: space-between;
+        margin: 0 1rem;
+        .header-title{
+            font-weight: 400;
+            font-size: 24px;
+            color: #001E2E;
+        }
+    }
+    
 }

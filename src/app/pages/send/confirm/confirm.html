@@ -83,7 +83,7 @@
 
       <ion-item button detail="false" (click)="showWallets()" class="row-container"
         [ngClass]="{'not-clickable': fromWalletDetails || walletConnectRequestId}">
-        <ion-label>
+        <ion-label slot="start">
           <div class="summary-item">
             <span translate>Sending from</span>
           </div>
@@ -104,7 +104,7 @@
       </ion-item>
 
       <ion-item *ngIf="!fromMultiSend" lines="none" [ngClass]="{'send-to-custom': !tx.name && !toAddressName }">
-        <ion-label>
+        <ion-label slot="start">
           <div class="summary-item">
             <span translate>Sending to</span>
           </div>
@@ -113,8 +113,7 @@
         <ion-note slot="end" class="address-note-custom">
           <div class="note-container" *ngIf="!tx.recipientType">
             <div copy-to-clipboard="{{ tx.origToAddress }}">
-              <span *ngIf="!tx.name">{{toAddressName || (tx.origToAddress |
-                shortenedAddress)}}</span>
+              <span *ngIf="!tx.name">{{toAddressName || (tx.origToAddress.slice(-8))}}</span>
               <span class="ellipsis" *ngIf="tx.name">{{tx.name}}</span>
             </div>
 
@@ -202,7 +201,7 @@
       <ng-container *ngIf="isDonation && remaining && isShowReceive">
         <div class="line-divider"></div>
         <ion-item lines="none">
-          <ion-label>
+          <ion-label slot="start">
             <div class="summary-item">
               <span translate>Receiving account</span>
             </div>
@@ -225,7 +224,7 @@
         <div class="line-divider"></div>
 
         <ion-item lines="none">
-          <ion-label>
+          <ion-label slot="start">
             <div class="summary-item">
               <span translate>Lotus Receiving</span>
             </div>
@@ -236,7 +235,7 @@
       </ng-container>
 
       <ion-item lines="none">
-        <ion-label position="stacked">{{'Memo' | translate}}</ion-label>
+        <ion-label class="no-margin-left" position="stacked">{{'Memo' | translate}}</ion-label>
         <ion-textarea placeholder="{{'Enter a transaction memo' | translate}}" [(ngModel)]="tx.description"
           name="tx.description" autocomplete="off" autocorrect="off"></ion-textarea>
       </ion-item>
