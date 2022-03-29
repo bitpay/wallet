@@ -33,22 +33,28 @@
         <ion-item class="item-wallet-input">
           <ion-label>
             <h3 translate>Total wallet inputs</h3>
-            <p class="info">{{allUtxosNb}} [{{allUtxosSum}}]</p>
           </ion-label>
+          <ion-note slot="end" class="info">
+            {{allUtxosNb}} [{{allUtxosSum}}]
+          </ion-note>
         </ion-item>
 
         <ion-item class="item-wallet-input">
           <ion-label>
             <h3 translate> Low amount inputs </h3>
-            <p class="info">{{lowUtxosNb}} [{{ lowUtxosSum }}]</p>
           </ion-label>
+          <ion-note slot="end" class="info">
+            {{lowUtxosNb}} [{{ lowUtxosSum }}]
+          </ion-note>
         </ion-item>
 
         <ion-item class="item-wallet-input">
           <ion-label>
-            <h3 translate>Approximate Bitcoin network fee to transfer wallet's balance (with normal priority)</h3>
-            <p class="info">{{minFeePer}} [{{minFee}}]</p>
+            <h3 translate>Bitcoin network fee</h3>
           </ion-label>
+          <ion-note slot="end" class="info">
+            {{minFeePer}} [{{minFee}}]
+          </ion-note>
         </ion-item>
       </div>
 
@@ -75,7 +81,7 @@
         <ion-item *ngFor="let u of latestUnused" copy-to-clipboard="{{u.address}}">
           <ion-label>
             <h4>{{u.address}}</h4>
-            <p>{{u.path}} {{u.createdOn * 1000 | amDateFormat:'MMMM Do YYYY, hh:mm a'}}</p>
+            <p class="info">{{u.path}} {{u.createdOn * 1000 | amDateFormat:'MMMM Do YYYY, hh:mm a'}}</p>
           </ion-label>
         </ion-item>
       </div>

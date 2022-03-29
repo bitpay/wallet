@@ -225,10 +225,14 @@ export class KeySettingsPage {
             this.configProvider.removeBwsFor(wallet.credentials.walletId);
           });
           this.keyProvider.removeKey(this.keyId);
-          this.router.navigate(['/tabs/wallets'], { state: {setDefaultKeySelect: true}, replaceUrl: true });
+          setTimeout(() => {
+            this.router.navigate([''], { replaceUrl: true });
+          }, 1000);
         } else {
           this.logger.warn('Key was not removed. Still in use');
-          this.router.navigate(['/tabs/wallets'], { state: {setDefaultKeySelect: true}, replaceUrl: true },);
+          setTimeout(() => {
+            this.router.navigate([''], { replaceUrl: true });
+          }, 1000);
         }
       })
       .catch(err => {

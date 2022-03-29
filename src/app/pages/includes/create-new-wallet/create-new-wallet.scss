@@ -1,14 +1,42 @@
-.zero-state-wallets {
-  background-color: #f0f2fc;
-  overflow: hidden;
-  width: 100%;
-  height: 226px;
-
-  .zero-state-image {
-    text-align: center;
-    img {
-      width: 270px;
-      margin-top: 25px;
+create-new-wallet {
+  .create-new-wallet-container {
+    height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    .zero-state-image {
+      text-align: center;
+      img {
+        width: 55%;
+      }
+    }
+    .card-title {
+      font-weight: 600;
+      font-size: 22px;
+      line-height: 28px;
+      color: #001E2E;
+      text-align: center;
+      margin: 0.5rem;
+    }
+    .card-body {
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 24px;
+      text-align: center;
+      letter-spacing: 0.5px;
+      color: rgba(0, 30, 46, 0.6);
+      margin: 0.5rem;
+    }
+    .card-btn {
+      text-align: center;
+      margin-top: 4rem;
+      .button-standard {
+        width: 33%;
+        --border-radius: 100px;
+        font-weight: 600;
+        line-height: 22px;
+        letter-spacing: 0.1px;
+      }
     }
   }
 }

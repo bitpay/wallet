@@ -194,11 +194,12 @@ export class WalletsPage {
   private initKeySelected() {
     let keyChange = this.profileProvider.keyChange;
     let walletChange = this.profileProvider.walletChange;
-    if (this.walletsGroups.length !== 0 || this.navParamsData.setDefaultKeySelect) {
-      if (this.keySelected.length === 0) {
+    if (this.walletsGroups.length !== 0) {
+      if (this.keySelected.length === 0 || keyChange.isDelete) {
         this.totalBalanceKey = this.getTotalBalanceKey(this.walletsGroups[0]);
         this.keySelected = this.walletsGroups[0];
         this.keyNameSelected = this.getWalletGroup(this.keySelected[0].keyId).name;
+        this.profileProvider.keyChange.isDelete = false;
       }
       if (keyChange.isStatus && keyChange.keyId) {
         const walletsGroups = this.profileProvider.orderedWalletsByGroup;

@@ -1,6 +1,9 @@
 page-wallet-addresses {
   ion-list {
     margin-bottom: 3rem;
+    &.ios {
+      margin-bottom: 5rem;
+    }
   }
   .add-icon {
     font-size: 1.7rem !important;

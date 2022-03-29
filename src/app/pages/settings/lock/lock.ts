@@ -100,7 +100,7 @@ export class LockPage {
   async openPinModal(action) {
     const modal = await this.modalCtrl.create({
       component: PinModalPage,
-      componentProps: action,
+      componentProps: { action: action },
       cssClass: 'fullscreen-modal'
     });
     await modal.present();
