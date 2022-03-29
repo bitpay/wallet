@@ -172,7 +172,7 @@
             --color: var(--color-on-primary-abcpay-dark);
         }
         &[fill="clear"] {
-            --background: transparent;
+            --background: transparent !important;
             --background-activated: transparent;
             --color: var(--text-color-dark-theme) !important;
         }
@@ -1682,7 +1682,7 @@
             }
         }
 
-        .accept-btn {
+        .detail-btn {
             --color: var(--color-primary-abcpay-dark) !important;
         }
 
