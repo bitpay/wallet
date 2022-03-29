@@ -84,6 +84,13 @@
       <span sheet-second-button-text translate *ngIf="params.secondBtnText" (click)="openInBrowser(params.url)">{{ params.secondBtnText }}</span>
     </info-sheet-template>
 
+    <info-sheet-template *ngSwitchCase="'invalid-qr'" type="danger" class="custom-sheet">
+      <span sheet-title-text>{{params.title}}</span>
+      <span sheet-text>{{params.msg}}</span>
+      <span sheet-second-button-text translate>Cancel</span>
+      <span sheet-button-text translate>Try agian</span>
+    </info-sheet-template>
+
     <info-sheet-template *ngSwitchCase="'backup-later-warning'" type="warning">
       <span sheet-title-text translate>Are you sure?</span>
       <span sheet-text translate>

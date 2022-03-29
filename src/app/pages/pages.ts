@@ -93,6 +93,8 @@ import { AmountPage } from '../pages/send/amount/amount';
 import { ConfirmPage } from '../pages/send/confirm/confirm';
 import { MultiSendPage } from '../pages/send/multi-send/multi-send';
 import { SelectInputsPage } from '../pages/send/select-inputs/select-inputs';
+import { SelectInputsSendPage } from '../pages/send/send-select-inputs/send-select-inputs';
+
 import { TransferToModalPage } from '../pages/send/transfer-to-modal/transfer-to-modal';
 import { TransferToPage } from '../pages/send/transfer-to/transfer-to';
 
@@ -104,6 +106,7 @@ import { DisclaimerModal } from './includes/disclaimer-modal/disclaimer-modal';
 import { TokenDetailsPage } from './token-details/token-details';
 import { ConfirmTokenPage } from './confirm-token/confirm-token';
 import { TokenInforPage } from './token-info/token-info';
+import { AccountsPage } from './accounts/accounts';
 
 
 export const PAGES = [
@@ -122,6 +125,7 @@ export const PAGES = [
   CreateNewWalletPage,
   CopayersPage,
   SelectInputsPage,
+  SelectInputsSendPage,
   LotusDonationCard,
   SharePage,
   ImportWalletPage,
@@ -145,6 +149,7 @@ export const PAGES = [
   HomePage,
   // CardsPage,
   WalletsPage,
+  AccountsPage,
   TokenDetailsPage,
   TokenInforPage,
   ConfirmTokenPage,

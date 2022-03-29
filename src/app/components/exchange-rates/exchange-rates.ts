@@ -19,6 +19,7 @@ export interface Card {
   backgroundColor: string;
   gradientBackgroundColor: string;
   name: string;
+  currentTime?: number;
 }
 
 @Component({

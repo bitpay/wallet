@@ -1,88 +1,153 @@
-recipient-component{
+recipient-component {
+
     input[type=number]::-webkit-inner-spin-button,
     input[type=number]::-webkit-outer-spin-button {
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    margin: 0;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        margin: 0;
     }
-    .recipient-header{
+
+    .recipient-header {
         font-weight: 600;
         color: rgba(0, 30, 46, 0.6);
         display: flex;
         justify-content: space-between;
-        .x-button{
+
+        .x-button {
             cursor: pointer;
         }
     }
-    
-    .recipient-content-wrapper{
+
+    .recipient-content-wrapper {
         background: #FAFAFB;
         border-radius: 12px;
         margin-bottom: 20px;
-        
-        .recipient-content{
+
+        .recipient-content {
             padding-left: 16px;
             padding-top: 18px;
             padding-bottom: 16px;
             padding-right: 16px;
-            .title{
+
+            .title {
                 font-weight: 600;
                 font-size: 14px;
                 color: rgba(0, 30, 46, 1);
             }
-            .transfer-to-header{
+
+            .transfer-to-header {
                 display: flex;
                 justify-content: space-between;
-                img{
+
+                img {
                     cursor: pointer;
                     color: #00658D;
                 }
             }
-            .search-address-wrapper, .amount-wrapper{
+
+            .search-address-wrapper,
+            .amount-wrapper {
                 --border-color: rgba(0, 30, 46, 0.38);
                 --border-width: 2px;
                 --border-style: solid;
                 --border-radius: 4px;
                 --background: transparent;
                 --highlight-color-focused: rgba(0, 30, 46, 0.38);
-                --highlight-color-valid	: rgba(0, 30, 46, 0.38);
+                --highlight-color-valid: rgba(0, 30, 46, 0.38);
                 --highlight-color-invalid: rgba(0, 30, 46, 0.38);
-                ion-input{
+
+                ion-input {
                     --placeholder-color: rgba(0, 30, 46, 0.38);
                     --color: #001E2E;
                     font-size: 16px;
                 }
-                .scan-icon{
+
+                .scan-icon {
                     width: 20px;
                     height: 20px;
                     margin-right: 0px;
                 }
-               .erase-icon{
-                   width: 14px;
-                   cursor: pointer;
-               }
-               .transfer-to-input{
+
+                .erase-icon {
+                    width: 14px;
                     cursor: pointer;
-               }
+                }
+
+                .transfer-to-input {
+                    cursor: pointer;
+                }
             }
-            .bold-text{
+
+            .bold-text {
                 color: #00658D;
                 font-weight: 600;
                 font-size: 16px;
             }
-            .amount-header{
+
+            .amount-header {
                 display: flex;
                 flex-flow: row;
                 justify-content: space-between;
             }
-            .max-text{
+
+            .max-text {
                 cursor: pointer;
             }
-            .unit-alt-text{
+
+            .unit-alt-text {
                 font-size: 12px;
                 color: rgba(0, 30, 46, 0.6);
             }
         }
+    }
+    .say-thank-wrapper {
+        background: url('../../../assets/img/bg-donate-card.svg') no-repeat 100% !important;
+        padding-bottom: 1rem;
+        background-size: cover !important;
+        .title-account {
+            color: #E0E4E6;
+        }
+    }
+
+    .say-thanks {
+        .title-thanks {
+            font-size: 22px;
+            line-height: 28px;
+            color: #EDEFF0;
+        }
+
+        .receiveLotus {
+            padding: 1rem 0;
+            font-size: 12px;
+            color: #73DAA5;
+        }
+
+        .messages {
+            font-size: 12px;
+            color: #EDEFF0;
+            opacity: .6;
+        }
+       
+    }
+
+    .selected-amount {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+
+        ion-label {
+            flex: unset;
+            padding-right: 1rem;
+        }
+    }
+
+    .disabled {
+        color: var(--grey-text);
+    }
+
+    .item-title {
+        color: var(--grey-text);
+        font-size: 14px;
     }
 }

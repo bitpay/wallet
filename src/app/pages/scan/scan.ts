@@ -15,6 +15,8 @@ import { EventManagerService } from 'src/app/providers/event-manager.service';
 import { Router } from '@angular/router';
 import _ from 'lodash';
 import { PreviousRouteService } from 'src/app/providers/previous-route/previous-route';
+import { ActionSheetProvider } from 'src/app/providers/action-sheet/action-sheet';
+import { AddressProvider } from 'src/app/providers/address/address';
 
 @Component({
   selector: 'page-scan',
@@ -69,6 +71,8 @@ export class ScanPage {
     private location: Location,
     private routerOutlet: IonRouterOutlet,
     private previousRouteService: PreviousRouteService,
+    private actionSheetProvider: ActionSheetProvider,
+    private addressProvider: AddressProvider
   ) {
     if (this.router.getCurrentNavigation()) {
       this.navParamsData = this.router.getCurrentNavigation().extras.state ? this.router.getCurrentNavigation().extras.state : {};
@@ -110,6 +114,7 @@ export class ScanPage {
       this.scannerServiceInitializedHandler
     );
 
+    this.scannerHasPermission = false;
     this.cameraToggleActive = false;
     this.lightActive = false;
     this.scanProvider.frontCameraEnabled = false;
@@ -175,6 +180,8 @@ export class ScanPage {
 
   private showErrorInfoSheet(error: Error | string, title?: string): void {
     let infoSheetTitle = title ? title : this.translate.instant('Error');
+
+
     this.errorsProvider.showDefaultError(
       this.bwcErrorProvider.msg(error),
       infoSheetTitle,
@@ -182,6 +189,21 @@ export class ScanPage {
         this.activate();
       }
     );
+  }
+
+
+  private showErrorInvalidQr(error: Error | string, title?: string): void {
+    let infoSheetTitle = title
+    const errorInfoSheet = this.actionSheetProvider.createInfoSheet(
+      'invalid-qr',
+      { msg: error, title: infoSheetTitle }
+    );
+    errorInfoSheet.present();
+    errorInfoSheet.onDidDismiss(option => {
+      if (option) {
+        this.router.navigate(['/tabs/scan'])
+      }
+    });
   }
 
   private updateCapabilities(): void {
@@ -243,7 +265,6 @@ export class ScanPage {
 
   private handleSuccessfulScan(contents: string): void {
     if (this.canGoBack) this.location.back();
-
     if (this.fromAddressbook) {
       this.events.publish('Local/AddressScan', { value: contents });
     } else if (this.fromImport) {
@@ -269,11 +290,43 @@ export class ScanPage {
       };
       this.incomingDataProvider.redir(contents, redirParms);
     } else {
-      // toto ionic 4
-      // this.navCtrl.parent.select(1); // Workaround to avoid keep camera active
-      const redirParms = { activePage: 'ScanPage' };
-      this.incomingDataProvider.redir(contents, redirParms);
+      this.router.navigate(['/tabs/home']).then(() => {
+        this.redirScanAddress(contents);
+      });
+
     }
+  }
+
+
+  private handleSendAddress(data, addrData): void {
+    const dataMenu = this.actionSheetProvider.createIncomingDataMenu({ data });
+    dataMenu.present();
+    dataMenu.onDidDismiss(dataDismiss => {
+      if (dataDismiss && dataDismiss.redirTo == 'SendPage') {
+        this.router.navigateByUrl('/accounts-page', {
+          state: {
+            coin: addrData.coin,
+            network: addrData.network,
+            toAddress: data.data
+          }
+        });
+      }
+    });
+  }
+
+  private redirScanAddress(address) {
+    const parsedData = this.incomingDataProvider.parseData(address);
+    if (parsedData) {
+      const addrData = this.addressProvider.getCoinAndNetwork(address);
+      if (addrData && addrData.coin && addrData.network) {
+        return this.handleSendAddress({
+          data: address,
+          type: parsedData.type,
+          coin: addrData.coin
+        }, addrData)
+      }
+    }
+    return this.showErrorInvalidQr(' ', 'Invalid QR code');
   }
 
   public authorize(): void {
