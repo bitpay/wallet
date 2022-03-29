@@ -67,7 +67,7 @@ export class RecipientComponent implements OnInit {
   receiveLotus: string;
   receiveAmountLotus: number;
   formatRemaining: string;
-  messagesReceiveLotus: string = '';
+  messagesReceiveLotus: boolean = false;
   @Input()
   recipient: RecipientModel;
 
@@ -631,12 +631,12 @@ export class RecipientComponent implements OnInit {
     this.isShowReceiveLotus = amountDonation >= minMoneydonation && remaining >= receiveLotus;
     if (this.isShowReceiveLotus) {
       this.receiveLotus = `You will receive ${receiveLotus} Lotus`;
-      this.messagesReceiveLotus = '';
+      this.messagesReceiveLotus = false;
     } else if (amountDonation <= minMoneydonation && amountDonation != 0) {
       this.receiveLotus = `You will receive 0 Lotus`;
-      this.messagesReceiveLotus = '';
+      this.messagesReceiveLotus = false;
     } else if (amountDonation >= minMoneydonation && remaining < receiveLotus) {
-      this.messagesReceiveLotus = `Due to high demand, we are running out of Lotus today and unable to give you back. Come back another day or proceed anyway.`;
+      this.messagesReceiveLotus = true;
     }
   }
 

@@ -1,13 +1,13 @@
 <div class="recipient-header" *ngIf="!isShowSelectInput && !isDonation">
   <p class="recipient-header-title">RECIPIENT</p>
   <img *ngIf="isShowDelete" (click)="informDelete()" class="x-button"
-    src="../../../../assets/img/recipient-component/x-{{darkThemeString}}.svg">
+    src="assets/img/recipient-component/x-{{darkThemeString}}.svg">
 </div>
 <div class="recipient-content-wrapper">
   <div class="recipient-content">
     <div *ngIf="!isDonation" class="transfer-to-header">
       <p class="title">Transfer to</p>
-      <img *ngIf="!token" (click)="openTransferToModal()" src="../../../../assets/img/recipient-component/Union-{{darkThemeString}}.svg">
+      <img *ngIf="!token" (click)="openTransferToModal()" src="assets/img/recipient-component/Union-{{darkThemeString}}.svg">
     </div>
     <ion-item *ngIf="!isDonation"  lines="none" class="search-address-wrapper">
       <ion-input class="transfer-to-input" [readonly]="recipient.name.length > 0"
@@ -16,10 +16,10 @@
         [value]="recipient.name"
         (ionChange)="processInput()">
       </ion-input>
-      <ion-icon src="../../../../assets/img/recipient-component/Subtract.svg" *ngIf="searchValue && searchValue.length > 0"
+      <ion-icon src="assets/img/recipient-component/Subtract.svg" *ngIf="searchValue && searchValue.length > 0"
         slot="end" class="erase-icon" (click)="cleanSearch()">
       </ion-icon>
-      <ion-icon src="../../../../assets/img/recipient-component/qr-{{darkThemeString}}.svg" *ngIf="isCordova" slot="end" class="scan-icon" (click)="openScanner()">
+      <ion-icon src="assets/img/recipient-component/qr-{{darkThemeString}}.svg" *ngIf="isCordova" slot="end" class="scan-icon" (click)="openScanner()">
         </ion-icon>
     </ion-item>
     <div class="amount-header">
@@ -50,21 +50,21 @@
           for someone to express appreciation through words alone. By tokenizing a flower, we can always have the
           appreciation with us.' | translate}}</div>
       </ng-container>
-      <div *ngIf="messagesReceiveLotus && !isShowReceiveLotus" class="messages">{{messagesReceiveLotus}}</div>
+      <div *ngIf="messagesReceiveLotus && !isShowReceiveLotus" class="messages">{{'Due to high demand, we are running out of Lotus today and unable to give you back. Come back another day or proceed anyway.' | translate}}</div>
     </div>
     <div *ngIf="isShowReceiveLotus" class="transfer-to-header">
       <p class="title-account">{{'Receiving account' | translate}}</p>
       <img *ngIf="!token" (click)="openTransferToModal()"
-        src="../../../../assets/img/recipient-component/Union-{{darkThemeString}}.svg">
+        src="assets/img/recipient-component/Union-{{darkThemeString}}.svg">
     </div>
     <ion-item *ngIf="isShowReceiveLotus" lines="none" class="search-address-wrapper">
       <ion-input class="transfer-to-input" [readonly]="recipient.name.length > 0" placeholder="Paste address here"
         [(ngModel)]="searchValue" [value]="recipient.name" (ionChange)="processInput()">
       </ion-input>
-      <ion-icon src="../../../../assets/img/recipient-component/Subtract.svg"
+      <ion-icon src="assets/img/recipient-component/Subtract.svg"
         *ngIf="searchValue && searchValue.length > 0" slot="end" class="erase-icon" (click)="cleanSearch()">
       </ion-icon>
-      <ion-icon src="../../../../assets/img/recipient-component/qr-{{darkThemeString}}.svg" *ngIf="isCordova" slot="end"
+      <ion-icon src="assets/img/recipient-component/qr-{{darkThemeString}}.svg" *ngIf="isCordova" slot="end"
         class="scan-icon" (click)="openScanner()">
       </ion-icon>
     </ion-item>
