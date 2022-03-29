@@ -35,6 +35,9 @@ export class WalletAddressesPage {
   public allUtxosSum: string;
   public minFee: string;
   public minFeePer: string;
+  public isShowWalletInpus: boolean;
+  public isShowAddressBalance: boolean;
+  public isShowUnsedAddress: boolean;
 
   private UNUSED_ADDRESS_LIMIT: number;
   private BALANCE_ADDRESS_LIMIT: number;
@@ -63,6 +66,9 @@ export class WalletAddressesPage {
     this.wallet = this.profileProvider.getWallet(this.navParamsData.walletId);
     this.withBalance = null;
     this.noBalance = null;
+    this.isShowWalletInpus = true;
+    this.isShowAddressBalance = true;
+    this.isShowUnsedAddress = true;
   }
 
   ionViewWillEnter() {
@@ -191,5 +197,17 @@ export class WalletAddressesPage {
         });
       }, 1000);
     });
+  }
+
+  public handleClickShowWallInputs() {
+    this.isShowWalletInpus = !this.isShowWalletInpus;
+  }
+
+  public handleClickAddessBalance() {
+    this.isShowAddressBalance = !this.isShowAddressBalance;
+  }
+
+  public handleClickUnsedAdress() {
+    this.isShowUnsedAddress = !this.isShowUnsedAddress;
   }
 }

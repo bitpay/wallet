@@ -24,85 +24,99 @@
 
     <ion-list *ngIf="!loading" class="settings-list bp-list">
       <div *ngIf="allUtxosNb">
-        <ion-item-divider class="item-end">
+        <ion-item-divider>
           <ion-label>
-            {{'Wallet Inputs' | translate}}
+            {{'Account Inputs' | translate}}
           </ion-label>
+          <ion-icon slot="end" *ngIf="isShowWalletInpus" src="assets/img/chevron-up.svg" class="up-down-icon" (click)="handleClickShowWallInputs()"></ion-icon>
+          <ion-icon slot="end" *ngIf="!isShowWalletInpus" src="assets/img/chevron-down.svg" class="up-down-icon" (click)="handleClickShowWallInputs()"></ion-icon>
         </ion-item-divider>
 
-        <ion-item class="item-wallet-input">
-          <ion-label>
-            <ion-grid class="ion-no-padding">
-              <ion-row>
-                <ion-col>
-                  <h3 translate>Total wallet inputs</h3>
-                </ion-col>
-                <ion-col class="ion-text-right">
-                  <p class="info">{{allUtxosNb}} [{{allUtxosSum}}]</p>
-                </ion-col>
-              </ion-row>
-            </ion-grid>
-          </ion-label>
-        </ion-item>
-
-        <ion-item class="item-wallet-input">
-          <ion-label>
-            <ion-grid class="ion-no-padding">
-              <ion-row>
-                <ion-col>
-                  <h3 translate> Low amount inputs </h3>
-                </ion-col>
-                <ion-col class="ion-text-right">
-                  <p class="info">{{lowUtxosNb}} [{{ lowUtxosSum }}]</p>
-                </ion-col>
-              </ion-row>
-            </ion-grid>
-          </ion-label>
-        </ion-item>
-
-        <ion-item class="item-wallet-input">
-          <ion-label>
-            <ion-grid class="ion-no-padding">
-              <ion-row>
-                <ion-col>
-                  <h3 translate class="network-fee-title">Bitcoin network fee</h3>
-                </ion-col>
-                <ion-col class="ion-text-right">
-                  <p class="info">~{{minFeePer}}</p>
-                  <p class="info">[{{minFee}}]</p>
-                </ion-col>
-              </ion-row>
-            </ion-grid>
-          </ion-label>
-        </ion-item>
+        <div *ngIf="isShowWalletInpus">
+          <ion-item class="item-wallet-input">
+            <ion-label>
+              <ion-grid class="ion-no-padding">
+                <ion-row>
+                  <ion-col>
+                    <h3 translate>Total wallet inputs</h3>
+                  </ion-col>
+                  <ion-col class="ion-text-right">
+                    <p class="info">{{allUtxosNb}} [{{allUtxosSum}}]</p>
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
+            </ion-label>
+          </ion-item>
+  
+          <ion-item class="item-wallet-input">
+            <ion-label>
+              <ion-grid class="ion-no-padding">
+                <ion-row>
+                  <ion-col>
+                    <h3 translate> Low amount inputs </h3>
+                  </ion-col>
+                  <ion-col class="ion-text-right">
+                    <p class="info">{{lowUtxosNb}} [{{ lowUtxosSum }}]</p>
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
+            </ion-label>
+          </ion-item>
+  
+          <ion-item class="item-wallet-input">
+            <ion-label>
+              <ion-grid class="ion-no-padding">
+                <ion-row>
+                  <ion-col>
+                    <h3 translate class="network-fee-title">Bitcoin network fee</h3>
+                  </ion-col>
+                  <ion-col class="ion-text-right">
+                    <p class="info">~{{minFeePer}}</p>
+                    <p class="info">[{{minFee}}]</p>
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
+            </ion-label>
+          </ion-item>
+        </div>
+        
       </div>
 
       <div *ngIf="latestWithBalance && latestWithBalance[0]">
-        <ion-item-divider class="item-end">
+        <ion-item-divider>
           <ion-label>
             {{'Addresses with balance' | translate}}
           </ion-label>
+          <ion-icon slot="end" *ngIf="isShowAddressBalance" src="assets/img/chevron-up.svg" class="up-down-icon" (click)="handleClickAddessBalance()"></ion-icon>
+          <ion-icon slot="end" *ngIf="!isShowAddressBalance" src="assets/img/chevron-down.svg" class="up-down-icon" (click)="handleClickAddessBalance()"></ion-icon>
         </ion-item-divider>
-        <ion-item *ngFor="let w of latestWithBalance" copy-to-clipboard="{{w.address}}">
-          <ion-label>
-            <h4>{{w.address}}</h4>
-            <p class="info">{{w.amount | satToUnit: wallet.coin}}</p>
-          </ion-label>
-        </ion-item>
+        <div *ngIf="isShowAddressBalance">
+          <ion-item *ngFor="let w of latestWithBalance" copy-to-clipboard="{{w.address}}">
+            <ion-label>
+              <h4>{{w.address}}</h4>
+              <p class="info">{{w.amount | satToUnit: wallet.coin}}</p>
+            </ion-label>
+          </ion-item>
+        </div>
+        
       </div>
 
       <div *ngIf="latestUnused && latestUnused[0]">
-        <ion-item-divider class="item-end">
+        <ion-item-divider>
           <ion-label>
             {{'Unused addresses' | translate}}
           </ion-label>
+          <ion-icon slot="end" *ngIf="isShowUnsedAddress" src="assets/img/chevron-up.svg" class="up-down-icon" (click)="handleClickUnsedAdress()"></ion-icon>
+          <ion-icon slot="end" *ngIf="!isShowUnsedAddress" src="assets/img/chevron-down.svg" class="up-down-icon" (click)="handleClickUnsedAdress()"></ion-icon>
         </ion-item-divider>
-        <ion-item *ngFor="let u of latestUnused" copy-to-clipboard="{{u.address}}">
-          <ion-label>
-            <h4>{{u.address}}</h4>
-            <p>{{u.path}} {{u.createdOn * 1000 | amDateFormat:'MMMM Do YYYY, hh:mm a'}}</p>
-          </ion-label>
-        </ion-item>
+        <div *ngIf="isShowUnsedAddress">
+          <ion-item *ngFor="let u of latestUnused" copy-to-clipboard="{{u.address}}">
+            <ion-label>
+              <h4>{{u.address}}</h4>
+              <p>{{u.path}} {{u.createdOn * 1000 | amDateFormat:'MMMM Do YYYY, hh:mm a'}}</p>
+            </ion-label>
+          </ion-item>
+        </div>
       </div>
     </ion-list>
   </div>
