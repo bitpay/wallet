@@ -59,6 +59,7 @@ export class SendPage {
   isShowSendMax: boolean = true;
   isShowDelete: boolean = false;
   toAddress: string = '';
+  formatRemaining: string;
   @ViewChild(IonContent) content: IonContent;
 
   constructor(
@@ -100,6 +101,10 @@ export class SendPage {
       this.titlePage = "Send Donation";
       this.dataDonation = this.navPramss;
       this.wallet.donationCoin = this.navPramss.donationCoin;
+      const coinDonation = _.get(this.dataDonation, 'donationCoin', 'xpi');
+      const precision = this.currencyProvider.getPrecision(coinDonation as Coin).unitToSatoshi;
+      const remaining = this.dataDonation.remaining;
+      this.formatRemaining = `${this.txFormatProvider.formatAmount(coinDonation, precision * remaining)} ${_.upperCase(coinDonation)}`;
     } else {
       this.wallet.donationCoin = undefined;
     }
