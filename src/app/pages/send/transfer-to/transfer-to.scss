@@ -48,10 +48,17 @@
       }
     }
   }
+  
 }
 .wallet-item-content-container{
   background: #FAFAFB;
+  &:last-child{
+    ::ng-deep ion-item{
+      border-bottom: none !important;
+    }
+  }
 }
+
 .wallets-container{
   margin-bottom: 1rem;
 }
