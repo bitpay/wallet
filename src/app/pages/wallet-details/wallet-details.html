@@ -120,8 +120,6 @@
             {{'Details' | translate}}
           </ion-button>
         </div>
-        <!-- <ion-badge class="txps-badge" *ngIf="txps.length > 0" (click)="openProposalsNotificationsPage()"
-          color="primary">{{txps.length}}</ion-badge> -->
       </ion-item-divider>
       <div *ngFor="let txp of txpsPending;  let i=index">
         <page-txp *ngIf="i<=2" [tx]="txp" [addressbook]="addressbook"></page-txp>

@@ -6,6 +6,12 @@ page-proposals-notifications {
     box-shadow: 0px -2px 16px rgb(0 0 0 / 6%), 0px 2px 16px rgb(0 0 0 / 6%), 0px 0px 4px rgb(0 0 0 / 3%);
     margin-top: 20px;
   }
+  .recipient{
+    --inner-padding-top: 1rem;
+    .icon-wallet{
+      margin-top: 23px;
+    }
+  }
   .wallet-card-container{
     background: var(--bg-color-light-theme);
     margin-bottom: 10px;
