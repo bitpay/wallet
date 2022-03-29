@@ -67,6 +67,7 @@ export class RecipientComponent implements OnInit {
   receiveLotus: string;
   receiveAmountLotus: number;
   formatRemaining: string;
+  messagesReceiveLotus: string = '';
   @Input()
   recipient: RecipientModel;
 
@@ -166,7 +167,7 @@ export class RecipientComponent implements OnInit {
   ngOnInit() {
     this.setAvailableUnits();
     this.updateUnitUI();
-    if (this.recipient && this.recipient.toAddress) {
+    if (this.recipient && this.recipient.toAddress && !this.isDonation) {
       this.searchValue = this.recipient.toAddress;
       this.processInput();
     }
@@ -457,7 +458,7 @@ export class RecipientComponent implements OnInit {
 
   checkRecipientValid() {
     if (!this.isDonation) {
-      this.recipient.isValid = this.validAddress && this.validAmount
+      this.recipient.isValid = this.validAddress && this.validAmount;
     } else {
       if (this.isShowReceiveLotus) {
         this.recipient.isValid = this.validAddress && this.validAmount;
@@ -630,10 +631,12 @@ export class RecipientComponent implements OnInit {
     this.isShowReceiveLotus = amountDonation >= minMoneydonation && remaining >= receiveLotus;
     if (this.isShowReceiveLotus) {
       this.receiveLotus = `You will receive ${receiveLotus} Lotus`;
+      this.messagesReceiveLotus = '';
     } else if (amountDonation <= minMoneydonation && amountDonation != 0) {
       this.receiveLotus = `You will receive 0 Lotus`;
+      this.messagesReceiveLotus = '';
     } else if (amountDonation >= minMoneydonation && remaining < receiveLotus) {
-      this.receiveLotus = `Due to high demand, we are running out of Lotus today and unable to give you back. Come back another day or proceed anyway.`;
+      this.messagesReceiveLotus = `Due to high demand, we are running out of Lotus today and unable to give you back. Come back another day or proceed anyway.`;
     }
   }
 

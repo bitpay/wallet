@@ -40,6 +40,11 @@
       <span class="available-letter">Available: </span>
       <span class="balance-letter">{{getBalance()}}</span>
     </div>
+    <div *ngIf="isDonation" class="available-content remaining">
+      <span class="available-letter" >Lotus Remaining: </span> 
+      <span class="available-letter">{{formatRemaining}}</span>
+    </div>
+   
     <div class="prompt-user-fullscreen-container" *ngIf="shouldShowZeroState()">
       <div>
         <div class="prompt-user">

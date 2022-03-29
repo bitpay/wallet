@@ -1,4 +1,4 @@
-<div class="recipient-header" *ngIf="!isShowSelectInput">
+<div class="recipient-header" *ngIf="!isShowSelectInput && !isDonation">
   <p class="recipient-header-title">RECIPIENT</p>
   <img *ngIf="isShowDelete" (click)="informDelete()" class="x-button"
     src="../../../../assets/img/recipient-component/x-{{darkThemeString}}.svg">
@@ -40,29 +40,33 @@
 
 </div>
 
-<div  *ngIf="isShowReceiveLotus" class="recipient-content-wrapper say-thank-wrapper">
+<div *ngIf="isShowReceiveLotus || messagesReceiveLotus" class="recipient-content-wrapper say-thank-wrapper">
   <div class="recipient-content">
     <div class="say-thanks">
       <div class="title-thanks">{{'Appreciate!' | translate}}</div>
-      <div class="receiveLotus">{{'receiveLotus' | translate}}</div>
-      <div class="messages">{{'We say, “thank you” to each other. But, talk is cheap and words are fleeting. It’s easy for someone to express appreciation through words alone. By tokenizing a flower, we can always have the appreciation with us.' | translate}}</div>
+      <ng-container *ngIf="isShowReceiveLotus">
+        <div class="receiveLotus">{{receiveLotus}}</div>
+        <div class="messages">{{'We say, “thank you” to each other. But, talk is cheap and words are fleeting. It’s easy
+          for someone to express appreciation through words alone. By tokenizing a flower, we can always have the
+          appreciation with us.' | translate}}</div>
+      </ng-container>
+      <div *ngIf="messagesReceiveLotus && !isShowReceiveLotus" class="messages">{{messagesReceiveLotus}}</div>
     </div>
-    <div class="transfer-to-header">
+    <div *ngIf="isShowReceiveLotus" class="transfer-to-header">
       <p class="title-account">{{'Receiving account' | translate}}</p>
-      <img *ngIf="!token" (click)="openTransferToModal()" src="../../../../assets/img/recipient-component/Union-{{darkThemeString}}.svg">
+      <img *ngIf="!token" (click)="openTransferToModal()"
+        src="../../../../assets/img/recipient-component/Union-{{darkThemeString}}.svg">
     </div>
-    <ion-item  lines="none" class="search-address-wrapper">
-      <ion-input class="transfer-to-input" [readonly]="recipient.name.length > 0"
-        placeholder="Paste address here"
-        [(ngModel)]="searchValue"
-        [value]="recipient.name"
-        (ionChange)="processInput()">
+    <ion-item *ngIf="isShowReceiveLotus" lines="none" class="search-address-wrapper">
+      <ion-input class="transfer-to-input" [readonly]="recipient.name.length > 0" placeholder="Paste address here"
+        [(ngModel)]="searchValue" [value]="recipient.name" (ionChange)="processInput()">
       </ion-input>
-      <ion-icon src="../../../../assets/img/recipient-component/Subtract.svg" *ngIf="searchValue && searchValue.length > 0"
-        slot="end" class="erase-icon" (click)="cleanSearch()">
+      <ion-icon src="../../../../assets/img/recipient-component/Subtract.svg"
+        *ngIf="searchValue && searchValue.length > 0" slot="end" class="erase-icon" (click)="cleanSearch()">
       </ion-icon>
-      <ion-icon src="../../../../assets/img/recipient-component/qr-{{darkThemeString}}.svg" *ngIf="isCordova" slot="end" class="scan-icon" (click)="openScanner()">
-        </ion-icon>
+      <ion-icon src="../../../../assets/img/recipient-component/qr-{{darkThemeString}}.svg" *ngIf="isCordova" slot="end"
+        class="scan-icon" (click)="openScanner()">
+      </ion-icon>
     </ion-item>
   </div>
 </div>

@@ -103,7 +103,7 @@ recipient-component {
     }
     .say-thank-wrapper {
         background: url('../../../assets/img/bg-donate-card.svg') no-repeat 100% !important;
-        padding-bottom: 1rem;
+        padding-bottom: 2rem;
         background-size: cover !important;
         .title-account {
             color: #E0E4E6;
@@ -111,25 +111,30 @@ recipient-component {
     }
 
     .say-thanks {
-        .title-thanks {
-            font-size: 22px;
-            line-height: 28px;
-            color: #EDEFF0;
-        }
-
-        .receiveLotus {
-            padding: 1rem 0;
-            font-size: 12px;
-            color: #73DAA5;
-        }
-
-        .messages {
-            font-size: 12px;
-            color: #EDEFF0;
-            opacity: .6;
-        }
-       
+        padding-bottom: 1rem;
     }
+    
+    .say-thanks {
+    .title-thanks {
+        font-size: 22px;
+        line-height: 28px;
+        color: #EDEFF0;
+    }
+
+    .receiveLotus {
+        padding-top: .5rem;
+        font-size: 12px;
+        color: #73DAA5;
+    }
+
+    .messages {
+        padding-top: .5rem;
+        font-size: 12px;
+        color: #EDEFF0;
+        opacity: .6;
+    }
+
+}
 
     .selected-amount {
         display: flex;
