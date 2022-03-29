@@ -50,6 +50,7 @@ export interface WalletBindTypeOpts {
 })
 export class ProfileProvider {
   public keyChange = {
+    isDelete: false,
     isStatus : false,
     keyId: ''
   };
@@ -183,6 +184,7 @@ export class ProfileProvider {
     });
     this.keyChange = {
       isStatus: true,
+      isDelete: false,
       keyId: newWalletKeyId
     }
   }
@@ -1811,6 +1813,11 @@ export class ProfileProvider {
   }
 
   public deleteWalletGroup(keyId: string, wallets): Promise<any> {
+    this.keyChange = {
+      isStatus: false,
+      isDelete: true,
+      keyId: keyId
+    };
     wallets.forEach(wallet => {
       this._deleteWalletClient(wallet);
     });
