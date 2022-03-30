@@ -35,4 +35,4 @@ const updateAndroid = async() => {
   await project.vfs.commitAll();
 }
 updateAndroid();
-updateIos();
+// updateIos();
