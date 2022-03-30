@@ -9,7 +9,7 @@ import { TxpDetailsPage } from '../../txp-details/txp-details';
 import { ConfirmPage } from '../../send/confirm/confirm';
 
 import _ from 'lodash';
-import { ModalController, NavController } from '@ionic/angular';
+import { ModalController, NavController, ToastController } from '@ionic/angular';
 import { Router } from '@angular/router';
 
 @Component({
@@ -29,7 +29,8 @@ export class TxpPage implements OnInit {
     private timeProvider: TimeProvider,
     private modalCtrl: ModalController,
     private navCtrl: NavController,
-    private router: Router
+    private router: Router,
+    public toastController: ToastController
   ) {}
 
   @Input()
@@ -80,7 +81,30 @@ export class TxpPage implements OnInit {
       if (data && data.multisigContractAddress) {
         this.router.navigate(['/confirm'], { state: data });
       }
+      if(data && data.finishText){
+        this.presentToast(data.finishText);
+      }
     });
+  }
+
+  async presentToast(finishText) {
+    const toast = await this.toastController.create({
+      message: finishText,
+      duration: 3000,
+      position: 'top',
+      animated: true,
+      cssClass: 'custom-finish-toast',
+      buttons:[
+        {
+          side: 'start',
+          icon: 'checkmark-circle',
+          handler: () => {
+            console.log('');
+          }
+        }
+      ]
+    });
+    toast.present();
   }
 
   private getContact(addr: string, coin: string) {

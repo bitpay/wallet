@@ -250,7 +250,7 @@ export class TxpDetailsPage {
       .publishAndSign(this.wallet, this.tx)
       .then(() => {
         this.onGoingProcessProvider.clear();
-        this.openFinishModal();
+        this.annouceFinish();
       })
       .catch(err => {
         this.onGoingProcessProvider.clear();
@@ -320,7 +320,7 @@ export class TxpDetailsPage {
       .broadcastTx(this.wallet, this.tx)
       .then(() => {
         this.onGoingProcessProvider.clear();
-        this.openFinishModal();
+        this.annouceFinish();
       })
       .catch(err => {
         this.onGoingProcessProvider.clear();
@@ -402,22 +402,15 @@ export class TxpDetailsPage {
     });
   }
 
-  public close(): void {
+  public close(params?): void {
     this.loading = false;
-    this.modalCtrl.dismiss();
+    this.modalCtrl.dismiss(params);
   }
 
-  private async openFinishModal() {
-    let modal = await this.modalCtrl.create({
-      component: FinishModalPage,
-      componentProps: { finishText: this.successText },
-      showBackdrop: true,
-      backdropDismiss: false
-    });
-
-    await modal.present();
-    modal.onDidDismiss().then(({ data }) => {
-      this.close();
-    });
+  private async annouceFinish() {
+    const params = {
+      finishText: this.successText
+    }
+   this.close(params);
   }
 }

@@ -22,7 +22,7 @@ import { WalletProvider } from '../../providers/wallet/wallet';
 import { TxDetailsModal } from '../../pages/tx-details/tx-details';
 import { SearchTxModalPage } from './search-tx-modal/search-tx-modal';
 import { WalletBalanceModal } from './wallet-balance/wallet-balance';
-import { ModalController, NavParams, Platform } from '@ionic/angular';
+import { ModalController, NavParams, Platform, ToastController } from '@ionic/angular';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { NgxQrcodeErrorCorrectionLevels } from '@techiediaries/ngx-qrcode';
@@ -80,6 +80,7 @@ export class WalletDetailsPage {
   public isShowDonationBtn: boolean;
   public selectedTheme;
   public navPramss: any;
+  public finishParam: any;
   typeErrorQr =  NgxQrcodeErrorCorrectionLevels;
   constructor(
     public http: HttpClient,
@@ -107,7 +108,8 @@ export class WalletDetailsPage {
     private configProvider: ConfigProvider,
     private analyticsProvider: AnalyticsProvider,
     private appProvider: AppProvider,
-    private location: Location
+    private location: Location,
+    public toastController: ToastController
   ) {
     this.currentTheme = this.appProvider.themeProvider.currentAppTheme;
     if (this.router.getCurrentNavigation()) {
@@ -115,6 +117,7 @@ export class WalletDetailsPage {
     } else {
       this.navPramss = history ? history.state : {};
     }
+   
     this.selectedTheme = this.themeProvider.currentAppTheme;
     this.zone = new NgZone({ enableLongStackTrace: false });
     this.isCordova = this.platformProvider.isCordova;
@@ -166,6 +169,39 @@ export class WalletDetailsPage {
     let defaults = this.configProvider.getDefaults();
     this.blockexplorerUrl = defaults.blockExplorerUrl[this.wallet.coin];
     this.blockexplorerUrlTestnet = defaults.blockExplorerUrlTestnet[this.wallet.coin];
+  }
+
+  ionViewDidEnter(){
+    if (this.router.getCurrentNavigation()) {
+      this.navPramss = this.router.getCurrentNavigation().extras.state;
+    } else {
+      this.navPramss = history ? history.state : {};
+    }
+    if(this.navPramss && this.navPramss.finishParam){
+      this.finishParam = this.navPramss.finishParam;
+      this.presentToast();
+    }
+  }
+
+  async presentToast() {
+    const toast = await this.toastController.create({
+      message: this.finishParam.finishText,
+      duration: 3000,
+      position: 'top',
+      animated: true,
+      cssClass: 'custom-finish-toast',
+      buttons:[
+        {
+          side: 'start',
+          icon: 'checkmark-circle',
+          handler: () => {
+            console.log('');
+          }
+        }
+      ]
+    });
+    toast.present();
+    this.navPramss.finishParam = null;
   }
 
   subscribeEvents() {

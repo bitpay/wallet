@@ -245,6 +245,15 @@ ion-header ion-toolbar {
     }
 }
 
+.custom-finish-toast{
+    --box-shadow: none;
+    --background: transparent;
+    &::part(container){
+        background: #73DAA5;
+        color: #003921;
+        border-radius: 8px;
+    }
+}
 .option-button {
     font-size: 24px;
     opacity: 0.6;

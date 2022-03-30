@@ -1356,7 +1356,7 @@ export class ConfirmPage {
         .then(multisigWallet => {
           // store preferences for the paired eth wallet
           this.walletProvider.updateRemotePreferences(pairedWallet);
-          this.openFinishModal(false, { redir: null }, multisigWallet.id).then(
+          this.annouceFinish(false, { redir: null }, multisigWallet.id).then(
             () => {
               this.events.publish('Local/WalletListChange');
             }
@@ -1608,10 +1608,10 @@ export class ConfirmPage {
           return this.instantiateMultisigContract(txp);
         } else if (this.walletConnectRequestId) {
           this.onGoingProcessProvider.clear();
-          return this.openFinishModal(false, { redir });
+          return this.annouceFinish(false, { redir });
         } else {
           this.onGoingProcessProvider.clear();
-          return this.openFinishModal(false, { redir });
+          return this.annouceFinish(false, { redir });
         }
       })
       .catch(err => {
@@ -1637,7 +1637,7 @@ export class ConfirmPage {
       .onlyPublish(wallet, txp)
       .then(() => {
         this.onGoingProcessProvider.clear();
-        this.openFinishModal(true);
+        this.annouceFinish(true);
       })
       .catch(err => {
         this.onGoingProcessProvider.clear();
@@ -1645,7 +1645,7 @@ export class ConfirmPage {
       });
   }
 
-  protected async openFinishModal(
+  protected async annouceFinish(
     onlyPublish?: boolean,
     redirectionParam?: { redir: string },
     walletId?: string
@@ -1667,17 +1667,7 @@ export class ConfirmPage {
       );
       params = { finishText, finishComment };
     }
-    this.modalCtrl.create({
-      component: FinishModalPage,
-      componentProps: params,
-
-      showBackdrop: true,
-      backdropDismiss: false,
-      cssClass: 'finish-modal'
-    }).then(data => {
-      data.present();
-    });
-
+  
     this.clipboardProvider.clearClipboardIfValidData([
       'PayPro',
       'BitcoinUri',
@@ -1690,16 +1680,17 @@ export class ConfirmPage {
       'ECashUri',
       'LotusUri'
     ]);
-    this.navigateBack(redir, walletId);
+    this.navigateBack(redir, walletId, params);
   }
 
-  private navigateBack(_redir?: string, walletId?: string) {
+  private navigateBack(_redir?: string, walletId?: string, params?) {
     this.router.navigate([''], { replaceUrl: true }).then(_ => {
       if (this.wallet) {
         this.router.navigate(['/wallet-details'], {
           state: {
             walletId: walletId ? walletId : this.wallet.credentials.walletId,
-            donationSupportCoins: this.donationSupportCoins
+            donationSupportCoins: this.donationSupportCoins,
+            finishParam: params
           }
         });
       }
