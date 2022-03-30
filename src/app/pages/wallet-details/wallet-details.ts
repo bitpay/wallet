@@ -81,7 +81,7 @@ export class WalletDetailsPage {
   public selectedTheme;
   public navPramss: any;
   public finishParam: any;
-  typeErrorQr =  NgxQrcodeErrorCorrectionLevels;
+  typeErrorQr = NgxQrcodeErrorCorrectionLevels;
   constructor(
     public http: HttpClient,
     private currencyProvider: CurrencyProvider,
@@ -117,7 +117,7 @@ export class WalletDetailsPage {
     } else {
       this.navPramss = history ? history.state : {};
     }
-   
+
     this.selectedTheme = this.themeProvider.currentAppTheme;
     this.zone = new NgZone({ enableLongStackTrace: false });
     this.isCordova = this.platformProvider.isCordova;
@@ -133,7 +133,7 @@ export class WalletDetailsPage {
           addr
         );
         this.address = address;
-    })
+      })
     this.isDarkModeEnabled = this.themeProvider.isDarkModeEnabled();
     this.showBuyCrypto =
       (this.wallet.network == 'livenet' ||
@@ -171,13 +171,13 @@ export class WalletDetailsPage {
     this.blockexplorerUrlTestnet = defaults.blockExplorerUrlTestnet[this.wallet.coin];
   }
 
-  ionViewDidEnter(){
+  ionViewDidEnter() {
     if (this.router.getCurrentNavigation()) {
       this.navPramss = this.router.getCurrentNavigation().extras.state;
     } else {
       this.navPramss = history ? history.state : {};
     }
-    if(this.navPramss && this.navPramss.finishParam){
+    if (this.navPramss && this.navPramss.finishParam) {
       this.finishParam = this.navPramss.finishParam;
       this.presentToast();
     }
@@ -190,7 +190,7 @@ export class WalletDetailsPage {
       position: 'top',
       animated: true,
       cssClass: 'custom-finish-toast',
-      buttons:[
+      buttons: [
         {
           side: 'start',
           icon: 'checkmark-circle',

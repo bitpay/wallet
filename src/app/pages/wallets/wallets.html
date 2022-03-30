@@ -53,7 +53,7 @@
       </ion-title>
       <ion-buttons slot="end" class="settings-button" *ngIf="walletsGroups && walletsGroups[0]">
         <ion-button class="key-add" (click)="openAddressBookPage()">
-          <ion-icon class="address-book" name="book-outline"></ion-icon>
+          <ion-icon class="address-book" src="assets/img/key-addressbook.svg"></ion-icon>
         </ion-button>
         <ion-button slot="icon-only" class="key-notifications" (click)="openProposalsNotificationsPage()">
           <img *ngIf="txpsN > 0" class="custom-notification-icon" src="assets/img/wallet-details/notification-{{currentTheme}}.svg" />
@@ -76,7 +76,7 @@
             {{isShowBalance ? totalBalanceKey : '******'}}
           </span>
           <span *ngIf="isShowBalance" class="unit">
-            USD
+            {{keySelected[0].cachedStatus.alternativeIsoCode}}
           </span>
         </div>
         <ion-button fill=clear (click)="addWallet(keySelected[0]?.keyId)">

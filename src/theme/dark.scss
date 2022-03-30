@@ -1989,8 +1989,11 @@
     }
 
     create-new-wallet {
-        .zero-state-wallets {
-            background-color: var(--bg-color-dark-theme-3);
+        .card-title {
+            color: #EDEFF0 !important;
+        }
+        .card-body {
+            color: rgba(237, 239, 240, 0.6) !important;
         }
     }
 
@@ -2907,6 +2910,10 @@
         }
         .secondary-label {
             color: rgba(237, 239, 240, 0.6) !important;
+            .secondary-label-multisign {
+                background: #051E2E;
+                color: rgba(237, 239, 240, 0.6);
+            }
         }
         .wallet-hidden {
             color: var(--text-grey)
