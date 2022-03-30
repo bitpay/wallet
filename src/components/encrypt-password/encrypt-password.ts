@@ -1,11 +1,12 @@
 import { Component, ComponentRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { TranslateService } from '@ngx-translate/core';
 import { InfoSheetComponent } from '../../components/info-sheet/info-sheet';
 import { InfoSheetType } from '../../providers/action-sheet/action-sheet';
 import { AppProvider } from '../../providers/app/app';
 import { DomProvider } from '../../providers/dom/dom';
+import { ExternalLinkProvider } from '../../providers/external-link/external-link';
 import { ActionSheetParent } from '../action-sheet/action-sheet-parent';
-
 @Component({
   selector: 'encrypt-password',
   templateUrl: 'encrypt-password.html'
@@ -20,7 +21,9 @@ export class EncryptPasswordComponent extends ActionSheetParent {
   constructor(
     private domProvider: DomProvider,
     private fb: FormBuilder,
-    private appProvider: AppProvider
+    private appProvider: AppProvider,
+    private externalLinkProvider: ExternalLinkProvider,
+    private translate: TranslateService
   ) {
     super();
     this.isCopay = this.appProvider.info.name === 'copay';
@@ -79,5 +82,23 @@ export class EncryptPasswordComponent extends ActionSheetParent {
 
   public confirm(password: string): void {
     this.dismiss(password);
+  }
+
+  public openSupportEncryptPassword(): void {
+    const url =
+      'https://support.bitpay.com/hc/en-us/articles/360000244506-What-Does-a-Spending-Password-Do-';
+    const optIn = false;
+    const title = null;
+    const message = this.translate.instant('Read more in our support page');
+    const okText = this.translate.instant('Open');
+    const cancelText = this.translate.instant('Go Back');
+    this.externalLinkProvider.open(
+      url,
+      optIn,
+      title,
+      message,
+      okText,
+      cancelText
+    );
   }
 }
