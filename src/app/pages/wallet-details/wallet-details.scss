@@ -1,6 +1,19 @@
 page-wallet-details {
   --icon-width: 36px;
-
+  .custom-txps-number{
+    display: flex;
+    justify-content: center;
+    width: 40px;
+    height: 32px;
+    border-radius: 100px;
+    border-radius: 100px;
+    font-size: 14px;
+    font-weight: 600;
+    align-self: center;
+    margin-left: 10px;
+    background: #FFDDB6;
+    align-items: center;
+  }
   .grid-wrapper {
     display: grid;
     grid-template-rows: max-content 2fr;
@@ -175,11 +188,24 @@ page-wallet-details {
           font-size: 14px;
         }
 
+        .detail-btn{
+          --padding-end: 0;
+          margin-right: 0;
+          ion-icon{
+            width: 14.5px;
+            height: 12px;
+          }
+        }
+
         .item-tx-history {
           width: 100%;
           display: flex;
           border-bottom: 1px solid #e4e7e9;
           padding-bottom: 1rem;
+          justify-content: space-between;
+          .custom-left-part{
+            display: flex;
+          }
         }
 
       }
@@ -269,8 +295,13 @@ page-wallet-details {
     }
 
     .proposal-container {
+      --inner-padding-end: 0;
+      --inner-padding-top: 0;
       .item .item-inner {
         padding: 0 10px 0 0;
+      }
+      ion-note{
+        padding-top: 0;
       }
 
       .date {
