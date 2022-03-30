@@ -31,7 +31,7 @@ export class TxpPage implements OnInit {
     private navCtrl: NavController,
     private router: Router,
     public toastController: ToastController
-  ) {}
+  ) { }
 
   @Input()
   set tx(tx) {
@@ -81,7 +81,7 @@ export class TxpPage implements OnInit {
       if (data && data.multisigContractAddress) {
         this.router.navigate(['/confirm'], { state: data });
       }
-      if(data && data.finishText){
+      if (data && data.finishText) {
         this.presentToast(data.finishText);
       }
     });
@@ -94,7 +94,7 @@ export class TxpPage implements OnInit {
       position: 'top',
       animated: true,
       cssClass: 'custom-finish-toast',
-      buttons:[
+      buttons: [
         {
           side: 'start',
           icon: 'checkmark-circle',
