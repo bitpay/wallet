@@ -1,5 +1,9 @@
 page-send {
-
+  .option-button{
+    --color: #EDEFF0 !important;
+    font-weight: 600 !important;
+    opacity: 1;
+  }
   ion-title {
     color: var(--color-light-theme);
   }

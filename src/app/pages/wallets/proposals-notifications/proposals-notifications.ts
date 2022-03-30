@@ -1,5 +1,5 @@
 import { Component, NgZone, ViewChild, ViewEncapsulation } from '@angular/core';
-import { IonRouterOutlet, ModalController, NavController, NavParams, Platform } from '@ionic/angular';
+import { IonRouterOutlet, ModalController, NavController, NavParams, Platform, ToastController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
 
 import * as _ from 'lodash';
@@ -19,7 +19,6 @@ import { ReplaceParametersProvider } from '../../../providers/replace-parameters
 import { WalletProvider } from '../../../providers/wallet/wallet';
 import { Location } from '@angular/common';
 // pages
-import { FinishModalPage } from '../../finish/finish';
 import { Router } from '@angular/router';
 
 @Component({
@@ -68,7 +67,7 @@ export class ProposalsNotificationsPage {
     private errorsProvider: ErrorsProvider,
     private routerOutlet: IonRouterOutlet,
     private router: Router,
-
+    public toastController: ToastController
   ) {
     if (this.router.getCurrentNavigation()) {
       this.navParamsData = this.router.getCurrentNavigation().extras.state;
@@ -316,7 +315,7 @@ export class ProposalsNotificationsPage {
               : this.translate.instant('{{txpsSuccess}} proposal signed'),
             { txpsSuccess: count.success }
           );
-          this.openModal(finishText, 'success');
+          this.presentToast(finishText);
         }
         // own TxActions  are not triggered?
         this.events.publish('Local/TxAction', wallet.walletId);
@@ -383,19 +382,26 @@ export class ProposalsNotificationsPage {
     this.walletIdSelectedToSign = null;
   }
 
-  private openModal(finishText, cssClass): void {
-    this.modalCtrl.create({
-      component: FinishModalPage,
-      componentProps: {
-        finishText,
-        cssClass
-      },
-      showBackdrop: true,
-      backdropDismiss: false
-    }).then(rs => {
-      rs.present();
+  async presentToast(finishText) {
+    const toast = await this.toastController.create({
+      message: finishText,
+      duration: 3000,
+      position: 'top',
+      animated: true,
+      cssClass: 'custom-finish-toast',
+      buttons:[
+        {
+          side: 'start',
+          icon: 'checkmark-circle',
+          handler: () => {
+            console.log('');
+          }
+        }
+      ]
     });
+    toast.present();
   }
+
 
   public selectAll(txpsByWallet): void {
     this.zone.run(()=>{

@@ -216,38 +216,16 @@ export class SendPage {
     this.invalidAddress = false;
   }
 
-  public showMoreOptions(): void {
-    const optionsSheet = this.actionSheetProvider.createOptionsSheet(
-      'send-options',
-      {
-        isUtxoCoin: this.currencyProvider.isUtxoCoin(this.wallet.coin),
-        isMultiSend: this.currencyProvider.isMultiSend(this.wallet.coin)
-      }
-    );
-    optionsSheet.present();
-
-    optionsSheet.onDidDismiss(option => {
-      if (option == 'multi-send')
-        this.router
-          .navigate(['/multi-send'], { // MultiSendPage
-            state: { walletId: this.wallet.id }
-          })
-          .then(() => {
-            this.analyticsProvider.logEvent('multi_send_clicked', {
-              coin: this.wallet.coin
-            });
-          });
-      if (option == 'select-inputs')
-        this.router
-          .navigate(['/send-select-inputs'], { // SelectInputsPage
-            state: { walletId: this.wallet.id }
-          })
-          .then(() => {
-            this.analyticsProvider.logEvent('select_inputs_clicked', {
-              coin: this.wallet.coin
-            });
-          });
-    });
+  public goToSelectInput(): void {
+    this.router
+      .navigate(['/send-select-inputs'], { // SelectInputsPage
+        state: { walletId: this.wallet.id }
+      })
+      .then(() => {
+        this.analyticsProvider.logEvent('select_inputs_clicked', {
+          coin: this.wallet.coin
+        });
+      });
   }
 
   public addNewRecipient() {

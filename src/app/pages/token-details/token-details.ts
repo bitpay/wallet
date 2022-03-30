@@ -1,7 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { ChangeDetectorRef, Component, NgZone, ViewEncapsulation } from "@angular/core";
 import { Router } from "@angular/router";
-import { ModalController } from "@ionic/angular";
+import { ModalController, ToastController } from "@ionic/angular";
 import { TranslateService } from "@ngx-translate/core";
 import _ from "lodash";
 import moment from "moment";
@@ -56,6 +56,7 @@ export class TokenDetailsPage {
   public updateTxHistoryError: boolean;
   public updatingTxHistoryProgress: number = 0;
   public addressbook = [];
+  public finishParam: any;
 
   constructor(
     public http: HttpClient,
@@ -75,7 +76,7 @@ export class TokenDetailsPage {
     private actionSheetProvider: ActionSheetProvider,
     private appProvider: AppProvider,
     private addressbookProvider: AddressBookProvider,
-
+    public toastController: ToastController
   ) {
     this.currentTheme = this.appProvider.themeProvider.currentAppTheme;
     this.zone = new NgZone({ enableLongStackTrace: false });
@@ -97,6 +98,38 @@ export class TokenDetailsPage {
         this.logger.error(err);
       });
 
+  }
+
+  ionViewDidEnter() {
+    if (this.router.getCurrentNavigation()) {
+      this.navPramss = this.router.getCurrentNavigation().extras.state;
+    } else {
+      this.navPramss = history ? history.state : {};
+    }
+    if(this.navPramss && this.navPramss.finishParam){
+      this.finishParam = this.navPramss.finishParam;
+      this.presentToast();
+    }
+  }
+
+  async presentToast() {
+    const toast = await this.toastController.create({
+      message: this.finishParam.finishText,
+      duration: 3000,
+      position: 'top',
+      animated: true,
+      cssClass: 'custom-finish-toast',
+      buttons:[
+        {
+          side: 'start',
+          icon: 'checkmark-circle',
+          handler: () => {
+            console.log('');
+          }
+        }
+      ]
+    });
+    toast.present();
   }
 
   subscribeEvents() {

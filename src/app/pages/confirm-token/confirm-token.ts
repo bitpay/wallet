@@ -130,14 +130,14 @@ export class ConfirmTokenPage {
     this.onGoingProcessProvider.set('Send Token ...');
     this.tokenProvider.sendToken(wallet, mnemonic, this.token.tokenInfo, this.amountTokenToSend, this.sendToAddress).then(() => {
       this.onGoingProcessProvider.clear();
-      this.openFinishModal();
+      this.annouceFinish();
     }).catch(err => {
       this.onGoingProcessProvider.clear();
       this.showErrorInfoSheet(err)
     })
   }
 
-  protected async openFinishModal() {
+  protected async annouceFinish() {
     let params: {
       finishText: string;
       finishComment?: string;
@@ -147,25 +147,15 @@ export class ConfirmTokenPage {
       autoDismiss: true
     };
 
-    this.modalCtrl.create({
-      component: FinishModalPage,
-      componentProps: params,
-
-      showBackdrop: true,
-      backdropDismiss: false,
-      cssClass: 'finish-modal'
-    }).then(data => {
-      data.present().then(_ => {
-        setTimeout(() => {
-          this.router.navigate(['/token-details'], {
-            state: {
-              walletId: this.wallet.credentials.walletId,
-              token: this.token
-            }
-          });
-        }, 100);
-      })
-    });
+    setTimeout(() => {
+      this.router.navigate(['/token-details'], {
+        state: {
+          walletId: this.wallet.credentials.walletId,
+          token: this.token,
+          finishParam: params
+        }
+      });
+    }, 100);
   }
 
   public showErrorInfoSheet(

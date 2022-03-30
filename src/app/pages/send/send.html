@@ -15,8 +15,8 @@
       </ion-back-button>
     </ion-buttons>
     <ion-buttons slot="end" *ngIf="showOptions(wallet?.coin) && !isDonation && !token">
-      <ion-button wide-header-bar-button fill="clear" class="option-button" (click)="showMoreOptions()">
-        <ion-icon name="ellipsis-horizontal-outline"></ion-icon>
+      <ion-button fill="clear" class="option-button" (click)="goToSelectInput()">
+       Select Inputs
       </ion-button>
     </ion-buttons>
     <ion-title>
