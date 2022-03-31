@@ -1,4 +1,14 @@
-.explanation {
-  padding: 16px;
-  font-size: 14px;
+page-wallet-service-url {
+  .explanation {
+    padding: 0 1rem;
+    margin-bottom: 2rem;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: 0.25px;
+    color: rgba(0, 30, 46, 0.6);
+  }
+  .group-btn {
+    margin-top: 2rem;
+  }
 }

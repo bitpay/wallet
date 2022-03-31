@@ -11,7 +11,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content fullscreen  scrollEvents="true" #scrollArea>
+<ion-content fullscreen scrollEvents="true" #scrollArea>
   <expandable-header [scrollArea]="scrollArea" [fadeFactor]="5" [disableFade]="true" #expandableHeader>
       <expandable-header-primary class="card-title">
         {{ card.unitCode | translate}}
@@ -39,9 +39,9 @@
       <span class="labels">
         <div *ngFor="let option of updateOptions">
           <ion-chip [ngClass]="{'active': activeOption === option.label, 'inactive': activeOption !== option.label }">
-            <ion-button fill="clear" [disabled]="canvas.loading" (click)="updateChart(option)">
+            <ion-label [disabled]="canvas.loading" (click)="updateChart(option)">
               {{ option.label }}
-            </ion-button>
+            </ion-label>
           </ion-chip>
         </div>
       </span>

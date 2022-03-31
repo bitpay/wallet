@@ -4,10 +4,10 @@ wallet-item-content {
   }
   
   .key-tab {
-      margin: 1rem 0.5rem 1rem 3px;
+      margin: 14px 12px 14px 8px;
       padding: 0;
-      width: 35px;
-      height: 35px;
+      width: 40px;
+      height: 40px;
   }
 
 .wallet-for-address-book{
@@ -54,8 +54,13 @@ wallet-item-content {
       font-size: 11px;
     }
   }
+  .main-label {
+    letter-spacing: 0.1px;
+  }
   .secondary-label {
     color: rgba(0, 30, 46, 0.6) !important;
+    margin-top: 4px;
+    letter-spacing: 0.4px;
     .secondary-label-multisign {
       background: #E6EEF2;
       color: rgba(0, 30, 46, 0.6);

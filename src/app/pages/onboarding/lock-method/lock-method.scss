@@ -82,10 +82,12 @@ ion-toolbar {
   padding: 0 1rem;
   ion-item {
     --background: var(--color-inner-item-light-theme);
-    --padding-start: 16px;
+    --padding-start: 1rem;
+    --padding-end: 1rem;
     --padding-bottom: 6px;
     --padding-top: 6px;
-    border-radius: 10px;
+    --inner-padding-end: 0;
+    --border-radius: 10px;
     ion-label {
       color: var(--color-light-on-background-theme);
     }
