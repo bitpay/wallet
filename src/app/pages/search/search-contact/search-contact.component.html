@@ -1,0 +1,56 @@
+<ion-header [translucent]="true" class="bp-header">
+  <ion-toolbar class="custom-toolbar">
+    <div class="header-container">
+      <ion-item class="search-input-ion-item">
+        <ion-icon slot="start" src="assets/img/search-{{currentTheme}}.svg"></ion-icon>
+        <ion-input [(ngModel)]="search" (ngModelChange)="processInput()" placeholder="search">
+        </ion-input>
+      </ion-item>
+      <ion-button fill="clear" class="cancel-btn" (click)="back()">
+        {{ 'Cancel' | translate}}
+      </ion-button>
+    </div>
+  </ion-toolbar>
+
+</ion-header>
+<ion-content>
+  <div page-content>
+    <div class="search-content-container">
+      <div class="wallets-container" *ngIf="filteredContactsList && filteredContactsList.length > 0">
+        <ion-list lines="none" class="bp-list" ng-class="{ 'disabled':itemTapped}">
+          <div class="category-label">
+            {{ 'ADDRESS BOOK' | translate}}
+          </div>
+          <!-- <div *ngFor="let contacts of filteredContactsList"> -->
+            <div class="wallet-item-content-container" *ngFor="let contact of filteredContactsList">
+              <div class="contact-name" (click)="close(contact)">
+                {{contact.name}}
+              </div>
+            </div>
+          <!-- </div> -->
+        </ion-list>
+      </div>
+
+      <div *ngFor="let coin of availableCoins" ng-class="{ 'disabled':itemTapped}">
+        <div class="wallets-container" *ngIf="!showContactTab && walletList[coin] && walletList[coin][0]">
+          <ion-list lines="none" class="bp-list">
+            <ng-container *ngIf="filteredWalletsByKeys && filteredWalletsByKeys.length > 0">
+              <div class="category-label">
+                {{ 'MY ACCOUNT' | translate}}
+              </div>
+              <div *ngFor="let walletsByKey of filteredWalletsByKeys">
+                <div class="key-divider" *ngIf="walletsByKey && walletsByKey[0]">
+                  <span>{{ walletsByKey[0].walletGroupName }}</span>
+                </div>
+                <div class="wallet-item-content-container" *ngFor="let wallet of walletsByKey">
+                  <wallet-item-content [isCustomForAddressBook]="true" [wallet]="wallet" (click)="close(wallet)">
+                  </wallet-item-content>
+                </div>
+              </div>
+            </ng-container>
+          </ion-list>
+        </div>
+      </div>
+    </div>
+  </div>
+</ion-content>

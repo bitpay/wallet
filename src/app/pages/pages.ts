@@ -107,7 +107,7 @@ import { TokenDetailsPage } from './token-details/token-details';
 import { ConfirmTokenPage } from './confirm-token/confirm-token';
 import { TokenInforPage } from './token-info/token-info';
 import { AccountsPage } from './accounts/accounts';
-
+import { SearchContactPage } from './search/search-contact/search-contact.component';
 
 export const PAGES = [
   AddPage,
@@ -135,6 +135,7 @@ export const PAGES = [
   BackupKeyPage,
   ConfirmPage,
   MultiSendPage,
+  SearchContactPage,
   TransferToModalPage,
   TransferToPage,
   CustomAmountPage,

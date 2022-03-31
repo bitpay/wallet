@@ -1,0 +1,42 @@
+page-search-contact{
+    .custom-toolbar{
+        margin-top: 1rem;
+        .header-container{
+            display: flex;
+            .search-input-ion-item{
+                --background: linear-gradient(0deg, rgba(0, 93, 141, 0.05), rgba(0, 93, 141, 0.05)), #FAFAFB;
+                /* Light/neutral/on-background-0.38 */
+            
+                border: 2px solid rgba(0, 30, 46, 0.38);
+                margin: 0 1rem;
+                margin-right: 0;
+                flex: 1;
+                
+            }
+            .cancel-btn{
+                display: flex;
+                align-self: center;
+                font-size: 16px;
+                width: 60px;
+                margin-right: 1rem;
+                margin-left: 1rem;
+            }
+            ion-icon{
+                margin-right: 1rem;
+            }
+        }
+    }
+
+    .category-label{
+        color: rgba(0, 30, 46, 0.6);
+        padding-left: 1rem;
+        font-weight: 600;
+        font-size: 14px;
+        padding-bottom: 1rem;
+    }
+    .search-content-container{
+        margin-top: 2rem;
+    }
+}
+
+
