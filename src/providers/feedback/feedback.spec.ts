@@ -95,7 +95,7 @@ describe('FeedbackProvider', () => {
     });
     it('return true if the version is updated', () => {
       const currentVersion = '5.4.6';
-      const savedVersion = '5.3.4';
+      const savedVersion = '5.4.4';
       const isVersionUpdatedSpy = feedbackProvider.isVersionUpdated(
         currentVersion,
         savedVersion
