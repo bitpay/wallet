@@ -1,13 +1,13 @@
 page-transfer-to,
-page-search-contact{
-  .custom-list{
+page-search-contact {
+  .custom-list {
     background: #FAFAFB;
     display: flex;
     flex-wrap: wrap;
     justify-content: flex-start;
-    
-    
-    ion-item{
+
+
+    ion-item {
       width: 108px;
       --background: transparent !important;
       background-color: unset !important;
@@ -17,12 +17,13 @@ page-search-contact{
       margin: 1rem 0.5rem !important;
       box-shadow: none !important;
 
-      .recent-contact-container{
+      .recent-contact-container {
         display: flex;
         flex-flow: column;
         align-items: center;
         width: 100%;
-        .contact-logo-container{
+
+        .contact-logo-container {
           width: 40px;
           height: 40px;
           display: flex;
@@ -31,16 +32,19 @@ page-search-contact{
           background: #B6C9D8;
           border-radius: 50px;
           margin-bottom: 4px;
-          .contact-logo-content{
+
+          .contact-logo-content {
             color: rgba(33, 51, 62, 1);
             font-size: 14px;
             font-weight: 600;
           }
         }
-        .account-logo-custom{
+
+        .account-logo-custom {
           background: #CCC1E9;
         }
-        .main-label{
+
+        .main-label {
           width: 100%;
           white-space: nowrap;
           overflow: hidden;
@@ -50,64 +54,75 @@ page-search-contact{
         }
       }
     }
-    
+
   }
-  .wallet-item-content-container{
+
+  .wallet-item-content-container {
     background: #FAFAFB;
-    &:last-child{
-      ::ng-deep ion-item{
+
+    &:last-child {
+      ::ng-deep ion-item {
         border-bottom: none !important;
       }
-      .contact-name{
+
+      .contact-name {
         border-bottom: none !important;
       }
     }
   }
 
-  .wallets-container{
+  .wallets-container {
     margin-bottom: 1rem;
   }
 
-  ion-segment{
+  ion-segment {
     border-radius: 24px 24px 0 0;
     padding: 16px 0px;
     background: #FAFAFB;
     color: #001E2E;
     margin-top: 2rem;
-    ion-segment-button{
+
+    ion-segment-button {
       color: #001E2E;
       --ripple-color: transparent;
       opacity: 0.6;
       --color-hover: unset !important;
     }
-    .segment-button-checked{
+
+    .segment-button-checked {
       border-radius: 0px;
       opacity: 1;
+
       &::part(indicator-background) {
         background: transparent;
         box-shadow: unset;
       }
-      .segment-button-indicator-background{
+
+      .segment-button-indicator-background {
         background: transparent;
         box-shadow: none;
       }
     }
   }
 
-  ion-note{
+  ion-note {
     padding-top: 0;
     padding-bottom: 0;
   }
+
   .show-more {
     display: flex;
     text-align: center;
   }
+
   .wallet-disabled {
     background-color: #fbfbfb;
+
     .main-label {
       color: #d4d4d4;
     }
   }
+
   .key-divider {
     display: flex;
     align-items: center;
@@ -120,14 +135,15 @@ page-search-contact{
       font-size: 12px;
       color: rgba(28, 55, 69, 0.6);
     }
-    ion-icon{
+
+    ion-icon {
       width: 16px;
       margin: 0;
       padding: 0;
     }
   }
 
-  .contact-name{
+  .contact-name {
     padding: 16px;
     padding-left: 0px;
     margin-left: 16px;
@@ -136,6 +152,7 @@ page-search-contact{
     font-size: 16px;
     border-bottom: 1px solid rgba(112, 129, 138, 0.38) !important;
   }
+
   .no-wallet {
     text-align: center;
     font-size: 18px;

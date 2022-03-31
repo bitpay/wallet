@@ -22,11 +22,11 @@
             {{ 'ADDRESS BOOK' | translate}}
           </div>
           <!-- <div *ngFor="let contacts of filteredContactsList"> -->
-            <div class="wallet-item-content-container" *ngFor="let contact of filteredContactsList">
-              <div class="contact-name" (click)="close(contact)">
-                {{contact.name}}
-              </div>
+          <div class="wallet-item-content-container" *ngFor="let contact of filteredContactsList">
+            <div class="contact-name" (click)="close(contact)">
+              {{contact.name}}
             </div>
+          </div>
           <!-- </div> -->
         </ion-list>
       </div>

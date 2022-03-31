@@ -19,7 +19,7 @@ export class SearchContactPage implements OnInit {
   public fromMultiSend: boolean;
   public currentTheme: string;
   navParamsData;
-  
+
 
   public wallets = {} as CoinsMap<any>;
   public hasWallets = {} as CoinsMap<boolean>;
@@ -44,8 +44,6 @@ export class SearchContactPage implements OnInit {
   public itemTapped: boolean = false;
 
   private _delayTimeOut: number = 700;
-  private _fromSend: boolean;
-  private _fromMultiSend: boolean;
 
   private CONTACTS_SHOW_LIMIT: number = 10;
   private currentContactsPage: number = 0;
@@ -95,7 +93,7 @@ export class SearchContactPage implements OnInit {
     this.viewCtrl.dismiss({});
   }
 
-  handleWallet(){
+  handleWallet() {
     this._wallet = this.navParamsData.wallet;
 
     for (const coin of this.availableCoins) {
@@ -169,16 +167,8 @@ export class SearchContactPage implements OnInit {
             (this.currentContactsPage + 1) * this.CONTACTS_SHOW_LIMIT
           )
         );
-        // this.filteredContactsList = _.clone(contactsList);
         this.contactsShowMore =
           this.contactsList.length > shortContactsList.length;
-
-        // this.contactsGroup = _.values(_.groupBy(_.map(this.filteredContactsList, contact => {
-        //   return {
-        //     firstLetter: contact.name[0],
-        //     ...contact
-        //   }
-        // }), 'firstLetter'));
       });
   }
 
