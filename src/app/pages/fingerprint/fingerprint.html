@@ -1,9 +1,10 @@
 <ion-content forceOverflow="false" fullscreen>
-  <div class="fingerprint-container" [ngClass]="{'fingerprint-bg-dark': isDarkTheme}">
-    <div class="fingerprint-button">
-      <ion-button class="button-standard" (click)="checkFingerprint()">
-        {{'Unlock App' | translate}}
-      </ion-button>
+  <div class="fingerprint-container" [ngClass]="{'fingerprint-bg-dark': currentTheme === 'dark'}">
+    <div class="fingerprint-button" (click)="checkFingerprint()">
+      <img src="assets/img/lock-icon-{{currentTheme}}.svg" alt="">
+      <div class="unlock-btn">
+        {{'Tap to unlock App' | translate}}
+      </div>
     </div>
   </div>
 </ion-content>

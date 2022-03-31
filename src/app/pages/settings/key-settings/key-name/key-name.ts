@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
+import { EventManagerService } from 'src/app/providers';
 import { Logger } from '../../../../providers/logger/logger';
 
 // services
@@ -21,6 +22,7 @@ export class KeyNamePage {
 
   constructor(
     private profileProvider: ProfileProvider,
+    private events: EventManagerService,
     private location: Location,
     private router: Router,
     private formBuilder: FormBuilder,
@@ -59,6 +61,7 @@ export class KeyNamePage {
       this.navParamsData.keyId,
       this.walletGroupNameForm.value.walletGroupName
     );
+    this.events.publish('Local/GetData', true);
     this.location.back();
   }
 }

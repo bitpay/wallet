@@ -48,7 +48,7 @@
           <ion-icon slot="icon-only" src="assets/img/key-list-{{currentTheme}}.svg"></ion-icon>
         </ion-button>
       </ion-buttons>
-      <ion-title>
+      <ion-title class="key-title">
         {{ keyNameSelected }}
       </ion-title>
       <ion-buttons slot="end" class="settings-button" *ngIf="walletsGroups && walletsGroups[0]">
@@ -76,7 +76,7 @@
             {{isShowBalance ? totalBalanceKey : '******'}}
           </span>
           <span *ngIf="isShowBalance" class="unit">
-            {{keySelected[0].cachedStatus.alternativeIsoCode}}
+            {{currentCurrency}}
           </span>
         </div>
         <ion-button fill=clear (click)="addWallet(keySelected[0]?.keyId)">

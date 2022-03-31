@@ -84,6 +84,7 @@ export class HomePage {
   public isCopay: boolean;
   private newReleaseVersion: string;
   private pagesMap: any;
+  public currentTheme: any;
 
   public isCordova: boolean;
   private zone;
@@ -110,6 +111,7 @@ export class HomePage {
     private splashScreen: SplashScreen,
     private rateProvider: RateProvider
   ) {
+    this.currentTheme = this.appProvider.themeProvider.currentAppTheme;
     this.logger.info('Loaded: HomePage');
     this.isCopay = this.appProvider.info.name === 'copay';
     this.zone = new NgZone({ enableLongStackTrace: false });
@@ -474,5 +476,13 @@ export class HomePage {
     ) {
       this.showInfoSheet(altCurrency);
     }
+  }
+
+  public openSettingPage() {
+    this.router.navigate(['/setting']);
+  }
+
+  public openProposalsNotificationsPage(): void {
+    this.router.navigate(['/proposals-notifications']);
   }
 }

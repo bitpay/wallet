@@ -271,6 +271,73 @@
         }
     }
 
+    // Material input custom
+    // --------------------------------------------------
+    .mat-form-field-appearance-outline {
+        .mat-form-field-outline {
+            color: rgba(237, 239, 240, 0.38) !important;
+        }
+    }
+
+    .mat-form-field-appearance-outline.mat-focused {
+        .mat-form-field-outline-thick {
+            color: rgba(237, 239, 240, 0.38) !important;
+        }  
+    }
+
+    .mat-form-field .mat-form-field-label {
+        color: rgba(237, 239, 240, 0.6) !important;
+    }
+
+    .mat-form-field.mat-focused .mat-form-field-label {
+        color: rgba(237, 239, 240, 0.6) !important;
+    }
+
+    .mat-form-field-appearance-outline.mat-form-field-invalid {
+        .mat-form-field-outline {
+            color: #FFB4A9 !important;
+        }
+    }
+
+    .mat-form-field-appearance-outline.mat-form-field-invalid {
+        .mat-form-field-outline-thick {
+            color: #FFB4A9 !important;
+        }
+    }
+
+    .mat-form-field.mat-form-field-invalid {
+        .mat-form-field-label {
+            color: #FFB4A9 !important;
+        }
+    }
+    
+
+    .mat-form-field.mat-form-field-invalid {
+        .mat-form-field-label {
+            color: #FFB4A9 !important;
+        }
+    }
+
+    .error-form-field.mat-form-field-appearance-outline {
+        .mat-form-field-outline {
+            color: #FFB4A9 !important;
+        }
+    }
+
+    .error-form-field.mat-form-field-appearance-outline.mat-focused {
+        .mat-form-field-outline-thick {
+            color: #FFB4A9 !important;
+        }  
+    }
+
+    .mat-form-field.error-form-field .mat-form-field-label {
+        color: #FFB4A9 !important;
+    }
+
+    .mat-form-field.error-form-field.mat-focused .mat-form-field-label {
+        color: #FFB4A9 !important;
+    }
+
     .swiper-pagination-bullet-active {
         background-color: var(--swiper-pagination-bullet-active-dark);
     }
@@ -983,9 +1050,8 @@
 
     page-fingerprint {
         .fingerprint-button {
-            ion-button {
-                background: var(--color-primary-abcpay-dark) !important;
-                color: var(--color-on-primary-abcpay-dark) !important;
+            .unlock-btn {
+                color: #EDEFF0 !important;
             }
         }
     }
@@ -1263,15 +1329,31 @@
             .total-amount-value {
                 color: var(--text-color-dark-theme) !important;
             }
+            .negative-avg {
+                color: #FFB4A9 !important;
+                border-radius: 50vh;
+              }
+            
+              .possitive-avg {
+                color: #73DAA5 !important;
+                border-radius: 50vh;
+              }
         }
 
-        .active {
-            ion-button {
-              --color: var(--color-primary-abcpay-dark) !important;
+        ion-chip {
+            &.inactive {
+                ion-label {
+                    color: rgba(224, 228, 230, 0.6) !important;
+                }
             }
-            background: linear-gradient(0deg, rgba(126, 208, 255, 0.14), rgba(126, 208, 255, 0.14)),
-            #001E2E;
-          }
+            &.active {
+                ion-label {
+                    color: var(--color-primary-abcpay-dark) !important;
+                    }
+                background: linear-gradient(0deg, rgba(126, 208, 255, 0.14), rgba(126, 208, 255, 0.14)),
+                #001E2E !important;
+            }
+        }
     }
 
     // 5.2 - Tab Wallets
@@ -1316,8 +1398,10 @@
               }
         }
 
-        ion-title{
-            color: var(--color-on-primary-container-abcpay-dark);
+        ion-title {
+            &.key-title {
+                color: var(--color-on-primary-container-abcpay-dark) !important;
+            }
         }
 
         .balance {
@@ -1447,6 +1531,26 @@
         }
     }
 
+    page-wallet-export {
+        .group-container {
+            background: linear-gradient(0deg, rgba(126, 208, 255, 0.11), rgba(126, 208, 255, 0.11)), #001E2E;
+            .include-private-item {
+                ion-label {
+                    color: #EDEFF0 !important;
+                }
+            }
+            .sub-include-private {
+                color: rgba(237, 239, 240, 0.6);
+                border-color: rgba(112, 129, 138, 0.38);
+            }
+        }
+    }
+
+    page-wallet-service-url {
+        .explanation {
+            color: rgba(237, 239, 240, 0.6);
+        }
+    }    
 
     page-copayers,
     page-txp-details,
@@ -1617,9 +1721,6 @@
 
         .donate-card {
             color: var(--bg-surface-color-abcpay-dark);
-            &::before {
-                opacity: 0.6;
-            }
         }
 
         .balance-card {
@@ -2942,6 +3043,16 @@
             ion-button {
                 color: #7ED0FF !important;
             }
+        }
+    }
+
+    token-info {
+        ion-buttons {
+          .close-tx-modal {
+            ion-icon {
+              color: rgba(28, 55, 69, 0.6);
+            }
+          }
         }
     }
 

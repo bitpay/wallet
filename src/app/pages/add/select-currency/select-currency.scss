@@ -4,17 +4,23 @@ page-select-currency {
   }
 
   .list-button {
-    padding-top: 10px;
-    padding-bottom: 10px;
+    --padding-start: 1rem !important;
+    --padding-end: 1rem !important;
+    --inner-padding-top: 1rem;
+    --inner-padding-bottom: 1rem;
+    --inner-padding-end: 0;
+    padding: 0;
+    margin-top: 0 !important;
 
     ion-icon {
-      margin-left: 3px;
+      margin: 0;
+      padding: 0;
+      margin-right: 1rem;
       height: 40px;
       width: 40px;
     }
 
     .item-title {
-      // color: black;
       font-size: 18px;
       font-weight: 500;
       h3{

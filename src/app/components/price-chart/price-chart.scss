@@ -22,3 +22,9 @@ apx-chart {
     display: none !important;
   }
 }
+
+::ng-deep apx-chart {
+  .apexcharts-tooltip {
+    box-shadow: none !important;
+  }
+}

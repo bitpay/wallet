@@ -14,6 +14,7 @@ import { Logger } from 'src/app/providers/logger/logger';
 import { WalletProvider } from 'src/app/providers/wallet/wallet';
 import { AnalyticsProvider } from 'src/app/providers/analytics/analytics';
 import { Router } from '@angular/router';
+import { LoadingController } from '@ionic/angular';
 
 @Component({
   selector: 'price-page',
@@ -44,7 +45,8 @@ export class PricePage {
     private configProvider: ConfigProvider,
     private logger: Logger,
     private walletProvider: WalletProvider,
-    private analyticsProvider: AnalyticsProvider
+    private analyticsProvider: AnalyticsProvider,
+    private loadingCtr: LoadingController
   ) {
     this.getCoinDonate();
     if (this.router.getCurrentNavigation()) {
@@ -57,10 +59,15 @@ export class PricePage {
   }
 
   ngOnInit() {
+    const loading = this.loadingCtr.create({
+      message: 'Please wait...'
+    })
+    loading.then(loadingEl => loadingEl.present());
     this.drawCanvas();
     // Let the canvas settle
     setTimeout(() => {
       this.getPrice(DateRanges.Day);
+      loading.then(loadingEl => loadingEl.dismiss());
     }, 1000);
   }
 
