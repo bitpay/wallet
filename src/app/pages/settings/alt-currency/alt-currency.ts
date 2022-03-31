@@ -152,12 +152,11 @@ export class AltCurrencyPage {
     ) {
       this.configProvider.set(opts);
       this.saveLastUsed(newAltCurrency);
-      this.router.navigate([''], { replaceUrl: true }).then(() => {
-        this.reload();
-      });
-      this.router.navigate([''], { replaceUrl: true }).then(() => {
-        this.reload();
-      })
+      setTimeout(() => {
+        this.router.navigate([''], { replaceUrl: true }).then(() => {
+          this.reload();
+        });
+      }, 300);
     } else {
       // To stop showing currencies that are no longer supported
       this.showErrorAndRemoveAltCurrency(newAltCurrency);
