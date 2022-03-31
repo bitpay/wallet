@@ -102,9 +102,10 @@ token-details {
       border-bottom: 0;
 
       .ng-star-inserted {
-        font-size: 18px;
+        font-size: 11px;
         font-weight: 600;
-        color: #444444;
+        color: rgba(28, 55, 69, 0.6);
+        letter-spacing: 0.5px;
       }
 
       &.item {
