@@ -29,7 +29,7 @@
   </ion-toolbar>
 </ion-header>
 <ion-content scrollEvents="true" #scrollArea>
-  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)" pullMin="90" pullMax="160" disabled="false">
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)" pullMin="90" pullMax="160">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
   <expandable-header [scrollArea]="scrollArea" [fadeFactor]="5" [disableFade]="true" #expandableHeader>
@@ -49,7 +49,11 @@
             </span>
           </ion-icon>
         </button> -->
-        {{ 'Home' | translate }}
+        <!-- {{ 'Home' | translate }} -->
+        <div class="home-icon">
+          <ion-icon (click)="openSettingPage()" src="assets/img/home-setting-icon-{{currentTheme}}.svg"></ion-icon>
+          <ion-icon (click)="openProposalsNotificationsPage()"src="assets/img/home-notifications-icon-{{currentTheme}}.svg"></ion-icon>
+        </div>
       </expandable-header-primary>
     </ion-toolbar>
   </expandable-header>
@@ -130,8 +134,8 @@
   </div>
 
   <!-- <page-feedback-card #showCard></page-feedback-card> -->
-  <!-- TODO: Use lotus donation card -->
-  <page-lotus-donation-card></page-lotus-donation-card>
+  <!-- TODO: temporary hide the donation feature. Later, adding feature in settings to disable / enable this feature -->
+  <!-- <page-lotus-donation-card></page-lotus-donation-card> -->
 
   <div *ngIf="showTotalBalance" class="total-amount-container">
     <div class="total-amount">

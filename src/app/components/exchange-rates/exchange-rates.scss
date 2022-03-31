@@ -36,16 +36,25 @@ exchange-rates {
     padding-top: 0;
     padding-bottom: 0;
     ion-item:not(.align-with-button){
-      --padding-start: 0.5rem;
-      --padding-end: 0;
+      --padding-start: 0.5rem !important;
+      --padding-end: 0 !important;
       --inner-padding-end: 1rem;
       padding-left: 0;
       ion-icon {
-        width: 35px;
-        height: 35px;
+        width: 40px;
+        height: 40px;
+        padding-right: 1rem;
+        margin: 9px 0;
       }
       ion-note {
         margin: 0;
+      }
+      .main-label {
+        letter-spacing: 0.1px;
+      }
+      .secondary-label {
+        margin-top: 4px;
+        letter-spacing: 0.4px;
       }
     }
   }
