@@ -1671,7 +1671,10 @@
         ion-content {
             background: var(--bg-color-dark-theme);
         }
-
+        .custom-txps-number{
+            background: #FFB85D;
+            color: #482A00;
+        }
         .toolbar-background {
             background: var(--bg-color-dark-theme) !important;
         }
@@ -3155,7 +3158,16 @@
         }
     }
 
-    page-transfer-to{
+    page-transfer-to, page-search-contact{
+        .dark .bp-list ion-item{
+            --background: unset;
+        }
+        .wallet-disabled {
+            background: linear-gradient(0deg, rgba(126, 208, 255, 0.05), rgba(126, 208, 255, 0.05)), #001E2E;
+            .main-label {
+                color: rgba(224, 228, 230, 0.6) !important;
+            }
+          }
         .contact-name{
             color: #EDEFF0;
         }
@@ -3185,6 +3197,20 @@
     page-transfer-to-modal{
         .header-title{
             color: #EDEFF0 !important;
+        }
+    }
+
+    page-search-contact{
+        .search-input-ion-item{
+            --background: #001E2E !important;
+            border-color: rgba(237, 239, 240, 0.38) !important;
+            color: #EDEFF0;
+        }
+        .cancel-btn{
+            --color: #7ED0FF !important;
+        }
+        .category-label{
+            color: rgba(237, 239, 240, 0.6);
         }
     }
 

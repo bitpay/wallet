@@ -64,6 +64,7 @@ import { TokenInforPage } from './pages/token-info/token-info';
 import { SelectInputsSendPage } from './pages/send/send-select-inputs/send-select-inputs';
 import { AccountsPage } from './pages/accounts/accounts';
 import { SettingsPage } from './pages/settings/settings';
+import { SearchContactPage } from './pages/search/search-contact/search-contact.component';
 
 const routes: Routes = [
   {
@@ -331,6 +332,10 @@ const routes: Routes = [
   {
     path: 'setting',
     component: SettingsPage
+  },
+  {
+    path: 'search-contact',
+    component: SearchContactPage
   }
 ];
 
