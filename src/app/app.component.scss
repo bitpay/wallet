@@ -201,6 +201,9 @@ label-tip {
 ion-header.bp-header{
     background: var(--bg-color-light-theme);
     ion-toolbar {
+        &:first-of-type {
+            padding-top: var(--ion-safe-area-top, 0) !important;
+        }
         ion-title {
             padding: 0;
             font-size: 18px;
