@@ -1,9 +1,12 @@
-.card-title {
-  font-weight: 700;
-  margin: 1rem;
-  text-transform: uppercase;
-  font-size: 24px;
-  line-height: 32px;
+expandable-header {
+  margin-top: 0.5rem;
+  .card-title {
+    font-weight: 400;
+    margin: 1rem;
+    text-transform: uppercase;
+    font-size: 24px;
+    line-height: 32px;
+  }
 }
 ion-title {
   text-transform: uppercase;
@@ -21,6 +24,7 @@ ion-title {
 
   .section-header {
     margin: 0;
+    display: none
   }
 
   .total-amount-value {
@@ -59,32 +63,41 @@ ion-title {
 
 .labels {
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-between;
   font-weight: 500;
-  padding: 0.5rem 1rem 0.5rem 1rem;
+  padding: 0 1rem;
 }
 
 
 .footer-price {
-  margin-top: -45px;
+  margin-top: -47px;
 
+  ion-chip {
+    padding: 4px 2rem;
+  }
   .active,
   .inactive {
-    ion-button {
+    ion-label {
       font-size: 12px;
     }
   }
   .active {
-    ion-button {
-      --color: var(--color-primary) !important;
+    ion-label {
+      color: var(--color-primary);
     }
     background: linear-gradient(0deg, rgba(0, 101, 141, 0.14), rgba(0, 101, 141, 0.14)), #FAFAFB;
   }
 
   .inactive {
-    ion-button {
-      --color: grey !important;
+    ion-label {
+      color: rgba(0, 30, 46, 0.6);
     }
     background: transparent;
+  }
+}
+
+.donation-footer {
+  ion-button {
+    margin-top: 1rem;
   }
 }

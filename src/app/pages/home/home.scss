@@ -38,8 +38,9 @@ button.bitpay-id-login {
   .section-header {
     color: rgba(0, 30, 46, 0.6);
     font-size: 14px;
-    font-weight: 400;
+    font-weight: 600;
     margin: 0;
+    letter-spacing: 0.1px;
   }
   .total-amount {
     padding: 1rem;
@@ -213,6 +214,12 @@ button.bitpay-id-login {
 .wide-header__title{
   padding-top: 0;
   padding-bottom: 0;
+  --padding-end: 1rem;
+  --padding-start: 1rem;
+  .home-icon {
+    display: flex;
+    justify-content: space-between;
+  }
 }
 
 .exchange-rate {

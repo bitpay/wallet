@@ -201,6 +201,9 @@ label-tip {
 ion-header.bp-header{
     background: var(--bg-color-light-theme);
     ion-toolbar {
+        &:first-of-type {
+            padding-top: var(--ion-safe-area-top, 0) !important;
+        }
         ion-title {
             padding: 0;
             font-size: 18px;
@@ -266,6 +269,96 @@ ion-header ion-toolbar {
     &:hover:not(.disable-hover) {
         color: #434d5a;
     }
+}
+
+// Material input custom
+// --------------------------------------------------
+.mat-form-field {
+    width: 100%;
+    padding: 0 1rem;
+}
+
+.mat-form-field-appearance-outline {
+    .mat-form-field-outline {
+        color: rgba(0, 30, 46, 0.38) !important;
+    }
+}
+
+.mat-form-field-appearance-outline.mat-focused {
+    .mat-form-field-outline-thick {
+        color: rgba(0, 30, 46, 0.38) !important;
+    }  
+}
+
+.mat-form-field .mat-form-field-label {
+    color: rgba(0, 30, 46, 0.38) !important;
+}
+
+.mat-form-field.mat-focused .mat-form-field-label {
+    color: rgba(0, 30, 46, 0.38) !important;
+}
+
+.mat-form-field-appearance-outline {
+    .mat-form-field-outline-start,
+    .mat-form-field-outline-gap,
+    .mat-form-field-outline-end {
+        border-width: 2px !important;
+    }
+}
+
+.mat-hint {
+    padding-left: 1.5rem;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 16px;
+}
+
+.mat-form-field-appearance-outline .mat-form-field-wrapper {
+    padding: 0 !important;
+}
+
+.mat-form-field-appearance-outline.mat-form-field-invalid {
+    .mat-form-field-outline {
+        color: #BA1B1B !important;
+    }
+}
+
+.mat-form-field-appearance-outline.mat-form-field-invalid {
+    .mat-form-field-outline-thick {
+        color: #BA1B1B !important;
+    }
+}
+
+.mat-form-field.mat-form-field-invalid {
+    .mat-form-field-label {
+        color: #BA1B1B !important;
+    }
+}
+
+.mat-form-field.mat-form-field-invalid {
+    .mat-form-field-label {
+        color: #BA1B1B !important;
+    }
+}
+
+.error-form-field.mat-form-field-appearance-outline {
+    .mat-form-field-outline {
+        color: #BA1B1B !important;
+    }
+}
+
+.error-form-field.mat-form-field-appearance-outline.mat-focused {
+    .mat-form-field-outline-thick {
+        color: #BA1B1B !important;
+    }  
+}
+
+.mat-form-field.error-form-field .mat-form-field-label {
+    color: #BA1B1B !important;
+}
+
+.mat-form-field.error-form-field.mat-focused .mat-form-field-label {
+    color: #BA1B1B !important;
 }
 
 // Buttons
@@ -745,9 +838,9 @@ ion-app.cameraView .nav-decor {
     min-height: 40px;
     --border-radius: 100px;
     box-shadow: none;
-    font-weight: 400;
+    font-weight: 600;
     font-size: 14px;
-
+    letter-spacing: 0.1px;
     .button-inner {
         padding: 2px;
     }

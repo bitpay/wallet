@@ -90,17 +90,17 @@
           </div>
 
         </div>
-        <div *ngIf="isShowDonationBtn" class="donate-card">
+        <!-- TODO: temporary hide the donation feature. Later, adding feature in settings to disable / enable this feature -->
+        <!-- <div *ngIf="isShowDonationBtn" class="donate-card">
           <div class="donate-title" (click)="handleDonation()">
-            <img src="assets/img/wallet-details/wallet-heart-{{currentTheme}}.svg" alt="">
+            <img src="assets/img/logo-donate-card-{{currentTheme}}.svg" alt="">
             <span>{{ 'Support Lotus with the Donation Program' | translate}}</span>
           </div>
 
           <div class="donate-info" (click)="openLink('https://givelotus.org')">
             <img src="assets/img/wallet-details/wallet-info-{{currentTheme}}.svg" alt="">
           </div>
-
-        </div>
+        </div> -->
       </expandable-header-footer>
     </expandable-header>
     <ion-list *ngIf="wallet && wallet?.isComplete() && !walletNotRegistered && txps && txps[0]"

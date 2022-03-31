@@ -193,6 +193,11 @@ export class ProfileProvider {
     this.persistenceProvider.setWalletGroupName(keyId, name);
     if (this.walletsGroups[keyId]) this.walletsGroups[keyId].name = name;
     this.setOrderedWalletsByGroup(); // Update Ordered Wallet List
+    this.keyChange = {
+      isStatus: true,
+      isDelete: false,
+      keyId: keyId
+    }
   }
 
   public async getWalletGroupName(keyId: string) {

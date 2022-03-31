@@ -41,6 +41,10 @@ import { IonicImageLoaderModule } from 'ionic-image-loader-v5';
 import { enterAnimation } from './animations/nav-animation';
 
 import { MatGridListModule } from '@angular/material/grid-list'; 
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatInputModule } from '@angular/material/input';
+import { MatIconModule } from '@angular/material/icon';
 
 export function translateParserFactory() {
   return new InterpolatedTranslateParser();
@@ -88,6 +92,10 @@ export class MyMissingTranslationHandler implements MissingTranslationHandler {
             navAnimation: enterAnimation
         }),
         MatGridListModule,
+        MatFormFieldModule,
+        BrowserAnimationsModule,
+        MatIconModule,
+        MatInputModule,
         FormsModule,
         ReactiveFormsModule,
         NgxTextOverflowClampModule,

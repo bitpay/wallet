@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
 import * as _ from 'lodash';
-import { ActionSheetProvider, PersistenceProvider } from 'src/app/providers';
+import { ActionSheetProvider, EventManagerService, PersistenceProvider } from 'src/app/providers';
 
 // providers
 import { AppProvider } from '../../../providers/app/app';
@@ -59,7 +59,7 @@ export class KeySettingsPage {
     private translate: TranslateService,
     private keyProvider: KeyProvider,
     private derivationPathHelperProvider: DerivationPathHelperProvider,
-    private modalCtrl: ModalController,
+    private events: EventManagerService,
     private errorsProvider: ErrorsProvider,
     private onGoingProcessProvider: OnGoingProcessProvider,
     private persistanceProvider: PersistenceProvider,
@@ -225,14 +225,14 @@ export class KeySettingsPage {
             this.configProvider.removeBwsFor(wallet.credentials.walletId);
           });
           this.keyProvider.removeKey(this.keyId);
-          setTimeout(() => {
-            this.router.navigate([''], { replaceUrl: true });
-          }, 1000);
+          this.router.navigate(['tabs/wallets']).then(() => {
+            this.events.publish('Local/GetData', true);
+          })
         } else {
           this.logger.warn('Key was not removed. Still in use');
-          setTimeout(() => {
-            this.router.navigate([''], { replaceUrl: true });
-          }, 1000);
+          this.router.navigate(['tabs/wallets']).then(() => {
+            this.events.publish('Local/GetData', true);
+          })
         }
       })
       .catch(err => {

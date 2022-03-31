@@ -113,7 +113,7 @@
           <ion-item *ngFor="let u of latestUnused" copy-to-clipboard="{{u.address}}">
             <ion-label>
               <h4>{{u.address}}</h4>
-              <p>{{u.path}} {{u.createdOn * 1000 | amDateFormat:'MMMM Do YYYY, hh:mm a'}}</p>
+              <p class="info">{{u.path}} {{u.createdOn * 1000 | amDateFormat:'MMMM Do YYYY, hh:mm a'}}</p>
             </ion-label>
           </ion-item>
         </div>
