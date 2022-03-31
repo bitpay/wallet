@@ -21,6 +21,7 @@ import {
   ActionSheetProvider,
   BwcErrorProvider,
   ErrorsProvider,
+  KeyProvider,
   Logger,
   OnGoingProcessProvider,
   PersistenceProvider,
@@ -70,7 +71,8 @@ export class SelectCurrencyPage {
     private modalCtrl: ModalController,
     private persistenceProvider: PersistenceProvider,
     private errorsProvider: ErrorsProvider,
-    private events: Events
+    private events: Events,
+    private keyProvider: KeyProvider
   ) {
     this.isJoin = this.navParam.data.isJoin;
     this.isShared = this.navParam.data.isShared;
@@ -167,10 +169,9 @@ export class SelectCurrencyPage {
         this.walletProvider.updateRemotePreferences(wallets);
         this.pushNotificationsProvider.updateSubscription(wallets);
         await new Promise(resolve => setTimeout(resolve, 1000));
-        this.profileProvider.setNewWalletGroupOrder(
-          wallets[0].credentials.keyId
-        );
-        this.endProcess(wallets[0].credentials.keyId);
+        const keyId = wallets[0].credentials.keyId;
+        this.profileProvider.setNewWalletGroupOrder(keyId);
+        this.endProcess(keyId, this.keyProvider.isPrivKeyEncrypted(keyId));
       })
       .catch(e => {
         this.showError(e);
@@ -193,12 +194,13 @@ export class SelectCurrencyPage {
     this.errorsProvider.showDefaultError(err, title);
   }
 
-  private endProcess(keyId?: string) {
+  private endProcess(keyId?: string, isKeyEncrypted?: boolean) {
     this.onGoingProcessProvider.clear();
     this.navCtrl.push(RecoveryKeyPage, {
       keyId,
       isOnboardingFlow: this.isOnboardingFlow,
-      hideBackButton: true
+      hideBackButton: true,
+      isKeyEncrypted
     });
   }
 

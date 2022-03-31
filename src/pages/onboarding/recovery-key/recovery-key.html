@@ -17,10 +17,10 @@
 </ion-content>
 <ion-footer no-border>
   <ion-toolbar>
-    <button ion-button class="button-standard no-margin-bottom" (click)="goToBackupKey()">
+    <button ion-button class="button-standard" [ngClass]="{'no-margin-bottom': !isKeyEncrypted}" (click)="goToBackupKey()">
       {{'View my recovery key' | translate}}
     </button>
-    <button ion-button clear color="primary" class="button-standard" (click)="showInfoSheet()">
+    <button *ngIf="!isKeyEncrypted" ion-button clear color="primary" class="button-standard" (click)="showInfoSheet()">
       {{"I’ll do this later" | translate}}
     </button>
   </ion-toolbar>
