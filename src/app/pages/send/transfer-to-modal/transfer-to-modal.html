@@ -4,7 +4,7 @@
       <div class="header-title">
         {{'Select recipient' | translate}}
       </div>
-      <ion-icon src="assets/img/search-{{currentTheme}}.svg"></ion-icon>
+      <ion-icon (click)="openSearchContactModal()" src="assets/img/search-{{currentTheme}}.svg"></ion-icon>
     </div>
     <page-transfer-to [wallet]="wallet" [searchInput]="search" [useAsModal]="true" [fromMultiSend]="fromMultiSend"  [fromSend]="fromSend"></page-transfer-to>
   </div>

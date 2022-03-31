@@ -4,6 +4,7 @@ import { ModalController, NavParams } from '@ionic/angular';
 import _ from 'lodash';
 import { AppProvider } from 'src/app/providers';
 import { ProfileProvider } from 'src/app/providers/profile/profile';
+import { SearchContactPage } from '../../search/search-contact/search-contact.component';
 
 @Component({
   selector: 'page-transfer-to-modal',
@@ -23,7 +24,8 @@ export class TransferToModalPage {
     private profileProvider: ProfileProvider,
     private navParams: NavParams,
     private viewCtrl: ModalController,
-    private appProvider: AppProvider
+    private appProvider: AppProvider,
+    private modalCtrl: ModalController
   ) {
     if (this.router.getCurrentNavigation()) {
       this.navParamsData = this.router.getCurrentNavigation().extras.state;
@@ -38,6 +40,29 @@ export class TransferToModalPage {
   }
 
   back() {
-    this.viewCtrl.dismiss({});
+    this.viewCtrl.dismiss();
+  }
+
+  public async openSearchContactModal(){
+    const modal = await this.modalCtrl.create({
+      component: SearchContactPage,
+      componentProps: {
+        wallet: this.wallet,
+        recipientId: this.navParamsData.recipientId
+      }
+    });
+    modal.onDidDismiss().then((recipient:any) => {
+      if(recipient.data.toAddress){
+        this.viewCtrl.dismiss({
+          recipientType: recipient.data.recipientType,
+          toAddress: recipient.data.toAddress,
+          name: recipient.data.name,
+          email: recipient.data.email,
+          id: recipient.data.id
+        });
+      }
+    });
+
+    return await modal.present();
   }
 }
