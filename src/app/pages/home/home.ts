@@ -118,11 +118,6 @@ export class HomePage {
       .getCardExperimentFlag()
       .then(status => (this.cardExperimentEnabled = status === 'enabled'));
     this.isCordova = this.platformProvider.isCordova;
-    // this.goToSearchContactPage();
-  }
-
-  goToSearchContactPage(){
-    this.router.navigate(['/search-contact']);
   }
 
   private showNewFeatureSlides() {
