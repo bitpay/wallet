@@ -6,14 +6,14 @@
   </div>
   <ion-list lines="none" class="bp-list custom-list" ng-class="{ 'disabled':itemTapped}">
     <ion-item button detail="false" *ngFor="let item of listRecentTransaction" (click)="close(item)">
-        <div class="recent-contact-container">
-          <div class="contact-logo-container" [ngClass]="{'account-logo-custom': item.isAccount}">
-            <div class="contact-logo-content">
-              {{item.name[0] | uppercase}}
-            </div>
+      <div class="recent-contact-container">
+        <div class="contact-logo-container" [ngClass]="{'account-logo-custom': item.isAccount}">
+          <div class="contact-logo-content">
+            {{item.name[0] | uppercase}}
           </div>
-          <div class="main-label">{{ item.name }}</div>
         </div>
+        <div class="main-label">{{ item.name }}</div>
+      </div>
     </ion-item>
 
   </ion-list>
@@ -51,8 +51,9 @@
         <div class="key-divider" *ngIf="walletsByKey && walletsByKey[0]">
           <span>{{ walletsByKey[0].walletGroupName }}</span>
         </div>
-        <div class="wallet-item-content-container" *ngFor="let wallet of walletsByKey">
-          <wallet-item-content [isCustomForAddressBook]="true" [wallet]="wallet" (click)="close(wallet)"></wallet-item-content>
+        <div class="wallet-item-content-container" *ngFor="let wallet of walletsByKey; let i = index">
+          <wallet-item-content [isCustomForAddressBook]="true" [wallet]="wallet" (click)="close(wallet)"
+            [isLastChild]="i === walletsByKey.length - 1"></wallet-item-content>
         </div>
       </div>
     </ion-list>

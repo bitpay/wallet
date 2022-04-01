@@ -4,6 +4,7 @@ page-search-contact {
     .header-container {
       display: flex;
       .search-input-ion-item {
+        --inner-padding-end: 0;
         --background: linear-gradient(
             0deg,
             rgba(0, 93, 141, 0.05),
@@ -16,7 +17,15 @@ page-search-contact {
         margin: 0 1rem;
         margin-right: 0;
         flex: 1;
+        height: 45px;
+        ion-input{
+          --padding-bottom: 15px;
+        }
       }
+      .erase-icon {
+        width: 14px;
+        cursor: pointer;
+    }
       .cancel-btn {
         display: flex;
         align-self: center;
@@ -27,6 +36,8 @@ page-search-contact {
       }
       ion-icon {
         margin-right: 1rem;
+        margin-top: 0;
+        margin-bottom: 5px;
       }
     }
   }

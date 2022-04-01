@@ -234,6 +234,10 @@ export class SearchContactPage implements OnInit {
       this.filteredWalletsByKeys = [];
     }
   }
+  public cleanSearch(): void{
+    this.search = '';
+    this.processInput();
+  }
 
   public searchWallets(): void {
     for (const coin of this.availableCoins) {

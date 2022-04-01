@@ -10,8 +10,12 @@ import { DecimalFormatBalance } from 'src/app/providers/decimal-format.ts/decima
 export class WalletItemContent {
   @Input()
   wallet: any;
+
   @Input()
   isCustomForAddressBook = false;
+
+  @Input()
+  isLastChild = false;
 
   @Input()
   coins: any;
