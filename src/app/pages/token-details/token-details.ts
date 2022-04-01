@@ -101,15 +101,17 @@ export class TokenDetailsPage {
   }
 
   ionViewDidEnter() {
-    if (this.router.getCurrentNavigation()) {
-      this.navPramss = this.router.getCurrentNavigation().extras.state;
-    } else {
-      this.navPramss = history ? history.state : {};
-    }
-    if(this.navPramss && this.navPramss.finishParam){
-      this.finishParam = this.navPramss.finishParam;
-      this.presentToast();
-    }
+    setTimeout(() => {
+      if (this.router.getCurrentNavigation()) {
+        this.navPramss = this.router.getCurrentNavigation().extras.state;
+      } else {
+        this.navPramss = history ? history.state : {};
+      }
+      if(this.navPramss && this.navPramss.finishParam){
+        this.finishParam = this.navPramss.finishParam;
+        this.presentToast();
+      }
+    }, 100);
   }
 
   async presentToast() {

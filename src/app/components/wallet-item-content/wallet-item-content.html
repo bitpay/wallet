@@ -1,4 +1,4 @@
-<ion-item lines="none" [ngClass]="{'wallet-disabled': !wallet?.isComplete() || wallet?.needsBackup, 'wallet-for-address-book': isCustomForAddressBook}">
+<ion-item lines="none" [ngClass]="{'wallet-disabled': !wallet?.isComplete() || wallet?.needsBackup, 'wallet-for-address-book': isCustomForAddressBook, 'last-child': isLastChild}">
   <ion-icon *ngIf="isKeyTab" [coin]="wallet.coin" [network]="wallet.network" class="key-tab" [ngClass]="{'testnet': wallet.network === 'testnet' }" src="assets/img/currencies/{{wallet.coin}}.svg" slot="start">
   </ion-icon>
   <coin-icon *ngIf="!isKeyTab && !isCustomForAddressBook" [coin]="wallet.coin" [network]="wallet.network" slot="start"></coin-icon>

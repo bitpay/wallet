@@ -88,7 +88,7 @@
           <ion-input type="text" formControlName="recoveryPhrase"></ion-input>
         </ion-item>
 
-        <ion-item *ngIf="joinForm.value.selectedSeed == 'set' && !keyId">
+        <ion-item disabled *ngIf="joinForm.value.selectedSeed == 'set' && !keyId">
           <ion-label position="stacked">{{'Derivation path' | translate}}</ion-label>
           <ion-input type="text" formControlName="derivationPath"></ion-input>
         </ion-item>

@@ -82,7 +82,9 @@ export class TxpPage implements OnInit {
         this.router.navigate(['/confirm'], { state: data });
       }
       if (data && data.finishText) {
-        this.presentToast(data.finishText);
+        setTimeout(() => {
+          this.presentToast(data.finishText);
+        }, 100);
       }
     });
   }

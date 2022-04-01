@@ -81,6 +81,8 @@ export class WalletDetailsPage {
   public selectedTheme;
   public navPramss: any;
   public finishParam: any;
+  toast?: HTMLIonToastElement;
+
   typeErrorQr = NgxQrcodeErrorCorrectionLevels;
   constructor(
     public http: HttpClient,
@@ -171,18 +173,6 @@ export class WalletDetailsPage {
     this.blockexplorerUrlTestnet = defaults.blockExplorerUrlTestnet[this.wallet.coin];
   }
 
-  ionViewDidEnter() {
-    if (this.router.getCurrentNavigation()) {
-      this.navPramss = this.router.getCurrentNavigation().extras.state;
-    } else {
-      this.navPramss = history ? history.state : {};
-    }
-    if (this.navPramss && this.navPramss.finishParam) {
-      this.finishParam = this.navPramss.finishParam;
-      this.presentToast();
-    }
-  }
-
   async presentToast() {
     const toast = await this.toastController.create({
       message: this.finishParam.finishText,
@@ -240,6 +230,17 @@ export class WalletDetailsPage {
       walletId: this.wallet.credentials.walletId
     });
     this.subscribeEvents();
+    setTimeout(() => {
+      if (this.router.getCurrentNavigation()) {
+        this.navPramss = this.router.getCurrentNavigation().extras.state;
+      } else {
+        this.navPramss = history ? history.state : {};
+      }
+      if (this.navPramss && this.navPramss.finishParam) {
+        this.finishParam = this.navPramss.finishParam;
+        this.presentToast();
+      }
+    }, 100);
   }
 
   ionViewWillLeave() {

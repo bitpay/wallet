@@ -5,6 +5,9 @@
         <ion-icon slot="start" src="assets/img/search-{{currentTheme}}.svg"></ion-icon>
         <ion-input [(ngModel)]="search" (ngModelChange)="processInput()" placeholder="search">
         </ion-input>
+        <ion-icon src="assets/img/recipient-component/Subtract.svg" *ngIf="search && search.length > 0" slot="end"
+          class="erase-icon" (click)="cleanSearch()">
+        </ion-icon>
       </ion-item>
       <ion-button fill="clear" class="cancel-btn" (click)="back()">
         {{ 'Cancel' | translate}}
@@ -42,8 +45,9 @@
                 <div class="key-divider" *ngIf="walletsByKey && walletsByKey[0]">
                   <span>{{ walletsByKey[0].walletGroupName }}</span>
                 </div>
-                <div class="wallet-item-content-container" *ngFor="let wallet of walletsByKey">
-                  <wallet-item-content [isCustomForAddressBook]="true" [wallet]="wallet" (click)="close(wallet)">
+                <div class="wallet-item-content-container" *ngFor="let wallet of walletsByKey; let i = index">
+                  <wallet-item-content [isCustomForAddressBook]="true" [wallet]="wallet" (click)="close(wallet)"
+                    [isLastChild]="i === walletsByKey.length - 1">
                   </wallet-item-content>
                 </div>
               </div>
