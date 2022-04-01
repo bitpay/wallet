@@ -8,50 +8,19 @@
         {{ 'Home' | translate }}
       </div>
     </ion-title>
-    <!-- TODO: Disable login account bitpay  -->
-    <!-- <ion-buttons *ngIf="isCordova && !isCopay" end>
-      <button color="light" ion-button clear  (click)="openBitPayIdPage()">
-        <div [reveal-at-scroll-pos]="expandableHeader.headerHeight" [scrollArea]="scrollArea">
-          <ion-icon *ngIf="!bitPayIdUserInfo">
-            <img src="assets/img/bitpay-card/icon-bitpay-user.svg" width="25">
-          </ion-icon>
-          <ion-icon *ngIf="bitPayIdUserInfo && !bitPayIdUserInfo?.givenName">
-            <img src="assets/img/bitpay-card/icon-bitpay.svg" width="25">
-          </ion-icon>
-          <ion-icon *ngIf="bitPayIdUserInfo && bitPayIdUserInfo?.givenName">
-            <span class="icon-bitpay-id icon-small">
-              {{accountInitials}}
-            </span>
-          </ion-icon>
-        </div>
-      </button>
-    </ion-buttons> -->
   </ion-toolbar>
 </ion-header>
 <ion-content scrollEvents="true" #scrollArea>
-  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)" pullMin="90" pullMax="160">
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
   <expandable-header [scrollArea]="scrollArea" [fadeFactor]="5" [disableFade]="true" #expandableHeader>
     <ion-toolbar class="wide-header__title" (click)="toggleTestnet()" tappable>
       <expandable-header-primary>
-        <!-- TODO: Disable login account bitpay  -->
-        <!-- <button *ngIf="isCordova && !isCopay" class="bitpay-id-login" color="light" ion-button clear  large (click)="openBitPayIdPage()">
-          <ion-icon *ngIf="!bitPayIdUserInfo">
-            <img src="assets/img/bitpay-card/icon-bitpay-user.svg" width="35">
-          </ion-icon>
-          <ion-icon *ngIf="bitPayIdUserInfo && !bitPayIdUserInfo?.givenName">
-            <img src="assets/img/bitpay-card/icon-bitpay.svg" width="35">
-          </ion-icon>
-          <ion-icon *ngIf="bitPayIdUserInfo && bitPayIdUserInfo?.givenName">
-            <span class="icon-bitpay-id">
-              {{accountInitials}}
-            </span>
-          </ion-icon>
-        </button> -->
         <div class="home-icon">
-          <ion-icon (click)="openSettingPage()" src="assets/img/home-setting-icon-{{currentTheme}}.svg"></ion-icon>
-          <ion-icon (click)="openProposalsNotificationsPage()"src="assets/img/home-notifications-icon-{{currentTheme}}.svg"></ion-icon>
+          <img (click)="openSettingPage()" src="assets/img/home-setting-icon-{{currentTheme}}.svg">
+          {{ 'Home' | translate }}
+          <img (click)="openProposalsNotificationsPage()"src="assets/img/home-notifications-icon-{{currentTheme}}.svg">
         </div>
       </expandable-header-primary>
     </ion-toolbar>
@@ -154,9 +123,7 @@
         <span *ngIf="totalBalanceChange || totalBalanceChange === 0" class="date" translate>(1D)</span>
       </div>
     </div>
-    <div class="img-total-amount">
-      <img src="../../../assets/img/home-abc-ic.svg" alt="">
-    </div>
+    <img src="../../../assets/img/home-abc-ic-{{currentTheme}}.svg" alt="">
     
   </div>
 
