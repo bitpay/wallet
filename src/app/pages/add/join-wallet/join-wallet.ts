@@ -215,10 +215,8 @@ export class JoinWalletPage {
         walletData = this.bwcProvider.parseSecret(invitation);
         this.coin = walletData.coin;
         this.derivationPathForTestnet = this.derivationPathHelperProvider.defaultTestnet;
-        this.derivationPathByDefault = "m/48'/0'/0'"; // hard code for this derivation path
-
+        this.derivationPathByDefault = this.getDerivationPathByDefault();
         this.setDerivationPath(walletData.network);
-
         this.logger.info('Correct invitation code for ' + walletData.network);
       } catch (ex) {
         this.logger.warn('Error parsing invitation: ' + ex);
@@ -226,6 +224,32 @@ export class JoinWalletPage {
     }
   }
 
+  private getDerivationPathByDefault(): string {
+    let derivationPathByDefault: string;
+    switch (this.coin) {
+      case 'bch':
+        derivationPathByDefault = this.derivationPathHelperProvider
+          .defaultMultisigBCH;
+        break;
+      case 'doge':
+        derivationPathByDefault = this.derivationPathHelperProvider
+          .defaultMultisigDOGE;
+        break;
+      case 'xec':
+        derivationPathByDefault = this.derivationPathHelperProvider
+          .defaultMultisigXEC;
+        break;
+      case 'xpi':
+        derivationPathByDefault = this.derivationPathHelperProvider
+          .defaultMultisigXPI;
+        break;
+      default:
+        derivationPathByDefault = this.derivationPathHelperProvider
+          .defaultMultisigBTC;
+    }
+
+    return derivationPathByDefault;
+  }
 
   public async setOptsAndJoin() {
 
