@@ -85,7 +85,7 @@
       </div>
 
       <div class="wallets-container">
-        <div class="header-title">
+        <div *ngIf="!(!walletsGroups || !walletsGroups[0])" class="header-title">
           {{'Accounts' | translate}}
         </div>
         <div class="section-header ion-padding-top ion-padding-bottom" *ngIf="keySelected[0]?.keyId == 'read-only'">

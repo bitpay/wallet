@@ -122,8 +122,8 @@ export class SettingsPage {
       this.navigation = this.themeProvider.getCurrentNavigationType();
     });
 
-    this.events.subscribe('Local/UpdateActiveThem', () => {
-      this.appTheme = this.themeProvider.getCurrentAppTheme();
+    this.events.subscribe('Local/UpdateActiveThem', (opts) => {
+      if (opts) this.appTheme = this.themeProvider.getCurrentAppTheme();
     });
   }
   

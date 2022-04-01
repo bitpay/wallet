@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { TranslateService } from '@ngx-translate/core';
 import { ThemeDetection } from '@ionic-native/theme-detection/ngx'
@@ -21,6 +21,7 @@ export class ThemeProvider {
   public availableNavigationTypes;
 
   public useSystemTheme: boolean = false;
+  public themeChange : EventEmitter<any> = new EventEmitter<any>();
 
   constructor(
     private logger: Logger,
@@ -139,6 +140,7 @@ export class ThemeProvider {
       .getElementsByTagName('ion-app')[0]
       .classList.add(isDarkMode ? 'dark' : 'light');
     this.logger.debug('Apply Theme: ' + this.currentAppTheme);
+    this.themeChange.emit();
   }
 
   public setActiveTheme(theme: string, detectedSystemTheme?: string) {

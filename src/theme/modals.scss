@@ -17,7 +17,7 @@
   }
 
   .fixscreen-modal{
-    .modal-wrapper {
+    &::part(content) {
       @include modal-wrapper;
       width: 312px !important;
       height: 450px !important;

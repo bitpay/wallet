@@ -8,7 +8,6 @@ import { Subscription } from 'rxjs';
 import { CopayersPage } from '../add/copayers/copayers';
 
 // Providers
-import { ActionSheetProvider } from '../../providers/action-sheet/action-sheet';
 import { AnalyticsProvider } from '../../providers/analytics/analytics';
 import { Logger } from '../../providers/logger/logger';
 import { PersistenceProvider } from '../../providers/persistence/persistence';
@@ -21,7 +20,7 @@ import { Router } from '@angular/router';
 import { TokenProvider } from 'src/app/providers/token-sevice/token-sevice';
 import { AddressProvider } from 'src/app/providers/address/address';
 import { Token } from 'src/app/providers/currency/token';
-import { AppProvider, ConfigProvider, CurrencyProvider } from 'src/app/providers';
+import { AppProvider, ConfigProvider, CurrencyProvider, ThemeProvider } from 'src/app/providers';
 import { DecimalFormatBalance } from 'src/app/providers/decimal-format.ts/decimal-format';
 
 interface UpdateWalletOptsI {
@@ -83,7 +82,8 @@ export class WalletsPage {
     private menu: MenuController,
     private appProvider: AppProvider,
     private currencyProvider: CurrencyProvider,
-    private configProvider: ConfigProvider
+    private configProvider: ConfigProvider,
+    private themeProvider: ThemeProvider
   ) {
     if (this.router.getCurrentNavigation()) {
       this.navParamsData = this.router.getCurrentNavigation().extras.state ? this.router.getCurrentNavigation().extras.state : {};
@@ -93,7 +93,7 @@ export class WalletsPage {
     const availableChains = this.currencyProvider.getAvailableChains();
     let config = this.configProvider.get();
     this.currentCurrency = config.wallet.settings.alternativeIsoCode;
-    this.currentTheme = this.appProvider.themeProvider.currentAppTheme;
+    this.currentTheme = this.themeProvider.currentAppTheme;
     this.collapsedGroups = {};
     this.collapsedToken = {};
     this.zone = new NgZone({ enableLongStackTrace: false });
@@ -423,6 +423,10 @@ export class WalletsPage {
 
       this.events.subscribe('Local/GetData', this.walletGetDataHandler);
     };
+    //Detect Change theme
+    this.themeProvider.themeChange.subscribe(() => {
+      this.currentTheme = this.appProvider.themeProvider.currentAppTheme;
+    });
 
     subscribeEvents();
     this.onResumeSubscription = this.plt.resume.subscribe(() => {

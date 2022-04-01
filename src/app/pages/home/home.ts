@@ -18,7 +18,8 @@ import {
   PopupProvider,
   ProfileProvider,
   RateProvider,
-  ReleaseProvider
+  ReleaseProvider,
+  ThemeProvider
 } from '../../providers';
 import { ActionSheetProvider } from '../../providers/action-sheet/action-sheet';
 import { ConfigProvider } from '../../providers/config/config';
@@ -109,9 +110,10 @@ export class HomePage {
     private emailProvider: EmailNotificationsProvider,
     private popupProvider: PopupProvider,
     private splashScreen: SplashScreen,
-    private rateProvider: RateProvider
+    private rateProvider: RateProvider,
+    private themeProvider: ThemeProvider,
   ) {
-    this.currentTheme = this.appProvider.themeProvider.currentAppTheme;
+    this.currentTheme = this.themeProvider.currentAppTheme;
     this.logger.info('Loaded: HomePage');
     this.isCopay = this.appProvider.info.name === 'copay';
     this.zone = new NgZone({ enableLongStackTrace: false });
@@ -192,6 +194,10 @@ export class HomePage {
 
   ngOnInit() {
     this.preFetchWallets();
+    //Detect Change theme
+    this.themeProvider.themeChange.subscribe(() => {
+      this.currentTheme = this.appProvider.themeProvider.currentAppTheme;
+    });
     // Required delay to improve performance loading
     setTimeout(() => {
       this.checkEmailLawCompliance();
@@ -271,7 +277,7 @@ export class HomePage {
     this.events.publish('Local/FetchWallets');
   }
 
-  public doRefresh(refresher): void {
+  public doRefresh(refresher) {
     this.preFetchWallets();
     setTimeout(() => {
       refresher.target.complete();
