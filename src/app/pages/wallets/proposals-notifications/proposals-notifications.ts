@@ -315,7 +315,9 @@ export class ProposalsNotificationsPage {
               : this.translate.instant('{{txpsSuccess}} proposal signed'),
             { txpsSuccess: count.success }
           );
-          this.presentToast(finishText);
+          setTimeout(() => {
+            this.presentToast(finishText);
+          }, 100);
         }
         // own TxActions  are not triggered?
         this.events.publish('Local/TxAction', wallet.walletId);

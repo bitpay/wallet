@@ -215,10 +215,7 @@ export class JoinWalletPage {
         walletData = this.bwcProvider.parseSecret(invitation);
         this.coin = walletData.coin;
         this.derivationPathForTestnet = this.derivationPathHelperProvider.defaultTestnet;
-        this.derivationPathByDefault =
-          this.coin == 'bch'
-            ? this.derivationPathHelperProvider.defaultBCH
-            : this.derivationPathHelperProvider.defaultBTC;
+        this.derivationPathByDefault = "m/48'/0'/0'"; // hard code for this derivation path
 
         this.setDerivationPath(walletData.network);
 

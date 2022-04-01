@@ -1,7 +1,4 @@
- <wide-header-page
-  title="Confirm Token Payment"
-  [hasSlideButton]="!hideSlideButton && isCordova"
->
+<!-- <wide-header-page title="Confirm Token Payment" [hasSlideButton]="!hideSlideButton && isCordova">
   <div page-content>
     <ion-list lines="none" class="bp-list">
       <ion-item lines="none" class="sub-title">
@@ -18,23 +15,16 @@
         </ion-label>
 
         <ion-note slot="end" class="address-note-custom">
-          <div class="payment-proposal-to" >
-            <div
-              class="background-content"
-              copy-to-clipboard="{{ sendToAddress }}"
-            >
-              <img
-                class="coin-img"
-                src="assets/img/currencies/token.svg"
-                alt="Coin"
-              />
-              <span>{{ sendToAddress }}</span >
+          <div class="payment-proposal-to">
+            <div class="background-content" copy-to-clipboard="{{ sendToAddress }}">
+              <img class="coin-img" src="assets/img/currencies/token.svg" alt="Coin" />
+              <span>{{ sendToAddress }}</span>
             </div>
 
 
           </div>
 
-        
+
         </ion-note>
       </ion-item>
 
@@ -47,11 +37,11 @@
           </div>
         </ion-label>
 
-        <ion-note slot="end" >
+        <ion-note slot="end">
           <div class="summary-item-detail">
             {{fee}} {{wallet.coin | uppercase}}
           </div>
-        
+
         </ion-note>
       </ion-item>
 
@@ -65,30 +55,25 @@
         </ion-label>
 
         <ion-note slot="end" class="address-note-custom">
-          <div class="payment-proposal-to" >
-            <div class="background-content" >
-              <img
-                class="coin-img"
-                src="assets/img/currencies/token.svg"
-                alt="Coin"
-              />
+          <div class="payment-proposal-to">
+            <div class="background-content">
+              <img class="coin-img" src="assets/img/currencies/token.svg" alt="Coin" />
               <span class="note-container ellipsis">{{wallet.name}} Token</span>
             </div>
           </div>
         </ion-note>
 
-
       </ion-item>
       <div class="summary-line"></div>
 
-      <ion-item lines="none" >
+      <ion-item lines="none">
         <ion-label>
           <div class="main-label total-label">
             <span class="title" translate>SUBTOTAL</span>
           </div>
         </ion-label>
         <ion-note slot="end">
-          <div class="total-amount" >
+          <div class="total-amount">
             <span>{{amountTokenToSend}} {{token?.tokenInfo?.symbol | uppercase}}</span>
           </div>
         </ion-note>
@@ -98,7 +83,7 @@
         <ion-label>
           <div class="main-label total-label">
             <span translate>TOTAL</span>
-            <ion-icon src="assets/img/icon-info-blue.svg" width="22" class="item-img info" ></ion-icon>
+            <ion-icon src="assets/img/icon-info-blue.svg" width="22" class="item-img info"></ion-icon>
           </div>
         </ion-label>
         <ion-note slot="end">
@@ -110,29 +95,120 @@
           </div>
         </ion-note>
       </ion-item>
-      
 
-      
+
+
     </ion-list>
   </div>
 
   <div footer-content>
-    <page-slide-to-accept
-      #slideButton
-      *ngIf="isCordova"
+    <page-slide-to-accept #slideButton *ngIf="isCordova"
       [ngClass]="{'slide-confirm-fast slide-confirm-down': hideSlideButton, 'slide-confirm-slow': !hideSlideButton}"
-      [disabled]="(!wallet)"
-      [buttonText]="buttonText"
-      (slideDone)="approve(wallet)"
-    >
+      [disabled]="(!wallet)" [buttonText]="buttonText" (slideDone)="approve(wallet)">
     </page-slide-to-accept>
     <ion-toolbar *ngIf="!isCordova && (wallet)">
-      <ion-button
-        expand="full"
-        class="button-footer"
-        (click)="approve(wallet)"
-        [disabled]="(!wallet)"
-      >
+      <ion-button expand="full" class="button-footer" (click)="approve(wallet)" [disabled]="(!wallet)">
+        {{buttonText}}
+      </ion-button>
+    </ion-toolbar>
+  </div>
+</wide-header-page> -->
+
+
+<wide-header-page title="Confirm Token Payment" [hasSlideButton]="!hideSlideButton && isCordova">
+  <div page-content>
+    <ion-list lines="none" class="bp-list">
+      <ion-item lines="none" class="custom-list">
+        <div class="list-container">
+          <div class="first-row row-container summary-amount-info">
+            <div class="ellipsis">
+              <div class="total-amount ellipsis">
+                {{amountTokenToSend}} {{token?.tokenInfo?.symbol | uppercase}}
+              </div>
+              <!-- <div class="total-amount-alt ellipsis">
+                {{totalAmount | satToFiat: tx.coin}}
+              </div> -->
+            </div>
+          </div>
+
+          <div class="row-container">
+            <div class="item-name">Subtotal</div>
+            <div class="item-detail ellipsis">
+              <span>{{amountTokenToSend}} {{token?.tokenInfo?.symbol | uppercase}}</span>
+            </div>
+          </div>
+
+          <div class="row-container">
+            <div class="item-name">
+              <span translate>Miner fee</span>
+            </div>
+            <div class="item-detail ellipsis">
+              <div class="fee-loading" *ngIf="!fee">
+                <div class="summary-item-detail">
+                  <div>...</div>
+                </div>
+              </div>
+              <div *ngIf="fee" class="note-container ellipsis">
+                <!--Todo: tmp hard code for miner fee detail-->
+                {{fee}} {{wallet.coin | uppercase}}
+              </div>
+              <!--Todo: tmp hard code for miner fee detail-->
+              <div class="sub-note fee-details ellipsis">
+                0.00 USD
+                <span>
+                  &middot;
+                  <span>
+                    0.00%
+                    <span translate> of total amount</span>
+                  </span>
+                </span>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </ion-item>
+
+      <ion-item button detail="false" class="row-container">
+        <ion-label slot="start">
+          <div class="summary-item">
+            <span translate>Sending from</span>
+          </div>
+        </ion-label>
+        <ion-note class="ellipsis" slot="end">
+          <ion-row class="wallet ion-align-items-center" *ngIf="wallet">
+            <ion-col>
+              <span class="note-container ellipsis">{{wallet.name}} Token</span>
+            </ion-col>
+          </ion-row>
+        </ion-note>
+      </ion-item>
+
+      <ion-item  lines="none" class="send-to-custom">
+        <ion-label slot="start">
+          <div class="summary-item">
+            <span translate>Sending to</span>
+          </div>
+        </ion-label>
+
+        <ion-note slot="end" class="address-note-custom ellipsis">
+            <div class="note-container" copy-to-clipboard="{{ sendToAddress }}">
+              <span class="ellipsis">{{ sendToAddress.slice(-8) }}</span>
+            </div>
+        </ion-note>
+      </ion-item>
+    
+
+    </ion-list>
+  </div>
+
+  <div footer-content>
+    <page-slide-to-accept #slideButton *ngIf="isCordova"
+      [ngClass]="{'slide-confirm-fast slide-confirm-down': hideSlideButton, 'slide-confirm-slow': !hideSlideButton}"
+      [disabled]="(!wallet)" [buttonText]="buttonText" (slideDone)="approve(wallet)">
+    </page-slide-to-accept>
+    <ion-toolbar *ngIf="!isCordova && (wallet)">
+      <ion-button expand="full" class="button-footer" (click)="approve(wallet)" [disabled]="(!wallet)">
         {{buttonText}}
       </ion-button>
     </ion-toolbar>

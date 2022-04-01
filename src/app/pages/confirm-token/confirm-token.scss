@@ -1,210 +1,408 @@
 confirm-token {
-    ion-content {
-      height: calc(100% - 130px) !important;
-    }
+  .ellipsis{
+    display: block !important;
+  }
+  ion-content {
+    height: calc(100% - 130px) !important;
+  }
 
-    .padded-input {
-      padding-top: 10px;
-      padding-bottom: 15px;
-    }
+  ion-note {
+    // margin-left: unset;
+    // margin-right: unset;
+    margin-inline: unset;
+  }
+  .amount-label {
+    padding-top: 1rem;
 
-    .payment-proposal-to {
-      padding: 10px;
-      height: 39px;
-      max-width: 200px;
-      border-radius: 19.5px;
-      background-color: #f6f7fc;
+    .amount {
       display: flex;
-      justify-content: center;
-      align-items: center;
-  
-      &.align-right {
-        margin-left: auto;
+      font-size: 3.5rem;
+      justify-content: space-between;
+      font-size: 3.5rem;
+
+      img.sending-img {
+        width: auto;
+        height: 40px;
       }
-  
-      .multiple-length {
+
+      .amount-coin {
+        font-size: 1.5rem;
+        margin-top: 0.35rem;
+        margin-left: 0.8rem;
+      }
+
+      div {
         display: flex;
       }
-  
-      .coin-img {
-        width: 18px;
-        height: 18px;
-        margin-right: 6px;
+    }
+
+    .alternative {
+      margin-top: 0.5rem;
+      color: var(--color-light-grey);
+    }
+  }
+
+  // button.item {
+  //   width: 100%;
+  // } 
+  .item-fee {
+
+    .fee-loading {
+      font-weight: 300;
+      color: var(--color-light-grey);
+    }
+
+    &.warn {
+      color: var(--color-error);
+
+      .fee-details {
+        color: var(--color-error);
       }
-  
-      .text-address {
+    }
+
+    &.btn-opacity {
+      background-color: #fbfbfb;
+    }
+  }
+
+  .padded-input {
+    padding-top: 10px;
+    padding-bottom: 15px;
+  }
+
+  .paypro {
+    width: 100%;
+    cursor: pointer;
+  }
+
+  .no-wallet-message {
+    ion-item {
+      text-align: center;
+      text-transform: uppercase;
+    }
+  }
+
+  .payment-proposal-to {
+    padding: 10px;
+    height: 39px;
+    max-width: 200px;
+    border-radius: 19.5px;
+    background-color: #f6f7fc;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &.align-right {
+      margin-left: auto;
+    }
+
+    .multiple-length {
+      display: flex;
+    }
+
+    .coin-img {
+      width: 18px;
+      height: 18px;
+      margin-right: 6px;
+    }
+
+    .text-address {
+      display: flex;
+      width: 25px;
+      justify-content: space-between;
+    }
+
+    .debit-card {
+      width: 40px;
+    }
+  }
+
+  .not-clickable {
+    pointer-events: none;
+  }
+
+  .last-item {
+    margin-left: auto !important;
+  }
+
+  .multi-amount {
+    text-align: right;
+    margin-top: 15px;
+  }
+
+  .bp-list {
+    .item{
+      --inner-padding-start: 16px;
+      border-radius: 12px;
+    }
+    .list-container{
+      display: flex;
+      flex-flow: column;
+      width: 100%;
+      .row-container{
         display: flex;
-        width: 25px;
         justify-content: space-between;
       }
-  
-      .debit-card {
-        width: 40px;
-      }
-    }
-  
-    .not-clickable {
-      pointer-events: none;
-    }
-  
-    .last-item {
-      margin-left: auto !important;
-    }
-
-    .bp-list {
-      .sub-title {
-        color: #000000;
-        font-size: 16px;
-        font-weight: 500;
-        line-height: 18px;
-      }
-  
-      .item {
-  
-        &.item-ios,
-        &.item-md {
-          padding-left: 19px;
-  
-          .item-inner {
-            padding-top: 0px;
-            padding-bottom: 0px;
+      .row-container:nth-child(n+2){
+        padding: 16px 0;
+        margin: 0 16px;
+        .item-name{
+          font-weight: 400;
+          font-size: 16px;
+          flex: 0 0 auto;
+          margin-right: 32px;
+        }
+        .item-detail{
+          font-size: 16px;
+          font-weight: 600 !important;
+          text-align: end;
+          .sub-note{
+            color: rgba(0, 30, 46, 0.6);
+            font-size: 11px;
           }
         }
       }
-    }
-  
-    .background-content {
-      display: flex;
-      padding: 0px 10px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      align-items: center;
-    }
-  
-    .note-container {
-      max-width: 100px;
-    }
-  
-    .wallet,
-    .multi-recip-title {
-      span {
-        height: 19px;
-        color: #000000;
-        font-size: 14px;
-        font-weight: 500;
-        line-height: 19px;
-        text-align: right;
-      }
-  
-      ion-icon.item-img.icon {
-  
-        &.icon-md,
-        &.icon-ios {
-          margin: 9px 0px 9px 0;
-          justify-content: center;
-          padding: 7px;
-  
-          img {
-            width: 20px;
-          }
-  
-          &.rectangle {
-            border-radius: 7px;
-            justify-content: center;
-          }
-  
-          .coin-img {
-            width: 18px;
-            height: 18px;
-            margin: 0px;
-          }
+      .send-to-content{
+        .item-name{
+          font-weight: 600 !important;
+          color:rgba(98, 90, 124, 1);
+        }
+        .item-detail{
+          color: rgba(255, 184, 93, 1);
         }
       }
-  
-      .gravatar {
-        ion-icon {
-          padding: 0px !important;
-          margin: 0px !important;
-  
-          img {
-            width: 18px;
-          }
-  
-          &.rectangle {
-            border-radius: 12px !important;
-          }
-        }
+      .row-container:nth-child(n+3) {
+        border-top: 1px solid rgba(112, 129, 138, 0.38);
       }
     }
     
-    .line-divider {
-      margin: 0px 17px;
-    }
-  
-    .background-button-content {
-      height: 47px;
-      background-color: #edf0fe;
-      display: flex;
+    .summary-amount-info{
       justify-content: center;
-      align-items: center;
-      max-width: 200px;
-      border-radius: 21px;
-      margin: 25px auto;
-    }
-  
-    .scanner-icon {
-      z-index: 99;
-      font-size: 28px;
-      color: var(--color-primary);
-      padding-top: 20px;
-    }
-  
-    .item-img {
-      &.info {
-        padding-left: 10px;
-        width: 22px;
-        height: 22px;
+      .total-amount{
+        margin-top: 16px;
+        margin-bottom: 4px;
+        color: rgba(204, 128, 0, 1) !important;
+        font-size: 22px;
+        font-weight: 600;
+        text-align: center;
+      }
+      .total-amount-alt{
+        display: flex;
+        justify-content: center;
+        color: rgba(255, 184, 93, 1);
+        font-size: 16px;
+        font-weight: 600;
+        text-align: center;
       }
     }
-  
-    .item.item-input span {
-      width: auto;
+
+    .sub-title {
+      color: #000000;
+      font-size: 16px;
+      font-weight: 500;
+      line-height: 18px;
     }
-  
-    .item.item-input input {
-      width: 80px;
-    }
-  
-    .add-new-contact {
-      width: 25px;
-      height: 25px;
-    }
-  
-  
-    .address-note-custom {
-      display: flex;
-    }
-  
-    .send-to-custom {
-      ion-label {
-        margin: 0 8px 0 0;
+   
+
+    .custom-list {
+      --inner-padding-start: 0;
+      --padding-end: 0;
+      --inner-padding-end: 0;
+      &::part(native){
+        padding: 0;
       }
-  
-      .address-note-custom {
-        margin: 0 8px 0 0;
-  
-        ion-icon {
-          margin: 0;
+
+      .first-row{
+        border-bottom: 1px solid rgba(112, 129, 138, 0.38);
+        padding-bottom: 17px;
+        display: flex;
+        justify-content: center;
+      }
+
+      .first-row-send-to{
+        justify-content: space-between;
+        padding-top: 16px; 
+        padding-right: 16px;
+        padding-left: 16px;
+      }
+      // &.item-ios,
+      // &.item-md {
+      //   padding-left: 19px;
+
+        
+      // }
+      // .item-inner {
+      //   padding-top: 0px;
+      //   padding-bottom: 0px;
+      //   padding-right: 0px !important;
+      // }
+    }
+    
+    
+  }
+
+  .background-content {
+    display: flex;
+    padding: 0px 10px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    align-items: center;
+    padding-left: 0px
+  }
+
+  .note-container {
+    font-size: 16px !important;
+    font-weight: 600 !important;
+    color: rgba(204, 128, 0, 1) !important;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .wallet,
+  .multi-recip-title {
+    span {
+      height: 19px;
+      color: #000000;
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 19px;
+      text-align: right;
+    }
+
+    ion-icon.item-img.icon {
+
+      &.icon-md,
+      &.icon-ios {
+        margin: 9px 0px 9px 0;
+        justify-content: center;
+        padding: 7px;
+
+        img {
+          width: 20px;
+        }
+
+        &.rectangle {
+          border-radius: 7px;
+          justify-content: center;
+        }
+
+        .coin-img {
+          width: 18px;
+          height: 18px;
+          margin: 0px;
         }
       }
     }
-  
-    coin-icon {
+
+    .gravatar {
       ion-icon {
-        margin: 0;
-        width: 20px;
-        height: 20px;
+        padding: 0px !important;
+        margin: 0px !important;
+
+        img {
+          width: 18px;
+        }
+
+        &.rectangle {
+          border-radius: 12px !important;
+        }
       }
     }
   }
+
+  .multi-recip-title {
+    display: flex;
+    align-items: center;
+  }
+
+  .line-divider {
+    margin: 0px 17px;
+  }
+
+  .background-button-content {
+    height: 47px;
+    background-color: #edf0fe;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 200px;
+    border-radius: 21px;
+    margin: 25px auto;
+  }
+
+  .scanner-icon {
+    z-index: 99;
+    font-size: 28px;
+    color: var(--color-primary);
+    padding-top: 20px;
+  }
+
+  .item-img {
+    &.info {
+      padding-left: 10px;
+      width: 22px;
+      height: 22px;
+    }
+  }
+
+  .item.item-input span {
+    width: auto;
+  }
+
+  .item.item-input input {
+    width: 80px;
+  }
+
+  .add-new-contact {
+    width: 25px;
+    height: 25px;
+  }
+
+  .add-new-contact-button {
+    float: right;
+    padding: 0px;
+    margin-right: 0px;
+    margin-left: 10px;
+  }
+
+  .address-note-custom {
+    display: flex;
+  }
+
+  .input-contact-custom {
+    background-color: #f8f8f8;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    margin-right: 10px;
+    margin-top: 5px;
+
+    input {
+      width: 100% !important;
+      padding-left: 15px !important ;
+    }
+  }
+
+  coin-icon {
+    ion-icon {
+      margin: 0;
+      width: 20px;
+      height: 20px;
+    }
+  }
+  ion-label{
+    margin: 1rem;
+    margin-right: 32px;
+    flex: 0 0 auto;
+  }
+  ion-note{
+    flex-grow: 1;
+    overflow: hidden;
+    display: flex;
+    width: 100%;
+    justify-content: flex-end;
+  }
+  .no-margin-left{
+    margin-left: 0 !important;
+  }
+}
