@@ -1,5 +1,6 @@
 import { Component, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
+import { ThemeProvider } from 'src/app/providers';
 
 @Component({
   selector: 'create-new-wallet',
@@ -8,7 +9,14 @@ import { Router } from '@angular/router';
   encapsulation: ViewEncapsulation.None
 })
 export class CreateNewWalletPage {
-  constructor(private router: Router) {}
+  public currentTheme;
+
+  constructor(
+    private router: Router,
+    private themeProvider: ThemeProvider
+  ) {
+    this.currentTheme = this.themeProvider.currentAppTheme;
+  }
 
   public goToAddWalletPage() {
     this.router.navigate(['/select-currency'], {state: {isZeroState: true}})
