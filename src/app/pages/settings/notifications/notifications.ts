@@ -129,29 +129,29 @@ export class NotificationsPage {
     this.configProvider.set(opts);
   }
 
-  public productsUpdatesChange() {
+  public async productsUpdatesChange() {
     const opts = {
       productsUpdates: {
         enabled: this.productsUpdates
       }
     };
     this.configProvider.set(opts);
-    this.updateTopic(this.productsUpdates, 'productsupdates');
+    await this.updateTopic(this.productsUpdates, 'productsupdates');
   }
 
-  public offersAndPromotionsChange() {
+  public async offersAndPromotionsChange() {
     const opts = {
       offersAndPromotions: {
         enabled: this.offersAndPromotions
       }
     };
     this.configProvider.set(opts);
-    this.updateTopic(this.offersAndPromotions, 'offersandpromotions');
+    await this.updateTopic(this.offersAndPromotions, 'offersandpromotions');
   }
 
-  public updateTopic(enabled, topic) {
-    if (enabled) this.pushProvider.subscribeToTopic(topic);
-    else this.pushProvider.unsubscribeFromTopic(topic);
+  public async updateTopic(enabled, topic) {
+    if (enabled)  await this.pushProvider.subscribeToTopic(topic);
+    else await this.pushProvider.unsubscribeFromTopic(topic);
   }
 
   public emailNotificationsChange() {

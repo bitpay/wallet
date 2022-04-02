@@ -1347,7 +1347,49 @@ ion-icon {
 }
 
 .in-app-notification-modal {
-    height: 20%;
+    height: 25%;
+    --background: transparent !important;
+    --backdrop-opacity: 0;
+    padding: 1rem;
+
+    ion-slide {
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        text-align: left;
+        flex-direction: column;
+        color: #482A00;
+        background: #FFDDB6 !important;
+        border-radius: 15px;
+        padding: 1.2rem 1rem;
+        align-items: flex-start;
+        font-style: normal;
+        font-weight: 600;
+        font-family: 'Open Sans';
+
+        .notification-title {
+            font-weight: 600;
+            font-size: 14px;
+            line-height: 22px;
+        }
+
+        .notification-button {
+            color: #482A00;
+            font-family: 'Open Sans';
+            font-size: 14px;
+            line-height: 20px;
+            width: 100%;
+            text-align: right;
+        }
+
+        .notification-message {
+            opacity: .6;
+            font-weight: 400;
+            font-size: 14px;
+            line-height: 20px;
+            padding: 0.3rem 0 .6rem 0;
+        }
+    }
 }
 
 expandable-header {
