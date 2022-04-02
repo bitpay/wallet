@@ -1,11 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { FCMNG } from 'fcm-ng';
 import { timer } from 'rxjs';
-
-// components
-
+import { FCM } from "capacitor-fcm";
 // providers
 import { AppProvider } from '../app/app';
 import { BwcProvider } from '../bwc/bwc';
@@ -20,6 +17,12 @@ import { AnimationController, ModalController } from '@ionic/angular';
 import { EventManagerService } from '../event-manager.service';
 import { NotificationComponent } from 'src/app/components/notification-component/notification-component';
 
+import {
+  ActionPerformed,
+  PushNotificationSchema,
+  PushNotifications
+} from '@capacitor/push-notifications';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -32,7 +35,7 @@ export class PushNotificationsProvider {
   private notifications = [];
   private currentNotif: HTMLIonModalElement;
   private openWalletId;
-
+  public fcm ;
   constructor(
     public http: HttpClient,
     public profileProvider: ProfileProvider,
@@ -41,7 +44,6 @@ export class PushNotificationsProvider {
     public logger: Logger,
     public appProvider: AppProvider,
     private bwcProvider: BwcProvider,
-    private FCMPlugin: FCMNG,
     private events: EventManagerService,
     private modalCtrl: ModalController,
     private translate: TranslateService,
@@ -51,45 +53,75 @@ export class PushNotificationsProvider {
     this.isIOS = this.platformProvider.isIOS;
     this.isAndroid = this.platformProvider.isAndroid;
     this.usePushNotifications = this.platformProvider.isCordova;
+    this.fcm = new FCM();
   }
 
   public init(): void {
     if (!this.usePushNotifications || this._token) return;
-    this.configProvider.load().then(() => {
+    this.configProvider.load().then(async () => {
       const config = this.configProvider.get();
       if (!config.pushNotifications.enabled) return;
-
-      this.logger.debug('Starting push notification registration...');
-
-      // Keep in mind the function will return null if the token has not been established yet.
-      this.FCMPlugin.getToken().then(token => {
+      await this.registerNotifications();
+      // On success, we should be able to receive notifications
+      this.fcm
+      .getToken()
+      .then(async token => {
         if (!token) {
           setTimeout(() => {
             this.init();
           }, 5000);
           return;
         }
-        this.logger.debug('Get token for push notifications: ' + token);
-        this._token = token;
+          this.logger.debug('Get token for push notifications: ' + token.token);
+          this._token = token.token;
         this.enable();
-        this.handlePushNotifications();
         // enabling topics
         if (
           this.appProvider.info.name != 'copay' &&
           config.offersAndPromotions.enabled
         )
-          this.subscribeToTopic('offersandpromotions');
+            await this.subscribeToTopic('offersandpromotions');
         if (
           this.appProvider.info.name != 'copay' &&
           config.productsUpdates.enabled
         )
-          this.subscribeToTopic('productsupdates');
+            await this.subscribeToTopic('productsupdates');
 
         this.fcmInterval = setInterval(() => {
           this.renewSubscription();
         }, 5 * 60 * 1000); // 5 min
+
+        }).catch(error=>{
+          this.logger.error(error);
       });
     });
+
+    // Show us the notification payload if the app is open on our device
+    PushNotifications.addListener('pushNotificationReceived',
+      (notification: PushNotificationSchema) => {
+        return this.handlePushNotifications(notification);
+      }
+    );
+
+    // Method called when tapping on a notification
+    PushNotifications.addListener('pushNotificationActionPerformed',
+      async (notification: ActionPerformed) => {
+        return await this.handlePushNotificationsWasTapped(notification);
+      });
+  }
+
+  private async registerNotifications() {
+    let permStatus = await PushNotifications.checkPermissions();
+
+    if (permStatus.receive === 'prompt') {
+      permStatus = await PushNotifications.requestPermissions();
+    }
+
+    if (permStatus.receive !== 'granted') {
+      throw new Error('User denied permissions!');
+    }
+
+    await PushNotifications.register();
   }
 
   private renewSubscription(): void {
@@ -105,15 +137,12 @@ export class PushNotificationsProvider {
     }, 1000);
   }
 
-  public handlePushNotifications(): void {
+  // Notification was received on device tray and tapped by the user.
+  public handlePushNotificationsWasTapped(notification: ActionPerformed): void {
     if (this.usePushNotifications) {
-      this.FCMPlugin.onNotification().subscribe(async data => {
         if (!this._token) return;
-        this.logger.debug(
-          'New Event Push onNotification: ' + JSON.stringify(data)
-        );
-        if (data.wasTapped) {
-          // Notification was received on device tray and tapped by the user.
+      const data = _.get(notification, 'notification.data', undefined);
+      if (!data) return;
           if (data.redir) {
             this.events.publish('IncomingDataRedir', { name: data.redir });
           } else if (
@@ -126,17 +155,24 @@ export class PushNotificationsProvider {
           } else {
             this._openWallet(data);
           }
-        } else {
+    }
+  }
+
+  public handlePushNotifications(notification: PushNotificationSchema): void {
+    if (this.usePushNotifications) {
+      if (!this._token) return;
+      const data = notification.data
+      this.logger.debug(
+        'New Event Push onNotification: ' + JSON.stringify(data)
+      );
           const wallet = this.findWallet(data.walletId, data.tokenAddress);
           if (!wallet) return;
           this.newBwsEvent(data, wallet.credentials.walletId);
           this.showInappNotification(data);
         }
-      });
-    }
   }
 
-  private newBwsEvent(notification, walletId): void {
+  public newBwsEvent(notification, walletId): void {
     let id = walletId;
     if (notification.tokenAddress) {
       id = walletId + '-' + notification.tokenAddress.toLowerCase();
@@ -209,12 +245,24 @@ export class PushNotificationsProvider {
     this._unsubscribe(walletClient);
   }
 
-  public subscribeToTopic(topic: string): void {
-    this.FCMPlugin.subscribeToTopic(topic);
+  public async subscribeToTopic(topic: string): Promise<void> {
+    await this.fcm.subscribeTo({ topic: topic })
+      .then(r => {
+        return this.logger.info(r);
+      })
+      .catch(err => {
+        return this.logger.error(err);
+      });
   }
 
-  public unsubscribeFromTopic(topic: string): void {
-    this.FCMPlugin.unsubscribeFromTopic(topic);
+  public async unsubscribeFromTopic(topic: string): Promise<void> {
+    await this.fcm.unsubscribeFrom({ topic: topic })
+      .then(r => {
+        return this.logger.info(r);
+      })
+      .catch(err => {
+        return this.logger.error(err);
+      });
   }
 
   private _subscribe(walletClient): void {
@@ -295,9 +343,9 @@ export class PushNotificationsProvider {
     return wallet;
   }
 
-  public clearAllNotifications(): void {
+  public async clearAllNotifications(): Promise<void> {
     if (!this._token) return;
-    this.FCMPlugin.clearAllNotifications();
+    await PushNotifications.removeAllDeliveredNotifications();
   }
 
   private verifySignature(data): boolean {
@@ -325,7 +373,7 @@ export class PushNotificationsProvider {
     return verificationResult;
   }
 
-  private showInappNotification(data) {
+  public showInappNotification(data) {
     if (!data.body || data.notification_type === 'NewOutgoingTx') return;
 
     this.notifications.unshift(data);
@@ -336,50 +384,27 @@ export class PushNotificationsProvider {
     if (this.currentNotif) return;
     this.notifications.some(async data => {
       if (!data.showDone) {
-
-        const enterAnimation = (baseEl: any) => {
-          const backdropAnimation = this.animationCtrl.create()
-            .addElement(baseEl.querySelector('ion-backdrop')!)
-            .fromTo('opacity', '0.01', 'var(--backdrop-opacity)');
-    
-          const wrapperAnimation = this.animationCtrl.create()
-            .addElement(baseEl.querySelector('.modal-wrapper')!)
-            .keyframes([
-              { offset: 0, opacity: '0', transform: 'scale(0)' },
-              { offset: 1, opacity: '0.99', transform: 'scale(1)' }
-            ]);
-    
-          return this.animationCtrl.create()
-            .addElement(baseEl)
-            .easing('ease-out')
-            .duration(500)
-            .addAnimation([backdropAnimation, wrapperAnimation]);
-        }
-    
-        const leaveAnimation = (baseEl: any) => {
-          return enterAnimation(baseEl).direction('reverse');
-        }
-
         this.currentNotif = await this.modalCtrl.create({
           component: NotificationComponent,
           componentProps: {
             title: data.title,
             message: data.body,
             customButton: {
-              closeButtonText: this.translate.instant('Open Wallet'),
+              closeButtonText: this.translate.instant('Open Account'),
               data: {
-                action: 'openWallet'
+                action: 'openWallet',
+                walletId: data.walletId
               }
             }
           },
           showBackdrop: true,
           backdropDismiss: true,
-          // enterAnimation: enterAnimation,
-          // leaveAnimation: leaveAnimation,
           cssClass: 'in-app-notification-modal'
         });
         this.currentNotif.onDidDismiss().then(({ data }) => {
-          if (data && data.action && data.action === 'openWallet') this._openWallet(data);
+          if (data && data.action && data.action === 'openWallet')  {
+            this._openWallet(data);
+          }
           this.currentNotif = null;
           this.runNotificationsQueue();
         })
