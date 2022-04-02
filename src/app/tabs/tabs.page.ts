@@ -22,11 +22,11 @@ import * as _ from 'lodash';
   styleUrls: ['tabs.page.scss']
 })
 export class TabsPage {
-
   appName: string;
   tabs;
   NETWORK = 'livenet';
   currentTheme;
+  selectedTab;
   public txpsN: number;
   public clipboardBadge: number;
   public clipboardData: string;
@@ -89,6 +89,18 @@ export class TabsPage {
     
   }
 
+  setCurrentTab(event) {
+    this.selectedTab = event?.tab || '';
+  }
+
+  setIconHomeTab(selectedTab) {
+    return selectedTab === 'home' ? `assets/img/tab-home-selected-${this.currentTheme}.svg` : `assets/img/tab-home-${this.currentTheme}.svg`;
+  }
+
+  setIconWalletsTab(selectedTab) {
+    return selectedTab === 'wallets' ? `assets/img/tab-wallet-selected-${this.currentTheme}.svg` : `assets/img/tab-wallet-${this.currentTheme}.svg`;
+  }
+
   private subscribeEvents() {
     
     this.events.subscribe('experimentUpdateStart', () => {
@@ -125,18 +137,17 @@ export class TabsPage {
       }, 1000);
     });
 
+    //Detect Change theme
+    this.themeProvider.themeChange.subscribe(() => {
+      this.currentTheme = this.appProvider.themeProvider.currentAppTheme;
+    });
+
     this.onPauseSubscription = this.plt.pause.subscribe(() => {
       this.unsubscribeEvents();
     });
 
     this.checkCardEnabled();
     this.checkClipboardData();
-  }
-
-  ionViewDidEnter() {
-    this.appProvider.themeProvider.getDetectedSystemTheme().then(theme => {
-      this.currentTheme = theme;
-    });
   }
 
   ngOnDestroy() {

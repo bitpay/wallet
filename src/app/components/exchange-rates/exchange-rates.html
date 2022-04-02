@@ -1,8 +1,7 @@
 <ion-list lines="none" class="bp-list">
   <div *ngFor="let coin of coins">
     <ion-item detail="false" button (click)="goToPricePage(coin)">
-      <ion-icon src="assets/img/currencies/{{coin.unitCode}}.svg" class="item-img" slot="start">
-      </ion-icon>
+      <img src="assets/img/currencies/{{coin.unitCode}}.svg" class="item-img" slot="start">
       <ion-label>
         <div class="main-label">{{coin.name}}</div>
         <div class="secondary-label">{{coin.unitCode | uppercase}}</div>

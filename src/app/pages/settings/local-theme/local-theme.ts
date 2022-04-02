@@ -38,6 +38,5 @@ export class LocalThemePage {
 
   public save(theme: string) {
     this.themeProvider.setActiveTheme(theme, this.autoDetectedTheme);
-    this.events.publish('Local/UpdateActiveThem');
   }
 }

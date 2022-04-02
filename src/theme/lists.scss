@@ -86,7 +86,7 @@
       }
   }
 
-  .item {
+  ion-item {
     border: 0;
 
     &.ios::part(detail-icon) {
@@ -94,27 +94,6 @@
       font-size: 22px;
       opacity: 1;
       margin-left: 0.5rem;
-    }
-
-    &.item-ios,
-    &.item-md {
-      border: 0;
-
-      &.item-block,
-      &:last-child {
-        border: 0;
-      }
-
-      .item-inner {
-        border: none;
-        padding-top: 4px;
-        padding-bottom: 4px;
-        margin-left: 0px;
-      }
-
-      &.item-ios {
-        font-size: 16px;
-      }
     }
   }
 

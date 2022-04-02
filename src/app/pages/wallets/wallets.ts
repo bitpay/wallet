@@ -8,21 +8,19 @@ import { Subscription } from 'rxjs';
 import { CopayersPage } from '../add/copayers/copayers';
 
 // Providers
-import { ActionSheetProvider } from '../../providers/action-sheet/action-sheet';
 import { AnalyticsProvider } from '../../providers/analytics/analytics';
 import { Logger } from '../../providers/logger/logger';
 import { PersistenceProvider } from '../../providers/persistence/persistence';
 import { PlatformProvider } from '../../providers/platform/platform';
 import { ProfileProvider } from '../../providers/profile/profile';
 import { WalletProvider } from '../../providers/wallet/wallet';
-import { LoadingController, MenuController, ModalController, NavController, NavParams, Platform } from '@ionic/angular';
+import { LoadingController, MenuController, ModalController, NavParams, Platform } from '@ionic/angular';
 import { EventManagerService } from 'src/app/providers/event-manager.service';
 import { Router } from '@angular/router';
 import { TokenProvider } from 'src/app/providers/token-sevice/token-sevice';
 import { AddressProvider } from 'src/app/providers/address/address';
 import { Token } from 'src/app/providers/currency/token';
-import { AppProvider, Coin, CurrencyProvider, RateProvider } from 'src/app/providers';
-import { DateRanges, ExchangeRate } from 'src/app/providers/rate/rate';
+import { AppProvider, ConfigProvider, CurrencyProvider, ThemeProvider } from 'src/app/providers';
 import { DecimalFormatBalance } from 'src/app/providers/decimal-format.ts/decimal-format';
 
 interface UpdateWalletOptsI {
@@ -51,6 +49,7 @@ export class WalletsPage {
   private onResumeSubscription: Subscription;
   private onPauseSubscription: Subscription;
   public showReorder: boolean = false;
+  public currentCurrency;
   listEToken = ['EAT', 'DoC', 'bcPro'];
   isDonation;
   donationSupportCoins = [];
@@ -75,7 +74,6 @@ export class WalletsPage {
     private events: EventManagerService,
     private persistenceProvider: PersistenceProvider,
     private modalCtrl: ModalController,
-    private actionSheetProvider: ActionSheetProvider,
     private loadingCtr: LoadingController,
     private navParams: NavParams,
     private tokenProvider: TokenProvider,
@@ -84,7 +82,8 @@ export class WalletsPage {
     private menu: MenuController,
     private appProvider: AppProvider,
     private currencyProvider: CurrencyProvider,
-    private rateProvider: RateProvider
+    private configProvider: ConfigProvider,
+    private themeProvider: ThemeProvider
   ) {
     if (this.router.getCurrentNavigation()) {
       this.navParamsData = this.router.getCurrentNavigation().extras.state ? this.router.getCurrentNavigation().extras.state : {};
@@ -92,7 +91,9 @@ export class WalletsPage {
      this.navParamsData =  history ? history.state : undefined;
    }
     const availableChains = this.currencyProvider.getAvailableChains();
-    this.currentTheme = this.appProvider.themeProvider.currentAppTheme;
+    let config = this.configProvider.get();
+    this.currentCurrency = config.wallet.settings.alternativeIsoCode;
+    this.currentTheme = this.themeProvider.currentAppTheme;
     this.collapsedGroups = {};
     this.collapsedToken = {};
     this.zone = new NgZone({ enableLongStackTrace: false });
@@ -223,6 +224,7 @@ export class WalletsPage {
       }
     } else {
       this.keySelected = [];
+      this.walletsGroups = [];
     }
   }
 
@@ -396,6 +398,14 @@ export class WalletsPage {
     this.fetchWalletStatus(opts);
   };
 
+  private walletGetDataHandler = opts => {
+    this.logger.debug('RECV Local/GetData @home', opts);
+    if (opts) {
+      this.getWalletsGroups();
+      this.initKeySelected();
+    }
+  };
+
   ngOnInit() {
     this.logger.info('Loaded: WalletsPage');
 
@@ -410,7 +420,13 @@ export class WalletsPage {
 
       // Wallet is focused on some inner view, therefore, we refresh its status and txs
       this.events.subscribe('Local/WalletFocus', this.walletFocusHandler);
+
+      this.events.subscribe('Local/GetData', this.walletGetDataHandler);
     };
+    //Detect Change theme
+    this.themeProvider.themeChange.subscribe(() => {
+      this.currentTheme = this.appProvider.themeProvider.currentAppTheme;
+    });
 
     subscribeEvents();
     this.onResumeSubscription = this.plt.resume.subscribe(() => {

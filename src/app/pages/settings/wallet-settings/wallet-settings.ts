@@ -11,6 +11,7 @@ import { ProfileProvider } from '../../../providers/profile/profile';
 import { PushNotificationsProvider } from '../../../providers/push-notifications/push-notifications';
 import { TouchIdProvider } from '../../../providers/touchid/touchid';
 import { WalletProvider } from '../../../providers/wallet/wallet';
+import { EventManagerService } from 'src/app/providers';
 
 @Component({
   selector: 'page-wallet-settings',
@@ -37,6 +38,7 @@ export class WalletSettingsPage {
     private logger: Logger,
     private walletProvider: WalletProvider,
     private externalLinkProvider: ExternalLinkProvider,
+    private events: EventManagerService,
     private configProvider: ConfigProvider,
     private router: Router,
     private touchIdProvider: TouchIdProvider,
@@ -196,6 +198,7 @@ export class WalletSettingsPage {
     if (!!this.wallet.hidden)
       this.pushNotificationsProvider.unsubscribe(this.wallet);
     else this.pushNotificationsProvider.updateSubscription(this.wallet);
+    this.events.publish('Local/GetData', true);
   }
 
   public openWalletGroupDelete(): void {

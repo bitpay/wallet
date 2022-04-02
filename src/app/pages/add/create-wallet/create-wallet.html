@@ -120,7 +120,7 @@
           </div>
         </label-tip>
 
-        <ion-item *ngIf="createForm.value.selectedSeed == 'set' && !keyId">
+        <ion-item [disabled]="isShared" *ngIf="createForm.value.selectedSeed == 'set' && !keyId">
           <ion-label position="stacked">{{'Derivation path' | translate}}</ion-label>
           <ion-input type="text" formControlName="derivationPath"></ion-input>
         </ion-item>

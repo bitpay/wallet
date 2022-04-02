@@ -1,9 +1,18 @@
-
+::ng-deep ion-modal {
+  &::part(content) {
+    height: 53%;
+    margin: auto 2rem;
+    border-radius: 28px;
+  }
+}
 disclaimer-modal {
+  padding: 24px 0;
+  background: linear-gradient(0deg, rgba(0, 101, 141, 0.11), rgba(0, 101, 141, 0.11)), #FAFAFB;
   .title{
     font-size: 24px;
-    padding: 24px;
+    padding: 0 24px;
     padding-bottom: 16px;
+    line-height: 32px;
     color: rgba(0, 30, 46, 1);
   }
   .checkbox-list {
@@ -25,10 +34,13 @@ disclaimer-modal {
           align-self: flex-start;
        
         }
+        ion-label {
+          letter-spacing: 0.25px;
+        }
       }
       ion-checkbox{
         --border-radius: 50%;
-        --size : 24px;
+        --size : 22px;
         --background-checked: rgba(0, 101, 141, 1);
         --border-color-checked: rgba(0, 101, 141, 1);
         --background: transparent;

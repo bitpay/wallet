@@ -285,11 +285,11 @@ export class ImportWalletPage {
         await modal.present();
         modal.onDidDismiss().then(({ data }) => {
           if (data.isConfirm) {
-            this.goToHomePage(wallets[0].credentials.keyId);
+            this.goToWalletsPage();
           }
         });
       } else {
-        this.goToHomePage(wallets[0].credentials.keyId);
+        this.goToWalletsPage();
       }
     });
   }
@@ -304,6 +304,15 @@ export class ImportWalletPage {
       })
       .then(data => {
         this.events.publish('Local/FetchWallets');
+      });
+  }
+
+  private goToWalletsPage() {
+    this.router
+      .navigate(['tabs/wallets'])
+      .then(() => {
+        this.events.publish('Local/FetchWallets');
+        this.events.publish('Local/GetData', true);
       });
   }
 

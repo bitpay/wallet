@@ -2,21 +2,44 @@ page-wallet-export {
   .warning-message {
     margin-top: 10px;
   }
-  .include-private-item {
-    --padding-start: 1rem !important;
-    --padding-end: 1rem !important;
-    --inner-padding-end: 0;
-    --padding-top: 6px;
-    --padding-bottom: 6px;
-    ion-label {
-      font-size: 16px !important;
-      line-height: 24px;
-      letter-spacing: 0.5px;
-      color: #001E2E !important;
+  .group-container {
+    margin: 1rem;
+    margin-top: 0;
+    padding: 1rem 0;
+    background: #FAFAFB;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.02), 0px 4px 10px rgba(0, 0, 0, 0.04);
+    border-radius: 8px;
+    .confirm-password {
+      margin-top: 2rem;
     }
-    ion-checkbox {
-      margin: 0;
+    .include-private-item {
+      --padding-start: 0 !important;
+      --padding-end: 0 !important;
+      margin: 0 1rem !important;
+      box-shadow: none !important;
+      ion-label {
+        font-size: 16px !important;
+        line-height: 24px;
+        letter-spacing: 0.5px;
+        color: #001E2E !important;
+      }
+      ion-checkbox {
+        margin: 0;
+      }
     }
+    .sub-include-private {
+      border-top: 1px solid rgba(112, 129, 138, 0.16);
+      margin: 0 1rem;
+      padding-top: 1rem;
+      color: rgba(0, 30, 46, 0.6);
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 20px;
+      letter-spacing: 0.25px;
+    }
+  }
+  .button-container {
+    margin-top: 2rem;
   }
   ion-button {
     line-height: 20px;

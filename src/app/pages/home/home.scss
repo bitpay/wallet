@@ -35,20 +35,23 @@ button.bitpay-id-login {
   margin: 1rem;
   display: flex;
   justify-content: space-between;
+  position: relative;
   .section-header {
     color: rgba(0, 30, 46, 0.6);
     font-size: 14px;
-    font-weight: 400;
+    font-weight: 600;
     margin: 0;
+    letter-spacing: 0.1px;
   }
   .total-amount {
     padding: 1rem;
   }
 
-  .img-total-amount {
-    img {
-      height: 100%;
-    }
+  img {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    height: 100%;
   }
 
   .total-amount-value {
@@ -213,6 +216,17 @@ button.bitpay-id-login {
 .wide-header__title{
   padding-top: 0;
   padding-bottom: 0;
+  --padding-end: 1rem;
+  --padding-start: 1rem;
+  expandable-header-primary {
+    font-weight: 600;
+    font-size: 16px;
+    letter-spacing: 0.1px;
+  }
+  .home-icon {
+    display: flex;
+    justify-content: space-between;
+  }
 }
 
 .exchange-rate {

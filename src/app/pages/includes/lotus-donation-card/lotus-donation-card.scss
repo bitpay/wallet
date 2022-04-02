@@ -1,9 +1,9 @@
 .message {
   &-background {
-    width: 90%;
     border-radius: 8px;
     background-color: #f9f9fb;
-    background: url(../../../../assets/img/bg-donate-card.svg) no-repeat;
+    background-image: url(../../../../assets/img/bg-donate-card.svg);
+    background-repeat: no-repeat;
     background-size: cover;
     margin: 1rem 1rem 2rem 1rem;
     &.no-margin {

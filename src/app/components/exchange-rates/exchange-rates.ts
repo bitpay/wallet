@@ -3,7 +3,6 @@ import { Router } from '@angular/router';
 import * as _ from 'lodash';
 import { ConfigProvider, CurrencyProvider, EventManagerService, Logger } from '../../providers';
 import { Coin } from '../../providers/currency/currency';
-import { DecimalFormatPrice } from '../../providers/decimal-format.ts/decimal-format';
 import {
   DateRanges,
   ExchangeRate,
@@ -111,10 +110,6 @@ export class ExchangeRates {
       alternativeIsoCode
     );
     this.fiatIsoCode = this.isFiatIsoCodeSupported ? alternativeIsoCode : 'USD';
-  }
-
-  public dynamicDecimalFormat(coin: string) {
-    return DecimalFormatPrice(coin);
   }
 
   public getDigitsInfo(coin: string) {

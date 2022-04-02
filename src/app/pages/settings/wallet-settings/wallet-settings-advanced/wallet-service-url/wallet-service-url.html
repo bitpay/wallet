@@ -2,19 +2,21 @@
   <div page-content>
     <ion-list lines="none" class="bp-list">
       <form [formGroup]="walletServiceForm">
-        <ion-item>
-          <ion-label position="stacked">Wallet Service URL</ion-label>
-          <ion-input type="text" formControlName="bwsurl" [value]="walletServiceForm.value.bwsurl" required></ion-input>
-        </ion-item>
         <div class="explanation">
           <span>{{comment}}</span>
-          <a (click)="resetDefaultUrl()" translate>
-            Use default url
-          </a>
         </div>
-        <ion-button class="button-standard" (click)="save()" [disabled]="!walletServiceForm.valid">
-          {{'Save' | translate}}
-        </ion-button>
+        <mat-form-field appearance="outline">
+          <mat-label translate>Wallet Service URL</mat-label>
+          <input matInput type="text" formControlName="bwsurl" [value]="walletServiceForm.value.bwsurl" [placeholder]="'Wallet Service URL'" translate>
+        </mat-form-field>
+        <div class="group-btn">
+          <ion-button class="button-standard" (click)="resetDefaultUrl()" [disabled]="!walletServiceForm.valid">
+            {{'Use default url' | translate}}
+          </ion-button>
+          <ion-button class="button-standard" (click)="save()" [disabled]="!walletServiceForm.valid">
+            {{'Save' | translate}}
+          </ion-button>
+        </div>
       </form>
     </ion-list>
   </div>

@@ -1,4 +1,21 @@
 token-info {
+  ion-toolbar {
+    --padding-start: 0 !important;
+    --padding-end: 0 !important;
+    padding: 0 1rem !important;
+    ion-buttons {
+      .close-tx-modal {
+        border-radius: 50%;
+        box-shadow: none;
+        --padding-start: 0;
+        --padding-end: 0;
+        margin: 0;
+        ion-icon {
+          color: rgba(28, 55, 69, 0.6);
+        }
+      }
+    }
+  }
   .note-container {
     max-width: 200px;
   }

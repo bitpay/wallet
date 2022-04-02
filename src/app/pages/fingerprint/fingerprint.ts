@@ -14,7 +14,7 @@ import { TouchIdProvider } from 'src/app/providers/touchid/touchid';
 })
 export class FingerprintModalPage {
   public unregister;
-  public isDarkTheme: boolean;
+  public currentTheme: string;
   constructor(
     private touchid: TouchIdProvider,
     private platform: Platform,
@@ -23,7 +23,7 @@ export class FingerprintModalPage {
   ) {
     this.checkFingerprint();
     // Get Theme
-    this.isDarkTheme = this.themeProvider.currentAppTheme === 'dark';
+    this.currentTheme = this.themeProvider.currentAppTheme;
   }
 
   public checkFingerprint(): void {

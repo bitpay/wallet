@@ -1,4 +1,4 @@
-import { AfterContentInit, Component, Input } from '@angular/core';
+import { AfterContentInit, Component, Input, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
 import { ModalController, NavParams } from '@ionic/angular';
 
@@ -46,7 +46,8 @@ interface UpdateWalletOptsI {
 @Component({
   selector: 'page-transfer-to',
   templateUrl: 'transfer-to.html',
-  styleUrls: ['transfer-to.scss']
+  styleUrls: ['transfer-to.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class TransferToPage {
   public search: string = '';

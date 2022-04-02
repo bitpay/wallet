@@ -2,39 +2,42 @@ wallet-item-content {
   .wallet-warning {
     color: var(--color-danger);
   }
-  
+
   .key-tab {
-      margin: 1rem 0.5rem 1rem 3px;
-      padding: 0;
-      width: 35px;
-      height: 35px;
+    margin: 14px 12px 14px 8px;
+    padding: 0;
+    width: 40px;
+    height: 40px;
   }
 
-.wallet-for-address-book{
-  --background: transparent !important;
-  border-bottom: 1px solid rgba(112, 129, 138, 0.38) !important;
+  .wallet-for-address-book {
+    --background: transparent !important;
+    border-bottom: 1px solid rgba(112, 129, 138, 0.38) !important;
 
-  margin-right: 0 !important;
-  border-radius: 0 !important;
-  margin-bottom: 0 !important;
-  margin-top: 0 !important;
-  box-shadow: none !important;
-  padding: 1rem 0;
-  --padding-start: 0 !important;
-  --padding-end: 0 !important;
-  .main-label{
-    font-size: 16px;
+    margin-right: 0 !important;
+    border-radius: 0 !important;
+    margin-bottom: 0 !important;
+    margin-top: 0 !important;
+    box-shadow: none !important;
+    padding: 1rem 0;
+    --padding-start: 0 !important;
+    --padding-end: 0 !important;
+    .main-label {
+      font-size: 16px;
+    }
+    .secondary-note {
+      font-size: 11px;
+      color: rgba(237, 239, 240, 0.6);
+    }
+    ion-note {
+      padding-top: 0;
+      padding-bottom: 0;
+    }
+  }
 
+  .last-child {
+    border-bottom: none !important;
   }
-  .secondary-note {
-    font-size: 11px;  
-    color: rgba(237, 239, 240, 0.6);
-  }
-  ion-note{
-    padding-top: 0;
-    padding-bottom: 0;
-  }
-}
 
   .secondary-note {
     font-size: 12px !important;
@@ -47,17 +50,22 @@ wallet-item-content {
       font-size: 11px;
     }
     .possitive-avg {
-      color: #37A372;
+      color: #37a372;
       border-radius: 50vh;
       padding-right: 10px;
       padding-left: 10px;
       font-size: 11px;
     }
   }
+  .main-label {
+    letter-spacing: 0.1px;
+  }
   .secondary-label {
     color: rgba(0, 30, 46, 0.6) !important;
+    margin-top: 4px;
+    letter-spacing: 0.4px;
     .secondary-label-multisign {
-      background: #E6EEF2;
+      background: #e6eef2;
       color: rgba(0, 30, 46, 0.6);
       padding: 2px 6px;
       border-radius: 8px;
@@ -70,5 +78,4 @@ wallet-item-content {
     font-size: 14px;
     color: rgba(0, 30, 46, 0.6);
   }
-  
 }
