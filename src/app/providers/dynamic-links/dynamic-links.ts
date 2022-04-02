@@ -14,7 +14,7 @@ export class DynamicLinksProvider {
   constructor(
     private logger: Logger,
     private events: EventManagerService,
-    private FCMPlugin: FCMNG,
+    private FCMPlugin: FCMNG, // Todo: Check FCMPlugin for DynamicLinksProvider still working when build with capacitor
     private incomingDataProvider: IncomingDataProvider,
     private platformProvider: PlatformProvider,
     private persistenceProvider: PersistenceProvider

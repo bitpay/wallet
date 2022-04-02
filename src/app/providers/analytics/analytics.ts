@@ -9,7 +9,7 @@ declare var cordova: any;
 })
 export class AnalyticsProvider {
   constructor(
-    private FCMPlugin: FCMNG,
+    private FCMPlugin: FCMNG, // Todo: Check FCMPlugin for AnalyticsProvider still working when build with capacitor
     private platformProvider: PlatformProvider
   ) {}
   logEvent(eventName: string, eventParams: { [key: string]: any }) {

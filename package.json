@@ -42,6 +42,7 @@
   "private": true,
   "dependencies": {
     "@abcpros/bitcore-wallet-client": "^8.25.38",
+    "@abcpros/xpi-js": "^4.0.6",
     "@angular-builders/custom-webpack": "^13.0.0",
     "@angular/animations": "13.1.1",
     "@angular/cdk": "^12.2.13",
@@ -57,6 +58,7 @@
     "@capacitor/core": "^3.2.3",
     "@capacitor/ios": "^3.2.3",
     "@capacitor/project": "^1.0.28",
+    "@capacitor/push-notifications": "^1.0.9",
     "@capacitor/splash-screen": "^1.2.2",
     "@ionic-native/clipboard": "^5.36.0",
     "@ionic-native/core": "^5.36.0",
@@ -82,6 +84,7 @@
     "base64-js": "^1.5.1",
     "bitauth": "git+https://github.com/bitpay/bitauth.git#68cf0353bf517a7e5293478608839fa904351eb6",
     "buffer-compare": "^1.1.1",
+    "capacitor-fcm": "^2.0.0",
     "capacitor-resources": "^2.0.5",
     "chart.js": "^3.5.1",
     "cordova": "^10.0.0",
@@ -145,8 +148,7 @@
     "util": "^0.12.4",
     "webpack": "^5.52.1",
     "yargs": "^17.2.1",
-    "zone.js": "~0.11.4",
-    "@abcpros/xpi-js": "^4.0.6"
+    "zone.js": "~0.11.4"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~13.1.2",
