@@ -4,6 +4,8 @@ import { Logger } from '../logger/logger';
 import BCHJS from '@abcpros/xpi-js';
 import { AddressProvider } from '../address/address';
 import { Token, TokenInfo, UtxoToken } from 'src/app/models/tokens/tokens.model';
+import { RateProvider } from '../rate/rate';
+import { ProfileProvider } from '../profile/profile';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +15,9 @@ export class TokenProvider {
   chronikClient;
   constructor(
     private logger: Logger,
-    private addressProvider: AddressProvider
+    private addressProvider: AddressProvider,
+    private rateProvider : RateProvider,
+    private profileProvider : ProfileProvider
   ) {
     this.logger.debug('TokenProvider initialized');
     this.bchjs = new BCHJS({ restURL: '' });
@@ -66,15 +70,27 @@ export class TokenProvider {
       );
     });
   }
+  
+
+  public getAlternativeBalanceToken(token, wallet) {
+    let availableBalanceAlternative = 0;
+    availableBalanceAlternative = this.rateProvider.toFiatToken(
+      token.amountToken,
+      wallet.cachedStatus.alternativeIsoCode,
+      token.tokenInfo.symbol
+    );
+    if (!availableBalanceAlternative) availableBalanceAlternative = 0;
+    return availableBalanceAlternative;
+  }
 
   async sendToken(wallet, mnemonic, tokenInfo, TOKENQTY, etokenAddress) {
     const rootSeed = await this.bchjs.Mnemonic.toSeed(mnemonic);
     // master HDNode
     let masterHDNode;
     masterHDNode = this.bchjs.HDNode.fromSeed(rootSeed);
-
+    const rootPath = wallet.getRootPath() ?  wallet.getRootPath()  : "m/44'/1899'/0'";
     // HDNode of BIP44 account
-    const account = this.bchjs.HDNode.derivePath(masterHDNode, "m/44'/1899'/0'");
+    const account = this.bchjs.HDNode.derivePath(masterHDNode, rootPath);
     const change = this.bchjs.HDNode.derivePath(account, '0/0');
 
     const cashAddress = this.bchjs.HDNode.toCashAddress(change);
@@ -193,6 +209,58 @@ export class TokenProvider {
     const txid = await this.broadcast_raw(wallet, hex, true);
     return txid;
   }
+
+   public isSupportToken(wallet): boolean {
+    return wallet && wallet.coin == 'xec' && wallet.isSlpToken ; 
+   }
+
+  public loadEtokenAddress(wallet) {
+    return this.profileProvider.setAddress(wallet).then(addr => {
+      if (!addr) return '';
+      const { prefix, type, hash } = this.addressProvider.decodeAddress(addr);
+      const etoken = this.addressProvider.encodeAddress('etoken', type, hash, addr);
+      return etoken;
+    })
+  }
+
+  public setAlternativeBalanceToken(groupToken, wallet) {
+    _.forEach(groupToken, token => {
+      token.alternativeBalance  = this.getAlternativeBalanceToken(token, wallet);
+    })
+    return groupToken;
+  }
+
+
+  private _setTokensWallet(walletId, groupToken) {
+    return new Promise(resolve => {
+      this.profileProvider.setTokensWallet(walletId, groupToken);
+      resolve(true)
+    });
+  }
+
+  private _setAddressEtokensWallet(walletId, addressEtoken) {
+    return new Promise(resolve => {
+      this.profileProvider.setAddressEtoken(walletId, addressEtoken);
+      resolve(true)
+    });
+  }
+
+  public async loadTokenWallet(wallet) {
+    try {
+      if (this.isSupportToken(wallet)) {
+        const etokenAddress = await this.loadEtokenAddress(wallet);
+        if (etokenAddress) {
+          await this._setAddressEtokensWallet(wallet.id, etokenAddress);
+        }
+        let groupToken = await this.getTokens(wallet);
+        if (!_.isEmpty(groupToken)) {
+          groupToken = this.setAlternativeBalanceToken(groupToken, wallet);
+          await this._setTokensWallet(wallet.id, groupToken);
+        }
+      }
+    } catch { }
+  }
+
 
   getTokenUtxos(utxos : UtxoToken[], tokenInfo : TokenInfo) : UtxoToken[] {
     const tokenUtxos = [];

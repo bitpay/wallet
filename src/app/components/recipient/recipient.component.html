@@ -31,7 +31,7 @@
       <span *ngIf="!token" [ngClass]="{'disabled': isSelectedTotalAmout, 'bold-text': !isSelectedTotalAmout}">{{unit}} </span>
       <span *ngIf="token" class="bold-text">{{token?.tokenInfo?.symbol}}</span>
     </ion-item>
-    <p *ngIf="!token" class="unit-alt-text">{{recipient.altAmountStr}} {{alternativeUnit}}</p>
+    <p class="unit-alt-text">{{recipient.altAmountStr}} {{alternativeUnit}}</p>
     <div class="selected-amount" lines="none" *ngIf="isShowSelectInput">
       <ion-label class="item-title">{{'Send total selected amount' | translate}}</ion-label>
       <ion-toggle [(ngModel)]="isSelectedTotalAmout" (ionChange)="changeSelectedAmount($event)" ></ion-toggle>

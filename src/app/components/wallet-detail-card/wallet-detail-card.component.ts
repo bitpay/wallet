@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
-import { ActionSheetProvider, AppProvider, CurrencyProvider, EventManagerService, ProfileProvider } from 'src/app/providers';
+import { ActionSheetProvider, AppProvider, CurrencyProvider, EventManagerService, ProfileProvider, RateProvider, TokenProvider } from 'src/app/providers';
 import { DecimalFormatBalance } from 'src/app/providers/decimal-format.ts/decimal-format';
 import * as _ from 'lodash';
 import { TokenInforPage } from 'src/app/pages/token-info/token-info';
@@ -69,17 +69,10 @@ export class WalletDetailCardComponent implements OnInit {
   );
 
   public getAlternativeBalance() {
-    if (this.wallet.coin === 'xrp') {
-      const availableAlternative =
-        this.wallet.cachedStatus &&
-        this.wallet.cachedStatus.availableBalanceAlternative;
-      return DecimalFormatBalance(availableAlternative);
-    } else {
-      const totalBalanceAlternative =
-        this.wallet.cachedStatus &&
-        this.wallet.cachedStatus.totalBalanceAlternative;
-      return DecimalFormatBalance(totalBalanceAlternative);
-    }
+    const totalBalanceAlternative =
+      this.wallet.cachedStatus &&
+      this.wallet.cachedStatus.totalBalanceAlternative;
+    return DecimalFormatBalance(totalBalanceAlternative);
   }
 
   public isUtxoCoin(): boolean {

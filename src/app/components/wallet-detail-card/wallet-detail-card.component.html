@@ -89,7 +89,7 @@
           <div *ngIf="wallet?.balanceHidden">******</div>
         </div>
         <div class="balance-alt-str" *ngIf="!wallet?.balanceHidden">
-          ~ 0.00 USD
+          ~ {{token.alternativeBalance}} {{wallet?.cachedStatus.alternativeIsoCode}}
         </div>
         <div class="balance-alt-str" *ngIf="wallet?.balanceHidden">
           ******

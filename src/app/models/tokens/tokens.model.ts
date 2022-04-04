@@ -34,6 +34,7 @@ export interface Token {
   tokenId: string;
   tokenInfo?: TokenInfo;
   utxoToken?: UtxoToken[];
+  alternativeBalance? : number;
 }
 
 
