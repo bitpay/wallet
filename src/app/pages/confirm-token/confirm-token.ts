@@ -148,13 +148,15 @@ export class ConfirmTokenPage {
     };
 
     setTimeout(() => {
-      this.router.navigate(['/token-details'], {
-        state: {
-          walletId: this.wallet.credentials.walletId,
-          token: this.token,
-          finishParam: params
-        }
-      });
+      this.router.navigate(['/tabs/wallets'], { replaceUrl: true},).then(() => {
+        this.router.navigate(['/token-details'], {
+          state: {
+            walletId: this.wallet.credentials.walletId,
+            token: this.token,
+            finishParam: params
+          }
+        });
+      })
     }, 100);
   }
 

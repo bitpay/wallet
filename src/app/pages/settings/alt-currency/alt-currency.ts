@@ -81,11 +81,23 @@ export class AltCurrencyPage {
     ];
   }
 
+  _getCurrenciesSupport() {
+    let currenciesSupport = ['HNL', 'AUD', 'USD'];
+    const config = this.configProvider.getDefaults();
+    const currenciesSupportDefault = _.get(config, 'currenciesSupport', []);
+    if (currenciesSupportDefault) {
+      currenciesSupport = _.map(currenciesSupportDefault, 'isoCode');
+    }
+    return currenciesSupport;
+  }
+
   ionViewWillEnter() {
     this.rate
       .whenRatesAvailable('btc')
       .then(() => {
-        this.completeAlternativeList = this.rate.listAlternatives(true).filter(cur => ['AUD', 'USD'].includes(cur.isoCode));
+        const listAlternatives = this.rate.listAlternatives(true);
+        const currenciesSupport = this._getCurrenciesSupport();
+        this.completeAlternativeList = _.filter(listAlternatives, cur => _.includes(currenciesSupport, cur.isoCode));
         let idx = _.keyBy(this.unusedCurrencyList, 'isoCode');
         let idx2 = _.keyBy(this.lastUsedAltCurrencyList, 'isoCode');
 

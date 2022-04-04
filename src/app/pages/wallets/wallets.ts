@@ -14,7 +14,7 @@ import { PersistenceProvider } from '../../providers/persistence/persistence';
 import { PlatformProvider } from '../../providers/platform/platform';
 import { ProfileProvider } from '../../providers/profile/profile';
 import { WalletProvider } from '../../providers/wallet/wallet';
-import { LoadingController, MenuController, ModalController, NavParams, Platform } from '@ionic/angular';
+import { MenuController, ModalController, NavParams, Platform } from '@ionic/angular';
 import { EventManagerService } from 'src/app/providers/event-manager.service';
 import { Router } from '@angular/router';
 import { TokenProvider } from 'src/app/providers/token-sevice/token-sevice';
@@ -51,7 +51,6 @@ export class WalletsPage {
   public showReorder: boolean = false;
   public currentCurrency;
   listEToken = ['EAT', 'DoC', 'bcPro'];
-  isDonation;
   donationSupportCoins = [];
   navParamsData;
   isShowCreateNewWallet = false;
@@ -74,7 +73,6 @@ export class WalletsPage {
     private events: EventManagerService,
     private persistenceProvider: PersistenceProvider,
     private modalCtrl: ModalController,
-    private loadingCtr: LoadingController,
     private navParams: NavParams,
     private tokenProvider: TokenProvider,
     private changeDetectorRef: ChangeDetectorRef,
@@ -87,9 +85,9 @@ export class WalletsPage {
   ) {
     if (this.router.getCurrentNavigation()) {
       this.navParamsData = this.router.getCurrentNavigation().extras.state ? this.router.getCurrentNavigation().extras.state : {};
-   } else {
-     this.navParamsData =  history ? history.state : undefined;
-   }
+    } else {
+      this.navParamsData = history ? history.state : undefined;
+    }
     const availableChains = this.currencyProvider.getAvailableChains();
     let config = this.configProvider.get();
     this.currentCurrency = config.wallet.settings.alternativeIsoCode;
@@ -105,25 +103,6 @@ export class WalletsPage {
 
   ionViewDidEnter() {
     this._didEnter();
-  }
-
-  async loadItemTokenWallet(wallet, j) {
-    const groupToken = await this.tokenProvider.getTokens(wallet);
-    if (!_.isEmpty(groupToken)) {
-      this.keySelected[j].tokens = groupToken ;
-      this.profileProvider.setTokensWallet(this.keySelected[j].id, groupToken);
-    }
-  }
-
-  public reloadToken(loading, wallet, j) {
-    setTimeout(() => {
-      try {
-        this.loadItemTokenWallet(wallet, j); // loading in true
-        loading.target.complete();
-      } catch {
-        loading.target.complete();
-      }
-    }, 300);
   }
 
   goToTokenDetails(wallet, token: Token) {
@@ -148,29 +127,31 @@ export class WalletsPage {
       this.navParamsData = history ? history.state : {};
     }
     if (_.isEmpty(this.navParamsData) && this.navParams && !_.isEmpty(this.navParamsData)) this.navParamsData = this.navParamsData;
-    this.isDonation = this.navParamsData.isDonation;
-    this.getWalletsGroups();
+    const walletsGroups = this.profileProvider.orderedWalletsByGroup;
+    this.walletsGroups = walletsGroups;
     this.initKeySelected();
+    this.loadTokenWallet();
+
   }
 
-  private getWalletsGroups() {
-    const walletsGroups = this.profileProvider.orderedWalletsByGroup;
-    if (this.isDonation) {
-      this.walletProvider.getDonationInfo().then((data: any) => {
-        this.donationSupportCoins = data.donationSupportCoins;
-        this.walletsGroups = this.filterLotusDonationWallet(walletsGroups);
-      });
-    }
-    else {
-      this.walletsGroups = walletsGroups;
-      this.loadTokenDataToken(walletsGroups).then(data => {
-        this.walletsGroups = data;
-        this.changeDetectorRef.detectChanges();
-      }).catch(err => {
-        this.walletsGroups = walletsGroups;
-        this.logger.error(err);
-      })
-    }
+  private updateTotalBalanceKey(keySelected) {
+    let totalAlternativeBalanceToken = 0;
+    _.forEach(keySelected, wallet => {
+      if(wallet.tokens) {
+        totalAlternativeBalanceToken += _.sumBy(wallet.tokens, 'alternativeBalance')
+      }
+    })
+    return totalAlternativeBalanceToken + _.toNumber(this.getTotalBalanceKey(keySelected));
+  }
+
+  private loadTokenWallet() {
+    this.loadTokenData(this.keySelected).then(data => {
+      this.keySelected = data;
+      this.totalBalanceKey = DecimalFormatBalance(this.updateTotalBalanceKey(data));
+      this.changeDetectorRef.detectChanges();
+    }).catch(err => {
+      this.logger.error(err);
+    })
   }
 
   openMenu() {
@@ -197,7 +178,7 @@ export class WalletsPage {
     let walletChange = this.profileProvider.walletChange;
     if (this.walletsGroups.length !== 0) {
       if (this.keySelected.length === 0 || keyChange.isDelete) {
-        this.totalBalanceKey = this.getTotalBalanceKey(this.walletsGroups[0]);
+        this.totalBalanceKey = DecimalFormatBalance(this.getTotalBalanceKey(this.walletsGroups[0]));
         this.keySelected = this.walletsGroups[0];
         this.keyNameSelected = this.getWalletGroup(this.keySelected[0].keyId).name;
         this.profileProvider.keyChange.isDelete = false;
@@ -207,7 +188,7 @@ export class WalletsPage {
         const newAddWallet = walletsGroups.find((item) => {
           return item[0].keyId == keyChange.keyId;
         })
-        this.totalBalanceKey = this.getTotalBalanceKey(newAddWallet);
+        this.totalBalanceKey = DecimalFormatBalance(this.getTotalBalanceKey(newAddWallet));
         this.keySelected = newAddWallet;
         this.keyNameSelected = this.getWalletGroup(this.keySelected[0].keyId).name;
         this.profileProvider.keyChange.isStatus = false;
@@ -217,7 +198,7 @@ export class WalletsPage {
         const newAddWallet = walletsGroups.find((item) => {
           return item[0].keyId == walletChange.keyId;
         })
-        this.totalBalanceKey = this.getTotalBalanceKey(newAddWallet);
+        this.totalBalanceKey = DecimalFormatBalance(this.getTotalBalanceKey(newAddWallet));
         this.keySelected = newAddWallet;
         this.keyNameSelected = this.getWalletGroup(this.keySelected[0].keyId).name;
         this.profileProvider.walletChange.isStatus = false;
@@ -236,24 +217,25 @@ export class WalletsPage {
     });
   }
 
-  public editKeyName(){
+  public editKeyName() {
     this.isEditKeyName = false;
   }
 
   public getKeySelected(keyId) {
-    this.keySelected = this.profileProvider.getWalletsFromGroup({keyId: keyId});
+    this.keySelected = this.profileProvider.getWalletsFromGroup({ keyId: keyId });
     this.keyNameSelected = this.getWalletGroup(this.keySelected[0].keyId).name;
-    this.totalBalanceKey = this.getTotalBalanceKey(this.keySelected);
+    this.totalBalanceKey = DecimalFormatBalance(this.getTotalBalanceKey(this.keySelected));
+    this.loadTokenWallet();
   }
 
   private getTotalBalanceKey(key) {
     const totalBalanceAlternative = key.reduce((result, wallet) => {
-      if(wallet.cachedStatus && wallet.cachedStatus.totalBalanceAlternative && wallet.network !== 'testnet'){
-          result += parseFloat(wallet.cachedStatus.totalBalanceAlternative);
+      if (wallet.cachedStatus && wallet.cachedStatus.totalBalanceAlternative && wallet.network !== 'testnet') {
+        result += parseFloat(wallet.cachedStatus.totalBalanceAlternative);
       }
       return result;
     }, 0)
-    return DecimalFormatBalance(totalBalanceAlternative);
+    return totalBalanceAlternative;
   }
 
   public DecimalFormatBalance(amount) {
@@ -289,28 +271,17 @@ export class WalletsPage {
 
   setTokensWallet(walletId, groupToken) {
     return new Promise(resolve => {
-      this.profileProvider.setTokensWallet(walletId, groupToken) ;
+      this.profileProvider.setTokensWallet(walletId, groupToken);
       resolve(true)
     });
   }
 
-  async loadTokenDataToken(walletsGroups) {
-    for (var i = 0; i < walletsGroups.length; i++) {
-      const walletsGroup = walletsGroups[i];
-      for (var j = 0; j < walletsGroup.length; j++) {
-        const wallet = walletsGroup[j]
-        if (this.isSupportToken(wallet)) {
-          const etokenAddress = await this.loadEtokenAddress(wallet)
-          if (etokenAddress) walletsGroups[i][j].etokenAddress = etokenAddress
-          const groupToken = await this.tokenProvider.getTokens(wallet);
-          if (!_.isEmpty(groupToken)) {
-            walletsGroups[i][j].tokens = groupToken;
-            await this.setTokensWallet(walletsGroups[i][j].id, groupToken)
-          }
-        }
-      }
+  private async loadTokenData(keySelected) {
+    for (var i = 0; i < keySelected.length; i++) {
+      let wallet = keySelected[i];
+      wallet = await this.tokenProvider.loadTokenWallet(wallet);
     }
-    return walletsGroups;
+    return keySelected;;
   }
 
   private filterLotusDonationWallet(walletGroups: any) {
@@ -401,8 +372,10 @@ export class WalletsPage {
   private walletGetDataHandler = opts => {
     this.logger.debug('RECV Local/GetData @home', opts);
     if (opts) {
-      this.getWalletsGroups();
+      const walletsGroups = this.profileProvider.orderedWalletsByGroup;
+      this.walletsGroups = walletsGroups;
       this.initKeySelected();
+      this.loadTokenWallet();
     }
   };
 
@@ -490,14 +463,7 @@ export class WalletsPage {
         });
 
       });
-      if (this.isDonation) {
-        this.walletsGroups = this.filterLotusDonationWallet(this.walletsGroups);
-      } else {
-        this.loadTokenDataToken(this.walletsGroups).then(data => {
-          this.walletsGroups = data;
-          this.changeDetectorRef.detectChanges();
-        })
-      }
+      this.loadTokenWallet();
     },
     5000,
     {
@@ -629,67 +595,7 @@ export class WalletsPage {
       });
   }
 
-  // private processWalletError(wallet, err): void {
-  //   wallet.error = wallet.errorObj = null;
-
-  //   if (!err || err == 'INPROGRESS') return;
-
-  //   wallet.cachedStatus = null;
-  //   wallet.errorObj = err;
-
-  //   if (err.message === '403') {
-  //     wallet.error = this.translate.instant('Access denied');
-  //   } else if (err === 'WALLET_NOT_REGISTERED') {
-  //     wallet.error = this.translate.instant('Wallet not registered');
-  //   } else {
-  //     wallet.error = this.bwcErrorProvider.msg(err);
-  //   }
-  //   this.logger.warn(
-  //     this.bwcErrorProvider.msg(
-  //       wallet.error,
-  //       'Error updating status for ' + wallet.id
-  //     )
-  //   );
-  // }
-
-  public handleDonation(wallet) {
-    const loading = this.loadingCtr.create({
-      message: 'Please wait...'
-    })
-    loading.then(loadingEl => loadingEl.present());
-    this.walletProvider.getDonationInfo().then((data: any) => {
-      loading.then(loadingEl => loadingEl.dismiss());
-      if (_.isEmpty(data)) {
-        throw new Error("No data Remaning");
-      }
-      this.router.navigate(['/amount'], {
-        state: {
-          toAddress: _.get(_.find(data.donationToAddresses, item => item.coin == wallet.coin), 'address', ''),
-          donationSupportCoins: data.donationSupportCoins,
-          id: wallet.credentials.walletId,
-          walletId: wallet.credentials.walletId,
-          recipientType: 'wallet',
-          name: wallet.name,
-          coin: wallet.coin,
-          network: wallet.network,
-          isDonation: true,
-          fromWalletDetails: true,
-          minMoneydonation: data.minMoneydonation,
-          remaining: data.remaining,
-          receiveLotus: data.receiveAmountLotus,
-          donationCoin: data.donationCoin
-        }
-      });
-    }).catch((err) => {
-      console.log(err)
-      loading.then(loadingEl => loadingEl.dismiss());
-    });
-  }
-
   public async goToWalletDetails(wallet) {
-    if (this.isDonation) {
-      return this.handleDonation(wallet);
-    }
     if (wallet.isComplete()) {
       this.router.navigate(['/wallet-details'], {
         state: {
@@ -709,9 +615,7 @@ export class WalletsPage {
   }
 
   public doRefresh(refresher): void {
-    if (!this.isDonation) {
-      this.debounceSetWallets();
-    }
+    this.debounceSetWallets();
     setTimeout(() => {
       refresher.target.complete();
     }, 2000);

@@ -137,10 +137,15 @@
                       </ion-label>
                       <ion-note slot="end">
                         <div>
-                          <div *ngIf="!wallet?.balanceHidden" class="main-note">
-                            {{DecimalFormatBalance(token?.amountToken)}}</div>
+                          <div *ngIf="!wallet?.balanceHidden">
+                            <div class="main-note">{{DecimalFormatBalance(token?.amountToken)}}</div>
+                            <div class="secondary-note" *ngIf="wallet?.cachedStatus">
+                              <span >~</span> {{'$' + DecimalFormatBalance(token.alternativeBalance)}}
+                            </div>
+                          </div>
                           <div *ngIf="wallet?.balanceHidden" class="main-note">******</div>
                         </div>
+                        
                       </ion-note>
                     </ion-item>
                   </ion-list>
@@ -162,14 +167,7 @@
           </div>
         </label-tip>
       </div>
-      <ng-container *ngIf="!isDonation;else donation">
         <create-new-wallet *ngIf="!walletsGroups || !walletsGroups[0]"></create-new-wallet>
-      </ng-container>
-      <ng-template #donation>
-        <div *ngIf="isShowCreateNewWallet">
-          <create-new-wallet></create-new-wallet>
-        </div>
-      </ng-template>
     </div>
   </ion-content>
 </div>

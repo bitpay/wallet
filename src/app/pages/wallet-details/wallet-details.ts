@@ -899,19 +899,12 @@ export class WalletDetailsPage {
       return totalBalanceStr || lastKnownBalance;
     }
   }
-
+  
   public getAlternativeBalance() {
-    if (this.wallet.coin === 'xrp') {
-      const availableAlternative =
-        this.wallet.cachedStatus &&
-        this.wallet.cachedStatus.availableBalanceAlternative;
-      return DecimalFormatBalance(availableAlternative);
-    } else {
       const totalBalanceAlternative =
         this.wallet.cachedStatus &&
         this.wallet.cachedStatus.totalBalanceAlternative;
       return DecimalFormatBalance(totalBalanceAlternative);
-    }
   }
 
   public async viewOnBlockchain() {
