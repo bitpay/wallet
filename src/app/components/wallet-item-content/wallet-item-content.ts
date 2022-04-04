@@ -51,16 +51,10 @@ export class WalletItemContent {
   }
 
   getAlternativeBalance(wallet, currency) {
-    if (currency === 'XRP') {
-      const availableAlternative =
-        wallet.cachedStatus && wallet.cachedStatus.availableBalanceAlternative;
-      return DecimalFormatBalance(availableAlternative);
-    } else {
-      const totalBalanceAlternative =
-        wallet.cachedStatus && wallet.cachedStatus.totalBalanceAlternative;
-      if (totalBalanceAlternative == '0.00') return '0';
-      return DecimalFormatBalance(totalBalanceAlternative);
-    }
+    const totalBalanceAlternative =
+      wallet.cachedStatus && wallet.cachedStatus.totalBalanceAlternative;
+    if (totalBalanceAlternative == '0.00') return '0';
+    return DecimalFormatBalance(totalBalanceAlternative);
   }
 
   getLastKownBalance(wallet, currency) {

@@ -404,6 +404,13 @@ export class RecipientComponent implements OnInit {
       const unit = Math.pow(10, decimals)
       if (decimals && result > 0) amount = (amount * unit).toFixed(0);
       this.recipient.amount = parseInt(amount, 10);
+      const alternativeAmount = this.rateProvider.toFiatToken(
+        result,
+        this.wallet.cachedStatus.alternativeIsoCode,
+        this.token.tokenInfo.symbol
+      );
+      this.alternativeAmount = this.filterProvider.formatFiatAmount(alternativeAmount);
+      this.recipient.altAmountStr = this.alternativeAmount;
     } else {
       amount = unit.isFiat
         ? (this.fromFiat(amount) * this.unitToSatoshi).toFixed(0)

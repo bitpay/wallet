@@ -6,11 +6,18 @@ import env from '../../../environments';
 import { CoinsMap, CurrencyProvider } from '../currency/currency';
 import { Logger } from '../logger/logger';
 
+
+export interface Currency { 
+    isoCode: string,
+    name: string
+}
 export interface Config {
   limits: {
     totalCopayers: number;
     mPlusN: number;
   };
+
+  currenciesSupport?: Currency[];
 
   token?: {
     xec?: {
@@ -169,6 +176,20 @@ export class ConfigProvider {
         totalCopayers: 6,
         mPlusN: 100
       },
+      currenciesSupport: [
+        {
+          isoCode: 'AUD',
+          name: 'Australian Dollar'
+        },
+        {
+          isoCode: 'USD',
+          name: 'US Dollar'
+        },
+        {
+          isoCode: 'HNL',
+          name: 'Honduran Lempira'
+        },
+      ],
       token: {
         xec: {
           bchURL: "https://rest.kingbch.com/v4/",

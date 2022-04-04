@@ -234,6 +234,10 @@ export class ProfileProvider {
     this.wallet[walletId].tokens = tokens;
   }
 
+  public setAddressEtoken(walletId: string, etokenAddress: string): void {
+    this.wallet[walletId].etokenAddress = etokenAddress;
+  }
+  
   private requiresGroupBackup(keyId: string) {
     let k = this.keyProvider.getKey(keyId);
     if (!k) return false;

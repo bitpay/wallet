@@ -180,6 +180,21 @@ export class RateProvider {
     );
   }
 
+
+  public toFiatToken(
+    amountToken: number,
+    code: string,
+    chain,
+    opts?: { customRate?: number; rates?: any}
+  ): number {
+    if (!this.isCoinAvailable(chain)) {
+      return null;
+    }
+    const customRate = opts && opts.customRate;
+    const rate = customRate || this.getRate(code, chain, opts);
+    return amountToken * rate ; 
+  }
+
   public fromFiat(
     amount: number,
     code: string,
