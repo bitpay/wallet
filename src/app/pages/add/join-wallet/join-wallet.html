@@ -40,12 +40,14 @@
         <mat-label>{{'Wallet invitation' | translate}}</mat-label>
         <input (input)="processInvitation(joinForm.value.invitationCode)" matInput type="text"
           formControlName="invitationCode" [placeholder]="'Wallet invitation'" translate>
-        <ion-icon matSuffix src="assets/img/recipient-component/Subtract.svg" *ngIf="joinForm.value.invitationCode && joinForm.value.invitationCode.length > 0"
-          slot="end" class="erase-icon" (click)="cleanSearch()">
+        <ion-icon matSuffix src="assets/img/recipient-component/Subtract.svg"
+          *ngIf="joinForm.value.invitationCode && joinForm.value.invitationCode.length > 0" slot="end"
+          class="erase-icon" (click)="cleanSearch()">
         </ion-icon>
         <ion-icon matSuffix *ngIf="joinForm.controls['invitationCode'].status == 'VALID'" name="checkmark-circle"
           class="icon-custom check success" slot="end"></ion-icon>
-        <ion-icon matSuffix *ngIf="isCordova" class="scanner-icon" src="assets/img/recipient-component/qr-{{currentTheme}}.svg" slot="end" (click)="openScanner()">
+        <ion-icon matSuffix *ngIf="isCordova" class="scanner-icon"
+          src="assets/img/recipient-component/qr-{{currentTheme}}.svg" slot="end" (click)="openScanner()">
         </ion-icon>
       </mat-form-field>
     </div>
@@ -63,19 +65,18 @@
       </ng-template>
     </ion-button>
 
+    <div class="line-divider" *ngIf="showAdvOpts"></div>
+
     <div *ngIf="showAdvOpts" class="show-advance-option ion-padding-bottom">
-
-      <div class="line-divider" *ngIf="showAdvOpts"></div>
-
       <mat-form-field class="wallet-service-url-mat-form-field" appearance="outline">
-        <mat-label>{{'Wallet Service URL' | translate}}</mat-label>
-        <input matInput type="text" formControlName="bwsURL" [placeholder]="'Wallet Service URL'" translate>
+        <mat-label>{{'Account Service URL' | translate}}</mat-label>
+        <input matInput type="text" formControlName="bwsURL" [placeholder]="'Account Service URL'" translate>
       </mat-form-field>
 
       <div class="line-divider" *ngIf="!keyId"></div>
 
       <ion-item class="wallet-key-ion-item" *ngIf="!keyId">
-        <ion-label position="stacked">{{'Wallet key' | translate}}</ion-label>
+        <ion-label position="stacked">{{'Account key' | translate}}</ion-label>
         <ion-select okText="{{okText}}" cancelText="{{cancelText}}" formControlName="selectedSeed"
           (ionChange)="seedOptionsChange(joinForm.value.selectedSeed)">
           <ion-select-option *ngFor="let opt of seedOptions" [value]="opt.id">{{opt.label}}</ion-select-option>
@@ -83,8 +84,9 @@
       </ion-item>
 
       <mat-form-field appearance="outline" *ngIf="joinForm.value.selectedSeed == 'set' && !keyId">
-        <mat-label>{{'Wallet recovery phrase' | translate}}</mat-label>
-        <input matInput type="text" formControlName="recoveryPhrase" [placeholder]="'Wallet recovery phrase'" translate>
+        <mat-label>{{'Account recovery phrase' | translate}}</mat-label>
+        <input matInput type="text" formControlName="recoveryPhrase" [placeholder]="'Account recovery phrase'"
+          translate>
       </mat-form-field>
 
       <mat-form-field appearance="outline" *ngIf="joinForm.value.selectedSeed == 'set' && !keyId">

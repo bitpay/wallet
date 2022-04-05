@@ -1,166 +1,197 @@
-<wide-header-page title="{{ 'Create {coinLabel} Wallet' | translate: {coinLabel: coin.toUpperCase()} }}">
-  <div page-content #content>
-    <form [formGroup]="createForm">
-      <div class="wallet-info-container">
-        <ion-item>
-          <ion-label position="floating">{{'Wallet name' | translate}}</ion-label>
-          <ion-input type="text" formControlName="walletName"></ion-input>
-        </ion-item>
+<ion-header [translucent]="true" class="bp-header">
+  <ion-toolbar class="header" [ngClass]="{ 
+    'bg-bch': coin == 'bch',
+    'bg-xec': coin == 'xec',
+    'bg-xpi': coin == 'xpi',
+    'bg-doge': coin == 'doge',
+    'bg-ltc': coin == 'ltc'
+    }">
+    <ion-buttons slot="start">
+      <ion-back-button icon="chevron-back-outline" defaultHref="/">
+      </ion-back-button>
+    </ion-buttons>
 
-        <div *ngIf="isShared">
-          <!-- *ngIf="coin != 'eth'" -->
-          <ion-item>
-            <ion-label position="floating">{{'Your name' | translate}}</ion-label>
-            <ion-input type="text" formControlName="myName"></ion-input>
-          </ion-item>
+    <ion-title class="toolbar-title">
+      <div [reveal-at-scroll-pos]="expandableHeader.headerHeight" [scrollArea]="scrollArea">
+        {{ 'Create {coinLabel} Wallet' | translate: {coinLabel: coin.toUpperCase()} }}
+      </div>
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
 
-          <div class="custom-item">
-            <div class="label">{{'Required number of signatures' | translate}}</div>
-            <div class="buttons-container">
-              <ion-button fill="clear" class="add-button"
-                (click)="set('requiredCopayers', this.createForm.value.requiredCopayers - 1)">
-                -
-              </ion-button>
-              <div class="number-copayer">
-                {{createForm.value.requiredCopayers}}
-              </div>
-              <ion-button fill="clear" class="add-button"
-                (click)="set('requiredCopayers', this.createForm.value.requiredCopayers + 1)">
-                +
-              </ion-button>
+<ion-content [forceOverscroll]="true" scrollEvents="true" #scrollArea>
+  <expandable-header [scrollArea]="scrollArea" [fadeFactor]="5" [disableFade]="true" #expandableHeader>
+    <ion-toolbar class="wide-header__title" tappable>
+      <expandable-header-primary>
+        {{ 'Create {coinLabel} Wallet' | translate: {coinLabel: coin.toUpperCase()} }}
+      </expandable-header-primary>
+    </ion-toolbar>
+  </expandable-header>
+
+
+  <form [formGroup]="createForm">
+    <div class="wallet-info-container">
+
+      <mat-form-field appearance="outline">
+        <mat-label>{{'Wallet name' | translate}}</mat-label>
+        <input matInput type="text" formControlName="walletName" [placeholder]="'Wallet name'" translate>
+      </mat-form-field>
+
+      <div *ngIf="isShared">
+        <mat-form-field class="your-name-mat-form-field" appearance="outline">
+          <mat-label>{{'Your name' | translate}}</mat-label>
+          <input matInput type="text" formControlName="myName" [placeholder]="'Your name'" translate>
+        </mat-form-field>
+
+        <div class="custom-item">
+          <div class="label">{{'Required number of signatures' | translate}}</div>
+          <div class="buttons-container">
+            <ion-button fill="clear" class="add-button"
+              (click)="set('requiredCopayers', this.createForm.value.requiredCopayers - 1)">
+              -
+            </ion-button>
+            <div class="number-copayer">
+              {{createForm.value.requiredCopayers}}
             </div>
+            <ion-button fill="clear" class="add-button"
+              (click)="set('requiredCopayers', this.createForm.value.requiredCopayers + 1)">
+              +
+            </ion-button>
           </div>
+        </div>
 
-          <div class="custom-item">
-            <div class="label">{{'Total number of copayers' | translate}}</div>
-            <div class="buttons-container">
-              <ion-button fill="clear" class="add-button"
-                (click)="set('totalCopayers', this.createForm.value.totalCopayers - 1)">
-                -
-              </ion-button>
-              <div class="number-copayer">
-                {{createForm.value.totalCopayers}}
-              </div>
-              <ion-button fill="clear" class="add-button"
-                (click)="set('totalCopayers',this.createForm.value.totalCopayers + 1)">
-                +
-              </ion-button>
+        <div class="custom-item">
+          <div class="label">{{'Total number of copayers' | translate}}</div>
+          <div class="buttons-container">
+            <ion-button fill="clear" class="add-button"
+              (click)="set('totalCopayers', this.createForm.value.totalCopayers - 1)">
+              -
+            </ion-button>
+            <div class="number-copayer">
+              {{createForm.value.totalCopayers}}
             </div>
+            <ion-button fill="clear" class="add-button"
+              (click)="set('totalCopayers',this.createForm.value.totalCopayers + 1)">
+              +
+            </ion-button>
           </div>
+        </div>
 
-          <!-- <label-tip type="info" header="no-header" class="no-arrowhead">
-            <div label-tip-body>
-              <span translate>Multi-user wallet require multiple devices to set up. It takes longer to complete but it's recommended security configuration for long term storage.</span>
-            </div>
-          </label-tip> -->
+        <!-- <label-tip type="info" header="no-header" class="no-arrowhead">
+          <div label-tip-body>
+            <span translate>Multi-user wallet require multiple devices to set up. It takes longer to complete but it's recommended security configuration for long term storage.</span>
+          </div>
+        </label-tip> -->
 
-          <div class="notification-container">
-            <img src="../../../../assets/img/backup-key-game/icon-notification.svg" />
-            <div class="notification-content">
-              Multi-user wallet require multiple devices to set up. It takes longer to complete but it's recommended
-              security configuration for long term storage.
-            </div>
+        <div class="notification-container">
+          <img src="../../../../assets/img/backup-key-game/icon-notification.svg" />
+          <div class="notification-content">
+            Multi-user wallet require multiple devices to set up. It takes longer to complete but it's recommended
+            security configuration for long term storage.
           </div>
         </div>
       </div>
+    </div>
 
-      <ion-button size="large" slot="start" class="advance-button" (click)="handleClickAdvanceOption()"
-        [ngClass]="{'open-advance': showAdvOpts}">
-        <ng-container *ngIf="!showAdvOpts; else elseBlock">
-          <span>{{'Show advanced options' | translate}}</span>
-          <ion-icon slot="end" src="../../../../assets/img/chevron-down.svg"></ion-icon>
-        </ng-container>
-        <ng-template #elseBlock>
-          <span *ngIf="showAdvOpts">{{'Hide advanced options' | translate}}</span>
-          <ion-icon slot="end" src="../../../../assets/img/chevron-up.svg"></ion-icon>
-        </ng-template>
-      </ion-button>
+    <ion-button size="large" slot="start" class="advance-button" (click)="handleClickAdvanceOption()"
+      [ngClass]="{'open-advance': showAdvOpts}">
+      <ng-container *ngIf="!showAdvOpts; else elseBlock">
+        <span>{{'Show advanced options' | translate}}</span>
+        <ion-icon slot="end" src="assets/img/chevron-down-{{currentTheme}}.svg"></ion-icon>
+      </ng-container>
+      <ng-template #elseBlock>
+        <span *ngIf="showAdvOpts">{{'Hide advanced options' | translate}}</span>
+        <ion-icon slot="end" src="assets/img/chevron-up-{{currentTheme}}.svg"></ion-icon>
+      </ng-template>
+    </ion-button>
 
-      <ion-item lines="none" *ngIf="showAdvOpts &&  coin === 'ltc' && createForm.value.selectedSeed == 'new'">
-        <ion-label>Segwit</ion-label>
-        <ion-toggle formControlName="useNativeSegwit"></ion-toggle>
+    <ion-item lines="none" *ngIf="showAdvOpts &&  coin === 'ltc' && createForm.value.selectedSeed == 'new'">
+      <ion-label>Segwit</ion-label>
+      <ion-toggle formControlName="useNativeSegwit"></ion-toggle>
+    </ion-item>
+    <div class="line-divider" *ngIf="showAdvOpts"></div>
+
+    <div *ngIf="showAdvOpts" class="show-advance-option ion-padding-bottom">
+      <mat-form-field class="wallet-service-url-mat-form-field" appearance="outline">
+        <mat-label>{{'Account Service URL' | translate}}</mat-label>
+        <input matInput type="text" formControlName="bwsURL" [placeholder]="'Account Service URL'" translate>
+      </mat-form-field>
+
+      <div class="line-divider"></div>
+
+      <ion-item class="wallet-key-ion-item" *ngIf="!keyId"
+        [ngClass]="{'set-padding-bottom': createForm.value.selectedSeed == 'set' && !keyId}">
+        <ion-label position="stacked">{{'Account key' | translate}}</ion-label>
+        <ion-select okText="{{okText}}" cancelText="{{cancelText}}" formControlName="selectedSeed"
+          (ionChange)="seedOptionsChange(createForm.value.selectedSeed)">
+          <ion-select-option *ngFor="let opt of seedOptions" [value]="opt.id">{{opt.label}}</ion-select-option>
+        </ion-select>
       </ion-item>
 
-      <div *ngIf="showAdvOpts" class="show-advance-option ion-padding-bottom">
-        <!-- *ngIf="!(isShared && coin == 'eth') -->
-        <ion-item>
-          <ion-label position="stacked">Wallet Service URL</ion-label>
-          <ion-input type="text" formControlName="bwsURL"></ion-input>
+      <mat-form-field *ngIf="createForm.value.selectedSeed == 'set' && !keyId" appearance="outline">
+        <mat-label>{{'Account recovery phrase'| translate}}</mat-label>
+        <input matInput type="text" formControlName="recoveryPhrase" [placeholder]="'Account recovery phrase'"
+          translate>
+      </mat-form-field>
+
+      <ng-container *ngIf="isEnvDev">
+        <ion-item class="testnet-ion-item" [ngClass]="{'with-label': createForm.value.testnetEnabled}"
+          *ngIf="createForm.value.selectedSeed == 'new'">
+          <ion-label>Testnet</ion-label>
+          <ion-toggle formControlName="testnetEnabled" (ionChange)="setDerivationPath()"
+            [disabled]="coin == 'xec' || coin == 'xpi'"></ion-toggle>
         </ion-item>
+      </ng-container>
 
-        <ion-item *ngIf="!keyId">
-          <ion-label position="stacked">{{'Wallet key' | translate}}</ion-label>
-          <ion-select okText="{{okText}}" cancelText="{{cancelText}}" formControlName="selectedSeed"
-            (ionChange)="seedOptionsChange(createForm.value.selectedSeed)">
-            <ion-select-option *ngFor="let opt of seedOptions" [value]="opt.id">{{opt.label}}</ion-select-option>
-          </ion-select>
-        </ion-item>
+      <label-tip *ngIf="createForm.value.testnetEnabled && createForm.value.selectedSeed == 'new'" type="warn">
+        <span label-tip-title translate>Testnet Wallet</span>
+        <div label-tip-body>
+          {{ 'The testnet is an alternative {coinName} block chain, to be used for testing. Testnet coins are separate
+          and distinct from actual {coinName}, and do not have any value. This allows application developers or
+          {coinName} testers to experiment, without having to use real {coinName}' | translate : {coinName: coinName }
+          }} .
+        </div>
+      </label-tip>
 
-        <ion-item *ngIf="createForm.value.selectedSeed == 'set' && !keyId">
-          <ion-label position="stacked">{{'Wallet recovery phrase' | translate}}</ion-label>
-          <ion-input type="text" formControlName="recoveryPhrase"></ion-input>
-        </ion-item>
+      <mat-form-field *ngIf="createForm.value.selectedSeed == 'set' && !keyId" appearance="outline">
+        <mat-label>{{'Derivation path'| translate}}</mat-label>
+        <input matInput type="text" formControlName="derivationPath" [placeholder]="'Derivation path'" translate>
+      </mat-form-field>
 
-        <ng-container *ngIf="isEnvDev">
-          <ion-item [ngClass]="{'with-label': createForm.value.testnetEnabled}"
-            *ngIf="createForm.value.selectedSeed == 'new'">
-            <ion-label>Testnet</ion-label>
-            <ion-toggle formControlName="testnetEnabled" (ionChange)="setDerivationPath()"
-              [disabled]="coin == 'xec' || coin == 'xpi'"></ion-toggle>
-          </ion-item>
-        </ng-container>
+      <ion-item class="option-container" [ngClass]="{'set-padding-top': !isEnvDev}"
+        *ngIf="!isShared && (this.coin === 'xpi' || this.coin === 'xec')">
+        <div class="option-line">
+          <ion-label>
+            eToken Path
+          </ion-label>
+          <ion-toggle [checked]="isSlpToken" (ionChange)="changeSlpPath($event)"></ion-toggle>
+        </div>
+        <div class="option-line-info" *ngIf="isSlpToken">
+          <span translate>Only select path m'/44'/1899'/0 for #Saving4Lotus or #Hold2Earn programs</span>
+        </div>
+      </ion-item>
 
-        <label-tip *ngIf="createForm.value.testnetEnabled && createForm.value.selectedSeed == 'new'" type="warn">
-          <span label-tip-title translate>Testnet Wallet</span>
-          <div label-tip-body>
-            {{ 'The testnet is an alternative {coinName} block chain, to be used for testing. Testnet coins are separate
-            and distinct from actual {coinName}, and do not have any value. This allows application developers or
-            {coinName} testers to experiment, without having to use real {coinName}' | translate : {coinName: coinName }
-            }} .
-          </div>
-        </label-tip>
+      <ion-item lines="none" class="option-container" *ngIf="!isSingleAddress()"
+        [ngClass]="{'with-label': createForm.value.singleAddress}">
+        <div class="option-line">
+          <p>Single Address</p>
+          <ion-toggle [disabled]="isSlpToken" [checked]="isSlpToken" formControlName="singleAddress"></ion-toggle>
+        </div>
+        <div class="option-line-info" *ngIf="createForm.value.singleAddress">
+          <span translate>The single address feature will force the wallet to only use one address rather than
+            generating new addresses.</span>
+          <br>
+          <a class="label-tip-link" (click)="openSupportSingleAddress()" translate>Learn More</a>
+        </div>
+      </ion-item>
+    </div>
+  </form>
+</ion-content>
 
-        <ion-item [disabled]="isShared" *ngIf="createForm.value.selectedSeed == 'set' && !keyId">
-          <ion-label position="stacked">{{'Derivation path' | translate}}</ion-label>
-          <ion-input type="text" formControlName="derivationPath"></ion-input>
-        </ion-item>
 
-        <ion-item class="option-container" *ngIf="!isShared && (this.coin === 'xpi' || this.coin === 'xec')">
-          <div class="option-line">
-            <ion-label>
-              eToken Path
-            </ion-label>
-            <ion-toggle [checked]="isSlpToken" (ionChange)="changeSlpPath($event)"></ion-toggle>
-          </div>
-          <div class="option-line-info" *ngIf="isSlpToken">
-            <span translate>Only select path m'/44'/1899'/0 for #Saving4Lotus or #Hold2Earn programs</span>
-          </div>
-        </ion-item>
-
-        <ion-item class="option-container" *ngIf="!isSingleAddress()"
-          [ngClass]="{'with-label': createForm.value.singleAddress}">
-          <!-- <ion-label>{{'Single address' | translate}}</ion-label> -->
-          <div class="option-line">
-            <p>Single Address</p>
-            <ion-toggle [disabled]="isSlpToken" [checked]="isSlpToken" formControlName="singleAddress"></ion-toggle>
-          </div>
-          <div class="option-line-info" *ngIf="createForm.value.singleAddress">
-            <span translate>The single address feature will force the wallet to only use one address rather than
-              generating new addresses.</span>
-            <br>
-            <a class="label-tip-link" (click)="openSupportSingleAddress()" translate>Learn More</a>
-          </div>
-        </ion-item>
-
-       
-      </div>
-
-    </form>
-  </div>
-  <div footer-content>
-    <ion-toolbar>
-      <ion-button class="button-standard" (click)="setOptsAndCreate()" [disabled]="!createForm.valid">Create account
-      </ion-button>
-    </ion-toolbar>
-  </div>
-</wide-header-page>
+<ion-footer class="ion-no-border footer">
+  <ion-toolbar>
+    <ion-button class="button-standard" (click)="setOptsAndCreate()" [disabled]="!createForm.valid">Create account
+    </ion-button>
+  </ion-toolbar>
+</ion-footer>

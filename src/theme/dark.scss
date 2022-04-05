@@ -2216,23 +2216,6 @@
         }
     }
 
-    page-join-wallet {
-        // ion-item {
-        //     --background: var(--bg-color-dark-theme);
-        //     --color: var(--text-color-dark-theme-2) !important;
-        // }
-        .wallet-info-container {
-            background: linear-gradient(0deg, rgba(126, 208, 255, 0.11), rgba(126, 208, 255, 0.11)), #001E2E;
-        }
-        .advance-button{
-            --background: linear-gradient(0deg, rgba(126, 208, 255, 0.11), rgba(126, 208, 255, 0.11)), #001E2E;
-            color: #EDEFF0;
-        }
-        .show-advance-option {
-            background: linear-gradient(0deg, rgba(126, 208, 255, 0.11), rgba(126, 208, 255, 0.11)), #001E2E;
-        }
-    }
-
     page-addressbook-add {
         .add-address-book-container {
             .slide-title {
@@ -2472,6 +2455,30 @@
             --highlight-color-focused: rgba(224, 228, 230, 0.6);
             --highlight-color-valid	: rgba(224, 228, 230, 0.6);
             --highlight-color-invalid: rgba(224, 228, 230, 0.6);
+        }
+        .wallet-info-container {
+            background: linear-gradient(0deg, rgba(126, 208, 255, 0.11), rgba(126, 208, 255, 0.11)), #001E2E;
+        }
+        .advance-button{
+            --background: linear-gradient(0deg, rgba(126, 208, 255, 0.11), rgba(126, 208, 255, 0.11)), #001E2E;
+            color: #EDEFF0;
+        }
+        .show-advance-option {
+            background: linear-gradient(0deg, rgba(126, 208, 255, 0.11), rgba(126, 208, 255, 0.11)), #001E2E;
+            ion-item{
+                --border-color: #2B4552;
+            }
+        }
+        .custom-item{
+            .label{
+                color: rgba(224, 228, 230, 0.6);
+            }
+        }
+        .option-line-info{
+            color: rgba(224, 228, 230, 0.6) !important;
+            a{
+                color: #7ED0FF !important;
+            }
         }
     }
 

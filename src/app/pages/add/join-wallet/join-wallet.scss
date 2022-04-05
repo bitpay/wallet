@@ -1,4 +1,7 @@
 page-join-wallet {
+  .line-divider {
+    margin: 0 !important;
+  }
   .mat-form-field {
     padding: unset !important;
   }
@@ -73,7 +76,7 @@ page-join-wallet {
     padding-left: 10px;
     padding-bottom: 5px;
   }
-  .erase-icon{
+  .erase-icon {
     padding-bottom: 3px;
   }
 
@@ -92,7 +95,7 @@ page-join-wallet {
       color: var(--color-danger);
     }
   }
-  
+
   .linked-wallet {
     .item-inner {
       border-bottom: 0px !important;
