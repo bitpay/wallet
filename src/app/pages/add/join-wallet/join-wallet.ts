@@ -28,11 +28,11 @@ import {
 import { ModalController, NavController, NavParams } from '@ionic/angular';
 import { EventManagerService } from 'src/app/providers/event-manager.service';
 import { Router } from '@angular/router';
-import { ExternalLinkProvider } from 'src/app/providers';
+import { AppProvider, ExternalLinkProvider } from 'src/app/providers';
 @Component({
   selector: 'page-join-wallet',
   templateUrl: 'join-wallet.html',
-  styleUrls: ['/join-wallet.scss'],
+  styleUrls: ['./join-wallet.scss'],
   encapsulation: ViewEncapsulation.None
 })
 export class JoinWalletPage {
@@ -47,6 +47,7 @@ export class JoinWalletPage {
   public coin: Coin;
   public isOpenSelector: boolean;
   public pairedWallet;
+  public currentTheme: string;
 
   private derivationPathByDefault: string;
   private derivationPathForTestnet: string;
@@ -73,7 +74,8 @@ export class JoinWalletPage {
     private errorsProvider: ErrorsProvider,
     private actionSheetProvider: ActionSheetProvider,
     private router: Router,
-    private externalLinkProvider: ExternalLinkProvider
+    private externalLinkProvider: ExternalLinkProvider,
+    private appProvider: AppProvider
   ) {
     if (this.router.getCurrentNavigation()) {
       this.navParamsData = this.router.getCurrentNavigation().extras.state ? this.router.getCurrentNavigation().extras.state : {};
@@ -99,7 +101,7 @@ export class JoinWalletPage {
       recoveryPhrase: [null],
       derivationPath: [null]
     });
-
+    this.currentTheme = this.appProvider.themeProvider.currentAppTheme;
 
     this.joinForm.get('myName').setValidators([Validators.required]);
     this.joinForm
@@ -222,6 +224,10 @@ export class JoinWalletPage {
         this.logger.warn('Error parsing invitation: ' + ex);
       }
     }
+  }
+
+  public cleanSearch(){
+    this.joinForm.controls['invitationCode'].setValue('');
   }
 
   private getDerivationPathByDefault(): string {

@@ -273,6 +273,10 @@
 
     // Material input custom
     // --------------------------------------------------
+    .mat-form-field-appearance-outline.mat-focused .placeholder {
+        color: rgba(237, 239, 240, 0.38) !important;
+    }
+
     .mat-form-field-appearance-outline {
         .mat-form-field-outline {
             color: rgba(237, 239, 240, 0.38) !important;
@@ -2213,9 +2217,19 @@
     }
 
     page-join-wallet {
-        ion-item {
-            --background: var(--bg-color-dark-theme);
-            --color: var(--text-color-dark-theme-2) !important;
+        // ion-item {
+        //     --background: var(--bg-color-dark-theme);
+        //     --color: var(--text-color-dark-theme-2) !important;
+        // }
+        .wallet-info-container {
+            background: linear-gradient(0deg, rgba(126, 208, 255, 0.11), rgba(126, 208, 255, 0.11)), #001E2E;
+        }
+        .advance-button{
+            --background: linear-gradient(0deg, rgba(126, 208, 255, 0.11), rgba(126, 208, 255, 0.11)), #001E2E;
+            color: #EDEFF0;
+        }
+        .show-advance-option {
+            background: linear-gradient(0deg, rgba(126, 208, 255, 0.11), rgba(126, 208, 255, 0.11)), #001E2E;
         }
     }
 

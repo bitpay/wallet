@@ -1,61 +1,90 @@
 page-join-wallet {
-  form{
-    margin: 18px;  
+  .mat-form-field {
+    padding: unset !important;
+  }
+  .toolbar-title {
+    color: #edeff0;
+  }
+  form {
+    margin: 18px;
     margin-bottom: 120px;
-    .wallet-info-container{
-      background: linear-gradient(0deg, rgba(126, 208, 255, 0.11), rgba(126, 208, 255, 0.11)), #001E2E;
-      padding: 18px;
+    .wallet-info-container {
+      background: #fafafb;
+      padding: 23px 1rem 36px 1rem;
       border-radius: 12px;
-      padding-top: 0px;
+      .wallet-invitation-mat-form-field {
+        margin-top: 43px;
+      }
     }
-    ion-item{
+    ion-item {
       margin-left: 0px;
     }
-    .advance-button{
+    .advance-button {
       width: 100%;
-      --background:linear-gradient(0deg, rgba(126, 208, 255, 0.11), rgba(126, 208, 255, 0.11)), #001E2E;
+      --background: #fafafb;
+      --background-activated: none;
+      color: #001e2e;
       margin: 0px;
       margin-top: 32px;
       --border-radius: 8px;
       --padding-top: 16px;
-        --padding-bottom: 16px;
-        --padding-start: 16px;
-        span{
-          text-align:left;
-          width:100%;
-          font-size: 16px;
-          font-weight: 400;
-        }
-        ion-icon{
-          width: 12px;
-        }
+      --padding-bottom: 16px;
+      --padding-start: 16px;
+      --box-shadow: none !important;
+      span {
+        text-align: left;
+        width: 100%;
+        font-size: 16px;
+        font-weight: 600;
+      }
+      ion-icon {
+        width: 12px;
+      }
     }
-    .open-advance{
+    .open-advance {
       --border-radius: 8px 8px 0px 0px;
     }
-    .show-advance-option{
+    .show-advance-option {
       padding: 0px 16px;
-      padding-bottom: 23px;
-      background: linear-gradient(0deg, rgba(126, 208, 255, 0.11), rgba(126, 208, 255, 0.11)), #001E2E;
+      background: #fafafb;
       border-radius: 0px 0px 8px 8px;
-      
-      ion-item{
+
+      ion-item {
         padding-top: 23px;
+      }
+      .wallet-key-ion-item {
+        --background: transparent;
+        --padding-start: 0;
+        padding-bottom: 28px;
+      }
+      .wallet-service-url-mat-form-field {
+        padding-top: 23px !important;
+      }
+      .mat-form-field {
+        padding-bottom: 28px !important;
       }
     }
   }
 
-
   .scanner-icon {
     z-index: 99;
-    font-size: 28px;
+    font-size: 20px;
     color: var(--color-primary);
+    padding-left: 10px;
+    padding-bottom: 5px;
   }
+  .erase-icon{
+    padding-bottom: 3px;
+  }
+
   .check {
     font-size: 22px;
-    padding-top: 3px;
     display: flex;
     height: 100%;
+    width: 22px;
+    height: 22px;
+    padding-left: 10px;
+    padding-bottom: 4px;
     &.success {
       color: var(--color-success);
     }
@@ -63,6 +92,7 @@ page-join-wallet {
       color: var(--color-danger);
     }
   }
+  
   .linked-wallet {
     .item-inner {
       border-bottom: 0px !important;
