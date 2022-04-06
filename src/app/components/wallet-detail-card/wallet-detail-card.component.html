@@ -16,8 +16,8 @@
           <div class="wallet-info">
             <span *ngIf="wallet?.cachedStatus && wallet?.cachedStatus.wallet && wallet?.cachedStatus.wallet?.singleAddress && isUtxoCoin()" class="audit-table" >Auditable</span>
             <div (click)="goToMultisignInfo()" *ngIf="wallet?.credentials?.n > 1 || (!wallet?.credentials?.n && wallet?.n > 1) || !wallet?.isComplete() || (wallet?.isComplete() && wallet?.needsBackup)" class="secondary-label">
-              <span class="secondary-label-multisign" *ngIf="wallet?.credentials?.n > 1">Multisign {{ wallet?.credentials?.m }}-{{ wallet?.credentials?.n }}</span>
-              <span class="secondary-label-multisign" *ngIf="!wallet?.credentials?.n && wallet?.n > 1">Multisign {{ wallet?.m }}-{{ wallet?.n }}</span>
+              <span class="secondary-label-multisign" *ngIf="wallet?.credentials?.n > 1">Multisig {{ wallet?.credentials?.m }}-{{ wallet?.credentials?.n }}</span>
+              <span class="secondary-label-multisign" *ngIf="!wallet?.credentials?.n && wallet?.n > 1">Multisig {{ wallet?.m }}-{{ wallet?.n }}</span>
               <img src="assets/img/wallet-details/wallet-info-{{currentTheme}}.svg">
             </div>
           </div>
@@ -69,8 +69,8 @@
           <div class="wallet-info">
             <span class="audit-table" *ngIf="wallet?.cachedStatus && wallet?.cachedStatus.wallet && wallet?.cachedStatus.wallet?.singleAddress && isUtxoCoin()">Auditable</span>
             <div (click)="goToMultisignInfo()" *ngIf="wallet?.credentials?.n > 1 || (!wallet?.credentials?.n && wallet?.n > 1) || !wallet?.isComplete() || (wallet?.isComplete() && wallet?.needsBackup)" class="secondary-label">
-              <span class="secondary-label-multisign" *ngIf="wallet?.credentials?.n > 1">Multisign {{ wallet?.credentials?.m }}-{{ wallet?.credentials?.n }}</span>
-              <span class="secondary-label-multisign" *ngIf="!wallet?.credentials?.n && wallet?.n > 1">Multisign {{ wallet?.m }}-{{ wallet?.n }}</span>
+              <span class="secondary-label-multisign" *ngIf="wallet?.credentials?.n > 1">Multisig {{ wallet?.credentials?.m }}-{{ wallet?.credentials?.n }}</span>
+              <span class="secondary-label-multisign" *ngIf="!wallet?.credentials?.n && wallet?.n > 1">Multisig {{ wallet?.m }}-{{ wallet?.n }}</span>
               <img src="assets/img/wallet-details/wallet-info-{{currentTheme}}.svg">
             </div>
           </div>
