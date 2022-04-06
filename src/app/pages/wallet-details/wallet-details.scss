@@ -1,6 +1,6 @@
 page-wallet-details {
   --icon-width: 36px;
-  .custom-txps-number{
+  .custom-txps-number {
     display: flex;
     justify-content: center;
     width: 35px;
@@ -11,7 +11,7 @@ page-wallet-details {
     font-weight: 600;
     align-self: center;
     margin-left: 10px;
-    background: #FFDDB6;
+    background: #ffddb6;
     align-items: center;
   }
   .grid-wrapper {
@@ -21,7 +21,12 @@ page-wallet-details {
 
   .wrapper {
     min-height: 100%;
-    background: linear-gradient(0deg, rgba(0, 93, 141, 0.05), rgba(0, 93, 141, 0.05)), #FAFAFB !important;
+    background: linear-gradient(
+        0deg,
+        rgba(0, 93, 141, 0.05),
+        rgba(0, 93, 141, 0.05)
+      ),
+      #fafafb !important;
   }
 
   .balance-card {
@@ -152,7 +157,7 @@ page-wallet-details {
       }
 
       &--large {
-        background: #FAFAFB !important;
+        background: #fafafb !important;
         --inner-padding-end: 0;
         padding: 1rem 1rem 0 1rem;
         height: auto !important;
@@ -164,9 +169,11 @@ page-wallet-details {
           justify-content: center;
           align-items: flex-start;
           text-transform: none !important;
-          font-size: 20px !important;
-          color: #001E2E;
           font-weight: 600;
+          span {
+            font-size: 20px !important;
+            color: #001e2e;
+          }
           .label-multisign {
             text-transform: none;
             color: rgba(0, 30, 46, 0.6);
@@ -189,10 +196,10 @@ page-wallet-details {
           font-size: 14px;
         }
 
-        .detail-btn{
+        .detail-btn {
           --padding-end: 0;
           margin-right: 0;
-          ion-icon{
+          ion-icon {
             width: 14.5px;
             height: 12px;
           }
@@ -201,14 +208,12 @@ page-wallet-details {
         .item-tx-history {
           width: 100%;
           display: flex;
-          border-bottom: 1px solid #e4e7e9;
           padding-bottom: 1rem;
           justify-content: space-between;
-          .custom-left-part{
+          .custom-left-part {
             display: flex;
           }
         }
-
       }
 
       ion-label {
@@ -216,7 +221,6 @@ page-wallet-details {
         justify-content: space-between;
         align-items: center;
       }
-
     }
 
     .txps-badge {
@@ -263,7 +267,6 @@ page-wallet-details {
         white-space: break-spaces;
         text-overflow: ellipsis;
         overflow: hidden;
-    
       }
     }
 
@@ -273,7 +276,7 @@ page-wallet-details {
       color: var(--ion-color-dark);
 
       .received {
-        color: #37A372;
+        color: #37a372;
       }
 
       .sent {
@@ -281,7 +284,7 @@ page-wallet-details {
       }
 
       .immature {
-        color:#CCC1E9;
+        color: #ccc1e9;
       }
 
       .pending {
@@ -301,7 +304,7 @@ page-wallet-details {
       .item .item-inner {
         padding: 0 10px 0 0;
       }
-      ion-note{
+      ion-note {
         padding-top: 0;
       }
 
@@ -335,8 +338,8 @@ page-wallet-details {
   }
 
   .locked-balance {
-    background: #FAFAFB;
-    --background: #FAFAFB;
+    background: #fafafb;
+    --background: #fafafb;
     --padding-top: 0 !important;
     --padding-bottom: 0 !important;
     --inner-padding-bottom: 0 !important;
@@ -360,7 +363,7 @@ page-wallet-details {
           color: rgba(0, 30, 46, 0.38);
           letter-spacing: 0.4px;
         }
-        .total-alt-locked-amount{
+        .total-alt-locked-amount {
           font-size: 13px;
           color: rgba(0, 30, 46, 0.38);
           letter-spacing: 0.4px;
@@ -387,7 +390,12 @@ page-wallet-details {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    background: linear-gradient(0deg, rgba(0, 93, 141, 0.05), rgba(0, 93, 141, 0.05)), #FAFAFB;
+    background: linear-gradient(
+        0deg,
+        rgba(0, 93, 141, 0.05),
+        rgba(0, 93, 141, 0.05)
+      ),
+      #fafafb;
     box-shadow: 0px 0px 14px rgb(0 0 0 / 2%), 0px -4px 20px rgb(0 0 0 / 10%);
     border-radius: 24px 24px 0px 0px;
   }
@@ -416,7 +424,7 @@ page-wallet-details {
 
   .donate-card {
     &::before {
-      content: " ";
+      content: ' ';
       position: absolute;
       background-image: url(../../../assets/img/bg-donate-card.svg);
       background-size: cover;
@@ -434,7 +442,7 @@ page-wallet-details {
     }
     margin: 1rem;
     position: relative;
-    
+
     .donate-title {
       position: relative;
       font-size: 14px;
@@ -447,7 +455,7 @@ page-wallet-details {
         margin-right: 1rem;
       }
       span {
-        color: #E0E4E6;
+        color: #e0e4e6;
       }
     }
     .donate-info {
@@ -485,7 +493,12 @@ page-wallet-details {
       margin-top: 0;
       font-size: 12px;
       padding: 3px;
-      background: linear-gradient(0deg, rgba(0, 101, 141, 0.08), rgba(0, 101, 141, 0.08)), #FAFAFB;
+      background: linear-gradient(
+          0deg,
+          rgba(0, 101, 141, 0.08),
+          rgba(0, 101, 141, 0.08)
+        ),
+        #fafafb;
       text-align: center;
       border-radius: 5px;
     }

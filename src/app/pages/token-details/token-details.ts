@@ -9,7 +9,6 @@ import { Subscription } from "rxjs";
 import { Token } from "src/app/models/tokens/tokens.model";
 import { AddressBookProvider, LoadingProvider } from "src/app/providers";
 import { ActionSheetProvider } from "src/app/providers/action-sheet/action-sheet";
-import { AddressProvider } from "src/app/providers/address/address";
 import { AppProvider } from "src/app/providers/app/app";
 import { BwcErrorProvider } from "src/app/providers/bwc-error/bwc-error";
 import { ErrorsProvider } from "src/app/providers/errors/errors";
@@ -162,6 +161,7 @@ export class TokenDetailsPage {
       const utxoToken = _.filter(utxos, item => item.tokenId == this.token.tokenId && !item.isNonSLP);
       this.token.utxoToken = utxoToken;
       this.token.amountToken = this.caculateAmountToken(utxoToken, this.token.tokenInfo.decimals);
+      this.token.alternativeBalance = this.tokenProvider.getAlternativeBalanceToken(this.token, this.wallet);
       this.amountToken = `${this.token.amountToken} ${this.token.tokenInfo.symbol}`
     }).catch(err => {
       this.logger.error(err);

@@ -1,9 +1,7 @@
 import { Component, NgZone } from '@angular/core';
-import { NavController, Platform } from '@ionic/angular';
+import { Platform } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
-import { ActionSheetProvider } from '../providers/action-sheet/action-sheet';
-import { AnalyticsProvider } from '../providers/analytics/analytics';
 import { AppProvider } from '../providers/app/app';
 import { BwcErrorProvider } from '../providers/bwc-error/bwc-error';
 import { ClipboardProvider } from '../providers/clipboard/clipboard';
@@ -16,6 +14,7 @@ import { RateProvider } from '../providers/rate/rate';
 import { ThemeProvider } from '../providers/theme/theme';
 import { WalletProvider } from '../providers/wallet/wallet';
 import * as _ from 'lodash';
+import { TokenProvider } from '../providers/token-sevice/token-sevice';
 @Component({
   selector: 'app-tabs',
   templateUrl: 'tabs.page.html',
@@ -51,11 +50,9 @@ export class TabsPage {
     private bwcErrorProvider: BwcErrorProvider,
     private rateProvider: RateProvider,
     private platformProvider: PlatformProvider,
-    private actionSheetProvider: ActionSheetProvider,
-    private navCtrl: NavController,
-    private analyticsProvider: AnalyticsProvider,
     private themeProvider: ThemeProvider,
-    private clipboardProvider: ClipboardProvider
+    private clipboardProvider: ClipboardProvider,
+    private tokenProvider: TokenProvider
   ) {
     this.persistenceProvider.getNetwork().then((network: string) => {
       if (network) {
@@ -75,7 +72,7 @@ export class TabsPage {
     if (this.platformProvider.isElectron) {
       this.updateDesktopOnFocus();
     }
-    
+
     this.persistenceProvider.getCardExperimentFlag().then(status => {
       if (status === 'enabled') {
         this.persistenceProvider
@@ -86,7 +83,7 @@ export class TabsPage {
           });
       }
     });
-    
+
   }
 
   setCurrentTab(event) {
@@ -102,7 +99,7 @@ export class TabsPage {
   }
 
   private subscribeEvents() {
-    
+
     this.events.subscribe('experimentUpdateStart', () => {
       this.tabs.select(2);
     });
@@ -290,7 +287,7 @@ export class TabsPage {
 
   private fetchAllWalletsStatus = _.debounce(
     async () => {
-      this._fetchAllWallets();
+      await this._fetchAllWallets();
     },
     5000,
     {
@@ -298,7 +295,16 @@ export class TabsPage {
     }
   );
 
-  private _fetchAllWallets() {
+
+  private async loadToken(wallets) {
+    for (const i in wallets) {
+      const wallet = wallets[i];
+      await this.tokenProvider.loadTokenWallet(wallet);
+    }
+    return wallets;
+  }
+
+  private async _fetchAllWallets() {
     let hasConnectionError: boolean = false;
 
     this.profileProvider.setLastKnownBalance();
@@ -356,8 +362,9 @@ export class TabsPage {
       promises.push(pr(wallet));
     });
 
-    Promise.all(promises).then(() => {
+    Promise.all(promises).then(async () => {
       if (!hasConnectionError) {
+        wallets = await this.loadToken(wallets);
         this.updateTotalBalance(wallets);
       }
       this.updateTxps();

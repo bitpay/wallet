@@ -277,6 +277,10 @@
 
     // Material input custom
     // --------------------------------------------------
+    .mat-form-field-appearance-outline.mat-focused .placeholder {
+        color: rgba(237, 239, 240, 0.38) !important;
+    }
+
     .mat-form-field-appearance-outline {
         .mat-form-field-outline {
             color: rgba(237, 239, 240, 0.38) !important;
@@ -1784,7 +1788,9 @@
                 ion-label {
                     color: rgba(224, 228, 230, 0.6) !important;
                     &.tx-history-header-label {
-                        color: #EDEFF0 !important;
+                        span{
+                            color: #EDEFF0 !important;
+                        }
                         .label-multisign {
                             color: var(--text-grey)
                         }
@@ -2231,13 +2237,6 @@
         }
     }
 
-    page-join-wallet {
-        ion-item {
-            --background: var(--bg-color-dark-theme);
-            --color: var(--text-color-dark-theme-2) !important;
-        }
-    }
-
     page-addressbook-add {
         .add-address-book-container {
             .slide-title {
@@ -2470,6 +2469,10 @@
     page-create-wallet,
     page-create-eth-multisig,
     page-join-wallet {
+        .line-divider{
+            border-color: #2B4552 !important;
+        }
+
         .linked-wallet {
             color: var(--text-color-dark-theme) !important;
             background-color: var(--bg-color-dark-theme);
@@ -2480,6 +2483,30 @@
             --highlight-color-focused: rgba(224, 228, 230, 0.6);
             --highlight-color-valid	: rgba(224, 228, 230, 0.6);
             --highlight-color-invalid: rgba(224, 228, 230, 0.6);
+        }
+        .wallet-info-container {
+            background: linear-gradient(0deg, rgba(126, 208, 255, 0.11), rgba(126, 208, 255, 0.11)), #001E2E;
+        }
+        .advance-button{
+            --background: linear-gradient(0deg, rgba(126, 208, 255, 0.11), rgba(126, 208, 255, 0.11)), #001E2E;
+            color: #EDEFF0;
+        }
+        .show-advance-option {
+            background: linear-gradient(0deg, rgba(126, 208, 255, 0.11), rgba(126, 208, 255, 0.11)), #001E2E;
+            ion-item{
+                --border-color: #2B4552;
+            }
+        }
+        .custom-item{
+            .label{
+                color: rgba(224, 228, 230, 0.6);
+            }
+        }
+        .option-line-info{
+            color: rgba(224, 228, 230, 0.6) !important;
+            a{
+                color: #7ED0FF !important;
+            }
         }
     }
 
