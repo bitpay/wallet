@@ -4,9 +4,7 @@ import { Subject } from 'rxjs';
 
 import { AddressBookProvider, Contact } from 'src/app/providers/address-book/address-book';
 import { Router } from '@angular/router';
-import { Location } from '@angular/common';
-import { ActionSheetProvider } from 'src/app/providers';
-import { LoadingController } from '@ionic/angular';
+import { ActionSheetProvider, AppProvider, LoadingProvider } from 'src/app/providers';
 
 @Component({
   selector: 'page-addressbook',
@@ -19,15 +17,17 @@ export class AddressbookPage {
   public filteredAddressbook: Subject<any>;
   public addressBookSortAlpha: any = [];
   private navParamsData: any;
+  public currentTheme: any;
 
   public isEmptyList: boolean;
   public migratingContacts: boolean;
   wideHeaderPage;
   constructor(
+    private appProvider: AppProvider,
     private actionSheetProvider: ActionSheetProvider,
     public router: Router,
     private addressbookProvider: AddressBookProvider,
-    private loadingCtr: LoadingController
+    private loadingCtr: LoadingProvider
   ) {
     if (this.router.getCurrentNavigation()) {
       this.navParamsData = this.router.getCurrentNavigation().extras.state ? this.router.getCurrentNavigation().extras.state : {};
@@ -36,22 +36,16 @@ export class AddressbookPage {
     }
     this.addressbook = [];
     this.filteredAddressbook = new Subject<[]>();
+    this.currentTheme = this.appProvider.themeProvider.currentAppTheme;
   }
 
   ionViewWillEnter() {
-    const loading = this.loadingCtr.create({
-      message: 'Please wait...'
-    })
-    loading.then(loadingEl => loadingEl.present());
+    this.loadingCtr.autoLoader();
     this.migratingContacts = false;
     this.addressbookProvider.migratingContactsSubject.subscribe(_migrating => {
       this.migratingContacts = _migrating;
     });
-    this.initAddressbook().then(() => {
-      setTimeout(() => {
-        loading.then(loadingEl => loadingEl.dismiss());
-      },300)
-    })
+    this.initAddressbook();
   }
 
   sortAddressBookAlpha() {

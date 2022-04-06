@@ -32,7 +32,7 @@ import { AppProvider, ExternalLinkProvider } from 'src/app/providers';
 @Component({
   selector: 'page-join-wallet',
   templateUrl: 'join-wallet.html',
-  styleUrls: ['./join-wallet.scss'],
+  styleUrls: ['join-wallet.scss'],
   encapsulation: ViewEncapsulation.None
 })
 export class JoinWalletPage {
@@ -372,6 +372,7 @@ export class JoinWalletPage {
         this.onGoingProcessProvider.clear();
         this.walletProvider.updateRemotePreferences(wallet);
         this.pushNotificationsProvider.updateSubscription(wallet);
+        this.events.publish('Local/GetData', true);
         if (!opts['setSeed'] && !this.keyId) {
           this.router.navigate(['/recovery-key'], {
             state: {

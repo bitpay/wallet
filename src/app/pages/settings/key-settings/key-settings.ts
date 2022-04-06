@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
 import * as _ from 'lodash';
-import { ActionSheetProvider, EventManagerService, PersistenceProvider } from 'src/app/providers';
+import { ActionSheetProvider, EventManagerService, LoadingProvider, PersistenceProvider } from 'src/app/providers';
 
 // providers
 import { AppProvider } from '../../../providers/app/app';
@@ -69,7 +69,8 @@ export class KeySettingsPage {
     private platformProvider: PlatformProvider,
     private logsProvider: LogsProvider,
     private appProvider: AppProvider,
-    private configProvider: ConfigProvider
+    private configProvider: ConfigProvider,
+    private loadingProvider: LoadingProvider
   ) {
     if (this.router.getCurrentNavigation()) {
        this.navParamsData = this.router.getCurrentNavigation().extras.state ? this.router.getCurrentNavigation().extras.state : {};
@@ -81,6 +82,7 @@ export class KeySettingsPage {
   }
 
   ionViewWillEnter() {
+    this.loadingProvider.autoLoader();
     this.walletsGroup = this.profileProvider.getWalletGroup(this.keyId);
     this.wallets = this.profileProvider.getWalletsFromGroup({
       keyId: this.keyId,

@@ -11,7 +11,7 @@ import env from '../../../environments';
 import { DecimalFormatBalance } from '../../providers/decimal-format.ts/decimal-format';
 import { ErrorsProvider } from '../../providers/errors/errors';
 import { ExternalLinkProvider } from '../../providers/external-link/external-link';
-import { ActionSheetProvider, AddressBookProvider, AnalyticsProvider, AppProvider, BwcErrorProvider, ConfigProvider, CurrencyProvider, EventManagerService } from '../../providers/index';
+import { ActionSheetProvider, AddressBookProvider, AnalyticsProvider, AppProvider, BwcErrorProvider, ConfigProvider, CurrencyProvider, EventManagerService, LoadingProvider } from '../../providers/index';
 import { Logger } from '../../providers/logger/logger';
 import { PlatformProvider } from '../../providers/platform/platform';
 import { ProfileProvider } from '../../providers/profile/profile';
@@ -22,8 +22,8 @@ import { WalletProvider } from '../../providers/wallet/wallet';
 import { TxDetailsModal } from '../../pages/tx-details/tx-details';
 import { SearchTxModalPage } from './search-tx-modal/search-tx-modal';
 import { WalletBalanceModal } from './wallet-balance/wallet-balance';
-import { ModalController, NavParams, Platform, ToastController } from '@ionic/angular';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ModalController, Platform, ToastController } from '@ionic/angular';
+import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { NgxQrcodeErrorCorrectionLevels } from '@techiediaries/ngx-qrcode';
 
@@ -87,9 +87,8 @@ export class WalletDetailsPage {
   constructor(
     public http: HttpClient,
     private currencyProvider: CurrencyProvider,
-    private navParams: NavParams,
+    private loadingProvider: LoadingProvider,
     private router: Router,
-    private route: ActivatedRoute,
     private walletProvider: WalletProvider,
     private addressbookProvider: AddressBookProvider,
     private events: EventManagerService,
@@ -219,6 +218,7 @@ export class WalletDetailsPage {
   }
 
   ionViewWillEnter() {
+    this.loadingProvider.autoLoader();
     this.hiddenBalance = this.wallet.balanceHidden;
     this.backgroundColor = this.themeProvider.getThemeInfo().walletDetailsBackgroundStart;
     this.onResumeSubscription = this.platform.resume.subscribe(() => {
