@@ -1,7 +1,8 @@
 page-join-wallet {
   .line-divider {
     margin: 0 !important;
-    border: 0.5px solid #dae0e5;
+    border: none !important;
+    border-bottom: 0.5px solid #dae0e5 !important;
   }
   .mat-form-field {
     padding: unset !important;
@@ -79,6 +80,7 @@ page-join-wallet {
   }
   .erase-icon {
     padding-bottom: 3px;
+    padding-left: 5px;
   }
 
   .check {

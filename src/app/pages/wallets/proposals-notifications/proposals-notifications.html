@@ -7,7 +7,7 @@
         </ion-item-divider>
         <ng-container *ngFor="let txpsByWallet of txpsByStatus.data; let i = index">
           <div *ngIf="txpsByWallet.walletId && txpsByWallet.txps && txpsByWallet.txps[0] && txpsByWallet.txps[0].wallet" class="wallet-card-content-container" >
-            <ion-item lines="none" class="recipient">
+            <ion-item class="recipient">
               <ion-icon class="item-img wallet icon-wallet" [ngClass]="{ testnet: txpsByWallet.txps[0].wallet.network === 'testnet' }" src="assets/img/currencies/{{txpsByWallet.txps[0].wallet.coin}}.svg" slot="start">
               </ion-icon>
               <ion-label>

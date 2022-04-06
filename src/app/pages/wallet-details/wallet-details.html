@@ -112,7 +112,7 @@
           </span>
         </ion-label>
       </ion-item-divider>
-      <ion-item-divider class="tx-history-header tx-history-header--large">
+      <ion-item-divider class="tx-history-header tx-history-header--large" (click)="openProposalsNotificationsPage()">
         <div class="item-tx-history">
           <div class="custom-left-part">
             <ion-label slot="start" class="tx-history-header-label">
@@ -123,7 +123,7 @@
               {{txps.length}}
             </ion-badge>
           </div>
-          <ion-button class="detail-btn" fill="clear" slot="end" (click)="openProposalsNotificationsPage()">
+          <ion-button class="detail-btn" fill="clear" slot="end">
             <ion-icon slot="icon-only" src="assets/img/chevron-right-{{currentTheme}}.svg"></ion-icon>
           </ion-button>
         </div>

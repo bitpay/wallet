@@ -1,7 +1,8 @@
 page-create-wallet {
   .line-divider {
     margin: 0 !important;
-    border: 0.5px solid #dae0e5;
+    border: none !important;
+    border-bottom: 0.5px solid #dae0e5 !important;
   }
   mat-form-field {
     padding: unset !important;
@@ -14,7 +15,7 @@ page-create-wallet {
     margin-bottom: 120px;
     .wallet-info-container {
       background: #fafafb;
-      padding: 23px 1rem 8px 1rem;
+      padding: 23px 1rem 1rem 1rem;
       border-radius: 12px;
       .your-name-mat-form-field {
         margin-top: 43px;

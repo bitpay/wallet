@@ -1772,7 +1772,9 @@
                 ion-label {
                     color: rgba(224, 228, 230, 0.6) !important;
                     &.tx-history-header-label {
-                        color: #EDEFF0 !important;
+                        span{
+                            color: #EDEFF0 !important;
+                        }
                         .label-multisign {
                             color: var(--text-grey)
                         }

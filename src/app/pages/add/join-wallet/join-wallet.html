@@ -44,8 +44,6 @@
           *ngIf="joinForm.value.invitationCode && joinForm.value.invitationCode.length > 0" slot="end"
           class="erase-icon" (click)="cleanSearch()">
         </ion-icon>
-        <ion-icon matSuffix *ngIf="joinForm.controls['invitationCode'].status == 'VALID'" name="checkmark-circle"
-          class="icon-custom check success" slot="end"></ion-icon>
         <ion-icon matSuffix *ngIf="isCordova" class="scanner-icon"
           src="assets/img/recipient-component/qr-{{currentTheme}}.svg" slot="end" (click)="openScanner()">
         </ion-icon>
