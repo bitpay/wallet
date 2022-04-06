@@ -1,6 +1,7 @@
 page-create-wallet {
   .line-divider {
     margin: 0 !important;
+    border: 0.5px solid #dae0e5;
   }
   mat-form-field {
     padding: unset !important;
@@ -121,41 +122,6 @@ page-create-wallet {
     }
   }
 
-  // .advance-button{
-  //   width: 100%;
-  //   --background:linear-gradient(0deg, rgba(126, 208, 255, 0.11), rgba(126, 208, 255, 0.11)), #001E2E;
-  //   margin: 0px;
-  //   margin-top: 32px;
-  //   --border-radius: 8px;
-  //   --padding-top: 16px;
-  //     --padding-bottom: 16px;
-  //     --padding-start: 16px;
-  //     span{
-  //       text-align:left;
-  //       width:100%;
-  //       font-size: 16px;
-  //       font-weight: 400;
-  //     }
-  //     ion-icon{
-  //       width: 12px;
-  //     }
-  // }
-
-  // .open-advance{
-  //   --border-radius: 8px 8px 0px 0px;
-  // }
-
-  // .show-advance-option{
-  //   padding: 0px 16px;
-  //   padding-bottom: 23px;
-  //   background: linear-gradient(0deg, rgba(126, 208, 255, 0.11), rgba(126, 208, 255, 0.11)), #001E2E;
-  //   border-radius: 0px 0px 8px 8px;
-
-  //   ion-item{
-  //     padding-top: 23px;
-  //   }
-  // }
-
   .option-container {
     &::part(native) {
       flex-flow: column;
@@ -166,6 +132,7 @@ page-create-wallet {
       display: flex;
       flex-flow: row;
       justify-content: space-between;
+      align-items: center;
       p {
         font-size: 16px;
         margin: 0px;
@@ -205,12 +172,7 @@ page-create-wallet {
       align-self: flex-start;
       margin-top: 6px;
     }
-    // .icon-img-container{
-    //   display: flex;
-    //   flex-flow: column;
-    //   justify-content: flex-start;
-    //   font-size: 14px;
-    // }
+
     .notification-content {
       margin-left: 10px;
     }

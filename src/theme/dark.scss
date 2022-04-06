@@ -2445,6 +2445,10 @@
     page-create-wallet,
     page-create-eth-multisig,
     page-join-wallet {
+        .line-divider{
+            border-color: #2B4552 !important;
+        }
+
         .linked-wallet {
             color: var(--text-color-dark-theme) !important;
             background-color: var(--bg-color-dark-theme);
