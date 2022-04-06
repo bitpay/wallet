@@ -7,8 +7,8 @@
     <div class="secondary-label">
       {{wallet?.coin | uppercase}}
       <ng-container *ngIf="wallet?.credentials?.n > 1 || (!wallet?.credentials?.n && wallet?.n > 1) || !wallet?.isComplete() || (wallet?.isComplete() && wallet?.needsBackup)" class="secondary-label">
-        <span class="secondary-label-multisign" *ngIf="wallet?.credentials?.n > 1">Multisign {{ wallet?.credentials?.m }}-{{ wallet?.credentials?.n }}</span>
-        <span class="secondary-label-multisign" *ngIf="!wallet?.credentials?.n && wallet?.n > 1">Multisign {{ wallet?.m }}-{{ wallet?.n }}</span>
+        <span class="secondary-label-multisign" *ngIf="wallet?.credentials?.n > 1">Multisig {{ wallet?.credentials?.m }}-{{ wallet?.credentials?.n }}</span>
+        <span class="secondary-label-multisign" *ngIf="!wallet?.credentials?.n && wallet?.n > 1">Multisig {{ wallet?.m }}-{{ wallet?.n }}</span>
       </ng-container>
     </div>
     

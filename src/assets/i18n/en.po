@@ -2287,8 +2287,8 @@ msgstr "Multiple recipients ({recipientsCount})"
 msgid "Multisig contract address not found."
 msgstr "Multisig contract address not found."
 
-msgid "Multisign {m} - {n}"
-msgstr "Multisign {m} - {n}"
+msgid "Multisig {m} - {n}"
+msgstr "Multisig {m} - {n}"
 
 msgid "Name"
 msgstr "Name"

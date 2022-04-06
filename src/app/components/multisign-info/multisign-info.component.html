@@ -1,7 +1,7 @@
 <action-sheet>
   <div class="container-multisign-info">
-    <h2 class="title">{{ 'Multisign {m} - {n}' | translate: {m: wallet.m , n: wallet.n} }}</h2>
-    <p class="sub-title">{{'This account requires {m} copayers to sign a transaction (out of {n} copayers total).' |
+    <h2 class="title">{{ 'Multisig {m} - {n}' | translate: {m: wallet.m , n: wallet.n} }}</h2>
+    <p class="sub-title">{{'This account requires {m} copayers to sign a transaction (out of {n} copayers in total).' |
       translate :{m: wallet.m , n: wallet.n} }}</p>
     <div class="action-btn">
       <ion-button fill="clear" (click)="dismiss()">
