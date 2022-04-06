@@ -80,7 +80,7 @@
 
     // 1.4 - Borders
     --border-color-dark-theme: #6B858F;
-    --border-color-dark-theme-2: rgba(76, 76, 76, 0.3);
+    --border-color-dark-theme-2: #2B4451;
 
     // 1.5 - Slides
     --swiper-pagination-bullet-active-dark: #434c5a;
@@ -170,15 +170,19 @@
             --background-activated: var(--color-primary-abcpay-dark);
             --background: var(--color-primary-abcpay-dark);
             --color: var(--color-on-primary-abcpay-dark);
+            &.button-disabled {
+                --background: linear-gradient(0deg, rgba(237, 239, 240, 0.12), rgba(237, 239, 240, 0.12)), #0E3245 !important;
+                --color: rgba(224, 228, 230, 0.38) !important;
+            }
         }
         &[fill="clear"] {
-            --background: transparent !important;
-            --background-activated: transparent;
-            --color: var(--text-color-dark-theme) !important;
-        }
-        &.button-disabled {
-            --background: linear-gradient(0deg, rgba(237, 239, 240, 0.12), rgba(237, 239, 240, 0.12)), #0E3245 !important;
-            --color: rgba(224, 228, 230, 0.38);
+            --background-activated: none;
+            --background: none;
+            --color: var(--color-primary-abcpay-dark) !important;
+            &.button-disabled {
+                --background: none !important;
+                --color: rgba(224, 228, 230, 0.38);
+            }
         }
     }
 
@@ -340,6 +344,17 @@
 
     .mat-form-field.error-form-field.mat-focused .mat-form-field-label {
         color: #FFB4A9 !important;
+    }
+
+    mat-hint {
+        color: rgba(237, 239, 240, 0.6);
+    }
+
+    .mat-input-element {
+        color: #EDEFF0;
+        &::placeholder {
+            color: rgba(237, 239, 240, 0.38) !important;
+        }
     }
 
     .swiper-pagination-bullet-active {
@@ -1161,7 +1176,7 @@
     miner-fee-warning {
         action-sheet {
             .action-sheet-bottom {
-                background: linear-gradient(0deg, rgba(126, 208, 255, 0.11), rgba(126, 208, 255, 0.11)), #001E2E !important;
+                background: #001E2E !important;
 
                 .encrypt-password,
                 .miner-fee {
@@ -1227,6 +1242,7 @@
                 }
 
                 .encrypt-password-small {
+                    background: linear-gradient(0deg, rgba(126, 208, 255, 0.11), rgba(126, 208, 255, 0.11)), #001E2E !important;
                     .slide-title {
                         h3 {
                             color: var(--bg-surface-color-abcpay-dark) !important;
@@ -1778,6 +1794,9 @@
                         .label-multisign {
                             color: var(--text-grey)
                         }
+                    }
+                    .ng-star-inserted {
+                        color: rgba(224, 228, 230, 0.6) !important;
                     }
                 }
             }
@@ -2407,11 +2426,14 @@
     page-create-eth-multisig,
     page-bitpay-phase-one-card-intro {
         ion-item {
-            --background: var(--bg-color-dark-theme-8);
+            --background: var(--bg-color-dark-theme-8) !important;
             color: var(--text-color-dark-theme) !important;
             --highlight-color-focused: rgba(224, 228, 230, 0.6);
             --highlight-color-valid	: rgba(224, 228, 230, 0.6);
             --highlight-color-invalid: rgba(224, 228, 230, 0.6);
+            ion-label {
+                color: var(--text-color-dark-theme) !important;
+            }
         }
         ion-segment-button {
             &::part(native) {
@@ -2430,8 +2452,8 @@
                 background: linear-gradient(0deg, rgba(126, 208, 255, 0.11), rgba(126, 208, 255, 0.11)), #001E2E;
                 ion-item{
                     border-color: rgba(237, 239, 240, 0.38);
-                    ion-label{
-                        color: rgba(237, 239, 240, 0.6);
+                    ion-label {
+                        color: var(--text-color-dark-theme) !important;
                     }
                 }
             }

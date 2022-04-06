@@ -87,8 +87,6 @@
   }
 
   ion-item {
-    border: 0;
-
     &.ios::part(detail-icon) {
       background: url(../assets/img/chevron_right.svg) no-repeat !important;
       font-size: 22px;
@@ -198,6 +196,10 @@
 }
 
 .bp-list.settings-list {
+  margin-bottom: 3rem;
+  &.ios {
+    margin-bottom: 7rem;
+  }
   ion-item{
     --padding-start: 1rem !important;
     --padding-end: 0 !important;

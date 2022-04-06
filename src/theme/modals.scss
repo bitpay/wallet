@@ -28,6 +28,12 @@
 
       }
     }
+
+    &.md {
+      &::part(content) {
+        height: 70% !important;
+      }
+    }
   
     ion-backdrop {
       visibility: visible !important;

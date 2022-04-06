@@ -45,6 +45,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
+import { A11yModule } from '@angular/cdk/a11y';
 
 export function translateParserFactory() {
   return new InterpolatedTranslateParser();
@@ -105,6 +106,7 @@ export class MyMissingTranslationHandler implements MissingTranslationHandler {
         MomentModule,
         BrowserModule,
         FormsModule,
+        A11yModule,
         ReactiveFormsModule,
         NgxBarcodeModule,
         NgxQRCodeModule,
