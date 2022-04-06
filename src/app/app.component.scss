@@ -88,6 +88,14 @@ ion-content.add-padding-bottom,
     }
 }
 
+ion-content {
+    &.ios {
+      .wrapper {
+        padding-bottom: 5rem;
+      }
+    }
+}
+
 ion-title.bp-title {
     font-weight: 700 !important;
 }
@@ -359,6 +367,13 @@ ion-header ion-toolbar {
 
 .mat-form-field.error-form-field.mat-focused .mat-form-field-label {
     color: #BA1B1B !important;
+}
+
+.mat-input-element,
+    ::placeholder {
+    font-size: 16px;
+    line-height: 24px;
+    letter-spacing: 0.5px;
 }
 
 // Buttons
@@ -1319,7 +1334,7 @@ ion-icon {
 
 .line-divider {
     box-sizing: border-box;
-    border: 0.5px solid rgba(155, 163, 174, 0.1);
+    border: 1px solid rgba(155, 163, 174, 0.1);
     margin: 0px 25px;
 }
 

@@ -2096,6 +2096,11 @@ export class ProfileProvider {
             return this.addAndBindWalletClient(data.walletClient, {
               bwsurl: opts.bwsurl
             }).then(walletClient => {
+              this.keyChange = {
+                isStatus: true,
+                isDelete: false,
+                keyId: opts.keyId
+              }
               return Promise.resolve(walletClient);
             });
           });
@@ -2309,6 +2314,11 @@ export class ProfileProvider {
       this.wallet[walletId].hidden
     );
     this.setOrderedWalletsByGroup(); // Update Ordered Wallet List
+    this.keyChange = {
+      isStatus: true,
+      isDelete: false,
+      keyId: this.wallet[walletId].keyId
+    }
   }
 
   public getTxps(opts): Promise<any> {

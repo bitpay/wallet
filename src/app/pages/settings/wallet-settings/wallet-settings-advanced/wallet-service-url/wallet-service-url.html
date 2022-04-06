@@ -10,7 +10,7 @@
           <input matInput type="text" formControlName="bwsurl" [value]="walletServiceForm.value.bwsurl" [placeholder]="'Wallet Service URL'" translate>
         </mat-form-field>
         <div class="group-btn">
-          <ion-button class="button-standard" (click)="resetDefaultUrl()" [disabled]="!walletServiceForm.valid">
+          <ion-button fill="clear" class="button-standard" (click)="resetDefaultUrl()" [disabled]="!walletServiceForm.valid">
             {{'Use default url' | translate}}
           </ion-button>
           <ion-button class="button-standard" (click)="save()" [disabled]="!walletServiceForm.valid">

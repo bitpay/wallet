@@ -7,7 +7,7 @@ import _ from "lodash";
 import moment from "moment";
 import { Subscription } from "rxjs";
 import { Token } from "src/app/models/tokens/tokens.model";
-import { AddressBookProvider } from "src/app/providers";
+import { AddressBookProvider, LoadingProvider } from "src/app/providers";
 import { ActionSheetProvider } from "src/app/providers/action-sheet/action-sheet";
 import { AddressProvider } from "src/app/providers/address/address";
 import { AppProvider } from "src/app/providers/app/app";
@@ -76,7 +76,8 @@ export class TokenDetailsPage {
     private actionSheetProvider: ActionSheetProvider,
     private appProvider: AppProvider,
     private addressbookProvider: AddressBookProvider,
-    public toastController: ToastController
+    public toastController: ToastController,
+    private loadingProvider: LoadingProvider
   ) {
     this.currentTheme = this.appProvider.themeProvider.currentAppTheme;
     this.zone = new NgZone({ enableLongStackTrace: false });
@@ -168,6 +169,7 @@ export class TokenDetailsPage {
   }
 
   ionViewWillEnter() {
+    this.loadingProvider.autoLoader();
     this.amountToken = `${this.token.amountToken} ${this.token.tokenInfo.symbol}`;
     this.loadToken();
     // Getting info from cache

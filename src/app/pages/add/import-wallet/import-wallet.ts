@@ -1,4 +1,4 @@
-import { Component, OnChanges, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, OnChanges, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -60,6 +60,8 @@ export class ImportWalletPage {
   public currentTheme: string;
 
   navParamsData;
+
+  @ViewChild('textarea', { static: false }) textarea: ElementRef;
 
   constructor(
     private navCtrl: NavController,
@@ -136,6 +138,12 @@ export class ImportWalletPage {
 
   ngOnDestroy() {
     this.events.unsubscribe('Local/BackupScan', this.updateWordsHandler);
+  }
+
+  ngAfterViewInit(){
+    setTimeout(() => {
+      this.textarea.nativeElement.focus();
+    }, 300);
   }
 
   private setForm(): void {
@@ -285,11 +293,11 @@ export class ImportWalletPage {
         await modal.present();
         modal.onDidDismiss().then(({ data }) => {
           if (data.isConfirm) {
-            this.goToWalletsPage();
+            this.goToHomePage(wallets[0].credentials.keyId);
           }
         });
       } else {
-        this.goToWalletsPage();
+        this.goToHomePage(wallets[0].credentials.keyId);
       }
     });
   }
@@ -312,7 +320,7 @@ export class ImportWalletPage {
       .navigate(['tabs/wallets'])
       .then(() => {
         this.events.publish('Local/FetchWallets');
-        this.events.publish('Local/GetData', true);
+        // this.events.publish('Local/GetData', true);
       });
   }
 
