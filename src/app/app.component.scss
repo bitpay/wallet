@@ -361,6 +361,12 @@ ion-header ion-toolbar {
     color: #BA1B1B !important;
 }
 
+.mat-form-field-prefix,
+.mat-form-field-suffix {
+  display: inline-flex;
+  align-items: center;
+}
+
 // Buttons
 // --------------------------------------------------
 .bottom-absolute {

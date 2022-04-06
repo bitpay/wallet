@@ -32,6 +32,7 @@ import { IonContent, ModalController, NavController, NavParams } from '@ionic/an
 import { EventManagerService } from 'src/app/providers/event-manager.service';
 import { Router } from '@angular/router';
 import { CopayersPage } from '../copayers/copayers';
+import { AppProvider } from 'src/app/providers';
 @Component({
   selector: 'page-create-wallet',
   templateUrl: 'create-wallet.html',
@@ -73,6 +74,7 @@ export class CreateWalletPage implements OnInit {
   public okText: string;
   public cancelText: string;
   public createForm: FormGroup;
+  public currentTheme: string;
 
   public multisigAddresses: string[];
   public invalidAddress: boolean;
@@ -102,6 +104,7 @@ export class CreateWalletPage implements OnInit {
     private persistenceProvider: PersistenceProvider,
     private errorsProvider: ErrorsProvider,
     private router: Router,
+    private appProvider: AppProvider
   ) {
     if (this.router.getCurrentNavigation()) {
       this.navParamsData = this.router.getCurrentNavigation().extras.state ? this.router.getCurrentNavigation().extras.state : {};
@@ -109,6 +112,7 @@ export class CreateWalletPage implements OnInit {
       this.navParamsData = history ? history.state : {};
     }
     if (_.isEmpty(this.navParamsData) && this.navParams && !_.isEmpty(this.navParams.data)) this.navParamsData = this.navParams.data;
+    this.currentTheme = this.appProvider.themeProvider.currentAppTheme;
 
     this.okText = this.translate.instant('Ok');
     this.cancelText = this.translate.instant('Cancel');

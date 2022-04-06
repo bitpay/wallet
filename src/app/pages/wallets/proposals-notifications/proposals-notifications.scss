@@ -1,27 +1,30 @@
 page-proposals-notifications {
-  ion-item-divider{
+  ion-item-divider {
     background: unset;
     border-bottom: unset;
     padding: 1rem 1rem 1rem 1rem;
-    box-shadow: 0px -2px 16px rgb(0 0 0 / 6%), 0px 2px 16px rgb(0 0 0 / 6%), 0px 0px 4px rgb(0 0 0 / 3%);
+    box-shadow: 0px -2px 16px rgb(0 0 0 / 6%), 0px 2px 16px rgb(0 0 0 / 6%),
+      0px 0px 4px rgb(0 0 0 / 3%);
     margin-top: 20px;
   }
-  .recipient{
-    --inner-padding-top: 1rem;
-    .icon-wallet{
-      margin-top: 23px;
+  .recipient {
+    --inner-padding-top: 0;
+    --border-color: #dae0e5;
+    .icon-wallet {
+      margin-top: 16px;
+      margin-bottom: 16px;
     }
   }
-  .wallet-card-container{
+  .wallet-card-container {
     background: var(--bg-color-light-theme);
     margin-bottom: 10px;
-    .wallet-card-content-container{
+    .wallet-card-content-container {
       margin-bottom: 15px;
     }
   }
-  .wallet-name-label{
+  .wallet-name-label {
     font-size: 16px;
-    color: #001E2E;
+    color: #001e2e;
     font-weight: 600;
   }
   .select-all {
