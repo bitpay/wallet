@@ -330,8 +330,17 @@ export class ExchangeCryptoPage {
             _.isArray(promise.data.result) &&
             promise.data.result.length > 0
           ) {
+            const availableChains: string[] = this.currencyProvider.getAvailableChains();
             const supportedCoinsWithFixRateEnabled = promise.data.result
-              .filter(coin => coin.enabled && coin.fixRateEnabled)
+              .filter(
+                coin =>
+                  coin.enabled &&
+                  coin.fixRateEnabled &&
+                  coin.protocol &&
+                  [...availableChains, 'erc20'].includes(
+                    coin.protocol.toLowerCase()
+                  )
+              )
               .map(({ name }) => name);
 
             // TODO: add support to float-rate coins supported by Changelly
