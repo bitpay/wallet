@@ -164,7 +164,7 @@ export class CoinbaseProvider {
         this.credentials.STATE +
         '&scope=' +
         this.credentials.SCOPE +
-        '&meta[send_limit_amount]=1000&meta[send_limit_currency]=USD&meta[send_limit_period]=day';
+        '&meta[send_limit_amount]=10000&meta[send_limit_currency]=USD&meta[send_limit_period]=day';
     }
   }
 
