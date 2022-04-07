@@ -1225,6 +1225,7 @@ export class ConfirmPage {
       } else if (tx.speedUpTx && txp.coin === 'btc') {
         txp.inputs = [];
         txp.inputs.push(tx.speedUpTxInfo.input);
+        txp.fee = tx.speedUpTxInfo.fee;
         txp.excludeUnconfirmedUtxos = true;
       } else if (tx.fromSelectInputs || tx.fromReplaceByFee) {
         txp.inputs = tx.inputs;
