@@ -1,4 +1,10 @@
 <ion-header [translucent]="true" class="wide-header ion-no-border" [ngClass]="{'cordova': platformProvider.isCordova}">
+  <ion-toolbar translucent *ngIf="!this.platformProvider.isCordova || !this.platformProvider.isAndroid">
+    <div class="header-container-desktop">
+      <img class="logo-abcpay" src="../../../assets/img/abcpay-logo.svg" alt="">
+      <img src="../../../assets/img/abcpay-text.svg" alt="">
+    </div>
+  </ion-toolbar>
   <ion-toolbar>
     <ion-buttons *ngIf="!hideBackButton" slot="start">
       <ion-back-button *ngIf="isCustomBack" onclick="event.stopImmediatePropagation(); window.myCustomMethod()" defaultHref="/" icon="chevron-back-outline">

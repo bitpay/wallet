@@ -38,6 +38,30 @@ body {
     /* Chrome, Safari, and Opera */
     -webkit-touch-callout: none;
     /* Disable Android and iOS callouts*/
+    background: url(../assets/img/blending-combination.svg) no-repeat;
+    background-size: cover;
+    background-position: bottom;
+}
+
+// Config UI for desktop
+ion-toolbar {
+    --padding-start: 0;
+    --padding-end: 0;
+    .header-container-desktop {
+        display: flex;
+        justify-content: flex-start;
+        padding: 1rem 0;
+        border-bottom: 1px solid #2B4451;
+        .logo-abcpay {
+          margin-right: 1rem;
+          margin-left: 3rem;
+        }
+    }
+}
+
+.isDesktop {
+    max-width: 576px;
+    margin: auto;
 }
 
 // all content without menu
@@ -63,7 +87,8 @@ ion-button {
 }
 
 ion-back-button {
-    margin: 0.5rem;
+    margin: 0;
+    --padding-start: 0;
 }
 
 ion-segment-button {
@@ -91,7 +116,7 @@ ion-content.add-padding-bottom,
 ion-content {
     &.ios {
       .wrapper {
-        padding-bottom: 5rem;
+        padding-bottom: 2rem;
       }
     }
 }
@@ -1207,12 +1232,13 @@ ion-tabs {
             font-weight: normal;
             opacity: 0.8;
             padding: 0;
-            max-width: 88px;
+            // max-width: 88px;
             --color-selected: #4f6ef7;
 
             &.tab-selected {
                 opacity: 1;
                 margin-bottom: 5px;
+                border-top: 2px solid var(--color-primary);
             }
 
             ion-icon {

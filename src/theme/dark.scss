@@ -250,6 +250,7 @@
 
         ion-tab-button[aria-selected='true'] {
             opacity: 1;
+            border-color: var(--color-primary-abcpay-dark);
         }
 
         ion-tab-button[aria-selected='false'] {
@@ -460,7 +461,7 @@
 
     .search-container {
         --background: var(--bg-color-dark-theme);
-        background-color: var(--bg-color-dark-theme);
+        background: var(--bg-color-dark-theme);
     }
 
     .search-wrapper {

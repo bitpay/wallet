@@ -25,12 +25,19 @@ page-feature-education {
     --offset-bottom: 0px !important;
   }
   .custom-footer{
-   ion-button{
-     opacity: 0;
-   }
+    ion-button{
+      opacity: 0;
+    }
     .show-button{
       ion-button{
         opacity: 1;
+      }
+    }
+    .button-next {
+      width: 22% !important;
+      ion-icon {
+        margin-left: 0.5rem;
+        width: 16px;
       }
     }
   }

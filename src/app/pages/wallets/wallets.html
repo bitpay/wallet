@@ -39,6 +39,12 @@
 
 <div class="ion-page" id="main-content">
   <ion-header *ngIf="!(!walletsGroups || !walletsGroups[0])" [translucent]="true" class="bp-header">
+    <ion-toolbar translucent *ngIf="!this.platformProvider.isCordova || !this.platformProvider.isAndroid">
+      <div class="header-container-desktop">
+        <img class="logo-abcpay" src="../../../assets/img/abcpay-logo.svg" alt="">
+        <img src="../../../assets/img/abcpay-text.svg" alt="">
+      </div>
+    </ion-toolbar>
     <ion-toolbar>
       <ion-buttons slot="start" class="ion-no-margin">
         <ion-button class="key-setting" (click)="openSettingPage()">

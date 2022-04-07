@@ -5,7 +5,7 @@
       <ion-icon [src]="setIconHomeTab(selectedTab)"></ion-icon>
     </ion-tab-button>
 
-    <ion-tab-button tab="scan">
+    <ion-tab-button tab="scan" *ngIf="navigationType === 'scan' && isCordova">
       <div class="scan-container">
         <ion-icon src="assets/img/tab-scan-{{currentTheme}}.svg"></ion-icon>
       </div>

@@ -67,7 +67,7 @@ export class WalletsPage {
     private router: Router,
     private profileProvider: ProfileProvider,
     private walletProvider: WalletProvider,
-    private platformProvider: PlatformProvider,
+    public platformProvider: PlatformProvider,
     private analyticsProvider: AnalyticsProvider,
     private logger: Logger,
     private events: EventManagerService,

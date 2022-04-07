@@ -68,6 +68,10 @@ export class WalletDetailCardComponent implements OnInit {
     }
   );
 
+  public formatTxAmount(amount: any) {
+    return DecimalFormatBalance(amount);
+  }
+
   public getAlternativeBalance() {
     const totalBalanceAlternative =
       this.wallet.cachedStatus &&

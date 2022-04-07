@@ -1,4 +1,5 @@
 import { Component, Input, ViewEncapsulation } from '@angular/core';
+import { DecimalFormatBalance } from 'src/app/providers/decimal-format.ts/decimal-format';
 
 @Component({
   selector: 'balance-to-show',
@@ -23,6 +24,10 @@ export class BalanceToShowComponent {
 
   constructor() {
     this.resize = false;
+  }
+
+  public formatTxAmount(amount: any) {
+    return DecimalFormatBalance(amount);
   }
 
   private processBalance(balance: string) {

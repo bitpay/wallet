@@ -223,10 +223,12 @@ button.bitpay-id-login {
     font-size: 16px;
     letter-spacing: 0.1px;
   }
-  .home-icon {
-    display: flex;
-    justify-content: space-between;
-  }
+}
+
+.home-icon {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 1rem;
 }
 
 .exchange-rate {

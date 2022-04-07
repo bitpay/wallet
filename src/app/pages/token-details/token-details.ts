@@ -7,10 +7,11 @@ import _ from "lodash";
 import moment from "moment";
 import { Subscription } from "rxjs";
 import { Token } from "src/app/models/tokens/tokens.model";
-import { AddressBookProvider, LoadingProvider } from "src/app/providers";
+import { AddressBookProvider, LoadingProvider, PlatformProvider } from "src/app/providers";
 import { ActionSheetProvider } from "src/app/providers/action-sheet/action-sheet";
 import { AppProvider } from "src/app/providers/app/app";
 import { BwcErrorProvider } from "src/app/providers/bwc-error/bwc-error";
+import { DecimalFormatBalance } from "src/app/providers/decimal-format.ts/decimal-format";
 import { ErrorsProvider } from "src/app/providers/errors/errors";
 import { EventManagerService } from "src/app/providers/event-manager.service";
 import { Logger } from "src/app/providers/logger/logger";
@@ -61,6 +62,7 @@ export class TokenDetailsPage {
     public http: HttpClient,
     private router: Router,
     private profileProvider: ProfileProvider,
+    public platformProvider: PlatformProvider,
     private themeProvider: ThemeProvider,
     private modalCtrl: ModalController,
     private translate: TranslateService,
@@ -154,6 +156,10 @@ export class TokenDetailsPage {
 
   public trackByFn(index) {
     return index;
+  }
+
+  public formatTxAmount(amount: any) {
+    return DecimalFormatBalance(amount);
   }
 
   loadToken() {

@@ -60,6 +60,9 @@
   
   .wallet-details-modal {
     transition: opacity 300ms ease;
+    &::part(content) {
+      height: 100%;
+    }
   
     &.scanning {
       opacity: 0;
