@@ -15,6 +15,7 @@ import { WalletProvider } from 'src/app/providers/wallet/wallet';
 import { AnalyticsProvider } from 'src/app/providers/analytics/analytics';
 import { Router } from '@angular/router';
 import { LoadingController } from '@ionic/angular';
+import { PlatformProvider } from 'src/app/providers';
 
 @Component({
   selector: 'price-page',
@@ -46,7 +47,8 @@ export class PricePage {
     private logger: Logger,
     private walletProvider: WalletProvider,
     private analyticsProvider: AnalyticsProvider,
-    private loadingCtr: LoadingController
+    private loadingCtr: LoadingController,
+    public platformProvider: PlatformProvider
   ) {
     this.getCoinDonate();
     if (this.router.getCurrentNavigation()) {

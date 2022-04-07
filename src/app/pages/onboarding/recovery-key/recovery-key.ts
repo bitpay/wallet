@@ -6,7 +6,7 @@ import {
   NavParams,
   Platform
 } from '@ionic/angular';
-import { ProfileProvider, ThemeProvider } from 'src/app/providers';
+import { PlatformProvider, ProfileProvider, ThemeProvider } from 'src/app/providers';
 import { ActionSheetProvider } from 'src/app/providers/action-sheet/action-sheet';
 import { EventManagerService } from 'src/app/providers/event-manager.service';
 import { Logger } from 'src/app/providers/logger/logger';
@@ -35,7 +35,8 @@ export class RecoveryKeyPage {
     private router: Router,
     private modalCtrl: ModalController,
     private themeProvider: ThemeProvider,
-    private profileProvider: ProfileProvider
+    private profileProvider: ProfileProvider,
+    public platformProvider: PlatformProvider
   ) {
     this.themeCurrent = this.themeProvider.currentAppTheme;
     if (this.router.getCurrentNavigation()) {

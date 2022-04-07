@@ -1,4 +1,10 @@
 <ion-header class="bp-header">
+  <ion-toolbar translucent *ngIf="!this.platformProvider.isCordova || !this.platformProvider.isAndroid">
+    <div class="header-container-desktop">
+      <img class="logo-abcpay" src="../../../assets/img/abcpay-logo.svg" alt="">
+      <img src="../../../assets/img/abcpay-text.svg" alt="">
+    </div>
+  </ion-toolbar>
   <ion-toolbar>
     <ion-buttons slot="start">
       <ion-back-button icon="chevron-back-outline" defaultHref="/"></ion-back-button>
@@ -97,7 +103,7 @@
                     [ngClass]="{'received': tx.action == 'received' || tx.action == 'mined' || tx.action == 'immature' , 'sent' : tx.action == 'sent','pending' : tx.confirmations <= 0}">-</span>
                   <span
                     [ngClass]="{'received': tx.action == 'received' || tx.action == 'mined' || tx.action == 'immature', 'sent' : tx.action == 'sent','pending' : tx.confirmations <= 0}">
-                    {{tx.amountToken}} {{tx.symbolToken}}</span>
+                    {{formatTxAmount(tx.amountToken)}} {{tx.symbolToken}}</span>
                 </div>
                 <ng-container *ngIf="tx.action == 'received'">
                   <span *ngIf="tx.inputAddresses && tx.inputAddresses[0]" class="tx-action" >{{'From: {address}' | translate: {address: tx.inputAddresses[0].slice(-8)} }}</span>

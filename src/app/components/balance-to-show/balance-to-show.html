@@ -1,6 +1,6 @@
 <div class="flex" [ngClass]="{'resizeAmountFont': resize}">
   <span class="amount">
-    {{ amount }}
+    {{ formatTxAmount(amount) }}
   </span>
   <span class="unit">
     {{ unit }}

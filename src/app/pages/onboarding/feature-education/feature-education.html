@@ -32,7 +32,12 @@
 </ion-content>
 
 <ion-footer class="ion-no-border custom-footer">
-  <ion-toolbar class="button-group" [ngClass]="{'show-button': slideEnd}">
+  <ion-toolbar class="button-group" [ngClass]="{'show-button': !slideEnd && !isCordova}" *ngIf="!slideEnd && !isCordova">
+    <ion-button class="button-standard button-next" (click)="swiper.swiperRef.slideNext(400)">
+      {{'Next' | translate}} <ion-icon name="chevron-forward-outline"></ion-icon>
+    </ion-button>
+  </ion-toolbar>
+  <ion-toolbar class="button-group" [ngClass]="{'show-button': slideEnd}" *ngIf="slideEnd">
     <ion-button  class="button-standard ion-no-margin-bottom" (click)="goToNextPage('SelectCurrencyPage')">
       {{'Create a new account' | translate}}
     </ion-button>

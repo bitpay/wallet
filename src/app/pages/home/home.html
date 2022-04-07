@@ -1,11 +1,16 @@
 <ion-header [translucent]="true" class="bp-header">
+  <ion-toolbar *ngIf="!this.platformProvider.isCordova || !this.platformProvider.isAndroid">
+    <div class="header-container-desktop">
+      <img class="logo-abcpay" src="../../../assets/img/abcpay-logo.svg" alt="">
+      <img src="../../../assets/img/abcpay-text.svg" alt="">
+    </div>
+  </ion-toolbar>
   <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-back-button></ion-back-button>
-    </ion-buttons>
     <ion-title>
-      <div [reveal-at-scroll-pos]="expandableHeader.headerHeight" [scrollArea]="scrollArea">
+      <div class="home-icon">
+        <img (click)="openSettingPage()" src="assets/img/home-setting-icon-{{currentTheme}}.svg">
         {{ 'Home' | translate }}
+        <img (click)="openProposalsNotificationsPage()"src="assets/img/home-notifications-icon-{{currentTheme}}.svg">
       </div>
     </ion-title>
   </ion-toolbar>
@@ -14,17 +19,6 @@
   <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
-  <expandable-header [scrollArea]="scrollArea" [fadeFactor]="5" [disableFade]="true" #expandableHeader>
-    <ion-toolbar class="wide-header__title" (click)="toggleTestnet()" tappable>
-      <expandable-header-primary>
-        <div class="home-icon">
-          <img (click)="openSettingPage()" src="assets/img/home-setting-icon-{{currentTheme}}.svg">
-          {{ 'Home' | translate }}
-          <img (click)="openProposalsNotificationsPage()"src="assets/img/home-notifications-icon-{{currentTheme}}.svg">
-        </div>
-      </expandable-header-primary>
-    </ion-toolbar>
-  </expandable-header>
 
   <div class="message-background" *ngIf="accessDenied">
     <div class="message-header no-dismissible"></div>

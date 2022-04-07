@@ -63,7 +63,7 @@ export class CopayApp {
   constructor(
     private config: Config,
     private platform: Platform,
-    private platformProvider: PlatformProvider,
+    public platformProvider: PlatformProvider,
     private logger: Logger,
     private appProvider: AppProvider,
     private popupProvider: PopupProvider,
@@ -170,7 +170,7 @@ export class CopayApp {
     this.logger.debug('Setting Cached Total Balance');
     this.appProvider.setTotalBalance();
 
-    if (this.platform.is('cordova')) {
+  if (this.platform.is('cordova')) {
       this.statusBar.show();
 
       // Set User-Agent

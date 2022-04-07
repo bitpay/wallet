@@ -101,7 +101,7 @@ export class HomePage {
     private configProvider: ConfigProvider,
     private events: EventManagerService,
     private releaseProvider: ReleaseProvider,
-    private platformProvider: PlatformProvider,
+    public platformProvider: PlatformProvider,
     private modalCtrl: ModalController,
     private profileProvider: ProfileProvider,
     private actionSheetProvider: ActionSheetProvider,

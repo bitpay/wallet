@@ -84,7 +84,7 @@ export class SettingsPage {
     public profileProvider: ProfileProvider,
     private configProvider: ConfigProvider,
     private logger: Logger,
-    private platformProvider: PlatformProvider,
+    public platformProvider: PlatformProvider,
     private translate: TranslateService,
     private modalCtrl: ModalController,
     private touchid: TouchIdProvider,

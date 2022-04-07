@@ -1,6 +1,6 @@
 import { Component, ComponentRef, NgZone, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AnimationController } from '@ionic/angular';
+import { AnimationController, Platform } from '@ionic/angular';
 import { InfoSheetType } from 'src/app/providers/action-sheet/action-sheet';
 import { AppProvider } from 'src/app/providers/app/app';
 import { DomProvider } from 'src/app/providers/dom/dom';
@@ -25,6 +25,7 @@ export class EncryptPasswordComponent extends ActionSheetParent {
     private fb: FormBuilder,
     private appProvider: AppProvider,
     public animationCtrl: AnimationController,
+    public platform: Platform
   ) {
     super();
     this.zone = new NgZone({ enableLongStackTrace: false });

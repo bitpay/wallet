@@ -18,7 +18,7 @@
             <div (click)="goToMultisignInfo()" *ngIf="wallet?.credentials?.n > 1 || (!wallet?.credentials?.n && wallet?.n > 1) || !wallet?.isComplete() || (wallet?.isComplete() && wallet?.needsBackup)" class="secondary-label">
               <span class="secondary-label-multisign" *ngIf="wallet?.credentials?.n > 1">Multisig {{ wallet?.credentials?.m }}-{{ wallet?.credentials?.n }}</span>
               <span class="secondary-label-multisign" *ngIf="!wallet?.credentials?.n && wallet?.n > 1">Multisig {{ wallet?.m }}-{{ wallet?.n }}</span>
-              <img src="assets/img/wallet-details/wallet-info-{{currentTheme}}.svg">
+              <img src="assets/img/wallet-details/wallet-info-dark.svg">
             </div>
           </div>
         </div>
@@ -71,7 +71,7 @@
             <div (click)="goToMultisignInfo()" *ngIf="wallet?.credentials?.n > 1 || (!wallet?.credentials?.n && wallet?.n > 1) || !wallet?.isComplete() || (wallet?.isComplete() && wallet?.needsBackup)" class="secondary-label">
               <span class="secondary-label-multisign" *ngIf="wallet?.credentials?.n > 1">Multisig {{ wallet?.credentials?.m }}-{{ wallet?.credentials?.n }}</span>
               <span class="secondary-label-multisign" *ngIf="!wallet?.credentials?.n && wallet?.n > 1">Multisig {{ wallet?.m }}-{{ wallet?.n }}</span>
-              <img src="assets/img/wallet-details/wallet-info-{{currentTheme}}.svg">
+              <img src="assets/img/wallet-details/wallet-info-dark.svg">
             </div>
           </div>
         </div>
@@ -89,7 +89,7 @@
           <div *ngIf="wallet?.balanceHidden">******</div>
         </div>
         <div class="balance-alt-str" *ngIf="!wallet?.balanceHidden">
-          ~ {{token.alternativeBalance}} {{wallet?.cachedStatus.alternativeIsoCode}}
+          ~ {{formatTxAmount(token.alternativeBalance)}} {{wallet?.cachedStatus.alternativeIsoCode}}
         </div>
         <div class="balance-alt-str" *ngIf="wallet?.balanceHidden">
           ******

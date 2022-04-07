@@ -101,7 +101,7 @@ export class WalletDetailsPage {
     private platform: Platform,
     private profileProvider: ProfileProvider,
     private viewCtrl: ModalController,
-    private platformProvider: PlatformProvider,
+    public platformProvider: PlatformProvider,
     private socialSharing: SocialSharing,
     private bwcErrorProvider: BwcErrorProvider,
     private errorsProvider: ErrorsProvider,
@@ -905,6 +905,10 @@ export class WalletDetailsPage {
         this.wallet.cachedStatus &&
         this.wallet.cachedStatus.totalBalanceAlternative;
       return DecimalFormatBalance(totalBalanceAlternative);
+  }
+
+  public formatTxAmount(amount: any) {
+    return DecimalFormatBalance(amount);
   }
 
   public async viewOnBlockchain() {
