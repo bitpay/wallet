@@ -189,6 +189,10 @@ export class ConfigProvider {
           isoCode: 'HNL',
           name: 'Honduran Lempira'
         },
+        {
+          isoCode: 'VND',
+          name: 'Vietnamese Dong'
+        },
       ],
       token: {
         xec: {

@@ -1,11 +1,12 @@
 import { Component, Input, ViewEncapsulation } from '@angular/core';
+import { ConfigProvider } from 'src/app/providers';
 import { DecimalFormatBalance } from 'src/app/providers/decimal-format.ts/decimal-format';
 
 @Component({
   selector: 'wallet-item-content',
   templateUrl: 'wallet-item-content.html',
   styleUrls: ['wallet-item-content.scss'],
-  encapsulation : ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None
 })
 export class WalletItemContent {
   @Input()
@@ -25,7 +26,21 @@ export class WalletItemContent {
 
   @Input()
   isShowBalance: any = true;
-  
+
+  public symbolCurrency;
+
+  constructor(private configProvider: ConfigProvider) {
+    let config = this.configProvider.get();
+    const currentCurrency = config.wallet.settings.alternativeIsoCode;
+    switch (currentCurrency) {
+      case 'VND':
+        this.symbolCurrency = '₫';
+        break;
+      default:
+        this.symbolCurrency = '$';
+    }
+  }
+
   getBalance(wallet, currency) {
     const lastKnownBalance = this.getLastKownBalance(wallet, currency);
     const totalBalanceStr =
