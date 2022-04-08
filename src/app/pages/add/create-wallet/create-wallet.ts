@@ -32,7 +32,7 @@ import { IonContent, ModalController, NavController, NavParams } from '@ionic/an
 import { EventManagerService } from 'src/app/providers/event-manager.service';
 import { Router } from '@angular/router';
 import { CopayersPage } from '../copayers/copayers';
-import { AppProvider } from 'src/app/providers';
+import { AppProvider, PlatformProvider } from 'src/app/providers';
 @Component({
   selector: 'page-create-wallet',
   templateUrl: 'create-wallet.html',
@@ -104,7 +104,8 @@ export class CreateWalletPage implements OnInit {
     private persistenceProvider: PersistenceProvider,
     private errorsProvider: ErrorsProvider,
     private router: Router,
-    private appProvider: AppProvider
+    private appProvider: AppProvider,
+    public platformProvider: PlatformProvider
   ) {
     if (this.router.getCurrentNavigation()) {
       this.navParamsData = this.router.getCurrentNavigation().extras.state ? this.router.getCurrentNavigation().extras.state : {};
