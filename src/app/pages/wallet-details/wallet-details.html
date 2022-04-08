@@ -1,5 +1,5 @@
 <ion-header class="bp-header">
-  <ion-toolbar translucent *ngIf="!this.platformProvider.isCordova || !this.platformProvider.isAndroid">
+  <ion-toolbar class="toolbar-desktop" translucent *ngIf="!this.platformProvider.isCordova">
     <div class="header-container-desktop">
       <img class="logo-abcpay" src="../../../assets/img/abcpay-logo.svg" alt="">
       <img src="../../../assets/img/abcpay-text.svg" alt="">
@@ -245,11 +245,11 @@
 
                     <span *ngIf="!tx.isSlpToken"
                       [ngClass]="{'received': tx.action == 'received' || tx.action == 'mined' || tx.action == 'immature', 'sent' : tx.action == 'sent','pending' : tx.confirmations <= 0}">
-                      {{formatTxAmount(tx.amount)}}</span>
+                      {{tx.amount | satToUnit: wallet?.coin}}</span>
 
                     <span *ngIf="tx.isSlpToken"
                       [ngClass]="{'received': tx.action == 'received' || tx.action == 'mined' || tx.action == 'immature', 'sent' : tx.action == 'sent','pending' : tx.confirmations <= 0}">
-                      {{formatTxAmount(tx.amountToken)}} {{tx.symbolToken}}</span>
+                      {{tx.amountToken | satToUnit: wallet?.coin}} {{tx.symbolToken}}</span>
                   </ng-container>
                   <ng-container *ngIf="tx.action == 'invalid'">
                     <span class="double-spend" translate>(possible double spend)</span>

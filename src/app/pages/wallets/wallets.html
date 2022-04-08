@@ -7,7 +7,7 @@
       <ion-title>{{'Your keys' | translate}}</ion-title>
     </ion-toolbar>
   </ion-header>
-  <ion-content>
+  <ion-content class="content-desktop">
     <ion-list lines="none">
       <ion-reorder-group disabled={{showReorder}} (ionItemReorder)="reorderAccounts($event)">
         <ion-item *ngFor="let walletGroup of walletsGroups" (click)="getKeySelected(walletGroup[0]?.keyId)">
@@ -39,7 +39,7 @@
 
 <div class="ion-page" id="main-content">
   <ion-header *ngIf="!(!walletsGroups || !walletsGroups[0])" [translucent]="true" class="bp-header">
-    <ion-toolbar translucent *ngIf="!this.platformProvider.isCordova || !this.platformProvider.isAndroid">
+    <ion-toolbar class="toolbar-desktop" translucent *ngIf="!this.platformProvider.isCordova">
       <div class="header-container-desktop">
         <img class="logo-abcpay" src="../../../assets/img/abcpay-logo.svg" alt="">
         <img src="../../../assets/img/abcpay-text.svg" alt="">
@@ -69,7 +69,7 @@
     </ion-toolbar>
   </ion-header>
 
-  <ion-content>
+  <ion-content class="content-desktop">
     <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)" pullMin="90" pullMax="160">
       <ion-refresher-content></ion-refresher-content>
     </ion-refresher>

@@ -38,30 +38,118 @@ body {
     /* Chrome, Safari, and Opera */
     -webkit-touch-callout: none;
     /* Disable Android and iOS callouts*/
-    background: url(../assets/img/blending-combination.svg) no-repeat;
-    background-size: cover;
-    background-position: bottom;
+    &.bg-desktop {
+        background: url(../assets/img/blending-combination.svg) no-repeat;
+        background-size: cover;
+        background-position: bottom;
+    }
 }
 
 // Config UI for desktop
-ion-toolbar {
-    --padding-start: 0;
-    --padding-end: 0;
-    .header-container-desktop {
+.isDesktop {
+    max-width: 576px;
+    margin: auto;
+    ion-content {
+        --padding-start: 2rem;
+        --padding-end: 2rem;
+        width: calc(100% + 15px);
+
+        &::part(scroll)::-webkit-scrollbar {
+            display: none;
+        }
+
+        &::part(scroll) {
+            -ms-overflow-style: none; // IE and Edge
+            scrollbar-width: none; // Firefox
+        }
+
+        &.content-desktop {
+            --padding-start: 0;
+            --padding-end: 0;
+            .wallets-container {
+                padding: 0 2rem;
+            }
+        }
+    }
+   
+    ion-toolbar {
+        --padding-start: 2rem;
+        --padding-end: 2rem;
+        min-height: 80px;
         display: flex;
-        justify-content: flex-start;
-        padding: 1rem 0;
-        border-bottom: 1px solid #2B4451;
-        .logo-abcpay {
-          margin-right: 1rem;
-          margin-left: 3rem;
+        &.toolbar-desktop {
+            --padding-start: 0;
+            --padding-end: 0;
+        }
+        &.wide-header__title {
+            --padding-start: 1rem;
+            --padding-end: 1rem;
+            padding: 0;
+        }
+        .header-container-desktop {
+            display: flex;
+            justify-content: flex-start;
+            padding: 1rem 0;
+            border-bottom: 1px solid #2B4451;
+            .logo-abcpay {
+              margin-right: 1rem;
+              margin-left: 3rem;
+            }
+        }
+    }
+
+    .settings-list {
+        padding: 0 1rem !important;
+        .mat-form-field {
+            padding: 0 !important;
+        }
+        .scan-item {
+            margin: 0 1rem;
+        }
+    }
+
+    page-import-wallet {
+        ion-content {
+            --offset-bottom: -125px !important;
         }
     }
 }
 
-.isDesktop {
-    max-width: 576px;
-    margin: auto;
+@media only screen and (max-width: 576px) {
+    .isDesktop {
+        ion-content {
+            --padding-start: 0;
+            --padding-end: 0;
+            .wallets-container {
+                padding: inherit !important;
+            }
+        }
+    }
+
+    ion-toolbar {
+        --padding-start: 0 !important;
+        --padding-end: 0 !important;
+        &.wide-header__title {
+            --padding-start: 1rem !important;
+            --padding-end: 1rem !important;
+        }
+        .header-container-desktop {
+            .logo-abcpay {
+              margin-right: 1rem;
+              margin-left: 1rem !important;
+            }
+        }
+    }
+
+    .settings-list {
+        padding: 0 !important;
+        .mat-form-field {
+            padding: 0 1rem !important;
+        }
+        .scan-item {
+            margin: 0;
+        }
+    }
 }
 
 // all content without menu
@@ -78,6 +166,7 @@ ion-content.add-bottom-safe-area {
 // Default ion-note align-seft-center
 ion-note {
     align-self: center;
+    margin: 0 10px;
 }
 
 // Turn off background hover ion-button
@@ -89,6 +178,9 @@ ion-button {
 ion-back-button {
     margin: 0;
     --padding-start: 0;
+    &.ios {
+        margin: 0.5rem;
+    }
 }
 
 ion-segment-button {
@@ -241,6 +333,7 @@ ion-header.bp-header{
             padding: 0;
             font-size: 18px;
             font-weight: 700;
+            text-align: center;
         }
     }
 } 
@@ -1238,7 +1331,9 @@ ion-tabs {
             &.tab-selected {
                 opacity: 1;
                 margin-bottom: 5px;
-                border-top: 2px solid var(--color-primary);
+                &:not(.no-boder-scan-tab) {
+                    border-top: 2px solid var(--color-primary);
+                }
             }
 
             ion-icon {
