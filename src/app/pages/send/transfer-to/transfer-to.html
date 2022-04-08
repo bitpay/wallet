@@ -29,7 +29,7 @@
 </ion-segment>
 
 
-<div class="wallets-container" *ngIf="showContactTab && contactsGroup && contactsGroup.length > 0">
+<div class="wallets-container" *ngIf="showContactTab && contactsGroup && contactsGroup.length > 0; else noAccounts">
   <ion-list lines="none" class="bp-list" ng-class="{ 'disabled':itemTapped}">
     <div *ngFor="let contacts of contactsGroup">
       <div class="key-divider">
@@ -44,21 +44,36 @@
   </ion-list>
 </div>
 
-<div *ngFor="let coin of availableCoins" ng-class="{ 'disabled':itemTapped}">
-  <div class="wallets-container" *ngIf="!showContactTab && walletList[coin] && walletList[coin][0]">
-    <ion-list lines="none" class="bp-list">
-      <div *ngFor="let walletsByKey of filteredWalletsByKeys[0] ? filteredWalletsByKeys : walletsByKeys">
-        <div class="key-divider" *ngIf="walletsByKey && walletsByKey[0]">
-          <span>{{ walletsByKey[0].walletGroupName }}</span>
-        </div>
-        <div class="wallet-item-content-container" *ngFor="let wallet of walletsByKey; let i = index">
-          <wallet-item-content [isCustomForAddressBook]="true" [wallet]="wallet" (click)="close(wallet)"
-            [isLastChild]="i === walletsByKey.length - 1"></wallet-item-content>
-        </div>
+<ng-template #noAccounts>
+  <ng-container *ngIf="showContactTab">
+    <div class="no-info-container">
+      <img src="assets/img/EmptyContact-{{currentTheme}}.svg">
+      <div class="content">{{'No contact yet' | translate}}</div>
+    </div>
+  </ng-container>
+</ng-template>
+
+<div class="wallets-container" *ngIf="!showContactTab && walletsByKeys && walletsByKeys.length > 0; else noAddress">
+  <ion-list lines="none" class="bp-list">
+    <div *ngFor="let walletsByKey of walletsByKeys">
+      <div class="key-divider" *ngIf="walletsByKey && walletsByKey[0]">
+        <span>{{ walletsByKey[0].walletGroupName }}</span>
       </div>
-    </ion-list>
-  </div>
+      <div class="wallet-item-content-container" *ngFor="let wallet of walletsByKey; let i = index">
+        <wallet-item-content [isCustomForAddressBook]="true" [wallet]="wallet" (click)="close(wallet)"
+          [isLastChild]="i === walletsByKey.length - 1"></wallet-item-content>
+      </div>
+    </div>
+  </ion-list>
 </div>
+<ng-template #noAddress>
+  <ng-container *ngIf="!showContactTab">
+    <div class="no-info-container">
+      <img src="assets/img/EmptyWallet-{{currentTheme}}.svg">
+      <div class="content">{{'No accounts' | translate}}</div>
+    </div>
+  </ng-container>
+</ng-template>
 
 <ng-container *ngIf="this.navParamsData?.isDonation && walletList[_wallet.donationCoin].length == 0">
   <create-new-wallet></create-new-wallet>

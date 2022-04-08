@@ -20,6 +20,7 @@ import { WalletProvider } from '../../../providers/wallet/wallet';
 import { Location } from '@angular/common';
 // pages
 import { Router } from '@angular/router';
+import { AppProvider } from 'src/app/providers';
 
 @Component({
   selector: 'page-proposals-notifications',
@@ -46,6 +47,8 @@ export class ProposalsNotificationsPage {
   private isElectron: boolean;
   private walletId: string;
   private multisigContractAddress: string;
+
+  public currentTheme: string;
   navParamsData;
   canGoBack;
   constructor(
@@ -67,13 +70,15 @@ export class ProposalsNotificationsPage {
     private errorsProvider: ErrorsProvider,
     private routerOutlet: IonRouterOutlet,
     private router: Router,
-    public toastController: ToastController
+    public toastController: ToastController,
+    public appProvider: AppProvider
   ) {
     if (this.router.getCurrentNavigation()) {
       this.navParamsData = this.router.getCurrentNavigation().extras.state;
     } else {
       this.navParamsData = history ? history.state : {};
     }
+    this.currentTheme = this.appProvider.themeProvider.currentAppTheme;
     this.zone = new NgZone({ enableLongStackTrace: false });
     this.isElectron = this.platformProvider.isElectron;
     if (this.navParamsData) {
@@ -88,7 +93,7 @@ export class ProposalsNotificationsPage {
     this.txpsPending = [];
     this.txpsAccepted = [];
     this.txpsRejected = [];
-    this.canGoBack = this.routerOutlet && this.routerOutlet.canGoBack();
+    // this.canGoBack = this.routerOutlet && this.routerOutlet.canGoBack();
   }
 
   ionViewWillEnter() {
@@ -202,14 +207,14 @@ export class ProposalsNotificationsPage {
             data: this.groupByWallets(this.txpsRejected)
           });
 
-          if (
-            this.canGoBack &&
-            !this.txpsPending[0] &&
-            !this.txpsAccepted[0] &&
-            !this.txpsRejected[0]
-          ) {
-            this.location.back();
-          }
+          // if (
+          //   this.canGoBack &&
+          //   !this.txpsPending[0] &&
+          //   !this.txpsAccepted[0] &&
+          //   !this.txpsRejected[0]
+          // ) {
+          //   this.location.back();
+          // }
         });
       })
       .catch(err => {
@@ -391,7 +396,7 @@ export class ProposalsNotificationsPage {
       position: 'top',
       animated: true,
       cssClass: 'custom-finish-toast',
-      buttons:[
+      buttons: [
         {
           side: 'start',
           icon: 'checkmark-circle',
@@ -406,7 +411,7 @@ export class ProposalsNotificationsPage {
 
 
   public selectAll(txpsByWallet): void {
-    this.zone.run(()=>{
+    this.zone.run(() => {
       this.txpsToSign = [];
       for (let i = 0; i < txpsByWallet.txps.length; i++) {
         txpsByWallet.txps[i].checked = true;

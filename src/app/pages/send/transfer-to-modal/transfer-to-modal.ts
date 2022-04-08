@@ -2,7 +2,7 @@ import { Component, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
 import { ModalController, NavParams } from '@ionic/angular';
 import _ from 'lodash';
-import { AppProvider } from 'src/app/providers';
+import { AppProvider, LoadingProvider } from 'src/app/providers';
 import { ProfileProvider } from 'src/app/providers/profile/profile';
 import { SearchContactPage } from '../../search/search-contact/search-contact.component';
 
@@ -25,7 +25,8 @@ export class TransferToModalPage {
     private navParams: NavParams,
     private viewCtrl: ModalController,
     private appProvider: AppProvider,
-    private modalCtrl: ModalController
+    private modalCtrl: ModalController,
+    private loadingProvider: LoadingProvider
   ) {
     if (this.router.getCurrentNavigation()) {
       this.navParamsData = this.router.getCurrentNavigation().extras.state;
@@ -39,11 +40,15 @@ export class TransferToModalPage {
     this.fromMultiSend = this.navParamsData.fromMultiSend;
   }
 
+  ionViewWillEnter() {
+    this.loadingProvider.autoLoader();
+  }
+
   back() {
     this.viewCtrl.dismiss();
   }
 
-  public async openSearchContactModal(){
+  public async openSearchContactModal() {
     const modal = await this.modalCtrl.create({
       component: SearchContactPage,
       componentProps: {
@@ -51,8 +56,8 @@ export class TransferToModalPage {
         recipientId: this.navParamsData.recipientId
       }
     });
-    modal.onDidDismiss().then((recipient:any) => {
-      if(recipient.data.toAddress){
+    modal.onDidDismiss().then((recipient: any) => {
+      if (recipient.data.toAddress) {
         this.viewCtrl.dismiss({
           recipientType: recipient.data.recipientType,
           toAddress: recipient.data.toAddress,

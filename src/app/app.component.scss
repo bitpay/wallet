@@ -49,6 +49,9 @@ body {
 .isDesktop {
     max-width: 576px;
     margin: auto;
+    .ion-page{
+        overflow: auto !important;
+    }
     ion-content {
         --padding-start: 2rem;
         --padding-end: 2rem;
@@ -407,6 +410,10 @@ ion-header ion-toolbar {
 .mat-form-field-appearance-outline {
     .mat-form-field-outline {
         color: rgba(0, 30, 46, 0.38) !important;
+    }
+    .mat-form-field-infix{
+        color: rgba(0, 30, 46, 1) !important;
+        padding-left: 5px;
     }
 }
 

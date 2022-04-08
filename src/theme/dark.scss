@@ -34,3235 +34,3489 @@
 10 - New Features Slides
 */
 
-
 .dark {
-    // Color - AbcPay ReDesign
-    --color-primary-abcpay-dark: #7ED0FF;
-    --color-on-primary-abcpay-dark: #00344B;
-    --color-primary-container-abcpay-dark: #004C6C;
-    --color-on-primary-container-abcpay-dark: #C3E7FF;
+  // Color - AbcPay ReDesign
+  --color-primary-abcpay-dark: #7ed0ff;
+  --color-on-primary-abcpay-dark: #00344b;
+  --color-primary-container-abcpay-dark: #004c6c;
+  --color-on-primary-container-abcpay-dark: #c3e7ff;
 
-    --color-secondary-abcpay-dark: #B6C9D8;
-    --color-on-secondary-abcpay-dark: #21333E;
-    --color-secondary-container-abcpay-dark: #374955;
-    --color-on-secondary-container-abcpay-dark: #D2E5F4;
+  --color-secondary-abcpay-dark: #b6c9d8;
+  --color-on-secondary-abcpay-dark: #21333e;
+  --color-secondary-container-abcpay-dark: #374955;
+  --color-on-secondary-container-abcpay-dark: #d2e5f4;
 
-    --bg-hight-color-abcpay-dark: #EDEFF0;
-    --bg-surface-color-abcpay-dark: #E0E4E6;
-    --bg-outline-color-abcpay-dark: #70818A;
+  --bg-hight-color-abcpay-dark: #edeff0;
+  --bg-surface-color-abcpay-dark: #e0e4e6;
+  --bg-outline-color-abcpay-dark: #70818a;
 
-    // 1 - Definitions
-    // 1.1 - Backgrounds
-    --bg-color-dark-theme: #001E2E;
-    --bg-color-dark-theme-2: #1F4455;
-    --bg-color-dark-theme-3: #235068;
-    --bg-color-dark-theme-4: rgba(56, 56, 56, 0.8);
-    --bg-color-dark-theme-5: linear-gradient(0deg, rgba(126, 208, 255, 0.14), rgba(126, 208, 255, 0.14)), #001E2E;
-    --bg-color-dark-theme-6: linear-gradient(
-        0deg, rgba(126, 208, 255, 0.12), rgba(126, 208, 255, 0.12)), #001E2E;
+  // 1 - Definitions
+  // 1.1 - Backgrounds
+  --bg-color-dark-theme: #001e2e;
+  --bg-color-dark-theme-2: #1f4455;
+  --bg-color-dark-theme-3: #235068;
+  --bg-color-dark-theme-4: rgba(56, 56, 56, 0.8);
+  --bg-color-dark-theme-5: linear-gradient(
+      0deg,
+      rgba(126, 208, 255, 0.14),
+      rgba(126, 208, 255, 0.14)
+    ),
+    #001e2e;
+  --bg-color-dark-theme-6: linear-gradient(
+      0deg,
+      rgba(126, 208, 255, 0.12),
+      rgba(126, 208, 255, 0.12)
+    ),
+    #001e2e;
 
-        
-    --bg-color-dark-theme-7: rgb(23 54 106); 
+  --bg-color-dark-theme-7: rgb(23 54 106);
 
-    --bg-color-dark-theme-8: linear-gradient(0deg, rgba(126, 208, 255, 0.11), rgba(126, 208, 255, 0.11)), #001E2E ;
+  --bg-color-dark-theme-8: linear-gradient(
+      0deg,
+      rgba(126, 208, 255, 0.11),
+      rgba(126, 208, 255, 0.11)
+    ),
+    #001e2e;
 
-    --bg-color-dark-theme-toolbar: #001E2E;
-    --bg-color-dark-theme-message: #1d1d1d;
-    --gradient-dark-theme: #101010;
+  --bg-color-dark-theme-toolbar: #001e2e;
+  --bg-color-dark-theme-message: #1d1d1d;
+  --gradient-dark-theme: #101010;
 
-    // 1.2 - Text
-    --text-color-dark-theme: rgba(255, 255, 255, 0.87);
-    --text-color-dark-theme-2: rgba(255, 255, 255, 0.6);
-    --text-color-dark-theme-3: rgba(255, 255, 255, 0.38);
+  // 1.2 - Text
+  --text-color-dark-theme: rgba(255, 255, 255, 0.87);
+  --text-color-dark-theme-2: rgba(255, 255, 255, 0.6);
+  --text-color-dark-theme-3: rgba(255, 255, 255, 0.38);
 
-    // 1.3 - Messages
-    --bg-color-warning: #ffe7d9;
+  // 1.3 - Messages
+  --bg-color-warning: #ffe7d9;
 
-    // 1.4 - Borders
-    --border-color-dark-theme: #6B858F;
-    --border-color-dark-theme-2: #2B4451;
+  // 1.4 - Borders
+  --border-color-dark-theme: #6b858f;
+  --border-color-dark-theme-2: #2b4451;
 
-    // 1.5 - Slides
-    --swiper-pagination-bullet-active-dark: #434c5a;
-    --swiper-pagination-bullet-dark: #7ED0FF;
+  // 1.5 - Slides
+  --swiper-pagination-bullet-active-dark: #434c5a;
+  --swiper-pagination-bullet-dark: #7ed0ff;
 
-    // 1.6 - Toggles
-    --toggle-color-dark-theme: #ffffff;
-    --toggle-checked-color-dark-theme: #7ED0FF;
-    --toggle-background-active-dark-theme: #3c718f;
+  // 1.6 - Toggles
+  --toggle-color-dark-theme: #ffffff;
+  --toggle-checked-color-dark-theme: #7ed0ff;
+  --toggle-background-active-dark-theme: #3c718f;
 
-    // 1.7 - PinPad
-    --bg-pin-pad: #0e3244;
+  // 1.7 - PinPad
+  --bg-pin-pad: #0e3244;
 
-    // 1.7 - Overriding Ionic Variables
-    --background-color: var(--bg-color-dark-theme);
+  // 1.7 - Overriding Ionic Variables
+  --background-color: var(--bg-color-dark-theme);
 
-    // 1.8 - Info Sheet
-    --text-color-info-sheet-dark-theme: #B8C2C7;
+  // 1.8 - Info Sheet
+  --text-color-info-sheet-dark-theme: #b8c2c7;
 
-    --text-grey: rgba(237, 239, 240, 0.6);
+  --text-grey: rgba(237, 239, 240, 0.6);
 
-    --slider-bg-button: rgba(126, 208, 255, 1);
-    @include toolbar-button-color(var(--text-color-dark-theme));
+  --slider-bg-button: rgba(126, 208, 255, 1);
+  @include toolbar-button-color(var(--text-color-dark-theme));
 
-    // TODO: Remove text opacity from default styles
-    page-bitpay-card ion-title .toolbar-title,
-    .wallet-details-header ion-title .toolbar-title,
-    page-copayers .copayers-header-content .text,
-    page-finish .container .content .body-comment,
-    page-home .total-amount-container .average-container .date,
-    page-scan .page-scan-has-problems .header-container .subtitle,
-    page-addressbook .zero-state-description,
-    token-details .balance-alt-str,
-    token-details .balance-spendable,
-    token-details .tx-history .date,
-    page-wallet-details .balance-alt-str,
-    page-wallet-details .balance-spendable,
-    page-wallet-details .tx-history .date,
-    .bp-list .secondary-note {
-        opacity: 1 !important;
+  // TODO: Remove text opacity from default styles
+  page-bitpay-card ion-title .toolbar-title,
+  .wallet-details-header ion-title .toolbar-title,
+  page-copayers .copayers-header-content .text,
+  page-finish .container .content .body-comment,
+  page-home .total-amount-container .average-container .date,
+  page-scan .page-scan-has-problems .header-container .subtitle,
+  page-addressbook .zero-state-description,
+  token-details .balance-alt-str,
+  token-details .balance-spendable,
+  token-details .tx-history .date,
+  page-wallet-details .balance-alt-str,
+  page-wallet-details .balance-spendable,
+  page-wallet-details .tx-history .date,
+  .bp-list .secondary-note {
+    opacity: 1 !important;
+  }
+
+  page-wallet-balance {
+    .balance-container {
+      .balance-header {
+        .balance {
+          .available {
+            color: #73daa5;
+          }
+          .confirming {
+            color: var(--color-primary-abcpay-dark);
+          }
+          .locked {
+            color: #ccc1e9;
+          }
+          .fiat {
+            color: var(--text-grey);
+          }
+          .total {
+            color: #ffb85d;
+          }
+        }
+      }
+      .sub-title {
+        color: rgba(237, 239, 240, 0.38);
+      }
+    }
+  }
+
+  page-add-wallet,
+  options-sheet {
+    .bp-list ion-icon.item-img.icon.item-icon.icon-settings {
+      &.icon-md,
+      &.icon-ios {
+        opacity: 1;
+
+        img {
+          filter: invert(1);
+        }
+      }
+    }
+  }
+
+  ion-button {
+    &.button-standard {
+      --background-activated: var(--color-primary-abcpay-dark);
+      --background: var(--color-primary-abcpay-dark);
+      --color: var(--color-on-primary-abcpay-dark);
+      &.button-disabled {
+        --background: linear-gradient(
+            0deg,
+            rgba(237, 239, 240, 0.12),
+            rgba(237, 239, 240, 0.12)
+          ),
+          #0e3245 !important;
+        --color: rgba(224, 228, 230, 0.38) !important;
+      }
+    }
+    &[fill='clear'] {
+      --background-activated: none;
+      --background: none;
+      --color: var(--color-primary-abcpay-dark) !important;
+      &.button-disabled {
+        --background: none !important;
+        --color: rgba(224, 228, 230, 0.38);
+      }
+    }
+  }
+
+  ion-back-button {
+    --color: var(--bg-surface-color-abcpay-dark);
+  }
+
+  // 3 - General
+  ion-content {
+    --background: var(--bg-color-dark-theme);
+    --color: var(--text-color-dark-theme) !important;
+  }
+
+  ion-loading {
+    --background: var(--bg-color-dark-theme-2);
+    color: var(--text-color-dark-theme) !important;
+  }
+
+  coin-icon {
+    ion-icon.item-img.icon.background_xrp {
+      background-color: var(--color-dark);
+
+      &.testnet {
+        filter: invert(0.2);
+      }
+    }
+  }
+
+  ion-list {
+    background-color: var(--bg-color-dark-theme);
+    border-color: #314d5c !important;
+    ion-item {
+      --color-hover: none;
+      --background-hover: none;
+      --background: var(--bg-color-dark-theme);
+    }
+  }
+
+  ion-modal {
+    --background: var(--bg-color-dark-theme);
+  }
+
+  form {
+    ion-item {
+      border-color: var(--border-color-dark-theme) !important;
+    }
+  }
+
+  .line-divider {
+    border: 0.5px solid var(--border-color-dark-theme-2);
+  }
+
+  .royal,
+  a.royal {
+    color: var(--text-color-dark-theme) !important;
+  }
+
+  ion-item-divider .md,
+  ion-item-divider .ios {
+    --background: var(--bg-color-dark-theme);
+  }
+
+  ion-tab-bar {
+    --background: var(--bg-color-dark-theme);
+
+    ion-tab-button[aria-selected='true'] {
+      opacity: 1;
+      border-color: var(--color-primary-abcpay-dark);
     }
 
-    page-wallet-balance {
-        .balance-container {
-            .balance-header {
-              .balance {
-                .available {
-                  color: #73DAA5;
-                }
-                .confirming {
-                  color: var(--color-primary-abcpay-dark);
-                }
-                .locked {
-                  color: #CCC1E9;
-                }
-                .fiat {
-                  color: var(--text-grey)
-                }
-                .total {
-                  color: #FFB85D;
+    ion-tab-button[aria-selected='false'] {
+      ion-icon {
+        &[name='home'],
+        &[name='wallet'],
+        &[name='cards'],
+        &[name='book-outline'],
+        &[name='settings'] {
+          opacity: 0.4;
+        }
+
+        &[class*='tab-scan'] {
+          background: url('../assets/img/tab-icons/tab-scan-dm.svg') no-repeat
+            50% 50%;
+        }
+
+        &[class*='tab-copay-scan'] {
+          filter: invert(0.4);
+          opacity: 1;
+        }
+      }
+    }
+  }
+
+  // Material input custom
+  // --------------------------------------------------
+  .mat-form-field-appearance-outline.mat-focused .placeholder {
+    color: rgba(237, 239, 240, 0.38) !important;
+  }
+
+  .mat-form-field-appearance-outline {
+    .mat-form-field-outline {
+      color: rgba(237, 239, 240, 0.38) !important;
+    }
+  }
+
+  .mat-form-field-appearance-outline.mat-focused {
+    .mat-form-field-outline-thick {
+      color: rgba(237, 239, 240, 0.38) !important;
+    }
+  }
+
+  .mat-form-field .mat-form-field-label {
+    color: rgba(237, 239, 240, 0.6) !important;
+  }
+
+  .mat-form-field.mat-focused .mat-form-field-label {
+    color: rgba(237, 239, 240, 0.6) !important;
+  }
+
+  .mat-form-field-appearance-outline.mat-form-field-invalid {
+    .mat-form-field-outline {
+      color: #ffb4a9 !important;
+    }
+  }
+
+  .mat-form-field-appearance-outline.mat-form-field-invalid {
+    .mat-form-field-outline-thick {
+      color: #ffb4a9 !important;
+    }
+  }
+
+  .mat-form-field.mat-form-field-invalid {
+    .mat-form-field-label {
+      color: #ffb4a9 !important;
+    }
+  }
+
+  .mat-form-field.mat-form-field-invalid {
+    .mat-form-field-label {
+      color: #ffb4a9 !important;
+    }
+  }
+
+  .error-form-field.mat-form-field-appearance-outline {
+    .mat-form-field-outline {
+      color: #ffb4a9 !important;
+    }
+  }
+
+  .error-form-field.mat-form-field-appearance-outline.mat-focused {
+    .mat-form-field-outline-thick {
+      color: #ffb4a9 !important;
+    }
+  }
+
+  .mat-form-field.error-form-field .mat-form-field-label {
+    color: #ffb4a9 !important;
+  }
+
+  .mat-form-field.error-form-field.mat-focused .mat-form-field-label {
+    color: #ffb4a9 !important;
+  }
+
+  mat-hint {
+    color: rgba(237, 239, 240, 0.6);
+  }
+
+  .mat-input-element {
+    color: #edeff0;
+    &::placeholder {
+      color: rgba(237, 239, 240, 0.38) !important;
+    }
+  }
+
+  .swiper-pagination-bullet-active {
+    background-color: var(--swiper-pagination-bullet-active-dark);
+  }
+
+  .swiper-pagination-bullet {
+    background-color: var(--swiper-pagination-bullet-dark);
+  }
+
+  button.item.activated,
+  .item-md.activated {
+    background-color: var(--bg-color-dark-theme-2);
+  }
+
+  .gift-card-content {
+    .header-extension {
+      background: var(--bg-color-dark-theme-toolbar);
+    }
+  }
+
+  .box-notification {
+    &.success,
+    &.info,
+    &.warning,
+    &.error {
+      background: none;
+      border: 1px solid;
+    }
+  }
+
+  .text-danger {
+    color: #ffb4a9 !important;
+  }
+
+  ion-toggle {
+    --background: var(--bg-color-dark-theme-3);
+    --background-checked: var(--toggle-background-active-dark-theme) !important;
+
+    &::before {
+      background-color: var(--bg-color-dark-theme-3);
+    }
+
+    --handle-background: var(--toggle-color-dark-theme);
+    --handle-background-checked: var(
+      --toggle-checked-color-dark-theme
+    ) !important;
+  }
+
+  .alert-ios {
+    .alert-button {
+      border-color: var(--bg-color-dark-theme-3);
+    }
+
+    .alert-input {
+      border-color: var(--bg-color-dark-theme-3);
+    }
+  }
+
+  ion-alert {
+    .alert-wrapper {
+      background: var(--bg-color-dark-theme-2);
+      color: var(--text-color-dark-theme) !important;
+
+      .alert-title {
+        color: var(--text-color-dark-theme) !important;
+      }
+    }
+    [aria-checked='true'].sc-ion-alert-md .alert-radio-label.sc-ion-alert-md {
+      color: var(--text-color-dark-theme) !important;
+    }
+
+    .alert-radio-group {
+      .alert-radio:not([aria-checked='true']) .alert-radio-label {
+        color: var(--text-color-dark-theme) !important;
+      }
+    }
+
+    .alert-input {
+      color: var(--text-color-dark-theme) !important;
+      background: var(--bg-color-dark-theme);
+      color: var(--text-color-dark-theme) !important;
+    }
+
+    .alert-message {
+      color: var(--text-color-dark-theme) !important;
+    }
+  }
+
+  ion-select {
+    color: var(--text-color-dark-theme) !important;
+  }
+
+  .alert-ios .alert-button ion-action-sheet {
+    .action-sheet-group {
+      background: var(--bg-color-dark-theme-2);
+      color: var(--text-color-dark-theme) !important;
+
+      .action-sheet-button {
+        color: var(--text-color-dark-theme) !important;
+      }
+    }
+  }
+
+  .search-container {
+    --background: var(--bg-color-dark-theme);
+    background: var(--bg-color-dark-theme);
+  }
+
+  .search-wrapper {
+    --background: var(--bg-color-dark-theme-2);
+    color: var(--text-color-dark-theme-2) !important;
+  }
+
+  search-bar {
+    background: var(--bg-color-dark-theme);
+    border-color: #2b4552;
+
+    ion-input {
+      background: var(--bg-color-dark-theme);
+      color: var(--text-color-dark-theme) !important;
+    }
+  }
+
+  action-sheet ion-searchbar {
+    background: var(--bg-color-dark-theme-2);
+
+    ion-input {
+      background: #292929;
+    }
+  }
+
+  add-button {
+    .add-button {
+      &__icon {
+        filter: invert(1);
+      }
+
+      &__text {
+        color: var(--text-color-dark-theme-2) !important;
+      }
+    }
+  }
+
+  .prompt-user {
+    .title-info {
+      color: var(--text-color-dark-theme) !important;
+    }
+
+    .subtitle-info {
+      color: var(--text-color-dark-theme-2) !important;
+    }
+  }
+
+  .energized,
+  a.energized {
+    color: #ffb4a9;
+  }
+
+  .gravatar-img {
+    filter: invert(1);
+  }
+
+  .alertTheme {
+    color: var(--text-color-dark-theme) !important;
+
+    .alert-message {
+      color: var(--text-color-dark-theme) !important;
+    }
+
+    .alert-wrapper {
+      background-color: var(--bg-color-dark-theme-2);
+    }
+  }
+
+  .alertDanger {
+    .alert-message {
+      color: var(--color-danger);
+    }
+
+    color: var(--text-color-dark-theme) !important;
+
+    .alert-wrapper {
+      background-color: var(--bg-color-dark-theme-2);
+    }
+
+    .alert-input {
+      color: var(--text-color-dark-theme) !important;
+    }
+  }
+
+  .toast-bg {
+    .toast-wrapper {
+      background-color: var(--bg-color-dark-theme-2);
+      color: var(--text-color-dark-theme-2) !important;
+    }
+  }
+
+  // 3.1 Lists
+  .bp-list {
+    ion-item {
+      &.ios,
+      &.md {
+        border: 0;
+        --background: linear-gradient(
+            0deg,
+            rgba(126, 208, 255, 0.11),
+            rgba(126, 208, 255, 0.11)
+          ),
+          #001e2e;
+        --padding-start: 5px;
+        --padding-end: 5px;
+        margin: 1rem 1rem;
+        &::part(native) {
+          border-radius: 8px;
+        }
+        &::part(detail-icon) {
+          filter: brightness(0) saturate(100%) invert(71%) sepia(7%)
+            saturate(485%) hue-rotate(155deg) brightness(88%) contrast(87%);
+        }
+      }
+
+      &:not(.create-button):not(.assertive) {
+        &.ios,
+        &.md {
+          color: var(--text-color-dark-theme) !important;
+        }
+      }
+    }
+
+    .main-label,
+    .main-note,
+    .status .royal {
+      color: var(--text-color-dark-theme) !important;
+    }
+
+    ion-item-divider {
+      background: var(--bg-color-dark-theme) !important;
+      border-color: #314d5c !important;
+
+      ion-label {
+        color: var(--text-color-dark-theme-3) !important;
+      }
+    }
+
+    .summary-item-detail {
+      color: var(--text-color-dark-theme) !important;
+
+      .text-input {
+        color: var(--text-color-dark-theme) !important;
+        opacity: 1;
+      }
+    }
+
+    .total-amount {
+      color: var(--text-color-dark-theme) !important;
+    }
+
+    &.settings-list {
+      ion-item {
+        background: linear-gradient(
+            0deg,
+            rgba(126, 208, 255, 0.05),
+            rgba(126, 208, 255, 0.05)
+          ),
+          #001e2e !important;
+        --background: linear-gradient(
+            0deg,
+            rgba(126, 208, 255, 0.05),
+            rgba(126, 208, 255, 0.05)
+          ),
+          #001e2e !important;
+        --border-color: #2b4552;
+        ion-label {
+          color: #fff;
+          &.color-danger {
+            color: #ffb4a9 !important;
+          }
+        }
+        ion-note {
+          background: transparent;
+          color: rgba(237, 239, 240, 0.6);
+        }
+        ion-radio {
+          --color-checked: var(--color-primary-abcpay-dark);
+        }
+        ion-icon {
+          color: #555a60 !important;
+        }
+        &.create-button {
+          ion-label {
+            color: var(--color-primary-abcpay-dark) !important;
+          }
+        }
+        .copayer {
+          color: #fff;
+        }
+        .pk {
+          color: rgba(237, 239, 240, 0.6) !important;
+        }
+        &:last-child {
+          border-bottom: 1px solid #2b4552 !important;
+          --border-color: transparent;
+        }
+
+        &:first-child {
+          border-top: 1px solid #2b4552 !important;
+        }
+      }
+      .item-start {
+        border-top: 1px solid #2b4552 !important;
+        --border-color: transparent;
+      }
+
+      .item-end {
+        border-bottom: 1px solid #2b4552 !important;
+        --border-color: transparent;
+      }
+      ion-item-divider {
+        ion-label {
+          color: rgba(237, 239, 240, 0.6) !important;
+        }
+        ion-icon[name='help-circle'] {
+          color: rgba(237, 239, 240, 0.6) !important;
+        }
+      }
+      label-tip {
+        background: var(--bg-color-dark-theme) !important;
+        div[label-tip-body] {
+          color: rgba(237, 239, 240, 0.6);
+        }
+        .label-tip-link {
+          color: var(--color-primary-abcpay-dark);
+        }
+      }
+    }
+  }
+
+  .button-secondary {
+    --background: var(--bg-color-dark-theme-3) !important;
+    color: var(--text-color-dark-theme-2) !important;
+
+    &:hover,
+    &:focus,
+    &:active {
+      &.md,
+      &.ios {
+        --background-color: var(--bg-color-dark-theme-2) !important;
+        color: var(--text-color-dark-theme-2) !important;
+      }
+    }
+
+    &:active,
+    &.activated {
+      &.md,
+      &.ios {
+        --background: var(--bg-color-dark-theme-2) !important;
+        color: var(--text-color-dark-theme-2) !important;
+      }
+    }
+  }
+
+  // 3.2 - Label tip
+  label-tip {
+    opacity: 0.7;
+    color: var(--text-color-dark-theme-2) !important;
+
+    &.info {
+      background-color: var(--bg-color-dark-theme-4) !important;
+
+      &:before {
+        border-bottom-color: var(--bg-color-dark-theme-4) !important;
+      }
+    }
+
+    &.warn {
+      background-color: var(--bg-color-dark-theme-4) !important;
+
+      &:before {
+        border-bottom-color: var(--bg-color-dark-theme-4) !important;
+      }
+    }
+
+    &.danger {
+      background-color: var(--bg-color-dark-theme-4) !important;
+
+      &:before {
+        border-bottom-color: var(--bg-color-dark-theme-4) !important;
+      }
+    }
+
+    .label-header {
+      color: var(--text-color-dark-theme) !important;
+    }
+  }
+
+  // 3.3 - General cards
+  action-card-v4.card {
+    background-color: var(--bg-color-dark-theme-2);
+
+    .action-card__content {
+      background-color: var(--bg-color-dark-theme-2);
+
+      .action-card__title {
+        color: var(--text-color-dark-theme) !important;
+      }
+    }
+
+    .bitpay-card-header,
+    .home-gift-card-header {
+      background-color: var(--bg-color-dark-theme-3);
+    }
+  }
+
+  action-card.card {
+    background: var(--bg-color-dark-theme-2);
+
+    .action-card {
+      &__content {
+        background: var(--bg-color-dark-theme-2);
+      }
+    }
+  }
+
+  .card {
+    page-txp {
+      .proposal-container .item-inner {
+        border-bottom: 1px solid var(--border-color-dark-theme-2);
+      }
+    }
+  }
+
+  .offer-card {
+    background: var(--bg-color-dark-theme-2);
+
+    .main-label {
+      color: var(--text-color-dark-theme) !important;
+    }
+
+    .extended-info .bp-list {
+      .item {
+        background: var(--bg-color-dark-theme-2);
+
+        &:not(:last-child) {
+          border-top: 1px dashed #434d5a;
+        }
+      }
+
+      .total {
+        color: white;
+      }
+    }
+
+    .terms {
+      color: #8e8d8d;
+    }
+  }
+
+  // 3.4 - Expandable header
+  ion-content.add-padding-bottom,
+  .add-padding-bottom ion-content {
+    .fixed-content,
+    .scroll-content {
+      background-color: var(--bg-color-dark-theme);
+    }
+  }
+
+  .wide-header__title {
+    color: var(--text-color-dark-theme) !important;
+    background: var(--bg-color-dark-theme);
+  }
+
+  wide-header-page,
+  card-catalog-page {
+    .wide-header {
+      .toolbar-background {
+        background: var(--bg-color-dark-theme-toolbar);
+      }
+    }
+  }
+
+  .header-extend {
+    background: var(--bg-color-dark-theme-toolbar);
+  }
+
+  // 3.5 - Toolbar
+  ion-toolbar {
+    background: var(--bg-color-dark-theme);
+    --background: var(--bg-color-dark-theme);
+    color: var(--text-color-dark-theme) !important;
+    --border-width: 0 !important;
+  }
+
+  .content-ios .toolbar-background-ios {
+    background: var(--bg-color-dark-theme);
+  }
+
+  .bar-button-default-md,
+  .bar-button-default.bar-button-md-default,
+  .bar-button-clear-md-default {
+    color: var(--text-color-dark-theme) !important;
+  }
+
+  .toolbar-content-md,
+  .toolbar-content-ios {
+    color: var(--text-color-dark-theme) !important;
+
+    .bar-buttons-md,
+    .bar-buttons-ios {
+      .bar-button .button-inner {
+        color: var(--text-color-dark-theme-2) !important;
+      }
+    }
+  }
+
+  ion-title {
+    color: var(--text-color-dark-theme) !important;
+  }
+
+  .header .toolbar-background {
+    background-color: var(--bg-color-dark-theme);
+  }
+
+  .toolbar {
+    &.toolbar-md,
+    &.toolbar-ios {
+      .back-button,
+      .close-container {
+        background-color: var(--bg-color-dark-theme-2);
+        color: var(--text-color-dark-theme) !important;
+
+        &.button-default,
+        &.button-md.activated,
+        &.button-ios.activated {
+          background-color: var(--bg-color-dark-theme-2);
+        }
+      }
+    }
+  }
+
+  page-bitpay-card {
+    .toolbar {
+      &.toolbar-md,
+      &.toolbar-ios {
+        .back-button {
+          background-color: rgba(155, 163, 174, 0.12);
+        }
+      }
+    }
+
+    ion-spinner {
+      * {
+        stroke: var(--text-color-dark-theme) !important;
+      }
+    }
+  }
+
+  page-bitpay-card-intro {
+    ion-toolbar {
+      background-color: var(--bg-color-dark-theme-2);
+    }
+  }
+
+  // 4 - Components
+  action-sheet {
+    .action-sheet {
+      background: var(--bg-color-dark-theme-8) !important;
+
+      .bp-list {
+        background: var(--bg-color-dark-theme-2) !important;
+
+        ion-item {
+          &.ios,
+          &.md {
+            --background: var(--bg-color-dark-theme-2) !important;
+            color: var(--text-color-dark-theme) !important;
+          }
+        }
+      }
+
+      .ion-item {
+        &.ios,
+        &.md {
+          --background: var(--bg-color-dark-theme-2) !important;
+        }
+      }
+    }
+  }
+
+  amount-picker {
+    .amount-picker {
+      &__amount {
+        color: var(--color-primary);
+      }
+
+      &__button {
+        border-color: var(--color-primary);
+
+        img {
+          filter: brightness(1.7) hue-rotate(8deg);
+        }
+      }
+    }
+  }
+
+  info-sheet {
+    .info-container {
+      background-color: var(--bg-color-dark-theme-2);
+
+      info-sheet-template {
+        .confirm-sheet {
+          background-color: var(--bg-color-dark-theme-2);
+          color: var(--text-color-dark-theme) !important;
+
+          .sheet-title {
+            color: var(--text-color-dark-theme) !important;
+          }
+
+          .sheet-text {
+            color: rgba(237, 239, 240, 0.6) !important;
+          }
+
+          .sheet-btn-group {
+            border-color: var(--border-color-dark-theme);
+            color: var(--color-primary-abcpay-dark) !important;
+
+            .sheet-btn.default,
+            .sheet-second-btn {
+              color: var(--color-primary-abcpay-dark) !important;
+            }
+          }
+        }
+      }
+
+      .sheet-second-btn-group {
+        color: var(--color-primary-abcpay-dark) !important;
+      }
+    }
+  }
+
+  wallet-selector {
+    .item-divider-md,
+    .item-divider-ios {
+      background-color: var(--bg-color-dark-theme-2);
+      border-bottom: 1px solid var(--bg-color-dark-theme-2);
+    }
+  }
+
+  memo-component {
+    .textarea-custom {
+      background-color: var(--bg-color-dark-theme);
+      color: var(--text-color-dark-theme) !important;
+    }
+
+    .title {
+      color: var(--text-color-dark-theme) !important;
+    }
+  }
+
+  contact-pop-up-component {
+    .text-input {
+      background-color: var(--bg-color-dark-theme);
+      color: var(--text-color-dark-theme) !important;
+    }
+
+    .title {
+      color: var(--text-color-dark-theme) !important;
+    }
+  }
+
+  page-choose-fee-level {
+    .testnet-warning {
+      background-color: var(--color-warning);
+    }
+
+    .fee {
+      &-speed-name {
+        color: var(--text-color-dark-theme) !important;
+      }
+
+      &-speed-satByte {
+        color: var(--text-color-dark-theme) !important;
+      }
+
+      &-avg-label {
+        color: var(--text-color-dark-theme) !important;
+      }
+
+      &-avg-time {
+        color: var(--text-color-dark-theme) !important;
+      }
+
+      &-card {
+        background-color: var(--bg-color-dark-theme);
+
+        .item {
+          &.item-ios,
+          &.item-md {
+            background: var(--bg-color-dark-theme);
+            color: var(--text-color-dark-theme) !important;
+          }
+        }
+      }
+    }
+  }
+
+  page-slide-to-accept {
+    background: linear-gradient(
+      to bottom,
+      rgba(18, 18, 18, 0),
+      rgba(18, 18, 18, 1),
+      rgba(18, 18, 18, 1)
+    );
+    background: -webkit-linear-gradient(
+      to bottom,
+      rgba(18, 18, 18, 0),
+      rgba(18, 18, 18, 1),
+      rgba(18, 18, 18, 1)
+    );
+  }
+
+  page-fingerprint {
+    .fingerprint-button {
+      .unlock-btn {
+        color: #edeff0 !important;
+      }
+    }
+  }
+
+  page-pin {
+    ion-header {
+      .toolbar-background {
+        background-color: var(--bg-color-dark-theme);
+      }
+    }
+
+    ion-content {
+      background-color: var(--bg-color-dark-theme) !important;
+    }
+
+    .pin-header {
+      .title {
+        color: var(--text-color-dark-theme) !important;
+      }
+    }
+
+    .content {
+      background-color: var(--bg-color-dark-theme);
+    }
+  }
+
+  pin-pad {
+    ion-col {
+      background: var(--color-secondary-container-abcpay-dark);
+      .letters {
+        color: #9b9b9b;
+      }
+    }
+  }
+
+  pin-dots {
+    .filled {
+      background-color: var(--bg-hight-color-abcpay-dark);
+    }
+  }
+
+  page-feedback-card {
+    ion-card.card {
+      background-color: var(--bg-color-dark-theme-2);
+      color: var(--text-color-dark-theme) !important;
+    }
+  }
+
+  page-lotus-donation-card {
+    ion-card.card {
+      background-color: var(--bg-color-dark-theme-2);
+      color: var(--text-color-dark-theme) !important;
+    }
+
+    .donate-btn {
+      ion-button {
+        --background: var(--color-primary-abcpay-dark) !important;
+        color: #00344b;
+      }
+    }
+  }
+
+  incoming-data-menu {
+    img {
+      filter: invert(0.7);
+    }
+
+    .title {
+      color: var(--bg-surface-color-abcpay-dark);
+    }
+
+    .address {
+      color: var(--bg-surface-color-abcpay-dark);
+      opacity: 0.6;
+    }
+
+    .group-btn {
+      ion-button {
+        color: var(--color-primary-abcpay-dark);
+      }
+    }
+  }
+
+  page-finish {
+    .bg-none {
+      background-color: var(--bg-color-dark-theme);
+    }
+
+    .container {
+      .content {
+        .body {
+          &-text {
+            &.bg-none {
+              color: var(--text-color-dark-theme) !important;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  encrypt-password,
+  miner-fee-warning {
+    action-sheet {
+      .action-sheet-bottom {
+        background: #001e2e !important;
+
+        .encrypt-password,
+        .miner-fee {
+          .encrypt-password-info,
+          .miner-fee-info {
+            .info {
+              .title {
+                color: var(--text-color-dark-theme) !important;
+              }
+
+              .text {
+                color: var(--text-color-dark-theme-2) !important;
+
+                b {
+                  color: var(--text-color-dark-theme) !important;
                 }
               }
             }
-            .sub-title {
-                color: rgba(237, 239, 240, 0.38);
-            } 
           }
-    }
 
-    page-add-wallet,
-    options-sheet {
-        .bp-list ion-icon.item-img.icon.item-icon.icon-settings {
+          .info-encrypt {
+            color: var(--text-grey);
+          }
 
-            &.icon-md,
-            &.icon-ios {
-                opacity: 1;
-
-                img {
-                    filter: invert(1);
-                }
-            }
-        }
-    }
-
-    ion-button {
-        &.button-standard {
-            --background-activated: var(--color-primary-abcpay-dark);
-            --background: var(--color-primary-abcpay-dark);
-            --color: var(--color-on-primary-abcpay-dark);
-            &.button-disabled {
-                --background: linear-gradient(0deg, rgba(237, 239, 240, 0.12), rgba(237, 239, 240, 0.12)), #0E3245 !important;
-                --color: rgba(224, 228, 230, 0.38) !important;
-            }
-        }
-        &[fill="clear"] {
-            --background-activated: none;
-            --background: none;
-            --color: var(--color-primary-abcpay-dark) !important;
-            &.button-disabled {
-                --background: none !important;
-                --color: rgba(224, 228, 230, 0.38);
-            }
-        }
-    }
-
-    ion-back-button {
-        --color: var(--bg-surface-color-abcpay-dark);
-    }
-
-    // 3 - General
-    ion-content {
-        --background: var(--bg-color-dark-theme);
-        --color: var(--text-color-dark-theme) !important;
-    }
-
-    ion-loading {
-        --background: var(--bg-color-dark-theme-2);
-        color: var(--text-color-dark-theme) !important;
-    }
-
-    coin-icon {
-        ion-icon.item-img.icon.background_xrp {
-            background-color: var(--color-dark);
-
-            &.testnet {
-                filter: invert(0.2);
-            }
-        }
-    }
-
-    ion-list {
-        background-color: var(--bg-color-dark-theme);
-        border-color: #314d5c !important;
-        ion-item {
-            --color-hover: none;
-            --background-hover: none;
-            --background: var(--bg-color-dark-theme);
-        }
-    }
-
-    ion-modal {
-        --background: var(--bg-color-dark-theme);
-    }
-
-    form {
-        ion-item {
-            border-color: var(--border-color-dark-theme) !important;
-        }
-    }
-
-    .line-divider {
-        border: 0.5px solid var(--border-color-dark-theme-2);
-    }
-
-    .royal,
-    a.royal {
-        color: var(--text-color-dark-theme) !important;
-    }
-
-    ion-item-divider .md,
-    ion-item-divider .ios {
-        --background: var(--bg-color-dark-theme);
-    }
-
-    ion-tab-bar {
-        --background: var(--bg-color-dark-theme);
-
-        ion-tab-button[aria-selected='true'] {
-            opacity: 1;
-            border-color: var(--color-primary-abcpay-dark);
-        }
-
-        ion-tab-button[aria-selected='false'] {
-            ion-icon {
-
-                &[name='home'],
-                &[name='wallet'],
-                &[name='cards'],
-                &[name='book-outline'],
-                &[name='settings'] {
-                    opacity: 0.4;
-                }
-
-                &[class*='tab-scan'] {
-                    background: url('../assets/img/tab-icons/tab-scan-dm.svg') no-repeat 50% 50%;
-                }
-
-                &[class*='tab-copay-scan'] {
-                    filter: invert(0.4);
-                    opacity: 1;
-                }
-            }
-        }
-    }
-
-    // Material input custom
-    // --------------------------------------------------
-    .mat-form-field-appearance-outline.mat-focused .placeholder {
-        color: rgba(237, 239, 240, 0.38) !important;
-    }
-
-    .mat-form-field-appearance-outline {
-        .mat-form-field-outline {
-            color: rgba(237, 239, 240, 0.38) !important;
-        }
-    }
-
-    .mat-form-field-appearance-outline.mat-focused {
-        .mat-form-field-outline-thick {
-            color: rgba(237, 239, 240, 0.38) !important;
-        }  
-    }
-
-    .mat-form-field .mat-form-field-label {
-        color: rgba(237, 239, 240, 0.6) !important;
-    }
-
-    .mat-form-field.mat-focused .mat-form-field-label {
-        color: rgba(237, 239, 240, 0.6) !important;
-    }
-
-    .mat-form-field-appearance-outline.mat-form-field-invalid {
-        .mat-form-field-outline {
-            color: #FFB4A9 !important;
-        }
-    }
-
-    .mat-form-field-appearance-outline.mat-form-field-invalid {
-        .mat-form-field-outline-thick {
-            color: #FFB4A9 !important;
-        }
-    }
-
-    .mat-form-field.mat-form-field-invalid {
-        .mat-form-field-label {
-            color: #FFB4A9 !important;
-        }
-    }
-    
-
-    .mat-form-field.mat-form-field-invalid {
-        .mat-form-field-label {
-            color: #FFB4A9 !important;
-        }
-    }
-
-    .error-form-field.mat-form-field-appearance-outline {
-        .mat-form-field-outline {
-            color: #FFB4A9 !important;
-        }
-    }
-
-    .error-form-field.mat-form-field-appearance-outline.mat-focused {
-        .mat-form-field-outline-thick {
-            color: #FFB4A9 !important;
-        }  
-    }
-
-    .mat-form-field.error-form-field .mat-form-field-label {
-        color: #FFB4A9 !important;
-    }
-
-    .mat-form-field.error-form-field.mat-focused .mat-form-field-label {
-        color: #FFB4A9 !important;
-    }
-
-    mat-hint {
-        color: rgba(237, 239, 240, 0.6);
-    }
-
-    .mat-input-element {
-        color: #EDEFF0;
-        &::placeholder {
-            color: rgba(237, 239, 240, 0.38) !important;
-        }
-    }
-
-    .swiper-pagination-bullet-active {
-        background-color: var(--swiper-pagination-bullet-active-dark);
-    }
-
-    .swiper-pagination-bullet {
-        background-color: var(--swiper-pagination-bullet-dark);
-    }
-
-    button.item.activated,
-    .item-md.activated {
-        background-color: var(--bg-color-dark-theme-2);
-    }
-
-    .gift-card-content {
-        .header-extension {
-            background: var(--bg-color-dark-theme-toolbar);
-        }
-    }
-
-    .box-notification {
-
-        &.success,
-        &.info,
-        &.warning,
-        &.error {
-            background: none;
-            border: 1px solid;
-        }
-    }
-
-    .text-danger {
-        color: #FFB4A9 !important;
-    }
-
-    ion-toggle {
-        --background: var(--bg-color-dark-theme-3);
-        --background-checked: var(--toggle-background-active-dark-theme) !important;
-
-        &::before {
-            background-color: var(--bg-color-dark-theme-3);
-        }
-
-        --handle-background: var(--toggle-color-dark-theme);
-        --handle-background-checked: var(--toggle-checked-color-dark-theme) !important;
-    }
-
-    .alert-ios {
-        .alert-button {
-            border-color: var(--bg-color-dark-theme-3);
-        }
-
-        .alert-input {
-            border-color: var(--bg-color-dark-theme-3);
-        }
-    }
-
-    ion-alert {
-        .alert-wrapper {
-            background: var(--bg-color-dark-theme-2);
-            color: var(--text-color-dark-theme) !important;
-
-            .alert-title {
-                color: var(--text-color-dark-theme) !important;
-            }
-        }
-        [aria-checked=true].sc-ion-alert-md .alert-radio-label.sc-ion-alert-md {
-            color: var(--text-color-dark-theme) !important;
-        }
-
-        .alert-radio-group {
-            .alert-radio:not([aria-checked='true']) .alert-radio-label {
-                color: var(--text-color-dark-theme) !important;
-            }
-        }
-
-        .alert-input {
-            color: var(--text-color-dark-theme) !important;
-            background: var(--bg-color-dark-theme);
-            color: var(--text-color-dark-theme) !important;
-        }
-
-        .alert-message {
-            color: var(--text-color-dark-theme) !important;
-        }
-    }
-
-    ion-select{
-        color: var(--text-color-dark-theme) !important;
-    }
-
-    .alert-ios .alert-button ion-action-sheet {
-        .action-sheet-group {
-            background: var(--bg-color-dark-theme-2);
-            color: var(--text-color-dark-theme) !important;
-
-            .action-sheet-button {
-                color: var(--text-color-dark-theme) !important;
-            }
-        }
-    }
-
-    .search-container {
-        --background: var(--bg-color-dark-theme);
-        background: var(--bg-color-dark-theme);
-    }
-
-    .search-wrapper {
-        --background: var(--bg-color-dark-theme-2);
-        color: var(--text-color-dark-theme-2) !important;
-    }
-
-    search-bar {
-        background: var(--bg-color-dark-theme);
-        border-color: #2B4552;
-
-        ion-input {
-            background: var(--bg-color-dark-theme);
-            color: var(--text-color-dark-theme) !important;
-        }
-    }
-
-    action-sheet ion-searchbar {
-        background: var(--bg-color-dark-theme-2);
-
-        ion-input {
-            background: #292929;
-        }
-    }
-
-    add-button {
-        .add-button {
-            &__icon {
-                filter: invert(1);
+          .encrypt-password-form {
+            .slide-title {
+              h3 {
+                color: var(--bg-hight-color-abcpay-dark) !important;
+              }
             }
 
-            &__text {
-                color: var(--text-color-dark-theme-2) !important;
-            }
-        }
-    }
-
-    .prompt-user {
-        .title-info {
-            color: var(--text-color-dark-theme) !important;
-        }
-
-        .subtitle-info {
-            color: var(--text-color-dark-theme-2) !important;
-        }
-    }
-
-    .energized,
-    a.energized {
-        color: #FFB4A9;
-    }
-
-    .gravatar-img {
-        filter: invert(1);
-    }
-
-    .alertTheme {
-        color: var(--text-color-dark-theme) !important;
-
-        .alert-message {
-            color: var(--text-color-dark-theme) !important;
-        }
-
-        .alert-wrapper {
-            background-color: var(--bg-color-dark-theme-2);
-        }
-    }
-
-    .alertDanger {
-        .alert-message {
-            color: var(--color-danger);
-        }
-
-        color: var(--text-color-dark-theme) !important;
-
-        .alert-wrapper {
-            background-color: var(--bg-color-dark-theme-2);
-        }
-
-        .alert-input {
-            color: var(--text-color-dark-theme) !important;
-        }
-    }
-
-    .toast-bg {
-        .toast-wrapper {
-            background-color: var(--bg-color-dark-theme-2);
-            color: var(--text-color-dark-theme-2) !important;
-        }
-    }
-
-    // 3.1 Lists
-    .bp-list {
-        ion-item {
-
-            &.ios,
-            &.md {
-                border: 0;
-                --background: linear-gradient(0deg, rgba(126, 208, 255, 0.11), rgba(126, 208, 255, 0.11)), #001E2E;
-                --padding-start: 5px;
-                --padding-end: 5px;
-                margin: 1rem 1rem;
-                &::part(native) {
-                    border-radius: 8px;
-                }
-                &::part(detail-icon) {
-                    filter: brightness(0) saturate(100%) invert(71%) sepia(7%) saturate(485%) hue-rotate(155deg) brightness(88%) contrast(87%);
-                }
-            }
-
-            &:not(.create-button):not(.assertive) {
-
-                &.ios,
-                &.md {
+            form {
+              ion-item {
+                --background: var(--bg-color-dark-theme) !important;
+                border: 1px solid var(--bg-outline-color-abcpay-dark) !important;
+                ion-input {
+                  color: var(--bg-hight-color-abcpay-dark) !important;
+                  input[type='password'],
+                  input[type='text'] {
                     color: var(--text-color-dark-theme) !important;
+                  }
                 }
+                &.error-message {
+                  border: 0 !important;
+                  padding: 0;
+                }
+              }
             }
+          }
         }
 
-        .main-label,
-        .main-note,
-        .status .royal {
+        ion-button {
+          ion-icon {
+            color: rgba(237, 239, 240, 0.6) !important;
+            &[name='eye-off'] {
+              color: var(--text-grey);
+            }
+            &[name='alert'] {
+              color: #ffb4a9;
+            }
+          }
+        }
+
+        .encrypt-password-small {
+          background: linear-gradient(
+              0deg,
+              rgba(126, 208, 255, 0.11),
+              rgba(126, 208, 255, 0.11)
+            ),
+            #001e2e !important;
+          .slide-title {
+            h3 {
+              color: var(--bg-surface-color-abcpay-dark) !important;
+            }
+          }
+          .info-encrypt {
+            color: rgba(237, 239, 240, 0.6) !important;
+          }
+          .submit-btn {
+            color: var(--color-primary-abcpay-dark) !important;
+            &[disabled] {
+              color: rgba(224, 228, 230, 0.38) !important;
+            }
+          }
+          ion-item {
+            --background: linear-gradient(
+                0deg,
+                rgba(126, 208, 255, 0.11),
+                rgba(126, 208, 255, 0.11)
+              ),
+              #001e2e !important;
+            border-color: rgba(237, 239, 240, 0.38) !important;
+            ion-input {
+              color: var(--text-color-dark-theme);
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .notification-modal-panel {
+    .notification-content {
+      background-color: var(--bg-color-dark-theme-2);
+
+      .slide-zoom {
+        .notification-info {
+          .notification-title {
             color: var(--text-color-dark-theme) !important;
-        }
+          }
 
-        ion-item-divider {
-            background: var(--bg-color-dark-theme) !important;
-            border-color: #314d5c !important;
-
-            ion-label {
-                color: var(--text-color-dark-theme-3) !important;
-            }
-        }
-
-        .summary-item-detail {
+          .notification-message {
             color: var(--text-color-dark-theme) !important;
-
-            .text-input {
-                color: var(--text-color-dark-theme) !important;
-                opacity: 1;
-            }
+          }
         }
 
-        .total-amount {
+        .notification-button {
+          ion-label {
             color: var(--text-color-dark-theme) !important;
+          }
         }
+      }
+    }
+  }
 
-        &.settings-list {
-            ion-item {
-                background: linear-gradient(0deg, rgba(126, 208, 255, 0.05), rgba(126, 208, 255, 0.05)), #001E2E !important;
-                --background: linear-gradient(0deg, rgba(126, 208, 255, 0.05), rgba(126, 208, 255, 0.05)), #001E2E !important;
-                --border-color: #2B4552;
-                ion-label {
-                    color: #FFF;
-                    &.color-danger {
-                        color: #FFB4A9 !important;
-                    }
-                }
-                ion-note {
-                    background: transparent;
-                    color: rgba(237, 239, 240, 0.6);
-                }
-                ion-radio {
-                    --color-checked: var(--color-primary-abcpay-dark);
-                }
-                ion-icon {
-                    color: #555a60 !important;
-                }
-                &.create-button {
-                    ion-label {
-                        color: var(--color-primary-abcpay-dark) !important;
-                    }
-                }
-                .copayer {
-                    color: #FFF;
-                }
-                .pk {
-                    color: rgba(237, 239, 240, 0.6) !important;
-                }
-                &:last-child {
-                    border-bottom: 1px solid #2B4552 !important;
-                    --border-color: transparent;
-                }
-              
-                &:first-child {
-                    border-top: 1px solid #2B4552 !important;
-                }
-            }
-            .item-start {
-                border-top: 1px solid #2B4552 !important;
-                --border-color: transparent;
-            }
-            
-            .item-end {
-                border-bottom: 1px solid #2B4552 !important;
-                --border-color: transparent;
-            }
-            ion-item-divider {
-                ion-label {
-                    color: rgba(237, 239, 240, 0.6) !important;
-                }
-                ion-icon[name="help-circle"] {
-                    color: rgba(237, 239, 240, 0.6) !important;
-                }
-            }
-            label-tip {
-                background: var(--bg-color-dark-theme) !important;
-                div[label-tip-body] {
-                    color: rgba(237, 239, 240, 0.6);
-                }
-                .label-tip-link {
-                    color: var(--color-primary-abcpay-dark);
-                }
-            }
-        }
+  // 5 - Tabs
+  // 5.1 Tab Home
+  page-home {
+    .total-amount-container {
+      .total-amount-value {
+        color: var(--text-color-dark-theme) !important;
+      }
     }
 
-    .button-secondary {
-        --background: var(--bg-color-dark-theme-3) !important;
-        color: var(--text-color-dark-theme-2) !important;
-
-        &:hover,
-        &:focus,
-        &:active {
-
-            &.md,
-            &.ios {
-                --background-color: var(--bg-color-dark-theme-2) !important;
-                color: var(--text-color-dark-theme-2) !important;
-            }
-        }
-
-        &:active,
-        &.activated {
-
-            &.md,
-            &.ios {
-                --background: var(--bg-color-dark-theme-2) !important;
-                color: var(--text-color-dark-theme-2) !important;
-            }
-        }
-    }
-
-    // 3.2 - Label tip
-    label-tip {
-        opacity: 0.7;
-        color: var(--text-color-dark-theme-2) !important;
-
-        &.info {
-            background-color: var(--bg-color-dark-theme-4) !important;
-
-            &:before {
-                border-bottom-color: var(--bg-color-dark-theme-4) !important;
-            }
-        }
-
-        &.warn {
-            background-color: var(--bg-color-dark-theme-4) !important;
-
-            &:before {
-                border-bottom-color: var(--bg-color-dark-theme-4) !important;
-            }
-        }
-
-        &.danger {
-            background-color: var(--bg-color-dark-theme-4) !important;
-
-            &:before {
-                border-bottom-color: var(--bg-color-dark-theme-4) !important;
-            }
-        }
-
-        .label-header {
-            color: var(--text-color-dark-theme) !important;
-        }
-    }
-
-    // 3.3 - General cards
-    action-card-v4.card {
+    .section-header {
+      color: rgba(237, 239, 240, 0.6) !important;
+      .date-label {
         background-color: var(--bg-color-dark-theme-2);
-
-        .action-card__content {
-            background-color: var(--bg-color-dark-theme-2);
-
-            .action-card__title {
-                color: var(--text-color-dark-theme) !important;
-            }
-        }
-
-        .bitpay-card-header,
-        .home-gift-card-header {
-            background-color: var(--bg-color-dark-theme-3);
-        }
+      }
     }
 
-    action-card.card {
-        background: var(--bg-color-dark-theme-2);
-
-        .action-card {
-            &__content {
-                background: var(--bg-color-dark-theme-2);
-            }
-        }
+    .date-label,
+    .date {
+      color: #94a3ac !important;
     }
 
-    .card {
-        page-txp {
-            .proposal-container .item-inner {
-                border-bottom: 1px solid var(--border-color-dark-theme-2);
-            }
-        }
+    .message {
+      &-background {
+        background-color: var(--bg-color-dark-theme-message);
+      }
     }
 
-    .offer-card {
-        background: var(--bg-color-dark-theme-2);
-
-        .main-label {
-            color: var(--text-color-dark-theme) !important;
-        }
-
-        .extended-info .bp-list {
-            .item {
-                background: var(--bg-color-dark-theme-2);
-
-                &:not(:last-child) {
-                    border-top: 1px dashed #434d5a;
-                }
-            }
-
-            .total {
-                color: white;
-            }
-        }
-
-        .terms {
-            color: #8e8d8d;
-        }
+    .exchange-rate-title {
+      color: #edeff0 !important;
     }
 
-    // 3.4 - Expandable header
-    ion-content.add-padding-bottom,
-    .add-padding-bottom ion-content {
-
-        .fixed-content,
-        .scroll-content {
-            background-color: var(--bg-color-dark-theme);
+    .total-amount-container {
+      background: #0e3244;
+      .average-container {
+        .negative-avg {
+          color: #ffb4a9 !important;
         }
+        .possitive-avg {
+          color: #73daa5 !important;
+        }
+      }
+    }
+  }
+
+  // 5.15 Price Page
+  price-page {
+    .price-wraper {
+      background: var(--bg-color-dark-theme-8);
+    }
+    ion-toolbar.footer-price {
+      --background: linear-gradient(
+          0deg,
+          rgba(126, 208, 255, 0.08),
+          rgba(126, 208, 255, 0.08)
+        ),
+        #001e2e;
     }
 
-    .wide-header__title {
+    .total-amount-container {
+      .total-amount-value {
         color: var(--text-color-dark-theme) !important;
-        background: var(--bg-color-dark-theme);
+      }
+      .negative-avg {
+        color: #ffb4a9 !important;
+        border-radius: 50vh;
+      }
+
+      .possitive-avg {
+        color: #73daa5 !important;
+        border-radius: 50vh;
+      }
     }
 
-    wide-header-page,
-    card-catalog-page {
-        .wide-header {
-            .toolbar-background {
-                background: var(--bg-color-dark-theme-toolbar);
-            }
+    ion-chip {
+      &.inactive {
+        ion-label {
+          color: rgba(224, 228, 230, 0.6) !important;
         }
-    }
-
-    .header-extend {
-        background: var(--bg-color-dark-theme-toolbar);
-    }
-
-    // 3.5 - Toolbar
-    ion-toolbar {
-        background: var(--bg-color-dark-theme);
-        --background: var(--bg-color-dark-theme);
-        color: var(--text-color-dark-theme) !important;
-        --border-width: 0 !important;
-    }
-
-    .content-ios .toolbar-background-ios {
-        background: var(--bg-color-dark-theme);
-    }
-
-    .bar-button-default-md,
-    .bar-button-default.bar-button-md-default,
-    .bar-button-clear-md-default {
-        color: var(--text-color-dark-theme) !important;
-    }
-
-    .toolbar-content-md,
-    .toolbar-content-ios {
-        color: var(--text-color-dark-theme) !important;
-
-        .bar-buttons-md,
-        .bar-buttons-ios {
-            .bar-button .button-inner {
-                color: var(--text-color-dark-theme-2) !important;
-            }
+      }
+      &.active {
+        ion-label {
+          color: var(--color-primary-abcpay-dark) !important;
         }
+        background: linear-gradient(
+            0deg,
+            rgba(126, 208, 255, 0.14),
+            rgba(126, 208, 255, 0.14)
+          ),
+          #001e2e !important;
+      }
+    }
+  }
+
+  // 5.2 - Tab Wallets
+  page-wallets {
+    .collapse > .collapse-btn {
+      background: var(--bg-color-dark-theme-2);
+    }
+
+    .section-header {
+      border-color: rgba(112, 129, 138, 0.38);
+    }
+
+    .token-container {
+      background: linear-gradient(
+          0deg,
+          rgba(126, 208, 255, 0.05),
+          rgba(126, 208, 255, 0.05)
+        ),
+        #001e2e;
+      ion-item {
+        --border-color: rgba(112, 129, 138, 0.38);
+        background: linear-gradient(
+            0deg,
+            rgba(126, 208, 255, 0.05),
+            rgba(126, 208, 255, 0.05)
+          ),
+          #001e2e !important;
+      }
+      .token-item {
+        background: linear-gradient(
+            0deg,
+            rgba(126, 208, 255, 0.05),
+            rgba(126, 208, 255, 0.05)
+          ),
+          #001e2e;
+      }
+      .address-token {
+        color: rgba(224, 228, 230, 0.6);
+      }
+      .wrap-key-token {
+        color: rgba(182, 201, 216, 0.6);
+      }
+    }
+
+    .collapse .item-img {
+      filter: invert(1);
+    }
+
+    .header-title {
+      color: var(--bg-hight-color-abcpay-dark);
+    }
+
+    .bp-header {
+      ion-toolbar {
+        --background: var(--color-primary-container-abcpay-dark);
+        background: var(--color-primary-container-abcpay-dark);
+      }
     }
 
     ion-title {
-        color: var(--text-color-dark-theme) !important;
+      &.key-title {
+        color: var(--color-on-primary-container-abcpay-dark) !important;
+      }
     }
 
-    .header .toolbar-background {
-        background-color: var(--bg-color-dark-theme);
-    }
-
-    .toolbar {
-
-        &.toolbar-md,
-        &.toolbar-ios {
-
-            .back-button,
-            .close-container {
-                background-color: var(--bg-color-dark-theme-2);
-                color: var(--text-color-dark-theme) !important;
-
-                &.button-default,
-                &.button-md.activated,
-                &.button-ios.activated {
-                    background-color: var(--bg-color-dark-theme-2);
-                }
-            }
+    .balance {
+      background: var(--color-primary-container-abcpay-dark);
+      ion-button {
+        --color: var(--color-primary-abcpay-dark);
+      }
+      .balance-str {
+        .eye {
+          color: #75a9c4;
         }
+        .balance-alt-str {
+          color: var(--color-on-primary-container-abcpay-dark);
+        }
+      }
     }
 
-    page-bitpay-card {
-        .toolbar {
-
-            &.toolbar-md,
-            &.toolbar-ios {
-                .back-button {
-                    background-color: rgba(155, 163, 174, 0.12);
-                }
-            }
-        }
-
-        ion-spinner {
-            * {
-                stroke: var(--text-color-dark-theme) !important;
-            }
-        }
-    }
-
-    page-bitpay-card-intro {
+    ion-menu {
+      ion-header {
         ion-toolbar {
-            background-color: var(--bg-color-dark-theme-2);
+          --background: linear-gradient(
+              0deg,
+              rgba(126, 208, 255, 0.14),
+              rgba(126, 208, 255, 0.14)
+            ),
+            #001e2e !important;
         }
-    }
-
-    // 4 - Components
-    action-sheet {
-        .action-sheet {
-            background: var(--bg-color-dark-theme-8) !important;
-
-            .bp-list {
-                background: var(--bg-color-dark-theme-2) !important;
-
-                ion-item {
-
-                    &.ios,
-                    &.md {
-                        --background: var(--bg-color-dark-theme-2) !important;
-                        color: var(--text-color-dark-theme) !important;
-                    }
-                }
-            }
-
-            .ion-item {
-
-                &.ios,
-                &.md {
-                    --background: var(--bg-color-dark-theme-2) !important;
-                }
-            }
-        }
-    }
-
-    amount-picker {
-        .amount-picker {
-            &__amount {
-                color: var(--color-primary);
-            }
-
-            &__button {
-                border-color: var(--color-primary);
-
-                img {
-                    filter: brightness(1.7) hue-rotate(8deg);
-                }
-            }
-        }
-    }
-
-    info-sheet {
-        .info-container {
-            background-color: var(--bg-color-dark-theme-2);
-
-            info-sheet-template {
-                .confirm-sheet {
-                    background-color: var(--bg-color-dark-theme-2);
-                    color: var(--text-color-dark-theme) !important;
-
-                    .sheet-title {
-                        color: var(--text-color-dark-theme) !important;
-                    }
-
-                    .sheet-text {
-                        color: rgba(237, 239, 240, 0.6) !important;
-                    }
-
-                    .sheet-btn-group {
-                        border-color: var(--border-color-dark-theme);
-                        color: var(--color-primary-abcpay-dark) !important;
-
-                        .sheet-btn.default,
-                        .sheet-second-btn {
-                            color: var(--color-primary-abcpay-dark) !important;
-                        }
-                    }
-                }
-            }
-
-            .sheet-second-btn-group {
-                color: var(--color-primary-abcpay-dark) !important;
-            }
-        }
-    }
-
-    wallet-selector {
-
-        .item-divider-md,
-        .item-divider-ios {
-            background-color: var(--bg-color-dark-theme-2);
-            border-bottom: 1px solid var(--bg-color-dark-theme-2);
-        }
-    }
-
-    memo-component {
-        .textarea-custom {
-            background-color: var(--bg-color-dark-theme);
-            color: var(--text-color-dark-theme) !important;
-        }
-
-        .title {
-            color: var(--text-color-dark-theme) !important;
-        }
-    }
-
-    contact-pop-up-component {
-        .text-input {
-            background-color: var(--bg-color-dark-theme);
-            color: var(--text-color-dark-theme) !important;
-        }
-
-        .title {
-            color: var(--text-color-dark-theme) !important;
-        }
-    }
-
-    page-choose-fee-level {
-        .testnet-warning {
-            background-color: var(--color-warning);
-        }
-
-        .fee {
-            &-speed-name {
-                color: var(--text-color-dark-theme) !important;
-            }
-
-            &-speed-satByte {
-                color: var(--text-color-dark-theme) !important;
-            }
-
-            &-avg-label {
-                color: var(--text-color-dark-theme) !important;
-            }
-
-            &-avg-time {
-                color: var(--text-color-dark-theme) !important;
-            }
-
-            &-card {
-                background-color: var(--bg-color-dark-theme);
-
-                .item {
-
-                    &.item-ios,
-                    &.item-md {
-                        background: var(--bg-color-dark-theme);
-                        color: var(--text-color-dark-theme) !important;
-                    }
-                }
-            }
-        }
-    }
-
-    page-slide-to-accept {
-        background: linear-gradient(to bottom,
-                rgba(18, 18, 18, 0),
-                rgba(18, 18, 18, 1),
-                rgba(18, 18, 18, 1));
-        background: -webkit-linear-gradient(to bottom,
-                rgba(18, 18, 18, 0),
-                rgba(18, 18, 18, 1),
-                rgba(18, 18, 18, 1));
-    }
-
-    page-fingerprint {
-        .fingerprint-button {
-            .unlock-btn {
-                color: #EDEFF0 !important;
-            }
-        }
-    }
-
-    page-pin {
-        ion-header {
-            .toolbar-background {
-                background-color: var(--bg-color-dark-theme);
-            }
-        }
-
-        ion-content {
-            background-color: var(--bg-color-dark-theme) !important;
-        }
-
-        .pin-header {
-            .title {
-                color: var(--text-color-dark-theme) !important;
-            }
-        }
-
-        .content {
-            background-color: var(--bg-color-dark-theme);
-        }
-    }
-
-    pin-pad {
-        ion-col {
-            background: var(--color-secondary-container-abcpay-dark);
-            .letters {
-                color: #9b9b9b;
-            }
-        }
-    }
-
-    pin-dots {
-        .filled {
-            background-color: var(--bg-hight-color-abcpay-dark);
-        }
-    }
-
-    page-feedback-card {
-        ion-card.card {
-            background-color: var(--bg-color-dark-theme-2);
-            color: var(--text-color-dark-theme) !important;
-        }
-    }
-
-    page-lotus-donation-card {
-        ion-card.card {
-            background-color: var(--bg-color-dark-theme-2);
-            color: var(--text-color-dark-theme) !important;
-        }
-
-        .donate-btn {
-            ion-button {
-                --background: var(--color-primary-abcpay-dark) !important;
-                color: #00344B;
-            }
-        }
-    }
-
-    incoming-data-menu {
-     img {
-         filter: invert(0.7);
-     }
-
-     .title {
-         color: var(--bg-surface-color-abcpay-dark);
-     }
-
-     .address {
-         color: var(--bg-surface-color-abcpay-dark);
-         opacity: .6;
-     }
-
-     .group-btn {
-         ion-button {
-             color: var(--color-primary-abcpay-dark)
-         }
-     }
- }
-
-    page-finish {
-        .bg-none {
-            background-color: var(--bg-color-dark-theme);
-        }
-
-        .container {
-            .content {
-                .body {
-                    &-text {
-                        &.bg-none {
-                            color: var(--text-color-dark-theme) !important;
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    encrypt-password,
-    miner-fee-warning {
-        action-sheet {
-            .action-sheet-bottom {
-                background: #001E2E !important;
-
-                .encrypt-password,
-                .miner-fee {
-
-                    .encrypt-password-info,
-                    .miner-fee-info {
-                        .info {
-                            .title {
-                                color: var(--text-color-dark-theme) !important;
-                            }
-
-                            .text {
-                                color: var(--text-color-dark-theme-2) !important;
-
-                                b {
-                                    color: var(--text-color-dark-theme) !important;
-                                }
-                            }
-                        }
-                    }
-
-                    .info-encrypt {
-                        color: var(--text-grey)
-                    }
-
-                    .encrypt-password-form {
-                        .slide-title {
-                            h3 {
-                                color: var(--bg-hight-color-abcpay-dark) !important;
-                            }
-                        }
-
-                        form {
-                            ion-item {
-                                --background: var(--bg-color-dark-theme) !important;
-                                border: 1px solid var(--bg-outline-color-abcpay-dark) !important;
-                                ion-input {
-                                    color: var(--bg-hight-color-abcpay-dark) !important;
-                                    input[type='password'],
-                                    input[type='text'] {
-                                        color: var(--text-color-dark-theme) !important;
-                                    }
-                                }
-                                &.error-message {
-                                    border: 0 !important;
-                                    padding: 0;
-                                }
-                            }
-                        }
-                    }
-                }
-
-                ion-button {
-                    ion-icon {
-                        color: rgba(237, 239, 240, 0.6) !important;
-                        &[name="eye-off"] {
-                            color: var(--text-grey)
-                          }
-                        &[name="alert"] {
-                          color: #FFB4A9;
-                        }
-                      }
-                }
-
-                .encrypt-password-small {
-                    background: linear-gradient(0deg, rgba(126, 208, 255, 0.11), rgba(126, 208, 255, 0.11)), #001E2E !important;
-                    .slide-title {
-                        h3 {
-                            color: var(--bg-surface-color-abcpay-dark) !important;
-                        }
-                    }
-                    .info-encrypt {
-                        color: rgba(237, 239, 240, 0.6) !important;
-                    }
-                    .submit-btn {
-                        color: var(--color-primary-abcpay-dark) !important;
-                        &[disabled] {
-                            color: rgba(224, 228, 230, 0.38) !important;
-                        }
-                    }
-                    ion-item {
-                        --background: linear-gradient(0deg, rgba(126, 208, 255, 0.11), rgba(126, 208, 255, 0.11)), #001E2E !important;
-                        border-color: rgba(237, 239, 240, 0.38) !important;
-                        ion-input {
-                            color: var(--text-color-dark-theme)
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    .notification-modal-panel {
-        .notification-content {
-            background-color: var(--bg-color-dark-theme-2);
-
-            .slide-zoom {
-                .notification-info {
-                    .notification-title {
-                        color: var(--text-color-dark-theme) !important;
-                    }
-
-                    .notification-message {
-                        color: var(--text-color-dark-theme) !important;
-                    }
-                }
-
-                .notification-button {
-                    ion-label {
-                        color: var(--text-color-dark-theme) !important;
-                    }
-                }
-            }
-        }
-    }
-
-    // 5 - Tabs
-    // 5.1 Tab Home
-    page-home {
-        .total-amount-container {
-            .total-amount-value {
-                color: var(--text-color-dark-theme) !important;
-            }
-        }
-
-        .section-header {
-            color: rgba(237, 239, 240, 0.6) !important;
-            .date-label {
-                background-color: var(--bg-color-dark-theme-2);
-            }
-        }
-
-        .date-label, .date {
-            color: #94A3AC !important;
-        }
-
-        .message {
-            &-background {
-                background-color: var(--bg-color-dark-theme-message);
-            }
-        }
-
-        .exchange-rate-title {
-            color: #EDEFF0 !important;
-        }
-
-        .total-amount-container {
-            background: #0E3244;
-            .average-container {
-                .negative-avg {
-                    color: #FFB4A9 !important;
-                }
-                .possitive-avg {
-                    color: #73DAA5 !important;
-                }
-            }
-        }
-    }
-
-    // 5.15 Price Page
-    price-page {
-        .price-wraper {
-            background: var(--bg-color-dark-theme-8);
-        }
-        ion-toolbar.footer-price {
-            --background: linear-gradient(0deg, rgba(126, 208, 255, 0.08), rgba(126, 208, 255, 0.08)), #001E2E;
-        }
-
-        .total-amount-container {
-            .total-amount-value {
-                color: var(--text-color-dark-theme) !important;
-            }
-            .negative-avg {
-                color: #FFB4A9 !important;
-                border-radius: 50vh;
-              }
-            
-              .possitive-avg {
-                color: #73DAA5 !important;
-                border-radius: 50vh;
-              }
-        }
-
-        ion-chip {
-            &.inactive {
-                ion-label {
-                    color: rgba(224, 228, 230, 0.6) !important;
-                }
-            }
-            &.active {
-                ion-label {
-                    color: var(--color-primary-abcpay-dark) !important;
-                    }
-                background: linear-gradient(0deg, rgba(126, 208, 255, 0.14), rgba(126, 208, 255, 0.14)),
-                #001E2E !important;
-            }
-        }
-    }
-
-    // 5.2 - Tab Wallets
-    page-wallets {
-        .collapse>.collapse-btn {
-            background: var(--bg-color-dark-theme-2);
-        }
-
-        .section-header {
+      }
+      ion-content {
+        --background: linear-gradient(
+            0deg,
+            rgba(126, 208, 255, 0.05),
+            rgba(126, 208, 255, 0.05)
+          ),
+          #001e2e !important;
+        ion-list {
+          ion-item {
             border-color: rgba(112, 129, 138, 0.38);
-        }
-
-        .token-container {
-            background: linear-gradient(0deg, rgba(126, 208, 255, 0.05), rgba(126, 208, 255, 0.05)), #001E2E;
-            ion-item {
-                --border-color: rgba(112, 129, 138, 0.38);
-                background: linear-gradient(0deg, rgba(126, 208, 255, 0.05), rgba(126, 208, 255, 0.05)), #001E2E !important;
-            }
-            .token-item {
-                background: linear-gradient(0deg, rgba(126, 208, 255, 0.05), rgba(126, 208, 255, 0.05)), #001E2E;
-            }
-            .address-token {
-                color: rgba(224, 228, 230, 0.6);
-            }
-            .wrap-key-token {
-                color: rgba(182, 201, 216, 0.6);
-            }
-        }
-
-        .collapse .item-img {
-            filter: invert(1);
-        }
-
-        .header-title {
-            color: var(--bg-hight-color-abcpay-dark);
-        }
-
-        .bp-header {
-            ion-toolbar {
-                --background: var(--color-primary-container-abcpay-dark);
-                background: var(--color-primary-container-abcpay-dark);
-              }
-        }
-
-        ion-title {
-            &.key-title {
-                color: var(--color-on-primary-container-abcpay-dark) !important;
-            }
-        }
-
-        .balance {
-            background: var(--color-primary-container-abcpay-dark);
-            ion-button {
-                --color: var(--color-primary-abcpay-dark);
-            }
-            .balance-str {
-                .eye {
-                    color: #75a9c4;
-                }
-                .balance-alt-str {
-                    color: var(--color-on-primary-container-abcpay-dark);
-                }
-            }
-        }
-
-        ion-menu {
-            ion-header {
-                ion-toolbar {
-                    --background: linear-gradient(0deg, rgba(126, 208, 255, 0.14), rgba(126, 208, 255, 0.14)), #001E2E !important;
-                }
-            }
-            ion-content {
-                --background: linear-gradient(0deg, rgba(126, 208, 255, 0.05), rgba(126, 208, 255, 0.05)), #001E2E !important;
-                ion-list {
-                    ion-item {
-                        border-color: rgba(112, 129, 138, 0.38);
-                        --background: linear-gradient(0deg, rgba(126, 208, 255, 0.05), rgba(126, 208, 255, 0.05)), #001E2E !important;
-                        --color: var(--text-color-dark-theme) !important;
-                        ion-icon {
-                            &[name="checkmark-circle"] {
-                                color: var(--color-primary-abcpay-dark);
-                            }
-                    }
-                }
-            }
-            }
-            ion-footer {
-                ion-toolbar {
-                    --background: linear-gradient(0deg, rgba(126, 208, 255, 0.05), rgba(126, 208, 255, 0.05)), #001E2E !important;
-                    .key-import{
-                            border-color: #70818a;
-                            --color: #7ED0FF !important;
-                    }
-                }
-            }
-        }
-    }
-
-    page-txp {
-        .item {
-
-            &.item-ios,
-            &.item-md {
-                background-color: var(--bg-color-dark-theme-2);
-                color: var(--text-color-dark-theme) !important;
-            }
-            ion-label {
-                color: var(--text-color-dark-theme) !important;                
-            }
-        }
-
-        ion-note .amount {
-            color: var(--text-color-dark-theme) !important;
-        }
-    }
-
-    page-txp-details, page-tx-details {
-        .line::before {
-            background: rgba(237, 239, 240, 0.38) !important;
-        }
-        .proposal-deletion {
-            background-color: var(--bg-color-dark-theme);
-        }
-        .delete-button{
-            --color: #FFB4A9 !important;
-            color: #FFB4A9 !important;
-        }
-        .reject-note{
-            color: #FFB4A9 !important;
-        }
-        .accept-note{
-            color: #73DAA5 !important;
-        }
-        .proposal-deletion-help{
-            color: rgba(237, 239, 240, 0.6) !important;
-        }
-
-        .proposal-rejection {
-            background-color: var(--bg-color-dark-theme);
-        }
-
-        .tx-detail-list{
-            background: linear-gradient(0deg, rgba(126, 208, 255, 0.11), rgba(126, 208, 255, 0.11)), #001E2E;
-        }
-        .timeline-container{
-            --background: linear-gradient(0deg, rgba(126, 208, 255, 0.11), rgba(126, 208, 255, 0.11)), #001E2E;
-            .timeline-cover{
-                .timeline-header{
-                    color: rgba(237, 239, 240, 0.6);
-                }
-                .timeline-content-label{
-                    .action{
-                        color: #EDEFF0;
-                    }
-                    .name{
-                        color: rgba(237, 239, 240, 0.6);
-                    }
-                }
-                .time-content{
-                    color: rgba(237, 239, 240, 0.6);
-                }
-            }
-        }
-    }
-
-    page-key-qr-export,
-    page-extended-private-key {
-        .container {
+            --background: linear-gradient(
+                0deg,
+                rgba(126, 208, 255, 0.05),
+                rgba(126, 208, 255, 0.05)
+              ),
+              #001e2e !important;
+            --color: var(--text-color-dark-theme) !important;
             ion-icon {
-                color: #482A00;
+              &[name='checkmark-circle'] {
+                color: var(--color-primary-abcpay-dark);
+              }
             }
-            .warning-message {
-                color: #482A00;  
-            }
+          }
         }
+      }
+      ion-footer {
+        ion-toolbar {
+          --background: linear-gradient(
+              0deg,
+              rgba(126, 208, 255, 0.05),
+              rgba(126, 208, 255, 0.05)
+            ),
+            #001e2e !important;
+          .key-import {
+            border-color: #70818a;
+            --color: #7ed0ff !important;
+          }
+        }
+      }
+    }
+  }
+
+  page-txp {
+    .item {
+      &.item-ios,
+      &.item-md {
+        background-color: var(--bg-color-dark-theme-2);
+        color: var(--text-color-dark-theme) !important;
+      }
+      ion-label {
+        color: var(--text-color-dark-theme) !important;
+      }
     }
 
-    page-wallet-export {
-        .group-container {
-            background: linear-gradient(0deg, rgba(126, 208, 255, 0.11), rgba(126, 208, 255, 0.11)), #001E2E;
-            .include-private-item {
-                ion-label {
-                    color: #EDEFF0 !important;
-                }
-            }
-            .sub-include-private {
-                color: rgba(237, 239, 240, 0.6);
-                border-color: rgba(112, 129, 138, 0.38);
-            }
-        }
+    ion-note .amount {
+      color: var(--text-color-dark-theme) !important;
+    }
+  }
+
+  page-txp-details,
+  page-tx-details {
+    .line::before {
+      background: rgba(237, 239, 240, 0.38) !important;
+    }
+    .proposal-deletion {
+      background-color: var(--bg-color-dark-theme);
+    }
+    .delete-button {
+      --color: #ffb4a9 !important;
+      color: #ffb4a9 !important;
+    }
+    .reject-note {
+      color: #ffb4a9 !important;
+    }
+    .accept-note {
+      color: #73daa5 !important;
+    }
+    .proposal-deletion-help {
+      color: rgba(237, 239, 240, 0.6) !important;
     }
 
-    page-wallet-service-url {
-        .explanation {
+    .proposal-rejection {
+      background-color: var(--bg-color-dark-theme);
+    }
+
+    .tx-detail-list {
+      background: linear-gradient(
+          0deg,
+          rgba(126, 208, 255, 0.11),
+          rgba(126, 208, 255, 0.11)
+        ),
+        #001e2e;
+    }
+    .timeline-container {
+      --background: linear-gradient(
+          0deg,
+          rgba(126, 208, 255, 0.11),
+          rgba(126, 208, 255, 0.11)
+        ),
+        #001e2e;
+      .timeline-cover {
+        .timeline-header {
+          color: rgba(237, 239, 240, 0.6);
+        }
+        .timeline-content-label {
+          .action {
+            color: #edeff0;
+          }
+          .name {
             color: rgba(237, 239, 240, 0.6);
+          }
         }
-    }    
-
-    page-copayers,
-    page-txp-details,
-    token-info,
-    page-tx-details {
-        .timeline-container {
-            background-color: rgba(33, 51, 62, 1);
+        .time-content {
+          color: rgba(237, 239, 240, 0.6);
         }
+      }
     }
-    confirm-token,
-    page-confirm,
-    confirm-card-purchase-page,
-    page-txp-details,
-    page-tx-details,
-    token-info,
-    page-bitpay-card-topup,
-    page-create-eth-multisig {
-        .payment-proposal-to {
-            background-color: var(--bg-color-dark-theme-2);
-            color: var(--text-color-dark-theme) !important;
-        }
+  }
 
-        .wallet,
-        .multi-recip-title {
-            span {
-                color: var(--text-color-dark-theme) !important;
-            }
-        }
-
-        .bp-list {
-            .summary-item,
-            .total-amount-note,
-            .secondary-note {
-                color: rgba(237, 239, 240, 1) !important;
-            }
-
-            .sub-note{
-                color: rgba(237, 239, 240, 0.6) !important;
-            }
-
-            ion-note {
-                .note-container {
-                    color: rgba(255, 184, 93, 1) !important;
-                }
-            }
-            .send-to-content{
-                .item-name{
-                    color: rgba(204, 193, 233, 1) !important; 
-                }
-            }
-
-            .summary-amount-info{
-                .total-amount{
-                  color: rgba(255, 184, 93, 1) !important;
-                }
-                .total-amount-alt{
-                  color: rgba(255, 221, 182, 1);
-                }
-              }
-              .note-container {
-                color: rgba(255, 184, 93, 1) !important;
-              }
-        }
-
-        .background-button-content {
-            background-color: var(--bg-color-dark-theme-2);
-        }
-    
-        .input-contact-custom {
-            background-color: var(--bg-color-dark-theme-message);
-        }
-
-        .background-button-content {
-            background-color: var(--bg-color-dark-theme-2);
-        }
+  page-key-qr-export,
+  page-extended-private-key {
+    .container {
+      ion-icon {
+        color: #482a00;
+      }
+      .warning-message {
+        color: #482a00;
+      }
     }
-    token-info,
-    page-tx-details,
-    page-txp-details{
-        .payment-proposal-to{
-            background-color: unset;
+  }
+
+  page-wallet-export {
+    .group-container {
+      background: linear-gradient(
+          0deg,
+          rgba(126, 208, 255, 0.11),
+          rgba(126, 208, 255, 0.11)
+        ),
+        #001e2e;
+      .include-private-item {
+        ion-label {
+          color: #edeff0 !important;
         }
-        .tx-detail-list{
-            background: var(--bg-color-dark-theme-8);
-            .note-container{
-                color: #edeff0 !important;
-            }
-            .amount{
-                color: rgba(115, 218, 165, 1);
-            }
-            .negative-amount{
-                color: rgba(255, 180, 169, 1);
-            }
-            .amount-gold{
-                color: #FFB85D !important;         
-            }
-            .alternative{
-                color: rgba(237, 239, 240, 0.6);
-            }
-        }
-        .view-blockchain-button{
-            color: #7ED0FF
-        }
+      }
+      .sub-include-private {
+        color: rgba(237, 239, 240, 0.6);
+        border-color: rgba(112, 129, 138, 0.38);
+      }
+    }
+  }
+
+  page-wallet-service-url {
+    .explanation {
+      color: rgba(237, 239, 240, 0.6);
+    }
+  }
+
+  page-copayers,
+  page-txp-details,
+  token-info,
+  page-tx-details {
+    .timeline-container {
+      background-color: rgba(33, 51, 62, 1);
+    }
+  }
+  confirm-token,
+  page-confirm,
+  confirm-card-purchase-page,
+  page-txp-details,
+  page-tx-details,
+  token-info,
+  page-bitpay-card-topup,
+  page-create-eth-multisig {
+    .payment-proposal-to {
+      background-color: var(--bg-color-dark-theme-2);
+      color: var(--text-color-dark-theme) !important;
     }
 
-    page-bitpay-card-topup {
-        ion-content {
-            ion-item {
-                background-color: var(--bg-color-dark-theme);
-                color: var(--text-color-dark-theme) !important;
-            }
-        }
-    }
-    token-details,
-    page-wallet-details,
-    page-coinbase-account,
-    page-bitpay-card {
-        ion-content {
-            background: var(--bg-color-dark-theme);
-        }
-        .custom-txps-number{
-            background: #FFB85D;
-            color: #482A00;
-        }
-        .toolbar-background {
-            background: var(--bg-color-dark-theme) !important;
-        }
-
-        .search-button img {
-            filter: invert(1);
-        }
-
-        .ion-ios-more:before {
-            filter: invert(1);
-        }
-
-        .wallet-info {
-            .left-buttons {
-
-                .encrypted,
-                .testnet {
-                    filter: invert(1);
-                }
-
-                .read-only {
-                    filter: invert(0);
-                }
-
-                .square-border {
-                    span {
-                        border: 1px solid var(--text-color-dark-theme) !important;
-                    }
-                }
-            }
-        }
-
-        .action-buttons {
-            .button-standard {
-                color: var(--text-color-dark-theme) !important;
-            }
-            .action-btn {
-                ion-button {
-                    --background: var(--color-primary-abcpay-dark);
-                    --color: var(--color-on-primary-abcpay-dark);
-                    ion-icon {
-                        color: var(--color-on-primary-abcpay-dark);
-                    }
-                }
-            }
-        }
-
-        .donate-card {
-            color: var(--bg-surface-color-abcpay-dark);
-        }
-
-        .balance-card {
-            background: var(--bg-color-dark-theme);
-        }
-
-        .tx-history {
-            .tx-history-header {
-                &.item {
-                    background: linear-gradient(0deg, rgba(126, 208, 255, 0.08), rgba(126, 208, 255, 0.08)), #001E2E !important;
-                }
-            }
-
-            ion-item-group {
-                border-color: var(--border-color-dark-theme);
-            }
-
-            .item {
-                background: linear-gradient(0deg, rgba(126, 208, 255, 0.08), rgba(126, 208, 255, 0.08)), #001E2E;
-                --background: linear-gradient(0deg, rgba(126, 208, 255, 0.12), rgba(126, 208, 255, 0.12)), #001E2E;
-                color: var(--text-color-dark-theme) !important;
-                border-color: #314d5c;
-
-                &.warning-background {
-                    background-color: var(--bg-color-dark-theme-3);
-
-                    ion-note>.amount>.received,
-                    .action {
-                        color: var(--color-warning) !important;
-                    }
-                }
-
-                &.danger-background {
-                    background-color: var(--bg-color-dark-theme-3);
-
-                    ion-note>.amount>.received,
-                    .action {
-                        color: var(--color-danger) !important;
-                    }
-                }
-
-                ion-label {
-                    color: rgba(224, 228, 230, 0.6) !important;
-                    &.tx-history-header-label {
-                        span{
-                            color: #EDEFF0 !important;
-                        }
-                        .label-multisign {
-                            color: var(--text-grey)
-                        }
-                    }
-                    .ng-star-inserted {
-                        color: rgba(224, 228, 230, 0.6) !important;
-                    }
-                }
-            }
-
-            .item-tx-history {
-                border-color: #33505f !important;
-            }
-
-            .locked-balance {
-                --background: linear-gradient(0deg, rgba(126, 208, 255, 0.08), rgba(126, 208, 255, 0.08)), #001E2E;
-            }
-        }
-
-        .accept-btn {
-            --color: var(--color-primary-abcpay-dark) !important;
-        }
-
-        .pending-amount {
-            .total-alt-locked-amount, span {
-                color: rgba(237, 239, 240, 0.38) !important;
-            }
-        }
-
-        .tx-info {
-            .status {
-                background: var(--bg-color-dark-theme);
-                color: var(--text-grey)
-            }
-        }
-
-        .memo {
-            color: rgba(224, 228, 230, 0.6) !important;
-        }
-
-        .white-card {
-            background: linear-gradient(0deg, rgba(126, 208, 255, 0.08), rgba(126, 208, 255, 0.08)), #001E2E;
-            color: var(--text-color-dark-theme) !important;
-        }
-
-        .wrapper {
-            background: var(--bg-color-dark-theme) !important;
-        }
-
-        .header-transaction {
-            background: linear-gradient(0deg, rgba(126, 208, 255, 0.08), rgba(126, 208, 255, 0.08)), #001E2E;
-            ion-icon {
-                color: var(--text-grey)
-            }
-        }
-
-        .amount {
-            .received {
-              color: #73DAA5 !important;
-            }
-      
-            .sent {
-                color: #FFB4A9 !important;
-              &.pending {
-                color: #FFB4A9 !important;
-            }
-            }
-      
-            .immature {
-              color:#CCC1E9;
-            }
-        }
-
-        .date {
-            span {
-                color: var(--slateDark);
-            }
-        }
+    .wallet,
+    .multi-recip-title {
+      span {
+        color: var(--text-color-dark-theme) !important;
+      }
     }
 
-    page-copayers {
-        .white-card {
-            background: var(--bg-color-dark-theme);
-            color: var(--text-color-dark-theme) !important;
+    .bp-list {
+      .summary-item,
+      .total-amount-note,
+      .secondary-note {
+        color: rgba(237, 239, 240, 1) !important;
+      }
 
-            .timeline-content-icon ion-icon {
-                &[name='time-outline'] {
-                    filter: invert(1);
-                }
-            }
+      .sub-note {
+        color: rgba(237, 239, 240, 0.6) !important;
+      }
+
+      ion-note {
+        .note-container {
+          color: rgba(255, 184, 93, 1) !important;
         }
+      }
+      .send-to-content {
+        .item-name {
+          color: rgba(204, 193, 233, 1) !important;
+        }
+      }
+
+      .summary-amount-info {
+        .total-amount {
+          color: rgba(255, 184, 93, 1) !important;
+        }
+        .total-amount-alt {
+          color: rgba(255, 221, 182, 1);
+        }
+      }
+      .note-container {
+        color: rgba(255, 184, 93, 1) !important;
+      }
+    }
+
+    .background-button-content {
+      background-color: var(--bg-color-dark-theme-2);
+    }
+
+    .input-contact-custom {
+      background-color: var(--bg-color-dark-theme-message);
+    }
+
+    .background-button-content {
+      background-color: var(--bg-color-dark-theme-2);
+    }
+  }
+  token-info,
+  page-tx-details,
+  page-txp-details {
+    .payment-proposal-to {
+      background-color: unset;
+    }
+    .tx-detail-list {
+      background: var(--bg-color-dark-theme-8);
+      .note-container {
+        color: #edeff0 !important;
+      }
+      .amount {
+        color: rgba(115, 218, 165, 1);
+      }
+      .negative-amount {
+        color: rgba(255, 180, 169, 1);
+      }
+      .amount-gold {
+        color: #ffb85d !important;
+      }
+      .alternative {
+        color: rgba(237, 239, 240, 0.6);
+      }
+    }
+    .view-blockchain-button {
+      color: #7ed0ff;
+    }
+  }
+
+  page-bitpay-card-topup {
+    ion-content {
+      ion-item {
+        background-color: var(--bg-color-dark-theme);
+        color: var(--text-color-dark-theme) !important;
+      }
+    }
+  }
+  token-details,
+  page-wallet-details,
+  page-coinbase-account,
+  page-bitpay-card {
+    ion-content {
+      background: var(--bg-color-dark-theme);
+    }
+    .custom-txps-number {
+      background: #ffb85d;
+      color: #482a00;
+    }
+    .toolbar-background {
+      background: var(--bg-color-dark-theme) !important;
+    }
+
+    .search-button img {
+      filter: invert(1);
+    }
+
+    .ion-ios-more:before {
+      filter: invert(1);
+    }
+
+    .wallet-info {
+      .left-buttons {
+        .encrypted,
+        .testnet {
+          filter: invert(1);
+        }
+
+        .read-only {
+          filter: invert(0);
+        }
+
+        .square-border {
+          span {
+            border: 1px solid var(--text-color-dark-theme) !important;
+          }
+        }
+      }
+    }
+
+    .action-buttons {
+      .button-standard {
+        color: var(--text-color-dark-theme) !important;
+      }
+      .action-btn {
+        ion-button {
+          --background: var(--color-primary-abcpay-dark);
+          --color: var(--color-on-primary-abcpay-dark);
+          ion-icon {
+            color: var(--color-on-primary-abcpay-dark);
+          }
+        }
+      }
+    }
+
+    .donate-card {
+      color: var(--bg-surface-color-abcpay-dark);
+    }
+
+    .balance-card {
+      background: var(--bg-color-dark-theme);
     }
 
     .tx-history {
-        .icon-services {
-            border: 1px solid var(--text-color-dark-theme-2) !important;
+      .tx-history-header {
+        &.item {
+          background: linear-gradient(
+              0deg,
+              rgba(126, 208, 255, 0.08),
+              rgba(126, 208, 255, 0.08)
+            ),
+            #001e2e !important;
+        }
+      }
+
+      ion-item-group {
+        border-color: var(--border-color-dark-theme);
+      }
+
+      .item {
+        background: linear-gradient(
+            0deg,
+            rgba(126, 208, 255, 0.08),
+            rgba(126, 208, 255, 0.08)
+          ),
+          #001e2e;
+        --background: linear-gradient(
+            0deg,
+            rgba(126, 208, 255, 0.12),
+            rgba(126, 208, 255, 0.12)
+          ),
+          #001e2e;
+        color: var(--text-color-dark-theme) !important;
+        border-color: #314d5c;
+
+        &.warning-background {
+          background-color: var(--bg-color-dark-theme-3);
+
+          ion-note > .amount > .received,
+          .action {
+            color: var(--color-warning) !important;
+          }
         }
 
-        .amount {
-            color: var(--text-color-dark-theme) !important;
+        &.danger-background {
+          background-color: var(--bg-color-dark-theme-3);
+
+          ion-note > .amount > .received,
+          .action {
+            color: var(--color-danger) !important;
+          }
         }
 
-        .date {
-            color: var(--text-color-dark-theme-2) !important;
-        }
-    }
-
-    wallet-receive,
-    page-choose-fee-level {
-        .addr-header {
-            .addr-title {
-                color: var(--text-color-dark-theme) !important;
+        ion-label {
+          color: rgba(224, 228, 230, 0.6) !important;
+          &.tx-history-header-label {
+            span {
+              color: #edeff0 !important;
             }
-
-            .addr-buttons .addr-update {
-                background-color: var(--bg-color-dark-theme-3);
-            }
-        }
-
-        .addr-content {
-            .addr-container {
-                .text-address {
-                    background-color: var(--bg-color-dark-theme-3);
-                    color: var(--text-color-dark-theme-3);
-                }
-            }
-
-            .qr-container {
-                .lines-background {
-                    background: url(../assets/img/curved-lines-background.png) center center no-repeat var(--bg-color-warning);
-                    opacity: 0.1;
-                }
-            }
-        }
-
-        .close-btn {
-            button {
-                color: var(--text-color-dark-theme) !important;
-            }
-        }
-
-        .segment-button {
-            color: var(--text-color-dark-theme) !important;
-        }
-
-        .addr-sub-title {
-            color: rgba(224, 228, 230, 0.6);
-        }
-
-        .action-buttons {
-            .action-button {
-              ion-button {
-                --background: var(--color-secondary-container-abcpay-dark) !important;
-                ion-icon {
-                    color: var(--color-on-secondary-container-abcpay-dark) !important;
-                }
-              }
-              .ellipsis {
-                color: var(--color-on-secondary-container-abcpay-dark) !important;
-              }
+            .label-multisign {
+              color: var(--text-grey);
             }
           }
-    }
-
-    page-send-select-inputs {
-     ion-label {
-         color: var(--text-color-dark-theme);
-     }
-
-     .address {
-         color: var(--text-grey)
-     }
-
-     .disabled {
-         color: var(--text-grey)
-     }
-
-     ion-list {
-         background: var(--bg-color-dark-theme-8);
-         --background: var(--bg-color-dark-theme-8);
-     }
-
-     .content-list {
-         .label-address {
-             border-bottom: 1px solid var(--text-grey);
-         }
-
-         .select-inputs-header {
-             border-bottom: 1px solid var(--text-grey);
-         }
-     }
-
- }
-    
-
-    page-send,
-    page-multi-send,
-    page-send-select-inputs,
-    page-select-inputs,
-    page-proposals-notifications {
-        .wallet-name-label{
-            color: #FFFFFF;
-        }
-        .available-letter{
-            color:  rgba(237, 239, 240, 0.6) !important;
-        }
-        .btn-function-group{
-            --color: rgba(126, 208, 255, 1);
-            --border-color: rgba(224, 228, 230, 0.6);
-            .btn-add-more{
-            --color: rgba(126, 208, 255, 1);
-            --border-color: rgba(112, 129, 138, 1);
-            }
-        }
-        .amount {
-            color: var(--text-color-dark-theme) !important;
-        }
-
-        .address,
-        .amount-str {
-            opacity: 1;
-            color: var(--text-color-dark-theme-2) !important;
-        }
-
-        .recipient {
-            
-            ion-label {
-                color: var(--text-color-dark-theme) !important;
-            }
-        }
-
-        ion-header .item-divider-exp-header {
-            .header-data {
-                color: var(--text-color-dark-theme-2) !important;
-            }
-        }
-
-        .content-list {
-            .item {
-                --background: linear-gradient(0deg, rgba(126, 208, 255, 0.11), rgba(126, 208, 255, 0.11)), #001E2E;
-
-                .item-inner {
-                    border-bottom: 1px solid var(--border-color-dark-theme);
-                }
-            }
-
-            .item-divider-header {
-                &.item {
-                    background: var(--bg-color-dark-theme-2);
-                    color: var(--text-color-dark-theme-2) !important;
-                }
-            }
-        }
-
-        .total-inputs {
-            &-str {
-                color: var(--text-color-dark-theme) !important;
-            }
-        }
-
-        .send-header-wrapper {
-            background-color: var(--bg-color-dark-theme);
-        }
-
-        .uri-header-wrapper {
-            background-color: var(--bg-color-dark-theme);
-        }
-
-        .search-wrapper {
-            .scan-icon {
-                border-left: 1px solid rgba(151, 151, 151, 0.2);
-            }
-        }
-
-        .invalid {
-            border: 1px solid var(--color-error);
-            color: var(--color-error);
-        }
-
-        ion-checkbox {
-            .checkbox-icon {
-                border-color: var(--color-primary);
-                background-color: var(--bg-color-dark-theme);
-            }
-        }
-
-        .txp-container {
-            background: linear-gradient(0deg, rgba(126, 208, 255, 0.11), rgba(126, 208, 255, 0.11)), #001E2E;
-        }
-    }
-
-    recipient-component{
-        .recipient-header{
-            color: var(--text-grey)
-        }
-        .recipient-content-wrapper{
-            background: var(--bg-color-dark-theme-8);
-            .recipient-content{
-                .title{
-                    color: rgba(224, 228, 230, 0.6);
-                }
-                .search-address-wrapper, .amount-wrapper{
-                    --border-color: rgba(224, 228, 230, 0.6);
-                    --highlight-color-focused: rgba(224, 228, 230, 0.6);
-                    --highlight-color-valid	: rgba(224, 228, 230, 0.6);
-                    --highlight-color-invalid: rgba(224, 228, 230, 0.6);
-                    ion-input{
-                        --placeholder-color: rgba(237, 239, 240, 0.38);
-                        --color: #EDEFF0;
-                    }
-                }
-                .bold-text{
-                    color: #7ED0FF;
-                }
-                .unit-alt-text{
-                    color: rgba(224, 228, 230, 0.6);
-                    
-                }
-            }
-            
-        }
-        .item-title {
-            color: rgba(237, 239, 240, 0.6);
-        }
-    }
-
-    create-new-wallet {
-        .card-title {
-            color: #EDEFF0 !important;
-        }
-        .card-body {
-            color: rgba(237, 239, 240, 0.6) !important;
-        }
-    }
-
-    // 5.3 - Tab Cards
-    page-cards {
-        .card-item {
-            background: var(--bg-color-dark-theme);
-        }
-    }
-
-    buy-card-page {
-        .amount-box {
-            background-image: linear-gradient(-180deg,
-                    var(--bg-color-dark-theme) 30%,
-                    var(--gradient-dark-theme) 100%);
-
-            .discount-header {
-                background-color: var(--bg-color-dark-theme-2);
-                color: var(--text-color-dark-theme) !important;
-                border-bottom: 1px solid rgba(247, 247, 247, 0.02);
-            }
-        }
-
-        .buy-box {
-            background-color: #171717;
-        }
-    }
-
-    card-catalog-page {
-        .card-list-item {
-            background: none;
-
-            &__label {
-                color: var(--text-color-dark-theme) !important;
-            }
-        }
-
-        .category-item {
-            background: none;
-
-            ion-label {
-                color: var(--text-color-dark-theme) !important;
-            }
-
-            &:after {
-                background-color: var(--bg-color-dark-theme-2);
-            }
-        }
-
-        .no-results {
-            &__title {
-                color: var(--text-color-dark-theme) !important;
-            }
-
-            &__subtitle {
-                color: var(--text-color-dark-theme-3);
-            }
-        }
-    }
-
-    card-catalog-page,
-    merchant-page {
-        .section-divider {
-            background: var(--bg-color-dark-theme-2);
-        }
-    }
-
-    merchant-page {
-        .cover {
-            background-image: linear-gradient(180deg, #121212 0%, #1d1d1d 100%);
-        }
-
-        .body {
-
-            &__title,
-            &__subtitle {
-                color: var(--text-color-dark-theme) !important;
-            }
-
-            &__caption,
-            &__instructions {
-                color: var(--text-color-dark-theme-2) !important;
-            }
-        }
-    }
-
-    page-bitpay-phase-one-card-intro {
-        .phaseOne {
-            &__content {
-                &__title {
-                    color: var(--text-color-dark-theme) !important;
-                }
-
-                &__description {
-                    color: var(--text-color-dark-theme-3);
-                }
-            }
-
-            &__form {
-                &__link {
-                    color: var(--color-primary);
-                }
-            }
-
-            &__form-toggle {
-                &__label {
-                    color: var(--text-color-dark-theme-3);
-                    font-size: 14px;
-                    line-height: 18px;
-                }
-            }
-        }
-    }
-
-    page-addressbook-add {
-        .add-address-book-container {
-            .slide-title {
-                h3 {
-                    color: #E0E4E6 !important;
-                }
-            }
-            background: linear-gradient(0deg, rgba(126, 208, 255, 0.11), rgba(126, 208, 255, 0.11)), #001E2E;
-            ion-item {
-                --background: linear-gradient(0deg, rgba(126, 208, 255, 0.11), rgba(126, 208, 255, 0.11)), #001E2E !important;
-                border-color: rgba(237, 239, 240, 0.38);
-                ion-input {
-                    background: linear-gradient(0deg, rgba(126, 208, 255, 0.11), rgba(126, 208, 255, 0.11)), #001E2E;
-                    color: #EDEFF0;
-                }
-            }
-
-            .footer {
-                ion-button {
-                    color: var(--color-primary-abcpay-dark) !important;
-                    &[disabled] {
-                        color: rgba(224, 228, 230, 0.38) !important;
-                    }
-                }
-            }
-        }
-    }
-
-    page-addressbook {
-        .zero-state-icon {
-            background-color: var(--bg-color-dark-theme-3);
-        }
-        .add-button {
-            ion-icon {
-                color: rgba(237, 239, 240, 0.6) !important;
-            }
-        }
-        .zero-state {
-            .zero-state-heading {
-                color: #EDEFF0;
-            }
-            .zero-state-description {
-                color: rgba(237, 239, 240, 0.6);
-            }
-        }
-    }
-
-    page-addressbook-view {
-        ion-item {
-            ion-label {
-                color: rgba(237, 239, 240, 0.6) !important;
-                .comment {
-                    color: #EDEFF0 !important;
-
-                }
-            }
-            &.btn-send-container {
-                ion-label {
-                    color: var(--color-primary-abcpay-dark) !important;
-                    &.text-danger {
-                        color: #FFB4A9 !important;
-                    }
-                }
-            }
-        }
-    }
-
-    page-wallet-addresses,
-    page-wallet-transaction-history {
-        ion-item {
-            background: linear-gradient(0deg, rgba(126, 208, 255, 0.05), rgba(126, 208, 255, 0.05)), #001E2E;
-            --background: linear-gradient(0deg, rgba(126, 208, 255, 0.05), rgba(126, 208, 255, 0.05)), #001E2E;
-            ion-label {
-                color: var(--color-primary-abcpay-dark) !important;
-            }
-        }
-        .explanation {
-            color: rgba(237, 239, 240, 0.6) !important;
-        }
-        .label-clear-cache {
-            color: #FFB4A9 !important;
-        }
-        .label-export {
-            color: var(--color-primary-abcpay-dark) !important;
-        }
-        ion-label {
-            h3, h4 {
-                color: #EDEFF0 !important;
-            }
-            .info {
-                color: rgba(237, 239, 240, 0.6) !important;
-            }
-        }
-    }
-
-    page-scan {
-        .page-scan-has-problems {
-            background-color: var(--bg-color-dark-theme-toolbar);
-
-            .body {
-                background-color: var(--bg-color-dark-theme-toolbar);
-
-                div {
-                    color: var(--bg-color-dark-theme-toolbar);
-                }
-            }
-        }
-    }
-
-    card-details-page {
-        background-color: var(--bg-color-dark-theme);
-
-        .gift-card-content .scroll-content>div.wrapper {
-            background-color: var(--bg-color-dark-theme);
-        }
-
-        .card-image {
-            img {
-                background: var(--bg-color-dark-theme);
-            }
-        }
-
-        .card-info {
-            background-color: var(--bg-color-dark-theme-3);
-            border: 1px solid var(--border-color-dark-theme);
-
-            &__title {
-                color: var(--text-color-dark-theme-2) !important;
-            }
-
-            &__body {
-                color: var(--text-color-dark-theme) !important;
-            }
-
-            &__date {
-                color: var(--text-color-dark-theme-3);
-            }
-
-            &.has-pin {
-                .separator {
-                    border-top: 1px solid var(--border-color-dark-theme);
-                }
-            }
-        }
-    }
-
-    page-share {
-        .share-buttons {
-            background-color: var(--bg-color-dark-theme);
-        }
-    }
-
-    // 6 - Other Pages
-    page-amount {
-        ion-content.content {
-            background-color: var(--bg-color-dark-theme);
-        }
-    }
-
-    page-simplex,
-    page-wyre {
-        .buy-crypto-button {
-            color: var(--text-color-dark-theme) !important;
-        }
-    }
-
-    page-add,
-    page-select-currency,
-    page-coin-selector,
-    select-invoice-page {
-        .list-button {
-            .item-title {
-                color: var(--text-color-dark-theme) !important;
-                span {
-                    color: var(--text-grey)
-                }
-            }
-
-            .item-subtitle {
-                color: var(--text-color-dark-theme-2) !important;
-            }
-        }
-    }
-
-    page-import-wallet,
-    page-create-wallet,
-    page-create-eth-multisig,
-    page-bitpay-phase-one-card-intro {
-        ion-item {
-            --background: var(--bg-color-dark-theme-8) !important;
-            color: var(--text-color-dark-theme) !important;
-            --highlight-color-focused: rgba(224, 228, 230, 0.6);
-            --highlight-color-valid	: rgba(224, 228, 230, 0.6);
-            --highlight-color-invalid: rgba(224, 228, 230, 0.6);
-            ion-label {
-                color: var(--text-color-dark-theme) !important;
-            }
-        }
-        ion-segment-button {
-            &::part(native) {
-                color: #EDEFF0 !important;
-            }
-        }
-        .advance-button{
-            --background: linear-gradient(0deg, rgba(126, 208, 255, 0.11), rgba(126, 208, 255, 0.11)), #001E2E;
-            span{
-                color: #EDEFF0;
-            }
-        }
-        .show-advance-option{
-            background: linear-gradient(0deg, rgba(126, 208, 255, 0.11), rgba(126, 208, 255, 0.11)), #001E2E;
-            ion-list{
-                background: linear-gradient(0deg, rgba(126, 208, 255, 0.11), rgba(126, 208, 255, 0.11)), #001E2E;
-                ion-item{
-                    border-color: rgba(237, 239, 240, 0.38);
-                    ion-label {
-                        color: var(--text-color-dark-theme) !important;
-                    }
-                }
-            }
-        }
-    }
-
-    page-create-wallet{
-        ion-content{
-            --background: #001E2E;;
-        }
-    }
-
-    page-create-wallet,
-    page-create-eth-multisig,
-    page-join-wallet {
-        .line-divider{
-            border-color: #2B4552 !important;
-        }
-
-        .linked-wallet {
-            color: var(--text-color-dark-theme) !important;
-            background-color: var(--bg-color-dark-theme);
-        }
-        ion-item {
-            --background: var(--bg-color-dark-theme-8);
-            color: var(--text-color-dark-theme) !important;
-            --highlight-color-focused: rgba(224, 228, 230, 0.6);
-            --highlight-color-valid	: rgba(224, 228, 230, 0.6);
-            --highlight-color-invalid: rgba(224, 228, 230, 0.6);
-        }
-        .wallet-info-container {
-            background: linear-gradient(0deg, rgba(126, 208, 255, 0.11), rgba(126, 208, 255, 0.11)), #001E2E;
-        }
-        .advance-button{
-            --background: linear-gradient(0deg, rgba(126, 208, 255, 0.11), rgba(126, 208, 255, 0.11)), #001E2E;
-            color: #EDEFF0;
-        }
-        .show-advance-option {
-            background: linear-gradient(0deg, rgba(126, 208, 255, 0.11), rgba(126, 208, 255, 0.11)), #001E2E;
-            ion-item{
-                --border-color: #2B4552;
-            }
-        }
-        .custom-item{
-            .label{
-                color: rgba(224, 228, 230, 0.6);
-            }
-        }
-        .option-line-info{
+          .ng-star-inserted {
             color: rgba(224, 228, 230, 0.6) !important;
-            a{
-                color: #7ED0FF !important;
-            }
+          }
         }
+      }
+
+      .item-tx-history {
+        border-color: #33505f !important;
+      }
+
+      .locked-balance {
+        --background: linear-gradient(
+            0deg,
+            rgba(126, 208, 255, 0.08),
+            rgba(126, 208, 255, 0.08)
+          ),
+          #001e2e;
+      }
     }
 
-    page-create-eth-multisig {
-        .multisig-input {
-            background-color: var(--bg-color-dark-theme);
-
-            .search-wrapper {
-                --background: var(--bg-color-dark-theme-2);
-                color: var(--text-color-dark-theme-2) !important;
-
-                &.invalid {
-                    border: 1px solid var(--color-error);
-                    color: var(--color-error);
-                }
-            }
-        }
+    .accept-btn {
+      --color: var(--color-primary-abcpay-dark) !important;
     }
 
-    phone-sheet {
-        .country__label {
-            color: white;
-        }
+    .pending-amount {
+      .total-alt-locked-amount,
+      span {
+        color: rgba(237, 239, 240, 0.38) !important;
+      }
     }
 
-    email-component,
-    phone-sheet,
-    phone-page {
+    .tx-info {
+      .status {
+        background: var(--bg-color-dark-theme);
+        color: var(--text-grey);
+      }
+    }
+
+    .memo {
+      color: rgba(224, 228, 230, 0.6) !important;
+    }
+
+    .white-card {
+      background: linear-gradient(
+          0deg,
+          rgba(126, 208, 255, 0.08),
+          rgba(126, 208, 255, 0.08)
+        ),
+        #001e2e;
+      color: var(--text-color-dark-theme) !important;
+    }
+
+    .wrapper {
+      background: var(--bg-color-dark-theme) !important;
+    }
+
+    .header-transaction {
+      background: linear-gradient(
+          0deg,
+          rgba(126, 208, 255, 0.08),
+          rgba(126, 208, 255, 0.08)
+        ),
+        #001e2e;
+      ion-icon {
+        color: var(--text-grey);
+      }
+    }
+
+    .amount {
+      .received {
+        color: #73daa5 !important;
+      }
+
+      .sent {
+        color: #ffb4a9 !important;
+        &.pending {
+          color: #ffb4a9 !important;
+        }
+      }
+
+      .immature {
+        color: #ccc1e9;
+      }
+    }
+
+    .date {
+      span {
+        color: var(--slateDark);
+      }
+    }
+  }
+
+  page-copayers {
+    .white-card {
+      background: var(--bg-color-dark-theme);
+      color: var(--text-color-dark-theme) !important;
+
+      .timeline-content-icon ion-icon {
+        &[name='time-outline'] {
+          filter: invert(1);
+        }
+      }
+    }
+  }
+
+  .tx-history {
+    .icon-services {
+      border: 1px solid var(--text-color-dark-theme-2) !important;
+    }
+
+    .amount {
+      color: var(--text-color-dark-theme) !important;
+    }
+
+    .date {
+      color: var(--text-color-dark-theme-2) !important;
+    }
+  }
+
+  wallet-receive,
+  page-choose-fee-level {
+    .addr-header {
+      .addr-title {
+        color: var(--text-color-dark-theme) !important;
+      }
+
+      .addr-buttons .addr-update {
+        background-color: var(--bg-color-dark-theme-3);
+      }
+    }
+
+    .addr-content {
+      .addr-container {
+        .text-address {
+          background-color: var(--bg-color-dark-theme-3);
+          color: var(--text-color-dark-theme-3);
+        }
+      }
+
+      .qr-container {
+        .lines-background {
+          background: url(../assets/img/curved-lines-background.png) center
+            center no-repeat var(--bg-color-warning);
+          opacity: 0.1;
+        }
+      }
+    }
+
+    .close-btn {
+      button {
+        color: var(--text-color-dark-theme) !important;
+      }
+    }
+
+    .segment-button {
+      color: var(--text-color-dark-theme) !important;
+    }
+
+    .addr-sub-title {
+      color: rgba(224, 228, 230, 0.6);
+    }
+
+    .action-buttons {
+      .action-button {
+        ion-button {
+          --background: var(--color-secondary-container-abcpay-dark) !important;
+          ion-icon {
+            color: var(--color-on-secondary-container-abcpay-dark) !important;
+          }
+        }
+        .ellipsis {
+          color: var(--color-on-secondary-container-abcpay-dark) !important;
+        }
+      }
+    }
+  }
+
+  page-send-select-inputs {
+    ion-label {
+      color: var(--text-color-dark-theme);
+    }
+
+    .address {
+      color: var(--text-grey);
+    }
+
+    .disabled {
+      color: var(--text-grey);
+    }
+
+    ion-list {
+      background: var(--bg-color-dark-theme-8);
+      --background: var(--bg-color-dark-theme-8);
+    }
+
+    .content-list {
+      .label-address {
+        border-bottom: 1px solid var(--text-grey);
+      }
+
+      .select-inputs-header {
+        border-bottom: 1px solid var(--text-grey);
+      }
+    }
+  }
+
+  page-send,
+  page-multi-send,
+  page-send-select-inputs,
+  page-select-inputs,
+  page-proposals-notifications {
+    .no-info-container {
+      .content {
+        color: rgba(237, 239, 240, 0.6);
+      }
+    }
+    .wallet-name-label {
+      color: #ffffff;
+    }
+    .available-letter {
+      color: rgba(237, 239, 240, 0.6) !important;
+    }
+    .btn-function-group {
+      --color: rgba(126, 208, 255, 1);
+      --border-color: rgba(224, 228, 230, 0.6);
+      .btn-add-more {
+        --color: rgba(126, 208, 255, 1);
+        --border-color: rgba(112, 129, 138, 1);
+      }
+    }
+    .amount {
+      color: var(--text-color-dark-theme) !important;
+    }
+    .option-button {
+      --color: #edeff0 !important;
+    }
+    .address,
+    .amount-str {
+      opacity: 1;
+      color: var(--text-color-dark-theme-2) !important;
+    }
+
+    .recipient {
+      ion-label {
+        color: var(--text-color-dark-theme) !important;
+      }
+    }
+
+    ion-header .item-divider-exp-header {
+      .header-data {
+        color: var(--text-color-dark-theme-2) !important;
+      }
+    }
+
+    .content-list {
+      .item {
+        --background: linear-gradient(
+            0deg,
+            rgba(126, 208, 255, 0.11),
+            rgba(126, 208, 255, 0.11)
+          ),
+          #001e2e;
+
+        .item-inner {
+          border-bottom: 1px solid var(--border-color-dark-theme);
+        }
+      }
+
+      .item-divider-header {
+        &.item {
+          background: var(--bg-color-dark-theme-2);
+          color: var(--text-color-dark-theme-2) !important;
+        }
+      }
+    }
+
+    .total-inputs {
+      &-str {
+        color: var(--text-color-dark-theme) !important;
+      }
+    }
+
+    .send-header-wrapper {
+      background-color: var(--bg-color-dark-theme);
+    }
+
+    .uri-header-wrapper {
+      background-color: var(--bg-color-dark-theme);
+    }
+
+    .search-wrapper {
+      .scan-icon {
+        border-left: 1px solid rgba(151, 151, 151, 0.2);
+      }
+    }
+
+    .invalid {
+      border: 1px solid var(--color-error);
+      color: var(--color-error);
+    }
+
+    ion-checkbox {
+      .checkbox-icon {
+        border-color: var(--color-primary);
+        background-color: var(--bg-color-dark-theme);
+      }
+    }
+
+    .txp-container {
+      background: linear-gradient(
+          0deg,
+          rgba(126, 208, 255, 0.11),
+          rgba(126, 208, 255, 0.11)
+        ),
+        #001e2e;
+    }
+  }
+
+  recipient-component {
+    .recipient-header {
+      color: var(--text-grey);
+    }
+    .recipient-content-wrapper {
+      background: var(--bg-color-dark-theme-8);
+      .recipient-content {
         .title {
-            color: var(--text-color-dark-theme) !important;
+          color: rgba(224, 228, 230, 0.6);
         }
+        .search-address-wrapper,
+        .amount-wrapper {
+          --border-color: rgba(224, 228, 230, 0.6);
+          --highlight-color-focused: rgba(224, 228, 230, 0.6);
+          --highlight-color-valid: rgba(224, 228, 230, 0.6);
+          --highlight-color-invalid: rgba(224, 228, 230, 0.6);
+          ion-input {
+            --placeholder-color: rgba(237, 239, 240, 0.38);
+            --color: #edeff0;
+          }
+        }
+        .bold-text {
+          color: #7ed0ff;
+        }
+        .unit-alt-text {
+          color: rgba(224, 228, 230, 0.6);
+        }
+      }
+    }
+    .item-title {
+      color: rgba(237, 239, 240, 0.6);
+    }
+  }
 
-        .sub-title {
-            color: var(--text-color-dark-theme) !important;
-        }
+  create-new-wallet {
+    .card-title {
+      color: #edeff0 !important;
+    }
+    .card-body {
+      color: rgba(237, 239, 240, 0.6) !important;
+    }
+  }
 
-        ion-item,
-        ion-item.item-toggle ion-label {
-            --background: var(--bg-color-dark-theme-2);
-            color: var(--text-color-dark-theme) !important;
-        }
+  // 5.3 - Tab Cards
+  page-cards {
+    .card-item {
+      background: var(--bg-color-dark-theme);
+    }
+  }
+
+  buy-card-page {
+    .amount-box {
+      background-image: linear-gradient(
+        -180deg,
+        var(--bg-color-dark-theme) 30%,
+        var(--gradient-dark-theme) 100%
+      );
+
+      .discount-header {
+        background-color: var(--bg-color-dark-theme-2);
+        color: var(--text-color-dark-theme) !important;
+        border-bottom: 1px solid rgba(247, 247, 247, 0.02);
+      }
     }
 
-    phone-page {
+    .buy-box {
+      background-color: #171717;
+    }
+  }
 
-        ion-item,
-        ion-item.item-toggle ion-label {
-            --background: var(--bg-color-dark-theme);
-        }
+  card-catalog-page {
+    .card-list-item {
+      background: none;
 
-        .phone-input {
-            color: white;
-            --phone-input-border-color-dark-theme: rgba(255, 255, 255, 0.4);
-            border-bottom-color: var(--phone-input-border-color-dark-theme);
-
-            &__country-code {
-                border-color: var(--phone-input-border-color-dark-theme);
-            }
-        }
+      &__label {
+        color: var(--text-color-dark-theme) !important;
+      }
     }
 
-    page-send-feedback {
-        .msg-to-user {
-            background: var(--bg-color-dark-theme);
+    .category-item {
+      background: none;
 
-            .feedback-title {
-                color: var(--text-color-dark-theme) !important;
-            }
+      ion-label {
+        color: var(--text-color-dark-theme) !important;
+      }
 
-            .feedback-msg {
-                color: var(--text-color-dark-theme) !important;
-            }
+      &:after {
+        background-color: var(--bg-color-dark-theme-2);
+      }
+    }
+
+    .no-results {
+      &__title {
+        color: var(--text-color-dark-theme) !important;
+      }
+
+      &__subtitle {
+        color: var(--text-color-dark-theme-3);
+      }
+    }
+  }
+
+  card-catalog-page,
+  merchant-page {
+    .section-divider {
+      background: var(--bg-color-dark-theme-2);
+    }
+  }
+
+  merchant-page {
+    .cover {
+      background-image: linear-gradient(180deg, #121212 0%, #1d1d1d 100%);
+    }
+
+    .body {
+      &__title,
+      &__subtitle {
+        color: var(--text-color-dark-theme) !important;
+      }
+
+      &__caption,
+      &__instructions {
+        color: var(--text-color-dark-theme-2) !important;
+      }
+    }
+  }
+
+  page-bitpay-phase-one-card-intro {
+    .phaseOne {
+      &__content {
+        &__title {
+          color: var(--text-color-dark-theme) !important;
         }
 
-        .user-feedback-card {
+        &__description {
+          color: var(--text-color-dark-theme-3);
+        }
+      }
+
+      &__form {
+        &__link {
+          color: var(--color-primary);
+        }
+      }
+
+      &__form-toggle {
+        &__label {
+          color: var(--text-color-dark-theme-3);
+          font-size: 14px;
+          line-height: 18px;
+        }
+      }
+    }
+  }
+
+  page-addressbook-add {
+    .add-address-book-container {
+      .slide-title {
+        h3 {
+          color: #e0e4e6 !important;
+        }
+      }
+      background: linear-gradient(
+          0deg,
+          rgba(126, 208, 255, 0.11),
+          rgba(126, 208, 255, 0.11)
+        ),
+        #001e2e;
+      ion-item {
+        --background: linear-gradient(
+            0deg,
+            rgba(126, 208, 255, 0.11),
+            rgba(126, 208, 255, 0.11)
+          ),
+          #001e2e !important;
+        border-color: rgba(237, 239, 240, 0.38);
+        ion-input {
+          background: linear-gradient(
+              0deg,
+              rgba(126, 208, 255, 0.11),
+              rgba(126, 208, 255, 0.11)
+            ),
+            #001e2e;
+          color: #edeff0;
+        }
+      }
+
+      .footer {
+        ion-button {
+          color: var(--color-primary-abcpay-dark) !important;
+          &[disabled] {
+            color: rgba(224, 228, 230, 0.38) !important;
+          }
+        }
+      }
+    }
+  }
+
+  page-addressbook {
+    .zero-state-icon {
+      background-color: var(--bg-color-dark-theme-3);
+    }
+    .add-button {
+      ion-icon {
+        color: rgba(237, 239, 240, 0.6) !important;
+      }
+    }
+    .zero-state {
+      .zero-state-heading {
+        color: #edeff0;
+      }
+      .zero-state-description {
+        color: rgba(237, 239, 240, 0.6);
+      }
+    }
+  }
+
+  page-addressbook-view {
+    ion-item {
+      ion-label {
+        color: rgba(237, 239, 240, 0.6) !important;
+        .comment {
+          color: #edeff0 !important;
+        }
+      }
+      &.btn-send-container {
+        ion-label {
+          color: var(--color-primary-abcpay-dark) !important;
+          &.text-danger {
+            color: #ffb4a9 !important;
+          }
+        }
+      }
+    }
+  }
+
+  page-wallet-addresses,
+  page-wallet-transaction-history {
+    ion-item {
+      background: linear-gradient(
+          0deg,
+          rgba(126, 208, 255, 0.05),
+          rgba(126, 208, 255, 0.05)
+        ),
+        #001e2e;
+      --background: linear-gradient(
+          0deg,
+          rgba(126, 208, 255, 0.05),
+          rgba(126, 208, 255, 0.05)
+        ),
+        #001e2e;
+      ion-label {
+        color: var(--color-primary-abcpay-dark) !important;
+      }
+    }
+    .explanation {
+      color: rgba(237, 239, 240, 0.6) !important;
+    }
+    .label-clear-cache {
+      color: #ffb4a9 !important;
+    }
+    .label-export {
+      color: var(--color-primary-abcpay-dark) !important;
+    }
+    ion-label {
+      h3,
+      h4 {
+        color: #edeff0 !important;
+      }
+      .info {
+        color: rgba(237, 239, 240, 0.6) !important;
+      }
+    }
+  }
+
+  page-scan {
+    .page-scan-has-problems {
+      background-color: var(--bg-color-dark-theme-toolbar);
+
+      .body {
+        background-color: var(--bg-color-dark-theme-toolbar);
+
+        div {
+          color: var(--bg-color-dark-theme-toolbar);
+        }
+      }
+    }
+  }
+
+  card-details-page {
+    background-color: var(--bg-color-dark-theme);
+
+    .gift-card-content .scroll-content > div.wrapper {
+      background-color: var(--bg-color-dark-theme);
+    }
+
+    .card-image {
+      img {
+        background: var(--bg-color-dark-theme);
+      }
+    }
+
+    .card-info {
+      background-color: var(--bg-color-dark-theme-3);
+      border: 1px solid var(--border-color-dark-theme);
+
+      &__title {
+        color: var(--text-color-dark-theme-2) !important;
+      }
+
+      &__body {
+        color: var(--text-color-dark-theme) !important;
+      }
+
+      &__date {
+        color: var(--text-color-dark-theme-3);
+      }
+
+      &.has-pin {
+        .separator {
+          border-top: 1px solid var(--border-color-dark-theme);
+        }
+      }
+    }
+  }
+
+  page-share {
+    .share-buttons {
+      background-color: var(--bg-color-dark-theme);
+    }
+  }
+
+  // 6 - Other Pages
+  page-amount {
+    ion-content.content {
+      background-color: var(--bg-color-dark-theme);
+    }
+  }
+
+  page-simplex,
+  page-wyre {
+    .buy-crypto-button {
+      color: var(--text-color-dark-theme) !important;
+    }
+  }
+
+  page-add,
+  page-select-currency,
+  page-coin-selector,
+  select-invoice-page {
+    .list-button {
+      .item-title {
+        color: var(--text-color-dark-theme) !important;
+        span {
+          color: var(--text-grey);
+        }
+      }
+
+      .item-subtitle {
+        color: var(--text-color-dark-theme-2) !important;
+      }
+    }
+  }
+
+  page-import-wallet,
+  page-create-wallet,
+  page-create-eth-multisig,
+  page-bitpay-phase-one-card-intro {
+    ion-item {
+      --background: var(--bg-color-dark-theme-8) !important;
+      color: var(--text-color-dark-theme) !important;
+      --highlight-color-focused: rgba(224, 228, 230, 0.6);
+      --highlight-color-valid: rgba(224, 228, 230, 0.6);
+      --highlight-color-invalid: rgba(224, 228, 230, 0.6);
+      ion-label {
+        color: var(--text-color-dark-theme) !important;
+      }
+    }
+    ion-segment-button {
+      &::part(native) {
+        color: #edeff0 !important;
+      }
+    }
+    .advance-button {
+      --background: linear-gradient(
+          0deg,
+          rgba(126, 208, 255, 0.11),
+          rgba(126, 208, 255, 0.11)
+        ),
+        #001e2e;
+      span {
+        color: #edeff0;
+      }
+    }
+    .show-advance-option {
+      background: linear-gradient(
+          0deg,
+          rgba(126, 208, 255, 0.11),
+          rgba(126, 208, 255, 0.11)
+        ),
+        #001e2e;
+      ion-list {
+        background: linear-gradient(
+            0deg,
+            rgba(126, 208, 255, 0.11),
+            rgba(126, 208, 255, 0.11)
+          ),
+          #001e2e;
+        ion-item {
+          border-color: rgba(237, 239, 240, 0.38);
+          ion-label {
+            color: var(--text-color-dark-theme) !important;
+          }
+        }
+      }
+    }
+  }
+
+  page-create-wallet {
+    ion-content {
+      --background: #001e2e;
+    }
+  }
+
+  page-create-wallet,
+  page-create-eth-multisig,
+  page-join-wallet {
+    .line-divider {
+      border-color: #2b4552 !important;
+    }
+
+    .linked-wallet {
+      color: var(--text-color-dark-theme) !important;
+      background-color: var(--bg-color-dark-theme);
+    }
+    ion-item {
+      --background: var(--bg-color-dark-theme-8);
+      color: var(--text-color-dark-theme) !important;
+      --highlight-color-focused: rgba(224, 228, 230, 0.6);
+      --highlight-color-valid: rgba(224, 228, 230, 0.6);
+      --highlight-color-invalid: rgba(224, 228, 230, 0.6);
+    }
+    .wallet-info-container {
+      background: linear-gradient(
+          0deg,
+          rgba(126, 208, 255, 0.11),
+          rgba(126, 208, 255, 0.11)
+        ),
+        #001e2e;
+    }
+    .advance-button {
+      --background: linear-gradient(
+          0deg,
+          rgba(126, 208, 255, 0.11),
+          rgba(126, 208, 255, 0.11)
+        ),
+        #001e2e;
+      color: #edeff0;
+    }
+    .show-advance-option {
+      background: linear-gradient(
+          0deg,
+          rgba(126, 208, 255, 0.11),
+          rgba(126, 208, 255, 0.11)
+        ),
+        #001e2e;
+      ion-item {
+        --border-color: #2b4552;
+      }
+    }
+    .custom-item {
+      .label {
+        color: rgba(224, 228, 230, 0.6);
+      }
+    }
+    .option-line-info {
+      color: rgba(224, 228, 230, 0.6) !important;
+      a {
+        color: #7ed0ff !important;
+      }
+    }
+  }
+
+  page-create-eth-multisig {
+    .multisig-input {
+      background-color: var(--bg-color-dark-theme);
+
+      .search-wrapper {
+        --background: var(--bg-color-dark-theme-2);
+        color: var(--text-color-dark-theme-2) !important;
+
+        &.invalid {
+          border: 1px solid var(--color-error);
+          color: var(--color-error);
+        }
+      }
+    }
+  }
+
+  phone-sheet {
+    .country__label {
+      color: white;
+    }
+  }
+
+  email-component,
+  phone-sheet,
+  phone-page {
+    .title {
+      color: var(--text-color-dark-theme) !important;
+    }
+
+    .sub-title {
+      color: var(--text-color-dark-theme) !important;
+    }
+
+    ion-item,
+    ion-item.item-toggle ion-label {
+      --background: var(--bg-color-dark-theme-2);
+      color: var(--text-color-dark-theme) !important;
+    }
+  }
+
+  phone-page {
+    ion-item,
+    ion-item.item-toggle ion-label {
+      --background: var(--bg-color-dark-theme);
+    }
+
+    .phone-input {
+      color: white;
+      --phone-input-border-color-dark-theme: rgba(255, 255, 255, 0.4);
+      border-bottom-color: var(--phone-input-border-color-dark-theme);
+
+      &__country-code {
+        border-color: var(--phone-input-border-color-dark-theme);
+      }
+    }
+  }
+
+  page-send-feedback {
+    .msg-to-user {
+      background: var(--bg-color-dark-theme);
+
+      .feedback-title {
+        color: var(--text-color-dark-theme) !important;
+      }
+
+      .feedback-msg {
+        color: var(--text-color-dark-theme) !important;
+      }
+    }
+
+    .user-feedback-card {
+      background-color: var(--bg-color-dark-theme-2);
+
+      .user-feedback-title {
+        color: var(--text-color-dark-theme) !important;
+      }
+    }
+  }
+
+  page-key-onboarding {
+    .key-onboarding-slides {
+      .swiper-slide {
+        background: linear-gradient(
+          to bottom,
+          var(--bg-color-dark-theme),
+          var(--gradient-dark-theme) 80%
+        );
+      }
+
+      .slide-info {
+        background: var(--bg-color-dark-theme);
+
+        .info .title,
+        .title {
+          color: var(--text-color-dark-theme) !important;
+        }
+
+        .info .text,
+        .text {
+          color: var(--text-color-dark-theme-2) !important;
+        }
+      }
+    }
+
+    ion-toolbar {
+      --background: var(--bg-color-dark-theme);
+    }
+
+    .checkbox-list {
+      .external-link {
+        color: var(--text-color-dark-theme-2) !important;
+      }
+
+      .text {
+        color: var(--text-color-dark-theme) !important;
+      }
+    }
+
+    .swiper-pagination-bullet {
+      background-color: var(--text-color-dark-theme-2) !important;
+    }
+  }
+
+  page-backup-key,
+  page-backup-game {
+    ion-content.content {
+      background: var(--bg-color-dark-theme);
+    }
+    .sub-header {
+      color: var(--text-grey);
+    }
+
+    .word-alignment {
+      .word-title {
+        color: var(--text-color-dark-theme) !important;
+      }
+
+      .word {
+        background: var(--bg-color-dark-theme-6);
+        color: var(--text-color-dark-theme);
+
+        .word-number {
+          color: var(--text-grey);
+        }
+
+        .dash-line {
+          border-bottom: 1px var(--border-color-dark-theme) dashed;
+        }
+      }
+    }
+
+    .word-guess-conatiner {
+      background-color: rgba(126, 208, 255, 0.11);
+      .word-guess-content {
+        ion-button {
+          --background: linear-gradient(
+              0deg,
+              rgba(126, 208, 255, 0.05),
+              rgba(126, 208, 255, 0.05)
+            ),
+            #001e2e;
+          color: var(--text-color-dark-theme);
+          --border-color: #70818a;
+        }
+      }
+    }
+  }
+
+  page-coinbase {
+    ion-content {
+      .center-header .button-clear-md-dark {
+        color: var(--text-color-dark-theme) !important;
+      }
+    }
+  }
+
+  page-custom-amount {
+    .qr-card-amount {
+      background-color: var(--bg-color-dark-theme);
+    }
+
+    .qr-container {
+      background-color: var(--bg-color-dark-theme);
+
+      div.qr-card.card {
+        background-color: var(--bg-color-dark-theme);
+      }
+
+      .qr-card {
+        background-color: white;
+      }
+    }
+
+    .receive-content {
+      background-color: var(--bg-color-dark-theme);
+
+      .addr-container {
+        .text-address {
+          background: var(--bg-color-dark-theme-2);
+          color: var(--text-color-dark-theme-2) !important;
+        }
+      }
+    }
+  }
+
+  card-terms {
+    .terms * {
+      color: var(--text-color-dark-theme-3);
+    }
+  }
+
+  page-card-item {
+    .card-icon {
+      .houston {
+        img {
+          filter: invert(1);
+        }
+      }
+    }
+  }
+
+  page-session-log {
+    ion-toolbar {
+      background: linear-gradient(
+          0deg,
+          rgba(126, 208, 255, 0.11),
+          rgba(126, 208, 255, 0.11)
+        ),
+        #001e2e !important;
+      --background: linear-gradient(
+          0deg,
+          rgba(126, 208, 255, 0.11),
+          rgba(126, 208, 255, 0.11)
+        ),
+        #001e2e !important;
+    }
+    ion-range {
+      &::part(tick-active) {
+        background: #fff;
+      }
+      &::part(tick) {
+        background: var(--color-primary-abcpay-dark) !important;
+      }
+      &::part(bar-active) {
+        background: var(--color-primary-abcpay-dark) !important;
+      }
+      &::part(bar) {
+        background: rgba(126, 208, 255, 0.38);
+      }
+    }
+    .filter-container {
+      .labels {
+        color: var(--text-color-dark-theme) !important;
+      }
+    }
+    .info-color {
+      color: var(--color-primary-abcpay-dark);
+    }
+    ion-icon[name='share-outline'] {
+      color: rgba(237, 239, 240, 0.6);
+    }
+    .no-entries-message {
+      background: var(--bg-color-dark-theme) !important;
+    }
+  }
+
+  page-fee-policy {
+    .description {
+      color: var(--text-color-dark-theme-2) !important;
+    }
+
+    ion-list {
+      .item-divider-ios {
+        background-color: var(--bg-color-dark-theme);
+      }
+
+      .item {
+        &.item-ios,
+        &.item-md {
+          .item-inner {
+            background-color: var(--bg-color-dark-theme);
+          }
+        }
+      }
+
+      .network-fee-policy {
+        &-title {
+          color: var(--text-color-dark-theme) !important;
+        }
+
+        &-rate {
+          color: var(--text-color-dark-theme) !important;
+        }
+      }
+    }
+  }
+
+  // 7 - Buy Crypto
+  page-crypto-order-summary {
+    .bp-list {
+      .card {
+        background: var(--bg-color-dark-theme);
+
+        .item {
+          &.item-ios,
+          &.item-md {
             background-color: var(--bg-color-dark-theme-2);
 
-            .user-feedback-title {
-                color: var(--text-color-dark-theme) !important;
-            }
-        }
-    }
-
-    page-key-onboarding {
-        .key-onboarding-slides {
-            .swiper-slide {
-                background: linear-gradient(to bottom,
-                        var(--bg-color-dark-theme),
-                        var(--gradient-dark-theme) 80%);
-            }
-
-            .slide-info {
-                background: var(--bg-color-dark-theme);
-
-                .info .title,
-                .title {
-                    color: var(--text-color-dark-theme) !important;
-                }
-
-                .info .text,
-                .text {
-                    color: var(--text-color-dark-theme-2) !important;
-                }
-            }
-        }
-
-        ion-toolbar {
-            --background: var(--bg-color-dark-theme);
-        }
-
-        .checkbox-list {
-            .external-link {
-                color: var(--text-color-dark-theme-2) !important;
-            }
-
-            .text {
-                color: var(--text-color-dark-theme) !important;
-            }
-        }
-
-        .swiper-pagination-bullet {
-            background-color: var(--text-color-dark-theme-2) !important;
-        }
-    }
-
-    page-backup-key,
-    page-backup-game {
-        ion-content.content {
-            background: var(--bg-color-dark-theme);
-        }
-        .sub-header{
-            color: var(--text-grey)
-        }
-
-        .word-alignment{
-            .word-title {
-                color: var(--text-color-dark-theme) !important;
-            }
-
-            .word {
-                background: var(--bg-color-dark-theme-6);
-                color: var(--text-color-dark-theme);
-
-                .word-number{
-                    color: var(--text-grey)
-                }
-
-                .dash-line {
-                    border-bottom: 1px var(--border-color-dark-theme) dashed;
-                }
-            }
-        }
-
-        .word-guess-conatiner{
-            background-color: rgba(126, 208, 255, 0.11);
-            .word-guess-content{
-                ion-button{
-                --background: linear-gradient(0deg, rgba(126, 208, 255, 0.05), rgba(126, 208, 255, 0.05)), #001E2E;
-                color: var(--text-color-dark-theme);
-                --border-color: #70818A;
-                }
-            }
-        }
-    }
-
-    page-coinbase {
-        ion-content {
-            .center-header .button-clear-md-dark {
-                color: var(--text-color-dark-theme) !important;
-            }
-        }
-    }
-
-    page-custom-amount {
-        .qr-card-amount {
-            background-color: var(--bg-color-dark-theme);
-        }
-
-        .qr-container {
-            background-color: var(--bg-color-dark-theme);
-
-            div.qr-card.card {
-                background-color: var(--bg-color-dark-theme);
-            }
-
-            .qr-card {
-                background-color: white;
-            }
-        }
-
-        .receive-content {
-            background-color: var(--bg-color-dark-theme);
-
-            .addr-container {
-                .text-address {
-                    background: var(--bg-color-dark-theme-2);
-                    color: var(--text-color-dark-theme-2) !important;
-                }
-            }
-        }
-    }
-
-    card-terms {
-        .terms * {
-            color: var(--text-color-dark-theme-3);
-        }
-    }
-
-    page-card-item {
-        .card-icon {
-            .houston {
-                img {
-                    filter: invert(1);
-                }
-            }
-        }
-    }
-
-    page-session-log {
-        ion-toolbar {
-            background: linear-gradient(0deg, rgba(126, 208, 255, 0.11), rgba(126, 208, 255, 0.11)), #001E2E !important;
-            --background: linear-gradient(0deg, rgba(126, 208, 255, 0.11), rgba(126, 208, 255, 0.11)), #001E2E !important;
-        }
-        ion-range {
-            &::part(tick-active) {
-              background: #FFF;
-            }
-            &::part(tick) {
-              background: var(--color-primary-abcpay-dark) !important;
-            }
-            &::part(bar-active) {
-              background: var(--color-primary-abcpay-dark) !important;
-            }
-            &::part(bar) {
-              background: rgba(126, 208, 255, 0.38);;
+            ion-note {
+              img {
+                filter: brightness(0.5);
+              }
             }
           }
-        .filter-container {
-            .labels {
-                color: var(--text-color-dark-theme) !important;
-            }
         }
-        .info-color {
-            color: var(--color-primary-abcpay-dark);
+      }
+    }
+  }
+
+  page-crypto-payment-method {
+    .item-img img {
+      filter: brightness(0.5);
+    }
+  }
+
+  page-crypto-offers {
+    .bp-list {
+      .summary-description {
+        color: var(--text-color-dark-theme) !important;
+      }
+    }
+  }
+
+  page-crypto-coin-selector {
+    .bp-list {
+      .available-wallets {
+        &-container {
+          background-color: var(--bg-color-dark-theme-2);
         }
-        ion-icon[name="share-outline"] {
-            color: rgba(237, 239, 240, 0.6);
+
+        &-label {
+          color: var(--text-color-dark-theme-2) !important;
         }
-        .no-entries-message {
-            background: var(--bg-color-dark-theme) !important;
-        }
+      }
+    }
+  }
+
+  ion-col {
+    .ellipsis {
+      color: var(--text-color-dark-theme) !important;
+    }
+  }
+
+  // 8 - Exchange Crypto
+
+  page-exchange-crypto {
+    .amount .amount-container {
+      background-color: var(--bg-color-dark-theme-2);
+      color: var(--text-color-dark-theme-2) !important;
     }
 
-    page-fee-policy {
-        .description {
-            color: var(--text-color-dark-theme-2) !important;
-        }
+    .divider {
+      border-bottom: 1px solid var(--border-color-dark-theme);
 
-        ion-list {
-            .item-divider-ios {
-                background-color: var(--bg-color-dark-theme);
-            }
-
-            .item {
-
-                &.item-ios,
-                &.item-md {
-                    .item-inner {
-                        background-color: var(--bg-color-dark-theme);
-                    }
-                }
-            }
-
-            .network-fee-policy {
-                &-title {
-                    color: var(--text-color-dark-theme) !important;
-                }
-
-                &-rate {
-                    color: var(--text-color-dark-theme) !important;
-                }
-            }
-        }
+      .arrow img {
+        filter: brightness(0.6);
+      }
     }
 
-    // 7 - Buy Crypto
-    page-crypto-order-summary {
-        .bp-list {
-            .card {
-                background: var(--bg-color-dark-theme);
+    .partner {
+      color: var(--text-color-dark-theme-2) !important;
+    }
+  }
 
-                .item {
-
-                    &.item-ios,
-                    &.item-md {
-                        background-color: var(--bg-color-dark-theme-2);
-
-                        ion-note {
-                            img {
-                                filter: brightness(0.5);
-                            }
-                        }
-                    }
-                }
-            }
+  // 9 - Onboarding
+  page-feature-education,
+  page-recovery-key,
+  page-lock-method {
+    .onboarding-slides,
+    .recovery-key-info,
+    .lock-method-info {
+      .info {
+        .title {
+          color: var(--text-color-dark-theme) !important;
         }
+
+        .text {
+          color: var(--text-color-dark-theme-2) !important;
+        }
+
+        .note {
+          color: var(--text-color-dark-theme-3) !important;
+        }
+      }
     }
 
-    page-crypto-payment-method {
-        .item-img img {
-            filter: brightness(0.5);
-        }
+    .custom-footer {
+      --ion-toolbar-background: none !important;
     }
 
-    page-crypto-offers {
-        .bp-list {
-            .summary-description {
-                color: var(--text-color-dark-theme) !important;
-            }
-        }
+    ion-item {
+      color: var(--text-color-dark-theme) !important;
+      --background: var(--bg-pin-pad) !important;
     }
 
-    page-crypto-coin-selector {
-        .bp-list {
-            .available-wallets {
-                &-container {
-                    background-color: var(--bg-color-dark-theme-2);
-                }
-
-                &-label {
-                    color: var(--text-color-dark-theme-2) !important;
-                }
-            }
+    .term-container {
+      background-color: var(--bg-pin-pad) !important;
+      ion-item {
+        ion-checkbox {
+          --background-checked: var(--color-primary-abcpay-dark);
         }
+      }
+      .term-title {
+        color: var(--text-color-dark-theme) !important;
+      }
+      .term-note {
+        color: var(--text-color-dark-theme-2) !important;
+      }
     }
 
-    ion-col {
-        .ellipsis {
+    .button-standard {
+      &[disabled] {
+        --background: var(--bg-pin-pad);
+        --color: rgba(224, 228, 230, 0.38);
+      }
+    }
+  }
+
+  page-disclaimer {
+    background-color: var(--bg-color-dark-theme) !important;
+
+    .checkbox-list {
+      .term-container {
+        background-color: var(--bg-color-dark-theme-2) !important;
+
+        .term {
+          &-title {
             color: var(--text-color-dark-theme) !important;
+          }
+
+          &-note {
+            color: var(--text-color-dark-theme-2) !important;
+          }
         }
+      }
+
+      .term-container.bg-none {
+        .term-note {
+          color: var(--text-color-dark-theme) !important;
+        }
+      }
+
+      .checkbox-icon {
+        border-color: var(--bg-color-dark-theme-3) !important;
+      }
     }
 
-    // 8 - Exchange Crypto
-
-    page-exchange-crypto {
-        .amount .amount-container {
-            background-color: var(--bg-color-dark-theme-2);
-            color: var(--text-color-dark-theme-2) !important;
-        }
-
-        .divider {
-            border-bottom: 1px solid var(--border-color-dark-theme);
-
-            .arrow img {
-                filter: brightness(0.6);
-            }
-        }
-
-        .partner {
-            color: var(--text-color-dark-theme-2) !important;
-        }
+    ion-footer {
+      background-color: var(--bg-color-dark-theme) !important;
     }
 
-    // 9 - Onboarding
-    page-feature-education,
-    page-recovery-key,
-    page-lock-method {
+    ion-label {
+      color: var(--text-color-dark-theme) !important;
+    }
 
-        .onboarding-slides,
-        .recovery-key-info,
-        .lock-method-info {
-            .info {
-                .title {
-                    color: var(--text-color-dark-theme) !important;
-                }
-
-                .text {
-                    color: var(--text-color-dark-theme-2) !important;
-                }
-
-                .note {
-                    color: var(--text-color-dark-theme-3) !important;
-                }
-            }
-
+    .disclaimer-footer {
+      background-color: var(--bg-color-dark-theme) !important;
+      box-shadow: 0 -15px 22px -10px var(--bg-color-dark-theme-3) !important;
+    }
+  }
+  .fixscreen-modal {
+    ion-backdrop {
+      background: #000000;
+      opacity: 0.75 !important;
+    }
+  }
+  disclaimer-modal {
+    background-color: var(--bg-color-dark-theme) !important;
+    .title {
+      color: rgba(237, 239, 240, 1);
+    }
+    .confirm-term {
+      color: rgba(224, 228, 230, 0.38) !important;
+    }
+    .confirm-term-success {
+      color: var(--color-primary-abcpay-dark) !important;
+    }
+    .checkbox-list {
+      .term-container {
+        .term {
+          &-note {
+            color: rgba(237, 239, 240, 0.6) !important;
+          }
         }
+      }
+      ion-checkbox {
+        --background-checked: rgba(126, 208, 255, 1) !important;
+        --border-color-checked: rgba(126, 208, 255, 1) !important;
+        --border-color: rgba(237, 239, 240, 0.6) !important;
+      }
+    }
+  }
 
-        .custom-footer {
-            --ion-toolbar-background: none !important;
-        }
+  page-add-funds {
+    background-color: var(--bg-color-dark-theme);
 
-        ion-item {
+    ion-list {
+      .option-container {
+        background-color: var(--bg-color-dark-theme-2);
+        box-shadow: none;
+
+        .info {
+          .title {
             color: var(--text-color-dark-theme) !important;
-            --background: var(--bg-pin-pad) !important;
-        }
+          }
 
-        .term-container {
-            background-color: var(--bg-pin-pad) !important;
-            ion-item {
-                ion-checkbox {
-                    --background-checked: var(--color-primary-abcpay-dark);
-                }
-            }
-            .term-title {
-                color: var(--text-color-dark-theme) !important;
-            }
-            .term-note {
-                color: var(--text-color-dark-theme-2) !important;
-            }
+          .note {
+            color: var(--text-color-dark-theme-2) !important;
+          }
         }
-
-        .button-standard {
-            &[disabled] {
-                --background: var(--bg-pin-pad);
-                --color: rgba(224, 228, 230, 0.38);
-            }
-        }
+      }
     }
 
-    page-disclaimer {
-        background-color: var(--bg-color-dark-theme) !important;
+    .disclaimer-footer {
+      background-color: var(--bg-color-dark-theme);
+    }
+  }
 
-        .checkbox-list {
-            .term-container {
-                background-color: var(--bg-color-dark-theme-2) !important;
+  // 10 - New Features Slides
+  page-new-feature {
+    .new-feature-slides ion-slide {
+      .supperior-container {
+        background: linear-gradient(180deg, #606060 0%, #202124 100%);
 
-                .term {
-                    &-title {
-                        color: var(--text-color-dark-theme) !important;
-                    }
+        .page-title {
+          color: #ffffff;
+        }
+      }
 
-                    &-note {
-                        color: var(--text-color-dark-theme-2) !important;
-                    }
-                }
-            }
+      .slide-info {
+        background-color: #000000;
 
-            .term-container.bg-none {
-                .term-note {
-                    color: var(--text-color-dark-theme) !important;
-                }
-            }
-
-            .checkbox-icon {
-                border-color: var(--bg-color-dark-theme-3) !important;
-            }
+        .title {
+          color: #ffffff;
         }
 
-        ion-footer {
-            background-color: var(--bg-color-dark-theme) !important;
+        .text {
+          color: #ffffff;
+        }
+      }
+    }
+  }
+
+  wallet-item-content {
+    .secondary-note {
+      color: rgba(237, 239, 240, 0.6) !important;
+      .negative-avg {
+        color: #ffb4a9;
+      }
+      .possitive-avg {
+        color: #2fcfa4;
+      }
+    }
+    .secondary-label {
+      color: rgba(237, 239, 240, 0.6) !important;
+      .secondary-label-multisign {
+        background: #051e2e;
+        color: rgba(237, 239, 240, 0.6);
+      }
+    }
+    .wallet-hidden {
+      color: var(--text-grey);
+    }
+  }
+
+  exchange-rates {
+    .average-container {
+      &.negative-avg {
+        color: #ffb4a9;
+      }
+      &.possitive-avg {
+        color: #73daa5;
+      }
+    }
+  }
+
+  multisign-info {
+    .title {
+      color: #edeff0 !important;
+    }
+    .sub-title {
+      color: rgba(237, 239, 240, 0.6) !important;
+    }
+    .action-btn {
+      ion-button {
+        color: #7ed0ff !important;
+      }
+    }
+  }
+
+  token-info {
+    ion-buttons {
+      .close-tx-modal {
+        ion-icon {
+          color: rgba(28, 55, 69, 0.6);
+        }
+      }
+    }
+  }
+
+  page-search-tx-modal {
+    .close-tx-modal {
+      ion-icon {
+        color: rgba(237, 239, 240, 0.6);
+      }
+    }
+    .search-container {
+      border-color: rgba(237, 239, 240, 0.6);
+      ion-icon {
+        color: rgba(237, 239, 240, 0.6);
+      }
+      .search-tx-modal {
+        --placeholder-color: #ffffff;
+        --color: #edeff0;
+      }
+    }
+    .tx-history {
+      .tx-history-header {
+        &.item {
+          background: linear-gradient(
+              0deg,
+              rgba(126, 208, 255, 0.08),
+              rgba(126, 208, 255, 0.08)
+            ),
+            #001e2e !important;
+        }
+      }
+
+      ion-item-group {
+        border-color: var(--border-color-dark-theme);
+      }
+
+      .item {
+        background: linear-gradient(
+            0deg,
+            rgba(126, 208, 255, 0.08),
+            rgba(126, 208, 255, 0.08)
+          ),
+          #001e2e;
+        --background: linear-gradient(
+            0deg,
+            rgba(126, 208, 255, 0.12),
+            rgba(126, 208, 255, 0.12)
+          ),
+          #001e2e;
+        color: var(--text-color-dark-theme) !important;
+        border-color: #314d5c;
+
+        &.warning-background {
+          background-color: var(--bg-color-dark-theme-3);
+
+          ion-note > .amount > .received,
+          .action {
+            color: var(--color-warning) !important;
+          }
+        }
+
+        &.danger-background {
+          background-color: var(--bg-color-dark-theme-3);
+
+          ion-note > .amount > .received,
+          .action {
+            color: var(--color-danger) !important;
+          }
         }
 
         ion-label {
-            color: var(--text-color-dark-theme) !important;
-        }
-
-        .disclaimer-footer {
-            background-color: var(--bg-color-dark-theme) !important;
-            box-shadow: 0 -15px 22px -10px var(--bg-color-dark-theme-3) !important;
-        }
-    }
-    .fixscreen-modal{
-        ion-backdrop{
-            background: #000000;
-            opacity: 0.75 !important;
-        }
-    }
-    disclaimer-modal{
-        background-color: var(--bg-color-dark-theme) !important;
-        .title{
-            color: rgba(237, 239, 240, 1);
-        }
-        .confirm-term{
-            color: rgba(224, 228, 230, 0.38) !important;
-        }
-        .confirm-term-success{
-            color: var(--color-primary-abcpay-dark) !important;
-        }
-        .checkbox-list{
-            .term-container {
-                .term {
-                    &-note {
-                        color: rgba(237, 239, 240, 0.6) !important;
-                    }
-                }
-            }
-            ion-checkbox{
-                --background-checked: rgba(126, 208, 255, 1) !important;
-                --border-color-checked: rgba(126, 208, 255, 1) !important;
-                --border-color: rgba(237, 239, 240, 0.6) !important;
-            }
-        }
-        
-    }
-
-    page-add-funds {
-        background-color: var(--bg-color-dark-theme);
-
-        ion-list {
-            .option-container {
-                background-color: var(--bg-color-dark-theme-2);
-                box-shadow: none;
-
-                .info {
-                    .title {
-                        color: var(--text-color-dark-theme) !important;
-                    }
-
-                    .note {
-                        color: var(--text-color-dark-theme-2) !important;
-                    }
-                }
-            }
-        }
-
-        .disclaimer-footer {
-            background-color: var(--bg-color-dark-theme);
-        }
-    }
-
-    // 10 - New Features Slides
-    page-new-feature {
-        .new-feature-slides ion-slide {
-            .supperior-container {
-                background: linear-gradient(180deg, #606060 0%, #202124 100%);
-
-                .page-title {
-                    color: #ffffff;
-                }
-            }
-
-            .slide-info {
-                background-color: #000000;
-
-                .title {
-                    color: #ffffff;
-                }
-
-                .text {
-                    color: #ffffff;
-                }
-            }
-        }
-    }
-
-    wallet-item-content {
-        .secondary-note {
-            color: rgba(237, 239, 240, 0.6) !important;
-            .negative-avg {
-              color: #FFB4A9;
-            }
-            .possitive-avg {
-              color: #2fcfa4;
-            }
-        }
-        .secondary-label {
-            color: rgba(237, 239, 240, 0.6) !important;
-            .secondary-label-multisign {
-                background: #051E2E;
-                color: rgba(237, 239, 240, 0.6);
-            }
-        }
-        .wallet-hidden {
-            color: var(--text-grey)
-        }
-    }
-
-    exchange-rates {
-        .average-container {
-            &.negative-avg {
-              color: #FFB4A9;
-            }
-            &.possitive-avg {
-              color: #73DAA5;
-            }
-        }
-    }
-
-    multisign-info{
-        .title{
-            color: #EDEFF0 !important;
-        }
-        .sub-title {
-            color: rgba(237, 239, 240, 0.6) !important;
-        }
-        .action-btn {
-            ion-button {
-                color: #7ED0FF !important;
-            }
-        }
-    }
-
-    token-info {
-        ion-buttons {
-          .close-tx-modal {
-            ion-icon {
-              color: rgba(28, 55, 69, 0.6);
+          color: rgba(224, 228, 230, 0.6) !important;
+          &.tx-history-header-label {
+            color: #edeff0 !important;
+            .label-multisign {
+              color: rgba(237, 239, 240, 0.6);
             }
           }
         }
-    }
+      }
 
-    page-search-tx-modal {
-        .close-tx-modal {
-            ion-icon {
-                color: rgba(237, 239, 240, 0.6);
-            }
+      .item-tx-history {
+        border-color: #33505f !important;
+      }
+
+      .locked-balance {
+        --background: linear-gradient(
+            0deg,
+            rgba(126, 208, 255, 0.08),
+            rgba(126, 208, 255, 0.08)
+          ),
+          #001e2e;
+      }
+
+      .amount {
+        .received {
+          color: #73daa5 !important;
         }
-        .search-container {
-            border-color: rgba(237, 239, 240, 0.6);
-            ion-icon {
-                color: rgba(237, 239, 240, 0.6);
-            }
-            .search-tx-modal {
-                --placeholder-color: #FFFFFF;
-                --color: #EDEFF0;
-            }
-        }
-        .tx-history {
-            .tx-history-header {
-                &.item {
-                    background: linear-gradient(0deg, rgba(126, 208, 255, 0.08), rgba(126, 208, 255, 0.08)), #001E2E !important;
-                }
-            }
 
-            ion-item-group {
-                border-color: var(--border-color-dark-theme);
-            }
-
-            .item {
-                background: linear-gradient(0deg, rgba(126, 208, 255, 0.08), rgba(126, 208, 255, 0.08)), #001E2E;
-                --background: linear-gradient(0deg, rgba(126, 208, 255, 0.12), rgba(126, 208, 255, 0.12)), #001E2E;
-                color: var(--text-color-dark-theme) !important;
-                border-color: #314d5c;
-
-                &.warning-background {
-                    background-color: var(--bg-color-dark-theme-3);
-
-                    ion-note>.amount>.received,
-                    .action {
-                        color: var(--color-warning) !important;
-                    }
-                }
-
-                &.danger-background {
-                    background-color: var(--bg-color-dark-theme-3);
-
-                    ion-note>.amount>.received,
-                    .action {
-                        color: var(--color-danger) !important;
-                    }
-                }
-
-                ion-label {
-                    color: rgba(224, 228, 230, 0.6) !important;
-                    &.tx-history-header-label {
-                        color: #EDEFF0 !important;
-                        .label-multisign {
-                            color: rgba(237, 239, 240, 0.6);
-                        }
-                    }
-                }
-            }
-
-            .item-tx-history {
-                border-color: #33505f !important;
-            }
-
-            .locked-balance {
-                --background: linear-gradient(0deg, rgba(126, 208, 255, 0.08), rgba(126, 208, 255, 0.08)), #001E2E;
-            }
-
-            .amount {
-                .received {
-                  color: #73DAA5 !important;
-                }
-          
-                .sent {
-                    color: #FFB4A9 !important;
-                  &.pending {
-                    color: #FFB4A9 !important;
-                }
-                }
-          
-                .immature {
-                  color:#CCC1E9;
-                }
-            }
-    
-            .date {
-                span {
-                    color: var(--slateDark);
-                }
-            }
-
-            .memo {
-                color: rgba(224, 228, 230, 0.6) !important;
-            }
-        }
-    }
-
-    page-transfer-to, page-search-contact{
-        .dark .bp-list ion-item{
-            --background: unset;
-        }
-        .wallet-disabled {
-            background: linear-gradient(0deg, rgba(126, 208, 255, 0.05), rgba(126, 208, 255, 0.05)), #001E2E;
-            .main-label {
-                color: rgba(224, 228, 230, 0.6) !important;
-            }
+        .sent {
+          color: #ffb4a9 !important;
+          &.pending {
+            color: #ffb4a9 !important;
           }
-        .contact-name{
-            color: #EDEFF0;
         }
-        .custom-list{
-            background: linear-gradient(0deg, rgba(126, 208, 255, 0.05), rgba(126, 208, 255, 0.05)), #001E2E;
-        }
-        ion-segment{
-            background: linear-gradient(0deg, rgba(126, 208, 255, 0.05), rgba(126, 208, 255, 0.05)), #001E2E;
-            ion-segment-button{
-                color: #EDEFF0 !important;
-            }
-        }
-        .key-divider{
-            background: linear-gradient(0deg, rgba(126, 208, 255, 0.11), rgba(126, 208, 255, 0.11)), #001E2E;
-            span{
-                color: rgba(224, 228, 230, 0.6) !important;
-            }
-        }
-        .key-name{
-            color: rgba(237, 239, 240, 0.6);
-        }
-        .wallet-item-content-container{
-            background: linear-gradient(0deg, rgba(126, 208, 255, 0.05), rgba(126, 208, 255, 0.05)), #001E2E;
-        }
-    }
 
-    page-transfer-to-modal{
-        .header-title{
-            color: #EDEFF0 !important;
+        .immature {
+          color: #ccc1e9;
         }
-    }
+      }
 
-    page-search-contact{
-        .search-input-ion-item{
-            --background: #001E2E !important;
-            border-color: rgba(237, 239, 240, 0.38) !important;
-            color: #EDEFF0;
+      .date {
+        span {
+          color: var(--slateDark);
         }
-        .cancel-btn{
-            --color: #7ED0FF !important;
-        }
-        .category-label{
-            color: rgba(237, 239, 240, 0.6);
-        }
-    }
+      }
 
+      .memo {
+        color: rgba(224, 228, 230, 0.6) !important;
+      }
+    }
+  }
+
+  page-transfer-to,
+  page-search-contact {
+    .dark .bp-list ion-item {
+      --background: unset;
+    }
+    .no-info-container {
+      .content {
+        color: rgba(237, 239, 240, 0.6);
+      }
+    }
+    .wallet-disabled {
+      background: linear-gradient(
+          0deg,
+          rgba(126, 208, 255, 0.05),
+          rgba(126, 208, 255, 0.05)
+        ),
+        #001e2e;
+      .main-label {
+        color: rgba(224, 228, 230, 0.6) !important;
+      }
+    }
+    .contact-name {
+      color: #edeff0;
+    }
+    .custom-list {
+      background: linear-gradient(
+          0deg,
+          rgba(126, 208, 255, 0.05),
+          rgba(126, 208, 255, 0.05)
+        ),
+        #001e2e;
+    }
+    ion-segment {
+      background: linear-gradient(
+          0deg,
+          rgba(126, 208, 255, 0.05),
+          rgba(126, 208, 255, 0.05)
+        ),
+        #001e2e;
+      ion-segment-button {
+        color: #edeff0 !important;
+      }
+    }
+    .key-divider {
+      background: linear-gradient(
+          0deg,
+          rgba(126, 208, 255, 0.11),
+          rgba(126, 208, 255, 0.11)
+        ),
+        #001e2e;
+      span {
+        color: rgba(224, 228, 230, 0.6) !important;
+      }
+    }
+    .key-name {
+      color: rgba(237, 239, 240, 0.6);
+    }
+    .wallet-item-content-container {
+      background: linear-gradient(
+          0deg,
+          rgba(126, 208, 255, 0.05),
+          rgba(126, 208, 255, 0.05)
+        ),
+        #001e2e;
+    }
+  }
+
+  page-transfer-to-modal {
+    .header-title {
+      color: #edeff0 !important;
+    }
+  }
+
+  page-search-contact {
+    .search-input-ion-item {
+      --background: #001e2e !important;
+      border-color: rgba(237, 239, 240, 0.38) !important;
+      color: #edeff0;
+    }
+    .cancel-btn {
+      --color: #7ed0ff !important;
+    }
+    .category-label {
+      color: rgba(237, 239, 240, 0.6);
+    }
+  }
 }

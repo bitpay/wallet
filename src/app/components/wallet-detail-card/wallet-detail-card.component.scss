@@ -2,6 +2,7 @@ wallet-detail-card {
   width: 100%;
   .wallet-card {
     width: 100%;
+    min-height: 187px;
     padding: 20px 20px 8px 20px;
     border-radius: 16px;
     color: #edeff0;
@@ -73,6 +74,7 @@ wallet-detail-card {
       display: flex;
       justify-content: space-between;
       width: 100%;
+      flex-flow: column;
       .eye {
         margin-left: 0;
         margin-left: 4px;
