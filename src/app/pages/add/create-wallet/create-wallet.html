@@ -1,4 +1,16 @@
 <ion-header [translucent]="true" class="bp-header">
+  <ion-toolbar class="header" translucent *ngIf="!this.platformProvider.isCordova" [ngClass]="{ 
+    'bg-bch': coin == 'bch',
+    'bg-xec': coin == 'xec',
+    'bg-xpi': coin == 'xpi',
+    'bg-doge': coin == 'doge',
+    'bg-ltc': coin == 'ltc'
+    }">
+    <div class="header-container-desktop">
+      <img class="logo-abcpay" src="../../../assets/img/abcpay-logo.svg" alt="">
+      <img src="../../../assets/img/abcpay-text.svg" alt="">
+    </div>
+  </ion-toolbar>
   <ion-toolbar class="header" [ngClass]="{ 
     'bg-bch': coin == 'bch',
     'bg-xec': coin == 'xec',

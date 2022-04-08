@@ -96,6 +96,9 @@ export class CopayApp {
     this.imageLoaderConfig.enableSpinner(false);
     this.initializeApp();
     this.platformProvider.isCordova ? this.routerHidden = true : this.routerHidden = false;
+    if (!this.platformProvider.isCordova) {
+      this.renderer.addClass(document.body, 'bg-desktop');
+    }
   }
 
   ngOnDestroy() {

@@ -1,8 +1,8 @@
 @mixin modal-wrapper {
     position: absolute;
     display: block;
-    width: 100% !important;
-    height: 100% !important;
+    width: 100%;
+    height: 100%;
   }
   
   .wallet-details-modal,
@@ -16,10 +16,16 @@
     }
   }
 
+  ion-modal {
+    &::part(content) {
+      @include modal-wrapper;
+    }
+  }
+
   .fixscreen-modal{
     &::part(content) {
       @include modal-wrapper;
-      width: 312px !important;
+      width: 90% !important;
       height: 450px !important;
       --border-radius: 28px;
       disclaimer-modal{
@@ -31,7 +37,7 @@
 
     &.md {
       &::part(content) {
-        height: 70% !important;
+        height: 65% !important;
       }
     }
   

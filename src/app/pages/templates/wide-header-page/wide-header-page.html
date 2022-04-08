@@ -1,5 +1,5 @@
 <ion-header [translucent]="true" class="wide-header ion-no-border" [ngClass]="{'cordova': platformProvider.isCordova}">
-  <ion-toolbar translucent *ngIf="!this.platformProvider.isCordova || !this.platformProvider.isAndroid">
+  <ion-toolbar class="toolbar-desktop" translucent *ngIf="!this.platformProvider.isCordova">
     <div class="header-container-desktop">
       <img class="logo-abcpay" src="../../../assets/img/abcpay-logo.svg" alt="">
       <img src="../../../assets/img/abcpay-text.svg" alt="">
