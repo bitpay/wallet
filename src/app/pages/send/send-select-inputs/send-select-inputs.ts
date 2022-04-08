@@ -201,6 +201,8 @@ export class SelectInputsSendPage {
   public selectInputTotal(event): void {
     if (this.skipIonChange) {
       return;
+    } else {
+      this.skipIonChange = true;
     }
     if (!event.detail.checked) {
       this._clearCheckBok(this.inputs);
@@ -219,11 +221,13 @@ export class SelectInputsSendPage {
     _.forEach(inputs, item => {
       item.checked = false;
     })
+    this.selectedInputs = [];
   }
 
   private _setAllCheckBok(inputs) {
     _.forEach(inputs, item => {
       item.checked = true;
+      this.selectedInputs.push(item);
     })
   }
 
@@ -231,6 +235,9 @@ export class SelectInputsSendPage {
   public selectInput(input, event): void {
     if (this.skipIonChange) {
       return;
+    }
+    else {
+      this.skipIonChange = true;
     }
     if (!event.detail.checked) {
       const index = _.indexOf(this.selectedInputs, input);

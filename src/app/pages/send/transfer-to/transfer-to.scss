@@ -1,11 +1,22 @@
 page-transfer-to,
 page-search-contact {
+  .no-info-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 40px;
+    flex-flow: column;
+    .content {
+      color: rgba(0, 30, 46, 0.6);
+      font-size: 16px;
+      padding-top: 16px;
+    }
+  }
   .custom-list {
-    background: #FAFAFB;
+    background: #fafafb;
     display: flex;
     flex-wrap: wrap;
     justify-content: flex-start;
-
 
     ion-item {
       width: 108px;
@@ -29,7 +40,7 @@ page-search-contact {
           display: flex;
           justify-content: center;
           align-items: center;
-          background: #B6C9D8;
+          background: #b6c9d8;
           border-radius: 50px;
           margin-bottom: 4px;
 
@@ -41,7 +52,7 @@ page-search-contact {
         }
 
         .account-logo-custom {
-          background: #CCC1E9;
+          background: #ccc1e9;
         }
 
         .main-label {
@@ -54,11 +65,10 @@ page-search-contact {
         }
       }
     }
-
   }
 
   .wallet-item-content-container {
-    background: #FAFAFB;
+    background: #fafafb;
 
     &:last-child {
       ::ng-deep ion-item {
@@ -78,12 +88,12 @@ page-search-contact {
   ion-segment {
     border-radius: 24px 24px 0 0;
     padding: 16px 0px;
-    background: #FAFAFB;
-    color: #001E2E;
+    background: #fafafb;
+    color: #001e2e;
     margin-top: 2rem;
 
     ion-segment-button {
-      color: #001E2E;
+      color: #001e2e;
       --ripple-color: transparent;
       opacity: 0.6;
       --color-hover: unset !important;
@@ -127,7 +137,12 @@ page-search-contact {
     display: flex;
     align-items: center;
     color: var(--color-grey);
-    background: linear-gradient(0deg, rgba(0, 101, 141, 0.11), rgba(0, 101, 141, 0.11)), #FAFAFB;
+    background: linear-gradient(
+        0deg,
+        rgba(0, 101, 141, 0.11),
+        rgba(0, 101, 141, 0.11)
+      ),
+      #fafafb;
 
     span {
       padding: 8px 10px 8px 16px;
@@ -147,7 +162,7 @@ page-search-contact {
     padding: 16px;
     padding-left: 0px;
     margin-left: 16px;
-    color: #001E2E;
+    color: #001e2e;
     font-weight: 600;
     font-size: 16px;
     border-bottom: 1px solid rgba(112, 129, 138, 0.38) !important;
@@ -166,6 +181,6 @@ page-search-contact {
 
   .key-name {
     margin: 14px 8px 14px 0;
-    color: #001E2E;
+    color: #001e2e;
   }
 }

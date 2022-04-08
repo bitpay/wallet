@@ -39,6 +39,7 @@ import { Router } from '@angular/router';
 import { ChooseFeeLevelModal } from '../../choose-fee-level/choose-fee-level';
 import { FinishModalPage } from '../../finish/finish';
 import { PreviousRouteService } from 'src/app/providers/previous-route/previous-route';
+import { LoadingProvider } from 'src/app/providers/loading/loading';
 @Component({
   selector: 'page-confirm',
   templateUrl: 'confirm.html',
@@ -160,7 +161,8 @@ export class ConfirmPage {
     private ab: AddressBookProvider,
     private router: Router,
     private location: Location,
-    private routerOutlet: IonRouterOutlet
+    private routerOutlet: IonRouterOutlet,
+    private loadingProvider: LoadingProvider
   ) {
     if (this.router.getCurrentNavigation()) {
       this.navParamsData = this.router.getCurrentNavigation().extras.state ? this.router.getCurrentNavigation().extras.state : {};
@@ -212,6 +214,10 @@ export class ConfirmPage {
       .catch(err => {
         console.log(err);
       });
+  }
+
+  ionViewWillEnter() {
+    this.loadingProvider.autoLoader();
   }
 
   ionViewDidEnter() {
@@ -655,7 +661,6 @@ export class ConfirmPage {
         return resolve(undefined);
       }
 
-      this.onGoingProcessProvider.set('calculatingFee');
       this.feeProvider
         .getFeeRate(
           wallet.coin,
@@ -1667,7 +1672,7 @@ export class ConfirmPage {
       );
       params = { finishText, finishComment };
     }
-  
+
     this.clipboardProvider.clearClipboardIfValidData([
       'PayPro',
       'BitcoinUri',

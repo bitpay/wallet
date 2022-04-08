@@ -14,38 +14,53 @@
         <div class="wallet-name">
           <p class="name">{{wallet?.name}}</p>
           <div class="wallet-info">
-            <span *ngIf="wallet?.cachedStatus && wallet?.cachedStatus.wallet && wallet?.cachedStatus.wallet?.singleAddress && isUtxoCoin()" class="audit-table" >Auditable</span>
-            <div (click)="goToMultisignInfo()" *ngIf="wallet?.credentials?.n > 1 || (!wallet?.credentials?.n && wallet?.n > 1) || !wallet?.isComplete() || (wallet?.isComplete() && wallet?.needsBackup)" class="secondary-label">
-              <span class="secondary-label-multisign" *ngIf="wallet?.credentials?.n > 1">Multisig {{ wallet?.credentials?.m }}-{{ wallet?.credentials?.n }}</span>
-              <span class="secondary-label-multisign" *ngIf="!wallet?.credentials?.n && wallet?.n > 1">Multisig {{ wallet?.m }}-{{ wallet?.n }}</span>
+            <span
+              *ngIf="wallet?.cachedStatus && wallet?.cachedStatus.wallet && wallet?.cachedStatus.wallet?.singleAddress && isUtxoCoin()"
+              class="audit-table">Auditable</span>
+            <div (click)="goToMultisignInfo()"
+              *ngIf="wallet?.credentials?.n > 1 || (!wallet?.credentials?.n && wallet?.n > 1) || !wallet?.isComplete() || (wallet?.isComplete() && wallet?.needsBackup)"
+              class="secondary-label">
+              <span class="secondary-label-multisign" *ngIf="wallet?.credentials?.n > 1">Multisig {{
+                wallet?.credentials?.m }}-{{ wallet?.credentials?.n }}</span>
+              <span class="secondary-label-multisign" *ngIf="!wallet?.credentials?.n && wallet?.n > 1">Multisig {{
+                wallet?.m }}-{{ wallet?.n }}</span>
               <img src="assets/img/wallet-details/wallet-info-dark.svg">
             </div>
           </div>
         </div>
       </div>
     </div>
-  
+
     <div class="balance-content">
       <div (tap)="updateAll(true)"
-        *ngIf="!wallet?.scanning && !walletNotRegistered && (wallet?.cachedStatus || wallet?.lastKnownBalance)">
+        *ngIf="!wallet?.scanning && !walletNotRegistered && (wallet?.cachedStatus || wallet?.lastKnownBalance);else dots">
         <div class="balance-str">
           <balance-to-show *ngIf="!wallet?.balanceHidden" [balance]="getBalance()"></balance-to-show>
           <div *ngIf="wallet?.balanceHidden">******</div>
-          <ion-icon class="eye" [name]="wallet?.balanceHidden ? 'eye-outline' : 'eye-off-outline'" (click)="toggleBalance()"></ion-icon>
+          <ion-icon class="eye" [name]="wallet?.balanceHidden ? 'eye-outline' : 'eye-off-outline'"
+            (click)="toggleBalance()"></ion-icon>
         </div>
-        <div class="balance-alt-str" *ngIf="wallet?.cachedStatus && wallet?.cachedStatus.totalBalanceAlternative && !wallet?.balanceHidden">
+        <div class="balance-alt-str"
+          *ngIf="wallet?.cachedStatus && wallet?.cachedStatus.totalBalanceAlternative && !wallet?.balanceHidden">
           ~ {{getAlternativeBalance()}} {{wallet?.cachedStatus.alternativeIsoCode}}
         </div>
         <div class="balance-alt-str" *ngIf="wallet?.balanceHidden">
           ******
         </div>
       </div>
-  
+      <ng-template #dots>
+        <div class="balance-str">
+          <ion-spinner name="dots"></ion-spinner>
+        </div>
+        <div class="balance-alt-str">
+          <ion-spinner name="dots"></ion-spinner>
+        </div>
+      </ng-template>
     </div>
 
     <div class="wallet-address">
       <ion-spinner *ngIf="!address" name="dots"></ion-spinner>
-      <p *ngIf="address" class="wallet-add" copy-to-clipboard="{{ address }}"> {{(address | slice:-8)}} 
+      <p *ngIf="address" class="wallet-add" copy-to-clipboard="{{ address }}"> {{(address | slice:-8)}}
         <ion-icon name="copy-outline"></ion-icon>
       </p>
     </div>
@@ -67,10 +82,15 @@
         <div class="wallet-name">
           <p class="name">{{token?.tokenInfo?.name}}</p>
           <div class="wallet-info">
-            <span class="audit-table" *ngIf="wallet?.cachedStatus && wallet?.cachedStatus.wallet && wallet?.cachedStatus.wallet?.singleAddress && isUtxoCoin()">Auditable</span>
-            <div (click)="goToMultisignInfo()" *ngIf="wallet?.credentials?.n > 1 || (!wallet?.credentials?.n && wallet?.n > 1) || !wallet?.isComplete() || (wallet?.isComplete() && wallet?.needsBackup)" class="secondary-label">
-              <span class="secondary-label-multisign" *ngIf="wallet?.credentials?.n > 1">Multisig {{ wallet?.credentials?.m }}-{{ wallet?.credentials?.n }}</span>
-              <span class="secondary-label-multisign" *ngIf="!wallet?.credentials?.n && wallet?.n > 1">Multisig {{ wallet?.m }}-{{ wallet?.n }}</span>
+            <span class="audit-table"
+              *ngIf="wallet?.cachedStatus && wallet?.cachedStatus.wallet && wallet?.cachedStatus.wallet?.singleAddress && isUtxoCoin()">Auditable</span>
+            <div (click)="goToMultisignInfo()"
+              *ngIf="wallet?.credentials?.n > 1 || (!wallet?.credentials?.n && wallet?.n > 1) || !wallet?.isComplete() || (wallet?.isComplete() && wallet?.needsBackup)"
+              class="secondary-label">
+              <span class="secondary-label-multisign" *ngIf="wallet?.credentials?.n > 1">Multisig {{
+                wallet?.credentials?.m }}-{{ wallet?.credentials?.n }}</span>
+              <span class="secondary-label-multisign" *ngIf="!wallet?.credentials?.n && wallet?.n > 1">Multisig {{
+                wallet?.m }}-{{ wallet?.n }}</span>
               <img src="assets/img/wallet-details/wallet-info-dark.svg">
             </div>
           </div>
@@ -82,8 +102,7 @@
     </div>
 
     <div class="balance-content">
-      <div (tap)="updateAll(true)"
-        *ngIf="!wallet?.scanning && (wallet?.cachedStatus || wallet?.lastKnownBalance)">
+      <div (tap)="updateAll(true)" *ngIf="!wallet?.scanning && (wallet?.cachedStatus || wallet?.lastKnownBalance)">
         <div class="balance-str">
           <balance-to-show *ngIf="!wallet?.balanceHidden" [balance]="amountToken"></balance-to-show>
           <div *ngIf="wallet?.balanceHidden">******</div>
@@ -100,10 +119,10 @@
 
     <div class="wallet-address">
       <ion-spinner *ngIf="!wallet?.etokenAddress" name="dots"></ion-spinner>
-      <p *ngIf="wallet?.etokenAddress" class="wallet-add" copy-to-clipboard="{{ wallet?.etokenAddress }}"> {{(wallet?.etokenAddress | slice:-8)}} 
+      <p *ngIf="wallet?.etokenAddress" class="wallet-add" copy-to-clipboard="{{ wallet?.etokenAddress }}">
+        {{(wallet?.etokenAddress | slice:-8)}}
         <ion-icon name="copy-outline"></ion-icon>
       </p>
     </div>
   </div>
 </ng-template>
-

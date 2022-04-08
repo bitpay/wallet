@@ -110,7 +110,7 @@
           </div>
         </ion-label>
 
-        <ion-note slot="end" class="address-note-custom ellipsis">
+        <ion-note slot="end" class="address-note-custom">
           <div class="note-container ellipsis" *ngIf="!tx.recipientType">
             <div copy-to-clipboard="{{ tx.origToAddress }}">
               <span *ngIf="!tx.name">{{toAddressName || (tx.origToAddress.slice(-8))}}</span>

@@ -16,7 +16,7 @@
     </ion-buttons>
     <ion-buttons slot="end" *ngIf="showOptions(wallet?.coin) && !isDonation && !token">
       <ion-button fill="clear" class="option-button" (click)="goToSelectInput()">
-       Select Inputs
+        <span>{{"Select Inputs" | translate}}</span>
       </ion-button>
     </ion-buttons>
     <ion-title>
@@ -41,10 +41,10 @@
       <span class="balance-letter">{{getBalance()}}</span>
     </div>
     <div *ngIf="isDonation" class="available-content remaining">
-      <span class="available-letter" >Lotus Remaining: </span> 
+      <span class="available-letter">Lotus Remaining: </span>
       <span class="available-letter">{{formatRemaining}}</span>
     </div>
-   
+
     <div class="prompt-user-fullscreen-container" *ngIf="shouldShowZeroState()">
       <div>
         <div class="prompt-user">
@@ -70,14 +70,9 @@
     </div>
     <div *ngIf="!shouldShowZeroState()">
       <p>{{search}}</p>
-      <recipient-component *ngFor="let recipient of listRecipient" 
-      [wallet]="wallet" 
-      [recipient]="recipient"
-      (deleteEvent)="deleteRecipient($event)" 
-      [isShowSendMax]="isShowSendMax && !isDonation"
-      [isShowDelete]="isShowDelete"
-      [token]="token"
-      (sendMaxEvent)="sendMax()">
+      <recipient-component *ngFor="let recipient of listRecipient" [wallet]="wallet" [recipient]="recipient"
+        (deleteEvent)="deleteRecipient($event)" [isShowSendMax]="isShowSendMax && !isDonation"
+        [isShowDelete]="isShowDelete" [token]="token" (sendMaxEvent)="sendMax()">
       </recipient-component>
     </div>
   </div>
@@ -85,9 +80,11 @@
 
 <ion-footer class="ion-no-border footer" *ngIf="!shouldShowZeroState()">
   <ion-toolbar>
-    <div class="btn-function-group"> 
-      <ion-button *ngIf="!token && !isDonation" class="btn-add-more" fill="outline" (click)="addNewRecipient()">{{'Add more recipient' | translate}}</ion-button>
-      <ion-button [disabled]="checkBeforeGoToConfirmPage()" class="button-standard" (click)="goToConfirm()">{{'Continue' | translate}}</ion-button>
+    <div class="btn-function-group">
+      <ion-button *ngIf="!token && !isDonation" class="btn-add-more" fill="outline" (click)="addNewRecipient()">{{'Add
+        more recipient' | translate}}</ion-button>
+      <ion-button [disabled]="checkBeforeGoToConfirmPage()" class="button-standard" (click)="goToConfirm()">{{'Continue'
+        | translate}}</ion-button>
     </div>
   </ion-toolbar>
 </ion-footer>

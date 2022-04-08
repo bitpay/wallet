@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { ModalController, NavParams } from '@ionic/angular';
 
 import * as _ from 'lodash';
+import { AppProvider } from 'src/app/providers';
 import { EventManagerService } from 'src/app/providers/event-manager.service';
 import { OnGoingProcessProvider } from 'src/app/providers/on-going-process/on-going-process';
 
@@ -86,7 +87,7 @@ export class TransferToPage {
   public listRecentTransaction = [];
 
   public showContactTab: boolean = false;
-
+  public currentTheme: string;
   constructor(
     private currencyProvider: CurrencyProvider,
     private router: Router,
@@ -100,6 +101,7 @@ export class TransferToPage {
     private events: EventManagerService,
     private onGoingProcessProvider: OnGoingProcessProvider,
     private navParams: NavParams,
+    private appProvider: AppProvider
   ) {
     if (this.router.getCurrentNavigation()) {
       this.navParamsData = this.router.getCurrentNavigation().extras.state;
@@ -117,7 +119,7 @@ export class TransferToPage {
       this.platformProvider.isIOS || this.platformProvider.isAndroid
         ? 700
         : 100;
-
+    this.currentTheme = this.appProvider.themeProvider.currentAppTheme;
   }
 
   public getListRecentTransaction() {
