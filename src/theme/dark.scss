@@ -263,7 +263,7 @@
 
   ion-tab-bar {
     --background: var(--bg-color-dark-theme);
-
+    box-shadow: 0px -2px 6px 2px rgb(0 0 0 / 15%), 0px -2px 2px rgb(0 0 0 / 30%);
     ion-tab-button[aria-selected='true'] {
       opacity: 1;
       border-color: var(--color-primary-abcpay-dark);
@@ -899,8 +899,7 @@
     &.toolbar-ios {
       .back-button,
       .close-container {
-        background-color: var(--bg-color-dark-theme-2);
-        color: var(--text-color-dark-theme) !important;
+        --color: var(--text-color-dark-theme) !important;
 
         &.button-default,
         &.button-md.activated,

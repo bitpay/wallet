@@ -78,7 +78,7 @@ body {
     ion-toolbar {
         --padding-start: 2rem;
         --padding-end: 2rem;
-        min-height: 80px;
+        min-height: 72px;
         display: flex;
         &.toolbar-desktop {
             --padding-start: 0;
@@ -116,6 +116,14 @@ body {
             --offset-bottom: -125px !important;
         }
     }
+
+    page-feature-education {
+        ion-footer {
+            ion-toolbar {
+                min-height: 115px;
+            }
+        }
+    }
 }
 
 @media only screen and (max-width: 576px) {
@@ -127,31 +135,41 @@ body {
                 padding: inherit !important;
             }
         }
-    }
 
-    ion-toolbar {
-        --padding-start: 0 !important;
-        --padding-end: 0 !important;
-        &.wide-header__title {
-            --padding-start: 1rem !important;
-            --padding-end: 1rem !important;
-        }
-        .header-container-desktop {
-            .logo-abcpay {
-              margin-right: 1rem;
-              margin-left: 1rem !important;
+        ion-toolbar {
+            --padding-start: 0 !important;
+            --padding-end: 0 !important;
+            &.toolbar-icon-view-mobile {
+                height: 44px !important;
+                min-height: 44px !important;
+            }
+            &.wide-header__title {
+                --padding-start: 1rem !important;
+                --padding-end: 1rem !important;
+            }
+            .header-container-desktop {
+                .logo-abcpay {
+                  margin-right: 1rem;
+                  margin-left: 1rem !important;
+                }
             }
         }
-    }
+    
+        .settings-list {
+            padding: 0 !important;
+            .mat-form-field {
+                padding: 0 1rem !important;
+            }
+            .scan-item {
+                margin: 0;
+            }
+        }
+        page-feature-education {
+            .hide-button-view-mobile {
+                display: none;
+            }
+        }
 
-    .settings-list {
-        padding: 0 !important;
-        .mat-form-field {
-            padding: 0 1rem !important;
-        }
-        .scan-item {
-            margin: 0;
-        }
     }
 }
 
@@ -359,22 +377,12 @@ ion-header ion-toolbar {
         height: 41px;
         width: 41px;
     }
-
-    margin-left: 13px !important;
-    border-radius: 50%;
-    background-color: rgba(155, 163, 174, 0.2);
-    color: #d8d8d8;
+    --padding-start: 0 !important;
+    --padding-end: 0 !important;
+    margin: 0 !important;
+    background-color: transparent;
+    --color: #d8d8d8;
     box-shadow: none;
-
-    &.button-ios {
-        margin: 0;
-    }
-
-    &.button-md.activated,
-    &.button-ios.activated {
-        background-color: rgba(155, 163, 174, 0.2);
-        box-shadow: none;
-    }
 }
 
 .custom-finish-toast{
@@ -1104,7 +1112,6 @@ ion-label {
 }
 
 .close-container.button-default {
-    color: var(--color-dark);
     box-shadow: none;
 }
 
@@ -1334,13 +1341,8 @@ ion-tabs {
             padding: 0;
             // max-width: 88px;
             --color-selected: #4f6ef7;
-
             &.tab-selected {
                 opacity: 1;
-                margin-bottom: 5px;
-                &:not(.no-boder-scan-tab) {
-                    border-top: 2px solid var(--color-primary);
-                }
             }
 
             ion-icon {
