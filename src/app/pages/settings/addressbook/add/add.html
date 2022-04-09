@@ -6,18 +6,24 @@
         </h3>
       </div>
     <form [formGroup]="addressBookAdd">
-      <ion-item lines="none">
-        <ion-input [placeholder]="'Name' | translate" formControlName="name" type="text"></ion-input>
-      </ion-item>
+      <mat-form-field class="form-field" appearance="outline">
+        <mat-label translate>Name</mat-label>
+        <input matInput type="text" formControlName="name" [placeholder]="'Name'" translate>
+      </mat-form-field>
   
-      <ion-item lines="none">
-        <ion-input [placeholder]="'Address' | translate" formControlName="address" type="text" [value]="addressBookAdd.value.address" address-validator></ion-input>
-  
-        <ion-icon *ngIf="addressBookAdd.controls['address'].status == 'VALID'" name="checkmark-circle" class="check success" slot="end"></ion-icon>
-        <ion-icon *ngIf="addressBookAdd.value.address && addressBookAdd.controls['address'].status == 'INVALID'" class="check fail" name="close-circle" slot="end"></ion-icon>
-  
-        <ion-icon *ngIf="isCordova" class="scanner-icon" name="scan" slot="end" (click)="openScanner()"></ion-icon>
-      </ion-item>
+      <mat-form-field class="form-field" appearance="outline">
+        <mat-label translate>Address</mat-label>
+        <input matInput type="text" formControlName="address" [value]="addressBookAdd.value.address" address-validator [placeholder]="'Address'" translate>
+        <mat-icon matSuffix>
+          <ion-icon *ngIf="addressBookAdd.controls['address'].status == 'VALID'" name="checkmark-circle" class="check success" slot="end"></ion-icon>
+          <ion-icon *ngIf="addressBookAdd.value.address && addressBookAdd.controls['address'].status == 'INVALID'" class="check fail" name="close-circle" slot="end"></ion-icon>
+    
+          <ion-icon *ngIf="isCordova" class="scanner-icon" name="scan" slot="end" (click)="openScanner()"></ion-icon>
+        </mat-icon>
+        <mat-hint *ngIf="addressBookAdd.value.address && addressBookAdd.controls['address'].status == 'INVALID'" class="text-danger">
+          {{'This field only accepts addresses supported by {appName} Wallet' | translate:{appName: appName} }}
+        </mat-hint>
+      </mat-form-field>
   
       <ion-item lines="none" *ngIf="this.addressBookAdd.get('address').valid && coins.length>1">
         <ion-label position="stacked" translate>Coin</ion-label>
@@ -31,11 +37,6 @@
           <ion-select-option *ngFor="let net of networks" [value]="net">{{net}}</ion-select-option>
         </ion-select>
       </ion-item>
-      <label-tip type="danger" header="no-header" *ngIf="addressBookAdd.value.address && addressBookAdd.controls['address'].status == 'INVALID'">
-        <div label-tip-body>
-          <span>{{'This field only accepts addresses supported by {appName} Wallet' | translate:{appName: appName} }}</span>
-        </div>
-      </label-tip>
     </form>
     <div class="footer">
       <ion-button type="submit" class="button-standard ion-no-margin-bottom" (click)="save()" [disabled]="addressBookAdd.invalid">

@@ -29,6 +29,7 @@ export class AddressbookPage {
     private addressbookProvider: AddressBookProvider,
     private loadingCtr: LoadingProvider
   ) {
+    this.loadingCtr.autoLoader();
     if (this.router.getCurrentNavigation()) {
       this.navParamsData = this.router.getCurrentNavigation().extras.state ? this.router.getCurrentNavigation().extras.state : {};
     } else {
@@ -40,7 +41,6 @@ export class AddressbookPage {
   }
 
   ionViewWillEnter() {
-    this.loadingCtr.autoLoader();
     this.migratingContacts = false;
     this.addressbookProvider.migratingContactsSubject.subscribe(_migrating => {
       this.migratingContacts = _migrating;

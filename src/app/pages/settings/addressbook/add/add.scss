@@ -29,6 +29,7 @@ page-addressbook-add {
         font-size: 24px;
         line-height: 32px;
         color: #001E2E;
+        margin-bottom: 2rem;
       }
     }
     form {
@@ -52,6 +53,13 @@ page-addressbook-add {
         ion-icon {
           padding: 0;
         }
+      }
+      .form-field {
+        margin-bottom: 3rem !important;
+      }
+      .mat-form-field-subscript-wrapper {
+        margin-top: 2rem !important;
+        padding: 0 !important;
       }
     }
     .footer {

@@ -2,12 +2,12 @@
   hideBackButton="true">
   <ion-buttons slot="start">
     <ion-button class="close-container disable-hover" (click)="close()">
-      <ion-icon color="dark" name="close-outline"></ion-icon>
+      <ion-icon name="close-outline"></ion-icon>
     </ion-button>
   </ion-buttons>
 
   <ion-buttons slot="end">
-    <ion-button clear wide-header-bar-button (click)="showDeletePopup()"
+    <ion-button class="close-container" wide-header-bar-button (click)="showDeletePopup()"
       *ngIf="wallet.notAuthorized || (!wallet.notAuthorized && secret)">
       <span *ngIf="!canSign" translate>Delete</span>
       <span *ngIf="canSign" translate>Hide</span>

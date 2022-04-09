@@ -186,4 +186,14 @@ page-choose-fee-level {
       }
     }
   }
+  
+  .loading-address {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 2rem;
+    p {
+      margin: 2rem !important;
+    }
+  }
 }

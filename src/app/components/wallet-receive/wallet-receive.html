@@ -24,40 +24,48 @@
       {{' Depositing any other crypto asset besides {coin} to this address may result in the total loss of your funds. AbcPay is not responsible for any funds loss due to the deposit of a different asset, wallet or network. ' | translate: {coin: wallet.coin.toUpperCase() } }}
     </div>
 
-    <div class="qr-container" *ngIf="wallet && wallet?.isComplete() && !wallet?.needsBackup" [ngClass]="{'blur': showingWarning || bchAddrFormat === 'legacy' && !disclaimerAccepted}">
-      <div class="prompt-user" *ngIf="newAddressError && !address">
-        <div class="title-icon larger-icon">
-          <img src="assets/img/ghost-straight-face.svg" />
-        </div>
-        <div class="title-info">
-          <span translate>Something goes wrong...</span>
-        </div>
-        <ion-button class="button-standard" (click)="setAddress(true)">
-          {{'Generate New Address' | translate}}
-        </ion-button>
-      </div>
-      <div *ngIf="address" class="card qr-card">
-
-        <ion-button fill="clear" *ngIf="!(wallet?.cachedStatus && wallet?.cachedStatus.wallet && wallet?.cachedStatus.wallet.singleAddress)" class="addr-update" (click)="setAddress(true)">
-          <ion-icon slot="icon-only" src="assets/img/add-refresh-light.svg"></ion-icon>
-        </ion-button>
-        <p copy-to-clipboard="{{ address }}">{{ address }}</p>
-        <ngx-qrcode hide-toast="true" value="{{ address }}" cssClass="aclass" [errorCorrectionLevel]="typeErrorQr.MEDIUM"></ngx-qrcode>
-      </div>
-      <div class="action-buttons">
-        <div class="action-button">
-          <ion-button copy-to-clipboard="{{ address }}">
-            <ion-icon name="copy-outline"></ion-icon>
+    <ng-container *ngIf="address;else loading">
+      <div class="qr-container" *ngIf="wallet && wallet?.isComplete() && !wallet?.needsBackup" [ngClass]="{'blur': showingWarning || bchAddrFormat === 'legacy' && !disclaimerAccepted}">
+        <div class="prompt-user" *ngIf="newAddressError && !address">
+          <div class="title-icon larger-icon">
+            <img src="assets/img/ghost-straight-face.svg" />
+          </div>
+          <div class="title-info">
+            <span translate>Something goes wrong...</span>
+          </div>
+          <ion-button class="button-standard" (click)="setAddress(true)">
+            {{'Generate New Address' | translate}}
           </ion-button>
-          <div class="ellipsis">{{ 'Copy' | translate }}</div> 
         </div>
-        <div class="action-button share-button">
-          <ion-button>
-            <ion-icon name="share-outline"></ion-icon>
+        <div *ngIf="address" class="card qr-card">
+  
+          <ion-button fill="clear" *ngIf="!(wallet?.cachedStatus && wallet?.cachedStatus.wallet && wallet?.cachedStatus.wallet.singleAddress)" class="addr-update" (click)="setAddress(true)">
+            <ion-icon slot="icon-only" src="assets/img/add-refresh-light.svg"></ion-icon>
           </ion-button>
-          <div class="ellipsis">{{ 'Share' | translate }}</div> 
+          <p copy-to-clipboard="{{ address }}">{{ address }}</p>
+          <ngx-qrcode hide-toast="true" value="{{ address }}" cssClass="aclass" [errorCorrectionLevel]="typeErrorQr.MEDIUM"></ngx-qrcode>
+        </div>
+        <div class="action-buttons">
+          <div class="action-button">
+            <ion-button copy-to-clipboard="{{ address }}">
+              <ion-icon name="copy-outline"></ion-icon>
+            </ion-button>
+            <div class="ellipsis">{{ 'Copy' | translate }}</div> 
+          </div>
+          <div class="action-button share-button">
+            <ion-button>
+              <ion-icon name="share-outline"></ion-icon>
+            </ion-button>
+            <div class="ellipsis">{{ 'Share' | translate }}</div> 
+          </div>
         </div>
       </div>
-    </div>
+    </ng-container>
+    <ng-template #loading>
+      <div class="loading-address">
+        <ion-spinner color="primary"></ion-spinner>
+        <p>Loading address...</p>
+      </div>
+    </ng-template>
   </div>
 </action-sheet>
