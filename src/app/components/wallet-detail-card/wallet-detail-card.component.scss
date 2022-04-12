@@ -29,7 +29,7 @@ wallet-detail-card {
         }
         .wallet-name {
           margin-left: 0.5rem;
-          max-width: 200px;
+          max-width: 240px;
           p {
             margin: 0;
           }
@@ -68,6 +68,7 @@ wallet-detail-card {
         }
       }
       .ngx-qrcode-address {
+        opacity: 0.8;
         width: 55px !important;
         height: 40px !important;
         img {
@@ -179,7 +180,10 @@ wallet-detail-card {
       margin: 0;
       font-weight: 500;
       span {
-        margin: 0 5px;
+        margin-left: 5px;
+      }
+      .addr-update {
+        margin-left: 18px;
       }
     }
     ion-icon {
@@ -249,9 +253,17 @@ wallet-detail-card {
   }
 
   .wallet-setting {
+    display: flex;
+    margin-left: 5px;
     ion-icon {
       width: 20px;
       height: 20px;
+    }
+  }
+
+  @media screen and (max-width: 376px) {
+    .wallet-name {
+      max-width: 200px !important;
     }
   }
 }
