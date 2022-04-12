@@ -137,7 +137,7 @@ export class WalletsPage {
   private updateTotalBalanceKey(keySelected) {
     let totalAlternativeBalanceToken = 0;
     _.forEach(keySelected, wallet => {
-      if(wallet.tokens) {
+      if (wallet.tokens) {
         totalAlternativeBalanceToken += _.sumBy(wallet.tokens, 'alternativeBalance')
       }
     })
@@ -231,7 +231,7 @@ export class WalletsPage {
   private getTotalBalanceKey(key) {
     const totalBalanceAlternative = key.reduce((result, wallet) => {
       if (wallet.cachedStatus && wallet.cachedStatus.totalBalanceAlternative && wallet.network !== 'testnet') {
-        result += parseFloat(wallet.cachedStatus.totalBalanceAlternative.replaceAll(',',''));
+        result += parseFloat(wallet.cachedStatus.totalBalanceAlternative.replaceAll(',', ''));
       }
       return result;
     }, 0)

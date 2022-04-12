@@ -7,7 +7,6 @@ import { SocialSharing } from '@ionic-native/social-sharing/ngx';
 
 // Providers
 import { AppProvider } from '../../../providers/app/app';
-import { ConfigProvider } from '../../../providers/config/config';
 import { KeyProvider } from '../../../providers/key/key';
 import { Logger } from '../../../providers/logger/logger';
 import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
@@ -18,11 +17,12 @@ import { PushNotificationsProvider } from '../../../providers/push-notifications
 import { ModalController, NavParams, Platform } from '@ionic/angular';
 import { EventManagerService } from 'src/app/providers/event-manager.service';
 import { NgxQrcodeErrorCorrectionLevels } from '@techiediaries/ngx-qrcode';
+import { ReplaceParametersProvider } from 'src/app/providers';
 
 @Component({
   selector: 'page-copayers',
   templateUrl: 'copayers.html',
-  styleUrls: ['/copayers.scss'],
+  styleUrls: ['./copayers.scss'],
   encapsulation: ViewEncapsulation.None
 })
 export class CopayersPage {
@@ -34,11 +34,12 @@ export class CopayersPage {
   public canSign: boolean;
   public copayers: any[];
   public secret;
-  typeErrorQr =  NgxQrcodeErrorCorrectionLevels;
+  typeErrorQr = NgxQrcodeErrorCorrectionLevels;
   private onResumeSubscription: Subscription;
   private onPauseSubscription: Subscription;
   static processed = {};
-
+  public titlePage: string;
+  public currentTheme: string;
   constructor(
     private plt: Platform,
     private appProvider: AppProvider,
@@ -54,7 +55,7 @@ export class CopayersPage {
     private pushNotificationsProvider: PushNotificationsProvider,
     private viewCtrl: ModalController,
     private keyProvider: KeyProvider,
-    private configProvider: ConfigProvider
+    private replaceParametersProvider: ReplaceParametersProvider
   ) {
     this.secret = null;
     this.appName = this.appProvider.info.userVisibleName;
@@ -63,6 +64,15 @@ export class CopayersPage {
     this.copayers = [];
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
     this.canSign = this.wallet.canSign;
+    this.titlePage = this.replaceParametersProvider.replace(
+      this.translate.instant('{{ name }} [{{m}}-{{n}}]'),
+      {
+        name: this.wallet.name,
+        m: this.wallet.m,
+        n: this.wallet.n
+      }
+    );
+    this.currentTheme = this.appProvider.themeProvider.currentAppTheme;
   }
 
 
