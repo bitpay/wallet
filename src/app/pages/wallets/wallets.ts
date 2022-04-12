@@ -231,7 +231,7 @@ export class WalletsPage {
   private getTotalBalanceKey(key) {
     const totalBalanceAlternative = key.reduce((result, wallet) => {
       if (wallet.cachedStatus && wallet.cachedStatus.totalBalanceAlternative && wallet.network !== 'testnet') {
-        result += parseFloat(wallet.cachedStatus.totalBalanceAlternative);
+        result += parseFloat(wallet.cachedStatus.totalBalanceAlternative.replaceAll(',',''));
       }
       return result;
     }, 0)

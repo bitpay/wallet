@@ -197,10 +197,13 @@ ion-button {
 }
 
 ion-back-button {
-    margin: 0;
-    --padding-start: 0;
+    --padding-start: 0 !important;
+    --padding-end: 25px !important;
+    margin: 0 !important;
+    padding: 10px !important;
     &.ios {
-        margin: 0.5rem;
+        margin: 0 !important;
+        padding: 10px !important;
     }
 }
 
@@ -1345,9 +1348,9 @@ ion-tabs {
                 opacity: 1;
             }
 
-            ion-icon {
-                width: 32px;
-                height: 32px;
+            img {
+                width: 40px;
+                height: 40px;
             }
 
             .scan-container {

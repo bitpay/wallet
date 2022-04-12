@@ -1,18 +1,8 @@
-<ion-header class="ion-no-border">
-  <ion-toolbar transparent>
-    <ion-buttons slot='start'>
-      <!-- <ion-button (click)="close(true)" color="primary" *ngIf="(action === 'pinSetUp' || action === 'lockSetUp')">
-        {{'Cancel' | translate}}
-      </ion-button> -->
-      <ion-back-button *ngIf="(action === 'pinSetUp' || action === 'lockSetUp')" (click)="close(true)" icon="chevron-back-outline" defaultHref=""></ion-back-button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content forceOverflow="false" [fullscreen]="true">
+<ion-content [ngClass]="{'bg-dark': currentTheme === 'dark'}" forceOverflow="false" [fullscreen]="true">
   <div class="pin-header">
     <div class="title">
       <div *ngIf="!disableButtons">
+        <span class="message" *ngIf="action === 'checkPin' && !incorrect" translate>Please enter your PIN</span>
         <span class="message" *ngIf="!confirmingPin && !incorrect && action === 'pinSetUp'" translate>Create your passcode</span>
         <span class="message" *ngIf="!confirmingPin && !incorrect && action === 'lockSetUp'" translate>Please enter your passcode</span>
         <span class="message" *ngIf="confirmingPin && !incorrect" translate>Re-type passcode</span>

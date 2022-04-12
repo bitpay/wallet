@@ -3,6 +3,7 @@ import { Vibration } from '@ionic-native/vibration/ngx';
 import { ModalController, NavParams, Platform } from '@ionic/angular';
 
 import { Subscription } from 'rxjs';
+import { ThemeProvider } from 'src/app/providers';
 
 import { Animate } from '../../../directives/animate/animate';
 import { ConfigProvider } from '../../../providers/config/config';
@@ -34,6 +35,7 @@ export class PinModalPage {
   public incorrect: boolean;
   public unregister;
   public isCordova: boolean;
+  public currentTheme: string;
 
   @ViewChild(Animate)
   pinCode: Animate;
@@ -46,8 +48,10 @@ export class PinModalPage {
     private persistenceProvider: PersistenceProvider,
     private vibration: Vibration,
     private viewCtrl: ModalController,
-    private platformProvider: PlatformProvider
+    private platformProvider: PlatformProvider,
+    private themeProvider: ThemeProvider
   ) {
+    this.currentTheme = this.themeProvider.currentAppTheme;
     this.ATTEMPT_LIMIT = 3;
     this.ATTEMPT_LOCK_OUT_TIME = 2 * 60;
     this.currentAttempts = 0;
