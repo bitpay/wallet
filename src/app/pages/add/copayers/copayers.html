@@ -1,76 +1,100 @@
-<wide-header-page subTitle="(Shared account)" title="{{ wallet.name }} [{{wallet.m}}-{{wallet.n}}]"
-  hideBackButton="true">
-  <ion-buttons slot="start">
-    <ion-button class="close-container disable-hover" (click)="close()">
-      <ion-icon name="close-outline"></ion-icon>
-    </ion-button>
-  </ion-buttons>
+<ion-header [translucent]="true" class="bp-header">
+  <ion-toolbar class="header" [ngClass]="{ 
+    'bg-bch': wallet.coin == 'bch',
+    'bg-xec': wallet.coin == 'xec',
+    'bg-xpi': wallet.coin == 'xpi',
+    'bg-doge': wallet.coin == 'doge',
+    'bg-ltc': wallet.coin == 'ltc'
+    }">
+    <ion-buttons slot="start">
+      <ion-button class="close-container disable-hover" (click)="close()">
+        <ion-icon class="icon-close" name="close-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
 
-  <ion-buttons slot="end">
-    <ion-button class="close-container" wide-header-bar-button (click)="showDeletePopup()"
-      *ngIf="wallet.notAuthorized || (!wallet.notAuthorized && secret)">
-      <span *ngIf="!canSign" translate>Delete</span>
-      <span *ngIf="canSign" translate>Hide</span>
-    </ion-button>
-  </ion-buttons>
-  <div page-content>
-
-    <div class="white-card" *ngIf="!wallet.notAuthorized && copayers && secret">
-      <div class="timeline-container">
-        <div class="timeline-item" *ngFor="let copayer of copayers; let i = index">
-          <div class="timeline-content">
-            <div class="timeline-content-icon">
-              <div class="line" *ngIf="copayers.length < wallet.n">
-                <ion-icon src="assets/img/copayer-invitation/joined.svg" slot="end"></ion-icon>
-              </div>
-            </div>
-            <div class="timeline-content-label ellipsis">
-              <div *ngIf="copayer.id == wallet.copayerId" class="name copayer-name ellipsis">{{'Me'|translate}}</div>
-              <div *ngIf="copayer.id != wallet.copayerId" class="name copayer-name  ellipsis">{{copayer.name}}</div>
+    <ion-buttons slot="end">
+      <ion-button class="close-container" wide-header-bar-button (click)="showDeletePopup()"
+        *ngIf="wallet.notAuthorized || (!wallet.notAuthorized && secret)">
+        <span *ngIf="!canSign" translate>Delete</span>
+        <span *ngIf="canSign" translate>Hide</span>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>
+      <div [reveal-at-scroll-pos]="expandableHeader.headerHeight" [scrollArea]="scrollArea">
+        {{titlePage | translate}}
+      </div>
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content scrollEvents="true" #scrollArea>
+  <expandable-header class="custom-expandable-header" [scrollArea]="scrollArea" [fadeFactor]="5" [disableFade]="true"
+    #expandableHeader>
+    <ion-toolbar class="wide-header__title" tappable>
+      <expandable-header-primary>
+        {{titlePage | translate}}
+        <div class="sub-title-header">
+          {{'(Shared account)' | translate}}
+        </div>
+      </expandable-header-primary>
+    </ion-toolbar>
+  </expandable-header>
+  <div class="white-card" *ngIf="!wallet.notAuthorized && copayers && secret">
+    <div class="timeline-container">
+      <div class="timeline-item" *ngFor="let copayer of copayers; let i = index">
+        <div class="timeline-content">
+          <div class="timeline-content-icon">
+            <div class="line" *ngIf="copayers.length < wallet.n">
+              <ion-icon src="assets/img/copayer-invitation/joined-{{currentTheme}}.svg" slot="end"></ion-icon>
             </div>
           </div>
-        </div>
-        <div class="timeline-item" *ngIf="!wallet.isComplete() && copayers.length < wallet.n">
-          <div class="timeline-content">
-            <div class="timeline-content-icon">
-              <div class="line no-border">
-                <ion-icon class="wait-icon" src="assets/img/copayer-invitation/wait.svg" slot="end"></ion-icon>
-              </div>
-            </div>
-            <div class="timeline-content-label ellipsis">
-              <div class="name ellipsis">{{'Waiting'|translate}}</div>
-            </div>
+          <div class="timeline-content-label ellipsis">
+            <div *ngIf="copayer.id == wallet.copayerId" class="name copayer-name ellipsis">{{'Me'|translate}}</div>
+            <div *ngIf="copayer.id != wallet.copayerId" class="name copayer-name  ellipsis">{{copayer.name}}</div>
           </div>
         </div>
       </div>
-    </div>
-
-    <div *ngIf="!wallet.notAuthorized" class="account-invitaion-container">
-      <div class="content">
-        <div class="account-ivitaion-info">
-          <div class="title">
-            Account Invitation
+      <div class="timeline-item" *ngIf="!wallet.isComplete() && copayers.length < wallet.n">
+        <div class="timeline-content">
+          <div class="timeline-content-icon">
+            <div class="line no-border">
+              <ion-icon class="wait-icon" src="assets/img/copayer-invitation/wait-{{currentTheme}}.svg" slot="end">
+              </ion-icon>
+            </div>
           </div>
-          <div class="sub-title" translate>
-            Share this address with the devices joining this account.
+          <div class="timeline-content-label ellipsis">
+            <div class="name ellipsis">{{'Waiting'|translate}}</div>
           </div>
         </div>
-        <div class="qr-code-container" *ngIf="!wallet.notAuthorized && secret" copy-to-clipboard="{{secret}}">
-          <ngx-qrcode hide-toast="true" value="{{ secret }}" cssClass="aclass"
-            [errorCorrectionLevel]="typeErrorQr.MEDIUM"></ngx-qrcode>
-        </div>
       </div>
-
-      <div class="button">
-        <ion-button *ngIf="isCordova && !wallet.notAuthorized" (click)="shareAddress()" class="button-standard">
-          {{ 'Share this invitation' | translate }}
-        </ion-button>
-      </div>
-    </div>
-
-    <div class="ion-padding error-msg" *ngIf="wallet.notAuthorized">
-      <h3 class="assertive" translate>Wallet incomplete and broken</h3>
-      <div translate>Delete it and create a new one</div>
     </div>
   </div>
-</wide-header-page>
+
+  <div *ngIf="!wallet.notAuthorized" class="account-invitaion-container">
+    <div class="content">
+      <div class="account-ivitaion-info">
+        <div class="title">
+          Account Invitation
+        </div>
+        <div class="sub-title" translate>
+          Share this address with the devices joining this account.
+        </div>
+      </div>
+      <div class="qr-code-container" *ngIf="!wallet.notAuthorized && secret" copy-to-clipboard="{{secret}}">
+        <ngx-qrcode hide-toast="true" value="{{ secret }}" cssClass="aclass"
+          [errorCorrectionLevel]="typeErrorQr.MEDIUM"></ngx-qrcode>
+      </div>
+    </div>
+
+    <div>
+      <ion-button (click)="shareAddress()" class="button-standard">
+        {{ 'Share this invitation' | translate }}
+      </ion-button>
+    </div>
+  </div>
+
+  <div class="ion-padding error-msg" *ngIf="wallet.notAuthorized">
+    <h3 class="assertive" translate>Wallet incomplete and broken</h3>
+    <div translate>Delete it and create a new one</div>
+  </div>
+
+</ion-content>

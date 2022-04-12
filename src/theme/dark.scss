@@ -1995,6 +1995,9 @@
   }
 
   page-copayers {
+    .sub-title-header{
+      color: rgba(237, 239, 240, 0.6);
+    }
     .white-card {
       background: var(--bg-color-dark-theme);
       color: var(--text-color-dark-theme) !important;
@@ -2002,6 +2005,32 @@
       .timeline-content-icon ion-icon {
         &[name='time-outline'] {
           filter: invert(1);
+        }
+      }
+      .timeline-content-icon{
+        .line::before {
+          background: rgba(115, 218, 165, 1);
+        }
+      }
+      .timeline-container{
+          background: #21333e;
+      }
+      .timeline-content {
+        &-label {  
+          > .name {
+            color: #B6C9D8;
+          }
+        }
+      }
+    }
+    .account-invitaion-container{
+      background: linear-gradient(0deg, rgba(126, 208, 255, 0.11), rgba(126, 208, 255, 0.11)), #001E2E !important;
+      .account-ivitaion-info{
+        .title{
+          color: rgba(237, 239, 240, 1) !important;
+        }
+        .sub-title{
+          color: rgba(237, 239, 240, 0.6) !important;
         }
       }
     }
