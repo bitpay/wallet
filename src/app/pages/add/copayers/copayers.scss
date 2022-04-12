@@ -1,4 +1,27 @@
 page-copayers {
+  @media only screen and (max-width: 576px) {
+    ion-content {
+      --padding-end: 1rem !important;
+    }
+  }
+
+  .custom-expandable-header {
+    margin-top: 12px;
+  }
+
+  .icon-close {
+    color: #edeff0 !important;
+  }
+  .close-container {
+    span {
+      color: #edeff0 !important;
+    }
+  }
+  .sub-title-header {
+    color: rgba(0, 30, 46, 0.6);
+    font-size: 14px;
+    margin-top: 4px;
+  }
   .toolbar-content {
     display: flex;
     justify-content: space-between;
@@ -22,52 +45,54 @@ page-copayers {
       }
     }
   }
- 
-  .account-invitaion-container{
+
+  .account-invitaion-container {
     display: flex;
     flex-flow: column;
-    background: linear-gradient(0deg, rgba(126, 208, 255, 0.11), rgba(126, 208, 255, 0.11)), #001E2E;
+    background: #fafafb;
     border-radius: 12px;
     margin: 2rem 1rem;
     padding: 24px 16px;
     margin-top: 0px;
-    
-    .content{
+
+    .content {
       display: flex;
       flex-flow: row;
-      .account-ivitaion-info{
+      .account-ivitaion-info {
         display: flex;
         flex-flow: column;
         padding-right: 16px;
-        .title{
+        .title {
           font-weight: 600;
           font-size: 16px;
-          color: rgba(237, 239, 240, 1);
+          color: #001e2e;
         }
-        .sub-title{
+        .sub-title {
           margin-top: 8px;
           font-weight: 400;
           font-size: 14px;
-          color: rgba(237, 239, 240, 0.6);
+          color: rgba(0, 30, 46, 0.6);
         }
       }
-      .aclass{
+      .aclass {
         height: 125px;
         width: 125px;
       }
     }
-    .button{
-      margin-top: 32px;
-      ion-button{
+    .button {
+      margin-top: 1rem;
+      margin-bottom: 0;
+      ion-button {
         margin-top: 0px;
         margin-bottom: 0px;
       }
     }
   }
   .white-card {
-    background: white;
+    background: transparent;
     padding: 2rem 1rem;
     padding-top: 9px;
+    margin-top: 20px;
     .title {
       font-size: 16px;
       font-weight: 500;
@@ -81,8 +106,13 @@ page-copayers {
   .error-msg {
     text-align: center;
   }
-  .timeline-container{
-    background-color: rgba(33, 51, 62, 1);
+  .timeline-container {
+    background: linear-gradient(
+        0deg,
+        rgba(0, 101, 141, 0.11),
+        rgba(0, 101, 141, 0.11)
+      ),
+      #fafafb;
     border-radius: 12px;
   }
   // Timeline styles
@@ -95,7 +125,7 @@ page-copayers {
       .timeline-content-icon {
         .line::before {
           content: '';
-          background: rgba(115, 218, 165, 1);
+          background: #006c44;
           width: 1px;
           position: absolute;
           left: 50%;
@@ -104,7 +134,6 @@ page-copayers {
           height: 16px;
           top: -8px;
         }
-     
       }
     }
 
@@ -119,7 +148,7 @@ page-copayers {
         color: var(--color-dark);
       }
     }
-    .wait-icon{
+    .wait-icon {
       opacity: 0.6;
     }
     .timeline-content {
@@ -162,14 +191,14 @@ page-copayers {
 
         > .name {
           font-size: 16px;
-          color: #B6C9D8;
+          color: #0b1d28;
           font-weight: 600;
           opacity: 0.6;
           @media (max-width: 330px) {
             font-size: 14px;
           }
         }
-        > .copayer-name{
+        > .copayer-name {
           opacity: 1;
         }
       }
