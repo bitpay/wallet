@@ -1995,7 +1995,7 @@
   }
 
   page-copayers {
-    .sub-title-header{
+    .sub-title-header {
       color: rgba(237, 239, 240, 0.6);
     }
     .white-card {
@@ -2007,29 +2007,34 @@
           filter: invert(1);
         }
       }
-      .timeline-content-icon{
+      .timeline-content-icon {
         .line::before {
           background: rgba(115, 218, 165, 1);
         }
       }
-      .timeline-container{
-          background: #21333e;
+      .timeline-container {
+        background: #21333e;
       }
       .timeline-content {
-        &-label {  
+        &-label {
           > .name {
-            color: #B6C9D8;
+            color: #b6c9d8;
           }
         }
       }
     }
-    .account-invitaion-container{
-      background: linear-gradient(0deg, rgba(126, 208, 255, 0.11), rgba(126, 208, 255, 0.11)), #001E2E !important;
-      .account-ivitaion-info{
-        .title{
+    .account-invitaion-container {
+      background: linear-gradient(
+          0deg,
+          rgba(126, 208, 255, 0.11),
+          rgba(126, 208, 255, 0.11)
+        ),
+        #001e2e !important;
+      .account-ivitaion-info {
+        .title {
           color: rgba(237, 239, 240, 1) !important;
         }
-        .sub-title{
+        .sub-title {
           color: rgba(237, 239, 240, 0.6) !important;
         }
       }
