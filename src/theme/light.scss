@@ -28,8 +28,10 @@
 
     // 2 - General
     ion-content {
-        background: var(--bg-color-light-content-theme);
-        --background: var(--bg-color-light-content-theme);
+        &:not(page-pin) {
+            background: var(--bg-color-light-content-theme);
+            --background: var(--bg-color-light-content-theme);
+        }
     }
 
     ion-list {
@@ -155,5 +157,10 @@
         ion-toolbar {
             --background: var(--bg-color-inner-item-light-theme);
         }
+    }
+
+    .back-transparent {
+        background: transparent !important;
+        --background: transparent !important;
     }
 }

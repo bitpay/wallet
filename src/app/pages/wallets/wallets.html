@@ -123,8 +123,8 @@
                     </div>
                   </div>
                   <div class="address-token" copy-to-clipboard="{{wallet.etokenAddress}}">
-                    <span class="background-content">{{wallet.etokenAddress | slice:-8}}</span>
                     <ion-icon class="coin-img" name="copy-outline"></ion-icon>
+                    <span class="background-content">{{wallet.etokenAddress | slice:-8}}</span>
                   </div>
                 </div>
                 <ng-container *ngIf="!wallet.tokens">

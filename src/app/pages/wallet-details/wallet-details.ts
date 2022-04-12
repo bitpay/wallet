@@ -846,9 +846,9 @@ export class WalletDetailsPage {
     });
   }
 
-  private requestSpecificAmount(): void {
+  public requestSpecificAmount(): void {
     this.walletProvider.getAddress(this.wallet, false).then(addr => {
-      this.router.navigate(['/amount'], {
+      this.router.navigate(['/custom-amount'], {
         state: {
           toAddress: addr,
           id: this.wallet.credentials.walletId,

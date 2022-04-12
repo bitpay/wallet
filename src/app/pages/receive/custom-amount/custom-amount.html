@@ -1,35 +1,35 @@
-<wide-header-page title="{{ wallet.name }}">
+<wide-header-page title="Request specific amount">
   <ion-buttons slot="end">
-    <ion-button fill="clear" wide-header-bar-button (click)="shareAddress()" *ngIf="showShareButton">
-      <ion-icon name="share-outline" class="pointer"></ion-icon>
+    <ion-button class="info-specific" fill="clear" wide-header-bar-button (click)="showPaymentRequestInfo()">
+      <ion-icon src="assets/img/wallet-details/wallet-info-{{currentTheme}}.svg" class="pointer"></ion-icon>
     </ion-button>
   </ion-buttons>
   <div page-content>
-    <div *ngIf="wallet" class="receive-content">
-      <div class="title-container">
-        <span class="title">{{'Payment Request' | translate}}</span>
-        <ion-icon src="assets/img/icon-info-blue.svg" (click)="showPaymentRequestInfo()">
-        </ion-icon>
-      </div>
-      <div class="addr-container">
-        <div class="text-address ellipsis">
-          <img class="copy-to-clip" copy-to-clipboard="{{ address }}" src="assets/img/paste-clipboard.svg" width="18" />
-          <div class="address-text ellipsis">
-            <span>{{ address }}</span>
-          </div>
-        </div>
-      </div>
+    <div class="amount-form">
+      <form [formGroup]="amountCustomForm">
+        <mat-form-field appearance="outline">
+          <mat-label translate>Request amount</mat-label>
+          <input (blur)="getAmountCustom()" matInput type="number" formControlName="amountCustom" [value]="amountCustomForm.value.amountCustom" [placeholder]="'Request amount'" translate>
+          <span matSuffix>{{wallet.coin.toUpperCase()}}</span>
+        </mat-form-field>
+        <mat-hint *ngIf="altAmountStr">{{altAmountStr}}</mat-hint>
+      </form>
     </div>
 
-    <div class="qr-card-amount">
-      <span>{{amountUnitStr}}</span>
-      <br>
-      <small>({{altAmountStr}})</small>
-    </div>
     <div class="qr-container">
       <div class="card qr-card" copy-to-clipboard="{{ qrAddress }}">
         <ngx-qrcode hide-toast="true" value="{{ qrAddress }}" cssClass="aclass" [errorCorrectionLevel]="typeErrorQr.MEDIUM"></ngx-qrcode>
+        <div class="address-text ellipsis">
+          <span>{{ address }}</span>
+        </div>
       </div>
     </div>
+  </div>
+  <div footer-content>
+    <ion-toolbar>
+      <ion-button class="button-standard" *ngIf="isCordova && !wallet.notAuthorized" (click)="shareAddress()" [disabled]="this.amountCustomForm.value.amountCustom === ''">
+        {{'Share this' | translate}}
+      </ion-button>
+    </ion-toolbar>
   </div>
 </wide-header-page>

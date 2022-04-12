@@ -16,6 +16,8 @@ import { NavParams } from '@ionic/angular';
 import { Router } from '@angular/router';
 import _ from 'lodash';
 import { NgxQrcodeErrorCorrectionLevels } from '@techiediaries/ngx-qrcode';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ThemeProvider } from 'src/app/providers';
 
 @Component({
   selector: 'page-custom-amount',
@@ -32,6 +34,9 @@ export class CustomAmountPage {
   public amountUnitStr: string;
   public amountCoin: string;
   public altAmountStr: string;
+  public amountCustomForm: FormGroup;
+  public isCordova: boolean;
+  public currentTheme: string;
   navParamsData;
   typeErrorQr =  NgxQrcodeErrorCorrectionLevels;
   constructor(
@@ -46,7 +51,19 @@ export class CustomAmountPage {
     private actionSheetProvider: ActionSheetProvider,
     private configProvider: ConfigProvider,
     private router: Router,
+    private formBuilder: FormBuilder,
+    private themeProvider: ThemeProvider
   ) {
+    this.currentTheme = this.themeProvider.currentAppTheme;
+    this.amountCustomForm = this.formBuilder.group({
+      amountCustom: [
+        0
+        ,
+        Validators.compose([Validators.minLength(1), Validators.required])
+      ]
+    });
+    this.amountCustomForm.value.amountCustom = 0;
+    this.isCordova = this.platformProvider.isCordova;
     if (this.router.getCurrentNavigation()) {
        this.navParamsData = this.router.getCurrentNavigation().extras.state ? this.router.getCurrentNavigation().extras.state : {};
     } else {
@@ -58,6 +75,16 @@ export class CustomAmountPage {
 
     this.wallet = this.profileProvider.getWallet(walletId);
 
+  }
+
+  ngOnInit(){
+    this.logger.info('Loaded: CustomAmountPage');
+    this.getAmountCustom();
+  }
+
+  public getAmountCustom() {
+    if (this.amountCustomForm.value.amountCustom === '') return;
+    this.navParamsData.amount = this.amountCustomForm.value.amountCustom;
     this.walletProvider.getAddress(this.wallet, false).then(addr => {
       this.address = this.walletProvider.getAddressView(
         this.wallet.coin,
@@ -68,7 +95,7 @@ export class CustomAmountPage {
       const parsedAmount = this.txFormatProvider.parseAmount(
         this.wallet.coin,
         this.navParamsData.amount,
-        this.navParamsData.currency
+        this.navParamsData.coin.toUpperCase()
       );
 
       // Amount in USD or BTC
@@ -120,10 +147,6 @@ export class CustomAmountPage {
           parsedAmount.amountSat;
       }
     });
-  }
-
-  ngOnInit(){
-    this.logger.info('Loaded: CustomAmountPage');
   }
 
   public shareAddress(): void {
