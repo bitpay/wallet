@@ -2,14 +2,13 @@ wallet-detail-card {
   width: 100%;
   .wallet-card {
     width: 100%;
-    min-height: 187px;
-    padding: 20px 20px 8px 20px;
     border-radius: 16px;
     color: #edeff0;
     box-shadow: 0px 2px 6px 2px rgb(0 0 0 / 15%);
     .wallet-card-header {
       display: flex;
       justify-content: space-between;
+      padding: 20px;
       .wallet-icon {
         display: flex;
         align-items: center;
@@ -17,8 +16,8 @@ wallet-detail-card {
           position: relative;
           margin-top: 6px;
           img {
-            width: 40px;
-            height: 40px;
+            width: 40px !important;
+            height: 40px !important;
           }
           .audit {
             width: 16px;
@@ -30,7 +29,7 @@ wallet-detail-card {
         }
         .wallet-name {
           margin-left: 0.5rem;
-          min-width: 240px;
+          max-width: 240px;
           p {
             margin: 0;
           }
@@ -68,9 +67,18 @@ wallet-detail-card {
           }
         }
       }
+      .ngx-qrcode-address {
+        opacity: 0.8;
+        width: 55px !important;
+        height: 40px !important;
+        img {
+          border-radius: 4px;
+        }
+      }
     }
     .balance-content {
-      margin-top: 1rem;
+      padding: 20px;
+      padding-top: 0;
       display: flex;
       justify-content: space-between;
       width: 100%;
@@ -159,25 +167,103 @@ wallet-detail-card {
 
   .wallet-address {
     text-align: end;
+    background: linear-gradient(270deg, rgba(0, 30, 46, 0.24) 2.04%, rgba(0, 30, 46, 0) 100%);
+    border-radius: 0px 8px 0px 0px;
+    padding: 8px 20px 8px 8px;
     .wallet-add {
-      margin-top: 1rem !important;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
       font-size: 13px;
       color: rgba(237, 239, 240, 0.6);
       letter-spacing: 0.4px;
       margin: 0;
       font-weight: 500;
+      span {
+        margin-left: 5px;
+      }
+      .addr-update {
+        margin-left: 18px;
+      }
     }
     ion-icon {
       color: #edeff0;
-      width: 16px;
-      height: 16px;
+      width: 20px;
+      height: 20px;
+    }
+    .addr-update {
+      --padding-start: 0;
+      --padding-end: 0;
+      width: 20px;
+      height: 20px;
+      margin: 0;
+      .spin-backwards {
+        animation: spin-backwards 0.5s ease-out 1;
+      }
+      @keyframes spin-backwards {
+        from {
+          transform: rotate(210deg);
+        }
+        to {
+          transform: rotate(-360deg);
+        }
+      }
+      .fade-in-out {
+        opacity: 0.1;
+      }
+      @keyframes bounce-down {
+        0% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(15%);
+        }
+        100% {
+          transform: translateY(0);
+        }
+      }
+      
+      .spin-icon {
+        height: 18px;
+      }
+      .spinner {
+        float: right;
+        padding-bottom: 0px;
+        border: 1px solid orange;
+        border-top: 1px solid red;
+        border-radius: 50%;
+        width: 18px;
+        height: 18px;
+        margin: 2px;
+        color: red;
+        background-color: red;
+      }
+      .spin-fast {
+        animation: spin-fast 0.3s linear infinite;
+      }
+      @keyframes spin-fast {
+        from {
+          transform: rotate(0deg);
+        }
+        to {
+          transform: rotate(360deg);
+        }
+      }
     }
   }
 
   .wallet-setting {
+    display: flex;
+    margin-left: 5px;
     ion-icon {
       width: 20px;
       height: 20px;
+    }
+  }
+
+  @media screen and (max-width: 376px) {
+    .wallet-name {
+      max-width: 200px !important;
     }
   }
 }

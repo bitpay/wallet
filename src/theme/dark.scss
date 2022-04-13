@@ -208,8 +208,10 @@
 
   // 3 - General
   ion-content {
-    --background: var(--bg-color-dark-theme);
-    --color: var(--text-color-dark-theme) !important;
+    &:not(page-pin) {
+      --background: var(--bg-color-dark-theme);
+      --color: var(--text-color-dark-theme) !important;
+    }
   }
 
   ion-loading {
@@ -1106,10 +1108,6 @@
       }
     }
 
-    ion-content {
-      background-color: var(--bg-color-dark-theme) !important;
-    }
-
     .pin-header {
       .title {
         color: var(--text-color-dark-theme) !important;
@@ -1122,6 +1120,7 @@
   }
 
   pin-pad {
+    background: var(--bg-color-dark-theme) !important;
     ion-col {
       background: var(--color-secondary-container-abcpay-dark);
       .letters {
@@ -1132,7 +1131,10 @@
 
   pin-dots {
     .filled {
-      background-color: var(--bg-hight-color-abcpay-dark);
+      background-color: #00FFD3;
+    }
+    .circle {
+      border-color: #00FFD3;
     }
   }
 
@@ -3552,4 +3554,9 @@
       color: rgba(237, 239, 240, 0.6);
     }
   }
+
+  .back-transparent {
+    background: transparent !important;
+    --background: transparent !important;
+}
 }

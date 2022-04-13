@@ -81,10 +81,10 @@
         <div class="action-buttons"
           [ngClass]="{'two-actions': !showBuyCrypto && !showExchangeCrypto, 'no-margin': !wallet?.balanceHidden && !wallet?.scanning && !updateStatusError && showBalanceButton}">
 
-          <div class="action-btn receive-btn" (click)="goToReceivePage()">
+          <div class="action-btn receive-btn" (click)="requestSpecificAmount()">
             <ion-button expand="block">
               <ion-icon slot="start" name="arrow-down-outline"></ion-icon>
-              {{ 'Receive' | translate }}
+              {{ 'Request' | translate }}
             </ion-button>
           </div>
 

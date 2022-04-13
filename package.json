@@ -103,7 +103,7 @@
     "cordova-plugin-globalization": "^1.0.9",
     "cordova-plugin-inappbrowser": "4.1.0",
     "cordova-plugin-ionic-keyboard": "^2.2.0",
-    "cordova-plugin-qrscanner": "^3.0.1",
+    "cordova-plugin-qrscanner-codaxy": "^3.0.4",
     "cordova-plugin-screen-orientation": "^3.0.2",
     "cordova-plugin-splashscreen": "^6.0.0",
     "cordova-plugin-statusbar": "^2.4.3",
