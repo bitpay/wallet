@@ -509,8 +509,6 @@ export class IncomingDataProvider {
       this.activePage = redirParams.activePage;
     if (redirParams && redirParams.activePage)
       this.fromFooterMenu = redirParams.fromFooterMenu;
-    if (redirParams && redirParams.recipientId)
-      this.recipientId = redirParams.recipientId;
     if (redirParams.token) {
       if (this.isValidEToken(data)) {
         this.handleEtoken(data, redirParams);
