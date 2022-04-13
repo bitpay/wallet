@@ -92,8 +92,8 @@ export class RecipientComponent implements OnInit {
   @Input()
   isDonation?: boolean;
 
-  @Output() deleteEvent? = new EventEmitter<number>();
-  @Output() sendMaxEvent? = new EventEmitter<boolean>();
+  @Output() deleteEvent?= new EventEmitter<number>();
+  @Output() sendMaxEvent?= new EventEmitter<boolean>();
 
   private validDataTypeMap: string[] = [
     'BitcoinAddress',
@@ -161,7 +161,7 @@ export class RecipientComponent implements OnInit {
       const precision = this.currencyProvider.getPrecision(coin as Coin).unitToSatoshi;
       this.formatRemaining = this.txFormatProvider.formatAmount(coin, precision * this.remaining);
     }
-   
+
   }
 
   ngOnInit() {
@@ -187,7 +187,7 @@ export class RecipientComponent implements OnInit {
   private updateAddressHandler: any = data => {
     if (data.recipientId === this.recipient.id) {
       this.searchValue = data.value;
-      this.processInput();
+      // this.processInput();
     }
   };
 
@@ -448,6 +448,7 @@ export class RecipientComponent implements OnInit {
       ) {
         const isValid = this.checkCoinAndNetwork(address);
         if (isValid) {
+          this.redir();
           this.validAddress = true;
           this.recipient.toAddress = address;
           if (this.token && this.wallet.coin) this.recipient.toAddress = tokenAddress;
@@ -463,6 +464,17 @@ export class RecipientComponent implements OnInit {
     this.checkRecipientValid();
   }
 
+  private redir() {
+    this.incomingDataProvider.redir(this.searchValue, {
+      activePage: 'SendPage',
+      amount: this.navParams.data.amount,
+      coin: this.navParams.data.coin, // TODO ???? what is this for ?
+      recipientId: !this.isShowSendMax ? this.recipient.id : null
+    });
+    this.search = '';
+  }
+
+
   checkRecipientValid() {
     if (!this.isDonation) {
       this.recipient.isValid = this.validAddress && this.validAmount;
@@ -474,7 +486,7 @@ export class RecipientComponent implements OnInit {
       }
     }
   }
-  
+
   public async checkIfContact() {
     await timer(50).toPromise();
     return this.transferTo.hasContactsOrWallets;
@@ -498,7 +510,7 @@ export class RecipientComponent implements OnInit {
     }
 
     if (isValid) {
-      this.validAddress = false;
+      this.validAddress = true;
       return true;
     } else {
       this.validAddress = true;
@@ -667,4 +679,13 @@ export class RecipientComponent implements OnInit {
     return parseFloat(rateProvider.toString());
   }
 
+  public updateRecipient(recipient: RecipientModel) {
+    this.searchValue = recipient.toAddress;
+    this.recipient.toAddress = recipient.toAddress;
+    this.expression = recipient.amount;
+    this.recipient.isSpecificAmount = recipient.isSpecificAmount;
+    this.processInput();
+    this.processAmount();
+    this.checkRecipientValid();
+  }
 }

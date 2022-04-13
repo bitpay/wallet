@@ -7,16 +7,18 @@
   <div class="recipient-content">
     <div *ngIf="!isDonation" class="transfer-to-header">
       <p class="title">Transfer to</p>
-      <img *ngIf="!token" (click)="openTransferToModal()" src="assets/img/recipient-component/Union-{{darkThemeString}}.svg">
+      <img *ngIf="!token && !recipient.isSpecificAmount" (click)="openTransferToModal()" src="assets/img/recipient-component/Union-{{darkThemeString}}.svg">
     </div>
     <ion-item *ngIf="!isDonation"  lines="none" class="search-address-wrapper">
-      <ion-input class="transfer-to-input" [readonly]="recipient.name.length > 0"
+      <ion-input class="transfer-to-input" 
+      [readonly]="recipient.name.length > 0"
+        [disabled]="recipient.isSpecificAmount"
         placeholder="Paste address here"
         [(ngModel)]="searchValue"
         [value]="recipient.name"
         (ionChange)="processInput()">
       </ion-input>
-      <ion-icon src="assets/img/recipient-component/Subtract.svg" *ngIf="searchValue && searchValue.length > 0"
+      <ion-icon src="assets/img/recipient-component/Subtract.svg" *ngIf="searchValue && searchValue.length > 0 && !recipient.isSpecificAmount"
         slot="end" class="erase-icon" (click)="cleanSearch()">
       </ion-icon>
       <ion-icon src="assets/img/recipient-component/qr-{{darkThemeString}}.svg" *ngIf="isCordova" slot="end" class="scan-icon" (click)="openScanner()">
@@ -24,10 +26,10 @@
     </ion-item>
     <div class="amount-header">
       <p class="title">Amount</p>
-      <p class="bold-text max-text" *ngIf="isShowSendMax" (click)="sendMax()">Max</p>
+      <p class="bold-text max-text" *ngIf="isShowSendMax && !recipient.isSpecificAmount" (click)="sendMax()">Max</p>
     </div>
     <ion-item lines="none" class="amount-wrapper">
-      <ion-input placeholder=0 type="number" [disabled]="isSelectedTotalAmout" [(ngModel)]="expression" (ngModelChange)="processAmount()"></ion-input>
+      <ion-input placeholder=0 type="number" [disabled]="isSelectedTotalAmout || recipient.isSpecificAmount" [(ngModel)]="expression" (ngModelChange)="processAmount()"></ion-input>
       <span *ngIf="!token" [ngClass]="{'disabled': isSelectedTotalAmout, 'bold-text': !isSelectedTotalAmout}">{{unit}} </span>
       <span *ngIf="token" class="bold-text">{{token?.tokenInfo?.symbol}}</span>
     </ion-item>
@@ -46,9 +48,7 @@
       <div class="title-thanks">{{'Appreciate!' | translate}}</div>
       <ng-container *ngIf="isShowReceiveLotus">
         <div class="receiveLotus">{{receiveLotus}}</div>
-        <div class="messages">{{'We say, “thank you” to each other. But, talk is cheap and words are fleeting. It’s easy
-          for someone to express appreciation through words alone. By tokenizing a flower, we can always have the
-          appreciation with us.' | translate}}</div>
+        <div class="messages">{{'We say, “thank you” to each other. But, talk is cheap and words are fleeting. It’s easy for someone to express appreciation through words alone. By tokenizing a flower, we can always have the appreciation with us.' | translate}}</div>
       </ng-container>
       <div *ngIf="messagesReceiveLotus && !isShowReceiveLotus" class="messages">{{'Due to high demand, we are running out of Lotus today and unable to give you back. Come back another day or proceed anyway.' | translate}}</div>
     </div>

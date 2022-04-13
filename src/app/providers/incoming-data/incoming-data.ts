@@ -21,6 +21,7 @@ export interface RedirParams {
   token?: any,
   fromHomeCard?: boolean;
   fromFooterMenu?: boolean;
+  recipientId?: number;
 }
 @Injectable({
   providedIn: 'root'
@@ -226,7 +227,7 @@ export class IncomingDataProvider {
     let amount = parsed.amount || amountFromRedirParams;
 
     if (parsed.r) {
-    } else this.goSend(address, amount, message, coin);
+    } else this.goSend(address, amount, message, coin, redirParams.recipientId);
   }
 
   private handleEtoken(data: string, redirParams?: RedirParams) {
@@ -235,7 +236,7 @@ export class IncomingDataProvider {
       redirParams && redirParams.amount ? redirParams.amount : '';
     const coin = Coin.XEC;
     let amount = amountFromRedirParams;
-    this.goSend(data, amount, null, coin, null, null, redirParams.token);
+    this.goSend(data, amount, null, coin, redirParams.recipientId, null, null, redirParams.token);
   }
 
   private handleECashUri(data: string, redirParams?: RedirParams): void {
@@ -255,7 +256,7 @@ export class IncomingDataProvider {
     let amount = parsed.amount || amountFromRedirParams;
 
     if (parsed.r) {
-    } else this.goSend(address, amount, message, coin);
+    } else this.goSend(address, amount, message, coin, redirParams.recipientId);
   }
 
   private handleLotusUri(data: string, redirParams?: RedirParams): void {
@@ -270,12 +271,12 @@ export class IncomingDataProvider {
     if (parsed.address && data.indexOf(address) < 0) {
       address = parsed.address.toCashAddress();
     }
-
     let message = parsed.message;
     let amount = parsed.amount || amountFromRedirParams;
-
+    this.logger.debug(amount);
+    this.logger.debug(redirParams.recipientId);
     if (parsed.r) {
-    } else this.goSend(address, amount, message, coin);
+    } else this.goSend(address, amount, message, coin, redirParams.recipientId);
   }
 
   private handleDogecoinUri(data: string, redirParams?: RedirParams): void {
@@ -288,7 +289,7 @@ export class IncomingDataProvider {
     let message = parsed.message;
     let amount = parsed.amount || amountFromRedirParams;
     if (parsed.r) {
-    } else this.goSend(address, amount, message, coin);
+    } else this.goSend(address, amount, message, coin, redirParams.recipientId);
   }
 
   private handleLitecoinUri(data: string, redirParams?: RedirParams): void {
@@ -301,7 +302,7 @@ export class IncomingDataProvider {
     let message = parsed.message;
     let amount = parsed.amount || amountFromRedirParams;
     if (parsed.r) {
-    } else this.goSend(address, amount, message, coin);
+    } else this.goSend(address, amount, message, coin, redirParams.recipientId);
   }
 
   private handleWalletConnectUri(uri: string): void {
@@ -372,7 +373,7 @@ export class IncomingDataProvider {
         coin
       });
     } else if (redirParams && redirParams.amount) {
-      this.goSend(data, redirParams.amount, '', coin);
+      this.goSend(data, redirParams.amount, '', coin, redirParams.recipientId);
     } else {
       this.goToAmountPage(data, coin);
     }
@@ -391,7 +392,7 @@ export class IncomingDataProvider {
         coin
       });
     } else if (redirParams && redirParams.amount) {
-      this.goSend(data, redirParams.amount, '', coin);
+      this.goSend(data, redirParams.amount, '', coin, redirParams.recipientId);
     } else {
       this.goToAmountPage(data, coin);
     }
@@ -410,7 +411,7 @@ export class IncomingDataProvider {
         coin
       });
     } else if (redirParams && redirParams.amount) {
-      this.goSend(data, redirParams.amount, '', coin);
+      this.goSend(data, redirParams.amount, '', coin, redirParams.recipientId);
     } else {
       this.goToAmountPage(data, coin);
     }
@@ -429,7 +430,7 @@ export class IncomingDataProvider {
         coin
       });
     } else if (redirParams && redirParams.amount) {
-      this.goSend(data, redirParams.amount, '', coin);
+      this.goSend(data, redirParams.amount, '', coin, redirParams.recipientId);
     } else {
       this.goToAmountPage(data, coin);
     }
@@ -448,7 +449,7 @@ export class IncomingDataProvider {
         coin
       });
     } else if (redirParams && redirParams.amount) {
-      this.goSend(data, redirParams.amount, '', coin);
+      this.goSend(data, redirParams.amount, '', coin, redirParams.recipientId);
     } else {
       this.goToAmountPage(data, coin);
     }
@@ -508,7 +509,8 @@ export class IncomingDataProvider {
       this.activePage = redirParams.activePage;
     if (redirParams && redirParams.activePage)
       this.fromFooterMenu = redirParams.fromFooterMenu;
-
+    if (redirParams && redirParams.recipientId)
+      this.recipientId = redirParams.recipientId;
     if (redirParams.token) {
       if (this.isValidEToken(data)) {
         this.handleEtoken(data, redirParams);
@@ -873,11 +875,12 @@ export class IncomingDataProvider {
     amount: string,
     message: string,
     coin: Coin,
+    recipientId?: number,
     requiredFeeRate?: string,
     destinationTag?: string,
     token?: any
   ): void {
-    if (amount) {
+    if (amount && !recipientId) {
       let stateParams = {
         amount,
         toAddress: addr,
@@ -891,7 +894,26 @@ export class IncomingDataProvider {
         params: stateParams
       };
       this.incomingDataRedir(nextView);
-    } else {
+    }
+    else if (amount && recipientId) {
+      this.logger.debug('go Send');
+
+      let stateParams = {
+        amount,
+        toAddress: addr,
+        description: message,
+        coin,
+        requiredFeeRate,
+        destinationTag,
+        recipientId
+      };
+      let nextView = {
+        name: 'SendPage',
+        params: stateParams
+      };
+      this.incomingDataRedir(nextView);
+    }
+    else {
       let stateParams = {
         toAddress: addr,
         description: message,
@@ -899,7 +921,7 @@ export class IncomingDataProvider {
         token
       };
       let nextView = {
-        name: 'AmountPage',
+        name: 'SendPage',
         params: stateParams
       };
       this.incomingDataRedir(nextView);
@@ -915,7 +937,6 @@ export class IncomingDataProvider {
       name: 'AmountPage',
       params: stateParams
     };
-
     this.incomingDataRedir(nextView);
   }
 
