@@ -196,4 +196,14 @@ page-choose-fee-level {
       margin: 2rem !important;
     }
   }
+
+  ion-segment-button {
+    min-height: 32px;
+    &::part(indicator-background) {
+      background: none !important;
+      border-bottom: 2px solid var(--color-primary);
+      box-shadow: none !important;
+      border-radius: 0 !important;
+    }
+  }
 }

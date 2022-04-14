@@ -143,13 +143,16 @@
                       </ion-label>
                       <ion-note slot="end">
                         <div>
-                          <div *ngIf="!wallet?.balanceHidden">
+                          <ng-container *ngIf="isShowBalance || wallet?.balanceHidden;else noShowBalanceToken">
                             <div class="main-note">{{DecimalFormatBalance(token?.amountToken)}}</div>
                             <div class="secondary-note" *ngIf="wallet?.cachedStatus">
                               <span >~</span> {{'$' + DecimalFormatBalance(token.alternativeBalance)}}
                             </div>
-                          </div>
-                          <div *ngIf="wallet?.balanceHidden" class="main-note">******</div>
+                          </ng-container>
+                          <ng-template #noShowBalanceToken>
+                            <div class="main-note">******</div>
+                            <div class="secondary-note">******</div>
+                          </ng-template>
                         </div>
                         
                       </ion-note>

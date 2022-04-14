@@ -169,12 +169,12 @@ wallet-detail-card {
     text-align: end;
     background: linear-gradient(270deg, rgba(0, 30, 46, 0.24) 2.04%, rgba(0, 30, 46, 0) 100%);
     border-radius: 0px 8px 0px 0px;
-    padding: 8px 20px 8px 8px;
+    padding: 5px 20px 5px 8px;
     .wallet-add {
       display: flex;
       justify-content: flex-end;
       align-items: center;
-      font-size: 13px;
+      font-size: 12px;
       color: rgba(237, 239, 240, 0.6);
       letter-spacing: 0.4px;
       margin: 0;
@@ -188,8 +188,12 @@ wallet-detail-card {
     }
     ion-icon {
       color: #edeff0;
-      width: 20px;
-      height: 20px;
+      width: 13px;
+      height: 13px;
+      &.icon-refresh {
+        width: 20px;
+        height: 20px;
+      }
     }
     .addr-update {
       --padding-start: 0;
@@ -256,8 +260,8 @@ wallet-detail-card {
     display: flex;
     margin-left: 5px;
     ion-icon {
-      width: 20px;
-      height: 20px;
+      width: 16px;
+      height: 16px;
     }
   }
 

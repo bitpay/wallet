@@ -29,7 +29,7 @@
           </div>
         </div>
       </div>
-      <div class="ngx-qrcode-address" *ngIf="address">
+      <div (click)="goToReceivePage()" class="ngx-qrcode-address" *ngIf="address">
         <ng-container *ngIf="address && !loading;else noShowQrCode">
           <ngx-qrcode hide-toast="true" value="{{ address }}" cssClass="aclass" [errorCorrectionLevel]="typeErrorQr.MEDIUM"></ngx-qrcode>
         </ng-container>
@@ -76,7 +76,7 @@
           <span copy-to-clipboard="{{ address }}">{{(address | slice:-8)}}</span>
         </ng-template>
         <ion-button fill="clear" *ngIf="!(wallet?.cachedStatus && wallet?.cachedStatus.wallet && wallet?.cachedStatus.wallet.singleAddress)" class="addr-update" (click)="setAddress(true)">
-          <ion-icon slot="icon-only" src="assets/img/wallet-details/wallet-detail-card-refresh.svg"></ion-icon>
+          <ion-icon class="icon-refresh" slot="icon-only" src="assets/img/wallet-details/wallet-detail-card-refresh.svg"></ion-icon>
         </ion-button>
       </div>
     </div>
@@ -112,7 +112,7 @@
           </div>
         </div>
       </div>
-      <div class="ngx-qrcode-address" *ngIf="wallet?.etokenAddress">
+      <div (click)="goToReceivePage()" class="ngx-qrcode-address" *ngIf="wallet?.etokenAddress">
         <ng-container *ngIf="wallet?.etokenAddress && !loading;else noShowQrCodeToken">
           <ngx-qrcode hide-toast="true" value="{{ wallet?.etokenAddress }}" cssClass="aclass" [errorCorrectionLevel]="typeErrorQr.MEDIUM"></ngx-qrcode>
         </ng-container>

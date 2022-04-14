@@ -16,7 +16,7 @@ export enum AlertType {
 })
 export class InfoSheetTemplate {
   @Input()
-  type: AlertType | any = AlertType.info;
+  type: AlertType | any;
 
   @Input()
   sheetSecondBtnGroup: any = 'false';

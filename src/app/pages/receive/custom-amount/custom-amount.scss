@@ -101,4 +101,12 @@ page-custom-amount {
   .info-specific {
     --padding-end: 12px !important;
   }
+  
+  .mat-form-field-appearance-outline .mat-form-field-infix {
+    padding-left: 0 !important;
+  }
+  
+  .mat-hint {
+    padding-left: 28px !important;
+  }
 }
