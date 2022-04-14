@@ -459,4 +459,10 @@ page-tx-details {
   .memo-custom{
     --highlight-background: transparent;
   }
+  .wrapper {
+    padding-bottom: 4rem !important;
+  }
+  div[page-content] {
+    padding-bottom: 4rem;
+  }
 }

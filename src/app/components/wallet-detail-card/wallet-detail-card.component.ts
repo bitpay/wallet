@@ -1,12 +1,13 @@
 import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
-import { ActionSheetProvider, AddressProvider, AppProvider, BwcErrorProvider, CurrencyProvider, EventManagerService, Logger, ProfileProvider, RateProvider, TokenProvider, WalletProvider } from 'src/app/providers';
+import { ActionSheetProvider, AddressProvider, AppProvider, BwcErrorProvider, CurrencyProvider, ErrorsProvider, EventManagerService, Logger, ProfileProvider, RateProvider, TokenProvider, WalletProvider } from 'src/app/providers';
 import { DecimalFormatBalance } from 'src/app/providers/decimal-format.ts/decimal-format';
 import * as _ from 'lodash';
 import { TokenInforPage } from 'src/app/pages/token-info/token-info';
 import { ModalController } from '@ionic/angular';
 import { NgxQrcodeErrorCorrectionLevels } from '@techiediaries/ngx-qrcode';
 import { timer } from 'rxjs';
+import { TranslateService } from '@ngx-translate/core';
 
 const MIN_UPDATE_TIME = 2000;
 
@@ -58,6 +59,8 @@ export class WalletDetailCardComponent implements OnInit {
     private logger: Logger,
     private bwcErrorProvider: BwcErrorProvider,
     private addressProvider: AddressProvider,
+    private translate: TranslateService,
+    private errorsProvider: ErrorsProvider,
   ) {
     this.currentTheme = this.appProvider.themeProvider.currentAppTheme;
   }
@@ -215,5 +218,38 @@ export class WalletDetailCardComponent implements OnInit {
 
     await timer(200).toPromise();
     this.playAnimation = false;
+  }
+
+  public goToReceivePage() {
+    if (this.wallet && this.wallet.isComplete() && this.wallet.needsBackup) {
+      const needsBackup = this.actionSheetProvider.createNeedsBackup();
+      needsBackup.present();
+      needsBackup.onDidDismiss(data => {
+        if (data === 'goToBackup') this.goToBackup();
+      });
+    } else {
+      const params = {
+        wallet: this.wallet
+      };
+      const receive = this.actionSheetProvider.createWalletReceive(params);
+      receive.present();
+      receive.onDidDismiss(data => {
+        if (data) this.showErrorInfoSheet(data);
+      });
+    }
+  }
+
+  public goToBackup(): void {
+    this.router.navigate(['/backup-key'], {
+      state: { keyId: this.wallet.credentials.keyId }
+    });
+  }
+
+  public showErrorInfoSheet(error: Error | string): void {
+    const infoSheetTitle = this.translate.instant('Error');
+    this.errorsProvider.showDefaultError(
+      this.bwcErrorProvider.msg(error),
+      infoSheetTitle
+    );
   }
 }

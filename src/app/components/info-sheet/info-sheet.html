@@ -276,12 +276,12 @@
         }}</span>
     </info-sheet-template>
 
-    <info-sheet-template *ngSwitchCase="'payment-request'" type="info">
+    <info-sheet-template sheetSecondBtnGroup="true" *ngSwitchCase="'payment-request'">
       <span sheet-title-text translate>Payment Request info</span>
       <span sheet-text>
         {{'Share this QR code to receive {amount} in your wallet {name}.' | translate: {amount: params.amount, name:params.name} }}
       </span>
-      <span sheet-button-text translate>GOT IT</span>
+      <span sheet-third-button-text  translate>GOT IT</span>
     </info-sheet-template>
 
     <info-sheet-template *ngSwitchCase="'payment-method-changed'" type="warning">

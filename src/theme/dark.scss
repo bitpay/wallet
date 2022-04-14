@@ -2113,6 +2113,12 @@
         }
       }
     }
+
+    ion-segment-button {
+      &::part(indicator-background) {
+        border-color: var(--color-primary-abcpay-dark) !important;
+      }
+    }
   }
 
   page-send-select-inputs {
