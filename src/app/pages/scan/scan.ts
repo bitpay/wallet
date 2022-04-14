@@ -104,6 +104,7 @@ export class ScanPage {
     this.logger.info('Loaded: ScanPage');
     this.routerOutlet.swipeGesture = false;
     this.canGoBack = this.routerOutlet && this.routerOutlet.canGoBack();
+
   }
 
   ionViewWillLeave() {
@@ -299,19 +300,32 @@ export class ScanPage {
 
 
   private handleSendAddress(data, addrData): void {
-    const dataMenu = this.actionSheetProvider.createIncomingDataMenu({ data });
-    dataMenu.present();
-    dataMenu.onDidDismiss(dataDismiss => {
-      if (dataDismiss && dataDismiss.redirTo == 'SendPage') {
-        this.router.navigateByUrl('/accounts-page', {
-          state: {
-            coin: addrData.coin,
-            network: addrData.network,
-            toAddress: data.data
-          }
-        });
-      }
-    });
+    if (data.data.includes('amount')) {
+      this.router.navigateByUrl('/accounts-page', {
+        state: {
+          coin: addrData.coin,
+          network: addrData.network,
+          toAddress: data.data,
+          isSpecificAmount: true
+        }
+      });
+    }
+    else {
+      const dataMenu = this.actionSheetProvider.createIncomingDataMenu({ data });
+      dataMenu.present();
+      dataMenu.onDidDismiss(dataDismiss => {
+        if (dataDismiss && dataDismiss.redirTo == 'SendPage') {
+          this.router.navigateByUrl('/accounts-page', {
+            state: {
+              coin: addrData.coin,
+              network: addrData.network,
+              toAddress: data.data
+            }
+          });
+        }
+      });
+    }
+
   }
 
   private redirScanAddress(address) {

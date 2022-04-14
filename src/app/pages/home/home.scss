@@ -10,6 +10,7 @@ button.bitpay-id-login {
   margin-top: -12px;
   float: right;
 }
+
 .icon-bitpay-id {
   font-family: 'Heebo-Medium' !important;
   background: #1a2c57;
@@ -31,7 +32,7 @@ button.bitpay-id-login {
   align-items: center;
 }
 .total-amount-container {
-  background: #FAFAFB;
+  background: #fafafb;
   margin: 1rem;
   display: flex;
   justify-content: space-between;
@@ -75,11 +76,11 @@ button.bitpay-id-login {
     text-align: center;
     height: 21px;
     .negative-avg {
-      color: #BA1B1B;
+      color: #ba1b1b;
       border-radius: 50vh;
     }
     .possitive-avg {
-      color: #37A372;
+      color: #37a372;
       border-radius: 50vh;
     }
     .average {
@@ -213,7 +214,7 @@ button.bitpay-id-login {
   cursor: default;
 }
 
-.wide-header__title{
+.wide-header__title {
   padding-top: 0;
   padding-bottom: 0;
   --padding-end: 1rem;
@@ -229,6 +230,18 @@ button.bitpay-id-login {
   display: flex;
   justify-content: space-between;
   padding: 0 1rem;
+  align-items: center;
+  .key-notifications {
+    --overflow: visible;
+    --padding-end: 0;
+  }
+
+  .custom-notification-icon {
+    position: absolute;
+    bottom: 17px;
+    left: 17px;
+    z-index: 1;
+  }
 }
 
 .exchange-rate {
@@ -238,12 +251,12 @@ button.bitpay-id-login {
   .exchange-rate-title {
     font-size: 22px;
     font-weight: 600;
-    color: #001E2E;
+    color: #001e2e;
   }
   .date-label {
     background: none;
     font-size: 14px;
-    color: rgba(0, 30, 46, 0.6);;
+    color: rgba(0, 30, 46, 0.6);
     padding-left: 0.5rem;
   }
 }

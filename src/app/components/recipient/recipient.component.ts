@@ -448,10 +448,10 @@ export class RecipientComponent implements OnInit {
       ) {
         const isValid = this.checkCoinAndNetwork(address);
         if (isValid) {
-          this.redir();
           this.validAddress = true;
           this.recipient.toAddress = address;
           if (this.token && this.wallet.coin) this.recipient.toAddress = tokenAddress;
+          this.redir();
         }
       }
       else if (parsedData && parsedData.type == 'PrivateKey') {
@@ -563,12 +563,17 @@ export class RecipientComponent implements OnInit {
     });
   }
 
-  public cleanSearch() {
+  public cleanSearch(isSpecificRecipient?:boolean) {
     this.recipient.toAddress = '';
     this.recipient.name = '';
     this.validAddress = false;
     this.recipient.recipientType = '';
     this.searchValue = '';
+    if(isSpecificRecipient){
+      this.recipient.isSpecificAmount = false;
+      this.expression = 0;
+      this.processAmount();
+    }
     this.checkRecipientValid();
   }
 

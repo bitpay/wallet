@@ -89,6 +89,7 @@ export class HomePage {
 
   public isCordova: boolean;
   private zone;
+  public txpsN: number;
 
   constructor(
     private persistenceProvider: PersistenceProvider,
@@ -164,6 +165,22 @@ export class HomePage {
     });
   }
 
+  private updateTxps() {
+    this.profileProvider
+      .getTxps({ limit: 3 })
+      .then(data => {
+        this.events.publish('Local/UpdateTxps', {
+          n: data.n
+        });
+        this.zone.run(() => {
+          this.txpsN = data.n;
+        });
+      })
+      .catch(err => {
+        this.logger.error(err);
+      });
+  }
+
   ionViewWillEnter() {
     const config = this.configProvider.get();
     this.totalBalanceAlternativeIsoCode =
@@ -190,6 +207,7 @@ export class HomePage {
           });
       }
     });
+    this.updateTxps();
   }
 
   ngOnInit() {
@@ -281,6 +299,7 @@ export class HomePage {
     this.preFetchWallets();
     setTimeout(() => {
       refresher.target.complete();
+      this.updateTxps();
     }, 2000);
   }
 

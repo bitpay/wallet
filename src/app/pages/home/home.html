@@ -10,7 +10,10 @@
       <div class="home-icon">
         <img (click)="openSettingPage()" src="assets/img/home-setting-icon-{{currentTheme}}.svg">
         {{ 'Home' | translate }}
-        <img (click)="openProposalsNotificationsPage()"src="assets/img/home-notifications-icon-{{currentTheme}}.svg">
+        <ion-button fill="clear" slot="icon-only" class="key-notifications" (click)="openProposalsNotificationsPage()">
+          <img *ngIf="txpsN > 0" class="custom-notification-icon" src="assets/img/wallet-details/notification-{{currentTheme}}.svg" />
+          <ion-icon slot="end" src="assets/img/home-notifications-icon-{{currentTheme}}.svg"></ion-icon>
+        </ion-button>
       </div>
     </ion-title>
   </ion-toolbar>
