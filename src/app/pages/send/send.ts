@@ -145,17 +145,8 @@ export class SendPage {
   }
 
   private SendPageRedirEventHandler: any = nextView => {
-    // toto ionic 4 : Remove view ???? Handle in ionic 4 - 5 ???
-    // const currentIndex = this.navCtrl.getActive().index;
-    // const currentView = this.navCtrl.getViews();
     nextView.params.fromWalletDetails = true;
     nextView.params.walletId = this.wallet.credentials.walletId;
-    // this.navCtrl
-    //   .push(this.pageMap[nextView.name], nextView.params, { animate: false })
-    //   .then(() => {
-    //     if (currentView[currentIndex].name == 'ScanPage')
-    //       this.navCtrl.remove(currentIndex);
-    //   });
     if (nextView && nextView.params.amount) {
       if (nextView.params.recipientId) {
         let totalAmountStr = this.txFormatProvider.satToUnit(

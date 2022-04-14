@@ -187,7 +187,6 @@ export class RecipientComponent implements OnInit {
   private updateAddressHandler: any = data => {
     if (data.recipientId === this.recipient.id) {
       this.searchValue = data.value;
-      // this.processInput();
     }
   };
 
