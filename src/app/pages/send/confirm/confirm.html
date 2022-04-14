@@ -183,8 +183,8 @@
             <div class="item-name">
               <div class="background-content">
                 <span>{{recipient.name || ((recipient.addressToShow ||
-                  recipient.toAddress || recipient.address) |
-                  shortenedAddress)}}</span>
+                  recipient.toAddress || recipient.address).slice(-8)
+                  )}}</span>
               </div>
             </div>
             <div class="item-detail ellipsis">

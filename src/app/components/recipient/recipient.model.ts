@@ -8,6 +8,7 @@ export class RecipientModel {
     public name?:string;
     public recipientType: string;
     public currency?: string;
+    public isSpecificAmount?: boolean;
     constructor(data) {
         this.id = Date.now();
         this.toAddress = data.toAddress || "";
@@ -18,5 +19,6 @@ export class RecipientModel {
         this.name = data.name || "";
         this.recipientType = data.recipientType || "";
         this.currency = data.currency || "";
+        this.isSpecificAmount = data.isSpecificAmount || false;
     }
 } 

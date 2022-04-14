@@ -1,4 +1,4 @@
-import { Component, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, QueryList, ViewChild, ViewChildren, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
 import { IonContent, NavParams, Platform } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
@@ -23,6 +23,7 @@ import { PlatformProvider } from '../../providers/platform/platform';
 
 // Pages
 import { RecipientModel } from '../../components/recipient/recipient.model';
+import { RecipientComponent } from 'src/app/components/recipient/recipient.component';
 
 @Component({
   selector: 'page-send',
@@ -60,8 +61,9 @@ export class SendPage {
   isShowDelete: boolean = false;
   toAddress: string = '';
   formatRemaining: string;
+  recipientNotInit: RecipientModel;
   @ViewChild(IonContent) content: IonContent;
-
+  @ViewChildren(RecipientComponent) queryListRecipientComponent: QueryList<RecipientComponent>;
   constructor(
     private currencyProvider: CurrencyProvider,
     private router: Router,
@@ -122,6 +124,13 @@ export class SendPage {
     this.logger.info('Loaded: SendPage');
   }
 
+  ngAfterViewInit() {
+    if (this.recipientNotInit) {
+      this.queryListRecipientComponent.toArray()[0].updateRecipient(this.recipientNotInit);
+      this.recipientNotInit = null;
+    }
+  }
+
   ngOnDestroy() {
     this.events.unsubscribe('SendPageRedir', this.SendPageRedirEventHandler);
     this.events.unsubscribe('Desktop/onFocus');
@@ -136,17 +145,41 @@ export class SendPage {
   }
 
   private SendPageRedirEventHandler: any = nextView => {
-    // toto ionic 4 : Remove view ???? Handle in ionic 4 - 5 ???
-    // const currentIndex = this.navCtrl.getActive().index;
-    // const currentView = this.navCtrl.getViews();
     nextView.params.fromWalletDetails = true;
     nextView.params.walletId = this.wallet.credentials.walletId;
-    // this.navCtrl
-    //   .push(this.pageMap[nextView.name], nextView.params, { animate: false })
-    //   .then(() => {
-    //     if (currentView[currentIndex].name == 'ScanPage')
-    //       this.navCtrl.remove(currentIndex);
-    //   });
+    if (nextView && nextView.params.amount) {
+      if (nextView.params.recipientId) {
+        let totalAmountStr = this.txFormatProvider.satToUnit(
+          nextView.params.amount,
+          this.wallet.coin
+        );
+        this.queryListRecipientComponent.toArray().find(s => s.recipient.id === nextView.params.recipientId).updateRecipient(new RecipientModel({
+          toAddress: nextView.params.toAddress,
+          amount: totalAmountStr,
+          isSpecificAmount: true
+        }))
+      }
+      else {
+        let totalAmountStr = this.txFormatProvider.satToUnit(
+          nextView.params.amount,
+          this.wallet.coin
+        );
+        if (this.queryListRecipientComponent) {
+          this.queryListRecipientComponent.toArray()[0].updateRecipient(new RecipientModel({
+            toAddress: nextView.params.toAddress,
+            amount: totalAmountStr,
+            isSpecificAmount: true
+          }));
+        }
+        else {
+          this.recipientNotInit = new RecipientModel({
+            toAddress: nextView.params.toAddress,
+            amount: totalAmountStr,
+            isSpecificAmount: true
+          })
+        }
+      }
+    }
     this.router.navigate([this.pageMap[nextView.name]], {
       state: nextView.params
     });
