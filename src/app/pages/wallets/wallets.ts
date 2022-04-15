@@ -50,6 +50,7 @@ export class WalletsPage {
   private onPauseSubscription: Subscription;
   public showReorder: boolean = false;
   public currentCurrency;
+  public isScroll = false;
   listEToken = ['EAT', 'DoC', 'bcPro'];
   donationSupportCoins = [];
   navParamsData;
@@ -61,6 +62,7 @@ export class WalletsPage {
   isEditKeyName = false;
   keySelected = [];
   keyNameSelected;
+  
   constructor(
     public http: HttpClient,
     private plt: Platform,
@@ -95,6 +97,15 @@ export class WalletsPage {
     this.collapsedGroups = {};
     this.collapsedToken = {};
     this.zone = new NgZone({ enableLongStackTrace: false });
+  }
+
+  async handleScrolling(event) {
+    if (event.detail.currentY > 0) {
+      this.isScroll = true;
+    }
+    else {
+      this.isScroll = false;
+    }
   }
 
   getWalletGroup(name: string) {

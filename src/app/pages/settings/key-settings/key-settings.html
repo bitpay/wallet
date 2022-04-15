@@ -1,5 +1,5 @@
 <ion-header class="bp-header">
-  <ion-toolbar>
+  <ion-toolbar [ngClass]="{'add-box-shadow-scroll': isScroll}">
     <ion-buttons slot="start">
       <ion-back-button icon="chevron-back-outline" defaultHref= "/"></ion-back-button>
     </ion-buttons>
@@ -11,7 +11,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content #scrollArea scrollEvents="true" forceOverflow="false" class="add-bottom-safe-area">
+<ion-content #scrollArea scrollEvents="true" forceOverflow="false" class="add-bottom-safe-area" (ionScroll)="handleScrolling($event)">
   <div class="wrapper">
     <expandable-header [scrollArea]="scrollArea" [fadeFactor]="5" [disableFade]="true" #expandableHeader>
       <ion-toolbar class="wide-header__title">

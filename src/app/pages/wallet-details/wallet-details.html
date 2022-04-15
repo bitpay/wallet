@@ -5,7 +5,7 @@
       <img src="../../../assets/img/abcpay-text.svg" alt="">
     </div>
   </ion-toolbar>
-  <ion-toolbar>
+  <ion-toolbar [ngClass]="{'add-box-shadow-scroll': isScroll}">
     <ion-buttons slot="start">
       <ion-back-button icon="chevron-back-outline" defaultHref="/"></ion-back-button>
     </ion-buttons>
@@ -16,7 +16,7 @@
     </ion-title>
   </ion-toolbar>
 </ion-header>
-<ion-content scrollEvents="true" forceOverflow="false" #scrollArea [fixed-scroll-bg-color]="backgroundColor">
+<ion-content scrollEvents="true" forceOverflow="false" #scrollArea [fixed-scroll-bg-color]="backgroundColor" (ionScroll)="handleScrolling($event)">
   <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)" pullMin="90" pullMax="160">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>

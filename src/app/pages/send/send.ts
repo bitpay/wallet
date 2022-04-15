@@ -39,6 +39,7 @@ export class SendPage {
   public invalidAddress: boolean;
   public validDataFromClipboard;
   private onResumeSubscription: Subscription;
+  public isScroll = false;
   private pageMap = {
     AddressbookAddPage: '/address-book-add',
     AmountPage: '/amount',
@@ -118,6 +119,15 @@ export class SendPage {
     this.onResumeSubscription = this.plt.resume.subscribe(() => {
       this.setDataFromClipboard();
     });
+  }
+
+  async handleScrolling(event) {
+    if (event.detail.currentY > 0) {
+      this.isScroll = true;
+    }
+    else {
+      this.isScroll = false;
+    }
   }
 
   ngOnInit() {

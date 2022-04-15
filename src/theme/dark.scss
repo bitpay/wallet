@@ -117,6 +117,11 @@
   --slider-bg-button: rgba(126, 208, 255, 1);
   @include toolbar-button-color(var(--text-color-dark-theme));
 
+  // Custom header class when scroll
+  .add-box-shadow-scroll{
+    box-shadow: 0px 2px 6px 2px rgba(0, 0, 0, 0.3), 0px 1px 2px rgba(0, 0, 0, 0.6);
+  }
+
   // TODO: Remove text opacity from default styles
   page-bitpay-card ion-title .toolbar-title,
   .wallet-details-header ion-title .toolbar-title,
@@ -434,7 +439,7 @@
 
   ion-alert {
     .alert-wrapper {
-      background: var(--bg-color-dark-theme-2);
+      background: linear-gradient(0deg, rgba(126, 208, 255, 0.11), rgba(126, 208, 255, 0.11)), #001E2E !important;
       color: var(--text-color-dark-theme) !important;
 
       .alert-title {
@@ -459,6 +464,10 @@
 
     .alert-message {
       color: var(--text-color-dark-theme) !important;
+    }
+
+    .alert-button {
+      color: #7ed0ff !important;
     }
   }
 
@@ -983,7 +992,12 @@
 
       info-sheet-template {
         .confirm-sheet {
-          background-color: var(--bg-color-dark-theme-2);
+          background: linear-gradient(
+              0deg,
+              rgba(126, 208, 255, 0.11),
+              rgba(126, 208, 255, 0.11)
+            ),
+            #001e2e;
           color: var(--text-color-dark-theme) !important;
 
           .sheet-title {
@@ -1131,10 +1145,10 @@
 
   pin-dots {
     .filled {
-      background-color: #00FFD3;
+      background-color: #00ffd3;
     }
     .circle {
-      border-color: #00FFD3;
+      border-color: #00ffd3;
     }
   }
 
@@ -2644,6 +2658,9 @@
       &::part(native) {
         color: #edeff0 !important;
       }
+      &::part(indicator-background) {
+        background: #7ed0ff !important;
+      }
     }
     .advance-button {
       --background: linear-gradient(
@@ -3564,5 +3581,5 @@
   .back-transparent {
     background: transparent !important;
     --background: transparent !important;
-}
+  }
 }

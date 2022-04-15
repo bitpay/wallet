@@ -511,7 +511,10 @@ ion-header ion-toolbar {
     line-height: 24px;
     letter-spacing: 0.5px;
 }
-
+// Custom header class when scroll
+.add-box-shadow-scroll{
+    box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.04), 0px 2px 6px 2px rgba(0, 0, 0, 0.08);
+}
 // Buttons
 // --------------------------------------------------
 .bottom-absolute {

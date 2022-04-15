@@ -57,6 +57,10 @@ page-confirm {
 
       .fee-details {
         color: var(--color-error);
+        ion-icon{
+          margin: unset;
+          padding: unset;
+        }
       }
     }
 

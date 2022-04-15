@@ -75,6 +75,7 @@ export class SettingsPage {
   public appVersion: string;
   public navigation: string;
   public featureList: any;
+  public isScroll = false;
   useLegacyQrCode;
   constructor(
     private app: AppProvider,
@@ -100,6 +101,15 @@ export class SettingsPage {
     this.appVersion = this.app.info.version;
     this.isCordova = this.platformProvider.isCordova;
     this.isCopay = this.app.info.name === 'copay';
+  }
+
+  async handleScrolling(event) {
+    if (event.detail.currentY > 0) {
+      this.isScroll = true;
+    }
+    else {
+      this.isScroll = false;
+    }
   }
 
   ngOnInit() {

@@ -47,6 +47,8 @@ export class WideHeaderPage {
   @ViewChild(IonContent)
   scrollArea: IonContent;
 
+  public isScroll = false;
+
   constructor(
     public platformProvider: PlatformProvider
   ) { 
@@ -54,5 +56,14 @@ export class WideHeaderPage {
   }
   overide = () => {
     this.back.emit();
+  }
+
+  async handleScrolling(event) {
+    if (event.detail.currentY > 0) {
+      this.isScroll = true;
+    }
+    else {
+      this.isScroll = false;
+    }
   }
 }
