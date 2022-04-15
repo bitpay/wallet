@@ -2128,9 +2128,14 @@
       }
     }
 
-    ion-segment-button {
-      &::part(indicator-background) {
-        border-color: var(--color-primary-abcpay-dark) !important;
+    ion-segment {
+      background: var(--bg-color-dark-theme-8) !important;
+      ion-segment-button {
+        background: var(--bg-color-dark-theme-8) !important;
+        color: var(--text-color-dark-theme) !important;
+        &::part(indicator-background) {
+          border-color: var(--color-primary-abcpay-dark) !important;
+        }
       }
     }
   }
@@ -3366,7 +3371,7 @@
     ion-buttons {
       .close-tx-modal {
         ion-icon {
-          color: rgba(28, 55, 69, 0.6);
+          color: rgba(237, 239, 240, 0.6);
         }
       }
     }

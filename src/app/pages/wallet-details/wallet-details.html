@@ -249,7 +249,7 @@
 
                     <span *ngIf="tx.isSlpToken"
                       [ngClass]="{'received': tx.action == 'received' || tx.action == 'mined' || tx.action == 'immature', 'sent' : tx.action == 'sent','pending' : tx.confirmations <= 0}">
-                      {{tx.amountToken | satToUnit: wallet?.coin}} {{tx.symbolToken}}</span>
+                      {{formatTxAmount(tx.amountToken) + ' ' + tx.symbolToken}}</span>
                   </ng-container>
                   <ng-container *ngIf="tx.action == 'invalid'">
                     <span class="double-spend" translate>(possible double spend)</span>
@@ -263,11 +263,11 @@
                 <ng-container *ngIf="tx.action == 'received'">
                   <ng-container *ngIf="tx.inputAddresses && tx.inputAddresses[0]">
                     <span class="tx-action"
-                      *ngIf="(!tx.note || (tx.note && !tx.note.body)) && (!addressbook || !tx.inputAddresses[0] || !getContactName(tx.inputAddresses[0]))">{{'From:
+                      *ngIf="(!addressbook || !tx.inputAddresses[0] || !getContactName(tx.inputAddresses[0]))">{{'From:
                       {address}'
                       | translate: {address: tx.inputAddresses[0].slice(-8)} }}</span>
                     <span class="tx-action"
-                      *ngIf="(!tx.note || (tx.note && !tx.note.body)) && addressbook && tx.inputAddresses[0] && getContactName(tx.inputAddresses[0])">
+                      *ngIf="addressbook && tx.inputAddresses[0] && getContactName(tx.inputAddresses[0])">
                       {{'From: ' + getContactName(tx.inputAddresses[0])| translate}}
                     </span>
                   </ng-container>
