@@ -26,6 +26,7 @@ page-choose-fee-level {
     color: rgba(28, 55, 69, 0.6);
     padding: 0 1.5rem;
     margin: 1rem 0;
+    padding-bottom: 1.5rem;
     letter-spacing: 0.25px;
   }
   .addr-header {
@@ -145,6 +146,7 @@ page-choose-fee-level {
   }
   .qr-container {
     padding: 0 1.5rem;
+    padding-bottom: 1rem;
     .qr-card {
       position: relative;
       border-radius: 1rem;
@@ -197,13 +199,18 @@ page-choose-fee-level {
     }
   }
 
-  ion-segment-button {
-    min-height: 32px;
-    &::part(indicator-background) {
-      background: none !important;
-      border-bottom: 2px solid var(--color-primary);
-      box-shadow: none !important;
-      border-radius: 0 !important;
+  ion-segment {
+    background: linear-gradient(0deg, rgba(0, 101, 141, 0.11), rgba(0, 101, 141, 0.11)), #FAFAFB !important;
+    ion-segment-button {
+      min-height: 3rem;
+      background: linear-gradient(0deg, rgba(0, 101, 141, 0.11), rgba(0, 101, 141, 0.11)), #FAFAFB !important;
+      color: #0B1D28;
+      &::part(indicator-background) {
+        background: none !important;
+        border-bottom: 2px solid var(--color-primary);
+        box-shadow: none !important;
+        border-radius: 0 !important;
+      }
     }
   }
 }
