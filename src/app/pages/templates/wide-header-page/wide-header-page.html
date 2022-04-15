@@ -5,7 +5,7 @@
       <img src="../../../assets/img/abcpay-text.svg" alt="">
     </div>
   </ion-toolbar>
-  <ion-toolbar>
+  <ion-toolbar [ngClass]="{'add-box-shadow-scroll': isScroll}">
     <ion-buttons *ngIf="!hideBackButton" slot="start">
       <ion-back-button *ngIf="isCustomBack" onclick="event.stopImmediatePropagation(); window.myCustomMethod()" defaultHref="/" icon="chevron-back-outline">
       </ion-back-button>
@@ -27,7 +27,8 @@
   </ion-toolbar>
 </ion-header>
 <ion-content [fullscreen]="true" scrollEvents="true" #scrollArea
-  [ngClass]="{'add-padding-bottom': hasSlideButton, 'add-bottom-safe-area': !hasSlideButton && platformProvider.isCordova}">
+  [ngClass]="{'add-padding-bottom': hasSlideButton, 'add-bottom-safe-area': !hasSlideButton && platformProvider.isCordova}"
+  (ionScroll)="handleScrolling($event)">
   <div class="wrapper">
     <expandable-header [scrollArea]="scrollArea" [fadeFactor]="5" [disableFade]="true" #expandableHeader>
       <ion-toolbar *ngIf="!hideToolbar" class="wide-header__title">

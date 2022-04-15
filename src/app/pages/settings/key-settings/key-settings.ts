@@ -45,6 +45,7 @@ export class KeySettingsPage {
   public isDeletedSeed: boolean;
   public needsBackup: boolean;
   public derivationStrategy: string;
+  public isScroll = false;
 
   private keyId: string;
   navParamsData: any;
@@ -79,6 +80,15 @@ export class KeySettingsPage {
     }
     this.logger.info('Loaded:  KeySettingsPage');
     this.keyId = this.navParamsData.keyId;
+  }
+
+  async handleScrolling(event) {
+    if (event.detail.currentY > 0) {
+      this.isScroll = true;
+    }
+    else {
+      this.isScroll = false;
+    }
   }
 
   ionViewWillEnter() {

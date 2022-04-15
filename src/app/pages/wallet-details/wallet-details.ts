@@ -81,6 +81,8 @@ export class WalletDetailsPage {
   public selectedTheme;
   public navPramss: any;
   public finishParam: any;
+  public isScroll = false;
+
   toast?: HTMLIonToastElement;
 
   typeErrorQr = NgxQrcodeErrorCorrectionLevels;
@@ -170,6 +172,15 @@ export class WalletDetailsPage {
     let defaults = this.configProvider.getDefaults();
     this.blockexplorerUrl = defaults.blockExplorerUrl[this.wallet.coin];
     this.blockexplorerUrlTestnet = defaults.blockExplorerUrlTestnet[this.wallet.coin];
+  }
+
+  async handleScrolling(event) {
+    if (event.detail.currentY > 0) {
+      this.isScroll = true;
+    }
+    else {
+      this.isScroll = false;
+    }
   }
 
   async presentToast() {

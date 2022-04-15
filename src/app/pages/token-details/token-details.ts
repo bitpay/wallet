@@ -57,6 +57,7 @@ export class TokenDetailsPage {
   public updatingTxHistoryProgress: number = 0;
   public addressbook = [];
   public finishParam: any;
+  public isScroll = false;
 
   constructor(
     public http: HttpClient,
@@ -100,6 +101,15 @@ export class TokenDetailsPage {
         this.logger.error(err);
       });
 
+  }
+
+  async handleScrolling(event) {
+    if (event.detail.currentY > 0) {
+      this.isScroll = true;
+    }
+    else {
+      this.isScroll = false;
+    }
   }
 
   ionViewDidEnter() {
@@ -476,14 +486,6 @@ export class TokenDetailsPage {
 
   converDate(number) {
     return new Date(number);
-  }
-
-  shouldShowSpinner() {
-    return (
-      (this.updatingTxHistory) &&
-      !this.updateStatusError &&
-      !this.updateTxHistoryError
-    );
   }
 
   public createdWithinPastDay(time) {

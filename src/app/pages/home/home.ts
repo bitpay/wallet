@@ -1,4 +1,4 @@
-import { Component, NgZone, ViewChild } from '@angular/core';
+import { Component, ElementRef, NgZone, Renderer2, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import * as _ from 'lodash';
 import * as moment from 'moment';
@@ -90,6 +90,7 @@ export class HomePage {
   public isCordova: boolean;
   private zone;
   public txpsN: number;
+  public isScroll: boolean;
 
   constructor(
     private persistenceProvider: PersistenceProvider,
@@ -113,6 +114,7 @@ export class HomePage {
     private splashScreen: SplashScreen,
     private rateProvider: RateProvider,
     private themeProvider: ThemeProvider,
+    private renderer: Renderer2
   ) {
     this.currentTheme = this.themeProvider.currentAppTheme;
     this.logger.info('Loaded: HomePage');
@@ -125,6 +127,15 @@ export class HomePage {
     this.isCordova = this.platformProvider.isCordova;
   }
 
+  async handleScrolling(event) {
+    if (event.detail.currentY > 0) {
+      this.isScroll = true;
+    }
+    else {
+      this.isScroll = false;
+    }
+  }
+  
   private showNewFeatureSlides() {
     if (this.appProvider.isLockModalOpen) return;
     this.events.unsubscribe('Local/showNewFeaturesSlides');

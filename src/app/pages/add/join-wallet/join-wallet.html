@@ -4,7 +4,8 @@
     'bg-xec': coin == 'xec',
     'bg-xpi': coin == 'xpi',
     'bg-doge': coin == 'doge',
-    'bg-ltc': coin == 'ltc'
+    'bg-ltc': coin == 'ltc',
+    'add-box-shadow-scroll': isScroll
     }">
     <ion-buttons slot="start">
       <ion-back-button icon="chevron-back-outline" defaultHref="/">
@@ -19,7 +20,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [forceOverscroll]="true" scrollEvents="true" #scrollArea>
+<ion-content [forceOverscroll]="true" scrollEvents="true" #scrollArea (ionScroll)="handleScrolling($event)">
   <expandable-header [scrollArea]="scrollArea" [fadeFactor]="5" [disableFade]="true" #expandableHeader>
     <ion-toolbar class="wide-header__title" tappable>
       <expandable-header-primary>

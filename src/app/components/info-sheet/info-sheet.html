@@ -125,10 +125,10 @@
       <span sheet-fourth-button-text translate>I understand</span>
     </info-sheet-template>
 
-    <info-sheet-template *ngSwitchCase="'copy-to-clipboard'" type="success">
+    <info-sheet-template *ngSwitchCase="'copy-to-clipboard'" type="success" sheetSecondBtnGroup="true">
       <span sheet-title-text translate>Copied to Clipboard</span>
       <span sheet-text>{{params?.msg}}</span>
-      <span sheet-button-text translate>GOT IT</span>
+      <span sheet-fourth-button-text translate>GOT IT</span>
     </info-sheet-template>
 
     <info-sheet-template *ngSwitchCase="'delete-contact'" sheetSecondBtnGroup={{params?.secondBtnGroup}} type="danger">

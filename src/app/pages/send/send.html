@@ -8,7 +8,8 @@
     'bg-EAT': token?.tokenInfo?.symbol == 'EAT',
     'bg-bcPro': token?.tokenInfo?.symbol == 'bcPro',
     'bg-DoC': token?.tokenInfo?.symbol == 'DoC',
-    'bg-ABCSLP': token?.tokenInfo?.symbol == 'ABCSLP'
+    'bg-ABCSLP': token?.tokenInfo?.symbol == 'ABCSLP',
+    'add-box-shadow-scroll': isScroll
     }">
     <ion-buttons slot="start">
       <ion-back-button icon="chevron-back-outline" defaultHref="/">
@@ -26,7 +27,7 @@
     </ion-title>
   </ion-toolbar>
 </ion-header>
-<ion-content scrollEvents="true" #scrollArea>
+<ion-content scrollEvents="true" #scrollArea (ionScroll)="handleScrolling($event)">
   <expandable-header [scrollArea]="scrollArea" [fadeFactor]="5" [disableFade]="true" #expandableHeader>
     <ion-toolbar class="wide-header__title" tappable>
       <expandable-header-primary>

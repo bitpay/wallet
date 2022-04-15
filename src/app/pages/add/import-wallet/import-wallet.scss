@@ -22,6 +22,9 @@ page-import-wallet {
       margin: 0;
       --background: transparent !important;
     }
+    mat-form-field{
+      margin-top: 2rem;
+    }
   }
   .final-list-custom{
     border-radius: 24px;
@@ -125,6 +128,9 @@ page-import-wallet {
         &::part(native){
           color: #001E2E;
         }
+        &::part(indicator-background){
+          background: #00658D;
+        }
       }
     }
   }
@@ -169,7 +175,7 @@ page-import-wallet {
     width: 92%;
     top: 0;
     left: 0;
-    margin: 20px 4%;
+    margin: 2rem 4%;
     // height: $upload-box-height - 40px;
     color: #999;
     font-weight: bold;
