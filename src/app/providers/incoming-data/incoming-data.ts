@@ -372,10 +372,8 @@ export class IncomingDataProvider {
         type: 'bitcoinAddress',
         coin
       });
-    } else if (redirParams && redirParams.amount) {
+    }else {
       this.goSend(data, redirParams.amount, '', coin, redirParams.recipientId);
-    } else {
-      this.goToAmountPage(data, coin);
     }
   }
 
@@ -391,10 +389,8 @@ export class IncomingDataProvider {
         type: 'dogecoinAddress',
         coin
       });
-    } else if (redirParams && redirParams.amount) {
-      this.goSend(data, redirParams.amount, '', coin, redirParams.recipientId);
     } else {
-      this.goToAmountPage(data, coin);
+      this.goSend(data, redirParams.amount, '', coin, redirParams.recipientId);
     }
   }
 
@@ -410,10 +406,8 @@ export class IncomingDataProvider {
         type: 'litecoinAddress',
         coin
       });
-    } else if (redirParams && redirParams.amount) {
-      this.goSend(data, redirParams.amount, '', coin, redirParams.recipientId);
     } else {
-      this.goToAmountPage(data, coin);
+      this.goSend(data, redirParams.amount, '', coin, redirParams.recipientId);
     }
   }
 
@@ -429,10 +423,8 @@ export class IncomingDataProvider {
         type: 'lotusAddress',
         coin
       });
-    } else if (redirParams && redirParams.amount) {
-      this.goSend(data, redirParams.amount, '', coin, redirParams.recipientId);
     } else {
-      this.goToAmountPage(data, coin);
+      this.goSend(data, redirParams.amount, '', coin, redirParams.recipientId);
     }
   }
 
@@ -448,10 +440,8 @@ export class IncomingDataProvider {
         type: 'ecashAddress',
         coin
       });
-    } else if (redirParams && redirParams.amount) {
+    }  else {
       this.goSend(data, redirParams.amount, '', coin, redirParams.recipientId);
-    } else {
-      this.goToAmountPage(data, coin);
     }
   }
 
@@ -926,17 +916,17 @@ export class IncomingDataProvider {
     }
   }
 
-  private goToAmountPage(toAddress: string, coin: Coin): void {
-    let stateParams = {
-      toAddress,
-      coin
-    };
-    let nextView = {
-      name: 'AmountPage',
-      params: stateParams
-    };
-    this.incomingDataRedir(nextView);
-  }
+  // private goToAmountPage(toAddress: string, coin: Coin): void {
+  //   let stateParams = {
+  //     toAddress,
+  //     coin
+  //   };
+  //   let nextView = {
+  //     name: 'SendPage',
+  //     params: stateParams
+  //   };
+  //   this.incomingDataRedir(nextView);
+  // }
 
   private incomingDataRedir(nextView) {
     if (this.activePage === 'SendPage') {
