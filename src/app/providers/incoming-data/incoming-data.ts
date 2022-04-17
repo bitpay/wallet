@@ -916,18 +916,6 @@ export class IncomingDataProvider {
     }
   }
 
-  // private goToAmountPage(toAddress: string, coin: Coin): void {
-  //   let stateParams = {
-  //     toAddress,
-  //     coin
-  //   };
-  //   let nextView = {
-  //     name: 'SendPage',
-  //     params: stateParams
-  //   };
-  //   this.incomingDataRedir(nextView);
-  // }
-
   private incomingDataRedir(nextView) {
     if (this.activePage === 'SendPage') {
       this.events.publish('SendPageRedir', nextView);

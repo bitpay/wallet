@@ -45,8 +45,8 @@ export class TokenDetailsPage {
   public tokenData;
   public amountToken;
   public selectedTheme;
-  public showNoTransactionsYetMsg;
-  public updateStatusError;
+  public showNoTransactionsYetMsg = false;
+  public updateStatusError = false;
   public zone;
   public currentTheme;
   private currentPage: number = 0;
@@ -58,7 +58,7 @@ export class TokenDetailsPage {
   public addressbook = [];
   public finishParam: any;
   public isScroll = false;
-
+  public isShowZeroState = false;
   constructor(
     public http: HttpClient,
     private router: Router,
@@ -100,7 +100,6 @@ export class TokenDetailsPage {
       .catch(err => {
         this.logger.error(err);
       });
-
   }
 
   async handleScrolling(event) {
@@ -420,6 +419,7 @@ export class TokenDetailsPage {
     this.zone.run(() => {
       this.groupedHistory = this.groupHistory(this.history);
     });
+    this.isShowZeroState = true;
     if (loading) this.currentPage++;
   }
 
