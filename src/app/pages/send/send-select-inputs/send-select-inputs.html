@@ -67,7 +67,7 @@
           <ion-checkbox slot="start" (ionChange)="selectInput(input, $event)" (click)="skipIonChange=false" [checked]="input.checked"></ion-checkbox>
           <ion-label class="label-address">
             <div class="address">
-              {{input.address | shortenedAddress}}
+              {{input.address.slice(-8)}}
             </div>
             <div class="amount">
               {{input.amount}} {{wallet.coin | uppercase}}

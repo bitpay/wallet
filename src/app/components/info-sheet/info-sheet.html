@@ -1,10 +1,10 @@
 <action-sheet>
   <div class="info-container" [ngSwitch]="sheetType">
-    <info-sheet-template *ngSwitchCase="'address-copied'" type="success">
+    <info-sheet-template *ngSwitchCase="'address-copied'" type="success" sheetSecondBtnGroup="true">
       <span sheet-title-text>{{'Copied {coin} address' | translate: {coin: params.coin | uppercase }
         }}</span>
       <span sheet-text class="text-address">{{params.address}}</span>
-      <span sheet-button-text translate>OK</span>
+      <span sheet-third-button-text translate>OK</span>
     </info-sheet-template>
 
     <info-sheet-template *ngSwitchCase="'backup-needed-with-activity'" type="info">
@@ -16,20 +16,22 @@
       <span sheet-second-button-text translate>Not right now</span>
     </info-sheet-template>
 
-    <info-sheet-template *ngSwitchCase="'miner-fee-notice'" type="warning">
+    <info-sheet-template *ngSwitchCase="'miner-fee-notice'" type="warning" sheetSecondBtnGroup="true">
       <span sheet-title-text translate>Miner Fee Notice</span>
       <span sheet-text>
         {{'Because you are sending the maximum amount contained in this wallet, the {coinName} miner fee ({fee} {coin}) will be deducted from the total.  {msg}' | translate: {coinName: params.coinName, fee: params.fee, coin:params.coin, msg: params.msg} }}
       </span>
-      <span sheet-button-text translate>GOT IT</span>
+     <span sheet-third-button-text translate>GOT IT</span>
+
     </info-sheet-template>
 
-    <info-sheet-template *ngSwitchCase="'speed-up-notice'" type="warning">
+    <info-sheet-template *ngSwitchCase="'speed-up-notice'" type="warning" sheetSecondBtnGroup="true">
       <span sheet-title-text translate>Miner Fee Notice</span>
       <span sheet-text>
         {{'Because you are speeding up this transaction, the {coinName} miner fee ({fee} {coin}) will be deducted from the total.' | translate: {coinName: params.coinName, fee: params.fee, coin:params.coin} }}
       </span>
-      <span sheet-button-text translate>GOT IT</span>
+     <span sheet-third-button-text translate>GOT IT</span>
+
     </info-sheet-template>
 
     <info-sheet-template *ngSwitchCase="'insufficient-funds-for-fee'" type="danger">
@@ -77,10 +79,11 @@
       <span sheet-second-button-text translate>Continue Anyway</span>
     </info-sheet-template>
 
-    <info-sheet-template *ngSwitchCase="'default-error'" type="danger">
+    <info-sheet-template *ngSwitchCase="'default-error'" type="danger" sheetSecondBtnGroup="true">
       <span sheet-title-text>{{params.title}}</span>
       <span sheet-text>{{params.msg}}</span>
-      <span sheet-button-text translate>GOT IT</span>
+     <span sheet-third-button-text translate>GOT IT</span>
+
       <span sheet-second-button-text translate *ngIf="params.secondBtnText" (click)="openInBrowser(params.url)">{{ params.secondBtnText }}</span>
     </info-sheet-template>
 
@@ -100,20 +103,21 @@
       <span sheet-second-button-text translate>GO BACK</span>
     </info-sheet-template>
 
-    <info-sheet-template *ngSwitchCase="'backup-ready'" type="success">
+    <info-sheet-template *ngSwitchCase="'backup-ready'" type="success" sheetSecondBtnGroup="true">
       <span sheet-title-text>{{'Your {walletType} wallet is backed up!' | translate : {walletType: params.walletType} }}</span>
       <span sheet-text translate>
         Be sure to store your recovery phrase in a secure place. If this app is deleted, your money cannot be recovered without it.
       </span>
-      <span sheet-button-text translate>GOT IT</span>
+     <span sheet-third-button-text translate>GOT IT</span>
+
     </info-sheet-template>
 
-    <info-sheet-template *ngSwitchCase="'backup-safeguard-warning'" type="info">
+    <info-sheet-template *ngSwitchCase="'backup-safeguard-warning'" type="info" sheetSecondBtnGroup="true">
       <span sheet-title-text translate>Recovery Key</span>
       <span sheet-text translate>
         Your recovery key is composed of 12 randomly selected words. Please carefully write down each word in the order it appears.
       </span>
-      <span sheet-button-text translate>OK</span>
+      <span sheet-third-button-text translate>OK</span>
     </info-sheet-template>
 
     <info-sheet-template *ngSwitchCase="'sensitive-info'" type="danger" sheetSecondBtnGroup="true">
@@ -158,12 +162,13 @@
       <span sheet-fourth-button-text translate>Open</span>
     </info-sheet-template>
 
-    <info-sheet-template *ngSwitchCase="'copied-gift-card-claim-code'" type="success">
+    <info-sheet-template *ngSwitchCase="'copied-gift-card-claim-code'" type="success" sheetSecondBtnGroup="true">
       <span sheet-title-text style="word-break: break-all;">{{'Copied: {claimCode}' | translate: params }}</span>
       <span sheet-text>
         <redeem-instructions [cardConfig]="params.cardConfig" [params]="params"></redeem-instructions>
       </span>
-      <span sheet-button-text translate>GOT IT</span>
+     <span sheet-third-button-text translate>GOT IT</span>
+
     </info-sheet-template>
 
     <info-sheet-template *ngSwitchCase="'linkEthWallet'" type="{{ params.wallets[0] ? 'info' : 'warning' }}">
@@ -193,7 +198,7 @@
       <span sheet-button-text *ngIf="!params.wallets[0]" translate>GOT IT</span>
     </info-sheet-template>
 
-    <info-sheet-template *ngSwitchCase="'copied-invoice-url'" type="{{ params.error ? 'danger' : 'success' }}">
+    <info-sheet-template *ngSwitchCase="'copied-invoice-url'" type="{{ params.error ? 'danger' : 'success' }}" sheetSecondBtnGroup="true">
       <span *ngIf="!params.error" sheet-title-text class="truncate">
         <span translate>Copied</span>: {{params.invoiceUrl}}
       </span>
@@ -203,8 +208,9 @@
       <span sheet-text>
         <redeem-instructions [cardConfig]="params.cardConfig" [params]="params"></redeem-instructions>
       </span>
-      <span sheet-button-text translate>GOT IT</span>
-      <span sheet-button-text class="sheet-btn-invoice" translate (click)="openInBrowser(params.invoiceUrl)" style="float: right;" slot="end">OPEN IN BROWSER
+     <span sheet-third-button-text translate>GOT IT</span>
+
+      <span sheet-fourth-button-text class="sheet-btn-invoice" translate (click)="openInBrowser(params.invoiceUrl)" style="float: right;" slot="end">OPEN IN BROWSER
       </span>
     </info-sheet-template>
 
@@ -226,36 +232,38 @@
       <span sheet-button-text translate>YES</span>
     </info-sheet-template>
 
-    <info-sheet-template *ngSwitchCase="'gift-card-archived'" type="success">
+    <info-sheet-template *ngSwitchCase="'gift-card-archived'" type="success" sheetSecondBtnGroup="true">
       <span sheet-title-text translate>Card Archived</span>
       <span sheet-text translate>You can continue to view your archived cards here if you need to access them.</span>
-      <span sheet-button-text translate>OK</span>
+      <span sheet-third-button-text translate>OK</span>
     </info-sheet-template>
 
-    <info-sheet-template *ngSwitchCase="'activation-fee-included'" type="info">
+    <info-sheet-template *ngSwitchCase="'activation-fee-included'" type="info" sheetSecondBtnGroup="true">
       <span sheet-title-text translate>Activation Fee</span>
       <span sheet-text>{{'{displayName} gift cards contain an additional activation fee of {fee} {currency}.' | translate: params }}</span>
-      <span sheet-button-text translate>OK</span>
+      <span sheet-third-button-text translate>OK</span>
     </info-sheet-template>
 
-    <info-sheet-template *ngSwitchCase="'gift-cards-unavailable'" type="danger">
+    <info-sheet-template *ngSwitchCase="'gift-cards-unavailable'" type="danger" sheetSecondBtnGroup="true">
       <span sheet-title-text translate>Temporarily Unavailable</span>
       <span sheet-text translate>Gift card purchases are temporarily unavailable. Please try again later.</span>
-      <span sheet-button-text translate>OK</span>
+      <span sheet-third-button-text translate>OK</span>
     </info-sheet-template>
 
-    <info-sheet-template *ngSwitchCase="'below-minimum-gift-card-amount'" type="danger">
+    <info-sheet-template *ngSwitchCase="'below-minimum-gift-card-amount'" type="danger" sheetSecondBtnGroup="true">
       <span sheet-title-text translate>Below Minimum Amount</span>
       <span sheet-text>{{'The purchase amount must be at least {minAmount} {currency}. Please modify your amount.' | translate: params }}</span>
-      <span sheet-button-text translate>GOT IT</span>
+     <span sheet-third-button-text translate>GOT IT</span>
+
     </info-sheet-template>
 
-    <info-sheet-template *ngSwitchCase="'above-maximum-gift-card-amount'" type="danger">
+    <info-sheet-template *ngSwitchCase="'above-maximum-gift-card-amount'" type="danger" sheetSecondBtnGroup="true">
       <span sheet-title-text translate>Purchase Limit Reached</span>
       <span sheet-text>
         {{'The purchase amount is limited to {maxAmount} {currency} per day. Please modify your amount.' | translate:params }}
       </span>
-      <span sheet-button-text translate>GOT IT</span>
+     <span sheet-third-button-text translate>GOT IT</span>
+
     </info-sheet-template>
 
     <info-sheet-template *ngSwitchCase="'legacy-address-info'" type="info">
@@ -276,15 +284,15 @@
         }}</span>
     </info-sheet-template>
 
-    <info-sheet-template sheetSecondBtnGroup="true" *ngSwitchCase="'payment-request'">
+    <info-sheet-template sheetSecondBtnGroup="true" *ngSwitchCase="'payment-request'" sheetSecondBtnGroup="true">
       <span sheet-title-text translate>Payment Request info</span>
       <span sheet-text>
         {{'Share this QR code to receive {amount} in your wallet {name}.' | translate: {amount: params.amount, name:params.name} }}
       </span>
-      <span sheet-third-button-text  translate>GOT IT</span>
+      <span sheet-third-button-text translate>GOT IT</span>
     </info-sheet-template>
 
-    <info-sheet-template *ngSwitchCase="'payment-method-changed'" type="warning">
+    <info-sheet-template *ngSwitchCase="'payment-method-changed'" type="warning" sheetSecondBtnGroup="true">
       <span sheet-title-text translate>Payment method updated</span>
       <span *ngIf="params.reason == 'coin'" sheet-text>
         {{'Only the payment methods supported to buy {coin} with {currency} will be shown.' | translate: {coin: params.coin | uppercase, currency:params.currency | uppercase} }}
@@ -292,31 +300,34 @@
       <span *ngIf="params.reason == 'country'" sheet-text>
         {{'SEPA Bank Transfer purchases are not supported outside the European Union.' | translate: {coin: params.coin | uppercase, currency:params.currency | uppercase} }}
       </span>
-      <span sheet-button-text translate>GOT IT</span>
+     <span sheet-third-button-text translate>GOT IT</span>
+
     </info-sheet-template>
 
-    <info-sheet-template *ngSwitchCase="'one-phone-country'" type="info">
+    <info-sheet-template *ngSwitchCase="'one-phone-country'" type="info" sheetSecondBtnGroup="true">
       <span sheet-title-text translate>{{params.countryCode === 'US' ? 'U.S.' : params.countryCode}} Phone Required</span>
       <span sheet-text>
         {{'Only a {name} phone number can be used for this purchase.' | translate: {name:params.country.name} }}
       </span>
-      <span sheet-button-text translate>GOT IT</span>
+     <span sheet-third-button-text translate>GOT IT</span>
+
     </info-sheet-template>
 
-    <info-sheet-template *ngSwitchCase="'print-required'" type="info">
+    <info-sheet-template *ngSwitchCase="'print-required'" type="info" sheetSecondBtnGroup="true">
       <span sheet-title-text translate>Printed Gift Card Required</span>
       <span sheet-text>
         {{'{displayName} requires you to present a printed gift card at redemption.' | translate: params }} <br />
         <br />
         You will be able to print this gift card upon completing your purchase.
       </span>
-      <span sheet-button-text translate>GOT IT</span>
+     <span sheet-third-button-text translate>GOT IT</span>
+
     </info-sheet-template>
 
-    <info-sheet-template *ngSwitchCase="'in-app-notification'" type="success">
+    <info-sheet-template *ngSwitchCase="'in-app-notification'" type="success" sheetSecondBtnGroup="true">
       <span sheet-title-text>{{params.title}}</span>
       <span sheet-text>{{params.body}}</span>
-      <span sheet-button-text translate>OK</span>
+      <span sheet-third-button-text translate>OK</span>
     </info-sheet-template>
 
     <info-sheet-template *ngSwitchCase="'request-feature'" sheetSecondBtnGroup='true'>
@@ -434,25 +445,27 @@
       <span sheet-second-button-text translate>View details</span>
     </info-sheet-template>
 
-    <info-sheet-template *ngSwitchCase="'subtotal-amount'" type="info">
+    <info-sheet-template *ngSwitchCase="'subtotal-amount'" type="info" sheetSecondBtnGroup="true">
       <span sheet-title-text>{{ 'Subtotal' | translate }}</span>
       <span sheet-text>
         {{ 'For AbcPay invoices and gift cards the subtotal amount is the product or service amount plus network costs.' | translate }}
         <a class="label-tip-link" (click)="openInBrowser('https://support.bitpay.com/hc/en-us/articles/115002990803-What-is-the-Network-Cost-fee-on-BitPay-invoices-and-why-is-BitPay-charging-it')" translate>Read more</a>
       </span>
-      <span sheet-button-text translate>GOT IT</span>
+     <span sheet-third-button-text translate>GOT IT</span>
+
     </info-sheet-template>
 
-    <info-sheet-template *ngSwitchCase="'total-amount'" type="info">
+    <info-sheet-template *ngSwitchCase="'total-amount'" type="info" sheetSecondBtnGroup="true">
       <span sheet-title-text>{{ 'Total' | translate }}</span>
       <span sheet-text>
         {{ 'The total amount is the subtotal amount plus transaction fees.' | translate }}
         <a class="label-tip-link" (click)="openInBrowser('https://support.bitpay.com/hc/en-us/articles/115003393863-What-are-bitcoin-miner-fees-')" translate>Read more</a>
       </span>
-      <span sheet-button-text translate>GOT IT</span>
+     <span sheet-third-button-text translate>GOT IT</span>
+
     </info-sheet-template>
 
-    <info-sheet-template *ngSwitchCase="'no-wallets-available'" type="info">
+    <info-sheet-template *ngSwitchCase="'no-wallets-available'" type="info" sheetSecondBtnGroup="true">
       <span sheet-title-text translate>No wallets available</span>
       <span sheet-text>
         <span translate>What could have happened?</span>
@@ -466,10 +479,11 @@
           <li translate>Your wallet is testnet</li>
         </ul>
       </span>
-      <span sheet-button-text translate>GOT IT</span>
+     <span sheet-third-button-text translate>GOT IT</span>
+
     </info-sheet-template>
 
-    <info-sheet-template *ngSwitchCase="'recovery-phrase-length'" type="warning">
+    <info-sheet-template *ngSwitchCase="'recovery-phrase-length'" type="warning" sheetSecondBtnGroup="true">
       <span sheet-title-text translate>Something went wrong</span>
       <span sheet-text>
         <span translate>What could have happened?</span>
@@ -484,7 +498,8 @@
           </li>
         </ul>
       </span>
-      <span sheet-button-text translate>GOT IT</span>
+     <span sheet-third-button-text translate>GOT IT</span>
+
     </info-sheet-template>
 
     <info-sheet-template *ngSwitchCase="'no-wallets-error'" type="warning">
@@ -505,12 +520,12 @@
       <span sheet-second-button-text translate>GOT IT</span>
     </info-sheet-template>
 
-    <info-sheet-template *ngSwitchCase="'protect-money'" type="safeguard">
+    <info-sheet-template *ngSwitchCase="'protect-money'" type="safeguard" sheetSecondBtnGroup="true">
       <span sheet-title-text translate>Protect your money</span>
       <span sheet-text translate>
         First, lets ensure no one can easily access your crypto funds when you’re away from your device by adding biometric security.
       </span>
-      <span sheet-button-text translate>OK</span>
+      <span sheet-third-button-text translate>OK</span>
     </info-sheet-template>
 
     <info-sheet-template *ngSwitchCase="'pincode-info'" type="safeguard">
@@ -563,12 +578,12 @@
       <span sheet-button-text translate>TRY AGAIN</span>
     </info-sheet-template>
 
-    <info-sheet-template *ngSwitchCase="'correct-recovery-prhase'" type="success">
+    <info-sheet-template *ngSwitchCase="'correct-recovery-prhase'" type="success" sheetSecondBtnGroup="true">
       <span sheet-title-text translate>Perfect!</span>
       <span sheet-text>
         In order to protect your funds from being accessible to hackers and thieves, store this recovery phrase in a safe and secure place.
       </span>
-      <span sheet-button-text translate>OK</span>
+      <span sheet-third-button-text translate>OK</span>
     </info-sheet-template>
 
     <info-sheet-template *ngSwitchCase="'unsupported-alt-currency'" type="{{ params.error ? 'danger' : 'warning' }}">
@@ -626,10 +641,10 @@
       <span sheet-second-button-text translate>GOT IT</span>
     </info-sheet-template>
 
-    <info-sheet-template *ngSwitchCase="'sync-wallets'" type="success">
+    <info-sheet-template *ngSwitchCase="'sync-wallets'" type="success" sheetSecondBtnGroup="true">
       <span sheet-title-text>{{params.title}}</span>
       <span sheet-text>{{params.msg}}</span>
-      <span sheet-button-text translate>OK</span>
+      <span sheet-third-button-text translate>OK</span>
     </info-sheet-template>
 
     <info-sheet-template *ngSwitchCase="'testnet-warning-1'" type="warning">
@@ -641,10 +656,10 @@
       <span sheet-second-button-text translate>Cancel</span>
     </info-sheet-template>
 
-    <info-sheet-template *ngSwitchCase="'multisig-instantiation'" type="success">
+    <info-sheet-template *ngSwitchCase="'multisig-instantiation'" type="success" sheetSecondBtnGroup="true">
       <span sheet-title-text translate>The transaction is taking longer than usual to confirm</span>
       <span sheet-text translate>When your transaction is confirmed, the multisig wallet will show up in the wallet list. You can check the transaction status in the wallet history.</span>
-      <span sheet-button-text translate>OK</span>
+      <span sheet-third-button-text translate>OK</span>
     </info-sheet-template>
 
     <info-sheet-template *ngSwitchCase="'join-wallet-warning'" type="warning">
