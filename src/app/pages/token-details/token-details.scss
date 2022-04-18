@@ -298,7 +298,7 @@ token-details {
     align-items: flex-end;
     color: rgba(0, 30, 46, 0.6);
     .status {
-      width: 56px;
+      max-width: 75px;
       margin-top: 0;
       font-size: 12px;
       padding: 3px;

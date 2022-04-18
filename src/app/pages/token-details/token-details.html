@@ -108,13 +108,18 @@
                   <span *ngIf="tx.inputAddresses && tx.inputAddresses[0]" class="tx-action" >{{'From: {address}' | translate: {address: tx.inputAddresses[0].slice(-8)} }}</span>
                   <span *ngIf="!tx.inputAddresses || !tx.inputAddresses[0]" class="tx-action" >From : unknown sender</span>
                 </ng-container >
-                <span class="tx-action" *ngIf="tx.action == 'sent' ">{{'To: {address}' | translate: {address: tx.addressTo.slice(-8)} }}</span>
+                <span class="tx-action" *ngIf="tx.action == 'sent' && tx.outputs[0].address !== 'false'">{{'To: {address}' | translate: {address: tx.addressTo.slice(-8)} }}</span>
+                <span class="tx-action" *ngIf="tx.action == 'sent' && tx.outputs[0].address === 'false'">{{'To: {address}' | translate: {address: tx.inputAddresses[0].slice(-8)} }}</span>
               </div>
 
               <ion-note slot="end" class="ion-text-end ion-no-margin ion-no-padding">
                 <div class="tx-info">
                   <ng-container *ngIf="tx.confirmations <= 0">
                     <p class="status" *ngIf="tx.action == 'sent' || tx.action == 'received'">{{'Pending'| translate}}</p>
+                    <p class="status" *ngIf="tx.outputs[0].address === 'false'">{{'Moving'| translate}}</p>
+                  </ng-container>
+                  <ng-container *ngIf="tx.confirmations > 0">
+                    <p class="status" *ngIf="tx.outputs[0].address === 'false'">{{'Sent to self'| translate}}</p>
                   </ng-container>
                   <p class="status" *ngIf="tx.isGenesis">Genesis</p>
                   <p class="date" *ngIf="tx.time && createdWithinPastDay(tx.time * 1000)">{{converDate(tx.time * 1000) |

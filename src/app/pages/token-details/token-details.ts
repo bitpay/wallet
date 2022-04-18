@@ -517,9 +517,10 @@ export class TokenDetailsPage {
             amountToken : tx.amountToken,
             tokenId: tx.tokenId,
             symbolToken: tx.symbolToken,
-            name: tx.name
+            name: tx.name,
+            addressToShow: tx.addressTo
           },
-          token: this.token
+          token: this.token,
         }
       }).then(res => {
         res.present();

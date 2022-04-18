@@ -29,7 +29,8 @@ export interface TokenData {
   amountToken: string,
   tokenId: string,
   symbolToken: string,
-  name: string
+  name: string,
+  addressToShow: string
 }
 
 @Component({
@@ -497,12 +498,12 @@ export class TxDetailsModal {
     this.viewCtrl.dismiss();
   }
 
-  sendBack(address) {
+  sendBack(btx) {
     this.viewCtrl.dismiss().then(() => {
       this.router.navigate(['/send-page'], {
         state: {
           walletId: this.wallet.id,
-          toAddress: address,
+          toAddress: btx.address || (this.tokenData && this.tokenData.addressToShow !== 'false' ? this.tokenData.addressToShow : btx.inputAddresses[0]) || btx.inputAddresses[0],
           token: this.token
         }
       });

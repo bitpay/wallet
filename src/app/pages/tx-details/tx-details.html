@@ -42,8 +42,8 @@
             </div>
           </ng-container>
           <ng-container *ngIf="btx.action === 'sent' || btx.action === 'received'">
-            <ion-button fill="outline" class="btn-custom" (click)="sendBack(btx.address || btx.inputAddresses[0])">
-              {{ btx.action === 'sent' ? 'Send Again' : 'Send Back' | translate}}
+            <ion-button fill="outline" class="btn-custom" (click)="sendBack(btx)">
+              {{ btx.action === 'sent' ? 'Send again' : 'Send back' | translate}}
             </ion-button>
           </ng-container>
           <div class="sending-label" *ngIf="btx.amount === 0 && wallet.coin === 'eth'">
