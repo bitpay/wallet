@@ -354,7 +354,7 @@ export class TxDetailsModal {
       });
   }
 
-  public getFiatRateStrToken(){
+  public getFiatRateStrToken() {
     const token = {
       amountToken: this.btx?.amountToken,
       tokenInfo: {
