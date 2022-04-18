@@ -127,6 +127,7 @@ export class RateProvider {
     const customRate =
       opts && opts.rates && opts.rates[chain] && opts.rates[chain][code];
     if (customRate) return customRate;
+    if (!this.rates[chain]) return undefined;
     if (this.rates[chain][code]) return this.rates[chain][code];
     if (
       !this.rates[chain][code] &&

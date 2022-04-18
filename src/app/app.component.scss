@@ -201,6 +201,7 @@ ion-back-button {
     --padding-end: 25px !important;
     margin: 0 !important;
     padding: 10px !important;
+    --background-hover: transparent !important;
     &.ios {
         margin: 0 !important;
         padding: 10px !important;
@@ -2205,4 +2206,8 @@ ion-toolbar.header {
             background-size: cover !important;
         }
     }
+}
+
+.stroke-card {
+    border: 1px solid #e5eff7;
 }

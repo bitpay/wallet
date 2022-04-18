@@ -31,7 +31,7 @@
 
 
   <form [formGroup]="joinForm">
-    <div class="wallet-info-container">
+    <div class="wallet-info-container stroke-card">
       <mat-form-field appearance="outline">
         <mat-label>{{'Your name' | translate}}</mat-label>
         <input matInput type="text" formControlName="myName" [placeholder]="'Your name'" translate>
@@ -66,7 +66,7 @@
 
     <div class="line-divider" *ngIf="showAdvOpts"></div>
 
-    <div *ngIf="showAdvOpts" class="show-advance-option ion-padding-bottom">
+    <div *ngIf="showAdvOpts" class="show-advance-option stroke-card ion-padding-bottom">
       <mat-form-field class="wallet-service-url-mat-form-field" appearance="outline">
         <mat-label>{{'Account Service URL' | translate}}</mat-label>
         <input matInput type="text" formControlName="bwsURL" [placeholder]="'Account Service URL'" translate>

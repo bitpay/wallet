@@ -10,7 +10,7 @@
     </ion-button>
   </ion-buttons>
   <div page-content>
-    <ion-list lines="none" *ngIf="btx" class="bp-list tx-detail-list">
+    <ion-list lines="none" *ngIf="btx" class="bp-list tx-detail-list stroke-card">
       <ion-item class="amount-item">
         <div class="header-container">
           <ng-container *ngIf="!btx.tokenId">
@@ -35,9 +35,22 @@
               <div *ngIf="!isNegative" class="amount">
                 + {{btx.amountToken}} {{btx.symbolToken}}
               </div>
+              <div class="alternative">
+                <span *ngIf="!btx.fiatRateStr">...</span>
+                <span>{{fiatRateStrToken}}</span>
+              </div>
             </div>
           </ng-container>
-
+          <ng-container *ngIf="btx.action === 'sent'">
+            <ion-button fill="outline" class="btn-custom" (click)="sendAgain(btx.addressTo)">
+              Send Again
+            </ion-button>
+          </ng-container>
+          <ng-container *ngIf="btx.action === 'received'">
+            <ion-button fill="outline" class="btn-custom" (click)="sendBack(btx.inputAddresses[0])">
+              Send Back
+            </ion-button>
+          </ng-container>
           <div class="sending-label" *ngIf="btx.amount === 0 && wallet.coin === 'eth'">
             <span>{{'Interaction with contract' | translate}}</span>
           </div>

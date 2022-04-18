@@ -134,28 +134,29 @@
                 <ng-container *ngIf="wallet.tokens">
                   <ion-list class="token-item bp-list" [ngClass]="{ collapsed: isCollapsedToken(wallet.id) }">
                     <ion-item *ngFor="let token of wallet.tokens" (click)="goToTokenDetails(wallet, token)">
-                      <img class="item-img rectangle token-icon" [src]="setIconToken(token)" slot="start">
-                      <ion-label>
-                        <div class="main-label">{{token?.tokenInfo?.name}}</div>
-                        <div class="secondary-label" *ngIf="wallet?.cachedStatus">
-                          {{token?.tokenInfo?.symbol}}
-                        </div>
-                      </ion-label>
-                      <ion-note slot="end">
-                        <div>
-                          <ng-container *ngIf="isShowBalance || wallet?.balanceHidden;else noShowBalanceToken">
-                            <div class="main-note">{{DecimalFormatBalance(token?.amountToken)}}</div>
-                            <div class="secondary-note" *ngIf="wallet?.cachedStatus">
-                              <span >~</span> {{'$' + DecimalFormatBalance(token.alternativeBalance)}}
-                            </div>
-                          </ng-container>
-                          <ng-template #noShowBalanceToken>
-                            <div class="main-note">******</div>
-                            <div class="secondary-note">******</div>
-                          </ng-template>
-                        </div>
-                        
-                      </ion-note>
+                      <ng-container *ngIf="token?.amountToken !== 0">
+                        <img class="item-img rectangle token-icon" [src]="setIconToken(token)" slot="start">
+                        <ion-label>
+                          <div class="main-label">{{token?.tokenInfo?.name}}</div>
+                          <div class="secondary-label" *ngIf="wallet?.cachedStatus">
+                            {{token?.tokenInfo?.symbol}}
+                          </div>
+                        </ion-label>
+                        <ion-note slot="end">
+                          <div>
+                            <ng-container *ngIf="isShowBalance || wallet?.balanceHidden;else noShowBalanceToken">
+                              <div class="main-note">{{DecimalFormatBalance(token?.amountToken)}}</div>
+                              <div class="secondary-note" *ngIf="wallet?.cachedStatus">
+                                <span >~</span> {{'$' + DecimalFormatBalance(token.alternativeBalance)}}
+                              </div>
+                            </ng-container>
+                            <ng-template #noShowBalanceToken>
+                              <div class="main-note">******</div>
+                              <div class="secondary-note">******</div>
+                            </ng-template>
+                          </div>
+                        </ion-note>  
+                      </ng-container>
                     </ion-item>
                   </ion-list>
                 </ng-container>

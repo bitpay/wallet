@@ -20,7 +20,9 @@ import { EventManagerService } from 'src/app/providers/event-manager.service';
 import { ModalController, NavController, NavParams } from '@ionic/angular';
 import { Location } from '@angular/common';
 import { PersistenceProvider } from 'src/app/providers/persistence/persistence';
-import { AppProvider } from 'src/app/providers';
+import { AppProvider, TokenProvider } from 'src/app/providers';
+import { Router } from '@angular/router';
+import { DecimalFormatBalance } from 'src/app/providers/decimal-format.ts/decimal-format';
 
 export interface TokenData {
   amountToken: string,
@@ -56,6 +58,7 @@ export class TxDetailsModal {
   public tokenData: TokenData;
   public isNegative: boolean;
   public currentTheme;
+  public fiatRateStrToken;
   constructor(
     private configProvider: ConfigProvider,
     private currencyProvider: CurrencyProvider,
@@ -77,6 +80,8 @@ export class TxDetailsModal {
     private viewCtrl: ModalController,
     private persistenceProvider: PersistenceProvider,
     private appProvider: AppProvider,
+    private router: Router,
+    private tokenProvider: TokenProvider
   ) { }
   
   ngOnInit() {
@@ -316,7 +321,7 @@ export class TxDetailsModal {
         this.initActionList();
 
         this.updateFiatRate();
-
+        this.getFiatRateStrToken();
         if (this.currencyProvider.isUtxoCoin(this.wallet.coin)) {
           this.walletProvider
             .getLowAmount(this.wallet)
@@ -347,6 +352,27 @@ export class TxDetailsModal {
           );
         }
       });
+  }
+
+  public getFiatRateStrToken() {
+    const token = {
+      amountToken: this.btx?.amountToken,
+      tokenInfo: {
+        symbol: this.btx?.symbolToken
+      }
+    }
+    const alternativeBalanceToken = this.tokenProvider.getAlternativeBalanceToken(token, this.wallet);
+    let rate = this.rateProvider.getRate(this.wallet.cachedStatus.alternativeIsoCode, token.tokenInfo.symbol);
+    if (!rate) {
+      rate = 0;
+    }
+    this.fiatRateStrToken =  
+            DecimalFormatBalance(alternativeBalanceToken) +
+            ' ' +
+            this.wallet.cachedStatus.alternativeIsoCode +
+            ' @ ' + DecimalFormatBalance(rate) + ' ' +
+            this.wallet.cachedStatus.alternativeIsoCode + ' per ' +
+            token.tokenInfo.symbol.toUpperCase();
   }
 
   public async saveMemoInfo(): Promise<void> {
@@ -464,5 +490,27 @@ export class TxDetailsModal {
 
   close() {
     this.viewCtrl.dismiss();
+  }
+
+  sendAgain(address) {
+    this.viewCtrl.dismiss().then(() => {
+      this.router.navigate(['/send-page'], {
+        state: {
+          walletId: this.wallet.id,
+          toAddress: address
+        }
+      });
+    });
+  }
+
+  sendBack(address) {
+    this.viewCtrl.dismiss().then(() => {
+      this.router.navigate(['/send-page'], {
+        state: {
+          walletId: this.wallet.id,
+          toAddress: address
+        }
+      });
+    });
   }
 }
