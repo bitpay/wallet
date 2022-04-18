@@ -21,6 +21,7 @@ import { ModalController, NavController, NavParams } from '@ionic/angular';
 import { Location } from '@angular/common';
 import { PersistenceProvider } from 'src/app/providers/persistence/persistence';
 import { AppProvider } from 'src/app/providers';
+import { Router } from '@angular/router';
 
 export interface TokenData {
   amountToken: string,
@@ -77,6 +78,7 @@ export class TxDetailsModal {
     private viewCtrl: ModalController,
     private persistenceProvider: PersistenceProvider,
     private appProvider: AppProvider,
+    private router: Router
   ) { }
   
   ngOnInit() {
@@ -464,5 +466,27 @@ export class TxDetailsModal {
 
   close() {
     this.viewCtrl.dismiss();
+  }
+
+  sendAgain(address) {
+    this.viewCtrl.dismiss().then(() => {
+      this.router.navigate(['/send-page'], {
+        state: {
+          walletId: this.wallet.id,
+          toAddress: address
+        }
+      });
+    });
+  }
+
+  sendBack(address) {
+    this.viewCtrl.dismiss().then(() => {
+      this.router.navigate(['/send-page'], {
+        state: {
+          walletId: this.wallet.id,
+          toAddress: address
+        }
+      });
+    });
   }
 }

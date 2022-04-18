@@ -18,7 +18,7 @@
   <ion-list lines="none" *ngIf="txHistorySearchResults && txHistorySearchResults[0]" class="tx-history">
     <div class="item-wrapper" *ngFor="let tx of txHistorySearchResults; trackBy: trackByFn; let i = index">
   
-      <ion-item button detail="false" (click)="close(tx.txid)"
+      <ion-item button detail="false" class="stroke-card" (click)="close(tx.txid)"
         [ngClass]="{'danger-background': tx.hasUnconfirmedInputs || tx.isRBF}">
 
         <div class="action">

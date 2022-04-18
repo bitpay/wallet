@@ -31,7 +31,7 @@
 
 
   <form [formGroup]="createForm">
-    <div class="wallet-info-container">
+    <div class="wallet-info-container stroke-card">
 
       <mat-form-field appearance="outline">
         <mat-label>{{'Wallet name' | translate}}</mat-label>
@@ -105,7 +105,7 @@
 
    
 
-    <div *ngIf="showAdvOpts" class="show-advance-option ion-padding-bottom">
+    <div *ngIf="showAdvOpts" class="show-advance-option stroke-card ion-padding-bottom">
 
       <ion-item lines="none" *ngIf="showAdvOpts &&  coin === 'ltc' && createForm.value.selectedSeed == 'new'">
         <ion-label>Segwit</ion-label>
