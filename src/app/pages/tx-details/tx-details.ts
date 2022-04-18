@@ -503,7 +503,7 @@ export class TxDetailsModal {
       this.router.navigate(['/send-page'], {
         state: {
           walletId: this.wallet.id,
-          toAddress: btx.address || (this.tokenData && this.tokenData.addressToShow !== 'false' ? this.tokenData.addressToShow : btx.inputAddresses[0]) || btx.inputAddresses[0],
+          toAddress: btx.address || (btx.addressTo && btx.addressTo !== 'false') ? btx.addressTo : false || (this.tokenData && this.tokenData.addressToShow !== 'false' ? this.tokenData.addressToShow : btx.inputAddresses[0]) || btx.inputAddresses[0],
           token: this.token
         }
       });
