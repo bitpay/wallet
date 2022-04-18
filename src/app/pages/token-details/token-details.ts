@@ -518,7 +518,8 @@ export class TokenDetailsPage {
             tokenId: tx.tokenId,
             symbolToken: tx.symbolToken,
             name: tx.name
-          }
+          },
+          token: this.token
         }
       }).then(res => {
         res.present();
