@@ -72,6 +72,16 @@ export class AddressbookViewPage {
     })
   }
 
+  send():void{
+    this.router.navigateByUrl('/accounts-page', {
+      state: {
+        coin: this.coin,
+        network: this.network,
+        toAddress: this.address,
+      }
+    });
+  }
+
   public remove(): void {
     const infoSheet = this.actionSheetProvider.createInfoSheet(
       'delete-contact',
