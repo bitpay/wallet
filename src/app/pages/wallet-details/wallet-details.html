@@ -286,7 +286,7 @@
                     {{ 'To: {walletName}' | translate: {walletName: tx.customData.toWalletName} | translate}}
                   </span>
                   <span class="tx-action"
-                    *ngIf="tx.message && addressbook && tx.outputs[0] && getContactName(tx.outputs[0].address)">
+                    *ngIf="addressbook && tx.outputs[0] && getContactName(tx.outputs[0].address)">
                     {{'To: ' + getContactName(tx.outputs[0].address) | translate}}
                   </span>
                 </ng-container>
