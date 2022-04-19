@@ -449,21 +449,17 @@ export class RecipientComponent implements OnInit {
         const isValid = this.checkCoinAndNetwork(address);
         if (isValid) {
           this.validAddress = true;
-          if(this.checkIfContact()){
-            this.addressBookProvider.get(address, this.wallet.network).then(
-              contactSelected =>{
-                if(contactSelected){
-                  this.recipient.toAddress = contactSelected.address;
-                  this.recipient.name = contactSelected.name;
-                  this.recipient.recipientType = 'contact';
-                }
+          this.addressBookProvider.get(address, this.wallet.network).then(
+            contactSelected => {
+              if (contactSelected) {
+                this.recipient.toAddress = contactSelected.address;
+                this.recipient.name = contactSelected.name;
+                this.recipient.recipientType = 'contact';
               }
-            );
-          }
-          else{
-            this.recipient.toAddress = address;
-            if (this.token && this.wallet.coin) this.recipient.toAddress = tokenAddress;
-          }
+            }
+          );
+          this.recipient.toAddress = address;
+          if (this.token && this.wallet.coin) this.recipient.toAddress = tokenAddress;
           this.redir();
         }
       }
@@ -576,13 +572,13 @@ export class RecipientComponent implements OnInit {
     });
   }
 
-  public cleanSearch(isSpecificRecipient?:boolean) {
+  public cleanSearch(isSpecificRecipient?: boolean) {
     this.recipient.toAddress = '';
     this.recipient.name = '';
     this.validAddress = false;
     this.recipient.recipientType = '';
     this.searchValue = '';
-    if(isSpecificRecipient){
+    if (isSpecificRecipient) {
       this.recipient.isSpecificAmount = false;
       this.expression = 0;
       this.processAmount();
