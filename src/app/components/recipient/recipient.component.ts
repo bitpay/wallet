@@ -22,7 +22,7 @@ import { timer } from 'rxjs';
 import { RecipientModel } from './recipient.model';
 import { FilterProvider } from 'src/app/providers/filter/filter';
 import { RateProvider } from 'src/app/providers/rate/rate';
-import { ClipboardProvider, ThemeProvider } from 'src/app/providers';
+import { AddressBookProvider, ClipboardProvider, ThemeProvider } from 'src/app/providers';
 import { Token } from 'src/app/models/tokens/tokens.model';
 import { TransferToModalPage } from 'src/app/pages/send/transfer-to-modal/transfer-to-modal';
 
@@ -137,6 +137,7 @@ export class RecipientComponent implements OnInit {
     private clipboardProvider: ClipboardProvider,
     private themeProvider: ThemeProvider,
     private modalCtrl: ModalController,
+    private addressBookProvider: AddressBookProvider
   ) {
     this.darkThemeString = this.themeProvider.currentAppTheme === 'dark' ? 'dark' : 'light';
     if (this.router.getCurrentNavigation()) {
@@ -448,8 +449,21 @@ export class RecipientComponent implements OnInit {
         const isValid = this.checkCoinAndNetwork(address);
         if (isValid) {
           this.validAddress = true;
-          this.recipient.toAddress = address;
-          if (this.token && this.wallet.coin) this.recipient.toAddress = tokenAddress;
+          if(this.checkIfContact()){
+            this.addressBookProvider.get(address, this.wallet.network).then(
+              contactSelected =>{
+                if(contactSelected){
+                  this.recipient.toAddress = contactSelected.address;
+                  this.recipient.name = contactSelected.name;
+                  this.recipient.recipientType = 'contact';
+                }
+              }
+            );
+          }
+          else{
+            this.recipient.toAddress = address;
+            if (this.token && this.wallet.coin) this.recipient.toAddress = tokenAddress;
+          }
           this.redir();
         }
       }
