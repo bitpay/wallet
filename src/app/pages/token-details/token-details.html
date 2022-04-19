@@ -46,7 +46,7 @@
         </div>
       </expandable-header-footer>
     </expandable-header>
-    <div class="prompt-user activity-fix white-card" *ngIf="isShowZeroState && shouldShowZeroState()">
+    <div class="prompt-user activity-fix white-card" *ngIf="!updateTxHistoryError && !(updatingTxHistory && (!history[0] || updatingTxHistoryProgress>4)) && isShowZeroState && shouldShowZeroState()">
       <div class="title-icon larger-icon">
         <img *ngIf="wallet.coin !== 'doge' && wallet.coin !== 'xpi'" src="assets/img/wallet-details/ghost-{{currentTheme}}.svg">
         <img *ngIf="wallet.coin === 'xpi'"
@@ -108,13 +108,18 @@
                   <span *ngIf="tx.inputAddresses && tx.inputAddresses[0]" class="tx-action" >{{'From: {address}' | translate: {address: tx.inputAddresses[0].slice(-8)} }}</span>
                   <span *ngIf="!tx.inputAddresses || !tx.inputAddresses[0]" class="tx-action" >From : unknown sender</span>
                 </ng-container >
-                <span class="tx-action" *ngIf="tx.action == 'sent' ">{{'To: {address}' | translate: {address: tx.addressTo.slice(-8)} }}</span>
+                <span class="tx-action" *ngIf="tx.action == 'sent' && tx.outputs[0].address !== 'false'">{{'To: {address}' | translate: {address: tx.addressTo.slice(-8)} }}</span>
+                <span class="tx-action" *ngIf="tx.action == 'sent' && tx.outputs[0].address === 'false'">{{'To: {address}' | translate: {address: tx.inputAddresses[0].slice(-8)} }}</span>
               </div>
 
               <ion-note slot="end" class="ion-text-end ion-no-margin ion-no-padding">
                 <div class="tx-info">
-                  <ng-container *ngIf="tx.confirmations <= 0">
-                    <p class="status" *ngIf="tx.action == 'sent' || tx.action == 'received'">{{'Pending'| translate}}</p>
+                  <ng-container *ngIf="tx.confirmations <= 0 && (tx.action == 'sent' || tx.action == 'received')">
+                    <p class="status" *ngIf="tx.outputs[0].address !== 'false'">{{'Pending'| translate}}</p>
+                    <p class="status" *ngIf="tx.outputs[0].address === 'false'">{{'Moving'| translate}}</p>
+                  </ng-container>
+                  <ng-container *ngIf="tx.confirmations > 0">
+                    <p class="status" *ngIf="tx.outputs[0].address === 'false'">{{'Sent to self'| translate}}</p>
                   </ng-container>
                   <p class="status" *ngIf="tx.isGenesis">Genesis</p>
                   <p class="date" *ngIf="tx.time && createdWithinPastDay(tx.time * 1000)">{{converDate(tx.time * 1000) |

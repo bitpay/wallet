@@ -23,12 +23,14 @@ import { PersistenceProvider } from 'src/app/providers/persistence/persistence';
 import { AppProvider, TokenProvider } from 'src/app/providers';
 import { Router } from '@angular/router';
 import { DecimalFormatBalance } from 'src/app/providers/decimal-format.ts/decimal-format';
+import { Token } from 'src/app/models/tokens/tokens.model';
 
 export interface TokenData {
   amountToken: string,
   tokenId: string,
   symbolToken: string,
-  name: string
+  name: string,
+  addressToShow: string
 }
 
 @Component({
@@ -56,6 +58,7 @@ export class TxDetailsModal {
   public txsUnsubscribedForNotifications: boolean;
   public txMemo: string;
   public tokenData: TokenData;
+  public token: Token;
   public isNegative: boolean;
   public currentTheme;
   public fiatRateStrToken;
@@ -92,6 +95,7 @@ export class TxDetailsModal {
     this.title = this.translate.instant('Transaction');
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
     this.tokenData = this.navParams.data.tokenData;
+    this.token = this.navParams.data.token;
     this.color = this.wallet.color;
     this.copayerId = this.wallet.credentials.copayerId;
     this.isShared = this.wallet.credentials.n > 1;
@@ -321,7 +325,9 @@ export class TxDetailsModal {
         this.initActionList();
 
         this.updateFiatRate();
-        this.getFiatRateStrToken();
+        if(this.token){
+          this.getFiatRateStrToken();
+        }
         if (this.currencyProvider.isUtxoCoin(this.wallet.coin)) {
           this.walletProvider
             .getLowAmount(this.wallet)
@@ -492,25 +498,14 @@ export class TxDetailsModal {
     this.viewCtrl.dismiss();
   }
 
-  sendAgain(address) {
-    this.viewCtrl.dismiss().then(() => {
-      this.router.navigate(['/send-page'], {
-        state: {
-          walletId: this.wallet.id,
-          toAddress: address
-        }
-      });
-    });
-  }
-
-  sendBack(address) {
-    this.viewCtrl.dismiss().then(() => {
-      this.router.navigate(['/send-page'], {
-        state: {
-          walletId: this.wallet.id,
-          toAddress: address
-        }
-      });
+  sendBack(btx) {
+    this.viewCtrl.dismiss();
+    this.router.navigate(['/send-page'], {
+      state: {
+        walletId: this.wallet.id,
+        toAddress: btx.address || (btx.addressTo && btx.addressTo !== 'false') ? btx.addressTo : false || (this.tokenData && this.tokenData.addressToShow !== 'false' ? this.tokenData.addressToShow : btx.inputAddresses[0]) || btx.inputAddresses[0],
+        token: this.token
+      }
     });
   }
 }

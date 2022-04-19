@@ -469,10 +469,13 @@ page-tx-details {
   }
   .btn-custom {
     --color: var(--color-primary);
-    --border-color: rgba(0, 30, 46, 1);
+    --border-color: rgba(112, 129, 138, 1);    
     --border-radius: 100px;
     --border-width: 1px;
-    width: 30%;
+    --padding-bottom: 9px;
+    --padding-top: 9px;
+    --padding-start: 24px;
+    --padding-end: 24px;
     margin-top: 1rem;
     font-size: 14px;
     font-weight: 600;
