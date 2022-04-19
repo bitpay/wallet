@@ -17,8 +17,8 @@
     </div>
 
     <div class="qr-container">
-      <div class="card qr-card" copy-to-clipboard="{{ qrAddress }}">
-        <ngx-qrcode hide-toast="true" value="{{ qrAddress }}" cssClass="aclass" [errorCorrectionLevel]="typeErrorQr.MEDIUM"></ngx-qrcode>
+      <div class="card qr-card" copy-to-clipboard="{{ amountCustomForm.value.amountCustom === 0 || !amountCustomForm.value.amountCustom  ? address : qrAddress }}">
+        <ngx-qrcode hide-toast="true" value="{{ amountCustomForm.value.amountCustom === 0 || !amountCustomForm.value.amountCustom ? address : qrAddress }}" cssClass="aclass" [errorCorrectionLevel]="typeErrorQr.MEDIUM"></ngx-qrcode>
         <div class="address-text ellipsis">
           <span>{{ address }}</span>
         </div>

@@ -229,7 +229,7 @@ export class WalletDetailsPage {
   }
 
   ionViewWillEnter() {
-    this.loadingProvider.autoLoader();
+    this.loadingProvider.simpleLoader();
     this.hiddenBalance = this.wallet.balanceHidden;
     this.backgroundColor = this.themeProvider.getThemeInfo().walletDetailsBackgroundStart;
     this.onResumeSubscription = this.platform.resume.subscribe(() => {
@@ -351,6 +351,9 @@ export class WalletDetailsPage {
       this.groupedHistory = this.groupHistory(this.history);
     });
     if (loading) this.currentPage++;
+    setTimeout(() => {
+      this.loadingProvider.dismissLoader();
+    }, 1000);
   }
 
   updateAddressToShowToken(tx) {
