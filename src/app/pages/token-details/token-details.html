@@ -46,7 +46,7 @@
         </div>
       </expandable-header-footer>
     </expandable-header>
-    <div class="prompt-user activity-fix white-card" *ngIf="!updateTxHistoryError && !(updatingTxHistory && (!history[0] || updatingTxHistoryProgress>4)) && isShowZeroState && shouldShowZeroState()">
+    <div class="prompt-user activity-fix white-card" *ngIf="!(history && history[0]) && !updateTxHistoryError && !(updatingTxHistory && (!history[0] || updatingTxHistoryProgress>4)) && isShowZeroState && shouldShowZeroState()">
       <div class="title-icon larger-icon">
         <img *ngIf="wallet.coin !== 'doge' && wallet.coin !== 'xpi'" src="assets/img/wallet-details/ghost-{{currentTheme}}.svg">
         <img *ngIf="wallet.coin === 'xpi'"

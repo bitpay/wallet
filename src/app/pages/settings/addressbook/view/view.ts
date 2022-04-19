@@ -73,17 +73,13 @@ export class AddressbookViewPage {
   }
 
   send():void{
-    this.router.navigate(['/amount'], {
+    this.router.navigateByUrl('/accounts-page', {
       state: {
-        toAddress: this.address,
-        name: this.name,
-        email: this.email,
-        destinationTag: this.tag,
         coin: this.coin,
-        recipientType: 'contact',
-        network: this.network
+        network: this.network,
+        toAddress: this.address,
       }
-    })
+    });
   }
 
   public remove(): void {
