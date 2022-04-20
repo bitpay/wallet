@@ -11,7 +11,7 @@
         <input matInput type="text" formControlName="name" [placeholder]="'Name'" translate>
       </mat-form-field>
   
-      <mat-form-field class="form-field" appearance="outline">
+      <mat-form-field [ngClass]="{'mobile-view': isCordova}" class="form-field" appearance="outline">
         <mat-label translate>Address</mat-label>
         <input matInput type="text" formControlName="address" [value]="addressBookAdd.value.address" address-validator [placeholder]="'Address'" translate>
         <mat-icon matSuffix>
