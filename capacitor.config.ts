@@ -2,7 +2,7 @@ import { CapacitorConfig } from '@capacitor/cli';
 import * as configProvider from './src/assets/appConfig.json' ;
 const config: CapacitorConfig = {
   appId: configProvider.packageNameId,
-  appName: configProvider.packageName,
+  appName: configProvider.userVisibleName,
   webDir: 'www',
   bundledWebRuntime: false,
   plugins : {
