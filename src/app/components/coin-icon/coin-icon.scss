@@ -1,7 +1,7 @@
 .md [slot="start"] {
   margin: 0px 8px 0px 0px;
 }
-ion-icon {
+img {
   margin: 9px 15px 9px 0;
   justify-content: center;
   padding: 7px;
@@ -17,7 +17,7 @@ ion-icon {
 }
 
 ::ng-deep page-confirm coin-icon {
-  ion-icon {
+  img {
     margin: 0 !important;
     width: 20px !important;
     height: 20px !important;

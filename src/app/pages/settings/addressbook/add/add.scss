@@ -62,6 +62,12 @@ page-addressbook-add {
         margin-top: 2rem !important;
         padding: 0 !important;
       }
+
+      .mobile-view {
+        .mat-form-field-infix {
+          max-width: 85%;
+        }   
+      }
     }
     .footer {
       display: flex;

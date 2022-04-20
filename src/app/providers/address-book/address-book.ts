@@ -136,22 +136,26 @@ export class AddressBookProvider {
         entry.network
       );
       if (
-        _.isNull(_addrData) ||
+        !addrData.address.includes('etoken') && 
+        (_.isNull(_addrData) ||
         _.isEmpty(_addrData) ||
         !_addrData.coin ||
-        !_addrData.network
+        !_addrData.network)
       ) {
         let msg = this.translate.instant('Not valid bitcoin address');
         return reject(msg);
       }
-      addrData.coin =
-        entry.coin &&
-        this.currencyProvider
-          .getChain(Coin[entry.coin.toUpperCase()])
-          .toLowerCase() === _addrData.coin.toLowerCase()
-          ? entry.coin.toLowerCase()
-          : _addrData.coin.toLowerCase();
-      addrData.network = _addrData.network;
+
+      if (!addrData.address.includes('etoken')) {
+        addrData.coin =
+          entry.coin &&
+          this.currencyProvider
+            .getChain(Coin[entry.coin.toUpperCase()])
+            .toLowerCase() === _addrData.coin.toLowerCase()
+            ? entry.coin.toLowerCase()
+            : _addrData.coin.toLowerCase();
+        addrData.network = _addrData.network;
+      }
 
       this.persistenceProvider
         .getAddressBook(addrData.network)

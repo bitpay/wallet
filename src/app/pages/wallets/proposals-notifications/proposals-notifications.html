@@ -9,10 +9,9 @@
           <div *ngIf="txpsByWallet.walletId && txpsByWallet.txps && txpsByWallet.txps[0] && txpsByWallet.txps[0].wallet"
             class="wallet-card-content-container">
             <ion-item class="recipient">
-              <ion-icon class="item-img wallet icon-wallet"
+              <img class="item-img wallet icon-wallet"
                 [ngClass]="{ testnet: txpsByWallet.txps[0].wallet.network === 'testnet' }"
                 src="assets/img/currencies/{{txpsByWallet.txps[0].wallet.coin}}.svg" slot="start">
-              </ion-icon>
               <ion-label>
                 <span class="ellipsis wallet-name-label">{{txpsByWallet.txps[0].wallet.name}}
                   ({{txpsByWallet.txps[0].wallet.m}} - {{txpsByWallet.txps[0].wallet.n}})</span>
