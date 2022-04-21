@@ -449,7 +449,8 @@ export class RecipientComponent implements OnInit {
         const isValid = this.checkCoinAndNetwork(address);
         if (isValid) {
           this.validAddress = true;
-          this.addressBookProvider.get(address, this.wallet.network).then(
+          let addressFinal = tokenAddress.trim().length > 0 ? tokenAddress : address;
+          this.addressBookProvider.get(addressFinal, this.wallet.network).then(
             contactSelected => {
               if (contactSelected) {
                 this.recipient.toAddress = contactSelected.address;
