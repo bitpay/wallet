@@ -2269,6 +2269,7 @@
     }
 
     ion-checkbox {
+      --checkmark-color: var(--bg-color-dark-theme);
       .checkbox-icon {
         border-color: var(--color-primary);
         background-color: var(--bg-color-dark-theme);
@@ -3180,6 +3181,7 @@
       background-color: var(--bg-pin-pad) !important;
       ion-item {
         ion-checkbox {
+          --checkmark-color: var(--bg-color-dark-theme);
           --background-checked: var(--color-primary-abcpay-dark);
         }
       }
@@ -3270,6 +3272,7 @@
         --background-checked: rgba(126, 208, 255, 1) !important;
         --border-color-checked: rgba(126, 208, 255, 1) !important;
         --border-color: rgba(237, 239, 240, 0.6) !important;
+        --checkmark-color: var(--bg-color-dark-theme);
       }
     }
   }
@@ -3593,6 +3596,6 @@
   }
 
   .stroke-card {
-    border-color: #072335;
+    border-color: #072335 !important;
   }
 }

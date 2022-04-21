@@ -8,7 +8,7 @@ import { Logger } from 'src/app/providers/logger/logger';
 @Component({
   selector: 'page-coin-selector',
   templateUrl: 'coin-selector.html',
-  styleUrls: ['/coin-selector.scss'],
+  styleUrls: ['coin-selector.scss'],
   encapsulation: ViewEncapsulation.None
 })
 export class CoinSelectorPage {

@@ -1,25 +1,51 @@
 page-coin-selector {
   background-color: white;
   .description {
-    font-size: 16px;
-    padding: 2rem 3rem 0rem 3rem;
+    font-size: 14px;
+    letter-spacing: 0.25px;
+    padding: 0 1rem 1rem 1rem;
   }
   .list-button {
-    padding-top: 10px;
-    padding-bottom: 10px;
-
-    ion-icon.item-icon {
-      margin-left: 3px;
-
-      img {
-        height: 40px;
-      }
+    --padding-start: 1rem !important;
+    --padding-end: 1rem !important;
+    --inner-padding-top: 1rem;
+    --inner-padding-bottom: 1rem;
+    --inner-padding-end: 0;
+    --padding-top: 5px;
+    --padding-bottom: 5px;
+    padding: 0;
+    margin-top: 0 !important;
+  }
+  ion-icon {
+    margin: 0 !important;
+    padding: 0 !important;
+    margin-right: 1rem !important;
+    height: 40px;
+    width: 40px;
+    &[name="chevron-back"] {
+      width: 28px !important;
+      height: 28px !important;
     }
+  }
 
-    .item-title {
-      color: black;
-      font-size: 18px;
-      font-weight: 500;
+  .item-title {
+    font-size: 18px;
+    font-weight: 500;
+    h3{
+      font-size: 16px;
+      font-weight: 600;
+      margin: 0;
     }
+    span{
+      font-size: 14px;
+      font-weight: 400;
+      color: rgba(0, 30, 46, 0.6);
+    }
+  }
+
+  .item-note {
+    font-size: 12.5px;
+    padding-top: 4px;
+    color: lightgrey;
   }
 }
