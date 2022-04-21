@@ -110,6 +110,7 @@
                 </ng-container >
                 <span class="tx-action" *ngIf="tx.action == 'sent' && tx.outputs[0].address !== 'false'">{{'To: {address}' | translate: {address: tx.addressTo.slice(-8)} }}</span>
                 <span class="tx-action" *ngIf="tx.action == 'sent' && tx.outputs[0].address === 'false'">{{'To: {address}' | translate: {address: tx.inputAddresses[0].slice(-8)} }}</span>
+                <span class="tx-action" *ngIf="this.addressbook && tx.action == 'sent' && tx.outputs[0].address === 'false' && getContactName(tx.inputAddresses[0])">{{'To: ' + getContactName(tx.inputAddresses[0]) | translate}}</span>
               </div>
 
               <ion-note slot="end" class="ion-text-end ion-no-margin ion-no-padding">
