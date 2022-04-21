@@ -133,8 +133,8 @@
                 </ng-container>
                 <ng-container *ngIf="wallet.tokens">
                   <ion-list class="token-item bp-list" [ngClass]="{ collapsed: isCollapsedToken(wallet.id) }">
-                    <ion-item *ngFor="let token of wallet.tokens" (click)="goToTokenDetails(wallet, token)">
-                      <ng-container *ngIf="token?.amountToken !== 0">
+                    <ng-container *ngFor="let token of wallet.tokens">
+                      <ion-item *ngIf="token.amountToken && token.amountToken !== 0" (click)="goToTokenDetails(wallet, token)">
                         <img class="item-img rectangle token-icon" [src]="setIconToken(token)" slot="start">
                         <ion-label>
                           <div class="main-label">{{token?.tokenInfo?.name}}</div>
@@ -156,8 +156,8 @@
                             </ng-template>
                           </div>
                         </ion-note>  
-                      </ng-container>
                     </ion-item>
+                    </ng-container>
                   </ion-list>
                 </ng-container>
               </div>

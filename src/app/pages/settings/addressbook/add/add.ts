@@ -135,7 +135,13 @@ export class AddressbookAddPage extends ActionSheetParent{
       ) {
         this.addressBookAdd.controls['coin'].setValue(coin);
       } else {
-        this.addressBookAdd.controls['coin'].setValue(this.addressInfo.coin);
+        // Handle address for case Token eCash
+        if (address.includes('etoken')) {
+          this.addressBookAdd.controls['coin'].setValue('xec');
+          this.addressBookAdd.controls['network'].setValue('livenet');
+        } else {
+          this.addressBookAdd.controls['coin'].setValue(this.addressInfo.coin);
+        }
       }
     }
   }
@@ -173,7 +179,7 @@ export class AddressbookAddPage extends ActionSheetParent{
       .add({
         name: name,
         email: this.addressBookAdd.value.email,
-        address: this.parseAddress(this.addressBookAdd.value.address),
+        address: this.addressBookAdd.value.address.includes('etoken') ? this.addressBookAdd.value.address : this.parseAddress(this.addressBookAdd.value.address),
         tag: this.addressBookAdd.value.tag,
         network: this.addressBookAdd.value.network,
         coin: this.addressBookAdd.value.coin
