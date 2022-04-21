@@ -40,7 +40,7 @@ export class MultipleOutputsPage {
       : undefined;
     if (this._tx.tokenId) this._tx.hasMultiplesOutputs = false;
     this.tx.outputs.forEach(output => {
-      const outputAddr = output.toAddress ? output.toAddress : output.address;
+      let outputAddr = output.toAddress ? output.toAddress : output.address;
       this.coin = this._tx.coin
         ? this._tx.coin
         : this.addressProvider.getCoinAndNetwork(outputAddr, this._tx.network)
@@ -52,9 +52,14 @@ export class MultipleOutputsPage {
         outputAddr,
         this._tx.tokenId ? true : false
       );
-
-      output.addressToShow =
-        addressToShow == 'false' ? 'Unparsed address' : addressToShow;
+      
+      if(addressToShow == 'false'){
+        output.addressToShow = 'Unparsed address';
+      } else{
+        outputAddr = addressToShow;
+        output.addressToShow = addressToShow;
+      }
+      
       this.addressBookProvider
         .getContactName(outputAddr, this.tx.network)
         .then(contact => {

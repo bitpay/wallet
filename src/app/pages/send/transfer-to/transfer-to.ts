@@ -131,6 +131,7 @@ export class TransferToPage {
       if (historyEle.customData && historyEle.customData.toWalletName) {
         contacts.push({
           name: historyEle.customData.toWalletName,
+          recipientType: 'wallet',
           isAccount: true,
           getAddress: () => Promise.resolve(historyEle.addressTo),
         });
