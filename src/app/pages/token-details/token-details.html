@@ -111,7 +111,7 @@
                       <span class="tx-action" >{{'From: {address}' | translate: {address: tx.inputAddresses[0].slice(-8)} }}</span>
                     </ng-template>
                   </ng-container>
-                  <span *ngIf="!tx.inputAddresses || !tx.inputAddresses[0]" class="tx-action" >From : unknown sender</span>
+                  <span *ngIf="!tx.inputAddresses || !tx.inputAddresses[0]" class="tx-action" >{{ 'From : unknown sender' | translate }}</span>
                 </ng-container>
 
                 <ng-container *ngIf="tx.action == 'sent' && tx.outputs[0].address !== 'false'">
