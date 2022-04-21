@@ -1,4 +1,6 @@
 .notification-modal-panel {
+  padding-top: 1rem;
+  padding-top: calc(var(--ion-safe-area-top, 0) + 10px);
   position: absolute;
   width: 100%;
   transition: opacity 300ms ease;
@@ -10,6 +12,8 @@
       calc(env(safe-area-inset-right) + 5px);
   }
   .notification-content {
+    width: 95% !important;
+    margin: auto;
     .slide-zoom {
       background-color: var(colors-primary);
       border-radius: 10px;
@@ -50,5 +54,12 @@
         }
       }
     }
+  }
+  ion-button {
+    position: absolute;
+    top: calc(var(--ion-safe-area-top, 0) + 6%);
+    right: 4%;
+    z-index: 9;
+    --color: #000 !important;
   }
 }

@@ -191,4 +191,7 @@ page-create-wallet {
   .last-item {
     margin-left: auto;
   }
+  .wide-header__title {
+    --min-height: 72px;
+  }
 }
