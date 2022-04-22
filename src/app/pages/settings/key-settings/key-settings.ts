@@ -142,7 +142,7 @@ export class KeySettingsPage {
           this.logger.debug('Key encrypted');
         } catch (error) {
           this.encryptEnabled = false;
-          const title = this.translate.instant('Could not encrypt wallet');
+          const title = this.translate.instant('Could not encrypt account');
           this.showErrorInfoSheet(error, title);
         }
       })

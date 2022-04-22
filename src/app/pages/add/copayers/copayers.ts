@@ -136,10 +136,10 @@ export class CopayersPage {
     let msg;
     if (!this.canSign) {
       msg = this.translate.instant(
-        'Are you sure you want to delete this wallet?'
+        'Are you sure you want to delete this account?'
       );
     }
-    msg = this.translate.instant('Are you sure you want to hide this wallet?');
+    msg = this.translate.instant('Are you sure you want to hide this account?');
     this.popupProvider.ionicConfirm(title, msg).then(res => {
       if (res) this.deleteWallet();
     });

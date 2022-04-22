@@ -123,7 +123,7 @@ export class PaperWalletPage {
       this.popupProvider
         .ionicAlert(
           'Error',
-          this.translate.instant('No wallets available to receive funds')
+          this.translate.instant('No accounts available to receive funds')
         )
         .then(() => {
           this.location.back();
