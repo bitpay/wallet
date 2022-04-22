@@ -34,8 +34,8 @@
     <div class="wallet-info-container stroke-card">
 
       <mat-form-field appearance="outline">
-        <mat-label>{{'Wallet name' | translate}}</mat-label>
-        <input matInput type="text" formControlName="walletName" [placeholder]="'Wallet name'" translate>
+        <mat-label>{{'Account name' | translate}}</mat-label>
+        <input matInput type="text" formControlName="walletName" [placeholder]="'Account name'" translate>
       </mat-form-field>
 
       <div *ngIf="isShared">
@@ -81,7 +81,7 @@
         <div class="notification-container">
           <img src="../../../../assets/img/backup-key-game/icon-notification.svg" />
           <div class="notification-content">
-            Multi-user wallet require multiple devices to set up. It takes longer to complete but it's recommended
+            Multi-user account requires multiple devices to set up. It takes longer to complete but it's recommended
             security configuration for long term storage.
           </div>
         </div>
@@ -180,7 +180,7 @@
           <ion-toggle [disabled]="isSlpToken" [checked]="isSlpToken" formControlName="singleAddress"></ion-toggle>
         </div>
         <div class="option-line-info" *ngIf="createForm.value.singleAddress">
-          <span translate>The single address feature will force the wallet to only use one address rather than
+          <span translate>The single address feature will force the account to only use one address rather than
             generating new addresses.</span>
           <br>
           <a class="label-tip-link" (click)="openSupportSingleAddress()" translate>Learn More</a>

@@ -385,7 +385,7 @@ export class ImportWalletPage {
               component: CoinSelectorPage,
               componentProps: {
                 description: this.translate.instant(
-                  'Please select the coin of the wallet to import:'
+                  'Please select the coin of the account to import:'
                 )
               },
 

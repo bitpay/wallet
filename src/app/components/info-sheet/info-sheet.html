@@ -19,7 +19,7 @@
     <info-sheet-template *ngSwitchCase="'miner-fee-notice'" type="warning" sheetSecondBtnGroup="true">
       <span sheet-title-text translate>Miner Fee Notice</span>
       <span sheet-text>
-        {{'Because you are sending the maximum amount contained in this wallet, the {coinName} miner fee ({fee} {coin}) will be deducted from the total.  {msg}' | translate: {coinName: params.coinName, fee: params.fee, coin:params.coin, msg: params.msg} }}
+        {{'Because you are sending the maximum amount contained in this account, the {coinName} miner fee ({fee} {coin}) will be deducted from the total.  {msg}' | translate: {coinName: params.coinName, fee: params.fee, coin:params.coin, msg: params.msg} }}
       </span>
      <span sheet-third-button-text translate>GOT IT</span>
 
@@ -71,9 +71,9 @@
     </info-sheet-template>
 
     <info-sheet-template *ngSwitchCase="'import-no-wallet-warning'" type="warning">
-      <span sheet-title-text translate>We couldn't find your wallet!</span>
+      <span sheet-title-text translate>We couldn't find your account!</span>
       <span sheet-text>
-        {{ 'There are no records of your wallet on our servers. If you are importing a BIP44 compatible wallet from a 3rd party you can continue to recreate it. If you wallet is not BIP44 compatible, you will not be able to access its funds.' | translate }}
+        {{ 'There are no records of your account on our servers. If you are importing a BIP44 compatible account from a 3rd party you can continue to recreate it. If you account is not BIP44 compatible, you will not be able to access its funds.' | translate }}
       </span>
       <span sheet-button-text translate>Go Back</span>
       <span sheet-second-button-text translate>Continue Anyway</span>
@@ -104,7 +104,7 @@
     </info-sheet-template>
 
     <info-sheet-template *ngSwitchCase="'backup-ready'" type="success" sheetSecondBtnGroup="true">
-      <span sheet-title-text>{{'Your {walletType} wallet is backed up!' | translate : {walletType: params.walletType} }}</span>
+      <span sheet-title-text>{{'Your {walletType} account is backed up!' | translate : {walletType: params.walletType} }}</span>
       <span sheet-text translate>
         Be sure to store your recovery phrase in a secure place. If this app is deleted, your money cannot be recovered without it.
       </span>
@@ -123,7 +123,7 @@
     <info-sheet-template *ngSwitchCase="'sensitive-info'" type="danger" sheetSecondBtnGroup="true">
       <span sheet-title-text translate>Sensitive Data</span>
       <span sheet-text translate>
-        The information you are about to share/export may contain sensitive data such us wallet IDs, addresses, balances, etc. Please be sure you trust the person or entity with whom you are sharing this information.
+        The information you are about to share/export may contain sensitive data such us account IDs, addresses, balances, etc. Please be sure you trust the person or entity with whom you are sharing this information.
       </span>
       <span sheet-third-button-text translate>Cancel</span>
       <span sheet-fourth-button-text translate>I understand</span>
@@ -287,7 +287,7 @@
     <info-sheet-template sheetSecondBtnGroup="true" *ngSwitchCase="'payment-request'" sheetSecondBtnGroup="true">
       <span sheet-title-text translate>Payment Request info</span>
       <span sheet-text>
-        {{'Share this QR code to receive {amount} in your wallet {name}.' | translate: {amount: params.amount, name:params.name} }}
+        {{'Share this QR code to receive {amount} in your account {name}.' | translate: {amount: params.amount, name:params.name} }}
       </span>
       <span sheet-third-button-text translate>GOT IT</span>
     </info-sheet-template>
@@ -351,7 +351,7 @@
     <info-sheet-template *ngSwitchCase="'new-key'" type="warning">
       <span sheet-title-text translate>Store this key separately</span>
       <span sheet-text translate>
-        This is a new 12-word key that manages its own set of wallets. It is unrelated to any 12 word key you may have previously created. Store and manage it accordingly.
+        This is a new 12-word key that manages its own set of accounts. It is unrelated to any 12 word key you may have previously created. Store and manage it accordingly.
       </span>
       <span sheet-button-text translate>Learn More</span>
       <span sheet-second-button-text translate>GOT IT</span>
@@ -471,10 +471,10 @@
         <span translate>What could have happened?</span>
         <ul>
           <li translate>
-            There are no wallets with enough funds to make the payment
+            There are no accounts with enough funds to make the payment
           </li>
           <li translate>
-            Part or the entirety of the funds in your wallet/s are unconfirmed
+            Part or the entirety of the funds in your account/s are unconfirmed
           </li>
           <li translate>Your wallet is testnet</li>
         </ul>
@@ -505,9 +505,9 @@
     <info-sheet-template *ngSwitchCase="'no-wallets-error'" type="warning">
       <span sheet-title-text translate>No wallet available</span>
       <span sheet-text>
-        {{'You do not have a {coin} wallet able to receive funds. If you decide to create it, remember it needs to be backed up.' | translate: {coin: params.coin ? params.coin : ''} }}
+        {{'You do not have a {coin} account able to receive funds. If you decide to create it, remember it needs to be backed up.' | translate: {coin: params.coin ? params.coin : ''} }}
       </span>
-      <span sheet-button-text translate>Create Wallet</span>
+      <span sheet-button-text translate>Create Account</span>
       <span sheet-second-button-text translate>GOT IT</span>
     </info-sheet-template>
 
@@ -548,7 +548,7 @@
     <info-sheet-template *ngSwitchCase="'encrypt-password-warning'" type="warning">
       <span sheet-title-text translate>Are you sure?</span>
       <span sheet-text translate>
-        Without encrypting your wallet, a thief or another app on this device could potentially access your money.
+        Without encrypting your account, a thief or another app on this device could potentially access your money.
       </span>
       <span sheet-button-text translate>I'M SURE</span>
       <span sheet-second-button-text translate>GO BACK</span>
@@ -608,7 +608,7 @@
     <info-sheet-template *ngSwitchCase="'send-max-min-amount'" type="danger">
       <span sheet-title-text translate>Error</span>
       <span sheet-text>
-        <span translate>As the estimated miner fee to complete the transaction is {{params.fee}} {{params.coin}}, the maximum spendable amount of your wallet is {{params.amount}} {{params.coin}} which is lower than the minimum allowed by the exchange: {{params.minAmount}} {{params.coin}}</span>
+        <span translate>As the estimated miner fee to complete the transaction is {{params.fee}} {{params.coin}}, the maximum spendable amount of your account is {{params.amount}} {{params.coin}} which is lower than the minimum allowed by the exchange: {{params.minAmount}} {{params.coin}}</span>
         <span *ngIf="params.msg">{{params.msg}}</span>
       </span>
       <span sheet-second-button-text translate>GOT IT</span>
@@ -658,13 +658,13 @@
 
     <info-sheet-template *ngSwitchCase="'multisig-instantiation'" type="success" sheetSecondBtnGroup="true">
       <span sheet-title-text translate>The transaction is taking longer than usual to confirm</span>
-      <span sheet-text translate>When your transaction is confirmed, the multisig wallet will show up in the wallet list. You can check the transaction status in the wallet history.</span>
+      <span sheet-text translate>When your transaction is confirmed, the multisig account will show up in the account list. You can check the transaction status in the account history.</span>
       <span sheet-third-button-text translate>OK</span>
     </info-sheet-template>
 
     <info-sheet-template *ngSwitchCase="'join-wallet-warning'" type="warning">
-      <span sheet-title-text translate>Someone asked you to join a multisig wallet?</span>
-      <span sheet-text translate>You are about to join a shared wallet. This is an advanced feature, make sure you understand how multisig wallets work before putting funds in it. If a third party invited you to join, make sure you trust them, if you have purchased cryptocurrency they may be scamming you.
+      <span sheet-title-text translate>Someone asked you to join a multisig account?</span>
+      <span sheet-text translate>You are about to join a shared account. This is an advanced feature, make sure you understand how multisig accounts work before putting funds in it. If a third party invited you to join, make sure you trust them, if you have purchased cryptocurrency they may be scamming you.
       </span>
       <span sheet-button-text translate>READ MORE</span>
       <span sheet-second-button-text translate>GOT IT</span>
