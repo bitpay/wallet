@@ -273,7 +273,7 @@
                   </ng-container>
 
                   <ng-container *ngIf="!tx.inputAddresses || !tx.inputAddresses[0]">
-                    <span class="tx-action">From : unknown sender</span>
+                    <span class="tx-action">{{ 'From : unknown sender' | translate }}</span>
                   </ng-container>
 
                 </ng-container>

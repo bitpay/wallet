@@ -94,7 +94,12 @@
         </ion-label>
         <ion-note class="secondary-note address-custom-letter-spacing" slot="end">
           <div class="ellipsis" copy-to-clipboard="{{btx.inputAddresses[0]}}">
-            <span>{{btx.inputAddresses[0].slice(-8) }}</span>
+            <span *ngIf="addressbook && getContactName(btx.inputAddresses[0]) ; else address">
+              {{ getContactName(btx.inputAddresses[0]) }}
+            </span>
+            <ng-template #address>
+              <span>{{ btx.inputAddresses[0].slice(-8) }}</span>
+            </ng-template>
           </div>
         </ion-note>
       </ion-item>
