@@ -1799,7 +1799,7 @@ export class WalletProvider {
       if (!keys || (!keys.mnemonic && !keys.xPrivKey))
         return reject(
           this.translate.instant(
-            'Exporting via QR not supported for this wallet'
+            'Exporting via QR not supported for this account'
           )
         );
 

@@ -163,7 +163,7 @@ export class KeySettingsPage {
           if (err === 'WRONG_PASSWORD') {
             this.errorsProvider.showWrongEncryptPasswordError();
           } else {
-            const title = this.translate.instant('Could not decrypt wallet');
+            const title = this.translate.instant('Could not decrypt account');
             this.showErrorInfoSheet(err, title);
           }
         });
@@ -360,7 +360,7 @@ export class KeySettingsPage {
           err.message != 'FINGERPRINT_CANCELLED' &&
           err.message != 'PASSWORD_CANCELLED'
         ) {
-          const title = this.translate.instant('Could not decrypt wallet');
+          const title = this.translate.instant('Could not decrypt account');
           if (err.message == 'WRONG_PASSWORD') {
             this.errorsProvider.showWrongEncryptPasswordError();
           } else {

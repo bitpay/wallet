@@ -109,10 +109,10 @@
           {{profileProvider.getWalletGroup(walletsGroup[0].keyId).name}}
         </ion-label>
         <ion-note *ngIf="walletsGroup.length == 1" slot="end">
-          {{'{walletsGroupLength} Wallet' | translate:{walletsGroupLength: walletsGroup.length} }}
+          {{'{walletsGroupLength} Account' | translate:{walletsGroupLength: walletsGroup.length} }}
         </ion-note>
         <ion-note *ngIf="walletsGroup.length > 1" slot="end">
-          {{'{walletsGroupLength} Wallets' | translate:{walletsGroupLength: walletsGroup.length} }}
+          {{'{walletsGroupLength} Accounts' | translate:{walletsGroupLength: walletsGroup.length} }}
         </ion-note>
       </ion-item>
 
@@ -121,10 +121,10 @@
           {{'Read Only' | translate}}
         </ion-label>
         <ion-note *ngIf="readOnlyWalletsGroup.length == 1" slot="end">
-          {{'{walletsGroupLength} Wallet' | translate:{walletsGroupLength: readOnlyWalletsGroup.length} }}
+          {{'{walletsGroupLength} Account' | translate:{walletsGroupLength: readOnlyWalletsGroup.length} }}
         </ion-note>
         <ion-note *ngIf="readOnlyWalletsGroup.length > 1" slot="end">
-          {{'{walletsGroupLength} Wallets' | translate:{walletsGroupLength: readOnlyWalletsGroup.length} }}
+          {{'{walletsGroupLength} Accounts' | translate:{walletsGroupLength: readOnlyWalletsGroup.length} }}
         </ion-note>
       </ion-item>
 

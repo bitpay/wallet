@@ -5,7 +5,7 @@
     </ion-buttons>
     <ion-title>
       <div [reveal-at-scroll-pos]="expandableHeader.headerHeight" [scrollArea]="scrollArea">
-        {{canSign ? ('Key Settings' | translate) : ('Read Only Wallets' | translate) }}
+        {{canSign ? ('Key Settings' | translate) : ('Read Only Accounts' | translate) }}
       </div>
     </ion-title>
   </ion-toolbar>
@@ -16,7 +16,7 @@
     <expandable-header [scrollArea]="scrollArea" [fadeFactor]="5" [disableFade]="true" #expandableHeader>
       <ion-toolbar class="wide-header__title">
         <expandable-header-primary>
-          {{canSign ? ('Key Settings' | translate) : ('Read Only Wallets' | translate) }}
+          {{canSign ? ('Key Settings' | translate) : ('Read Only Accounts' | translate) }}
         </expandable-header-primary>
       </ion-toolbar>
     </expandable-header>
@@ -24,7 +24,7 @@
     <label-tip class="no-arrowhead" *ngIf="!canSign" type="warn">
       <span label-tip-title translate>No Private Key</span>
       <div label-tip-body translate>
-        Read Only wallets don't include the private key.
+        Read Only accounts don't include the private key.
       </div>
     </label-tip>
 
@@ -58,7 +58,7 @@
       </ion-item>
       <ion-item button class="create-button item-end" *ngIf="wallets && wallets[0].canAddNewAccount" (click)="goToAddPage()">
         <ion-label>
-          {{'Create a new wallet' | translate }}
+          {{'Create a new account' | translate }}
         </ion-label>
       </ion-item>
 
@@ -105,7 +105,7 @@
             
       <ion-item detail="false" class="create-button" button *ngIf="!needsBackup" (click)="syncWallets()">
         <ion-label>
-          <span translate>Sync wallets across devices</span>
+          <span translate>Sync accounts across devices</span>
         </ion-label>
       </ion-item>
       

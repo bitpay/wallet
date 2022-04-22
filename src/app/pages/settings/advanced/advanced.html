@@ -11,14 +11,14 @@
       <label-tip type="info" header="no-header">
         <div label-tip-body>
           <div translate>
-            If enabled, wallets will also try to spend unconfirmed funds. However, unconfirmed funds are not allowed for spending with merchants, AbcPay Card loads, or AbcPay in-app gift card purchases.
+            If enabled, accounts will also try to spend unconfirmed funds. However, unconfirmed funds are not allowed for spending with merchants, AbcPay Card loads, or AbcPay in-app gift card purchases.
           </div>
         </div>
       </label-tip>
     </ion-list>
     <ion-list class="settings-list bp-list">
       <ion-item button *ngIf="oldProfileAvailable && wallets && wallets[0]" class="with-label no-border" (click)="openWalletRecoveryPage()" translate>
-        Recover old wallets
+        Recover old accounts
       </ion-item>
     </ion-list>
   </div>
