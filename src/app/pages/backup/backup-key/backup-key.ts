@@ -108,7 +108,7 @@ export class BackupKeyPage {
           err.message != 'FINGERPRINT_CANCELLED' &&
           err.message != 'PASSWORD_CANCELLED'
         ) {
-          const title = this.translate.instant('Could not decrypt wallet');
+          const title = this.translate.instant('Could not decrypt account');
           if (err.message == 'WRONG_PASSWORD') {
             this.errorsProvider.showWrongEncryptPasswordError();
           } else {
@@ -121,10 +121,10 @@ export class BackupKeyPage {
 
   private showNoRecoveryPhraseError() {
     const title = this.translate.instant(
-      'Wallet recovery phrase not available'
+      'Account recovery phrase not available'
     );
     let err = this.translate.instant(
-      'You can still export it from "Export Wallet" option.'
+      'You can still export it from "Export Account" option.'
     );
     this.showErrorInfoSheet(err, title);
     this.location.back();

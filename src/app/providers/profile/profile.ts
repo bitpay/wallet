@@ -918,12 +918,12 @@ export class ProfileProvider {
         .length;
       if (countInArray > 0) {
         const msg1 = this.replaceParametersProvider.replace(
-          this.translate.instant('The wallet is already in the app'),
+          this.translate.instant('The account is already in the app'),
           { nameCase: this.appProvider.info.nameCase }
         );
         const msg2 = this.replaceParametersProvider.replace(
           this.translate.instant(
-            '{{countInArray}} of your wallets already exist in {{nameCase}}'
+            '{{countInArray}} of your accounts already exist in {{nameCase}}'
           ),
           {
             countInArray,
@@ -1732,12 +1732,12 @@ export class ProfileProvider {
           })
         ) {
           return reject(
-            this.translate.instant('Cannot join the same wallet more that once')
+            this.translate.instant('Cannot join the same account more that once')
           );
         }
       } catch (ex) {
         this.logger.error(ex);
-        return reject(this.translate.instant('Bad wallet invitation'));
+        return reject(this.translate.instant('Bad account invitation'));
       }
       opts.networkName = walletData.network;
 

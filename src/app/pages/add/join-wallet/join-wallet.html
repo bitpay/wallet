@@ -38,9 +38,9 @@
       </mat-form-field>
 
       <mat-form-field class="wallet-invitation-mat-form-field" appearance="outline">
-        <mat-label>{{'Wallet invitation' | translate}}</mat-label>
+        <mat-label>{{'Account invitation' | translate}}</mat-label>
         <input (input)="processInvitation(joinForm.value.invitationCode)" matInput type="text"
-          formControlName="invitationCode" [placeholder]="'Wallet invitation'" translate>
+          formControlName="invitationCode" [placeholder]="'Account invitation'" translate>
         <ion-icon matSuffix src="assets/img/recipient-component/Subtract.svg"
           *ngIf="joinForm.value.invitationCode && joinForm.value.invitationCode.length > 0" slot="end"
           class="erase-icon" (click)="cleanSearch()">

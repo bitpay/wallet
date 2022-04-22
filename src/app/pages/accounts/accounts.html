@@ -37,7 +37,7 @@
         <ion-icon src="assets/img/settings-icons/icon-read-only.svg" width="20" class="item-img" slot="start">
         </ion-icon>
         <ion-label class="key-name">
-          <span translate>Read Only Wallets</span>
+          <span translate>Read Only Accounts</span>
         </ion-label>
       </div>
       <ion-list lines="nones" class="bp-list">
@@ -47,8 +47,8 @@
       <label-tip type="warn" class="ion-margin-top" *ngIf="walletGroup && walletGroup[0] && walletGroup[0]?.needsBackup"
         header="no-header">
         <div label-tip-body>
-          <span translate>Before retrieving your wallets addresses, it's recommended that you first write down your
-            recovery phrase and store it securely so that your wallets can be recovered in the case your device was lost
+          <span translate>Before retrieving your accounts addresses, it's recommended that you first write down your
+            recovery phrase and store it securely so that your accounts can be recovered in the case your device was lost
             or stolen.</span>
           <br>
           <a class="label-tip-link" (click)="openBackupPage(walletGroup[0]?.keyId)" translate>Backup now</a>

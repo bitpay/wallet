@@ -61,7 +61,7 @@ export class ExtendedPrivateKeyPage {
           if (err.message == 'WRONG_PASSWORD') {
             this.errorsProvider.showWrongEncryptPasswordError();
           } else {
-            let title = this.translate.instant('Could not decrypt wallet');
+            let title = this.translate.instant('Could not decrypt account');
             this.showErrorInfoSheet(this.bwcErrorProvider.msg(err), title);
           }
         }
