@@ -53,7 +53,7 @@ export class KeyDeletePage {
   public showDeletePopup(): void {
     const title = this.translate.instant('Warning!');
     const message = this.translate.instant(
-      'Are you sure you want to delete all wallets using this key?'
+      'Are you sure you want to delete all accounts using this key?'
     );
     this.popupProvider.ionicConfirm(title, message, null, null).then(res => {
       if (res) this.deleteWalletGroup();

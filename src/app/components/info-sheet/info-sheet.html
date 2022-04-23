@@ -466,7 +466,7 @@
     </info-sheet-template>
 
     <info-sheet-template *ngSwitchCase="'no-wallets-available'" type="info" sheetSecondBtnGroup="true">
-      <span sheet-title-text translate>No wallets available</span>
+      <span sheet-title-text translate>No accounts available</span>
       <span sheet-text>
         <span translate>What could have happened?</span>
         <ul>
@@ -503,7 +503,7 @@
     </info-sheet-template>
 
     <info-sheet-template *ngSwitchCase="'no-wallets-error'" type="warning">
-      <span sheet-title-text translate>No wallet available</span>
+      <span sheet-title-text translate>No account available</span>
       <span sheet-text>
         {{'You do not have a {coin} account able to receive funds. If you decide to create it, remember it needs to be backed up.' | translate: {coin: params.coin ? params.coin : ''} }}
       </span>

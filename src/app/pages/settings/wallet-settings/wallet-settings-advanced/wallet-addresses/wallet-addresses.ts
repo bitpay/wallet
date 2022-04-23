@@ -123,7 +123,7 @@ export class WalletAddressesPage {
             this.popupProvider.ionicAlert(
               this.bwcErrorProvider.msg(
                 err,
-                this.translate.instant('Could not update wallet')
+                this.translate.instant('Could not update account')
               )
             );
           });
@@ -134,7 +134,7 @@ export class WalletAddressesPage {
         this.popupProvider.ionicAlert(
           this.bwcErrorProvider.msg(
             err,
-            this.translate.instant('Could not update wallet')
+            this.translate.instant('Could not update account')
           )
         );
       });

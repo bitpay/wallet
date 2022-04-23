@@ -631,7 +631,7 @@ export class ProfileProvider {
         if (wallet.copayerId != creatorId) {
           title = this.translate.instant('New copayer');
           translatedMsg = this.translate.instant(
-            'A new copayer just joined your wallet {{walletName}}.'
+            'A new copayer just joined your account {{walletName}}.'
           );
           body = this.replaceParametersProvider.replace(translatedMsg, {
             walletName
@@ -651,7 +651,7 @@ export class ProfileProvider {
         if (wallet && wallet.m > 1 && wallet.copayerId != creatorId) {
           title = this.translate.instant('New payment proposal');
           translatedMsg = this.translate.instant(
-            'A new payment proposal has been created in your wallet {{walletName}}.'
+            'A new payment proposal has been created in your account {{walletName}}.'
           );
           body = this.replaceParametersProvider.replace(translatedMsg, {
             walletName
@@ -665,7 +665,7 @@ export class ProfileProvider {
           amount
         );
         translatedMsg = this.translate.instant(
-          'A payment of {{amountStr}} has been received into your wallet {{walletName}}.'
+          'A payment of {{amountStr}} has been received into your account {{walletName}}.'
         );
         body = this.replaceParametersProvider.replace(translatedMsg, {
           amountStr,
@@ -675,7 +675,7 @@ export class ProfileProvider {
       case 'TxProposalFinallyRejected':
         title = this.translate.instant('Payment proposal rejected');
         translatedMsg = this.translate.instant(
-          'A payment proposal in your wallet {{walletName}} has been rejected.'
+          'A payment proposal in your account {{walletName}} has been rejected.'
         );
         body = this.replaceParametersProvider.replace(translatedMsg, {
           walletName
@@ -947,7 +947,7 @@ export class ProfileProvider {
     opts: WalletBindTypeOpts = {}
   ): Promise<any> {
     if (!wallet || !wallet.credentials) {
-      return Promise.reject(this.translate.instant('Could not access wallet'));
+      return Promise.reject(this.translate.instant('Could not access account'));
     }
 
     const { bwsurl, store = true } = opts;
@@ -1542,7 +1542,7 @@ export class ProfileProvider {
           this.logger.info('Invalid wallet recovery phrase: ' + ex);
           return reject(
             this.translate.instant(
-              'Could not create: Invalid wallet recovery phrase'
+              'Could not create: Invalid account recovery phrase'
             )
           );
         }
@@ -1671,7 +1671,7 @@ export class ProfileProvider {
                 if (err && (!copayerRegistered || isSetSeed)) {
                   const msg = this.bwcErrorProvider.msg(
                     err,
-                    this.translate.instant('Error creating wallet')
+                    this.translate.instant('Error creating account')
                   );
                   return reject(msg);
                 } else if (copayerRegistered && opts.isSlpToken) {
@@ -1770,7 +1770,7 @@ export class ProfileProvider {
                 } else {
                   const msg = this.bwcErrorProvider.msg(
                     err,
-                    this.translate.instant('Could not join wallet')
+                    this.translate.instant('Could not join account')
                   );
                   return reject(msg);
                 }
@@ -2331,7 +2331,7 @@ export class ProfileProvider {
       opts = opts ? opts : {};
       const w = this.getWallets(opts);
       if (_.isEmpty(w)) {
-        return reject('No wallets available');
+        return reject('No accounts available');
       }
 
       let txps = [];

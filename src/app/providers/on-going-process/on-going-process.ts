@@ -31,13 +31,13 @@ export class OnGoingProcessProvider {
       connectingChangelly: this.translate.instant('Connecting to Changelly...'),
       connectingCoinbase: this.translate.instant('Connecting to Coinbase...'),
       creatingTx: this.translate.instant('Creating transaction...'),
-      creatingWallet: this.translate.instant('Creating Wallet...'),
+      creatingWallet: this.translate.instant('Creating Account...'),
       creatingEthMultisigWallet: this.translate.instant(
         'Creating ETH multisig wallet. Please wait...'
       ),
-      deletingWallet: this.translate.instant('Deleting Wallet...'),
+      deletingWallet: this.translate.instant('Deleting Account...'),
       extractingWalletInfo: this.translate.instant(
-        'Extracting Wallet information...'
+        'Extracting Account information...'
       ),
       fetchingPayPro: this.translate.instant('Fetching payment information...'),
       fetchingPayProOptions: this.translate.instant(
@@ -53,7 +53,7 @@ export class OnGoingProcessProvider {
       retrievingInputs: this.translate.instant(
         'Retrieving inputs information...'
       ),
-      scanning: this.translate.instant('Scanning Wallet funds...'),
+      scanning: this.translate.instant('Scanning Account funds...'),
       sendingTx: this.translate.instant('Sending transaction...'),
       signingTx: this.translate.instant('Signing transaction...'),
       sweepingWallet: this.translate.instant('Sweeping Wallet...'),

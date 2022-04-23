@@ -87,6 +87,8 @@
     "base64-js": "^1.5.1",
     "bitauth": "git+https://github.com/bitpay/bitauth.git#68cf0353bf517a7e5293478608839fa904351eb6",
     "buffer-compare": "^1.1.1",
+    "@capacitor-community/fcm": "^2.0.2",
+    "capacitor-resources": "^2.0.5",
     "chart.js": "^3.5.1",
     "cordova": "^10.0.0",
     "cordova-android": "^10.1.0",
