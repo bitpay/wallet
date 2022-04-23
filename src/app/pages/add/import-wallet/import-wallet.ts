@@ -488,7 +488,7 @@ export class ImportWalletPage {
     if (!opts.mnemonic && !opts.extendedPrivateKey) {
       const title = this.translate.instant('Error');
       const subtitle = this.translate.instant(
-        'Please enter the wallet recovery phrase'
+        'Please enter the account recovery phrase'
       );
       this.showErrorInfoSheet(title, subtitle);
       return;

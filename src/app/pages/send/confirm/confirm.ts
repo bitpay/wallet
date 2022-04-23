@@ -471,7 +471,7 @@ export class ConfirmPage {
       const msg = this.translate.instant(
         'You are trying to send more funds than you have available. Make sure you do not have funds locked by pending transaction proposals.'
       );
-      const title = this.translate.instant('No wallets available');
+      const title = this.translate.instant('No accounts available');
       return Promise.reject({ msg, title });
     }
     return Promise.resolve();
@@ -1050,7 +1050,7 @@ export class ConfirmPage {
       // ToDo: use a credential's (or fc's) function for this
       if (tx.description && !wallet.credentials.sharedEncryptingKey) {
         const msg = this.translate.instant(
-          'Could not add message to imported wallet without shared encrypting key'
+          'Could not add message to imported account without shared encrypting key'
         );
         return reject(msg);
       }
