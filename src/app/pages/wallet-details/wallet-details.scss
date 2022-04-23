@@ -136,6 +136,8 @@ page-wallet-details {
   }
 
   .tx-history {
+    min-height: 35vh;
+    background: var(--bg-color-light-theme);
     .tx-history-header {
       height: 3rem;
       border-bottom: 0;
@@ -510,5 +512,9 @@ page-wallet-details {
       margin: 0;
       font-size: 12px;
     }
+  }
+
+  ion-infinite-scroll {
+    background: var(--bg-color-light-theme);
   }
 }
