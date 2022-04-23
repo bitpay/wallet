@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { timer } from 'rxjs';
-import { FCM } from "capacitor-fcm";
+// import { FCM } from "capacitor-fcm";
 // providers
 import { AppProvider } from '../app/app';
 import { BwcProvider } from '../bwc/bwc';
@@ -35,7 +35,7 @@ export class PushNotificationsProvider {
   private notifications = [];
   private currentNotif: HTMLIonModalElement;
   private openWalletId;
-  public fcm ;
+  // public fcm ;
   constructor(
     public http: HttpClient,
     public profileProvider: ProfileProvider,
@@ -53,7 +53,7 @@ export class PushNotificationsProvider {
     this.isIOS = this.platformProvider.isIOS;
     this.isAndroid = this.platformProvider.isAndroid;
     this.usePushNotifications = this.platformProvider.isCordova;
-    this.fcm = new FCM();
+    // this.fcm = new FCM();
   }
 
   public init(): void {
@@ -63,37 +63,37 @@ export class PushNotificationsProvider {
       if (!config.pushNotifications.enabled) return;
       await this.registerNotifications();
       // On success, we should be able to receive notifications
-      this.fcm
-      .getToken()
-      .then(async token => {
-        if (!token) {
-          setTimeout(() => {
-            this.init();
-          }, 5000);
-          return;
-        }
-          this.logger.debug('Get token for push notifications: ' + token.token);
-          this._token = token.token;
-        this.enable();
-        // enabling topics
-        if (
-          this.appProvider.info.name != 'copay' &&
-          config.offersAndPromotions.enabled
-        )
-            await this.subscribeToTopic('offersandpromotions');
-        if (
-          this.appProvider.info.name != 'copay' &&
-          config.productsUpdates.enabled
-        )
-            await this.subscribeToTopic('productsupdates');
-
-        this.fcmInterval = setInterval(() => {
-          this.renewSubscription();
-        }, 5 * 60 * 1000); // 5 min
-
-        }).catch(error=>{
-          this.logger.error(error);
-      });
+      // this.fcm
+      // .getToken()
+      // .then(async token => {
+      //   if (!token) {
+      //     setTimeout(() => {
+      //       this.init();
+      //     }, 5000);
+      //     return;
+      //   }
+      //     this.logger.debug('Get token for push notifications: ' + token.token);
+      //     this._token = token.token;
+      //   this.enable();
+      //   // enabling topics
+      //   if (
+      //     this.appProvider.info.name != 'copay' &&
+      //     config.offersAndPromotions.enabled
+      //   )
+      //       await this.subscribeToTopic('offersandpromotions');
+      //   if (
+      //     this.appProvider.info.name != 'copay' &&
+      //     config.productsUpdates.enabled
+      //   )
+      //       await this.subscribeToTopic('productsupdates');
+      //
+      //   this.fcmInterval = setInterval(() => {
+      //     this.renewSubscription();
+      //   }, 5 * 60 * 1000); // 5 min
+      //
+      //   }).catch(error=>{
+      //     this.logger.error(error);
+      // });
     });
 
     // Show us the notification payload if the app is open on our device
@@ -225,8 +225,8 @@ export class PushNotificationsProvider {
     }
 
     // disabling topics
-    this.unsubscribeFromTopic('offersandpromotions');
-    this.unsubscribeFromTopic('productsupdates');
+    // this.unsubscribeFromTopic('offersandpromotions');
+    // this.unsubscribeFromTopic('productsupdates');
 
     const opts = {
       showHidden: true
@@ -246,23 +246,23 @@ export class PushNotificationsProvider {
   }
 
   public async subscribeToTopic(topic: string): Promise<void> {
-    await this.fcm.subscribeTo({ topic: topic })
-      .then(r => {
-        return this.logger.info(r);
-      })
-      .catch(err => {
-        return this.logger.error(err);
-      });
+    // await this.fcm.subscribeTo({ topic: topic })
+    //   .then(r => {
+    //     return this.logger.info(r);
+    //   })
+    //   .catch(err => {
+    //     return this.logger.error(err);
+    //   });
   }
 
   public async unsubscribeFromTopic(topic: string): Promise<void> {
-    await this.fcm.unsubscribeFrom({ topic: topic })
-      .then(r => {
-        return this.logger.info(r);
-      })
-      .catch(err => {
-        return this.logger.error(err);
-      });
+    // await this.fcm.unsubscribeFrom({ topic: topic })
+    //   .then(r => {
+    //     return this.logger.info(r);
+    //   })
+    //   .catch(err => {
+    //     return this.logger.error(err);
+    //   });
   }
 
   private _subscribe(walletClient): void {
