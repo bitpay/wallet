@@ -1,7 +1,7 @@
 {
   "packageName": "abcpay",
   "packageDescription": "Abcpay Wallet",
-  "packageNameId": "cash.abcpay.wallet.dev",
+  "packageNameId": "cash.abcpay.wallet",
   "packageNameIdDesktop": "cash.abcpay.wallet.desktop",
   "themeColor": "#000000",
   "userVisibleName": "AbcPay",
