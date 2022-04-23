@@ -20,7 +20,7 @@ import { EventManagerService } from 'src/app/providers/event-manager.service';
 import { ModalController, NavController, NavParams } from '@ionic/angular';
 import { Location } from '@angular/common';
 import { PersistenceProvider } from 'src/app/providers/persistence/persistence';
-import { AppProvider, TokenProvider } from 'src/app/providers';
+import { AddressBookProvider, AppProvider, TokenProvider } from 'src/app/providers';
 import { Router } from '@angular/router';
 import { DecimalFormatBalance } from 'src/app/providers/decimal-format.ts/decimal-format';
 import { Token } from 'src/app/models/tokens/tokens.model';
@@ -62,6 +62,9 @@ export class TxDetailsModal {
   public isNegative: boolean;
   public currentTheme;
   public fiatRateStrToken;
+
+  public addressbook = [];
+
   constructor(
     private configProvider: ConfigProvider,
     private currencyProvider: CurrencyProvider,
@@ -84,7 +87,8 @@ export class TxDetailsModal {
     private persistenceProvider: PersistenceProvider,
     private appProvider: AppProvider,
     private router: Router,
-    private tokenProvider: TokenProvider
+    private tokenProvider: TokenProvider,
+    private addressbookProvider: AddressBookProvider,
   ) { }
   
   ngOnInit() {
@@ -113,6 +117,15 @@ export class TxDetailsModal {
         value: res
       };
     });
+
+    this.addressbookProvider
+      .list(this.wallet.network)
+      .then(ab => {
+        this.addressbook = ab;
+      })
+      .catch(err => {
+        this.logger.error(err);
+      });
 
     this.updateTx();
   }
@@ -358,6 +371,12 @@ export class TxDetailsModal {
           );
         }
       });
+  }
+
+  getContactName(address: string) {
+    const existsContact = _.find(this.addressbook, c => c.address === address);
+    if (existsContact) return existsContact.name;
+    return null;
   }
 
   public getFiatRateStrToken() {

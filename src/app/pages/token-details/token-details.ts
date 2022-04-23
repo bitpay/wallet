@@ -407,7 +407,13 @@ export class TokenDetailsPage {
         }
       });
   }
-  
+
+  getContactName(address: string) {
+    const existsContact = _.find(this.addressbook, c => c.address === address);
+    if (existsContact) return existsContact.name;
+    return null;
+  }
+
 
   private showHistory(loading?: boolean) {
     if (!this.wallet.completeHistory) return;

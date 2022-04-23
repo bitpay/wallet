@@ -105,11 +105,29 @@
                     {{formatTxAmount(tx.amountToken)}} {{tx.symbolToken}}</span>
                 </div>
                 <ng-container *ngIf="tx.action == 'received'">
-                  <span *ngIf="tx.inputAddresses && tx.inputAddresses[0]" class="tx-action" >{{'From: {address}' | translate: {address: tx.inputAddresses[0].slice(-8)} }}</span>
-                  <span *ngIf="!tx.inputAddresses || !tx.inputAddresses[0]" class="tx-action" >From : unknown sender</span>
-                </ng-container >
-                <span class="tx-action" *ngIf="tx.action == 'sent' && tx.outputs[0].address !== 'false'">{{'To: {address}' | translate: {address: tx.addressTo.slice(-8)} }}</span>
-                <span class="tx-action" *ngIf="tx.action == 'sent' && tx.outputs[0].address === 'false'">{{'To: {address}' | translate: {address: tx.inputAddresses[0].slice(-8)} }}</span>
+                  <ng-container *ngIf="tx.inputAddresses && tx.inputAddresses[0]">
+                    <span *ngIf="this.addressbook && getContactName(tx.inputAddresses[0]); else addressFrom" class="tx-action" >{{'From: ' + getContactName(tx.inputAddresses[0]) | translate }}</span>
+                    <ng-template #addressFrom>
+                      <span class="tx-action" >{{'From: {address}' | translate: {address: tx.inputAddresses[0].slice(-8)} }}</span>
+                    </ng-template>
+                  </ng-container>
+                  <span *ngIf="!tx.inputAddresses || !tx.inputAddresses[0]" class="tx-action" >{{ 'From : unknown sender' | translate }}</span>
+                </ng-container>
+
+                <ng-container *ngIf="tx.action == 'sent' && tx.outputs[0].address !== 'false'">
+                  <span class="tx-action" *ngIf="this.addressbook && getContactName(tx.addressTo); else addressTo">{{'To: ' + getContactName(tx.addressTo) | translate}}</span>
+                  <ng-template #addressTo>
+                    <span class="tx-action" >{{'To: {address}' | translate: {address: tx.addressTo.slice(-8)} }}</span>
+                  </ng-template>
+                </ng-container>
+
+                <ng-container *ngIf="tx.action == 'sent' && tx.outputs[0].address === 'false'">
+                  <span class="tx-action" *ngIf="this.addressbook && getContactName(tx.inputAddresses[0]); else addressTo2">{{'To: ' + getContactName(tx.inputAddresses[0]) | translate}}</span>
+                  <ng-template #addressTo2>
+                    <span class="tx-action">{{'To: {address}' | translate: {address: tx.inputAddresses[0].slice(-8)} }}</span>
+                  </ng-template>
+                </ng-container>
+
               </div>
 
               <ion-note slot="end" class="ion-text-end ion-no-margin ion-no-padding">
