@@ -2,7 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { timer } from 'rxjs';
-import { FCM } from "capacitor-fcm";
+import { FCM } from "@capacitor-community/fcm";
+
 // providers
 import { AppProvider } from '../app/app';
 import { BwcProvider } from '../bwc/bwc';
@@ -53,7 +54,6 @@ export class PushNotificationsProvider {
     this.isIOS = this.platformProvider.isIOS;
     this.isAndroid = this.platformProvider.isAndroid;
     this.usePushNotifications = this.platformProvider.isCordova;
-    this.fcm = new FCM();
   }
 
   public init(): void {
@@ -63,9 +63,8 @@ export class PushNotificationsProvider {
       if (!config.pushNotifications.enabled) return;
       await this.registerNotifications();
       // On success, we should be able to receive notifications
-      this.fcm
-      .getToken()
-      .then(async token => {
+      FCM.getToken()
+        .then(async token => {
         if (!token) {
           setTimeout(() => {
             this.init();
@@ -80,12 +79,12 @@ export class PushNotificationsProvider {
           this.appProvider.info.name != 'copay' &&
           config.offersAndPromotions.enabled
         )
-            await this.subscribeToTopic('offersandpromotions');
+        await this.subscribeToTopic('offersandpromotions');
         if (
           this.appProvider.info.name != 'copay' &&
           config.productsUpdates.enabled
         )
-            await this.subscribeToTopic('productsupdates');
+        await this.subscribeToTopic('productsupdates');
 
         this.fcmInterval = setInterval(() => {
           this.renewSubscription();
@@ -246,7 +245,7 @@ export class PushNotificationsProvider {
   }
 
   public async subscribeToTopic(topic: string): Promise<void> {
-    await this.fcm.subscribeTo({ topic: topic })
+    await FCM.subscribeTo({ topic: topic })
       .then(r => {
         return this.logger.info(r);
       })
@@ -256,7 +255,7 @@ export class PushNotificationsProvider {
   }
 
   public async unsubscribeFromTopic(topic: string): Promise<void> {
-    await this.fcm.unsubscribeFrom({ topic: topic })
+    await FCM.unsubscribeFrom({ topic: topic })
       .then(r => {
         return this.logger.info(r);
       })
