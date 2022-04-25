@@ -88,7 +88,8 @@ export type InfoSheetType =
   | 'reset-all-setting'
   | 'help-and-support'
   | 'invalid-qr'
-  | 'delete-contact';
+  | 'delete-contact'
+  | 'no-amount-xec';
 
 export type OptionsSheetType =
   | 'wallet-options'

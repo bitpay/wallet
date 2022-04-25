@@ -24,6 +24,7 @@ import { TokenInforPage } from "../token-info/token-info";
 import { TxDetailsModal } from "../tx-details/tx-details";
 import { SearchTxModalPage } from "../wallet-details/search-tx-modal/search-tx-modal";
 const HISTORY_SHOW_LIMIT = 10;
+const configProvider = require('src/assets/appConfig.json')
 const MIN_UPDATE_TIME = 1000;
 
 interface UpdateWalletOptsI {
@@ -204,12 +205,22 @@ export class TokenDetailsPage {
   }
 
   public goToSendPage() {
-    this.router.navigate(['/send-page'], {
-      state: {
-        walletId: this.wallet.id,
-        token : this.token
-      }
-    });
+    if (this.wallet.cachedStatus.availableBalanceSat === 0 || this.wallet.cachedStatus.availableBalanceSat < configProvider.eTokenFee) {
+      const infoSheet = this.actionSheetProvider.createInfoSheet(
+        'no-amount-xec',
+        { secondBtnGroup: true,
+          isShowTitle: false
+        }
+      );
+      infoSheet.present();
+    } else {
+      this.router.navigate(['/send-page'], {
+        state: {
+          walletId: this.wallet.id,
+          token : this.token
+        }
+      });
+    }
   }
 
   public async openSearchModal(): Promise<void> {
