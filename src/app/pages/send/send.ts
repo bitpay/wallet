@@ -361,21 +361,26 @@ export class SendPage {
     }
   }
 
-  sendMax() {
+  sendMax(isToken:boolean) {
     const recipient = this.listRecipient[0];
-    this.router.navigate(['/confirm'], {
-      state: {
-        walletId: this.wallet.credentials.walletId,
-        recipientType: recipient.recipientType,
-        amount: recipient.amount,
-        currency: recipient.currency,
-        coin: this.wallet.coin,
-        network: this.wallet.network,
-        useSendMax: true,
-        toAddress: recipient.toAddress,
-        name: recipient.name
-      }
-    });
+    if(!isToken){
+      this.router.navigate(['/confirm'], {
+        state: {
+          walletId: this.wallet.credentials.walletId,
+          recipientType: recipient.recipientType,
+          amount: recipient.amount,
+          currency: recipient.currency,
+          coin: this.wallet.coin,
+          network: this.wallet.network,
+          useSendMax: true,
+          toAddress: recipient.toAddress,
+          name: recipient.name
+        }
+      });
+    } else{
+      this.goToConfirmToken();
+    }
+   
   }
 
   checkBeforeGoToConfirmPage() {
