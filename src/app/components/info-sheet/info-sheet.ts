@@ -2,6 +2,7 @@ import { Component, ViewChild, ViewEncapsulation } from '@angular/core';
 import { ExternalLinkProvider } from 'src/app/providers/external-link/external-link';
 import { ActionSheetParent } from '../action-sheet/action-sheet-parent';
 import { InfoSheetTemplate } from './info-sheet-template';
+const configProvider = require('src/assets/appConfig.json')
 
 @Component({
   selector: 'info-sheet',
@@ -12,6 +13,7 @@ import { InfoSheetTemplate } from './info-sheet-template';
 export class InfoSheetComponent extends ActionSheetParent {
   @ViewChild(InfoSheetTemplate, {static: false})
   infoSheetTemplate: InfoSheetTemplate;
+  public eTokenFee = configProvider.eTokenFee;
   constructor(private externalLinkProvider: ExternalLinkProvider) {
     super();
   }

@@ -162,6 +162,12 @@
       <span sheet-fourth-button-text translate>Open</span>
     </info-sheet-template>
 
+    <info-sheet-template *ngSwitchCase="'no-amount-xec'" sheetSecondBtnGroup={{params?.secondBtnGroup}} type="info">
+      <span sheet-title-text translate>Insufficient funds</span>
+      <span sheet-text translate>In order to send eToken, your eCash (XEC) account must have the minimum balance greater than {{eTokenFee}} XEC. Please see <a (click)="openInBrowser('https://docs.cashtab.com/docs/#send-etokens')">#send-etoken</a> for more detail!</span>
+      <span sheet-third-button-text translate>Got it</span>
+    </info-sheet-template>
+
     <info-sheet-template *ngSwitchCase="'copied-gift-card-claim-code'" type="success" sheetSecondBtnGroup="true">
       <span sheet-title-text style="word-break: break-all;">{{'Copied: {claimCode}' | translate: params }}</span>
       <span sheet-text>
