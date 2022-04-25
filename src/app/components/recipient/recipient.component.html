@@ -27,12 +27,12 @@
       <p *ngIf="!recipient.isSpecificAmount" class="title">{{'Amount' | translate}}</p>
       <p *ngIf="recipient.isSpecificAmount" class="title">{{'Specific amount request' | translate}}</p>
 
-      <p class="bold-text max-text" *ngIf="isShowSendMax && !recipient.isSpecificAmount" (click)="sendMax()">{{'Max' | translate}}</p>
+      <ion-button fill="clear" [disabled]="!validAddress" class="bold-text max-text ion-no-padding" *ngIf="isShowSendMax && !recipient.isSpecificAmount" (click)="sendMax()">{{'Max' | translate}}</ion-button>
     </div>
     <ion-item lines="none" class="amount-wrapper">
       <ion-input placeholder=0 type="{{recipient.isSpecificAmount ? 'string' : 'number'}}" [disabled]="isSelectedTotalAmout || recipient.isSpecificAmount" [(ngModel)]="expression" (ngModelChange)="processAmount()"></ion-input>
-      <span *ngIf="!token" [ngClass]="{'disabled': isSelectedTotalAmout, 'bold-text': !isSelectedTotalAmout}">{{unit}} </span>
-      <span *ngIf="token" class="bold-text">{{token?.tokenInfo?.symbol}}</span>
+      <span *ngIf="!token" (click)="changeUnit()" [ngClass]="{'disabled': isSelectedTotalAmout, 'bold-text': !isSelectedTotalAmout}">{{unit}} </span>
+      <span *ngIf="token" (click)="changeUnit()" class="bold-text">{{unit}}</span>
     </ion-item>
     <p class="unit-alt-text">{{recipient.altAmountStr}} {{alternativeUnit}}</p>
     <div class="selected-amount" lines="none" *ngIf="isShowSelectInput">
