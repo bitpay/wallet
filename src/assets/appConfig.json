@@ -35,5 +35,6 @@
     "giftcards": true,
     "walletConnect": true
   },
-  "commitHash": "2312af3"
+  "commitHash": "2312af3",
+  "eTokenFee": 13.42
 }

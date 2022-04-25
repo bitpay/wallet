@@ -325,9 +325,10 @@ export class PushNotificationsProvider {
       multisigContractAddress
     );
 
-    if (!wallet || this.openWalletId === wallet.credentials.walletId) return;
+    //TODO: test opening the same wallet then remove later
+    // if (!wallet || this.openWalletId === wallet.credentials.walletId) return;
 
-    this.openWalletId = wallet.credentials.walletId; // avoid opening the same wallet many times
+    // this.openWalletId = wallet.credentials.walletId; // avoid opening the same wallet many times
 
     await timer(1000).toPromise(); // wait for subscription to OpenWallet event
 
