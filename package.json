@@ -44,7 +44,7 @@
   "private": true,
   "dependencies": {
     "@abcpros/bitcore-wallet-client": "^8.25.38",
-    "@abcpros/xpi-js": "^4.0.6",
+    "@abcpros/xpi-js": "^4.0.7",
     "@angular-builders/custom-webpack": "^13.0.0",
     "@angular/animations": "13.1.1",
     "@angular/cdk": "^12.2.13",
