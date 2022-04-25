@@ -39,10 +39,13 @@ recipient-component {
             .transfer-to-header {
                 display: flex;
                 justify-content: space-between;
-
+                padding-bottom: 13px;
                 img {
                     cursor: pointer;
                     color: #00658D;
+                }
+                p {
+                    margin: 0;
                 }
             }
 
@@ -83,12 +86,17 @@ recipient-component {
                 color: #00658D;
                 font-weight: 600;
                 font-size: 16px;
+
             }
 
             .amount-header {
+                padding: 38px 0 13px 0;
                 display: flex;
                 flex-flow: row;
                 justify-content: space-between;
+                p {
+                    margin: 0;
+                }
             }
 
             .max-text {
@@ -100,6 +108,7 @@ recipient-component {
                 color: rgba(0, 30, 46, 0.6);
                 margin-top: 5px;
                 margin-left: 18px;
+                margin-bottom: 0;
             }
         }
     }

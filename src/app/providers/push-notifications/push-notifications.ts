@@ -62,36 +62,23 @@ export class PushNotificationsProvider {
       if (!config.pushNotifications.enabled) return;
       await this.registerNotifications();
       // On success, we should be able to receive notifications
-      FCM.getToken()
-      .then(async token => {
-        if (!token) {
-          setTimeout(() => {
-            this.init();
-          }, 5000);
-          return;
-        }
-          this.logger.debug('Get token for push notifications: ' + token.token);
-          this._token = token.token;
-        this.enable();
-        // enabling topics
-        if (
-          this.appProvider.info.name != 'copay' &&
-          config.offersAndPromotions.enabled
-        )
-            await this.subscribeToTopic('offersandpromotions');
-        if (
-          this.appProvider.info.name != 'copay' &&
-          config.productsUpdates.enabled
-        )
-            await this.subscribeToTopic('productsupdates');
+      await this.getToken();
+      this.enable();
+      // enabling topics
+      if (
+        this.appProvider.info.name != 'copay' &&
+        config.offersAndPromotions.enabled
+      )
+          await this.subscribeToTopic('offersandpromotions');
+      if (
+        this.appProvider.info.name != 'copay' &&
+        config.productsUpdates.enabled
+      )
+          await this.subscribeToTopic('productsupdates');
 
-        this.fcmInterval = setInterval(() => {
-          this.renewSubscription();
-        }, 5 * 60 * 1000); // 5 min
-
-        }).catch(error=>{
-          this.logger.error(error);
-      });
+      this.fcmInterval = setInterval(() => {
+        this.renewSubscription();
+      }, 5 * 60 * 1000); // 5 min
     });
 
     // Show us the notification payload if the app is open on our device
@@ -106,6 +93,35 @@ export class PushNotificationsProvider {
       async (notification: ActionPerformed) => {
         return await this.handlePushNotificationsWasTapped(notification);
       });
+  }
+
+  private async getToken() {
+    if (this.platformProvider.isAndroid) {
+      PushNotifications.addListener('registration', async ({ value }) => {
+        if (!value) {
+          setTimeout(() => {
+            this.init();
+          }, 5000);
+          return;
+        }
+          this.logger.debug('Get token for push notifications android: ' + value);
+          this._token = value;
+      })
+    } else {
+      FCM.getToken()
+      .then(async token => {
+        if (!token) {
+          setTimeout(() => {
+            this.init();
+          }, 5000);
+          return;
+        }
+          this.logger.debug('Get token for push notifications ios: ' + token.token);
+          this._token = token.token;
+      }).catch(error=>{
+        this.logger.error(error);
+      });
+    }
   }
 
   private async registerNotifications() {

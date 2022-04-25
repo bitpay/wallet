@@ -204,12 +204,23 @@ export class TokenDetailsPage {
   }
 
   public goToSendPage() {
-    this.router.navigate(['/send-page'], {
-      state: {
-        walletId: this.wallet.id,
-        token : this.token
-      }
-    });
+    const minFee = 13.42;
+    if (this.wallet.cachedStatus.availableBalanceSat === 0 || this.wallet.cachedStatus.availableBalanceSat < minFee) {
+      const infoSheet = this.actionSheetProvider.createInfoSheet(
+        'no-amount-xec',
+        { secondBtnGroup: true,
+          isShowTitle: false
+        }
+      );
+      infoSheet.present();
+    } else {
+      this.router.navigate(['/send-page'], {
+        state: {
+          walletId: this.wallet.id,
+          token : this.token
+        }
+      });
+    }
   }
 
   public async openSearchModal(): Promise<void> {

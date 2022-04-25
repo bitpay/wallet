@@ -50,7 +50,7 @@ export class SendPage {
     PaperWalletPage: '/paper-wallet',
     WalletDetailsPage: '/wallet-details'
   };
-
+  public currentTheme;
   isDonation: boolean;
   titlePage: string;
   dataDonation: any;
@@ -95,6 +95,7 @@ export class SendPage {
       address: 0,
       isValid: false
     }))
+    this.currentTheme = this.appProvider.themeProvider.currentAppTheme;
     this.wallet = this.profileProvider.getWallet(this.navPramss.walletId);
     this.token = this.navPramss.token;
     this.titlePage = "Send " + (this.wallet.coin as String).toUpperCase();
