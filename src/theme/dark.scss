@@ -1863,6 +1863,7 @@
     }
 
     .tx-history {
+      background: linear-gradient(0deg, rgba(126, 208, 255, 0.08), rgba(126, 208, 255, 0.08)), #001e2e !important;
       .tx-history-header {
         &.item {
           background: linear-gradient(
@@ -2011,6 +2012,10 @@
       span {
         color: var(--slateDark);
       }
+    }
+
+    ion-infinite-scroll {
+      background: linear-gradient(0deg, rgba(126, 208, 255, 0.08), rgba(126, 208, 255, 0.08)), #001e2e;
     }
   }
 

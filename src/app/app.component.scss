@@ -76,8 +76,8 @@ body {
     }
    
     ion-toolbar {
-        --padding-start: 2rem;
-        --padding-end: 2rem;
+        --padding-start: 2rem !important;
+        --padding-end: 2rem !important;
         min-height: 72px;
         display: flex;
         &.toolbar-desktop {
