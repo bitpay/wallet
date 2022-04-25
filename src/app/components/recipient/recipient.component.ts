@@ -184,7 +184,7 @@ export class RecipientComponent implements OnInit {
     }
   }
 
-  public changeUnit(): void {
+  public changeUnit(isToken?: boolean, isSendMax?: boolean): void {
     if (this.fixedUnit) return;
 
     this.unitIndex++;
@@ -200,8 +200,7 @@ export class RecipientComponent implements OnInit {
     }
 
     this.expression = '';
-    this.processAmount();
-    this.updateUnitUI();
+    this.updateUnitUI(!!isToken, !!isSendMax);
   }
 
   private updateAddressHandler: any = data => {
@@ -210,7 +209,7 @@ export class RecipientComponent implements OnInit {
     }
   };
 
-  private updateUnitUI(isToken?: boolean): void {
+  private updateUnitUI(isToken?: boolean, isSendMax?: boolean): void {
     this.unit = this.availableUnits[this.unitIndex].shortName;
     this.alternativeUnit = this.availableUnits[this.altUnitIndex].shortName;
     if (!isToken) {
@@ -224,7 +223,7 @@ export class RecipientComponent implements OnInit {
       this.satToUnit = 1 / this.unitToSatoshi;
       this.unitDecimals = unitDecimals;
     }
-    this.processAmount();
+    this.processAmount(isSendMax ? true : false);
     this.logger.debug(
       'Update unit coin @amount unit:' +
       this.unit +
@@ -403,7 +402,10 @@ export class RecipientComponent implements OnInit {
     return parseFloat(rateProvider.toString());
   }
 
-  public processAmount(isSendMax?:boolean): void {
+  public processAmount(isSendMax?: boolean): void {
+    if(this.token && isSendMax){
+      this.expression = this.token.amountToken;
+    }
     let formatedValue = this.format(this.expression);
     let result = this.evaluate(formatedValue);
     this.allowSend = this.onlyIntegers
@@ -426,7 +428,7 @@ export class RecipientComponent implements OnInit {
             true
           );
         } else {
-          this.alternativeAmount = result ? 'N/A' : null;
+          this.alternativeAmount = result ? 'N/A' : '0.00';
           this.allowSend = false;
         }
         if (this.isDonation) {
@@ -474,7 +476,7 @@ export class RecipientComponent implements OnInit {
     }
     this.validAmount = result > 0;
     this.checkRecipientValid();
-    if(isSendMax){
+    if (isSendMax) {
       this.sendMaxEvent.emit(true);
     }
   }
@@ -668,9 +670,12 @@ export class RecipientComponent implements OnInit {
 
   public sendMax(): void {
     if (this.token) {
-      this.expression = this.token.amountToken;
-      this.processAmount(true);
-
+      if (this.availableUnits[this.unitIndex].isFiat) {
+        this.changeUnit(true, true);
+      } else {
+        this.processAmount(true);
+      }
+      this.sendMaxEvent.emit(true);
     } else {
       this.sendMaxEvent.emit(false);
     }
