@@ -3,7 +3,7 @@
   "packageDescription": "Abcpay Wallet",
   "packageNameId": "cash.abcpay.wallet",
   "themeColor": "#000000",
-  "userVisibleName": "AbcPay Wallet",
+  "userVisibleName": "AbcPay",
   "purposeLine": "Secure Crypto Wallet",
   "bundleName": "wallet",
   "appUri": "AbcPay",
