@@ -90,17 +90,6 @@ export class FooterMenuComponent extends ActionSheetParent {
           }
         },
         logEvent: 'menu_send_crypto_clicked'
-      },
-      buyGiftCards: {
-        imgSrc: `assets/img/footer-menu/buy-gift-card.svg`,
-        mainLabel: this.translate.instant('Buy Gift Cards'),
-        secondaryLabel: this.translate.instant('Buy gift cards with crypto'),
-        showOption: this.appName === 'copay' ? false : true,
-        nextView: {
-          name: 'CardCatalogPage',
-          params: {}
-        },
-        logEvent: 'menu_buy_giftcards_clicked'
       }
     };
   }

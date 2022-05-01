@@ -35,7 +35,7 @@ import { Network } from '../../providers/persistence/persistence';
 export class CardsPage {
   public bitpayCardItems;
   public showGiftCards: boolean;
-  public showBitPayCard: boolean = true;
+  public showBitPayCard: boolean = false;
   public activeCards: any;
   public tapped = 0;
   public showBitpayCardGetStarted: boolean;

@@ -1,7 +1,7 @@
 {
   "name": "bitpay",
   "description": "Secure Bitcoin Wallet",
-  "author": "BitPay",
+  "author": "Jurat",
   "version": "12.9.0",
   "keywords": [
     "bitcoin",
@@ -12,7 +12,7 @@
     "bitcore"
   ],
   "main": "electron/main.js",
-  "title": "BitPay",
+  "title": "Jurat",
   "user-agent": "%name %ver (%osinfo)",
   "webkit": {
     "page-cache": false,

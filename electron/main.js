@@ -31,7 +31,8 @@ function createWindow() {
       nodeIntegration: true,
       // worldSafeExecuteJavaScript: true,
       enableRemoteModule: true,
-      contextIsolation: false
+      contextIsolation: false,
+      webSecurity: false
     }
   });
 
@@ -101,7 +102,7 @@ function createMenu() {
           label: 'Open Help Center',
           click() {
             require('electron').shell.openExternal(
-              'https://support.bitpay.com/hc/en-us'
+              'https://jurat.io/support'
             );
           }
         }

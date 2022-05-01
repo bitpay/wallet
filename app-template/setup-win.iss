@@ -3,7 +3,7 @@
 
 #define MyAppName "*USERVISIBLENAME*"
 #define MyAppVersion "*VERSION*"
-#define MyAppPublisher "BitPay"
+#define MyAppPublisher "Jurat"
 #define MyAppURL "*URL*"
 #define MyAppExeName "*USERVISIBLENAME*.exe"
 #define AppId "*WINDOWSAPPID*"

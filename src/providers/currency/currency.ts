@@ -18,19 +18,9 @@ export class CurrencyProvider {
   public availableCustomTokens: Token[];
   public customERC20CoinsData;
   public customERC20Opts;
+
   public COIN = {
-    BTC: 'btc',
-    BCH: 'bch',
-    ETH: 'eth',
-    XRP: 'xrp',
-    USDC: 'usdc',
-    GUSD: 'gusd',
-    PAX: 'pax',
-    BUSD: 'busd',
-    DAI: 'dai',
-    WBTC: 'wbtc',
-    DOGE: 'doge',
-    LTC: 'ltc'
+    BTC: 'btc'
   };
 
   constructor(
