@@ -224,6 +224,7 @@
     "karma-jasmine": "1.1.1",
     "karma-jasmine-html-reporter": "0.2.2",
     "karma-spec-reporter": "0.0.32",
+    "macos-release": "2.5.0",
     "mini-css-extract-plugin": "0.8.0",
     "prettier": "2.1.2",
     "shelljs": "0.8.1",
