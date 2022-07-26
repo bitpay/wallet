@@ -407,20 +407,60 @@ export class TxDetailsModal {
   }
 
   public async goToConfirm() {
-    const txp = await this.getTransaction();
-    const amount = this.btx.amount;
-    const toAddress = this.btx.outputs[0].address;
+    const txp = await this.getTransaction(); // only way to get actual inputs and ouputs
     const inputs = txp.inputs;
-    this.navCtrl.push(ConfirmPage, {
-      walletId: this.wallet.credentials.walletId,
-      fromReplaceByFee: true,
-      amount,
-      toAddress,
-      coin: this.wallet.coin,
-      network: this.wallet.network,
-      useSendMax: false,
-      inputs
-    });
+    const multiRecipients = [];
+
+    if (this.btx.hasMultiplesOutputs) {
+      txp.outputs.forEach(output => {
+        let amountToShow: string = +output.amount
+          ? this.txFormatProvider.formatAmount(this.wallet.coin, +output.amount)
+          : null;
+
+        let altAmountStr = this.txFormatProvider.formatAlternativeStr(
+          this.wallet.coin,
+          +output.amount
+        );
+
+        multiRecipients.push({
+          amount: output.amount,
+          amountToShow,
+          altAmountStr: altAmountStr ? altAmountStr : null,
+          toAddress: output.toAddress,
+          recipientType: 'address'
+        });
+      });
+      let totalAmount = 0;
+      multiRecipients.forEach(recipient => {
+        totalAmount += recipient.amount;
+      });
+      this.navCtrl.push(ConfirmPage, {
+        walletId: this.wallet.credentials.walletId,
+        fromMultiSend: true,
+        fromReplaceByFee: true,
+        totalAmount,
+        recipientType: 'multi',
+        color: this.wallet.color,
+        coin: this.wallet.coin,
+        network: this.wallet.network,
+        useSendMax: false,
+        recipients: multiRecipients,
+        inputs
+      });
+    } else {
+      const toAddress = this.btx.outputs[0].address;
+      const amount = this.btx.amount;
+      this.navCtrl.push(ConfirmPage, {
+        walletId: this.wallet.credentials.walletId,
+        fromReplaceByFee: true,
+        amount,
+        toAddress,
+        coin: this.wallet.coin,
+        network: this.wallet.network,
+        useSendMax: false,
+        inputs
+      });
+    }
     this.close();
   }
 }
