@@ -445,6 +445,7 @@ export class TxDetailsModal {
         network: this.wallet.network,
         useSendMax: false,
         recipients: multiRecipients,
+        description: this.btx.message,
         inputs
       });
     } else {
@@ -458,6 +459,7 @@ export class TxDetailsModal {
         coin: this.wallet.coin,
         network: this.wallet.network,
         useSendMax: false,
+        description: this.btx.message,
         inputs
       });
     }
