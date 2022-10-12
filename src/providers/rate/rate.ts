@@ -78,6 +78,8 @@ export class RateProvider {
       return this.getRates()
         .then(res => {
           _.map(res, (rates, coin) => {
+            // Compatibility new coin scheme for ETH network
+            coin = coin.replace('_e', '');
             const coinRates = {};
             _.each(rates, r => {
               if (r.code && r.rate) {
