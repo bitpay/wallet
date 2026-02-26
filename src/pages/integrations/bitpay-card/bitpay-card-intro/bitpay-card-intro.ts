@@ -28,6 +28,15 @@ export class BitPayCardIntroPage {
   public cardExperimentEnabled: boolean;
   public ready: boolean;
   public bitPayIdConnected: boolean;
+  public terms: string = 'limits';
+  public feeTerms: Array<{
+    title: string;
+    note: string;
+    linkText?: string;
+    linkUrl?: string;
+  }>;
+  public limitTerms: Array<{ title: string; note: string }>;
+
   constructor(
     private translate: TranslateService,
     private actionSheetCtrl: ActionSheetController,
@@ -47,6 +56,69 @@ export class BitPayCardIntroPage {
     this.persistenceProvider.getCardExperimentFlag().then(status => {
       this.cardExperimentEnabled = status === 'enabled';
     });
+
+    this.limitTerms = [
+      {
+        title: this.translate.instant('Cash Withdrawal (ATM & bank teller)'),
+        note: this.translate.instant(
+          '$2,000 per withdrawal, 3 withdrawals per day, $25,000 per month'
+        )
+      },
+      {
+        title: this.translate.instant('Load Limits'),
+        note: this.translate.instant('$10,000 per day')
+      },
+      {
+        title: this.translate.instant('Spending Limits'),
+        note: this.translate.instant('$10,000 per day')
+      },
+      {
+        title: this.translate.instant('Maximum Balance'),
+        note: '$25,000'
+      }
+    ];
+
+    this.feeTerms = [
+      {
+        title: this.translate.instant('Virtual Card Issuance and Replacement'),
+        note: '$0.00'
+      },
+      {
+        title: this.translate.instant('Physical Card Issuance'),
+        note: '$10.00'
+      },
+      {
+        title: this.translate.instant('Physical Card Replacement'),
+        note: '$10.00'
+      },
+      {
+        title: this.translate.instant('Monthly Fee'),
+        note: '$0.00'
+      },
+      {
+        title: this.translate.instant(
+          'Cash Withdrawal Fee (ATM or Inside Financial Institution) Physical Card Only'
+        ),
+        note: '$2.50'
+      },
+      {
+        title: this.translate.instant('Card Load'),
+        note: this.translate.instant('No conversion fee'),
+        linkText: this.translate.instant('Network and miner fees may apply'),
+        linkUrl:
+          'https://support.bitpay.com/hc/en-us/articles/115003393863-What-are-bitcoin-miner-fees-'
+      },
+      {
+        title: this.translate.instant('International Currency Conversion'),
+        note: '3%'
+      },
+      {
+        title: this.translate.instant('Inactivity Fee'),
+        note: this.translate.instant(
+          '$5 per month after 90 days with no transactions'
+        )
+      }
+    ];
   }
 
   ionViewWillEnter() {
@@ -235,5 +307,9 @@ export class BitPayCardIntroPage {
         this.navCtrl.pop();
       });
     }
+  }
+
+  public openExternalLink(url: string) {
+    this.externalLinkProvider.open(url);
   }
 }

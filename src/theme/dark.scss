@@ -614,6 +614,37 @@
       background-color: $bg-color-dark-theme-2;
     }
 
+    .terms-content {
+      border-bottom: 1px solid $bg-color-dark-theme-3;
+      ion-item {
+        background-color: $bg-color-dark-theme;
+      }
+      .terms {
+        &-label {
+          color: $text-color-dark-theme;
+        }
+        &-note {
+          color: $text-color-dark-theme-2;
+        }
+        &-bg-color {
+          background-color: $bg-color-dark-theme-2;
+        }
+      }
+    }
+
+    ion-segment {
+      .segment-button {
+        span {
+          color: $text-color-dark-theme-2;
+        }
+      }
+      .segment-activated {
+        span {
+          color: color($colors, primary);
+        }
+      }
+    }
+
     .bitpayCard {
       &-header {
         &-title {
