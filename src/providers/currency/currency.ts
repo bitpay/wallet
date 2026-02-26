@@ -192,7 +192,10 @@ export class CurrencyProvider {
   }
 
   getLogoURI(coin: string): string {
-    return this.coinOpts[coin].logoURI || 'assets/img/default-token.svg';
+    return (
+      (this.coinOpts[coin] && this.coinOpts[coin].logoURI) ||
+      'assets/img/default-token.svg'
+    );
   }
 
   defaultLogoURI(img) {
@@ -201,23 +204,25 @@ export class CurrencyProvider {
   }
 
   isUtxoCoin(coin: string): boolean {
-    return !!this.coinOpts[coin].properties.isUtxo;
+    return this.coinOpts[coin] && !!this.coinOpts[coin].properties.isUtxo;
   }
 
   isSingleAddress(coin: string): boolean {
-    return !!this.coinOpts[coin].properties.singleAddress;
+    return (
+      this.coinOpts[coin] && !!this.coinOpts[coin].properties.singleAddress
+    );
   }
 
   isSharedCoin(coin: string): boolean {
-    return !!this.coinOpts[coin].properties.hasMultiSig;
+    return this.coinOpts[coin] && !!this.coinOpts[coin].properties.hasMultiSig;
   }
 
   isERCToken(coin: string): boolean {
-    return !!this.coinOpts[coin].properties.isERCToken;
+    return this.coinOpts[coin] && !!this.coinOpts[coin].properties.isERCToken;
   }
 
   isStableCoin(coin: string): boolean {
-    return !!this.coinOpts[coin].properties.isStableCoin;
+    return this.coinOpts[coin] && !!this.coinOpts[coin].properties.isStableCoin;
   }
 
   isCustomERCToken(coin: string) {
@@ -233,14 +238,18 @@ export class CurrencyProvider {
   }
 
   getLinkedEthWallet(coin: string, walletId: string, m: number): string {
-    if (!this.coinOpts[coin].properties.isERCToken && coin !== 'eth')
+    if (
+      this.coinOpts[coin] &&
+      !this.coinOpts[coin].properties.isERCToken &&
+      coin !== 'eth'
+    )
       return null;
     if (coin === 'eth' && m === 1) return null;
     return walletId.replace(/-0x.*$/, '');
   }
 
   isMultiSend(coin: string): boolean {
-    return !!this.coinOpts[coin].properties.hasMultiSend;
+    return this.coinOpts[coin] && !!this.coinOpts[coin].properties.hasMultiSend;
   }
 
   getAvailableCoins(): string[] {
@@ -279,11 +288,11 @@ export class CurrencyProvider {
   }
 
   getCoinName(coin: string): string {
-    return this.coinOpts[coin].name;
+    return this.coinOpts[coin] && this.coinOpts[coin].name;
   }
 
   getChain(coin: string): string {
-    return this.coinOpts[coin].chain;
+    return this.coinOpts[coin] && this.coinOpts[coin].chain;
   }
 
   getRatesApi() {
@@ -299,27 +308,30 @@ export class CurrencyProvider {
   }
 
   getPaymentCode(coin: string): string {
-    return this.coinOpts[coin].paymentInfo.paymentCode;
+    return this.coinOpts[coin] && this.coinOpts[coin].paymentInfo.paymentCode;
   }
 
   getPrecision(coin: string) {
-    return this.coinOpts[coin].unitInfo;
+    return this.coinOpts[coin] && this.coinOpts[coin].unitInfo;
   }
 
   getProtocolPrefix(coin: string, network: string) {
-    return this.coinOpts[coin].paymentInfo.protocolPrefix[network];
+    return (
+      this.coinOpts[coin] &&
+      this.coinOpts[coin].paymentInfo.protocolPrefix[network]
+    );
   }
 
   getFeeUnits(coin: string) {
-    return this.coinOpts[coin].feeInfo;
+    return this.coinOpts[coin] && this.coinOpts[coin].feeInfo;
   }
 
   getMaxMerchantFee(coin: string): string {
-    return this.coinOpts[coin].feeInfo.maxMerchantFee;
+    return this.coinOpts[coin] && this.coinOpts[coin].feeInfo.maxMerchantFee;
   }
 
   getTheme(coin: string) {
-    return this.coinOpts[coin].theme;
+    return this.coinOpts[coin] && this.coinOpts[coin].theme;
   }
 
   getTokenAddress(coin) {
@@ -331,5 +343,18 @@ export class CurrencyProvider {
 
   getPopularErc20Tokens() {
     return _.orderBy(this.popularERC20TokensSymbols);
+  }
+
+  parseAmount(coin: string, amount: any): any {
+    if (
+      this.coinOpts[coin] &&
+      this.coinOpts[coin].unitInfo.unitDecimals >= 18
+    ) {
+      return amount.toLocaleString('fullwide', {
+        useGrouping: false,
+        maximumFractionDigits: 0
+      });
+    }
+    return amount;
   }
 }

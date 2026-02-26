@@ -1165,7 +1165,10 @@ export class ConfirmPage {
 
           txp.outputs.push({
             toAddress: recipient.toAddress,
-            amount: recipient.amount,
+            amount: this.currencyProvider.parseAmount(
+              tx.coin,
+              recipient.amount
+            ),
             message: tx.description,
             data: tx.data
           });
@@ -1203,13 +1206,16 @@ export class ConfirmPage {
               break;
           }
           tx.fee = estimatedFee;
-          tx.amount = tx.amount - estimatedFee;
+          tx.amount = this.currencyProvider.parseAmount(
+            tx.coin,
+            tx.amount - estimatedFee
+          );
         }
 
         txp.outputs = [
           {
             toAddress: tx.toAddress,
-            amount: tx.amount,
+            amount: this.currencyProvider.parseAmount(tx.coin, tx.amount),
             message: tx.description,
             data: tx.data,
             gasLimit: tx.gasLimit // wallet connect needs exact gasLimit value
@@ -1272,7 +1278,13 @@ export class ConfirmPage {
                 .Transactions.get({ chain: 'ERC20' })
                 .encodeData({
                   recipients: [
-                    { address: output.toAddress, amount: output.amount }
+                    {
+                      address: output.toAddress,
+                      amount: this.currencyProvider.parseAmount(
+                        tx.coin,
+                        output.amount
+                      )
+                    }
                   ],
                   tokenAddress: tx.tokenAddress
                 });
@@ -1669,7 +1681,7 @@ export class ConfirmPage {
   ): void {
     let msg: string;
     if (!error) return;
-    this.logger.warn('ERROR:', error);
+    this.logger.error(error);
     if (this.isCordova) this.slideButton.isConfirmed(false);
 
     if (

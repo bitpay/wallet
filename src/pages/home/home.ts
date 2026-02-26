@@ -553,7 +553,6 @@ export class HomePage {
           break;
         case 'giftcards':
           this.showShoppingOption = true;
-          this.setGiftCardAdvertisement();
           break;
         case 'coinbase':
           this.showCoinbase =
@@ -567,28 +566,6 @@ export class HomePage {
           break;
       }
     });
-  }
-
-  private setGiftCardAdvertisement() {
-    const alreadyVisible = this.advertisements.find(
-      a => a.name === 'amazon-gift-cards'
-    );
-    !alreadyVisible &&
-      !this.platformProvider.isMacApp() &&
-      this.advertisements.unshift({
-        name: 'amazon-gift-cards',
-        title: this.translate.instant('Shop at Amazon'),
-        body: this.translate.instant(
-          'Leverage your crypto with an amazon.com gift card.'
-        ),
-        app: 'bitpay',
-        linkText: this.translate.instant('Buy Now'),
-        link: CardCatalogPage,
-        isTesting: false,
-        imgSrc: 'assets/img/amazon.svg',
-        dismissible: true
-      });
-    this.showAdvertisements = true;
   }
 
   private addCardReferralAdvertisement() {
