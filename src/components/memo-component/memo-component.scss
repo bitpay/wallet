@@ -1,0 +1,20 @@
+memo-component {
+  .safe-area {
+    margin-bottom: calc(1.5rem + env(safe-area-inset-bottom));
+    margin-bottom: -webkit-calc(1.5rem + env(safe-area-inset-bottom));
+  }
+  .text-input {
+    background: #f3f3f3;
+    height: 60px;
+    padding: 8px;
+    margin: 16px;
+    width: 91%;
+    color: black;
+  }
+  .title {
+    padding: 20px 16px 0;
+    color: black;
+    font-size: 19px;
+    font-weight: 700;
+  }
+}

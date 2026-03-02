@@ -1,0 +1,54 @@
+<ion-header class="wide-header">
+  <ion-navbar>
+    <ion-title class="bp-title">
+      <div [reveal-at-scroll-pos]="expandableHeader.headerHeight" [scrollArea]="scrollArea">
+        <img width="110" src="assets/img/exchange-crypto/changelly-vector-logo{{themeProvider.isDarkModeEnabled() ? '-dark' : ''}}.svg" alt="Changelly" class="changelly-logo">
+      </div>
+    </ion-title>
+    <ng-content select="[right]"></ng-content>
+  </ion-navbar>
+</ion-header>
+
+<ion-content #scrollArea>
+  <div class="wrapper">
+    <expandable-header [scrollArea]="scrollArea" [fadeFactor]="5" [disableFade]="true" #expandableHeader>
+      <ion-toolbar class="wide-header__title">
+        <div>
+          <expandable-header-primary>
+            <img margin-left width="130" src="assets/img/exchange-crypto/changelly-vector-logo{{themeProvider.isDarkModeEnabled() ? '-dark' : ''}}.svg" alt="Changelly">
+          </expandable-header-primary>
+        </div>
+      </ion-toolbar>
+    </expandable-header>
+
+    <ion-list class="bp-list" *ngIf="swapTxs && swapTxs.length > 0">
+      <ion-item-divider>{{'Transactions' | translate}}
+        <ion-spinner item-end name="crescent" *ngIf="loading"></ion-spinner>
+      </ion-item-divider>
+      <button ion-item *ngFor="let swapTx of swapTxs | orderBy : ['-date']" (click)="openChangellyModal(swapTx)">
+        <ion-label>
+          <div class="ellipsis">{{swapTx.amountFrom  | number:'1.0-6' }} {{ swapTx.coinFrom | uppercase }}</div>
+          <div class="status">
+            <span [ngClass]="{balanced: ['finished', 'refunded'].includes(swapTx.status), assertive: ['failed', 'expired'].includes(swapTx.status), energized: ['waiting', 'confirming', 'exchanging', 'sending', 'hold'].includes(swapTx.status)}" *ngIf="swapTx.status" translate>{{ swapTx.status | titlecase }}</span>
+          </div>
+        </ion-label>
+        <div item-content text-end>
+          <div class="text-bold">{{ swapTx.amountTo | number:'1.0-6'}} {{ swapTx.coinTo | uppercase }}</div>
+          <div class="date calm">{{ swapTx.date | amTimeAgo }}</div>
+        </div>
+      </button>
+    </ion-list>
+  </div>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <div class="changelly-problems">
+      <span translate>Having problems with Changelly?</span>
+      <br>
+      <a (click)="openExternalLink('https://support.changelly.com/en/support/home')" translate>
+        Contact the Changelly support team.
+      </a>
+    </div>
+  </ion-toolbar>
+</ion-footer>

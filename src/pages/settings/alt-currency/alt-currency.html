@@ -1,19 +1,34 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>{{'Alternative currency' | translate}}</ion-title>
+    <ion-title class="bp-title">
+      <div [reveal-at-scroll-pos]="expandableHeader.headerHeight" [scrollArea]="scrollArea">
+        {{ 'Display Currency' | translate }}
+      </div>
+    </ion-title>
   </ion-navbar>
 </ion-header>
 
-<ion-content>
-  <ion-searchbar placeholder="{{'Search your currency' | translate}}" [(ngModel)]="searchedAltCurrency" (ngModelChange)="findCurrency(searchedAltCurrency)"></ion-searchbar>
-  <ion-list>
+<ion-content #scrollArea>
+  <expandable-header [scrollArea]="scrollArea" [fadeFactor]="5" [disableFade]="true" #expandableHeader>
+    <ion-toolbar class="wide-header__title">
+      <expandable-header-primary>
+        {{ 'Display Currency' | translate }}
+      </expandable-header-primary>
+    </ion-toolbar>
+  </expandable-header>
+
+  <ion-item class="search-container" no-lines padding>
+    <ion-input class="search-wrapper" placeholder="{{'Search currency' | translate}}" [(ngModel)]="searchedAltCurrency" (ngModelChange)="findCurrency()"></ion-input>
+  </ion-item>
+  <ion-list class="settings-list bp-list">
     <ion-item *ngFor="let lastUsedAltCurrency of lastUsedAltCurrencyList" (click)="save(lastUsedAltCurrency)">
       {{ lastUsedAltCurrency.name }}
-      <span item-end>{{lastUsedAltCurrency.isoCode}}</span>
+      <span class="currency" item-end>{{lastUsedAltCurrency.isoCode}}</span>
     </ion-item>
   </ion-list>
-  <ion-item-divider *ngIf="altCurrencyList[0] && lastUsedAltCurrencyList[0]"></ion-item-divider>
-  <ion-list>
+  <div class="line-divider"></div>
+  <div *ngIf="altCurrencyList[0] && lastUsedAltCurrencyList[0]" padding></div>
+  <ion-list class="settings-list bp-list">
     <ion-item *ngFor="let alt of altCurrencyList" (click)="save(alt)">
       {{ alt.name }}
       <ion-note item-end>{{alt.isoCode}}</ion-note>

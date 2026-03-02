@@ -1,0 +1,48 @@
+<div *ngIf="ready" @fade>
+  <div class="section-header" *ngIf="activeCards?.length" translate>
+    Gift Cards
+  </div>
+  <gift-card-item *ngFor="let brandCards of activeBrands" class="sliding-container" [cardName]="brandCards[0].name"
+    [giftCards]="brandCards" (action)="onGiftCardAction($event, brandCards)" [@archiveAnimation]></gift-card-item>
+
+  <div class="add-button-wrapper--center" *ngIf="activeBrands?.length && !platformProvider.isMacApp()"
+    [@archiveAnimation]>
+    <add-button (click)="buyGiftCards()" tappable>
+      <div add-button-text translate>Buy Gift Card</div>
+    </add-button>
+  </div>
+
+  <action-card-v4 *ngIf="!activeBrands?.length && !platformProvider.isMacApp()" (click)="buyGiftCards()" tappable>
+    <div action-card-header>
+      <div class="home-gift-card-header">
+        <div class="home-gift-card-image">
+          <img *ngIf="primaryCatalogCurrency === 'usd' && platformProvider.isMacApp()"
+            src="assets/img/gift-cards/mac-gift-cards.png">
+          <img *ngIf="primaryCatalogCurrency !== 'usd' || !platformProvider.isMacApp()"
+            src="assets/img/gift-cards/gift-cards-{{primaryCatalogCurrency}}.png" />
+        </div>
+      </div>
+    </div>
+    <div action-card-title translate>Buy Gift Cards</div>
+    <div action-card-body [clamp]="2">
+      Buy gift cards for major brands using cryptocurrency.
+    </div>
+    <div action-card-button translate>Get Started</div>
+  </action-card-v4>
+
+  <action-card-v4 *ngIf="platformProvider.isMacApp()" (click)="launchExtension()" tappable>
+    <div action-card-header>
+      <div class="home-gift-card-header" style="padding: 0;">
+        <div class="home-gift-card-image" style="margin-bottom: -6px;">
+          <img src="assets/img/gift-cards/extension-banner.png" style="max-height: unset;" />
+        </div>
+      </div>
+    </div>
+    <div action-card-title translate>Buy Gift Cards</div>
+    <div action-card-body [clamp]="2">
+      Purchase & spend store credit instantly.
+    </div>
+    <div action-card-button translate>Get on Chrome</div>
+  </action-card-v4>
+
+</div>

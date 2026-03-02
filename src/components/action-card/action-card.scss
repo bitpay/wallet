@@ -1,0 +1,51 @@
+action-card.card {
+  background: white;
+  display: block;
+  text-align: center;
+  padding: 20px;
+  padding-bottom: 0;
+
+  .action-card {
+    &__content {
+      background: white;
+
+      > * {
+        margin: 15px;
+      }
+    }
+
+    &__title {
+      font-size: 20px;
+      font-weight: 500;
+    }
+
+    &__body {
+      font-size: 16px;
+      font-weight: 300;
+      line-height: 23px;
+    }
+
+    &__cta {
+      color: map-get($colors, primary);
+      cursor: pointer;
+      font-size: 18px;
+      font-weight: 500;
+      margin: 30px -20px 0;
+      position: relative;
+
+      &:before {
+        background: rgba(136, 154, 196, 0.1);
+        content: '';
+        display: block;
+        height: 1px;
+        transform: translateX(18px);
+        top: -20px;
+        width: calc(100% - 36px);
+      }
+
+      > div {
+        padding: 16px;
+      }
+    }
+  }
+}

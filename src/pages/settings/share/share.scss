@@ -1,0 +1,45 @@
+page-share {
+  .share-image-container {
+    height: 55vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .share-the-love {
+      display: flex;
+      justify-content: center;
+      .share-the-love-illustration {
+        width: 25%;
+        height: 25%;
+      }
+    }
+  }
+  .subtitle {
+    padding: 30px;
+    text-align: center;
+  }
+  .share-buttons {
+    padding: 50px 10px 30px;
+    text-align: center;
+    background-color: color($colors, blank);
+    min-height: 180px;
+    position: absolute;
+    bottom: 0rem;
+    width: 100%;
+    height: 30%;
+  }
+  .share-buttons__action {
+    display: inline-block;
+    width: 90px;
+    height: 90px;
+    img {
+      width: 50px;
+    }
+    .name {
+      padding-top: 10px;
+      font-size: 0.9rem;
+    }
+  }
+  .illustration-send {
+    text-align: center;
+  }
+}

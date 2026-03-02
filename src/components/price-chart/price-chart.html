@@ -1,0 +1,17 @@
+<div class="container">
+  <ion-spinner *ngIf="loading"></ion-spinner>
+  <apx-chart
+    *ngIf="rates"
+    #chart
+    [series]="chartOptions.series"
+    [chart]="chartOptions.chart"
+    [dataLabels]="chartOptions.dataLabels"
+    [markers]="chartOptions.markers"
+    [tooltip]="chartOptions.tooltip"
+    [grid]="chartOptions.grid"
+    [xaxis]="chartOptions.xaxis"
+    [yaxis]="chartOptions.yaxis"
+    [stroke]="chartOptions.stroke"
+    [theme]="chartOptions.theme"
+  ></apx-chart>
+</div>

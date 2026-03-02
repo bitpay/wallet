@@ -1,0 +1,64 @@
+<wide-header-page title="{{ 'Add copayers' | translate }}">
+  <ion-buttons right>
+    <button clear wide-header-bar-button (click)="goToConfirm()" [disabled]="n != multisigAddresses.length" ion-button>
+      <span translate>Create</span>
+    </button>
+  </ion-buttons>
+  <div page-content>
+    <ion-list class="bp-list">
+      <ion-item class="linked-wallet">
+        <ion-label>
+          <div class="summary-item">
+            <span translate>Linked to (Copayer 1)</span>
+          </div>
+        </ion-label>
+
+        <ion-note item-end>
+          <ion-row align-items-center class="wallet" *ngIf="pairedWallet">
+            <ion-col>
+              <coin-icon [coin]="pairedWallet.coin" [network]="pairedWallet.network"></coin-icon>
+            </ion-col>
+
+            <ion-col>
+              <span class="note-container ellipsis">{{pairedWallet.name}}</span>
+            </ion-col>
+          </ion-row>
+        </ion-note>
+      </ion-item>
+      <label-tip type="info" header="no-header" class="no-arrowhead">
+        <div label-tip-body>
+          {{'You are creating a {m}-{n} wallet. And you need all {m} copayers addresses at creation time.' | translate: { n: n, m: m } }}
+        </div>
+      </label-tip>
+      <ion-item-divider>{{ 'Copayers' | translate }} </ion-item-divider>
+      <div *ngIf="n > multisigAddresses.length" class="multisig-input">
+        <ion-item class="search-wrapper" [ngClass]="{'invalid': invalidAddress && search != ''}">
+          <ion-input placeholder="{{'Enter copayer address' }}" [(ngModel)]="search" (ionChange)="processInput(search)"></ion-input>
+          <ion-icon *ngIf="invalidAddress && search != ''" item-end class="backspace-icon" name="backspace" (click)="cleanSearch()"></ion-icon>
+          <ion-icon *ngIf="isCordova" item-end class="scan-icon" (click)="openScanner()">
+            <img src="assets/img/scan-ico.svg">
+          </ion-icon>
+        </ion-item>
+      </div>
+
+      <ion-item *ngFor="let addr of multisigAddresses; let idx = index">
+        <ion-label>
+          <div class="summary-item">
+            <span translate>Copayer {{idx+1}}</span>
+          </div>
+        </ion-label>
+
+        <ion-note item-end>
+          <div class="payment-proposal-to">
+            <div class="background-content" copy-to-clipboard="{{ addr }}">
+              <img class="coin-img" src="assets/img/currencies/eth.svg" [ngClass]="{'testnet': pairedWallet.network === 'testnet'}" alt="Coin" />
+              <span>{{addr | shortenedAddress}}</span>
+            </div>
+          </div>
+        </ion-note>
+        <ion-icon *ngIf="idx != 0" class="close-icon pointer" name="ios-close-outline" item-right (click)="removeAddress(idx)"></ion-icon>
+      </ion-item>
+    </ion-list>
+
+  </div>
+</wide-header-page>

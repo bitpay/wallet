@@ -1,0 +1,146 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget android-versionCode="91000010" id="com.bitpay.wallet" ios-CFBundleVersion="10.0.10" version="10.0.10" xmlns="http://www.w3.org/ns/widgets" xmlns:android="http://schemas.android.com/apk/res/android">
+    <feature name="Clipboard">
+        <param name="android-package" value="com.verso.cordova.clipboard.Clipboard" />
+    </feature>
+    <feature name="LaunchReview">
+        <param name="android-package" value="uk.co.workingedge.phonegap.plugin.LaunchReview" />
+    </feature>
+    <feature name="File">
+        <param name="android-package" value="org.apache.cordova.file.FileUtils" />
+        <param name="onload" value="true" />
+    </feature>
+    <allow-navigation href="cdvfile:*" />
+    <feature name="CordovaHttpPlugin">
+        <param name="android-package" value="com.silkimen.cordovahttp.CordovaHttpPlugin" />
+    </feature>
+    <feature name="FingerprintAuth">
+        <param name="android-package" value="com.cordova.plugin.android.fingerprintauth.FingerprintAuth" />
+    </feature>
+    <feature name="LaunchMyApp">
+        <param name="android-package" value="nl.xservices.plugins.LaunchMyApp" />
+    </feature>
+    <feature name="Device">
+        <param name="android-package" value="org.apache.cordova.device.Device" />
+    </feature>
+    <feature name="Notification">
+        <param name="android-package" value="org.apache.cordova.dialogs.Notification" />
+    </feature>
+    <feature name="FCMPlugin">
+        <param name="android-package" value="com.gae.scaffolder.plugin.FCMPlugin" />
+        <param name="onload" value="true" />
+    </feature>
+    <feature name="Globalization">
+        <param name="android-package" value="org.apache.cordova.globalization.Globalization" />
+    </feature>
+    <feature name="InAppBrowser">
+        <param name="android-package" value="org.apache.cordova.inappbrowser.InAppBrowser" />
+    </feature>
+    <feature name="QRScanner">
+        <param name="android-package" value="com.bitpay.cordova.qrscanner.QRScanner" />
+    </feature>
+    <feature name="CDVOrientation">
+        <param name="android-package" value="cordova.plugins.screenorientation.CDVOrientation" />
+    </feature>
+    <feature name="SpinnerDialog">
+        <param name="android-package" value="hu.dpal.phonegap.plugins.SpinnerDialog" />
+    </feature>
+    <feature name="SplashScreen">
+        <param name="android-package" value="org.apache.cordova.splashscreen.SplashScreen" />
+        <param name="onload" value="true" />
+    </feature>
+    <feature name="StatusBar">
+        <param name="android-package" value="org.apache.cordova.statusbar.StatusBar" />
+        <param name="onload" value="true" />
+    </feature>
+    <feature name="ThemeDetection">
+        <param name="android-package" value="de.mariusbackes.cordova.plugin.ThemeDetection" />
+    </feature>
+    <feature name="Whitelist">
+        <param name="android-package" value="org.apache.cordova.whitelist.WhitelistPlugin" />
+        <param name="onload" value="true" />
+    </feature>
+    <feature name="SocialSharing">
+        <param name="android-package" value="nl.xservices.plugins.SocialSharing" />
+    </feature>
+    <feature name="Toast">
+        <param name="android-package" value="nl.xservices.plugins.Toast" />
+    </feature>
+    <feature name="UserAgent">
+        <param name="android-package" value="im.ltdev.cordova.UserAgent" />
+        <param name="onload" value="true" />
+    </feature>
+    <feature name="Keyboard">
+        <param name="android-package" onload="true" value="io.ionic.keyboard.IonicKeyboard" />
+    </feature>
+    <name>BitPay</name>
+    <description>
+      Secure Bitcoin Wallet
+    </description>
+    <author email="support@bitpay.com" href="https://bitpay.com">
+        BitPay Inc.
+    </author>
+    <content src="index.html" />
+    <access origin="https://bws.bitpay.com" />
+    <access origin="https://bitpay.com" />
+    <access origin="https://test.bitpay.com" />
+    <access origin="https://staging.bitpay.com" />
+    <access origin="https://auth.shapeshift.io" />
+    <access origin="https://shapeshift.io" />
+    <access origin="https://api.coinbase.com" />
+    <access origin="https://coinbase.com" />
+    <access origin="https://www.coinbase.com" />
+    <allow-navigation href="gap://ready" />
+    <edit-config file="app/src/main/AndroidManifest.xml" mode="merge" target="/manifest/application">
+        <application android:icon="@mipmap/ic_launcher" android:resource="@drawable/fcm_push_icon" android:roundIcon="@mipmap/ic_launcher_round" />
+    </edit-config>
+    <splash density="land-hdpi" src="resources/bitpay/android/splash/drawable-land-hdpi-screen.png" />
+    <splash density="land-ldpi" src="resources/bitpay/android/splash/drawable-land-ldpi-screen.png" />
+    <splash density="land-mdpi" src="resources/bitpay/android/splash/drawable-land-mdpi-screen.png" />
+    <splash density="land-xhdpi" src="resources/bitpay/android/splash/drawable-land-xhdpi-screen.png" />
+    <splash density="land-xxhdpi" src="resources/bitpay/android/splash/drawable-land-xxhdpi-screen.png" />
+    <splash density="land-xxxhdpi" src="resources/bitpay/android/splash/drawable-land-xxxhdpi-screen.png" />
+    <splash density="hdpi" src="resources/bitpay/android/splash/drawable-port-hdpi-screen.png" />
+    <splash density="port-hdpi" src="resources/bitpay/android/splash/drawable-port-hdpi-screen.png" />
+    <splash density="ldpi" src="resources/bitpay/android/splash/drawable-port-ldpi-screen.png" />
+    <splash density="port-ldpi" src="resources/bitpay/android/splash/drawable-port-ldpi-screen.png" />
+    <splash density="mdpi" src="resources/bitpay/android/splash/drawable-port-mdpi-screen.png" />
+    <splash density="port-mdpi" src="resources/bitpay/android/splash/drawable-port-mdpi-screen.png" />
+    <splash density="xhdpi" src="resources/bitpay/android/splash/drawable-port-xhdpi-screen.png" />
+    <splash density="port-xhdpi" src="resources/bitpay/android/splash/drawable-port-xhdpi-screen.png" />
+    <splash density="xxhdpi" src="resources/bitpay/android/splash/drawable-port-xxhdpi-screen.png" />
+    <splash density="port-xxhdpi" src="resources/bitpay/android/splash/drawable-port-xxhdpi-screen.png" />
+    <splash density="xxxhdpi" src="resources/bitpay/android/splash/drawable-port-xxxhdpi-screen.png" />
+    <splash density="port-xxxhdpi" src="resources/bitpay/android/splash/drawable-port-xxxhdpi-screen.png" />
+    <icon background="resources/bitpay/android/icon/v26/mipmap-mdpi/ic_launcher_background.png" density="mdpi" foreground="resources/bitpay/android/icon/v26/mipmap-mdpi/ic_launcher_foreground.png" />
+    <icon background="resources/bitpay/android/icon/v26/mipmap-hdpi/ic_launcher_background.png" density="hdpi" foreground="resources/bitpay/android/icon/v26/mipmap-hdpi/ic_launcher_foreground.png" />
+    <icon background="resources/bitpay/android/icon/v26/mipmap-xhdpi/ic_launcher_background.png" density="xhdpi" foreground="resources/bitpay/android/icon/v26/mipmap-xhdpi/ic_launcher_foreground.png" />
+    <icon background="resources/bitpay/android/icon/v26/mipmap-xxhdpi/ic_launcher_background.png" density="xxhdpi" foreground="resources/bitpay/android/icon/v26/mipmap-xxhdpi/ic_launcher_foreground.png" />
+    <icon background="resources/bitpay/android/icon/v26/mipmap-xxxhdpi/ic_launcher_background.png" density="xxxhdpi" foreground="resources/bitpay/android/icon/v26/mipmap-xxxhdpi/ic_launcher_foreground.png" />
+    <preference name="loglevel" value="DEBUG" />
+    <preference name="AndroidPersistentFileLocation" value="Internal" />
+    <preference name="iosPersistentFileLocation" value="Library" />
+    <preference name="DisallowOverscroll" value="true" />
+    <preference name="KeyboardResize" value="true" />
+    <preference name="HideKeyboardFormAccessoryBar" value="false" />
+    <preference name="KeyboardResizeMode" value="ionic" />
+    <preference name="KeyboardDisplayRequiresUserAction" value="false" />
+    <preference name="BackupWebStorage" value="none" />
+    <preference name="Orientation" value="default" />
+    <preference name="cordova-custom-config-stoponerror" value="true" />
+    <preference name="StatusBarBackgroundColor" value="#ffffff" />
+    <preference name="StatusBarOverlaysWebView" value="true" />
+    <preference name="StatusBarStyle" value="lightcontent" />
+    <preference name="ShowSplashScreenSpinner" value="false" />
+    <preference name="FadeSplashScreen" value="true" />
+    <preference name="FadeSplashScreenDuration" value="200" />
+    <preference name="SplashMaintainAspectRatio" value="true" />
+    <preference name="loadUrlTimeoutValue" value="60000" />
+    <preference name="UseSwiftLanguageVersion" value="5" />
+    <preference name="android-minSdkVersion" value="23" />
+    <preference name="android-targetSdkVersion" value="28" />
+    <preference name="deployment-target" value="10.3" />
+    <preference name="CordovaWebViewEngine" value="CDVWKWebViewEngine" />
+    <preference name="WKWebViewOnly" value="true" />
+    <preference name="android-manifest/application/@android:allowBackup" value="false" />
+</widget>

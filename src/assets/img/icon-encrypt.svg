@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="263px" height="190px" viewBox="0 0 263 190" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>D96902FC-601C-4B69-9A72-29E72CB39A04</title>
+    <defs>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-1">
+            <stop stop-color="#F7FDFB" offset="0.237652972%"></stop>
+            <stop stop-color="#4B4B4B" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="50%" y1="0.871394231%" x2="50%" y2="100%" id="linearGradient-2">
+            <stop stop-color="#2FCFA4" stop-opacity="0" offset="0%"></stop>
+            <stop stop-color="#2FCFA4" stop-opacity="0.170208698" offset="43.6899038%"></stop>
+            <stop stop-color="#2FCFA4" stop-opacity="0.766198645" offset="100%"></stop>
+        </linearGradient>
+        <circle id="path-3" cx="133" cy="95" r="95"></circle>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-5">
+            <stop stop-color="#4F6EF7" offset="0%"></stop>
+            <stop stop-color="#1A3B8B" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="iPhone-8" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Feature-Walkthrough---Backup-Key" transform="translate(-55.000000, -104.000000)">
+            <g id="Icon" transform="translate(55.000000, 104.000000)">
+                <polygon id="Rectangle" fill="url(#linearGradient-1)" opacity="0.166108631" points="60.5976563 42.6699219 208.568359 41.8671875 166.927734 180.757119 100.138672 182.027344"></polygon>
+                <mask id="mask-4" fill="white">
+                    <use xlink:href="#path-3"></use>
+                </mask>
+                <use id="Oval" fill="url(#linearGradient-2)" opacity="0.5" xlink:href="#path-3"></use>
+                <g id="lock" mask="url(#mask-4)" fill-rule="nonzero">
+                    <g transform="translate(88.000000, 76.000000)" id="Path">
+                        <path d="M28.3636364,43 L28.3636364,29.5625 C28.3636364,19.1891263 36.4994536,10.75 46.5,10.75 C56.5005464,10.75 64.6363636,19.1891263 64.6363636,29.5625 L64.6363636,43 L75,43 L75,29.5625 C75,13.2616569 62.2149777,0 46.5,0 C30.7850223,0 18,13.2616569 18,29.5625 L18,43 L28.3636364,43 Z" fill="#434D5A"></path>
+                        <path d="M84.7058824,121 L5.29411765,121 C2.37025588,121 0,118.671882 0,115.8 L0,48.2 C0,45.328118 2.37025588,43 5.29411765,43 L84.7058824,43 C87.6297441,43 90,45.328118 90,48.2 L90,115.8 C90,118.671882 87.6297441,121 84.7058824,121 Z" fill="url(#linearGradient-5)"></path>
+                        <path d="M56,72.2857143 C56,66.6049914 51.522925,62 46,62 C40.477225,62 36,66.6049914 36,72.2857143 C36,76.0832257 38.023625,79.3631086 41,81.1447743 L41,98 L51,98 L51,81.1447743 C53.976525,79.3629543 56,76.0832257 56,72.2857143 Z" fill="#161E32"></path>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -1,7 +1,8 @@
-<ion-tabs>
-  <ion-tab [root]="homeRoot" tabTitle="{{'Home'|translate}}" tabIcon="tab-home"></ion-tab>
-  <ion-tab [root]="receiveRoot" tabTitle="{{'Receive'|translate}}" tabIcon="tab-receive"></ion-tab>
-  <ion-tab [root]="scanRoot" tabTitle="{{'Scan'|translate}}" tabIcon="tab-scan"></ion-tab>
-  <ion-tab [root]="sendRoot" tabTitle="{{'Send'|translate}}" tabIcon="tab-send"></ion-tab>
-  <ion-tab [root]="settingsRoot" tabTitle="{{'Settings'|translate}}" tabIcon="tab-settings"></ion-tab>
+<ion-tabs #tabs>
+  <ion-tab [root]="homeRoot" tabIcon="tab-home"></ion-tab>
+  <ion-tab [root]="walletsRoot" [tabBadge]="txpsN" tabIcon="tab-wallets"></ion-tab>
+  <ion-tab tabIcon="tab-transact" [tabBadge]="clipboardBadge" (ionSelect)="openFooterMenu()" [show]="!isCordova || navigationType === 'transact'"></ion-tab>
+  <ion-tab [root]="scanRoot" [tabIcon]="scanIconType" [show]="navigationType === 'scan' && isCordova"></ion-tab>
+  <ion-tab (ionSelect)="disableCardNotificationBadge()" [root]="cardsRoot" [tabBadgeStyle]="'danger'" [tabBadge]="cardNotificationBadgeText" [show]="appName === 'BitPay'" tabIcon="tab-cards"></ion-tab>
+  <ion-tab [root]="settingsRoot" tabIcon="tab-settings"></ion-tab>
 </ion-tabs>

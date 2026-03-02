@@ -1,0 +1,116 @@
+page-wallet-connect-request-details {
+  .wc-container {
+    margin: auto 16px;
+    .bp-list {
+      ion-item:not(.align-with-button) {
+        padding-left: 0px;
+      }
+      .wallet {
+        display: flex;
+        align-items: center;
+        coin-icon {
+          ion-icon.item-img.icon {
+            padding: 5px;
+            margin: 0;
+            img {
+              width: 24px;
+            }
+          }
+        }
+      }
+      .item-inner {
+        padding-right: 0px;
+      }
+      ion-note {
+        &.peer-url {
+          max-width: 200px;
+          ion-row {
+            flex-wrap: nowrap;
+          }
+        }
+        margin-right: 0px;
+        color: #000000;
+        font-size: 16px;
+        font-weight: 400;
+        .main-note {
+          font-weight: 500;
+        }
+      }
+      .summary-item {
+        color: #000000;
+        font-size: 14px;
+        line-height: 18px;
+        font-weight: 400;
+      }
+      .item {
+        &.item-ios,
+        &.item-md {
+          padding-left: 0px;
+          ion-textarea {
+            .text-input[disabled] {
+              opacity: 1;
+              &.text-input-md,
+              &.text-input-ios {
+                width: calc(100% - 8px);
+              }
+            }
+          }
+          .item-inner {
+            padding-top: 0px;
+            padding-bottom: 0px;
+          }
+        }
+      }
+      .background-content {
+        padding: 10px;
+        height: 39px;
+        max-width: 200px;
+        border-radius: 19.5px;
+        background-color: #f6f7fc;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .wallet {
+        .coin-img {
+          width: 18px;
+          height: 18px;
+          margin-right: 10px;
+        }
+      }
+      ion-icon.item-img.icon {
+        &.icon-md.item-icon,
+        &.icon-ios.item-icon {
+          margin-right: 9px;
+          justify-content: center;
+          padding: 8px 0px;
+          img {
+            width: 40px;
+            border-radius: 8px;
+          }
+        }
+      }
+      .line-divider {
+        margin: 0px;
+      }
+      .wc-img {
+        width: 50px;
+        height: 50px;
+        border-radius: 8px;
+        &-sm {
+          border-radius: 50%;
+          @media (max-width: 381px) {
+            display: none;
+          }
+        }
+      }
+    }
+    .button-standard {
+      width: 100%;
+      max-width: none;
+    }
+    .btn-container {
+      margin-top: 90px;
+    }
+  }
+}

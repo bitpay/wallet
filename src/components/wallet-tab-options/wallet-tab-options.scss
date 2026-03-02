@@ -1,0 +1,31 @@
+wallet-tab-options-component {
+  .bp-list {
+    .main-label {
+      font-weight: 400;
+    }
+    ion-item-divider {
+      margin-top: 0px;
+      padding: 12.5px 0px 12.5px 20px;
+      background: #f8f8f9;
+    }
+    ion-icon.item-img.icon {
+      &.icon-md.item-icon,
+      &.icon-ios.item-icon {
+        padding: 14.5px;
+        font-size: 20px;
+        img {
+          width: 20px;
+          height: 20px;
+        }
+      }
+    }
+    ion-note.note {
+      background: #f4f5fb;
+      color: #565d6d;
+      font-weight: 300;
+      padding: 6px 10px;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+  }
+}

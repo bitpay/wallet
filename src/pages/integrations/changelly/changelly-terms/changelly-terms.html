@@ -1,0 +1,42 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title class="bp-title">
+      {{'Changelly Policies' | translate}}
+    </ion-title>
+    <ion-buttons right>
+      <button class="close-container disable-hover" (click)="close()" ion-button>
+        <ion-icon ios="md-close" md="md-close"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content text-center class="add-bottom-safe-area" no-bounce>
+  <ion-list class="bp-list">
+    <ion-item (click)="openExternalLink('https://changelly.com/privacy-policy')">
+      <ion-label translate>{{ 'Privacy Policy' | translate}}</ion-label>
+      <ion-note item-end>
+        <ion-icon item-end name="ios-arrow-forward-outline" color="light-grey"></ion-icon>
+      </ion-note>
+    </ion-item>
+    <ion-item (click)="openExternalLink('https://changelly.com/terms-of-use')">
+      <ion-label>{{ 'Terms of Use' | translate}}</ion-label>
+      <ion-note item-end>
+        <ion-icon item-end name="ios-arrow-forward-outline" color="light-grey"></ion-icon>
+      </ion-note>
+    </ion-item>
+    <ion-item (click)="openExternalLink('https://changelly.com/aml-kyc')">
+      <ion-label>{{ 'AML/KYC Policy' | translate}}</ion-label>
+      <ion-note item-end>
+        <ion-icon item-end name="ios-arrow-forward-outline" color="light-grey"></ion-icon>
+      </ion-note>
+    </ion-item>
+  </ion-list>
+
+  <div class="bottom-absolute">
+    <div class="partner">
+      <span>{{'Powered by' | translate}}</span>
+      <img src="assets/img/exchange-crypto/changelly-vector-logo{{themeProvider.isDarkModeEnabled() ? '-dark' : ''}}.svg" width="120">
+    </div>
+  </div>
+</ion-content>

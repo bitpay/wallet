@@ -1,0 +1,54 @@
+.card-list-item {
+  min-height: 83px;
+  padding-bottom: 2px;
+  padding-left: 10px;
+  padding-top: 2px;
+
+  ion-icon.icon.item-icon {
+    margin-right: 8px;
+  }
+
+  &__icon {
+    img {
+      border-radius: 50vh;
+      $icon-height: 53px;
+      height: $icon-height;
+      width: $icon-height;
+      margin: 3px 10px 3px 12px;
+    }
+
+    &.archived {
+      opacity: 0.25;
+    }
+  }
+
+  &__label {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 5px;
+  }
+
+  &__note {
+    font-weight: 400;
+    font-size: 14px;
+
+    &.discount {
+      font-weight: 500;
+    }
+  }
+
+  &.item {
+    &.item-block {
+      border: 0;
+    }
+    .item-inner {
+      border: 0;
+    }
+
+    &.item-md {
+      .item-inner {
+        margin-left: 0;
+      }
+    }
+  }
+}

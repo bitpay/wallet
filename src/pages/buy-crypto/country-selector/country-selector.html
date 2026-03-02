@@ -1,0 +1,53 @@
+<ion-header>
+  <ion-navbar>
+    <ion-buttons left *ngIf="useAsModal">
+      <button class="close-container disable-hover" (click)="close()" ion-button>
+        <ion-icon ios="md-close" md="md-close"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title class="bp-title">
+      <div [reveal-at-scroll-pos]="expandableHeader.headerHeight" [scrollArea]="scrollArea">
+        {{ 'Country selector' | translate }}
+      </div>
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content #scrollArea>
+  <expandable-header [scrollArea]="scrollArea" [fadeFactor]="5" [disableFade]="true" #expandableHeader>
+    <ion-toolbar class="wide-header__title">
+      <expandable-header-primary>
+        {{ 'Country selector' | translate }}
+      </expandable-header-primary>
+    </ion-toolbar>
+  </expandable-header>
+
+  <ion-item class="search-container" no-lines padding>
+    <ion-input class="search-wrapper" placeholder="{{'Search country' | translate}}" [(ngModel)]="searchedCountry" (ngModelChange)="findCountry()"></ion-input>
+  </ion-item>
+  <ion-list class="bp-list">
+    <ion-item *ngFor="let country of commonCountriesList" (click)="save(country)">
+      {{ country.name }}
+      <span class="country" item-end>{{country.threeLetterCode}}</span>
+    </ion-item>
+  </ion-list>
+  <div class="line-divider"></div>
+  <div *ngIf="countryList[0] && commonCountriesList[0]" padding></div>
+  <ion-list class="bp-list">
+    <ion-item *ngFor="let country of countryList" (click)="save(country)">
+      {{ country.name }}
+      <ion-note item-end>
+        <ion-row align-items-center>
+          <ion-note item-end>{{country.threeLetterCode}}</ion-note>
+          <ion-icon item-end name="ios-arrow-forward-outline" color="light-grey"></ion-icon>
+        </ion-row>
+      </ion-note>
+    </ion-item>
+  </ion-list>
+
+  <ion-spinner class="loading" *ngIf="!countryList[0]" name="crescent"></ion-spinner>
+
+  <ion-infinite-scroll (ionInfinite)="loadCountries($event)">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+</ion-content>

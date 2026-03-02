@@ -1,0 +1,19 @@
+<wide-header-page title="{{'Export Key' | translate}}">
+  <div page-content>
+    <div class="container">
+      <h3 translate>Warning!</h3>
+      <div class="warning-message">
+        <p translate>
+          Your Key is all that is needed to access your funds. Be sure to protect your key and store it only on secure devices. BitPay does not have access to your keys, so you alone are responsible for your keys. If you share key access with external services, you take responsibility for the risk of theft or breach.
+        </p>
+        <p>
+          {{ 'You can import this Key into other devices through the {appName} scanner' | translate: {appName: appName} }}
+        </p>
+      </div>
+      <div *ngIf="!keysEncrypted">
+        <ngx-qrcode *ngIf="code" hide-toast="true" qrc-value="{{code}}" qrc-class="aclass" qrc-errorCorrectionLevel="M"></ngx-qrcode>
+        <span *ngIf="walletsGroup && code">{{ walletsGroup.name }}</span>
+      </div>
+    </div>
+  </div>
+</wide-header-page>

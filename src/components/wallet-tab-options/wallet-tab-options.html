@@ -1,0 +1,20 @@
+<action-sheet fromTop="true">
+  <ion-list class="bp-list">
+    <button *ngIf="walletsGroups?.length == 1" ion-item (click)="dismiss({redirTo: 'AddPage',keyId: walletsGroups[0][0]?.credentials.keyId})">
+      <ion-icon class="item-img icon-settings" item-start>
+        <img src="assets/img/add-wallet/add-wallet.svg">
+      </ion-icon>
+      <ion-label>
+        <span class="main-label" translate>Create a new wallet</span>
+      </ion-label>
+    </button>
+    <button ion-item (click)="dismiss({redirTo: 'AddPage'})">
+      <ion-icon class="item-img icon-settings" item-start>
+        <img src="assets/img/plus-gray.svg">
+      </ion-icon>
+      <ion-label>
+        <span class="main-label" translate>Create or Import a Key</span>
+      </ion-label>
+    </button>
+  </ion-list>
+</action-sheet>

@@ -1,0 +1,52 @@
+<ion-header class="wide-header">
+  <ion-navbar>
+    <ion-title class="bp-title">
+      <div [reveal-at-scroll-pos]="expandableHeader.headerHeight" [scrollArea]="scrollArea">
+        <img src="assets/img/exchange-crypto/1inch-logo.svg" width="90" alt="OneInch">
+      </div>
+    </ion-title>
+    <ng-content select="[right]"></ng-content>
+  </ion-navbar>
+</ion-header>
+
+<ion-content #scrollArea>
+  <div class="wrapper">
+    <expandable-header [scrollArea]="scrollArea" [fadeFactor]="5" [disableFade]="true" #expandableHeader>
+      <ion-toolbar class="wide-header__title">
+        <expandable-header-primary>
+          <img src="assets/img/exchange-crypto/1inch-logo.svg" width="120" alt="OneInch">
+        </expandable-header-primary>
+      </ion-toolbar>
+    </expandable-header>
+
+    <ion-list class="bp-list" *ngIf="swapTxs && swapTxs.length > 0">
+      <ion-item-divider>{{'Transactions' | translate}}
+        <ion-spinner item-end name="crescent" *ngIf="loading"></ion-spinner>
+      </ion-item-divider>
+      <button ion-item *ngFor="let swapTx of swapTxs | orderBy : ['-date']" (click)="openOneInchModal(swapTx)">
+        <ion-label>
+          <div class="ellipsis">{{swapTx.amountFrom  | number:'1.0-6' }} {{ swapTx.coinFrom | uppercase }}</div>
+          <div class="status">
+            <span [ngClass]="{balanced: ['finished', 'refunded'].includes(swapTx.status), assertive: ['failed', 'expired'].includes(swapTx.status), energized: ['waiting', 'confirming', 'exchanging', 'sending', 'hold'].includes(swapTx.status)}" *ngIf="swapTx.status" translate>{{ swapTx.status | titlecase }}</span>
+          </div>
+        </ion-label>
+        <div item-content text-end>
+          <div class="text-bold">{{ swapTx.amountTo | number:'1.0-6'}} {{ swapTx.coinTo | uppercase }}</div>
+          <div class="date calm">{{ swapTx.date | amTimeAgo }}</div>
+        </div>
+      </button>
+    </ion-list>
+  </div>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <div class="one-inch-problems">
+      <span translate>Having problems with 1Inch?</span>
+      <br>
+      <a (click)="openExternalLink('https://help.1inch.io/en/')" translate>
+        Visit 1Inch Help Center.
+      </a>
+    </div>
+  </ion-toolbar>
+</ion-footer>

@@ -12,15 +12,15 @@ import { PlatformProvider } from '../../../../../../providers/platform/platform'
 
 @Component({
   selector: 'page-all-addresses',
-  templateUrl: 'all-addresses.html',
+  templateUrl: 'all-addresses.html'
 })
 export class AllAddressesPage {
-  public noBalance: any;
-  public withBalance: any;
+  public noBalance;
+  public withBalance;
   public coin: string;
   public isCordova: boolean;
+  public allAddresses;
 
-  private allAddresses: any;
   private walletName: string;
 
   constructor(
@@ -44,10 +44,10 @@ export class AllAddressesPage {
     this.viewCtrl.dismiss();
   }
 
-  private formatDate(ts: number): any {
-    var dateObj = new Date(ts * 1000);
+  private formatDate(ts: number) {
+    const dateObj = new Date(ts * 1000);
     if (!dateObj) {
-      this.logger.debug('Error formating a date');
+      this.logger.warn('Error formating a date');
       return 'DateError';
     }
     if (!dateObj.toJSON()) {
@@ -56,27 +56,60 @@ export class AllAddressesPage {
     return dateObj.toJSON();
   }
 
-  public sendByEmail(): any {
+  public sendByEmail() {
     this.onGoingProcessProvider.set('sendingByEmail');
     setTimeout(() => {
       this.onGoingProcessProvider.clear();
-      let appName = this.appProvider.info.nameCase;
+      const appName = this.appProvider.info.nameCase;
 
-      let body: string = appName + ' Wallet "' + this.walletName + '" Addresses\n  Only Main Addresses are  shown.\n\n';
-      body += "\n";
-      body += this.allAddresses.map((v) => {
-        return ('* ' + v.address + ' xpub' + v.path.substring(1) + ' ' + this.formatDate(v.createdOn));
-      }).join("\n");
+      let body: string =
+        appName +
+        ' Wallet "' +
+        this.walletName +
+        '" Addresses\n  Only Main Addresses are  shown.\n\n';
+      body += '\n';
+      body += this.allAddresses
+        .map(v => {
+          return (
+            '* ' +
+            v.address +
+            ' xpub' +
+            v.path.substring(1) +
+            ' ' +
+            this.formatDate(v.createdOn)
+          );
+        })
+        .join('\n');
 
-      this.socialSharing.shareViaEmail(
-        body,
-        appName + ' Addresses',
-        null, // TO: must be null or an array
-        null, // CC: must be null or an array
-        null, // BCC: must be null or an array
-        null, // FILES: can be null, a string, or an array
-      );
+      const subject = appName + ' Addresses';
+
+      // Check if sharing via email is supported
+      this.socialSharing
+        .canShareViaEmail()
+        .then(() => {
+          this.logger.info('sharing via email is possible');
+          this.socialSharing
+            .shareViaEmail(
+              body,
+              subject,
+              null, // TO: must be null or an array
+              null, // CC: must be null or an array
+              null, // BCC: must be null or an array
+              null // FILES: can be null, a string, or an array
+            )
+            .then(data => {
+              this.logger.info('Email created successfully: ', data);
+            })
+            .catch(err => {
+              this.logger.error('socialSharing Error: ', err);
+            });
+        })
+        .catch(() => {
+          this.logger.warn('sharing via email is not possible');
+          this.socialSharing.share(body, subject).catch(err => {
+            this.logger.error('socialSharing Error: ', err);
+          });
+        });
     });
   }
-
 }

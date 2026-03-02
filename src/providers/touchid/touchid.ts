@@ -1,145 +1,74 @@
 import { Injectable } from '@angular/core';
+import { FingerprintAIO } from '@ionic-native/fingerprint-aio';
+
+// Providers
+import { AppProvider } from '../../providers/app/app';
 import { Logger } from '../../providers/logger/logger';
 import { ConfigProvider } from '../config/config';
 import { PlatformProvider } from '../platform/platform';
 
-import { AndroidFingerprintAuth } from '@ionic-native/android-fingerprint-auth';
-import { TouchID } from '@ionic-native/touch-id';
-
+export enum TouchIdErrors {
+  fingerprintCancelled = 'FINGERPRINT_CANCELLED'
+}
 @Injectable()
 export class TouchIdProvider {
+  public iosBiometricMethod: string;
 
   constructor(
-    private touchId: TouchID,
-    private androidFingerprintAuth: AndroidFingerprintAuth,
+    private app: AppProvider,
     private platform: PlatformProvider,
     private config: ConfigProvider,
-    private logger: Logger
-  ) { }
+    private logger: Logger,
+    private faio: FingerprintAIO
+  ) {}
 
   public isAvailable(): Promise<any> {
-    return new Promise((resolve, reject) => {
-      if (this.platform.isCordova && this.platform.isAndroid) {
-        this.checkAndroid().then((isAvailable) => {
-          return resolve(isAvailable);
-        });
-      }
-      else if (this.platform.isCordova && this.platform.isIOS) {
-        this.checkIOS().then((isAvailable) => {
-          return resolve(isAvailable);
-        });
-      }
-      else {
-        return resolve(false);
-      }
-    });
-  }
-
-  private checkIOS(): Promise<any> {
-    return new Promise((resolve, reject) => {
-      this.touchId.isAvailable()
-        .then(
-        res => {
-          return resolve(true);
-        },
-        err => {
-          this.logger.debug("Fingerprint is not available");
-          return resolve(false);
-        }
-        );
-    });
-  }
-
-  private checkAndroid() {
-    return new Promise((resolve, reject) => {
-      this.androidFingerprintAuth.isAvailable()
-        .then(
-        res => {
-          if (res.isAvailable) return resolve(true);
-          else {
-            this.logger.debug("Fingerprint is not available");
-            return resolve(false);
-          }
-        });
-    });
-  }
-
-  private verifyIOSFingerprint(): Promise<any> {
-    return new Promise((resolve, reject) => {
-      this.touchId.verifyFingerprint('Scan your fingerprint please')
-        .then(
-        res => resolve(),
-        err => reject()
-        );
-    });
-  }
-
-  private verifyAndroidFingerprint(): Promise<any> {
-    return new Promise((resolve, reject) => {
-      this.androidFingerprintAuth.encrypt({ clientId: 'Copay' })
-        .then(result => {
-          if (result.withFingerprint) {
-            this.logger.debug('Successfully authenticated with fingerprint.');
-            resolve();
-          } else if (result.withBackup) {
-            this.logger.debug('Successfully authenticated with backup password!');
-            resolve();
-          } else this.logger.debug('Didn\'t authenticate!');
-        }).catch(error => {
-          if (error === this.androidFingerprintAuth.ERRORS.FINGERPRINT_CANCELLED) {
-            this.logger.debug('Fingerprint authentication cancelled');
-            reject();
-          } else {
-            this.logger.warn(error);
-            reject();
-          };
-        });
-    });
+    if (!this.platform.isCordova) return Promise.resolve(false);
+    return this.faio
+      .isAvailable()
+      .then(val => {
+        this.logger.debug('Biometric: ', val);
+        this.iosBiometricMethod = val;
+        return Promise.resolve(true);
+      })
+      .catch(e => {
+        this.logger.error('Biometric: ' + e.message, e.code);
+        return Promise.resolve(false);
+      });
   }
 
   public check(): Promise<any> {
-    return new Promise((resolve, reject) => {
-      if (this.platform.isIOS) {
-        this.verifyIOSFingerprint()
-          .then(() => {
-            resolve();
-          })
-          .catch(() => {
-            reject();
-          });
-      };
-      if (this.platform.isAndroid) {
-        this.verifyAndroidFingerprint()
-          .then(() => {
-            resolve();
-          })
-          .catch(() => {
-            reject();
-          });
-      };
-    });
+    if (!this.platform.isCordova) return undefined;
+    if (!this.app.isLockModalOpen && this.platform.isAndroid)
+      this.app.skipLockModal = true;
+    return this.faio
+      .show({
+        clientId: this.app.info.name
+      })
+      .then((result: any) => {
+        this.logger.debug('Biometric: ', result);
+      })
+      .catch((e: any) => {
+        this.logger.error('Biometric: ' + e.message, e.code);
+        throw e;
+      });
   }
 
-  private isNeeded(wallet: any): string {
-    let config: any = this.config.get();
+  private isNeeded(wallet): string {
+    let config = this.config.get();
     config.touchIdFor = config.touchIdFor || {};
     return config.touchIdFor[wallet.credentials.walletId];
   }
 
-  public checkWallet(wallet: any): Promise<any> {
-    return new Promise((resolve, reject) => {
-      this.isAvailable().then((isAvailable: boolean) => {
-        if (!isAvailable) return resolve();
-        if (this.isNeeded(wallet)) {
-          this.check().then(() => {
-            return resolve();
-          }).catch(() => {
-            return reject();
-          });
-        } else {
-          return resolve();
-        }
-      })
+  public checkWallet(wallet): Promise<any> {
+    return this.isAvailable().then((isAvailable: boolean) => {
+      if (!isAvailable) return undefined;
+      if (this.isNeeded(wallet)) return this.check();
+      return undefined;
     });
+  }
+
+  public getIosBiometricMethod(): string {
+    return this.iosBiometricMethod;
   }
 }

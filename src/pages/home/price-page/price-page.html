@@ -1,0 +1,40 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title size="large" class="bp-header card-title">{{ card.name | translate}}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <div class="total-amount-container">
+    <div id="displayDate" class="section-header" translate></div>
+    <span id="displayPrice" class="total-amount-value"></span>
+    <span *ngIf="card.totalBalanceChange || card.totalBalanceChange === 0" [ngClass]="card.totalBalanceChange >= 0 ? 'possitive-avg percent' : 'negative-avg percent'">
+      <span id="averagePricePercent"><span *ngIf="card.totalBalanceChange > 0">+</span></span>
+    </span>
+
+    <div class="average-container">
+      <div *ngIf="card.totalBalanceChangeAmount || card.totalBalanceChangeAmount === 0" [ngClass]="card.totalBalanceChangeAmount >= 0 ? 'possitive-avg' : 'negative-avg'">
+        <span class="average" id="averagePriceAmount"><span *ngIf="card.totalBalanceChangeAmount > 0">+</span></span>
+      </div>
+    </div>
+  </div>
+
+  <price-chart #canvas (priceChange)="setPrice($event)"></price-chart>
+</ion-content>
+
+<ion-footer no-border>
+  <ion-toolbar>
+    <span class="labels">
+      <div *ngFor="let option of updateOptions">
+        <ion-chip [ngClass]="{'active': activeOption === option.label, 'inactive': activeOption !== option.label }">
+          <button ion-button clear [disabled]="canvas.loading" (click)="updateChart(option)">
+            {{ option.label }}
+          </button>
+        </ion-chip>
+      </div>
+    </span>
+    <button ion-button class="button-standard" *ngIf="card.unitCode != 'xrp'" (click)="goToAmountPage()">
+      Buy {{ card.name }}
+    </button>
+  </ion-toolbar>
+</ion-footer>

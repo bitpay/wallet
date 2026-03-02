@@ -1,0 +1,60 @@
+page-create-eth-multisig {
+  .linked-wallet {
+    .item-inner {
+      border-bottom: 0px !important;
+    }
+  }
+  .multisig-input {
+    padding: 2.5rem 1.4rem 1rem 1.4rem;
+    box-shadow: 1px 2px 8px rgba(0, 0, 0, 0.1);
+    .search-wrapper {
+      background-color: #f8f8f8;
+      display: flex;
+      align-items: baseline;
+      border-radius: 8px;
+      .item-inner {
+        align-items: center;
+        margin-left: 0rem !important;
+        border-bottom: 0px !important;
+        box-shadow: none !important;
+      }
+      .scan-icon {
+        margin: 0;
+        border-left: 1px solid rgba(151, 151, 151, 0.2);
+        padding: 0rem 1rem 0.8rem 1.4rem;
+        z-index: 999;
+      }
+      .backspace-icon {
+        z-index: 999;
+      }
+    }
+  }
+  .invalid {
+    border: 1px solid color($colors, error);
+    color: color($colors, error);
+    background-color: #fff6f7;
+  }
+  .payment-proposal-to {
+    padding: 10px;
+    height: 39px;
+    max-width: 200px;
+    border-radius: 19.5px;
+    background-color: #f6f7fc;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .coin-img {
+      width: 18px;
+      height: 18px;
+      margin-right: 6px;
+    }
+    .background-content {
+      display: flex;
+      padding: 0px 10px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      align-items: center;
+    }
+  }
+}

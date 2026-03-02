@@ -1,47 +1,105 @@
 import { Injectable } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
 import { Logger } from '../../providers/logger/logger';
 
 // providers
+import { BwcProvider } from '../bwc/bwc';
+import { CurrencyProvider } from '../currency/currency';
+import { InvoiceProvider } from '../invoice/invoice';
 import { OnGoingProcessProvider } from '../on-going-process/on-going-process';
-import { ProfileProvider } from '../profile/profile';
 
 @Injectable()
 export class PayproProvider {
   constructor(
-    private profileProvider: ProfileProvider,
     private logger: Logger,
+    private bwcProvider: BwcProvider,
+    private currencyProvider: CurrencyProvider,
     private onGoingProcessProvider: OnGoingProcessProvider,
-    private translate: TranslateService
+    private invoiceProvider: InvoiceProvider
   ) {
-    this.logger.info('PayproProvider initialized');
+    this.logger.debug('PayproProvider initialized');
   }
 
-  public getPayProDetails(uri: string, coin: string, disableLoader?: boolean): Promise<any> {
-    return new Promise((resolve, reject) => {
-
-      let wallet: any = this.profileProvider.getWallets({
-        onlyComplete: true,
-        coin
-      })[0];
-
-      if (!wallet) return resolve();
-
-      this.logger.debug('Fetch PayPro Request...', uri);
-
-      if (!disableLoader) this.onGoingProcessProvider.set('fetchingPayPro');
-
-      wallet.fetchPayPro({
-        payProUrl: uri,
-      }, (err, paypro) => {
+  public async getPayProOptions(
+    paymentUrl,
+    disableLoader?: boolean,
+    attempt: number = 1
+  ): Promise<any> {
+    this.logger.info('PayPro Options: try... ' + attempt);
+    const bwc = this.bwcProvider.getPayProV2();
+    const options: any = {
+      paymentUrl
+    };
+    if (!disableLoader) {
+      this.onGoingProcessProvider.set('fetchingPayProOptions');
+    }
+    const payOpts = await bwc.getPaymentOptions(options).catch(async err => {
+      this.logger.error(`PayPro Options ERR: ${err.message}`);
+      if (attempt <= 3) {
+        await new Promise(resolve => setTimeout(resolve, 5000 * attempt));
+        return this.getPayProOptions(paymentUrl, disableLoader, ++attempt);
+      } else {
         if (!disableLoader) this.onGoingProcessProvider.clear();
-        if (err) return reject(this.translate.instant('Could Not Fetch Payment: Check if it is still valid'));
-        else if (!paypro.verified) {
-          this.logger.warn('Failed to verify payment protocol signatures');
-          return reject(this.translate.instant('Payment Protocol Invalid'));
-        }
-        return resolve(paypro);
-      });
+        throw err;
+      }
     });
+    if (!disableLoader) this.onGoingProcessProvider.clear();
+    this.logger.info('PayPro Options: SUCCESS', JSON.stringify(payOpts));
+    return payOpts;
+  }
+
+  public async getPayProDetails(params: {
+    paymentUrl;
+    coin;
+    payload?: { address?: string };
+    disableLoader?: boolean;
+    attempt?: number;
+  }): Promise<any> {
+    let { paymentUrl, coin, payload, disableLoader, attempt = 1 } = params;
+    this.logger.info('PayPro Details: try... ' + attempt);
+    const bwc = this.bwcProvider.getPayProV2();
+    const chain = this.currencyProvider.getChain(coin).toUpperCase();
+    const options: any = {
+      paymentUrl,
+      chain,
+      currency: coin.toUpperCase(),
+      payload
+    };
+    if (!disableLoader) {
+      this.onGoingProcessProvider.set('fetchingPayPro');
+    }
+
+    const payDetails = await bwc
+      .selectPaymentOption(options)
+      .catch(async err => {
+        this.logger.error(`PayPro Details ERR: ${err.message}`);
+        if (attempt <= 3) {
+          await new Promise(resolve => setTimeout(resolve, 5000 * attempt));
+          return this.getPayProDetails({
+            paymentUrl,
+            coin,
+            payload,
+            disableLoader,
+            attempt: ++attempt
+          });
+        } else {
+          if (!disableLoader) this.onGoingProcessProvider.clear();
+          throw err;
+        }
+      });
+    if (!disableLoader) this.onGoingProcessProvider.clear();
+    // workaround for getting invoice exchange rates
+    if (payDetails && !payDetails.exchangeRates) {
+      const invoiceId = payDetails.payProUrl.split('i/')[1];
+      const network = payDetails.payProUrl.includes('test')
+        ? 'testnet'
+        : 'livenet';
+      const invoice = await this.invoiceProvider.getBitPayInvoiceWithNetwork(
+        invoiceId,
+        network
+      );
+      payDetails.exchangeRates = invoice.exchangeRates;
+    }
+    this.logger.info('PayPro Details: SUCCESS', JSON.stringify(payDetails));
+    return payDetails;
   }
 }

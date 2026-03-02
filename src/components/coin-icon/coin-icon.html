@@ -1,0 +1,7 @@
+<ion-icon *ngIf="coin && currencyProvider.COIN[coin | uppercase]" class="item-img rectangle background_{{coin}}" [ngClass]="{'testnet': network === 'testnet'}" item-start>
+  <img (load)="onLoadImg(img1)" [src]="assetUrl" #img1/>
+</ion-icon>
+
+<ion-icon *ngIf="coin && !currencyProvider.COIN[coin | uppercase]" color="success" class="item-img rectangle background_default" item-start>
+  <img (load)="onLoadImg(img2)" src="{{currencyProvider.getLogoURI(coin)}}" (error)="currencyProvider.defaultLogoURI(img2)" #img2 />
+</ion-icon>

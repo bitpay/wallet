@@ -1,0 +1,25 @@
+gift-card-item {
+  ion-item-sliding.item-wrapper {
+    > button {
+      padding-left: 0;
+
+      .logo {
+        height: 73px;
+      }
+    }
+  }
+
+  button.item.item-block {
+    ion-note {
+      color: white;
+
+      &.dark {
+        color: $text-color;
+      }
+    }
+
+    img {
+      height: 73px;
+    }
+  }
+}

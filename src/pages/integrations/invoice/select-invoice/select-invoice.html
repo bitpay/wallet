@@ -1,0 +1,50 @@
+<wide-header-page title="{{'Select Currency' | translate}}">
+  <div page-content>
+    <ion-list *ngIf="paymentOptions.length > 0; else noWalletsAvailable" class="settings-list bp-list">
+      <div *ngFor="let option of paymentOptions">
+        <button class="list-button" ion-item (click)="goToPayPro(option.currency)" [disabled]="option.disabled">
+          <ion-icon item-start>
+            <img src="assets/img/currencies/{{option.currency.toLowerCase()}}.svg" />
+          </ion-icon>
+          <div class="item-title">{{getCoinName(option.currency.toLowerCase())}}</div>
+          <span class="alternative">{{option.estimatedAmount | satToUnit: option.currency.toLowerCase()}}</span>
+          <ion-note item-end>
+            <span>{{hasWallets[option.currency.toLowerCase()] || '0'}} {{hasWallets[option.currency.toLowerCase()] === 1 ? 'Wallet' : 'Wallets'}}</span>
+          </ion-note>
+        </button>
+      </div>
+    </ion-list>
+
+    <ng-template #noWalletsAvailable>
+      <div class="zero-state">
+        <div class="title-icon larger-icon">
+          <img src="assets/img/ghost-straight-face.svg" />
+        </div>
+
+        <h5 class="zero-state__heading" translate>
+          No Wallets Available
+        </h5>
+
+        <div class="zero-state__description">
+          <h6 class="zero-state__description-heading" translate>
+            What could have happened?
+          </h6>
+
+          <ul class="zero-state__reason-list">
+            <li class="zero-state__reason-list-item">
+              <span class="zero-state__reason" translate>
+                There are no wallets with enough funds to make the payment.
+              </span>
+            </li>
+
+            <li class="zero-state__reason-list-item">
+              <span class="zero-state__reason" translate>
+                Part or the entirety of the funds in your wallet(s) are unconfirmed.
+              </span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </ng-template>
+  </div>
+</wide-header-page>

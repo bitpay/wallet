@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="26px" height="20px" viewBox="0 0 26 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>credit-card</title>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Icons/Card">
+            <g id="credit-card" transform="translate(-0.000000, 0.000000)">
+                <path d="M24.3043478,19.6135266 L1.69565217,19.6135266 C0.759086957,19.6135266 -2.13162821e-14,18.8387923 -2.13162821e-14,17.8829213 L-2.13162821e-14,1.73060529 C-2.13162821e-14,0.7747343 0.759086957,0 1.69565217,0 L24.3043478,0 C25.240913,0 26,0.7747343 26,1.73060529 L26,17.8829213 C26,18.8387923 25.240913,19.6135266 24.3043478,19.6135266 Z" id="Shape-2" fill="#E7E7E7"></path>
+                <rect id="Rectangle" fill="#FFFFFF" x="3" y="11" width="13" height="3"></rect>
+                <polygon id="Rectangle-path" fill="#9BA3AE" points="0 3.43236715 26 3.43236715 26 7.84541063 0 7.84541063"></polygon>
+            </g>
+        </g>
+    </g>
+</svg>

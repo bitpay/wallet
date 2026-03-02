@@ -2,123 +2,331 @@ import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Events } from 'ionic-angular';
 import * as _ from 'lodash';
-import { Logger } from '../../providers/logger/logger';
+import { Observable } from 'rxjs';
 
 // providers
-import { AppProvider } from '../../providers/app/app';
-import { LanguageProvider } from '../../providers/language/language';
+import { DerivationPathHelperProvider } from '../../providers/derivation-path-helper/derivation-path-helper';
+import { ActionSheetProvider } from '../action-sheet/action-sheet';
+import { AppProvider } from '../app/app';
 import { BwcErrorProvider } from '../bwc-error/bwc-error';
 import { BwcProvider } from '../bwc/bwc';
 import { ConfigProvider } from '../config/config';
+import { CurrencyProvider } from '../currency/currency';
+import { ErrorsProvider } from '../errors/errors';
+import { KeyProvider } from '../key/key';
+import { LanguageProvider } from '../language/language';
+import { Logger } from '../logger/logger';
 import { OnGoingProcessProvider } from '../on-going-process/on-going-process';
 import { PersistenceProvider } from '../persistence/persistence';
 import { PlatformProvider } from '../platform/platform';
-import { PopupProvider } from '../popup/popup';
+import { RateProvider } from '../rate/rate';
+import { ReplaceParametersProvider } from '../replace-parameters/replace-parameters';
+import { TxFormatProvider } from '../tx-format/tx-format';
+import { WalletOptions } from '../wallet/wallet';
 
 // models
 import { Profile } from '../../models/profile/profile.model';
 
+interface WalletGroups {
+  [keyId: string]: {
+    name?: string;
+    needsBackup?: boolean;
+    order?: number;
+    isPrivKeyEncrypted?: boolean;
+    canSign?: boolean;
+    isDeletedSeed?: boolean;
+  };
+}
+
+export interface WalletBindTypeOpts {
+  bwsurl?: string;
+  store?: boolean;
+}
+
 @Injectable()
 export class ProfileProvider {
+  public walletsGroups: WalletGroups = {}; // TODO walletGroups Class
   public wallet: any = {};
   public profile: Profile;
+  public orderedWalletsByGroup: any = [];
 
-  private UPDATE_PERIOD = 15;
-  private throttledBwsEvent: any;
+  public UPDATE_PERIOD = 15;
+  public EXTENDED_UPDATE_PERIOD = 3600;
+  public UPDATE_PERIOD_FAST = 5;
+  private throttledBwsEvent;
   private validationLock: boolean = false;
-  private errors: any = this.bwcProvider.getErrors();
+  private errors = this.bwcProvider.getErrors();
 
   constructor(
+    private currencyProvider: CurrencyProvider,
     private logger: Logger,
     private persistenceProvider: PersistenceProvider,
     private configProvider: ConfigProvider,
+    private replaceParametersProvider: ReplaceParametersProvider,
     private bwcProvider: BwcProvider,
     private bwcErrorProvider: BwcErrorProvider,
     private platformProvider: PlatformProvider,
     private appProvider: AppProvider,
     private languageProvider: LanguageProvider,
     private events: Events,
-    private popupProvider: PopupProvider,
     private onGoingProcessProvider: OnGoingProcessProvider,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private txFormatProvider: TxFormatProvider,
+    private actionSheetProvider: ActionSheetProvider,
+    private keyProvider: KeyProvider,
+    private derivationPathHelperProvider: DerivationPathHelperProvider,
+    private errorsProvider: ErrorsProvider,
+    private rateProvider: RateProvider
   ) {
     this.throttledBwsEvent = _.throttle((n, wallet) => {
       this.newBwsEvent(n, wallet);
     }, 10000);
   }
 
-  private updateWalletSettings(wallet: any): void {
-    let config: any = this.configProvider.get();
-    let defaults: any = this.configProvider.getDefaults();
+  private trySetName(wallet: any, i: number = 0): any {
+    const config = this.configProvider.get();
+
+    if (i > 5) {
+      // just put the Id is the prev fails
+      wallet.linkedEthWalletName = wallet.linkedEthWallet;
+      return;
+    }
+
+    let linked = this.getWallet(wallet.linkedEthWallet);
+    if (linked && linked.credentials) {
+      this.logger.debug(
+        'Setting linkedEthWalletName:' + wallet.linkedEthWallet
+      );
+
+      wallet.linkedEthWalletName =
+        (config.aliasFor && config.aliasFor[linked.id]) ||
+        linked.credentials.walletName;
+
+      return;
+    } else {
+      this.logger.debug(
+        'Waiting to set name for linkedEthWalletName:' + wallet.linkedEthWallet
+      );
+
+      return window.setTimeout(() => {
+        this.trySetName(wallet, i + 1);
+      }, 2000);
+    }
+  }
+
+  private updateWalletFromConfig(wallet): void {
+    const config = this.configProvider.get();
+    const defaults = this.configProvider.getDefaults();
     // this.config.whenAvailable( (config) => { TODO
-    wallet.usingCustomBWS = config.bwsFor && config.bwsFor[wallet.id] && (config.bwsFor[wallet.id] != defaults.bws.url);
-    wallet.name = (config.aliasFor && config.aliasFor[wallet.id]) || wallet.credentials.walletName;
-    wallet.color = (config.colorFor && config.colorFor[wallet.id]) ? config.colorFor[wallet.id] : null;
+    wallet.usingCustomBWS =
+      config.bwsFor &&
+      config.bwsFor[wallet.id] &&
+      config.bwsFor[wallet.id] != defaults.bws.url;
+    wallet.name =
+      (config.aliasFor && config.aliasFor[wallet.id]) ||
+      wallet.credentials.walletName;
     wallet.email = config.emailFor && config.emailFor[wallet.id];
-    // });
+
+    // for token wallets
+    wallet.linkedEthWallet = this.currencyProvider.getLinkedEthWallet(
+      wallet.coin,
+      wallet.id,
+      wallet.n
+    );
+
+    if (wallet.linkedEthWallet) {
+      this.trySetName(wallet);
+    }
   }
 
   public setWalletOrder(walletId: string, index: number): void {
-    this.persistenceProvider.setWalletOrder(walletId, index);
-    this.logger.debug('Wallet new order stored');
-    this.wallet[walletId].order = index;
+    this.persistenceProvider.setWalletOrder(walletId, index).then(() => {
+      this.logger.debug(
+        'Wallet new order stored for ' + walletId + ': ' + index
+      );
+    });
+    if (this.wallet[walletId]) this.wallet[walletId]['order'] = index;
   }
 
-  private getWalletOrder(wallet): Promise<any> {
-    return new Promise((resolve, reject) => {
-      this.persistenceProvider.getWalletOrder(wallet.credentials.walletId).then((order) => {
-        return resolve(order);
-      });
-    })
+  public setWalletGroupOrder(keyId: string, index: number): void {
+    this.persistenceProvider.setWalletGroupOrder(keyId, index).then(() => {
+      this.logger.debug(
+        'Wallet group new order stored for ' + keyId + ': ' + index
+      );
+    });
+    if (this.walletsGroups[keyId]) this.walletsGroups[keyId]['order'] = index;
   }
 
-  public setBackupFlag(walletId: string): void {
-    this.persistenceProvider.setBackupFlag(walletId);
-    this.logger.debug('Backup flag stored');
-    this.wallet[walletId].needsBackup = false;
-  }
-
-  private requiresBackup(wallet: any): boolean {
-    if (wallet.isPrivKeyExternal()) return false;
-    if (!wallet.credentials.mnemonic && !wallet.credentials.mnemonicEncrypted) return false;
-    if (wallet.credentials.network == 'testnet') return false;
-
-    return true;
-  }
-
-  private needsBackup(wallet: any): Promise<boolean> {
-    return new Promise((resolve, reject) => {
-      if (!this.requiresBackup(wallet)) {
-        return resolve(false);
-      }
-
-      this.persistenceProvider.getBackupFlag(wallet.credentials.walletId).then((val: string) => {
-        if (val) {
-          return resolve(false);
-        }
-        return resolve(true);
-      }).catch((err) => {
-        this.logger.error(err);
-      });
-    })
-  }
-
-  private isBalanceHidden(wallet: any): Promise<boolean> {
-    return new Promise((resolve, reject) => {
-      this.persistenceProvider.getHideBalanceFlag(wallet.credentials.walletId).then((shouldHideBalance) => {
-        let isHidden = shouldHideBalance && shouldHideBalance.toString() == 'true' ? true : false;
-        return resolve(isHidden);
-      }).catch((err) => {
-        this.logger.error(err);
-      });
+  public setNewWalletGroupOrder(newWalletKeyId: string): void {
+    const promises = [];
+    Object.keys(this.walletsGroups).forEach(keyId => {
+      promises.push(this.getWalletGroupOrder(keyId));
+    });
+    Promise.all(promises).then(order => {
+      const index = !_.max(order) ? 0 : +_.max(order) + 1;
+      this.setWalletGroupOrder(newWalletKeyId, index);
+      this.setOrderedWalletsByGroup(); // Update Ordered Wallet List
     });
   }
 
-  private bindWalletClient(wallet: any, opts?: any): boolean {
-    opts = opts ? opts : {};
-    let walletId = wallet.credentials.walletId;
+  public setWalletGroupName(keyId: string, name: string): void {
+    this.persistenceProvider.setWalletGroupName(keyId, name);
+    if (this.walletsGroups[keyId]) this.walletsGroups[keyId].name = name;
+    this.setOrderedWalletsByGroup(); // Update Ordered Wallet List
+  }
 
-    if ((this.wallet[walletId] && this.wallet[walletId].started) && !opts.force) return false;
+  public async getWalletGroupName(keyId: string) {
+    const name = await this.persistenceProvider.getWalletGroupName(keyId);
+    return name;
+  }
+
+  private async getWalletOrder(walletId: string) {
+    const order = await this.persistenceProvider.getWalletOrder(walletId);
+    return order;
+  }
+
+  private async getWalletGroupOrder(keyId: string) {
+    const order = await this.persistenceProvider.getWalletGroupOrder(keyId);
+    return order;
+  }
+
+  public setBackupGroupFlag(
+    keyId: string,
+    timestamp?: string,
+    migrating?: boolean
+  ): void {
+    if (!keyId) return;
+    this.persistenceProvider.setBackupGroupFlag(keyId, timestamp);
+    this.logger.debug('Backup flag stored');
+    if (!migrating) this.walletsGroups[keyId].needsBackup = false;
+  }
+
+  public setWalletBackup(walletId: string): void {
+    this.wallet[walletId].needsBackup = false;
+  }
+
+  private requiresGroupBackup(keyId: string) {
+    let k = this.keyProvider.getKey(keyId);
+    if (!k) return false;
+
+    const keyObj = k.toObj();
+    if (!keyObj.mnemonic && !keyObj.mnemonicEncrypted) return false;
+    return true;
+  }
+
+  private requiresBackup(wallet) {
+    let k = this.keyProvider.getKey(wallet.credentials.keyId);
+    if (!k) return false;
+
+    const keyObj = k.toObj();
+    if (!keyObj.mnemonic && !keyObj.mnemonicEncrypted) return false;
+    return true;
+  }
+
+  private getBackupInfo(wallet): Promise<any> {
+    if (!this.requiresBackup(wallet)) {
+      return Promise.resolve({ needsBackup: false });
+    }
+    return this.persistenceProvider
+      .getBackupFlag(wallet.credentials.walletId)
+      .then(timestamp => {
+        if (timestamp) {
+          return Promise.resolve({ needsBackup: false, timestamp });
+        }
+        return Promise.resolve({ needsBackup: true });
+      })
+      .catch(err => {
+        this.logger.error(err);
+      });
+  }
+
+  private getBackupGroupInfo(keyId, wallet?): Promise<any> {
+    if (!this.requiresGroupBackup(keyId)) {
+      return Promise.resolve({ needsBackup: false });
+    }
+    return this.persistenceProvider
+      .getBackupGroupFlag(keyId)
+      .then(async timestamp => {
+        if (timestamp) {
+          return Promise.resolve({ needsBackup: false, timestamp });
+        } else {
+          const backupInfo = await this.getBackupInfo(wallet);
+          if (backupInfo && !backupInfo.needsBackup) {
+            this.setBackupGroupFlag(keyId, backupInfo.timestamp, true);
+            return Promise.resolve({
+              needsBackup: false,
+              timestamp: backupInfo.timestamp
+            });
+          }
+        }
+        return Promise.resolve({ needsBackup: true });
+      })
+      .catch(err => {
+        this.logger.error(err);
+      });
+  }
+
+  private isBalanceHidden(wallet): Promise<boolean> {
+    return new Promise(resolve => {
+      this.persistenceProvider
+        .getHideBalanceFlag(wallet.credentials.walletId)
+        .then(shouldHideBalance => {
+          const isHidden =
+            shouldHideBalance && shouldHideBalance.toString() == 'true'
+              ? true
+              : false;
+          return resolve(isHidden);
+        })
+        .catch(err => {
+          this.logger.error(err);
+        });
+    });
+  }
+
+  private isWalletHidden(wallet): Promise<boolean> {
+    return new Promise(resolve => {
+      this.persistenceProvider
+        .getHideWalletFlag(wallet.credentials.walletId)
+        .then(shouldHideWallet => {
+          const isHidden =
+            shouldHideWallet && shouldHideWallet.toString() == 'true'
+              ? true
+              : false;
+          return resolve(isHidden);
+        })
+        .catch(err => {
+          this.logger.error(err);
+        });
+    });
+  }
+
+  private coinSupported(coin): boolean {
+    const availableCoin = this.currencyProvider
+      .getAvailableCoins()
+      .find(_availableCoin => {
+        return _availableCoin.toLowerCase().includes(coin.toLowerCase());
+      });
+    return !!availableCoin;
+  }
+
+  private async bindWalletClient(wallet): Promise<boolean> {
+    if (!this.coinSupported(wallet.credentials.coin)) {
+      this.logger.debug(
+        `Coin (${wallet.credentials.coin}) not supported. Skipping.`
+      );
+      return Promise.resolve(true);
+    }
+
+    const walletId = wallet.credentials.walletId;
+    let keyId = wallet.credentials.keyId;
+    if (this.wallet[walletId] && this.wallet[walletId].started) {
+      this.logger.info('This wallet has been initialized. Skip. ' + walletId);
+      return Promise.resolve(false);
+    }
+
+    // Workaround to avoid wrong order relatad to async functions
+    if (keyId) this.walletsGroups[keyId] = {};
+    this.wallet[walletId] = {};
 
     // INIT WALLET VIEWMODEL
     wallet.id = walletId;
@@ -128,1086 +336,1883 @@ export class ProfileProvider {
     wallet.m = wallet.credentials.m;
     wallet.n = wallet.credentials.n;
     wallet.coin = wallet.credentials.coin;
-    wallet.status = {};
+    wallet.cachedStatus = {};
+    wallet.balanceHidden = await this.isBalanceHidden(wallet);
+    wallet.order = await this.getWalletOrder(wallet.id);
+    wallet.hidden = await this.isWalletHidden(wallet);
+    wallet.lastAddress = await this.persistenceProvider.getLastAddress(
+      walletId
+    );
+    wallet.canSign = keyId ? true : false;
+    wallet.isPrivKeyEncrypted = wallet.canSign
+      ? this.keyProvider.isPrivKeyEncrypted(keyId)
+      : false;
+    wallet.canAddNewAccount = this.checkAccountCreation(wallet, keyId);
+    wallet.isSegwit = this.checkIfSegwit(wallet.credentials.addressType);
 
-    this.updateWalletSettings(wallet);
+    this.updateWalletFromConfig(wallet);
     this.wallet[walletId] = wallet;
 
-    this.needsBackup(wallet).then((val: any) => {
-      wallet.needsBackup = val;
-    });
+    // INIT WALLET GROUP VIEWMODEL
 
-    this.isBalanceHidden(wallet).then((val: any) => {
-      wallet.balanceHidden = val;
-    });
+    let groupBackupInfo,
+      needsBackup,
+      order,
+      name,
+      isPrivKeyEncrypted,
+      canSign,
+      isDeletedSeed;
 
-    this.getWalletOrder(wallet).then((val: number) => {
-      wallet.order = val;
-    });
+    if (keyId) {
+      groupBackupInfo = await this.getBackupGroupInfo(keyId, wallet);
+      needsBackup = groupBackupInfo.needsBackup;
+      isPrivKeyEncrypted = this.keyProvider.isPrivKeyEncrypted(keyId);
+      canSign = true;
+      isDeletedSeed = this.keyProvider.isDeletedSeed(keyId);
+      order = await this.getWalletGroupOrder(keyId);
+      name = await this.getWalletGroupName(keyId);
+      if (!name) {
+        let walletsGroups = _.cloneDeep(this.walletsGroups);
+        delete walletsGroups['read-only'];
 
+        // use wallets name for wallets group name at migration
+        name = `Key ${Object.keys(walletsGroups).indexOf(keyId) + 1}`;
+      }
+    } else {
+      keyId = 'read-only';
+      needsBackup = false;
+      name = 'Read Only Wallets';
+      isPrivKeyEncrypted = false;
+      canSign = false;
+      isDeletedSeed = true;
+    }
+
+    wallet.needsBackup = needsBackup;
+    wallet.keyId = keyId;
+    wallet.walletGroupName = name;
+
+    this.walletsGroups[keyId] = {
+      order,
+      name,
+      isPrivKeyEncrypted,
+      needsBackup,
+      canSign,
+      isDeletedSeed
+    };
+
+    let date;
+    if (groupBackupInfo && groupBackupInfo.timestamp)
+      date = new Date(Number(groupBackupInfo.timestamp));
+
+    this.logger.info(
+      `Binding wallet: ${wallet.id} - Backed up: ${!needsBackup} ${
+        date ? date : ''
+      } - Encrypted: ${wallet.isPrivKeyEncrypted} - Token: ${!!wallet
+        .credentials.token}`
+    );
+
+    // If this is a token wallet, no need to initialize the rest
+    if (wallet.credentials.token) {
+      return Promise.resolve(true);
+    }
     wallet.removeAllListeners();
-
-    wallet.on('report', (n: any) => {
+    wallet.on('report', n => {
       this.logger.info('BWC Report:' + n);
     });
 
-    wallet.on('notification', (n: any) => {
-      this.logger.debug('BWC Notification:', JSON.stringify(n));
+    // Desktop: only use this 'notification' event
+    // Mobile: use this event in case push notification is not enabled; otherwise use push notifications
+    if (
+      !this.configProvider.get().pushNotifications.enabled ||
+      !this.platformProvider.isCordova
+    ) {
+      wallet.on('notification', n => {
+        if (this.platformProvider.isElectron) {
+          this.showDesktopNotifications(n, wallet);
+        }
 
-      if (n.type == "NewBlock" && n.data.network == "testnet") {
-        this.throttledBwsEvent(n, wallet);
-      } else this.newBwsEvent(n, wallet);
-    });
+        if (
+          (n.data.network && n.data.network != wallet.network) ||
+          (n.data.coin && n.data.coin != wallet.coin)
+        )
+          return;
+
+        // TODO many NewBlocks notifications...if many blocks
+        if (n.type == 'NewBlock' && n.data.network == 'testnet') {
+          this.throttledBwsEvent(n, wallet);
+        } else {
+          this.newBwsEvent(n, wallet);
+        }
+      });
+    }
 
     wallet.on('walletCompleted', () => {
       this.logger.debug('Wallet completed');
-      this.updateCredentials(JSON.parse(wallet.export()))
-      this.events.publish('status:updated');
+      this.updateCredentials(JSON.parse(wallet.toString()));
+      this.setOrderedWalletsByGroup();
+      this.events.publish('Local/WalletUpdate', { walletId: wallet.id });
     });
 
-    wallet.initialize({
-      notificationIncludeOwn: true,
-    }, (err: any) => {
-      if (err) {
-        this.logger.error('Could not init notifications err:', err);
-        return;
-      }
-      wallet.setNotificationsInterval(this.UPDATE_PERIOD);
-      wallet.openWallet((err: any) => {
-        if (wallet.status !== true)
-          this.logger.debug('Wallet + ' + walletId + ' status:' + JSON.stringify(wallet.status));
-      });
-    });
-    this.events.subscribe('wallet:updated', (walletId: string) => {
-      if (walletId && walletId == wallet.id) {
-        this.logger.debug('Updating settings for wallet:' + wallet.id);
-        this.updateWalletSettings(wallet);
-      }
-    });
-
-    return true;
-  }
-
-  private newBwsEvent(n: any, wallet: any): void {
-    if (wallet.cachedStatus)
-      wallet.cachedStatus.isValid = false;
-
-    if (wallet.completeHistory)
-      wallet.completeHistory.isValid = false;
-
-    if (wallet.cachedActivity)
-      wallet.cachedActivity.isValid = false;
-
-    if (wallet.cachedTxps)
-      wallet.cachedTxps.isValid = false;
-
-    this.events.publish('bwsEvent', wallet.id, n.type, n);
-  }
-
-  public updateCredentials(credentials: any): void {
-    this.profile.updateWallet(credentials);
-    this.persistenceProvider.storeProfile(this.profile);
-  }
-
-  public getLastKnownBalance(wid: string): Promise<string> {
-    return new Promise((resolve, reject) => {
-      this.persistenceProvider.getBalanceCache(wid).then((data: string) => {
-        return resolve(data);
-      }).catch((err: any) => {
-        return reject(err);
-      });
-    });
-  }
-
-  private addLastKnownBalance(wallet: any): Promise<any> {
-    return new Promise((resolve, reject) => {
-      let now = Math.floor(Date.now() / 1000);
-      let showRange = 600; // 10min;
-
-      this.getLastKnownBalance(wallet.id).then((data: any) => {
-        if (data) {
-          let parseData: any = data;
-          wallet.cachedBalance = parseData.balance;
-          wallet.cachedBalanceUpdatedOn = (parseData.updatedOn < now - showRange) ? parseData.updatedOn : null;
+    if (
+      !this.configProvider.get().pushNotifications.enabled ||
+      !this.platformProvider.isCordova
+    ) {
+      wallet.initialize(
+        {
+          notificationIncludeOwn: true,
+          notificationIntervalSeconds: this.EXTENDED_UPDATE_PERIOD
+        },
+        err => {
+          if (err) {
+            this.logger.error('Could not init notifications err:', err);
+            return;
+          }
+          wallet.setNotificationsInterval(this.EXTENDED_UPDATE_PERIOD);
+          wallet.openWallet(() => {});
         }
-        return resolve();
-      }).catch((err: any) => {
-        this.logger.warn(err);
-      });
+      );
+    }
+    this.events.subscribe('Local/ConfigUpdate', opts => {
+      this.logger.debug('Local/ConfigUpdate handler @profile', opts);
+
+      if (opts.walletId && opts.walletId == wallet.id) {
+        this.logger.debug('Updating wallet from config ' + wallet.id);
+        this.updateWalletFromConfig(wallet);
+      } else if (opts.walletId && opts.walletId.includes(wallet.id)) {
+        const tokenWallet = this.getWallet(opts.walletId);
+        this.logger.debug('Updating token wallet from config ' + opts.walletId);
+        this.updateWalletFromConfig(tokenWallet);
+      }
+    });
+    return Promise.resolve(true);
+  }
+
+  public checkAccountCreation(wallet, keyId: string): boolean {
+    /* Allow account creation only for wallets:
+    wallet n=1 : BIP44 - P2PKH - BTC o BCH only if it is 145'
+    wallet n>1 : BIP48 - P2SH - BTC o BCH only if it is 145'
+    wallet n=1 : BIP44 - P2SH - ETH only if it is 60'
+    key : !use44forMultisig - !use0forBCH - compliantDerivation - !BIP45
+     */
+
+    const key = this.keyProvider.getKey(keyId);
+
+    if (!wallet) {
+      return false;
+    } else if (!key) {
+      return false;
+    } else if (
+      key.use44forMultisig ||
+      key.use0forBCH ||
+      key.BIP45 ||
+      key.compliantDerivation === false
+    ) {
+      return false;
+    } else {
+      const derivationStrategy = this.derivationPathHelperProvider.getDerivationStrategy(
+        wallet.credentials.rootPath
+      );
+
+      const coinCode = this.derivationPathHelperProvider.parsePath(
+        wallet.credentials.rootPath
+      ).coinCode;
+
+      const chain = this.currencyProvider.getChain(wallet.coin).toLowerCase();
+
+      if (
+        (wallet.n == 1 && wallet.credentials.addressType == 'P2PKH') ||
+        (wallet.credentials.addressType == 'P2WPKH' &&
+          derivationStrategy == 'BIP44' &&
+          (chain == 'btc' ||
+            (chain == 'bch' && coinCode == "145'") ||
+            chain == 'ltc' ||
+            chain == 'doge'))
+      ) {
+        return true;
+      }
+      if (
+        (wallet.n > 1 && wallet.credentials.addressType == 'P2SH') ||
+        (wallet.credentials.addressType == 'P2WSH' &&
+          derivationStrategy == 'BIP48' &&
+          (chain == 'btc' ||
+            (chain == 'bch' && coinCode == "145'") ||
+            chain == 'ltc' ||
+            chain == 'doge'))
+      ) {
+        return true;
+      }
+      if (
+        wallet.n == 1 &&
+        wallet.credentials.addressType == 'P2PKH' &&
+        derivationStrategy == 'BIP44' &&
+        chain == 'eth' &&
+        coinCode == "60'"
+      ) {
+        return true;
+      }
+      if (
+        wallet.n == 1 &&
+        wallet.credentials.addressType == 'P2PKH' &&
+        derivationStrategy == 'BIP44' &&
+        chain == 'xrp' &&
+        coinCode == "144'"
+      ) {
+        return true;
+      }
+      return false;
+    }
+  }
+
+  public checkIfSegwit(addressType: string) {
+    if (!addressType) return false;
+    else if (addressType == 'P2WPKH' || addressType == 'P2WSH') {
+      return true;
+    } else return false;
+  }
+
+  public setFastRefresh(wallet): void {
+    this.logger.debug(`Wallet ${wallet.id} set to fast refresh`);
+    if (
+      !this.configProvider.get().pushNotifications.enabled ||
+      !this.platformProvider.isCordova
+    ) {
+      wallet.setNotificationsInterval(this.UPDATE_PERIOD_FAST);
+    }
+  }
+
+  public setSlowRefresh(wallet): void {
+    this.logger.debug(`Wallet ${wallet.id} back to slow refresh`);
+    if (
+      !this.configProvider.get().pushNotifications.enabled ||
+      !this.platformProvider.isCordova
+    ) {
+      wallet.setNotificationsInterval(this.EXTENDED_UPDATE_PERIOD);
+    }
+  }
+
+  private showDesktopNotifications(n, wallet): void {
+    if (!this.configProvider.get().desktopNotifications.enabled) return;
+
+    const creatorId = n && n.data && n.data.creatorId;
+    const amount = n && n.data && n.data.amount;
+    const walletName = wallet.name;
+    let title: string;
+    let body: string;
+    let translatedMsg: string;
+
+    switch (n.type) {
+      case 'NewCopayer':
+        if (wallet.copayerId != creatorId) {
+          title = this.translate.instant('New copayer');
+          translatedMsg = this.translate.instant(
+            'A new copayer just joined your wallet {{walletName}}.'
+          );
+          body = this.replaceParametersProvider.replace(translatedMsg, {
+            walletName
+          });
+        }
+        break;
+      case 'WalletComplete':
+        title = this.translate.instant('Wallet complete');
+        translatedMsg = this.translate.instant(
+          'Your wallet {{walletName}} is complete.'
+        );
+        body = this.replaceParametersProvider.replace(translatedMsg, {
+          walletName
+        });
+        break;
+      case 'NewTxProposal':
+        if (wallet && wallet.m > 1 && wallet.copayerId != creatorId) {
+          title = this.translate.instant('New payment proposal');
+          translatedMsg = this.translate.instant(
+            'A new payment proposal has been created in your wallet {{walletName}}.'
+          );
+          body = this.replaceParametersProvider.replace(translatedMsg, {
+            walletName
+          });
+        }
+        break;
+      case 'NewIncomingTx':
+        title = this.translate.instant('New payment received');
+        const amountStr = this.txFormatProvider.formatAmountStr(
+          wallet.coin,
+          amount
+        );
+        translatedMsg = this.translate.instant(
+          'A payment of {{amountStr}} has been received into your wallet {{walletName}}.'
+        );
+        body = this.replaceParametersProvider.replace(translatedMsg, {
+          amountStr,
+          walletName
+        });
+        break;
+      case 'TxProposalFinallyRejected':
+        title = this.translate.instant('Payment proposal rejected');
+        translatedMsg = this.translate.instant(
+          'A payment proposal in your wallet {{walletName}} has been rejected.'
+        );
+        body = this.replaceParametersProvider.replace(translatedMsg, {
+          walletName
+        });
+        break;
+      case 'TxConfirmation':
+        title = this.translate.instant('Transaction confirmed');
+        translatedMsg = this.translate.instant(
+          'The transaction from {{walletName}} that you were waiting for has been confirmed.'
+        );
+        body = this.replaceParametersProvider.replace(translatedMsg, {
+          walletName
+        });
+        break;
+    }
+
+    if (!body) return;
+
+    const OS = this.platformProvider.getOS();
+    if (OS && OS.OSName === 'MacOS') this.showOsNotifications(title, body);
+    else this.showInAppNotification(title, body);
+  }
+
+  private async showInAppNotification(title: string, body: string) {
+    const infoSheet = this.actionSheetProvider.createInfoSheet(
+      'in-app-notification',
+      {
+        title,
+        body
+      }
+    );
+    await infoSheet.present();
+    await Observable.timer(7000).toPromise();
+    infoSheet.dismiss();
+  }
+
+  private showOsNotifications(title: string, body: string): void {
+    const { ipcRenderer } = (window as any).require('electron');
+    ipcRenderer.send('new-notification', {
+      title,
+      body
     });
   }
 
-  public setLastKnownBalance(wid: string, balance: number): void {
-    this.persistenceProvider.setBalanceCache(wid, { balance, updatedOn: Math.floor(Date.now() / 1000) });
+  private newBwsEvent(n, wallet): void {
+    let id = wallet.id;
+    if (n.data && n.data.tokenAddress) {
+      id = wallet.id + '-' + n.data.tokenAddress.toLowerCase();
+      this.logger.debug(`event for token wallet: ${id}`);
+    }
+    let eventData = {
+      walletId: id,
+      notification_type: n.type,
+      notification: n
+    };
+    this.events.publish('bwsEvent', eventData);
   }
 
-  private runValidation(wallet: any, delay?: number, retryDelay?: number) {
+  public updateCredentials(credentials): void {
+    this.profile.updateWallet(credentials);
+    this.storeProfileIfDirty();
+  }
 
+  private runValidation(wallet, delay?: number, retryDelay?: number) {
     delay = delay ? delay : 500;
     retryDelay = retryDelay ? retryDelay : 50;
 
     if (this.validationLock) {
       return setTimeout(() => {
-        this.logger.debug('ValidatingWallet Locked: Retrying in: ' + retryDelay);
         return this.runValidation(wallet, delay, retryDelay);
       }, retryDelay);
     }
     this.validationLock = true;
 
     // IOS devices are already checked
-    let skipDeviceValidation = this.platformProvider.isIOS || this.profile.isDeviceChecked(this.platformProvider.ua);
-    let walletId = wallet.credentials.walletId;
+    const skipDeviceValidation =
+      this.platformProvider.isIOS ||
+      this.profile.isDeviceChecked(this.platformProvider.ua);
+    const walletId = wallet.credentials.walletId;
 
-    this.logger.debug('ValidatingWallet: ' + walletId + ' skip Device:' + skipDeviceValidation);
+    this.logger.debug(
+      `ValidatingWallet: ${walletId} skip Device: ${skipDeviceValidation}`
+    );
     setTimeout(() => {
-      wallet.validateKeyDerivation({
-        skipDeviceValidation,
-      }, (err: any, isOK: any) => {
-        this.validationLock = false;
+      wallet.validateKeyDerivation(
+        {
+          skipDeviceValidation
+        },
+        (_, isOK) => {
+          this.validationLock = false;
 
-        this.logger.debug('ValidatingWallet End:  ' + walletId + ' isOK:' + isOK);
-        if (isOK) {
-          this.profile.setChecked(this.platformProvider.ua, walletId);
-        } else {
-          this.logger.warn('Key Derivation failed for wallet:' + walletId);
-          this.persistenceProvider.clearLastAddress(walletId).then(() => {
-          });
-        };
-
-        this.storeProfileIfDirty();
-      });
+          this.logger.debug(`ValidatingWallet End: ${walletId} isOK: ${isOK}`);
+          if (isOK) {
+            this.profile.setChecked(this.platformProvider.ua, walletId);
+          } else {
+            this.logger.warn(`Key Derivation failed for wallet: ${walletId}`);
+            this.persistenceProvider.clearLastAddress(walletId);
+          }
+          this.storeProfileIfDirty();
+        }
+      );
     }, delay);
   }
 
-  public storeProfileIfDirty(): void {
-    if (this.profile.dirty) {
-      this.persistenceProvider.storeProfile(this.profile).then((err: any) => {
-        this.logger.debug('Saved modified Profile');
-        return;
+  public storeProfileLegacy(oldProfile) {
+    this.persistenceProvider
+      .storeProfileLegacy(oldProfile)
+      .then(() => {
+        this.logger.debug('Saved legacy Profile');
+      })
+      .catch(err => {
+        this.logger.error('Could not save legacy Profile', err);
       });
-    } else {
-      return;
-    };
   }
 
-  public importWallet(str: string, opts: any): Promise<any> {
-    return new Promise((resolve, reject) => {
-      let walletClient = this.bwcProvider.getClient(null, opts);
+  public storeProfileIfDirty(): Promise<any> {
+    if (!this.profile.dirty) {
+      return Promise.resolve();
+    }
+    return this.persistenceProvider
+      .storeProfile(this.profile)
+      .then(() => {
+        this.logger.debug('Saved modified Profile (Dirty)');
+        return Promise.resolve();
+      })
+      .catch(err => {
+        this.logger.error('Could not save Profile (Dirty)', err);
+        return Promise.reject(err);
+      });
+  }
 
-      this.logger.debug('Importing Wallet:', opts);
+  private askToEncryptKey(key): Promise<any> {
+    if (!key) return Promise.resolve();
+    // if the key is already encrypted, keep it that way for new wallets
+    if (key.isPrivKeyEncrypted()) return Promise.resolve();
 
-      try {
-        let c = JSON.parse(str);
-
-        if (c.xPrivKey && c.xPrivKeyEncrypted) {
-          this.logger.warn('Found both encrypted and decrypted key. Deleting the encrypted version');
-          delete c.xPrivKeyEncrypted;
-          delete c.mnemonicEncrypted;
+    // do not request encryption if wallets were already created without it
+    const wallets = this.getWalletsFromGroup({ keyId: key.id });
+    if (!key.isPrivKeyEncrypted() && wallets && wallets.length)
+      return Promise.resolve();
+    return this.showEncryptPasswordInfoModal().then((password: string) => {
+      if (!password) {
+        return Promise.resolve();
+      } else {
+        try {
+          this.keyProvider.encryptPrivateKey(key, password);
+        } catch (error) {
+          return Promise.reject(error);
         }
-
-        str = JSON.stringify(c);
-
-        walletClient.import(str, {
-          compressed: opts.compressed,
-          password: opts.password
-        });
-      } catch (err) {
-        return reject(this.translate.instant('Could not import. Check input file.'));
+        return Promise.resolve();
       }
-
-      let strParsed: any = JSON.parse(str);
-
-      if (!strParsed.n) {
-        return reject("Backup format not recognized. If you are using a Copay Beta backup and version is older than 0.10, please see: https://github.com/bitpay/copay/issues/4730#issuecomment-244522614");
-      }
-
-      let addressBook = strParsed.addressBook ? strParsed.addressBook : {};
-
-      this.addAndBindWalletClient(walletClient, {
-        bwsurl: opts.bwsurl
-      }).then((walletId: string) => {
-        this.setMetaData(walletClient, addressBook).then(() => {
-          return resolve(walletClient);
-        }).catch((err: any) => {
-          this.logger.warn(err);
-          return reject(err);
-        });
-      }).catch((err: any) => {
-        return reject(err);
-      });
     });
   }
 
-  // An alert dialog
-  private askPassword(warnMsg: string, title: string): Promise<any> {
-    return new Promise((resolve, reject) => {
-      let opts = {
-        type: 'password',
-        useDanger: true
-      }
-      this.popupProvider.ionicPrompt(title, warnMsg, opts).then((res: any) => {
-        return resolve(res);
-      });
+  private showEncryptPasswordInfoModal(): Promise<any> {
+    const encryptPasswordModal = this.actionSheetProvider.createEncryptPasswordComponent();
+    encryptPasswordModal.present({ maxHeight: '100%', minHeight: '100%' });
+    return new Promise(resolve => {
+      encryptPasswordModal.onDidDismiss(password => resolve(password));
     });
   }
 
-  private showWarningNoEncrypt(): Promise<any> {
-    return new Promise((resolve, reject) => {
-      let title = this.translate.instant('Are you sure?');
-      let msg = this.translate.instant('Without encryption, a thief or another application on this device may be able to access your funds.');
-      let okText = this.translate.instant('I\'m sure');
-      let cancelText = this.translate.instant('Go Back');
-      this.popupProvider.ionicConfirm(title, msg, okText, cancelText).then((res: any) => {
-        return resolve(res);
-      });
-    });
-  }
+  private addAndBindWalletClients(data, opts?): Promise<any> {
+    opts = opts || {};
 
-  private askToEncryptWallet(wallet: any): Promise<any> {
-    return new Promise((resolve, reject) => {
+    return this.clearEncryptPassword(opts.keyIdToReImport, data.key)
+      .then(res => {
+        this.logger.warn('Clear Encrypt Password? ', res);
+        this.onGoingProcessProvider.pause();
+        // Encrypt wallet
+        return this.askToEncryptKey(data.key).then(() => {
+          this.onGoingProcessProvider.resume();
+          return this.keyProvider.addKey(data.key).then(async () => {
+            const boundWalletClients = [];
+            for (const walletClient of data.walletClients) {
+              const boundClient = await this.addAndBindWalletClient(
+                walletClient,
+                {
+                  bwsurl: opts.bwsurl,
+                  store: false
+                }
+              );
+              // Skip if wallet multisig already exists with another key
+              if (boundClient === undefined && walletClient.credentials.m > 1)
+                continue;
 
-      if(!wallet.canSign()) return resolve();
-
-      var title = this.translate.instant('Would you like to protect this wallet with a password?');
-      var message = this.translate.instant('Encryption can protect your funds if this device is stolen or compromised by malicious software.');
-      var okText = this.translate.instant('Yes');
-      var cancelText = this.translate.instant('No');
-      this.popupProvider.ionicConfirm(title, message, okText, cancelText).then((res: any) => {
-        if (!res) {
-          return this.showWarningNoEncrypt().then((res) => {
-            if (res) return resolve()
-            return this.encrypt(wallet).then(() => {
-              return resolve();
-            });
-          });
-        }
-        return this.encrypt(wallet).then(() => {
-          return resolve();
-        });
-      });
-    });
-  }
-
-  private encrypt(wallet: any): Promise<any> {
-    return new Promise((resolve, reject) => {
-      let title = this.translate.instant('Enter a password to encrypt your wallet');
-      let warnMsg = this.translate.instant('This password is only for this device, and it cannot be recovered. To avoid losing funds, write your password down.');
-      this.askPassword(warnMsg, title).then((password: string) => {
-        if (!password) {
-          this.showWarningNoEncrypt().then((res: any) => {
-            if (res) return resolve();
-            this.encrypt(wallet).then(() => {
-              return resolve();
-            });
-          });
-        }
-        else {
-          title = this.translate.instant('Enter your encrypt password again to confirm');
-          this.askPassword(warnMsg, title).then((password2: string) => {
-            if (!password2 || password != password2) {
-              this.encrypt(wallet).then(() => {
-                return resolve();
-              });
-            } else {
-              wallet.encryptPrivateKey(password);
-              return resolve();
+              boundWalletClients.push(boundClient);
             }
+            this.setOrderedWalletsByGroup(); // Update Ordered Wallet List
+            return this.storeProfileIfDirty()
+              .then(() => {
+                this.checkIfAlreadyExist(boundWalletClients);
+                return Promise.resolve(_.compact(boundWalletClients));
+              })
+              .catch(err => {
+                return Promise.reject('failed to bind wallets:' + err);
+              });
           });
-        }
+        });
+      })
+      .catch(e => {
+        this.errorsProvider.showDefaultError(
+          e,
+          this.translate.instant('Error on Re-Import')
+        );
       });
-    });
+  }
+
+  private checkIfAlreadyExist(walletClients: any[]): void {
+    const existentWallets = _.filter(walletClients, item => item == undefined)
+      .length;
+    const newWallets = walletClients.length - existentWallets;
+    if (existentWallets > 0) {
+      const msg1 = this.replaceParametersProvider.replace(
+        this.translate.instant('The wallet is already in the app'),
+        { nameCase: this.appProvider.info.nameCase }
+      );
+      const msg2 = this.replaceParametersProvider.replace(
+        this.translate.instant(
+          '{{existentWallets}} of your wallets already exist in {{nameCase}}'
+        ),
+        {
+          existentWallets,
+          nameCase: this.appProvider.info.nameCase
+        }
+      );
+      const msg3 = this.translate.instant('. Added a new wallet.');
+      const msg4 = this.replaceParametersProvider.replace(
+        this.translate.instant('. Added {{newWallets}} new wallets.'),
+        { newWallets }
+      );
+
+      let msg = existentWallets == 1 ? msg1 : msg2;
+      if (newWallets > 0) msg = newWallets == 1 ? msg + msg3 : msg + msg4;
+
+      const title =
+        newWallets > 0
+          ? this.translate.instant('Notice')
+          : this.translate.instant('Warning');
+      this.errorsProvider.showDefaultError(msg, title);
+    }
   }
 
   // Adds and bind a new client to the profile
-  private addAndBindWalletClient(wallet: any, opts: any): Promise<any> {
-    return new Promise((resolve, reject) => {
-      if (!wallet || !wallet.credentials) {
-        return reject(this.translate.instant('Could not access wallet'));
-      }
+  private async addAndBindWalletClient(
+    wallet,
+    opts: WalletBindTypeOpts = {}
+  ): Promise<any> {
+    if (!wallet || !wallet.credentials) {
+      return Promise.reject(this.translate.instant('Could not access wallet'));
+    }
 
-      // Encrypt wallet
-      this.onGoingProcessProvider.pause();
-      this.askToEncryptWallet(wallet).then(() => {
-        this.onGoingProcessProvider.resume();
+    const { bwsurl, store = true } = opts;
+    const walletId: string = wallet.credentials.walletId;
 
-        let walletId: string = wallet.credentials.walletId
+    if (!this.profile.addWallet(JSON.parse(wallet.toString()))) {
+      return Promise.resolve();
+    }
 
-        if (!this.profile.addWallet(JSON.parse(wallet.export()))) {
-          let message = "Wallet already in " + this.appProvider.info.nameCase; // TODO: translate
-          return reject(message);
-        }
+    const skipKeyValidation: boolean = this.shouldSkipValidation(walletId);
+    if (!skipKeyValidation) {
+      this.logger.debug('Trying to runValidation: ' + walletId);
+      await this.runValidation(wallet);
+    }
 
-        let skipKeyValidation: boolean = this.shouldSkipValidation(walletId);
-        if (!skipKeyValidation)
-          this.runValidation(wallet);
-
-        this.bindWalletClient(wallet);
-
-        let saveBwsUrl = (): Promise<any> => {
-          return new Promise((resolve, reject) => {
-            let defaults: any = this.configProvider.getDefaults();
-            let bwsFor: any = {};
-            bwsFor[walletId] = opts.bwsurl || defaults.bws.url;
-
-            // Dont save the default
-            if (bwsFor[walletId] == defaults.bws.url) {
-              return resolve();
-            }
-
-            this.configProvider.set({ bwsFor });
-            return resolve();
-          });
-        };
-
-        saveBwsUrl().then(() => {
-          this.persistenceProvider.storeProfile(this.profile).then(() => {
-            return resolve(wallet);
-          }).catch((err: any) => {
-            return reject(err);
-          });
+    this.saveBwsUrl(walletId, bwsurl);
+    return this.bindWalletClient(wallet).then(() => {
+      if (!store) {
+        this.logger.debug('No storing new walletClient');
+        return Promise.resolve(wallet);
+      } else {
+        this.logger.debug('Storing new walletClient');
+        this.setOrderedWalletsByGroup(); // Update Ordered Wallet List
+        return this.storeProfileIfDirty().then(() => {
+          return Promise.resolve(wallet);
         });
-      });
+      }
     });
+  }
+
+  private saveBwsUrl(walletId, bwsurl: string = null): void {
+    const defaults = this.configProvider.getDefaults();
+    const bwsFor = {};
+    bwsFor[walletId] = bwsurl || defaults.bws.url;
+
+    // Dont save the default
+    if (bwsFor[walletId] == defaults.bws.url) {
+      return;
+    }
+
+    this.configProvider.set({ bwsFor });
   }
 
   private shouldSkipValidation(walletId: string): boolean {
-    return this.profile.isChecked(this.platformProvider.ua, walletId) || this.platformProvider.isIOS;
+    return (
+      true ||
+      this.profile.isChecked(this.platformProvider.ua, walletId) ||
+      this.platformProvider.isIOS
+    ); // disabled for now
   }
 
-  private setMetaData(wallet: any, addressBook: any): Promise<any> {
+  private setMetaData(wallet, addressBook): Promise<any> {
     return new Promise((resolve, reject) => {
-      this.persistenceProvider.getAddressbook(wallet.credentials.network).then((localAddressBook: any) => {
-        let localAddressBook1 = {};
-        try {
-          localAddressBook1 = JSON.parse(localAddressBook);
-        } catch (ex) {
-          this.logger.warn(ex);
-        }
-        let mergeAddressBook = _.merge(addressBook, localAddressBook1);
-        this.persistenceProvider.setAddressbook(wallet.credentials.network, JSON.stringify(mergeAddressBook)).then(() => {
-          return resolve();
-        }).catch((err: any) => {
+      this.persistenceProvider
+        .getAddressBook(wallet.credentials.network)
+        .then(localAddressBook => {
+          try {
+            localAddressBook = JSON.parse(localAddressBook);
+          } catch (ex) {
+            this.logger.info(
+              'Address Book: JSON.parse not neccesary.',
+              localAddressBook
+            );
+          }
+          const mergeAddressBook = _.merge(addressBook, localAddressBook);
+          this.persistenceProvider
+            .setAddressBook(
+              wallet.credentials.network,
+              JSON.stringify(mergeAddressBook)
+            )
+            .then(() => {
+              return resolve();
+            })
+            .catch(err => {
+              return reject(err);
+            });
+        })
+        .catch(err => {
           return reject(err);
         });
-      }).catch((err: any) => {
-        return reject(err);
+    });
+  }
+
+  public importExtendedPrivateKey(xPrivKey: string, opts): Promise<any> {
+    this.logger.info('Importing Wallet xPrivKey');
+    opts.xPrivKey = xPrivKey;
+    return this.serverAssistedImport(opts).then(data => {
+      // If the key already exists, bind the new wallets to it.
+      const key = this.keyProvider.getMatchedKey(data.key);
+      // skip if re-importing to clear encrypt
+      if (key && !opts.keyId) {
+        data.key = this.keyProvider.getKey(key.id);
+        opts.keyId = key.id;
+        data.walletClients.forEach(walletClient => {
+          walletClient.credentials.keyId = walletClient.keyId = key.id;
+        });
+      }
+      return this.addAndBindWalletClients(data, {
+        bwsurl: opts.bwsurl,
+        keyIdToReImport: opts.keyId
       });
     });
   }
 
-  public importExtendedPrivateKey(xPrivKey: string, opts: any): Promise<any> {
-    return new Promise((resolve, reject) => {
+  public importMnemonic(words, opts): Promise<any> {
+    this.logger.info('Importing Wallets Mnemonic');
+    words = this.normalizeMnemonic(words);
+    opts.words = words;
+    return this.serverAssistedImport(opts).then(data => {
+      // If the key already exists, bind the new wallets to it.
+      const key = this.keyProvider.getMatchedKey(data.key);
+      // skip if re-importing to clear encrypt
+      if (key && !opts.keyId) {
+        data.key = this.keyProvider.getKey(key.id);
+        opts.keyId = key.id;
+        data.walletClients.forEach(walletClient => {
+          walletClient.credentials.keyId = walletClient.keyId = key.id;
+        });
+      }
+      return this.addAndBindWalletClients(data, {
+        bwsurl: opts.bwsurl,
+        keyIdToReImport: opts.keyId
+      });
+    });
+  }
 
-      let walletClient = this.bwcProvider.getClient(null, opts);
-      this.logger.debug('Importing Wallet xPrivKey');
+  public syncWallets(words, opts): Promise<any> {
+    this.logger.info('Syncing wallets');
+    words = this.normalizeMnemonic(words);
+    opts.words = words;
+    return this.serverAssistedImport(opts).then(async data => {
+      data.key = this.keyProvider.getMatchedKey(data.key);
+      data.walletClients.forEach(walletClient => {
+        walletClient.credentials.keyId = walletClient.keyId = data.key.id;
+      });
+      const boundWalletClients = [];
+      for (const walletClient of data.walletClients) {
+        const boundClient = await this.addAndBindWalletClient(walletClient, {
+          bwsurl: opts.bwsurl,
+          store: false
+        });
+        boundWalletClients.push(boundClient);
+      }
+      return this.storeProfileIfDirty()
+        .then(() => {
+          this.countNewWallets(boundWalletClients);
+          return Promise.resolve(_.compact(boundWalletClients));
+        })
+        .catch(err => {
+          return Promise.reject('failed to bind wallets:' + err);
+        });
+    });
+  }
 
-      walletClient.importFromExtendedPrivateKey(xPrivKey, opts, (err: any) => {
-        if (err) {
-          if (err instanceof this.errors.NOT_AUTHORIZED) return reject(err);
-          this.bwcErrorProvider.cb(err, this.translate.instant('Could not import')).then((msg: string) => {
-            return reject(msg);
-          });
-        } else {
-          this.addAndBindWalletClient(walletClient, {
+  private countNewWallets(walletClients: any[]): void {
+    let msg;
+    const title = this.translate.instant('Sync completed');
+    const newWalletsCount = _.compact(walletClients).length;
+    if (newWalletsCount > 0) {
+      const msg1 = this.translate.instant('New wallet found');
+      const msg2 = this.replaceParametersProvider.replace(
+        this.translate.instant('{{newWalletsCount}} wallets found'),
+        {
+          newWalletsCount
+        }
+      );
+
+      msg = newWalletsCount == 1 ? msg1 : msg2;
+    } else {
+      msg = this.translate.instant('Your key is already synced');
+    }
+    const infoSheet = this.actionSheetProvider.createInfoSheet('sync-wallets', {
+      title,
+      msg
+    });
+    infoSheet.present();
+  }
+
+  public importFile(str: string, opts): Promise<any> {
+    return this._importFile(str, opts).then(async data => {
+      this.onGoingProcessProvider.pause();
+      return this.askToEncryptKey(data.key).then(() => {
+        this.onGoingProcessProvider.resume();
+        return this.keyProvider.addKey(data.key).then(() => {
+          return this.addAndBindWalletClient(data.walletClient, {
             bwsurl: opts.bwsurl
-          }).then((wallet: any) => {
-            return resolve(wallet);
-          }).catch((err: any) => {
-            return reject(err);
+          }).then(walletClient => {
+            this.checkIfAlreadyExist([].concat(walletClient));
+            return Promise.resolve(walletClient);
           });
-        };
+        });
       });
     });
   }
 
-  private normalizeMnemonic(words: string): string {
-    if (!words || !words.indexOf) return words;
-    let isJA = words.indexOf('\u3000') > -1;
-    let wordList = words.split(/[\u3000\s]+/);
+  private _importFile(str: string, opts): Promise<any> {
+    return new Promise(async (resolve, reject) => {
+      opts = opts ? opts : {};
+      opts['bp_partner'] = this.appProvider.info.name;
+      opts['bp_partner_version'] = this.appProvider.info.version;
+      this.logger.info('Importing Wallet:', opts);
+      const client = this.bwcProvider.getClient(null, opts);
+      let credentials;
+      let key;
+      let addressBook;
+      const Key = this.bwcProvider.getKey();
 
-    return wordList.join(isJA ? '\u3000' : ' ');
-  };
-
-  public importMnemonic(words: string, opts: any): Promise<any> {
-    return new Promise((resolve, reject) => {
-
-      let walletClient = this.bwcProvider.getClient(null, opts);
-
-      this.logger.debug('Importing Wallet Mnemonic');
-
-      words = this.normalizeMnemonic(words);
-      walletClient.importFromMnemonic(words, {
-        network: opts.networkName,
-        passphrase: opts.passphrase,
-        entropySourcePath: opts.entropySourcePath,
-        derivationStrategy: opts.derivationStrategy || 'BIP44',
-        account: opts.account || 0,
-        coin: opts.coin
-      }, (err: any) => {
-        if (err) {
-          if (err instanceof this.errors.NOT_AUTHORIZED) {
-            return reject(err);
+      const data = JSON.parse(str);
+      if (data.credentials) {
+        try {
+          credentials = data.credentials;
+          // check if the key exists to just add the wallet
+          if (data.key) {
+            key = this.keyProvider.getMatchedKey(data.key);
+            // skip if re-importing to clear encrypt
+            if (key && !opts.keyId) {
+              data.key = this.keyProvider.getKey(key.id);
+              opts.keyId = null;
+              data.credentials.keyId = key.id;
+            } else {
+              key = new Key({
+                seedType: 'object',
+                seedData: data.key
+              });
+            }
+          }
+          addressBook = data.addressBook;
+        } catch (err) {
+          if (err && err.message == 'Bad Key version') {
+            // Workaround for bad generated files. Fixed: https://github.com/bitpay/wallet/pull/11872
+            data.key.version = '1';
+            data.key.mnemonicHasPassphrase = false;
+            key = new Key({
+              seedType: 'object',
+              seedData: data.key
+            });
+          } else {
+            return reject(
+              this.translate.instant('Could not import. Check input file.')
+            );
+          }
+        }
+      } else {
+        // old format ? root = credentials.
+        try {
+          // needs to migrate?
+          if (data.xPrivKey && data.xPrivKeyEncrypted) {
+            this.logger.warn(
+              'Found both encrypted and decrypted key. Deleting the encrypted version'
+            );
+            delete data.xPrivKeyEncrypted;
+            delete data.mnemonicEncrypted;
           }
 
-          this.bwcErrorProvider.cb(err, this.translate.instant('Could not import')).then((msg: string) => {
-            return reject(msg);
-          });
-
+          let migrated = this.bwcProvider.upgradeCredentialsV1(data);
+          credentials = migrated.credentials;
+          key = migrated.key;
+          addressBook = data.addressBook ? data.addressBook : {};
+        } catch (error) {
+          this.logger.error(error);
+          return reject(
+            this.translate.instant('Could not import. Check input file.')
+          );
         }
+      }
 
-        this.addAndBindWalletClient(walletClient, {
-          bwsurl: opts.bwsurl
-        }).then((wallet: any) => {
-          return resolve(wallet);
-        }).catch((err: any) => {
-          return reject(err);
+      if (!credentials.n) {
+        return reject(
+          'Backup format not recognized. If you are using a Copay Beta backup and version is older than 0.10, please see: https://github.com/bitpay/copay/issues/4730#issuecomment-244522614'
+        );
+      }
+
+      // check if custom token
+      if (!this.coinSupported(credentials.coin) && credentials.token) {
+        const customTokens = [];
+        customTokens.push({
+          ...credentials.token,
+          ...{ symbol: credentials.token.symbol.toLowerCase() }
         });
+        await this.currencyProvider.addCustomToken(customTokens);
+      }
+
+      client.fromString(JSON.stringify(credentials));
+
+      if (key) {
+        this.logger.info(`Wallet ${credentials.walletId} key's extracted`);
+      } else {
+        this.logger.info(`READ-ONLY Wallet ${credentials.walletId} migrated`);
+      }
+
+      this.setMetaData(client, addressBook).catch(err => {
+        this.logger.warn('Could not set meta data: ', err);
       });
+
+      return resolve({ key, walletClient: client });
     });
   }
 
-  public importExtendedPublicKey(opts: any): Promise<any> {
+  // opts.words opts.xPrivKey
+  private serverAssistedImport(opts): Promise<any> {
     return new Promise((resolve, reject) => {
-
-      let walletClient = this.bwcProvider.getClient(null, opts);
-      this.logger.debug('Importing Wallet XPubKey');
-
-      walletClient.importFromExtendedPublicKey(opts.extendedPublicKey, opts.externalSource, opts.entropySource, {
-        account: opts.account || 0,
-        derivationStrategy: opts.derivationStrategy || 'BIP44',
-        coin: opts.coin
-      }, (err: any) => {
-        if (err) {
-
-          // in HW wallets, req key is always the same. They can't addAccess.
-          if (err instanceof this.errors.NOT_AUTHORIZED)
-            err.name = 'WALLET_DOES_NOT_EXIST';
-
-          this.bwcErrorProvider.cb(err, this.translate.instant('Could not import')).then((msg: string) => {
-            return reject(msg);
-          });
-
+      this.bwcProvider.Client.serverAssistedImport(
+        opts,
+        {
+          baseUrl: opts.bwsurl // clientOpts
+        },
+        async (err, key, walletClients) => {
+          if (err) {
+            return reject(err);
+          }
+          if (walletClients.length === 0) {
+            return reject('WALLET_DOES_NOT_EXIST');
+          } else {
+            let customTokens = [];
+            walletClients.forEach(w => {
+              if (
+                !this.coinSupported(w.credentials.coin) &&
+                w.credentials.token
+              )
+                customTokens.push({
+                  ...w.credentials.token,
+                  ...{ symbol: w.credentials.token.symbol.toLowerCase() }
+                });
+            });
+            if (customTokens && customTokens[0])
+              await this.currencyProvider.addCustomToken(customTokens);
+            return resolve({ key, walletClients });
+          }
         }
-
-        this.addAndBindWalletClient(walletClient, {
-          bwsurl: opts.bwsurl
-        }).then((wallet: any) => {
-          return resolve(wallet);
-        }).catch((err: any) => {
-          return reject(err);
-        });
-      });
+      );
     });
+  }
+
+  public normalizeMnemonic(words: string): string {
+    if (!words || !words.indexOf) return words;
+
+    // \u3000: A space of non-variable width: used in Chinese, Japanese, Korean
+    const isJA = words.indexOf('\u3000') > -1;
+    const wordList = words
+      .trim()
+      .toLowerCase()
+      .split(/[\u3000\s]+/);
+
+    return wordList.join(isJA ? '\u3000' : ' ');
   }
 
   public createProfile(): void {
     this.logger.info('Creating profile');
-    this.profile = new Profile();
-    this.profile = this.profile.create();
+    this.profile = Profile.create();
     this.persistenceProvider.storeNewProfile(this.profile);
   }
 
-  public bindProfile(profile: any): Promise<any> {
-    return new Promise((resolve, reject) => {
-      let bindWallets = (): Promise<any> => {
-        return new Promise((resolve, reject) => {
+  private bindWallets(profile): Promise<any> {
+    const profileLength = profile.credentials.length;
 
-          let l = profile.credentials.length;
-          let i = 0;
-          let totalBound = 0;
+    if (!profileLength) {
+      return Promise.resolve();
+    }
 
-          if (!l) {
-            return resolve();
-          }
+    const promises = [];
 
-          _.each(profile.credentials, (credentials) => {
-            this.bindWallet(credentials).then((bound: number) => {
-              i++;
-              totalBound += bound;
-              if (i == l) {
-                this.logger.info('Bound ' + totalBound + ' out of ' + l + ' wallets');
-                return resolve();
-              }
-            }).catch((err) => {
-              return reject(err);
-            });
-          });
-        });
-      };
+    return this.upgradeMultipleCredentials(profile).then(() => {
+      _.each(profile.credentials, credentials => {
+        promises.push(this.bindWallet(credentials));
+      });
 
-      bindWallets().then(() => {
-        this.isOnboardingCompleted().then(() => {
-          this.isDisclaimerAccepted().then(() => {
-            return resolve();
-          }).catch(() => {
-            return reject(new Error('NONAGREEDDISCLAIMER: Non agreed disclaimer'));
-          });
-        }).catch(() => {
-          this.isDisclaimerAccepted().then(() => {
-            this.setOnboardingCompleted().then(() => {
-              return resolve();
-            }).catch((err: any) => {
-              this.logger.error(err);
-            });
-          }).catch(() => {
-            return reject(new Error('ONBOARDINGNONCOMPLETED: Onboarding non completed'));
-          });
-        });
-      }).catch((err: any) => {
-        return reject(err);
+      return Promise.all(promises).then(() => {
+        this.logger.info(`Bound ${profileLength} wallets`);
+        this.setOrderedWalletsByGroup(); // Update Ordered Wallet List When App Start
+        return Promise.resolve();
       });
     });
   }
 
-  public isDisclaimerAccepted(): Promise<any> {
-    return new Promise((resolve, reject) => {
-
-      let disclaimerAccepted = this.profile && this.profile.disclaimerAccepted;
-      if (disclaimerAccepted) return resolve();
-
-      // OLD flag
-      this.persistenceProvider.getCopayDisclaimerFlag().then((val) => {
-        if (val) {
-          this.profile.disclaimerAccepted = true;
-          return resolve();
-        } else {
-          return reject();
-        }
-      });
+  private bindProfile(profile): Promise<any> {
+    return this.bindWallets(profile).then(() => {
+      return this.isDisclaimerAccepted();
     });
   }
 
-  public isOnboardingCompleted(): Promise<any> {
-    return new Promise((resolve, reject) => {
+  private upgradeMultipleCredentials(profile): Promise<any> {
+    const oldProfile = _.clone(profile);
+    const migrated = this.bwcProvider.upgradeMultipleCredentialsV1(
+      profile.credentials
+    );
 
-      let onboardingCompleted = this.profile && this.profile.onboardingCompleted;
-      if (onboardingCompleted) return resolve();
+    const newKeys = migrated.keys;
+    const newCrededentials = migrated.credentials;
 
-      this.persistenceProvider.getCopayOnboardingFlag().then((val) => {
-        if (val) {
-          this.profile.onboardingCompleted = true;
-          return resolve();
-        } else {
-          return reject();
-        }
+    if (newKeys.length > 0) {
+      this.logger.info(`Storing ${newKeys.length} migrated Keys`);
+      this.storeProfileLegacy(oldProfile);
+      return this.keyProvider.addKeys(newKeys).then(() => {
+        profile.credentials = newCrededentials;
+        profile.dirty = true;
+        return this.storeProfileIfDirty();
       });
-    });
-  }
+    } else {
+      if (newCrededentials.length > 0) {
+        // Only RO wallets.
+        this.storeProfileLegacy(oldProfile);
 
-
-  private bindWallet(credentials: any): Promise<any> {
-    return new Promise((resolve, reject) => {
-
-      if (!credentials.walletId || !credentials.m) {
-        return reject('bindWallet should receive credentials JSON');
+        profile.credentials = newCrededentials;
+        profile.dirty = true;
+        return this.storeProfileIfDirty();
       }
+      return Promise.resolve();
+    }
+  }
 
-      // Create the client
-      let getBWSURL = (walletId: string) => {
-        let config: any = this.configProvider.get();
-        let defaults: any = this.configProvider.getDefaults();
-        return ((config.bwsFor && config.bwsFor[walletId]) || defaults.bws.url);
-      };
+  public async isDisclaimerAccepted(): Promise<any> {
+    const disclaimerAccepted = this.profile && this.profile.disclaimerAccepted;
+    if (disclaimerAccepted) return Promise.resolve();
+    // OLD flag
+    let disclaimerFlag;
+    try {
+      disclaimerFlag = await this.persistenceProvider.getCopayDisclaimerFlag();
+    } catch (error) {}
+    if (disclaimerFlag) {
+      this.profile.disclaimerAccepted = true;
+      return Promise.resolve();
+    } else {
+      const onboardingState = this.profile.credentials.length
+        ? 'NONAGREEDDISCLAIMER'
+        : 'UNFINISHEDONBOARDING';
+      return Promise.resolve(onboardingState);
+    }
+  }
 
-      let walletClient = this.bwcProvider.getClient(JSON.stringify(credentials), {
-        bwsurl: getBWSURL(credentials.walletId),
-      });
+  private getBWSURL(walletId: string) {
+    const config = this.configProvider.get();
+    const defaults = this.configProvider.getDefaults();
+    return (config.bwsFor && config.bwsFor[walletId]) || defaults.bws.url;
+  }
 
-      let skipKeyValidation = this.shouldSkipValidation(credentials.walletId);
-      if (!skipKeyValidation) this.runValidation(walletClient, 500);
+  private async bindWallet(credentials): Promise<any> {
+    if (!credentials.walletId || !credentials.m) {
+      return Promise.reject(
+        new Error('bindWallet should receive credentials JSON')
+      );
+    }
 
-      this.logger.info('Binding wallet:' + credentials.walletId + ' Validating?:' + !skipKeyValidation);
-      return resolve(this.bindWalletClient(walletClient));
+    // Create the client
+    const walletClient = this.bwcProvider.getClient(
+      JSON.stringify(credentials),
+      {
+        bwsurl: this.getBWSURL(credentials.walletId),
+        bp_partner: this.appProvider.info.name,
+        bp_partner_version: this.appProvider.info.version
+      }
+    );
+
+    const skipKeyValidation = this.shouldSkipValidation(credentials.walletId);
+    if (!skipKeyValidation) {
+      this.logger.debug('Trying to runValidation: ' + credentials.walletId);
+      await this.runValidation(walletClient, 500);
+    }
+    return this.bindWalletClient(walletClient);
+  }
+
+  public getProfileLegacy(): Promise<any> {
+    return this.persistenceProvider.getProfileLegacy().catch(err => {
+      this.logger.info('Error getting old Profile', err);
+    });
+  }
+
+  public removeProfileLegacy(): Promise<any> {
+    return this.persistenceProvider.removeProfileLegacy().catch(err => {
+      this.logger.info('Error getting old Profile', err);
     });
   }
 
   public loadAndBindProfile(): Promise<any> {
-    return new Promise((resolve, reject) => {
-      this.persistenceProvider.getProfile().then((profile: any) => {
+    return this.persistenceProvider.getProfile().then(profile => {
+      if (!profile) {
+        return Promise.resolve();
+      }
 
-        if (!profile) {
-          return resolve();
-        }
-        this.profile = new Profile();
-        this.profile = this.profile.fromObj(profile);
-        // Deprecated: storageService.tryToMigrate
-        this.logger.debug('Profile read');
-        this.bindProfile(this.profile).then(() => {
-          return resolve(this.profile);
-        }).catch((err: any) => {
-          return reject(err);
-        });
-      }).catch((err: any) => {
-        return reject(err);
-      });
+      this.profile = Profile.fromObj(profile);
+
+      // Deprecated: storageService.tryToMigrate
+      this.logger.info('Profile loaded');
+
+      return this.bindProfile(this.profile);
     });
   }
 
-  private seedWallet(opts: any): Promise<any> {
+  public importWithDerivationPath(opts): Promise<any> {
     return new Promise((resolve, reject) => {
+      this.logger.info('Importing Wallet with derivation path');
+      this._importWithDerivationPath(opts)
+        .then(data => {
+          // Check if wallet exists
+          data.walletClient.openWallet(async err => {
+            if (err) {
+              if (err.message.indexOf('not found') > 0) {
+                err = 'WALLET_DOES_NOT_EXIST';
+              }
+              return reject(err);
+            }
+            this.keyProvider.addKey(data.key).then(() => {
+              this.addAndBindWalletClient(data.walletClient, {
+                bwsurl: opts.bwsurl
+              })
+                .then(walletClient => {
+                  this.checkIfAlreadyExist([].concat(walletClient));
+                  return resolve(walletClient);
+                })
+                .catch(err => {
+                  return reject(err);
+                });
+            });
+          });
+        })
+        .catch(err => {
+          return reject(err);
+        });
+    });
+  }
 
+  private _importWithDerivationPath(opts): Promise<any> {
+    const showOpts = _.clone(opts);
+    if (showOpts.extendedPrivateKey) showOpts.extendedPrivateKey = '[hidden]';
+    if (showOpts.mnemonic) showOpts.mnemonic = '[hidden]';
+
+    this.logger.debug('Importing Wallet:', JSON.stringify(showOpts));
+    return this.seedWallet(opts);
+  }
+
+  private seedWallet(opts?): Promise<any> {
+    return new Promise((resolve, reject) => {
       opts = opts ? opts : {};
-      let walletClient = this.bwcProvider.getClient(null, opts);
-      let network = opts.networkName || 'livenet';
+      opts['bp_partner'] = this.appProvider.info.name;
+      opts['bp_partner_version'] = this.appProvider.info.version;
 
+      // Token wallet?
+      if (opts.pairedWallet) {
+        return resolve();
+      }
+
+      const walletClient = this.bwcProvider.getClient(null, opts);
+      const network = opts.networkName || 'livenet';
+      const Key = this.bwcProvider.getKey();
+      let key;
       if (opts.mnemonic) {
         try {
           opts.mnemonic = this.normalizeMnemonic(opts.mnemonic);
-          walletClient.seedFromMnemonic(opts.mnemonic, {
-            network,
-            passphrase: opts.passphrase,
-            account: opts.account || 0,
-            derivationStrategy: opts.derivationStrategy || 'BIP44',
-            coin: opts.coin
+          // new BWC 8.23 api
+          key = new Key({
+            seedType: 'mnemonic',
+            seedData: opts.mnemonic,
+            useLegacyCoinType: opts.useLegacyCoinType,
+            useLegacyPurpose: opts.useLegacyPurpose,
+            passphrase: opts.passphrase
           });
-
+          walletClient.fromString(
+            key.createCredentials(opts.password, {
+              coin: opts.coin,
+              network,
+              account: opts.account || 0,
+              addressType: opts.addressType,
+              n: opts.n || 1
+            })
+          );
         } catch (ex) {
-          this.logger.info(ex);
-          return reject(this.translate.instant('Could not create: Invalid wallet recovery phrase'));
+          this.logger.info('Invalid wallet recovery phrase: ' + ex);
+          return reject(
+            this.translate.instant(
+              'Could not create: Invalid wallet recovery phrase'
+            )
+          );
         }
       } else if (opts.extendedPrivateKey) {
         try {
-          walletClient.seedFromExtendedPrivateKey(opts.extendedPrivateKey, {
-            network,
-            account: opts.account || 0,
-            derivationStrategy: opts.derivationStrategy || 'BIP44',
-            coin: opts.coin,
+          key = new Key({
+            seedType: 'extendedPrivateKey',
+            seedData: opts.extendedPrivateKey,
+            useLegacyCoinType: opts.useLegacyCoinType,
+            useLegacyPurpose: opts.useLegacyPurpose
           });
+          walletClient.fromString(
+            key.createCredentials(null, {
+              coin: opts.coin,
+              network,
+              account: opts.account || 0,
+              n: opts.n || 1
+            })
+          );
+          if (opts.duplicateKeyId) {
+            walletClient.credentials.keyId = opts.duplicateKeyId;
+
+            this.logger.debug(
+              `Reusing ${opts.duplicateKeyId} on the duplicated wallet`
+            );
+          }
         } catch (ex) {
-          this.logger.warn(ex);
-          return reject(this.translate.instant('Could not create using the specified extended private key'));
-        }
-      } else if (opts.extendedPublicKey) {
-        try {
-          walletClient.seedFromExtendedPublicKey(opts.extendedPublicKey, opts.externalSource, opts.entropySource, {
-            account: opts.account || 0,
-            derivationStrategy: opts.derivationStrategy || 'BIP44',
-            coin: opts.coin
-          });
-          walletClient.credentials.hwInfo = opts.hwInfo;
-        } catch (ex) {
-          this.logger.warn("Creating wallet from Extended Public Key Arg:", ex, opts);
-          return reject(this.translate.instant('Could not create using the specified extended public key'));
+          this.logger.warn(
+            'Could not get seed from Extended Private Key: ',
+            ex
+          );
+          return reject(
+            this.translate.instant(
+              'Could not create using the specified extended private key'
+            )
+          );
         }
       } else {
-        let lang = this.languageProvider.getCurrent();
+        const lang = this.languageProvider.getCurrent();
         try {
-          walletClient.seedFromRandomWithMnemonic({
-            network,
-            passphrase: opts.passphrase,
-            language: lang,
-            account: 0,
-            coin: opts.coin
-          });
+          if (!opts.key && !opts.keyId) {
+            key = new Key({
+              seedType: 'new',
+              language: lang
+            });
+          } else if (opts.key) {
+            key = opts.key;
+          } else if (opts.keyId) {
+            key = this.keyProvider.getKey(opts.keyId);
+          }
+          walletClient.fromString(
+            key.createCredentials(opts.password, {
+              coin: opts.coin,
+              network,
+              account: opts.account || 0,
+              n: opts.n || 1
+            })
+          );
         } catch (e) {
           this.logger.info('Error creating recovery phrase: ' + e.message);
           if (e.message.indexOf('language') > 0) {
             this.logger.info('Using default language for recovery phrase');
-            walletClient.seedFromRandomWithMnemonic({
-              network,
-              passphrase: opts.passphrase,
-              account: 0,
-              coin: opts.coin
-            });
+            key = new Key({ seedType: 'new' });
+            walletClient.fromString(
+              key.createCredentials(opts.password, {
+                coin: opts.coin,
+                network,
+                account: opts.account || 0,
+                n: opts.n || 1
+              })
+            );
           } else {
             return reject(e);
           }
         }
       }
-      return resolve(walletClient);
+      return resolve({ walletClient, key });
     });
   }
 
-  // Creates a wallet on BWC/BWS
-  private doCreateWallet(opts: any): Promise<any> {
+  // Creates a wallet on BWC/BWS and store it
+  private _createWallet(opts): Promise<any> {
     return new Promise((resolve, reject) => {
-
-      let showOpts = _.clone(opts);
+      const showOpts = _.clone(opts);
       if (showOpts.extendedPrivateKey) showOpts.extendedPrivateKey = '[hidden]';
       if (showOpts.mnemonic) showOpts.mnemonic = '[hidden]';
+      if (showOpts.password) showOpts.password = '[hidden]';
+      if (showOpts.key) showOpts.key = '[hidden]';
 
       this.logger.debug('Creating Wallet:', JSON.stringify(showOpts));
+
+      if (opts.useNativeSegwit && opts.coin !== 'btc' && opts.coin !== 'ltc') {
+        const err = 'Wrong useNativeSegwit opt for non btc wallet';
+        return reject(err);
+      }
       setTimeout(() => {
-        this.seedWallet(opts).then((walletClient: any) => {
+        this.seedWallet(opts)
+          .then(data => {
+            const coin = `[${opts.coin.toUpperCase()}]`;
+            const name =
+              opts.name ||
+              `${this.translate.instant('Personal Wallet')} ${coin}`;
+            const myName = opts.myName || this.translate.instant('me');
 
-          let name = opts.name || this.translate.instant('Personal Wallet');
-          let myName = opts.myName || this.translate.instant('me');
+            data.walletClient.createWallet(
+              name,
+              myName,
+              opts.m,
+              opts.n,
+              {
+                network: opts.networkName,
+                singleAddress: opts.singleAddress,
+                walletPrivKey: opts.walletPrivKey,
+                coin: opts.coin,
+                useNativeSegwit: opts.useNativeSegwit
+              },
+              err => {
+                const copayerRegistered =
+                  err instanceof this.errors.COPAYER_REGISTERED;
+                const isSetSeed = opts.mnemonic || opts.extendedPrivateKey;
 
-          walletClient.createWallet(name, myName, opts.m, opts.n, {
-            network: opts.networkName,
-            singleAddress: opts.singleAddress,
-            walletPrivKey: opts.walletPrivKey,
-            coin: opts.coin
-          }, (err: any, secret: any) => {
-            if (err) {
-              this.bwcErrorProvider.cb(err, this.translate.instant('Error creating wallet')).then((msg: string) => {
-                return reject(msg);
-              });
-            } else {
-              return resolve(walletClient);
-            }
+                if (err && (!copayerRegistered || isSetSeed)) {
+                  const msg = this.bwcErrorProvider.msg(
+                    err,
+                    this.translate.instant('Error creating wallet')
+                  );
+                  return reject(msg);
+                } else if (copayerRegistered) {
+                  // try with account + 1
+                  opts.account = opts.account ? opts.account + 1 : 1;
+                  if (opts.account === 20)
+                    return reject(
+                      this.translate.instant(
+                        'You reach the limit of twenty wallets from the same coin and network'
+                      )
+                    );
+                  return resolve(this._createWallet(opts));
+                } else {
+                  // Set default preferences.
+                  const config = this.configProvider.get();
+
+                  const prefs = {
+                    email: config.emailNotifications.email,
+                    language: this.languageProvider.getCurrent(),
+                    unit: 'btc' // deprecated
+                  };
+
+                  data.walletClient.preferences = _.assign(
+                    prefs,
+                    data.walletClient.preferences
+                  );
+                  return resolve(data);
+                }
+              }
+            );
+          })
+          .catch(err => {
+            return reject(err);
           });
-        }).catch((err: any) => {
-          return reject(err);
-        });
       }, 50);
     });
   }
 
-  // create and store a wallet
-  public createWallet(opts: any): Promise<any> {
-    return new Promise((resolve, reject) => {
-      this.doCreateWallet(opts).then((walletClient: any) => {
-        this.addAndBindWalletClient(walletClient, {
-          bwsurl: opts.bwsurl
-        }).then((wallet: any) => {
-          return resolve(wallet);
-        });
-      }).catch((err: any) => {
-        return reject(err);
-      });
-    });
-  }
-
   // joins and stores a wallet
-  public joinWallet(opts: any): Promise<any> {
+  private _joinWallet(opts): Promise<any> {
     return new Promise((resolve, reject) => {
-      this.logger.debug('Joining Wallet:', opts);
+      this.logger.info('Joining Wallet...');
 
+      let walletData;
       try {
-        var walletData = this.bwcProvider.parseSecret(opts.secret);
+        walletData = this.bwcProvider.parseSecret(opts.secret);
 
         // check if exist
-        if (_.find(this.profile.credentials, {
-          'walletId': walletData.walletId
-        })) {
-          return reject(this.translate.instant('Cannot join the same wallet more that once'));
+        if (
+          _.find(this.profile.credentials, {
+            walletId: walletData.walletId
+          })
+        ) {
+          return reject(
+            this.translate.instant('Cannot join the same wallet more that once')
+          );
         }
       } catch (ex) {
-        this.logger.debug(ex);
+        this.logger.error(ex);
         return reject(this.translate.instant('Bad wallet invitation'));
       }
       opts.networkName = walletData.network;
-      this.logger.debug('Joining Wallet:', opts);
 
-      this.seedWallet(opts).then((walletClient: any) => {
-        walletClient.joinWallet(opts.secret, opts.myName || 'me', {
-          coin: opts.coin
-        }, (err: any) => {
-          if (err) {
-            this.bwcErrorProvider.cb(err, this.translate.instant('Could not join wallet')).then((msg: string) => {
-              return reject(msg);
-            });
-          } else {
-            this.addAndBindWalletClient(walletClient, {
-              bwsurl: opts.bwsurl
-            }).then((wallet: any) => {
-              return resolve(wallet);
-            });
-          };
+      /* TODO: opts.n is just used to determinate if the wallet is multisig (m/48'/xx) or single sig (m/44')
+        we should change the name to 'isMultisig'
+       */
+      opts.n = 2;
+
+      this.logger.debug('Joining Wallet:', opts);
+      this.seedWallet(opts)
+        .then(data => {
+          data.walletClient.joinWallet(
+            opts.secret,
+            opts.myName || 'me',
+            {
+              coin: opts.coin
+            },
+            err => {
+              if (err) {
+                if (err instanceof this.errors.COPAYER_REGISTERED) {
+                  // try with account + 1
+                  opts.account = opts.account ? opts.account + 1 : 1;
+                  if (opts.account === 20)
+                    return reject(
+                      this.translate.instant(
+                        'You reach the limit of twenty wallets from the same coin and network'
+                      )
+                    );
+                  return resolve(this._joinWallet(opts));
+                } else {
+                  const msg = this.bwcErrorProvider.msg(
+                    err,
+                    this.translate.instant('Could not join wallet')
+                  );
+                  return reject(msg);
+                }
+              }
+              return resolve(data);
+            }
+          );
+        })
+        .catch(err => {
+          return reject(err);
         });
-      }).catch((err: any) => {
-        return reject(err);
+    });
+  }
+
+  public getWallet(walletId: string) {
+    return this.wallet[walletId];
+  }
+
+  public getWalletGroup(keyId) {
+    keyId = keyId ? keyId : 'read-only';
+    return this.walletsGroups[keyId];
+  }
+
+  private _deleteWalletClient(wallet) {
+    this.logger.info('Deleting Wallet:', wallet.credentials.walletName);
+    const walletId = wallet.credentials.walletId;
+
+    wallet.removeAllListeners();
+    this.profile.deleteWallet(walletId);
+
+    delete this.wallet[walletId];
+
+    this.persistenceProvider.removeAllWalletData(walletId);
+  }
+
+  public deleteWalletClient(wallet): Promise<any> {
+    this.logger.info('Deleting Wallet:', wallet.credentials.walletName);
+    const walletId = wallet.credentials.walletId;
+
+    wallet.removeAllListeners();
+    this.profile.deleteWallet(walletId);
+
+    delete this.wallet[walletId];
+
+    this.persistenceProvider.removeAllWalletData(walletId);
+    this.setOrderedWalletsByGroup(); // Update Ordered Wallet List
+    this.events.publish('Local/FetchWallets');
+    return this.storeProfileIfDirty();
+  }
+
+  public deleteWalletGroup(keyId: string, wallets): Promise<any> {
+    wallets.forEach(wallet => {
+      this._deleteWalletClient(wallet);
+    });
+    this.persistenceProvider.removeAllWalletGroupData(keyId);
+    this.setOrderedWalletsByGroup(); // Update Ordered Wallet List
+    this.events.publish('Local/FetchWallets');
+    return this.storeProfileIfDirty();
+  }
+
+  private getDefaultWalletOpts(coin): Partial<WalletOptions> {
+    const defaults = this.configProvider.getDefaults();
+    const opts: Partial<WalletOptions> = {
+      name: this.currencyProvider.getCoinName(coin),
+      m: 1,
+      n: 1,
+      myName: null,
+      networkName: 'livenet',
+      bwsurl: defaults.bws.url,
+      singleAddress: this.currencyProvider.isSingleAddress(coin) || false,
+      coin
+    };
+    if (coin === 'btc' || coin === 'ltc') opts.useNativeSegwit = true;
+    return opts;
+  }
+
+  private _createTokenWallet(ethWallet, tokenObj) {
+    this.logger.debug(
+      `Creating token wallet ${tokenObj.name} for ${ethWallet.id}:`
+    );
+
+    const tokenCredentials = ethWallet.credentials.getTokenCredentials(
+      tokenObj
+    );
+    const walletClient = this.bwcProvider.getClient(null, {
+      baseUrl: this.getBWSURL(ethWallet.credentials.walletId),
+      bp_partner: ethWallet.bp_partner,
+      bp_partner_version: ethWallet.bp_partner_version
+    });
+    walletClient.fromObj(tokenCredentials);
+
+    // Add the token info to the ethWallet.
+    ethWallet.preferences = ethWallet.preferences || {};
+    ethWallet.preferences.tokenAddresses =
+      ethWallet.preferences.tokenAddresses || [];
+    ethWallet.preferences.tokenAddresses.push(tokenObj.address);
+
+    return walletClient;
+  }
+
+  private _createMultisigEthWallet(ethWallet, multisigEthInfo) {
+    this.logger.debug(
+      `Creating ETH multisig wallet ${multisigEthInfo.walletName} for ${ethWallet.id}:`
+    );
+    const multisigEthCredentials = ethWallet.credentials.getMultisigEthCredentials(
+      multisigEthInfo
+    );
+    const walletClient = this.bwcProvider.getClient(null, {
+      bwsurl: this.getBWSURL(ethWallet.credentials.walletId),
+      bp_partner: ethWallet.bp_partner,
+      bp_partner_version: ethWallet.bp_partner_version
+    });
+    walletClient.fromObj(multisigEthCredentials);
+    // Add the token info to the ethWallet.
+    ethWallet.preferences = ethWallet.preferences || {};
+    ethWallet.preferences.multisigEthInfo =
+      ethWallet.preferences.multisigEthInfo || [];
+    ethWallet.preferences.multisigEthInfo.push(multisigEthInfo);
+
+    return walletClient;
+  }
+
+  public createTokenWallet(ethWallet, token): Promise<any> {
+    if (_.isString(token)) {
+      let tokens = this.currencyProvider.getAvailableTokens();
+      token = tokens.find(x => x.symbol == token);
+    }
+    const tokenWalletClient = this._createTokenWallet(ethWallet, token);
+    return this.addAndBindWalletClient(tokenWalletClient);
+  }
+
+  public async createCustomTokenWallet(ethWallet, customToken): Promise<any> {
+    await this.currencyProvider.addCustomToken(customToken);
+    const tokenWalletClient = this._createTokenWallet(ethWallet, customToken);
+    return this.addAndBindWalletClient(tokenWalletClient);
+  }
+
+  public createMultisigEthWallet(ethWallet, multisigEthInfo): Promise<any> {
+    const multisigEthWalletClient = this._createMultisigEthWallet(
+      ethWallet,
+      multisigEthInfo
+    );
+    return this.addAndBindWalletClient(multisigEthWalletClient);
+  }
+
+  public createMultipleWallets(coins: string[], tokens = []): Promise<any> {
+    return new Promise((resolve, reject) => {
+      if (tokens && tokens.length && coins.indexOf('eth') < 0) {
+        reject('No ethereum wallets for tokens');
+      }
+
+      const defaultOpts = this.getDefaultWalletOpts(coins[0]);
+
+      this._createWallet(defaultOpts).then(data => {
+        const key = data.key;
+        const firstWalletData = data;
+        const create2ndWallets = [];
+        coins.slice(1).forEach(coin => {
+          const newOpts: any = {};
+          Object.assign(newOpts, this.getDefaultWalletOpts(coin));
+          newOpts['key'] = key; // Add Key
+          create2ndWallets.push(this._createWallet(newOpts));
+        });
+        Promise.all(create2ndWallets)
+          .then(walletsData => {
+            walletsData.unshift(firstWalletData);
+            let walletClients = _.map(walletsData, 'walletClient');
+
+            // Handle tokens
+            if (!_.isEmpty(tokens)) {
+              const ethWalletClient = walletClients.find(
+                wallet => wallet.credentials.coin === 'eth'
+              );
+
+              if (!ethWalletClient) reject('no eth wallet for tokens');
+
+              let tokenObjs = this.currencyProvider.getAvailableTokens();
+
+              const tokenClients = tokens.map(token => {
+                token = tokenObjs.find(x => x.symbol == token);
+                return this._createTokenWallet(ethWalletClient, token);
+              });
+
+              walletClients = walletClients.concat(tokenClients);
+            }
+
+            this.addAndBindWalletClients({
+              key: firstWalletData.key,
+              walletClients
+            })
+              .then(() => {
+                return resolve(walletClients);
+              })
+              .catch(e => {
+                reject(e);
+              });
+          })
+          .catch(e => {
+            reject(e);
+          });
       });
     });
   }
 
-  public getWallet(walletId: string): any {
-    return this.wallet[walletId];
-  };
-
-  public deleteWalletClient(wallet: any): Promise<any> {
-    return new Promise((resolve, reject) => {
-      let walletId = wallet.credentials.walletId;
-
-      this.logger.debug('Deleting Wallet:', wallet.credentials.walletName);
-      wallet.removeAllListeners();
-
-      this.profile.deleteWallet(walletId);
-
-      delete this.wallet[walletId];
-
-      this.persistenceProvider.removeAllWalletData(walletId).catch((err: any) => {
-        this.logger.warn(err);
-      });
-
-      this.persistenceProvider.storeProfile(this.profile).then(() => {
-        return resolve();
-      }).catch((err: any) => {
-        return reject(err);
+  public createWallet(opts) {
+    return this.keyProvider.handleEncryptedWallet(opts.keyId).then(password => {
+      opts.password = password;
+      return this._createWallet(opts).then(data => {
+        // Encrypt wallet
+        this.onGoingProcessProvider.pause();
+        return this.askToEncryptKey(data.key).then(() => {
+          this.onGoingProcessProvider.resume();
+          return this.keyProvider.addKey(data.key).then(() => {
+            return this.addAndBindWalletClient(data.walletClient, {
+              bwsurl: opts.bwsurl
+            }).then(walletClient => {
+              return Promise.resolve(walletClient);
+            });
+          });
+        });
       });
     });
-  };
+  }
 
-  public createDefaultWallet(): Promise<any> {
-    return new Promise((resolve, reject) => {
-      let opts: any = {};
-      opts.m = 1;
-      opts.n = 1;
-      opts.networkName = 'livenet';
-      opts.coin = 'btc';
-      this.createWallet(opts).then((wallet: any) => {
-        return resolve(wallet);
-      }).catch((err) => {
-        return reject(err);
+  public joinWallet(opts): Promise<any> {
+    return this.keyProvider.handleEncryptedWallet(opts.keyId).then(password => {
+      opts.password = password;
+      return this._joinWallet(opts).then(data => {
+        // Encrypt wallet
+        this.onGoingProcessProvider.pause();
+        return this.askToEncryptKey(data.key).then(() => {
+          this.onGoingProcessProvider.resume();
+          return this.keyProvider.addKey(data.key).then(() => {
+            return this.addAndBindWalletClient(data.walletClient, {
+              bwsurl: opts.bwsurl
+            }).then(walletClient => {
+              return Promise.resolve(walletClient);
+            });
+          });
+        });
       });
     });
-  };
+  }
 
   public setDisclaimerAccepted(): Promise<any> {
-    return new Promise((resolve, reject) => {
-      this.profile.disclaimerAccepted = true;
-      this.persistenceProvider.storeProfile(this.profile).then(() => {
-        return resolve();
-      }).catch((err) => {
-        return reject(err);
+    this.profile.acceptDisclaimer();
+    return this.storeProfileIfDirty();
+  }
+
+  public setLastKnownBalance() {
+    // Add cached balance async
+    _.each(_.values(this.wallet), x => {
+      this.persistenceProvider.getLastKnownBalance(x.id).then(datum => {
+        // this.logger.debug("Last known balance for ",x.id,datum);
+        datum = datum || {};
+        let limit = Math.floor(Date.now() / 1000) - 2 * 60;
+        let { balance = null, updatedOn = null } = datum;
+        x.lastKnownBalance = balance;
+        x.lastKnownBalanceUpdatedOn = updatedOn < limit ? updatedOn : null;
       });
     });
   }
 
-  public setOnboardingCompleted(): Promise<any> {
-    return new Promise((resolve, reject) => {
-      this.profile.onboardingCompleted = true;
-      this.persistenceProvider.storeProfile(this.profile).then(() => {
-        return resolve();
-      }).catch((err) => {
-        return reject(err);
-      });
+  public getWallets(opts?) {
+    const wallets = [];
+    opts = opts || {};
+    // workaround to get wallets and wallets groups in the correct order
+    this.getOrderedWalletsGroups().forEach(walletsGroup => {
+      opts.keyId = walletsGroup.key;
+      wallets.push(this.getWalletsFromGroup(opts));
     });
+    return _.flatten(wallets);
   }
 
-  public getWallets(opts?: any) {
+  public setOrderedWalletsByGroup() {
+    this.logger.debug('Set Ordered Wallets By Group');
+    const wallets = [];
+    this.getOrderedWalletsGroups().forEach(walletsGroup => {
+      wallets.push(this.getWalletsFromGroup({ keyId: walletsGroup.key }));
+    });
+    this.orderedWalletsByGroup = _.values(
+      _.groupBy(_.flatten(wallets), 'keyId')
+    );
+  }
 
-    if (opts && !_.isObject(opts)) throw new Error("bad argument");
+  private getOrderedWalletsGroups() {
+    let walletsGroups = [];
+    for (let key in this.walletsGroups) {
+      walletsGroups.push({
+        key,
+        value: this.walletsGroups[key]
+      });
+    }
+    const orderedWalletsGroups = _.sortBy(walletsGroups, walletGroup => {
+      return +walletGroup.value.order;
+    });
+    return orderedWalletsGroups;
+  }
+
+  public getWalletsFromGroup(opts) {
+    if (opts && !_.isObject(opts)) throw new Error('bad argument');
 
     opts = opts || {};
-
     let ret = _.values(this.wallet);
 
+    if (opts.keyId === 'read-only') {
+      ret = _.filter(ret, x => {
+        return !x.credentials.keyId;
+      });
+    } else if (opts.keyId) {
+      ret = _.filter(ret, x => {
+        return x.credentials.keyId == opts.keyId;
+      });
+    }
+
     if (opts.coin) {
-      ret = _.filter(ret, (x: any) => {
-        return (x.credentials.coin == opts.coin);
+      let coins: string[] = [].concat(opts.coin);
+      ret = _.filter(ret, x => {
+        return _.findIndex(coins, coin => x.credentials.coin == coin) >= 0;
+      });
+    }
+
+    if (opts.backedUp) {
+      ret = _.filter(ret, x => {
+        return !x.needsBackup;
       });
     }
 
     if (opts.network) {
-      ret = _.filter(ret, (x: any) => {
-        return (x.credentials.network == opts.network);
+      ret = _.filter(ret, x => {
+        return x.credentials.network == opts.network;
       });
     }
 
     if (opts.n) {
-      ret = _.filter(ret, (w: any) => {
-        return (w.credentials.n == opts.n);
+      ret = _.filter(ret, w => {
+        return w.credentials.n == opts.n;
       });
     }
 
     if (opts.m) {
-      ret = _.filter(ret, (w: any) => {
-        return (w.credentials.m == opts.m);
-      });
-    }
-
-    if (opts.hasFunds) {
-      ret = _.filter(ret, (w: any) => {
-        if (!w.status) return;
-        return (w.status.availableBalanceSat > 0);
-      });
-    }
-
-    if (opts.minAmount) {
-      ret = _.filter(ret, (w: any) => {
-        if (!w.status) return;
-        return (w.status.availableBalanceSat > opts.minAmount);
+      ret = _.filter(ret, w => {
+        return w.credentials.m == opts.m;
       });
     }
 
     if (opts.onlyComplete) {
-      ret = _.filter(ret, (w: any) => {
+      ret = _.filter(ret, w => {
         return w.isComplete();
       });
-    } else { }
+    }
 
-    // Add cached balance async
-    _.each(ret, (x: any) => {
-      this.addLastKnownBalance(x);
-    });
+    if (opts.minAmount) {
+      ret = _.filter(ret, w => {
+        // IF no cached Status => return true!
+        if (_.isEmpty(w.cachedStatus)) return true;
+
+        return w.cachedStatus.availableBalanceSat > opts.minAmount;
+      });
+    }
+
+    if (opts.hasFunds) {
+      ret = _.filter(ret, w => {
+        // IF no cached Status => return true!
+        if (_.isEmpty(w.cachedStatus)) return true;
+
+        return w.cachedStatus.availableBalanceSat > 0;
+      });
+    }
+
+    if (!opts.showHidden) {
+      // remove hidden wallets
+      ret = _.filter(ret, w => {
+        return !w.hidden;
+      });
+    }
+
+    if (opts.canAddNewAccount) {
+      ret = _.filter(ret, w => {
+        return w.canAddNewAccount;
+      });
+    }
+
+    if (opts.pairFor) {
+      // grab walletIds from current wallet for this token (if any)
+      const tokenWalletIds = ret
+        .filter(wallet => wallet.coin === opts.pairFor.symbol.toLowerCase())
+        .map(wallet => wallet.id);
+
+      ret = ret.filter(
+        wallet =>
+          !tokenWalletIds.includes(`${wallet.id}-${opts.pairFor.address}`) &&
+          wallet.coin === 'eth'
+      );
+    }
+
+    if (opts.minFiatCurrency) {
+      ret = ret.filter(wallet => {
+        if (_.isEmpty(wallet.cachedStatus)) return true;
+
+        const availableBalanceFiat = this.rateProvider.toFiat(
+          wallet.cachedStatus.availableBalanceSat,
+          opts.minFiatCurrency.currency,
+          wallet.coin
+        );
+
+        return availableBalanceFiat >= Number(opts.minFiatCurrency.amount);
+      });
+    }
+
+    if (opts.minPendingAmount) {
+      ret = ret.filter(wallet => {
+        if (_.isEmpty(wallet.cachedStatus)) return true;
+
+        const availablePendingFiat = this.rateProvider.toFiat(
+          wallet.cachedStatus.pendingAmount,
+          opts.minPendingAmount.currency,
+          wallet.coin
+        );
+
+        return availablePendingFiat >= Number(opts.minPendingAmount.amount);
+      });
+    }
+
+    if (opts.lastAddress) {
+      ret = _.filter(ret, w => {
+        return w.lastAddress == opts.lastAddress;
+      });
+    }
+
+    if (opts.noEthMultisig) {
+      ret = _.filter(ret, w => {
+        return !(w.credentials.coin == 'eth' && w.credentials.n > 1);
+      });
+    }
 
     return _.sortBy(ret, 'order');
   }
 
+  public async updateEthWalletNonce(walletId, nonce: number) {
+    this.wallet[walletId].updatedNonce = nonce;
+  }
+
   public toggleHideBalanceFlag(walletId: string): void {
     this.wallet[walletId].balanceHidden = !this.wallet[walletId].balanceHidden;
-    this.persistenceProvider.setHideBalanceFlag(walletId, this.wallet[walletId].balanceHidden);
+    this.persistenceProvider.setHideBalanceFlag(
+      walletId,
+      this.wallet[walletId].balanceHidden
+    );
   }
 
-  public getNotifications(opts: any): Promise<any> {
-    return new Promise((resolve, reject) => {
-      opts = opts ? opts : {};
-
-      let TIME_STAMP = 60 * 60 * 6;
-      let MAX = 30;
-
-      let typeFilter = {
-        'NewOutgoingTx': 1,
-        'NewIncomingTx': 1
-      };
-
-      let w = this.getWallets();
-      if (_.isEmpty(w)) return reject('Could not find any wallet');
-
-      let l = w.length;
-      let j = 0;
-      let notifications = [];
-
-
-      let isActivityCached = (wallet: any): boolean => {
-        return wallet.cachedActivity && wallet.cachedActivity.isValid;
-      }
-
-
-      let updateNotifications = (wallet: any): Promise<any> => {
-        return new Promise((resolve, reject) => {
-
-          if (isActivityCached(wallet) && !opts.force) {
-            return resolve();
-          }
-
-          wallet.getNotifications({
-            timeSpan: TIME_STAMP,
-            includeOwn: true,
-          }, (err: any, n: any) => {
-            if (err) {
-              return reject(err);
-            }
-            wallet.cachedActivity = {
-              n: n.slice(-MAX),
-              isValid: true,
-            };
-
-            return resolve();
-          });
-        });
-      }
-
-      let process = (notifications: any): any[] => {
-        if (!notifications) return [];
-
-        let shown = _.sortBy(notifications, 'createdOn').reverse();
-
-        shown = shown.splice(0, opts.limit || MAX);
-
-        _.each(shown, (x: any) => {
-          x.txpId = x.data ? x.data.txProposalId : null;
-          x.txid = x.data ? x.data.txid : null;
-          x.types = [x.type];
-
-          x.action = () => {
-            // TODO?
-            // $state.go('tabs.wallet', {
-            //   walletId: x.walletId,
-            //   txpId: x.txpId,
-            //   txid: x.txid,
-            // });
-          };
-        });
-
-        // let finale = shown; GROUPING DISABLED!
-
-        let finale = [];
-        let prev: any;
-
-
-        // Item grouping... DISABLED.
-
-        // REMOVE (if we want 1-to-1 notification) ????
-        _.each(shown, (x: any) => {
-          if (prev && prev.walletId === x.walletId && prev.txpId && prev.txpId === x.txpId && prev.creatorId && prev.creatorId === x.creatorId) {
-            prev.types.push(x.type);
-            prev.data = _.assign(prev.data, x.data);
-            prev.txid = prev.txid || x.txid;
-            prev.creatorName = prev.creatorName || x.creatorName;
-          } else {
-            finale.push(x);
-            prev = x;
-          }
-        });
-
-        let u = this.bwcProvider.getUtils();
-        _.each(finale, (x: any) => {
-          if (x.data && x.data.message && x.wallet && x.wallet.credentials.sharedEncryptingKey) {
-            // TODO TODO TODO => BWC
-            x.message = u.decryptMessage(x.data.message, x.wallet.credentials.sharedEncryptingKey);
-          }
-        });
-
-        return finale;
-      }
-
-      let pr = (wallet, cb) => {
-        updateNotifications(wallet).then(() => {
-          let n = _.filter(wallet.cachedActivity.n, (x: any) => {
-            return typeFilter[x.type];
-          });
-
-          let idToName = {};
-          if (wallet.cachedStatus) {
-            _.each(wallet.cachedStatus.wallet.copayers, (c: any) => {
-              idToName[c.id] = c.name;
-            });
-          }
-
-          _.each(n, (x: any) => {
-            x.wallet = wallet;
-            if (x.creatorId && wallet.cachedStatus) {
-              x.creatorName = idToName[x.creatorId];
-            };
-          });
-
-          notifications.push(n);
-          return cb();
-        }).catch((err: any) => {
-          return cb(err);
-        });
-      };
-
-      _.each(w, (wallet: any) => {
-        pr(wallet, (err) => {
-          if (err)
-            this.logger.warn(this.bwcErrorProvider.msg(err, 'Error updating notifications for ' + wallet.name));
-          if (++j == l) {
-            notifications = _.sortBy(notifications, 'createdOn').reverse();
-            notifications = _.compact(_.flatten(notifications)).slice(0, MAX);
-            let total = notifications.length;
-            let processArray = process(notifications);
-            return resolve({ notifications: processArray, total });
-          }
-        });
-      });
-    });
+  public toggleHideWalletFlag(walletId: string): void {
+    this.wallet[walletId].hidden = !this.wallet[walletId].hidden;
+    this.persistenceProvider.setHideWalletFlag(
+      walletId,
+      this.wallet[walletId].hidden
+    );
+    this.setOrderedWalletsByGroup(); // Update Ordered Wallet List
   }
 
-  public getTxps(opts: any): Promise<any> {
+  public getTxps(opts): Promise<any> {
     return new Promise((resolve, reject) => {
-      let MAX = 100;
+      const MAX = 100;
       opts = opts ? opts : {};
-
-      let w = this.getWallets();
+      const w = this.getWallets(opts);
       if (_.isEmpty(w)) {
         return reject('No wallets available');
       }
 
       let txps = [];
 
-      _.each(w, (x: any) => {
-        if (x.pendingTxps)
-          txps = txps.concat(x.pendingTxps);
+      _.each(w, x => {
+        if (x.pendingTxps) txps = txps.concat(x.pendingTxps);
       });
-      let n = txps.length;
+      const n = txps.length;
       txps = _.sortBy(txps, 'createdOn').reverse();
       txps = _.compact(_.flatten(txps)).slice(0, opts.limit || MAX);
       return resolve({ txps, n });
     });
-  };
+  }
 
+  public isKeyInUse(keyId: string): boolean {
+    const keyIdIndex = this.profile.credentials.findIndex(c => {
+      if (keyId === 'read-only') {
+        return !c.keyId;
+      } else {
+        return c.keyId == keyId;
+      }
+    });
+    return keyIdIndex >= 0;
+  }
+
+  // Checks to see if a wallet exists with minimim fiat amount's worth in it (to pay invoice, for example)
+  public hasWalletWithFunds(fiatAmount: number, fiatCurrency: string): boolean {
+    const minFiatCurrency = {
+      amount: fiatAmount,
+      currency: fiatCurrency
+    };
+
+    const wallets = this.getWalletsFromGroup({ minFiatCurrency });
+
+    return Boolean(wallets.length);
+  }
+
+  private clearEncryptPassword(
+    keyIdToReImport: string,
+    currentKey: string
+  ): Promise<any> {
+    return new Promise(async (resolve, reject) => {
+      if (!keyIdToReImport) return resolve('No'); // No ask for re-import
+      const keyToReImport = this.keyProvider.getKey(keyIdToReImport);
+      if (this.keyProvider.isMatch(keyToReImport, currentKey)) {
+        const wallets = this.getWalletsFromGroup({
+          keyId: keyIdToReImport,
+          showHidden: true
+        });
+        await this.deleteWalletGroup(keyIdToReImport, wallets);
+        await this.keyProvider.removeKey(keyIdToReImport);
+        return resolve('Done');
+      } else {
+        return reject(
+          this.translate.instant(
+            'The recovery phrase you entered do not match the wallet you are trying to re-import'
+          )
+        );
+      }
+    });
+  }
 }

@@ -1,26 +1,17 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import {
-  Events,
-  ModalController,
-  NavController,
-  NavParams
-} from 'ionic-angular';
-import { Logger } from '../../providers/logger/logger';
+import { Events, NavController, NavParams, Platform } from 'ionic-angular';
 
 // providers
-import { ExternalLinkProvider } from '../../providers/external-link/external-link';
+import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
+import { ErrorsProvider } from '../../providers/errors/errors';
 import { IncomingDataProvider } from '../../providers/incoming-data/incoming-data';
+import { Logger } from '../../providers/logger/logger';
 import { PlatformProvider } from '../../providers/platform/platform';
 import { ScanProvider } from '../../providers/scan/scan';
 
-// pages
-import { IncomingDataMenuPage } from '../incoming-data-menu/incoming-data-menu';
-import { PaperWalletPage } from '../paper-wallet/paper-wallet';
-import { AmountPage } from '../send/amount/amount';
-import { AddressbookAddPage } from '../settings/addressbook/add/add';
-
-// import { QRScanner as QRScannerBrowser } from 'cordova-plugin-qrscanner/src/browser/src/library'
+import env from '../../environments';
+import { WalletConnectProvider } from '../../providers';
 
 @Component({
   selector: 'page-scan',
@@ -28,32 +19,51 @@ import { AddressbookAddPage } from '../settings/addressbook/add/add';
   providers: [ScanProvider]
 })
 export class ScanPage {
-  private modalIsOpen: boolean;
+  public browserScanEnabled: boolean;
   private scannerIsAvailable: boolean;
   private scannerHasPermission: boolean;
   private scannerIsDenied: boolean;
   private scannerIsRestricted: boolean;
+  private unregisterBackButtonAction;
   public canEnableLight: boolean;
   public canChangeCamera: boolean;
   public lightActive: boolean;
   public cameraToggleActive: boolean;
-  public scannerStates: any;
+  public scannerStates;
   public canOpenSettings: boolean;
   public currentState: string;
-  public tabBarElement: any;
-  // private qrScannerBrowser: QRScannerBrowser (inside constructor)
+  public isCordova: boolean;
+  public isCameraSelected: boolean;
+  public fromAddressbook: boolean;
+  public fromImport: boolean;
+  public fromJoin: boolean;
+  public fromSend: boolean;
+  public fromMultiSend: boolean;
+  public fromSelectInputs: boolean;
+  public fromEthMultisig: boolean;
+  public fromConfirm: boolean;
+  public fromWalletConnect: boolean;
+  public fromFooterMenu: boolean;
+  public canGoBack: boolean;
+  public tabBarElement;
+  public walletId: string;
+
   constructor(
     private navCtrl: NavController,
     private scanProvider: ScanProvider,
-    private platform: PlatformProvider,
+    private platformProvider: PlatformProvider,
     private incomingDataProvider: IncomingDataProvider,
     private events: Events,
-    private modalCtrl: ModalController,
-    private externalLinkProvider: ExternalLinkProvider,
     private logger: Logger,
-    private translate: TranslateService,
-    private navParams: NavParams
+    public translate: TranslateService,
+    private navParams: NavParams,
+    private platform: Platform,
+    private errorsProvider: ErrorsProvider,
+    private bwcErrorProvider: BwcErrorProvider,
+    private walletConnectProvider: WalletConnectProvider
   ) {
+    this.isCameraSelected = false;
+    this.browserScanEnabled = false;
     this.canEnableLight = true;
     this.canChangeCamera = true;
     this.scannerStates = {
@@ -63,42 +73,82 @@ export class ScanPage {
       loading: 'loading',
       visible: 'visible'
     };
-    this.modalIsOpen = false;
     this.scannerIsAvailable = true;
     this.scannerHasPermission = false;
     this.scannerIsDenied = false;
     this.scannerIsRestricted = false;
     this.canOpenSettings = false;
-    if (this.navParams.data.fromAddressbook) {
-      this.tabBarElement = document.querySelector('.tabbar.show-tabbar');
-      this.tabBarElement.style.display = 'none';
-    }
+    this.isCordova = this.platformProvider.isCordova;
+    this.tabBarElement = document.querySelector('.tabbar.show-tabbar');
   }
 
   ionViewDidLoad() {
-    this.logger.info('ionViewDidLoad ScanPage');
+    this.logger.info('Loaded: ScanPage');
+    this.navCtrl.swipeBackEnabled = false;
+    this.canGoBack = this.navCtrl.canGoBack();
   }
 
   ionViewWillLeave() {
-    // TODO support for browser
-    if (!this.platform.isCordova) return;
+    this.navCtrl.swipeBackEnabled = true;
+    this.events.unsubscribe('incomingDataError', this.incomingDataErrorHandler);
+    this.events.unsubscribe(
+      'scannerServiceInitialized',
+      this.scannerServiceInitializedHandler
+    );
+
     this.cameraToggleActive = false;
     this.lightActive = false;
     this.scanProvider.frontCameraEnabled = false;
     this.scanProvider.deactivate();
-    this.events.unsubscribe('incomingDataMenu.showMenu');
-    this.events.unsubscribe('scannerServiceInitialized');
-    if (this.navParams.data.fromAddressbook) {
-      this.tabBarElement.style.display = 'flex';
-    }
+    this.unregisterBackButtonAction && this.unregisterBackButtonAction();
+    this.tabBarElement.style.display = 'flex';
   }
 
-  ionViewWillEnter() {
+  async ionViewWillEnter() {
+    this.initializeBackButtonHandler();
+    this.fromAddressbook = this.navParams.data.fromAddressbook;
+    this.fromImport = this.navParams.data.fromImport;
+    this.fromJoin = this.navParams.data.fromJoin;
+    this.fromSend = this.navParams.data.fromSend;
+    this.fromMultiSend = this.navParams.data.fromMultiSend;
+    this.fromSelectInputs = this.navParams.data.fromSelectInputs;
+    this.fromEthMultisig = this.navParams.data.fromEthMultisig;
+    this.fromConfirm = this.navParams.data.fromConfirm;
+    this.fromWalletConnect = this.navParams.data.fromWalletConnect;
+    this.fromFooterMenu = this.navParams.data.fromFooterMenu;
+    this.walletId = this.navParams.data.walletId;
+
+    if (this.fromWalletConnect) {
+      this.walletConnectProvider.resetConnectionData();
+      if (this.navParams.data.fromSettings) {
+        // workaround for removing wc settings page
+        setTimeout(() => {
+          this.navCtrl.remove(1, 1);
+        }, 500);
+      }
+    }
+
+    if (this.canGoBack && this.tabBarElement)
+      this.tabBarElement.style.display = 'none';
+
+    if (!env.activateScanner) {
+      this.logger.debug('Scanner page: env.activateScanner = false');
+      return;
+    }
+
+    this.events.subscribe('incomingDataError', this.incomingDataErrorHandler);
+    this.initializeScanner();
+  }
+
+  private initializeScanner() {
     // try initializing and refreshing status any time the view is entered
     if (this.scannerHasPermission) {
+      this.logger.debug('scannerHasPermission: true');
       this.activate();
     } else {
+      this.logger.debug('scannerHasPermission: false');
       if (!this.scanProvider.isInitialized()) {
+        this.logger.debug('Scanner trying to initialize');
         this.scanProvider.gentleInitialize().then(() => {
           this.authorize();
         });
@@ -106,56 +156,42 @@ export class ScanPage {
         this.authorize();
       }
     }
+    this.events.subscribe(
+      'scannerServiceInitialized',
+      this.scannerServiceInitializedHandler
+    );
+  }
 
-    this.events.subscribe('incomingDataMenu.showMenu', data => {
-      if (!this.modalIsOpen) {
-        this.modalIsOpen = true;
-        let modal = this.modalCtrl.create(IncomingDataMenuPage, data);
-        modal.present();
-        modal.onDidDismiss(data => {
-          this.modalIsOpen = false;
-          switch (data.redirTo) {
-            case 'AmountPage':
-              this.sendPaymentToAddress(data.value, data.coin);
-              break;
-            case 'AddressBookPage':
-              this.addToAddressBook(data.value);
-              break;
-            case 'OpenExternalLink':
-              this.goToUrl(data.value);
-              break;
-            case 'PaperWalletPage':
-              this.scanPaperWallet(data.value);
-              break;
-            default:
-              this.activate();
-          }
-        });
+  private incomingDataErrorHandler: any = err => {
+    this.showErrorInfoSheet(err);
+  };
+
+  private scannerServiceInitializedHandler: any = () => {
+    this.logger.debug(
+      'Scanner initialization finished, reinitializing scan view...'
+    );
+    this._refreshScanView();
+  };
+
+  private showErrorInfoSheet(error: Error | string, title?: string): void {
+    let infoSheetTitle = title ? title : this.translate.instant('Error');
+    this.errorsProvider.showDefaultError(
+      this.bwcErrorProvider.msg(error),
+      infoSheetTitle,
+      () => {
+        this.activate();
       }
-    });
-
-    this.events.subscribe('scannerServiceInitialized', () => {
-      this.logger.debug(
-        'Scanner initialization finished, reinitializing scan view...'
-      );
-      this._refreshScanView();
-    });
+    );
   }
 
-  private goToUrl(url: string): void {
-    this.externalLinkProvider.open(url);
-  }
-
-  private sendPaymentToAddress(bitcoinAddress: string, coin: string): void {
-    this.navCtrl.push(AmountPage, { toAddress: bitcoinAddress, coin });
-  }
-
-  private addToAddressBook(bitcoinAddress: string): void {
-    this.navCtrl.push(AddressbookAddPage, { addressbookEntry: bitcoinAddress });
-  }
-
-  private scanPaperWallet(privateKey: string) {
-    this.navCtrl.push(PaperWalletPage, { privateKey });
+  private initializeBackButtonHandler(): void {
+    // This event is only used within Cordova apps running on Android and
+    // Windows platforms. This event is not fired on iOS since iOS doesn't come with a hardware back button
+    this.unregisterBackButtonAction = this.platform.registerBackButtonAction(
+      () => {
+        this.closeCam();
+      }
+    );
   }
 
   private updateCapabilities(): void {
@@ -194,26 +230,73 @@ export class ScanPage {
   }
 
   public activate(): void {
-    this.scanProvider.activate().then(() => {
-      this.updateCapabilities();
-      this.handleCapabilities();
-      this.logger.debug('Scanner activated, setting to visible...');
-      this.currentState = this.scannerStates.visible;
-      this.scanProvider.scan().then((contents: string) => {
-        this.logger.debug('Scan returned: "' + contents + '"');
-        this.handleSuccessfulScan(contents);
+    this.scanProvider
+      .activate()
+      .then(() => {
+        this.logger.info('Scanner activated, setting to visible...');
+        this.updateCapabilities();
+        this.handleCapabilities();
+        this.currentState = this.scannerStates.visible;
+
+        // resume preview if paused
+        this.scanProvider.resumePreview();
+
+        this.scanProvider.scan().then((contents: string) => {
+          this.scanProvider.pausePreview();
+          this.handleSuccessfulScan(contents);
+        });
+      })
+      .catch(err => {
+        this.logger.error(err);
       });
-    });
   }
 
   private handleSuccessfulScan(contents: string): void {
-    this.logger.debug('Scan returned: "' + contents + '"');
-    let fromAddressbook = this.navParams.data.fromAddressbook;
-    if (fromAddressbook) {
-      this.events.publish('update:address', { value: contents });
-      this.navCtrl.pop();
+    if (this.canGoBack) this.navCtrl.pop({ animate: false });
+
+    if (this.incomingDataProvider.isValidBitPayInvoice(contents)) {
+      this.incomingDataProvider.handleUnlock(contents);
+      return;
+    }
+
+    if (this.fromAddressbook) {
+      this.events.publish('Local/AddressScan', { value: contents });
+    } else if (this.fromImport) {
+      this.events.publish('Local/BackupScan', { value: contents });
+    } else if (this.fromJoin) {
+      this.events.publish('Local/JoinScan', { value: contents });
+    } else if (this.fromSend) {
+      this.events.publish('Local/AddressScan', { value: contents });
+    } else if (this.fromMultiSend) {
+      this.events.publish('Local/AddressScanMultiSend', { value: contents });
+    } else if (this.fromSelectInputs) {
+      this.events.publish('Local/AddressScanSelectInputs', { value: contents });
+    } else if (this.fromEthMultisig) {
+      this.events.publish('Local/AddressScanEthMultisig', { value: contents });
+    } else if (this.fromConfirm) {
+      this.events.publish('Local/TagScan', { value: contents });
+    } else if (this.fromWalletConnect) {
+      if (this.navParams.data.updateURI) {
+        this.events.publish('Local/UriScan', { value: contents });
+      } else {
+        const redirParams = {
+          fromWalletConnect: true,
+          fromSettings: this.navParams.data.fromSettings,
+          force: true,
+          walletId: this.walletId
+        };
+        this.incomingDataProvider.redir(contents, redirParams);
+      }
+    } else if (this.fromFooterMenu) {
+      const redirParams = {
+        activePage: 'ScanPage',
+        fromFooterMenu: this.fromFooterMenu
+      };
+      this.incomingDataProvider.redir(contents, redirParams);
     } else {
-      this.incomingDataProvider.redir(contents);
+      this.navCtrl.parent.select(1); // Workaround to avoid keep camera active
+      const redirParams = { activePage: 'ScanPage' };
+      this.incomingDataProvider.redir(contents, redirParams);
     }
   }
 
@@ -238,7 +321,7 @@ export class ScanPage {
         this.lightActive = resp;
       })
       .catch(error => {
-        this.logger.warn('scanner error: ' + error);
+        this.logger.warn('scanner error: ' + JSON.stringify(error));
       });
   }
 
@@ -250,7 +333,25 @@ export class ScanPage {
         this.lightActive = false;
       })
       .catch(error => {
-        this.logger.warn('scanner error: ' + error);
+        this.logger.warn('scanner error: ' + JSON.stringify(error));
       });
+  }
+
+  public closeCam() {
+    this.navCtrl.pop({ animate: false });
+  }
+
+  public goToWalletConnectPage() {
+    let nextView = {
+      name: 'WalletConnectPage',
+      params: {
+        fromSettings: this.navParams.data.fromSettings,
+        fromWalletConnect: this.fromWalletConnect,
+        walletId: this.walletId,
+        force: true,
+        pasteURL: true
+      }
+    };
+    this.events.publish('IncomingDataRedir', nextView);
   }
 }

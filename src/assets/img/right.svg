@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="17px" height="18px" viewBox="0 0 17 18" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 50.2 (55047) - http://www.bohemiancoding.com/sketch -->
+    <title>Icons/right</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Receive" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="-2.1---Receive-(Tip)" transform="translate(-334.000000, -573.000000)" stroke="#5676ec">
+            <g id="Items/Bitcoin-Address" transform="translate(-5.000000, 553.000000)">
+                <g id="Items/Bitcoin-Address-Copy">
+                    <g id="Icons/Small-(20px)/Refresh-(Dark)" transform="translate(339.000000, 20.000000)">
+                        <g id="arrows-24px-outline-1_refresh-68" transform="translate(0.850000, 0.000000)">
+                            <g id="Group">
+                                <path d="M15.6923077,8.9047619 C15.6923077,13.3571429 12.1615385,17 7.84615385,17 C3.53076923,17 0,13.3571429 0,8.9047619 C0,4.45238095 3.53076923,0.80952381 7.84615385,0.80952381 C10.9061538,0.80952381 13.5738462,2.59047619 14.8292308,5.26190476" id="Shape"></path>
+                                <polyline id="Shape" points="15.5353846 0.566666667 14.9076923 5.34285714 10.2 4.6952381"></polyline>
+                            </g>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

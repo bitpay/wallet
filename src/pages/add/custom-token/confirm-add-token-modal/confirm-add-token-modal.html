@@ -1,0 +1,96 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title class="bp-title">Add Token</ion-title>
+    <ion-buttons left>
+      <button class="close-container disable-hover" (click)="close()" ion-button>
+        <ion-icon ios="md-close" md="md-close"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-list class="bp-list confirm__margin-top">
+    <ion-item>
+      <ion-label>
+        <div class="summary-item">
+          <span>{{ 'Token address' | translate}}</span>
+        </div>
+      </ion-label>
+      <ion-note item-end>
+        <div class="summary-item-detail" copy-to-clipboard="{{ token.address }}">
+          <span>
+            {{ address }}
+          </span>
+        </div>
+      </ion-note>
+    </ion-item>
+
+    <div class="line-divider confirm__divider"></div>
+
+    <ion-item>
+      <ion-label>
+        <div class="summary-item">
+          <span>{{ 'Token name' | translate}}</span>
+        </div>
+      </ion-label>
+      <ion-note item-end>
+        <div class="summary-item-detail">
+            <span>
+              {{ token.name }}
+            </span>
+        </div>
+      </ion-note>
+    </ion-item>
+
+    <div class="line-divider confirm__divider"></div>
+
+    <ion-item>
+      <ion-label>
+        <div class="summary-item">
+          <span>{{ 'Token symbol' | translate}}</span>
+        </div>
+      </ion-label>
+      <ion-note item-end>
+        <div class="summary-item-detail">
+            <span>
+              {{ token.symbol }}
+            </span>
+        </div>
+      </ion-note>
+    </ion-item>
+
+    <div class="line-divider confirm__divider"></div>
+
+    <ion-item>
+      <ion-label>
+        <div class="summary-item">
+          <span>{{ 'Token precision' | translate}}</span>
+        </div>
+      </ion-label>
+      <ion-note item-end>
+        <div class="summary-item-detail">
+            <span>
+              {{ token.decimals }}
+            </span>
+        </div>
+      </ion-note>
+    </ion-item>
+
+    <div class="line-divider confirm__divider"></div>
+
+  </ion-list>
+
+  <div class="confirm__margin-top">
+    <button ion-button class="button-standard" color="primary" margin-top (click)="close('add')">
+      {{'Add Token' | translate }}
+    </button>
+
+    <button ion-button class="button-standard" color="secondary" outline margin-top (click)="close()">
+      {{'Cancel' | translate }}
+    </button>
+  </div>
+
+
+
+</ion-content>

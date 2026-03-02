@@ -1,0 +1,98 @@
+label-tip {
+  color: #4a4a4a;
+  display: block;
+  padding: 20px;
+  position: relative;
+
+  width: 90%;
+  border-radius: 15px;
+
+  margin: 20px auto !important;
+
+  &:before {
+    $arrow-height: 18px;
+    $arrow-width: $arrow-height * 0.8;
+    content: '';
+    width: 0;
+    height: 0;
+    border-left: $arrow-width solid transparent;
+    border-right: $arrow-width solid transparent;
+    border-bottom: $arrow-height solid transparent;
+    position: absolute;
+    top: -$arrow-height;
+    left: 25px;
+  }
+
+  &.right-arrow:before {
+    right: 25px;
+    left: unset;
+  }
+
+  // Remove arrowhead from label
+  &.info.no-arrowhead:before,
+  &.warn.no-arrowhead:before,
+  &.danger.no-arrowhead:before {
+    display: none !important;
+  }
+
+  &.danger {
+    background: color($background-colors, danger);
+
+    &:before {
+      border-bottom-color: color($background-colors, danger);
+    }
+  }
+
+  &.warn {
+    background: color($background-colors, warning);
+
+    &:before {
+      border-bottom-color: color($background-colors, warning);
+    }
+  }
+
+  &.info {
+    background: color($background-colors, info);
+
+    &:before {
+      border-bottom-color: color($background-colors, info);
+    }
+  }
+
+  .label-header {
+    color: black;
+    $icon-height: 20px;
+
+    &__icon {
+      margin-right: $icon-height/1.5;
+      height: $icon-height;
+      width: $icon-height;
+    }
+
+    align-items: center;
+    display: flex;
+    font-size: 16px;
+    margin-bottom: 20px;
+  }
+
+  [label-tip-body] {
+    font-size: 15px;
+
+    a.label-tip-link {
+      display: inline-block;
+      margin-top: 10px;
+    }
+  }
+
+  .blue a.label-tip-link {
+    color: color($colors, info);
+  }
+
+  .yellow a.label-tip-link {
+    color: color($colors, warning);
+  }
+
+  .red a.label-tip-link {
+    color: color($colors, danger);
+  }
+}

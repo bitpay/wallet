@@ -1,0 +1,33 @@
+search-bar {
+  background: white;
+  display: block;
+  padding: 10px 20px;
+  position: relative;
+  z-index: 2;
+
+  ion-input {
+    background: #f3f4f6;
+    border-radius: 8px;
+    font-size: 16px;
+    padding: 4px 20px;
+
+    &:after {
+      content: url(../assets/img/controls-ico-search.svg);
+      opacity: 0.7;
+      position: absolute;
+      top: calc(50% + 2px);
+      transform: translate(0, -50%);
+      right: 16px;
+    }
+
+    input.text-input {
+      margin-bottom: 12px;
+      margin-left: 0;
+      margin-top: 12px;
+
+      &::placeholder {
+        color: #9ba3ae;
+      }
+    }
+  }
+}

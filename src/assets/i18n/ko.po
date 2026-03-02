@@ -1,0 +1,4318 @@
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Crowdin-Project: copay\n"
+"X-Crowdin-Project-ID: 115298\n"
+"X-Crowdin-Language: ko\n"
+"X-Crowdin-File: template.pot\n"
+"X-Crowdin-File-ID: 1\n"
+"Project-Id-Version: copay\n"
+"Language-Team: Korean\n"
+"Language: ko\n"
+"PO-Revision-Date: 2021-09-15 13:49\n"
+
+msgid "(possible double spend)"
+msgstr "(이중 지출 가능)"
+
+msgid ") to pay the ETH miner fees."
+msgstr ") to pay the ETH miner fees."
+
+msgid "* A payment proposal can be deleted if 1) you are the creator, and no other copayer has signed, or 2) 10 minutes have passed since the proposal was created."
+msgstr "* A payment proposal can be deleted if 1) you are the creator, and no other copayer has signed, or 2) 10 minutes have passed since the proposal was created."
+
+msgid "*Currently available in the USA. More countries coming soon."
+msgstr "*Currently available in the USA. More countries coming soon."
+
+msgid ", please provide your phone number."
+msgstr "올바른 전화번호를 입력하세요"
+
+msgid ". Added a new wallet."
+msgstr ". Added a new wallet."
+
+msgid ". Added {{newWallets}} new wallets."
+msgstr ""
+
+msgid "1.5% of the amount."
+msgstr "금액의 1.5%"
+
+msgid "1D"
+msgstr "1D"
+
+msgid "1Inch is not available at this moment. Please, try again later."
+msgstr ""
+
+msgid "5 USD minimum fee or 2.9% of the amount + 0.30 USD, whichever is greater + Required miners fee."
+msgstr "5 USD minimum fee or 2.9% of the amount + 0.30 USD, whichever is greater + Required miners fee."
+
+msgid "5 USD minimum fee or 3.9% of the amount + 0.30 USD, whichever is greater + Required miners fee."
+msgstr "5 USD minimum fee or 3.9% of the amount + 0.30 USD, whichever is greater + Required miners fee."
+
+msgid "5-star ratings help us get BitPay Wallet into more hands, and more users means more resources can be committed to the app!"
+msgstr "5-star ratings help us get BitPay Wallet into more hands, and more users means more resources can be committed to the app!"
+
+msgid "A Destination Tag is an optional number that corresponds to an invoice or a XRP account on an exchange."
+msgstr "A Destination Tag is an optional number that corresponds to an invoice or a XRP account on an exchange."
+
+msgid "A dog without funds is a sad dog"
+msgstr "돈이 없는 개는 슬픈 개다."
+
+msgid "A new copayer just joined your wallet {{walletName}}."
+msgstr "A new copayer just joined your wallet {{walletName}}."
+
+msgid "A new payment proposal has been created in your wallet {{walletName}}."
+msgstr "A new payment proposal has been created in your wallet {{walletName}}."
+
+msgid "A payment of {{amountStr}} has been received into your wallet {{walletName}}."
+msgstr "A payment of {{amountStr}} has been received into your wallet {{walletName}}."
+
+msgid "A payment proposal in your wallet {{walletName}} has been rejected."
+msgstr "A payment proposal in your wallet {{walletName}} has been rejected."
+
+msgid "A pincode will ensure no one can easily access your crypto funds when you're away from your device."
+msgstr "핀코드는 당신이 스마트폰에서 떨어져있을 때 아무도 당신의 암호화폐에 쉽게 접근 할 수 없도록합니다."
+
+msgid "A total of {{amountAboveMaxSizeStr}} {{coin}} were excluded. The maximum size allowed for a transaction was exceeded."
+msgstr "A total of {{amountAboveMaxSizeStr}} {{coin}} were excluded. The maximum size allowed for a transaction was exceeded."
+
+msgid "A total of {{amountBelowFeeStr}} {{coin}} were excluded. These funds come from UTXOs smaller than the network fee provided."
+msgstr "A total of {{amountBelowFeeStr}} {{coin}} were excluded. These funds come from UTXOs smaller than the network fee provided."
+
+msgid "A transaction using your delayed transaction inputs will be sent to your own wallet with a higher miner fee to speed up the last confirmation time."
+msgstr "A transaction using your delayed transaction inputs will be sent to your own wallet with a higher miner fee to speed up the last confirmation time."
+
+msgid "A wallet is like a vault stored on your device containing your crypto funds. Much like a vault, your wallet will only be accessible with the master key."
+msgstr "지갑은 암호화폐가 들어있는 장치에 저장된 금고와 같습니다.  금고와 마찬가지로 지갑은 마스터 키로 만 액세스 할 수 있습니다."
+
+msgid "ACTIVATED"
+msgstr "활성화됨"
+
+msgid "AML/KYC Policy"
+msgstr "AML/KYC Policy"
+
+msgid "About {{ appName }}"
+msgstr "About {{ appName }}"
+
+msgid "About {{appName}}"
+msgstr "About {{appName}}"
+
+msgid "Accept"
+msgstr "Accept"
+
+msgid "Accepted"
+msgstr "Accepted"
+
+msgid "Access denied"
+msgstr "Access denied"
+
+msgid "Account"
+msgstr "계좌"
+
+msgid "Activation Fee"
+msgstr "Activation Fee"
+
+msgid "Activity"
+msgstr "활동"
+
+msgid "Add"
+msgstr "Add"
+
+msgid "Add BitPay Account?"
+msgstr "Add BitPay Account?"
+
+msgid "Add ERC-20 Tokens"
+msgstr ""
+
+msgid "Add Encryption"
+msgstr "암호 추가"
+
+msgid "Add Encryption?"
+msgstr "암호를 추가할까요?"
+
+msgid "Add Me"
+msgstr "나를 추가"
+
+msgid "Add Token"
+msgstr ""
+
+msgid "Add Wallet"
+msgstr "Add Wallet"
+
+msgid "Add account"
+msgstr "Add account"
+
+msgid "Add as a contact"
+msgstr "연락처로 추가"
+
+msgid "Add copayers"
+msgstr "원장 인증자 추가"
+
+msgid "Add funds"
+msgstr "Add funds"
+
+msgid "Add funds from an existing wallet."
+msgstr "기존 지갑으로 부터 자금 추가"
+
+msgid "Add this BitPay account ({{email}})?"
+msgstr "Add this BitPay account ({{email}})?"
+
+msgid "Add {coinName} address"
+msgstr "Add {coinName} address"
+
+msgid "Adding Tokens"
+msgstr ""
+
+msgid "Additional third-party fees may apply."
+msgstr "Additional third-party fees may apply."
+
+msgid "Address"
+msgstr "주소"
+
+msgid "Address Book"
+msgstr "주소록"
+
+msgid "Address From"
+msgstr ""
+
+msgid "Address Type"
+msgstr "주소 타입"
+
+msgid "Address already added"
+msgstr "Address already added"
+
+msgid "Address requested does not match active account"
+msgstr "Address requested does not match active account"
+
+msgid "Addressbook is empty"
+msgstr "Addressbook is empty"
+
+msgid "Addresses"
+msgstr "Addresses"
+
+msgid "Addresses with balance"
+msgstr "Addresses with balance"
+
+msgid "Advanced"
+msgstr "고급"
+
+msgid "All"
+msgstr "All"
+
+msgid "All addresses"
+msgstr "All addresses"
+
+msgid "All of your {coinName} wallet balance may not be available for immediate spending."
+msgstr "All of your {coinName} wallet balance may not be available for immediate spending."
+
+msgid "Allow camera access"
+msgstr "Allow camera access"
+
+msgid "Already duplicated"
+msgstr "Already duplicated"
+
+msgid "Amazon.co.jp Gift Cards never expire and can be redeemed towards millions of items at www.amazon.co.jp."
+msgstr "Amazon.co.jp Gift Cards never expire and can be redeemed towards millions of items at www.amazon.co.jp."
+
+msgid "Amount"
+msgstr "금액"
+
+msgid "Amount Too Low To Spend"
+msgstr "Amount Too Low To Spend"
+
+msgid "Amount below minimum allowed (dust threshold)"
+msgstr "Amount below minimum allowed (dust threshold)"
+
+msgid "Amount too big"
+msgstr "금액이 너무 큽니다"
+
+msgid "An encrypted passphrase is an extra layer of security that can prevent hackers from accessing your cryptocurrency if this device were ever stolen or compromised by malicious software."
+msgstr "An encrypted passphrase is an extra layer of security that can prevent hackers from accessing your cryptocurrency if this device were ever stolen or compromised by malicious software."
+
+msgid "An update to this app is available."
+msgstr "An update to this app is available."
+
+msgid "Apple Pay"
+msgstr "Apple Pay"
+
+msgid "Apply"
+msgstr "적용하십시오"
+
+msgid "Approval is confirming"
+msgstr ""
+
+msgid "Approve"
+msgstr "승인"
+
+msgid "Approve {{fromWalletCoin}}"
+msgstr ""
+
+msgid "Approximate Bitcoin network fee to transfer wallet's balance (with normal priority)"
+msgstr "Approximate Bitcoin network fee to transfer wallet's balance (with normal priority)"
+
+msgid "Approximate receiving amount"
+msgstr "Approximate receiving amount"
+
+msgid "Approximate receiving fiat amount"
+msgstr "Approximate receiving fiat amount"
+
+msgid "Archive"
+msgstr "Archive"
+
+msgid "Archive All {brand} Gift Cards?"
+msgstr "Archive All {brand} Gift Cards?"
+
+msgid "Archive Card"
+msgstr "Archive Card"
+
+msgid "Archive this Card?"
+msgstr "Archive this Card?"
+
+msgid "Archived Cards"
+msgstr "Archived Cards"
+
+msgid "Are you sure you want to delete all wallets using this key?"
+msgstr "Are you sure you want to delete all wallets using this key?"
+
+msgid "Are you sure you want to delete this contact?"
+msgstr "Are you sure you want to delete this contact?"
+
+msgid "Are you sure you want to delete this wallet?"
+msgstr "Are you sure you want to delete this wallet?"
+
+msgid "Are you sure you want to hide this wallet?"
+msgstr "Are you sure you want to hide this wallet?"
+
+msgid "Are you sure you want to reject this transaction?"
+msgstr "Are you sure you want to reject this transaction?"
+
+msgid "Are you sure you want to remove this transaction?"
+msgstr "Are you sure you want to remove this transaction?"
+
+msgid "Are you sure you would like to disconnect your BitPay ID?"
+msgstr "Are you sure you would like to disconnect your BitPay ID?"
+
+msgid "Are you sure?"
+msgstr "Are you sure?"
+
+msgid "As the estimated miner fee to complete the transaction is {{params.fee}} {{params.coin}}, the maximum spendable amount of your wallet is {{params.amount}} {{params.coin}} which is lower than the minimum allowed by the exchange: {{params.minAmount}} {{params.coin}}"
+msgstr "As the estimated miner fee to complete the transaction is {{params.fee}} {{params.coin}}, the maximum spendable amount of your wallet is {{params.amount}} {{params.coin}} which is lower than the minimum allowed by the exchange: {{params.minAmount}} {{params.coin}}"
+
+msgid "Attempted payment request"
+msgstr "Attempted payment request"
+
+msgid "Available"
+msgstr "Available"
+
+msgid "Average"
+msgstr "평균"
+
+msgid "Average confirmation time:"
+msgstr "Average confirmation time:"
+
+msgid "Awaiting payment to confirm"
+msgstr "Awaiting payment to confirm"
+
+msgid "Back"
+msgstr "Back"
+
+msgid "Back up all your wallets before using this function"
+msgstr "Back up all your wallets before using this function"
+
+msgid "Back up your wallet before using this function"
+msgstr "Back up your wallet before using this function"
+
+msgid "Backup"
+msgstr "Backup"
+
+msgid "Backup now"
+msgstr "Backup now"
+
+msgid "Backup wallet"
+msgstr "지갑 백업"
+
+msgid "Bad wallet invitation"
+msgstr "잘못된 지갑 초대 코드"
+
+msgid "Be careful. Some inputs of this transaction have no confirmations. Please wait until they are confirmed."
+msgstr "Be careful. Some inputs of this transaction have no confirmations. Please wait until they are confirmed."
+
+msgid "Be careful. Until it confirms, the transaction could be replaced/redirected by the sender. You can try to speed it up by using a higher fee."
+msgstr "Be careful. Until it confirms, the transaction could be replaced/redirected by the sender. You can try to speed it up by using a higher fee."
+
+msgid "Be sure to store your recovery phrase in a secure place. If this app is deleted, your money cannot be recovered without it."
+msgstr "Be sure to store your recovery phrase in a secure place. If this app is deleted, your money cannot be recovered without it."
+
+msgid "Because you are sending the maximum amount contained in this wallet, the {coinName} miner fee ({fee} {coin}) will be deducted from the total.  {msg}"
+msgstr "Because you are sending the maximum amount contained in this wallet, the {coinName} miner fee ({fee} {coin}) will be deducted from the total.  {msg}"
+
+msgid "Because you are speeding up this transaction, the {coinName} miner fee ({fee} {coin}) will be deducted from the total."
+msgstr "Because you are speeding up this transaction, the {coinName} miner fee ({fee} {coin}) will be deducted from the total."
+
+msgid "Because your encrypted password is not stored by BitPay, there is no way to reset it."
+msgstr "Because your encrypted password is not stored by BitPay, there is no way to reset it."
+
+msgid "Before duplicating your wallet, it's recommended that you first write down your recovery phrase and store it securely so that your wallet can be recovered in the case your device was lost or stolen."
+msgstr "Before duplicating your wallet, it's recommended that you first write down your recovery phrase and store it securely so that your wallet can be recovered in the case your device was lost or stolen."
+
+msgid "Before retrieving your wallet address, it's recommended that you first write down your recovery phrase and store it securely so that your wallet can be recovered in the case your device was lost or stolen."
+msgstr "Before retrieving your wallet address, it's recommended that you first write down your recovery phrase and store it securely so that your wallet can be recovered in the case your device was lost or stolen."
+
+msgid "Before retrieving your wallets addresses, it's recommended that you first write down your recovery phrase and store it securely so that your wallets can be recovered in the case your device was lost or stolen."
+msgstr "Before retrieving your wallets addresses, it's recommended that you first write down your recovery phrase and store it securely so that your wallets can be recovered in the case your device was lost or stolen."
+
+msgid "Before sending more funds to complete this transaction we recommend you read more about miner fees."
+msgstr "Before sending more funds to complete this transaction we recommend you read more about miner fees."
+
+msgid "Below Minimum Amount"
+msgstr "Below Minimum Amount"
+
+msgid "Biometric"
+msgstr "Biometric"
+
+msgid "BitPay Account"
+msgstr "BitPay Account"
+
+msgid "BitPay ID"
+msgstr "BitPay ID"
+
+msgid "BitPay ID successfully connected."
+msgstr "BitPay ID successfully connected."
+
+msgid "BitPay ID successfully disconnected."
+msgstr "BitPay ID successfully disconnected."
+
+msgid "BitPay cannot validate the destination tag. Before sending XRP please double-check the destination tag with the receiver, if not valid it may result in the permanent loss of the funds."
+msgstr "BitPay cannot validate the destination tag. Before sending XRP please double-check the destination tag with the receiver, if not valid it may result in the permanent loss of the funds."
+
+msgid "BitPay would also like to send you marketing and promotional communications about our products, services and special promotions. You can change your preferences at any time in “Settings” in our app or by contacting us as set forth in our"
+msgstr "BitPay would also like to send you marketing and promotional communications about our products, services and special promotions. You can change your preferences at any time in “Settings” in our app or by contacting us as set forth in our"
+
+msgid "Bitcoin Address"
+msgstr "비트코인 주소"
+
+msgid "Bitcoin Cash Address"
+msgstr "Bitcoin Cash Address"
+
+msgid "Bitcore Wallet Service is under maintenance. Please check https://status.bitpay.com/."
+msgstr "Bitcore Wallet Service is under maintenance. Please check https://status.bitpay.com/."
+
+msgid "Broadcast Payment"
+msgstr "Broadcast Payment"
+
+msgid "Broadcasted"
+msgstr "Broadcasted"
+
+msgid "Broadcasting transaction..."
+msgstr "Broadcasting transaction..."
+
+msgid "Buy"
+msgstr "Buy"
+
+msgid "Buy Amount"
+msgstr "Buy Amount"
+
+msgid "Buy Crypto"
+msgstr "Buy Crypto"
+
+msgid "Buy Crypto Settings"
+msgstr "Buy Crypto Settings"
+
+msgid "Buy Gift Card"
+msgstr "Buy Gift Card"
+
+msgid "Buy Gift Cards"
+msgstr "Buy Gift Cards"
+
+msgid "Buy Now"
+msgstr "Buy Now"
+
+msgid "Buy crypto with a credit card."
+msgstr "Buy crypto with a credit card."
+
+msgid "Buy crypto with cash"
+msgstr "Buy crypto with cash"
+
+msgid "Buy gift cards with crypto"
+msgstr "Buy gift cards with crypto"
+
+msgid "Buy {displayName} Gift Card"
+msgstr "Buy {displayName} Gift Card"
+
+msgid "Buying Bitcoin..."
+msgstr "비트코인 구입 중..."
+
+msgid "Buying Gift Card..."
+msgstr "Buying Gift Card..."
+
+msgid "By giving my email address, I give explicit consent to BitPay to use it to contact me about payment issues."
+msgstr "By giving my email address, I give explicit consent to BitPay to use it to contact me about payment issues."
+
+msgid "By granting this permission, \"1inch\" will be able to withdraw your {{ fromToken.symbol }} and complete transactions for you."
+msgstr ""
+
+msgid "By granting this permission, \"{{ peerMeta?.name }}\" will be able to withdraw your {{ request.tokenInfo?.symbol || request.tokenInfo?.name}} and complete transactions for you."
+msgstr ""
+
+msgid "By providing your email address, you give explicit consent to BitPay to use your email address to send you email notifications about payments."
+msgstr "By providing your email address, you give explicit consent to BitPay to use your email address to send you email notifications about payments."
+
+msgid "CANCEL"
+msgstr "취소"
+
+msgid "CHOOSE FEE LEVEL"
+msgstr "CHOOSE FEE LEVEL"
+
+msgid "CLOSE"
+msgstr "CLOSE"
+
+msgid "CONTINUE"
+msgstr "CONTINUE"
+
+msgid "Calculating fee..."
+msgstr "Calculating fee..."
+
+msgid "Calculating send max..."
+msgstr "Calculating send max..."
+
+msgid "Camera access denied"
+msgstr "Camera access denied"
+
+msgid "Can range from 2.5% to 5% of the transaction, depending on the volume of traffic (with a minimum of 10 USD or its equivalent in any other fiat currency) + 1% of the transaction."
+msgstr "Can range from 2.5% to 5% of the transaction, depending on the volume of traffic (with a minimum of 10 USD or its equivalent in any other fiat currency) + 1% of the transaction."
+
+msgid "Can't get rates at this moment. Please try again later"
+msgstr "Can't get rates at this moment. Please try again later"
+
+msgid "Cancel"
+msgstr "취소"
+
+msgid "Canceling Gift Card..."
+msgstr "Canceling Gift Card..."
+
+msgid "Cannot join the same wallet more that once"
+msgstr "동일한 지갑에 두 번 이상 합류할 수 없습니다"
+
+msgid "Cannot send XRP to the same wallet you are trying to send from. Please check the destination address and try it again."
+msgstr "Cannot send XRP to the same wallet you are trying to send from. Please check the destination address and try it again."
+
+msgid "Card Archived"
+msgstr "Card Archived"
+
+msgid "Card Settings"
+msgstr "Card Settings"
+
+msgid "Cards"
+msgstr "Cards"
+
+msgid "Change Amount"
+msgstr "Change Amount"
+
+msgid "Change Miner Fee"
+msgstr "Change Miner Fee"
+
+msgid "Changelly Policies"
+msgstr "Changelly Policies"
+
+msgid "Changelly has received payin and is waiting for certain amount of confirmations depending of incoming currency."
+msgstr "Changelly has received payin and is waiting for certain amount of confirmations depending of incoming currency."
+
+msgid "Changelly is not available at this moment. Please, try again later."
+msgstr "Changelly is not available at this moment. Please, try again later."
+
+msgid "Check the app camera permissions under your phone settings"
+msgstr "Check the app camera permissions under your phone settings"
+
+msgid "Check the transaction on your wallet details"
+msgstr "Check the transaction on your wallet details"
+
+msgid "Choose a backup file from your computer"
+msgstr "Choose a backup file from your computer"
+
+msgid "Choose from hundreds of ERC-20 tokens."
+msgstr ""
+
+msgid "Claim Code"
+msgstr "Claim Code"
+
+msgid "Clear"
+msgstr "Clear"
+
+msgid "Clear Encrypt Password"
+msgstr "Clear Encrypt Password"
+
+msgid "Clear cache"
+msgstr "캐시 삭제"
+
+msgid "Click to accept"
+msgstr "Click to accept"
+
+msgid "Click to deposit"
+msgstr "Click to deposit"
+
+msgid "Click to pay"
+msgstr "Click to pay"
+
+msgid "Click to send"
+msgstr "Click to send"
+
+msgid "Click to speed up"
+msgstr "Click to speed up"
+
+msgid "Click to withdraw"
+msgstr "Click to withdraw"
+
+msgid "Close"
+msgstr "닫기"
+
+msgid "Coin"
+msgstr "코인"
+
+msgid "Coin Selector"
+msgstr "Coin Selector"
+
+msgid "Coinbase Support"
+msgstr "Coinbase Support"
+
+msgid "Coinbase updated!"
+msgstr "Coinbase updated!"
+
+msgid "Coins are being sent to the recipient address."
+msgstr "Coins are being sent to the recipient address."
+
+msgid "Coins were successfully sent to the recipient address."
+msgstr "Coins were successfully sent to the recipient address."
+
+msgid "Coming soon"
+msgstr "Coming soon"
+
+msgid "Complete Swap"
+msgstr ""
+
+msgid "Completed"
+msgstr "완료됨"
+
+msgid "Configuration (m-n)"
+msgstr "Configuration (m-n)"
+
+msgid "Confirm"
+msgstr "확인"
+
+msgid "Confirm & Finish"
+msgstr "Confirm & Finish"
+
+msgid "Confirm Deposit"
+msgstr "Confirm Deposit"
+
+msgid "Confirm Passphrase"
+msgstr "Confirm Passphrase"
+
+msgid "Confirm Payment"
+msgstr "Confirm Payment"
+
+msgid "Confirm Request"
+msgstr "Confirm Request"
+
+msgid "Confirm Speed Up"
+msgstr "Confirm Speed Up"
+
+msgid "Confirm Withdraw"
+msgstr "Confirm Withdraw"
+
+msgid "Confirm your PIN"
+msgstr "Confirm your PIN"
+
+msgid "Confirm your new encrypt password"
+msgstr "Confirm your new encrypt password"
+
+msgid "Confirmations"
+msgstr "Confirmations"
+
+msgid "Confirmed transactions"
+msgstr "Confirmed transactions"
+
+msgid "Confirming"
+msgstr "확인 중"
+
+msgid "Congratulations! It looks like you've recently received money. It's highly advised that you verify your recovery phrase so that your funds can be recovered in case your phone was lost or stolen."
+msgstr "Congratulations! It looks like you've recently received money. It's highly advised that you verify your recovery phrase so that your funds can be recovered in case your phone was lost or stolen."
+
+msgid "Connect"
+msgstr "Connect"
+
+msgid "Connect Account"
+msgstr "Connect Account"
+
+msgid "Connect Coinbase Account"
+msgstr "Connect Coinbase Account"
+
+msgid "Connect Your BitPay ID"
+msgstr "Connect Your BitPay ID"
+
+msgid "Connect to Defi"
+msgstr ""
+
+msgid "Connect with Coinbase"
+msgstr "Connect with Coinbase"
+
+msgid "Connect your Coinbase!"
+msgstr "Connect your Coinbase!"
+
+msgid "Connected to"
+msgstr "Connected with"
+
+msgid "Connecting BitPay ID..."
+msgstr "Connecting BitPay ID..."
+
+msgid "Connecting to 1Inch..."
+msgstr ""
+
+msgid "Connecting to Coinbase..."
+msgstr "Connecting to Coinbase..."
+
+msgid "Connection reset by peer"
+msgstr "Connection reset by peer"
+
+msgid "Contact Information"
+msgstr "Contact Information"
+
+msgid "Contact the Changelly support team."
+msgstr "Contact the Changelly support team."
+
+msgid "Contact the Simplex support team."
+msgstr "Contact the Simplex support team."
+
+msgid "Contacts"
+msgstr "Contacts"
+
+msgid "Continue"
+msgstr "Continue"
+
+msgid "Continue Anyway"
+msgstr "Continue Anyway"
+
+msgid "Continue to Simplex"
+msgstr "Continue to Simplex"
+
+msgid "Continue to Wyre"
+msgstr "Continue to Wyre"
+
+msgid "Continue to the exchange page"
+msgstr "Continue to the exchange page"
+
+msgid "Continue to {storeName}"
+msgstr "Continue to {storeName}"
+
+msgid "Contract Address"
+msgstr ""
+
+msgid "Contribute translations"
+msgstr "Contribute translations"
+
+msgid "Control your money without an account"
+msgstr "Control your money without an account"
+
+msgid "Copayer already in this wallet"
+msgstr "Copayer already in this wallet"
+
+msgid "Copayer already voted on this spend proposal"
+msgstr "Copayer already voted on this spend proposal"
+
+msgid "Copayer data mismatch"
+msgstr "Copayer data mismatch"
+
+msgid "Copayer {{idx+1}}"
+msgstr "공동부담자"
+
+msgid "Copayers"
+msgstr "공동 부담자"
+
+msgid "Copied"
+msgstr "Copied"
+
+msgid "Copied to Clipboard"
+msgstr "Copied to Clipboard"
+
+msgid "Copied to clipboard"
+msgstr "Copied to clipboard"
+
+msgid "Copied {coin} address"
+msgstr "{coin}주소 복사됨"
+
+msgid "Copied: {claimCode}"
+msgstr "Copied: {claimCode}"
+
+msgid "Copy Code"
+msgstr "Copy Code"
+
+msgid "Copy this text as it is to a safe place (notepad or email)"
+msgstr "Copy this text as it is to a safe place (notepad or email)"
+
+msgid "Copy to clipboard"
+msgstr "Copy to clipboard"
+
+msgid "Could not access wallet"
+msgstr "Could not access wallet"
+
+msgid "Could not add message to imported wallet without shared encrypting key"
+msgstr "Could not add message to imported wallet without shared encrypting key"
+
+msgid "Could not build transaction"
+msgstr "Could not build transaction"
+
+msgid "Could not connect"
+msgstr "인터넷에 연결할 수 없습니다."
+
+msgid "Could not create address"
+msgstr "Could not create address"
+
+msgid "Could not create transaction"
+msgstr "Could not create transaction"
+
+msgid "Could not create using the specified extended private key"
+msgstr "Could not create using the specified extended private key"
+
+msgid "Could not create: Invalid wallet recovery phrase"
+msgstr "Could not create: Invalid wallet recovery phrase"
+
+msgid "Could not decrypt file, check your password"
+msgstr "파일을 해독할 수 없습니다, 비밀번호를 확인해주세요"
+
+msgid "Could not decrypt wallet"
+msgstr "Could not decrypt wallet"
+
+msgid "Could not delete payment proposal"
+msgstr "지불 제안을 삭제할 수 없습니다"
+
+msgid "Could not encrypt wallet"
+msgstr "Could not encrypt wallet"
+
+msgid "Could not find any ERC20 contract attached to the provided address."
+msgstr ""
+
+msgid "Could not found your selected wallet. Try with a new connection"
+msgstr ""
+
+msgid "Could not get crypto offer. Please, try again later."
+msgstr "암호화폐에 연결할 수 없습니다. 나중에 다시 시도하세요"
+
+msgid "Could not get dynamic fee"
+msgstr "동적 수수료를 받을 수 없습니다."
+
+msgid "Could not get dynamic fee for level:"
+msgstr "Could not get dynamic fee for level:"
+
+msgid "Could not get fee levels"
+msgstr "레벨 수수료를 받을 수 없습니다."
+
+msgid "Could not get transactions"
+msgstr "거래내역을 가져올 수 없습니다."
+
+msgid "Could not import. Check input file."
+msgstr "Could not import. Check input file."
+
+msgid "Could not join wallet"
+msgstr "지갑에 가입하지 못했습니다."
+
+msgid "Could not reject payment"
+msgstr "지불을 거절할 수 없습니다"
+
+msgid "Could not save preferences on the server"
+msgstr "서버에 환경 설정을 저장할 수 없습니다"
+
+msgid "Could not send transaction"
+msgstr "Could not send transaction"
+
+msgid "Could not update transaction history"
+msgstr "거래 기록을 업데이트할 수 없습니다"
+
+msgid "Could not update wallet"
+msgstr "Could not update wallet"
+
+msgid "Country"
+msgstr "국가"
+
+msgid "Country not supported: "
+msgstr "현재 지원하지 않는 국가입니다"
+
+msgid "Country selector"
+msgstr "Country selector"
+
+msgid "Create"
+msgstr "새로 만들기"
+
+msgid "Create Key"
+msgstr "Create Key"
+
+msgid "Create New Key"
+msgstr "Create New Key"
+
+msgid "Create Wallet"
+msgstr "Create Wallet"
+
+msgid "Create a new wallet"
+msgstr "Create a new wallet"
+
+msgid "Create or Import a Key"
+msgstr "Create or Import a Key"
+
+msgid "Create or import a wallet"
+msgstr "Create or import a wallet"
+
+msgid "Create {coinLabel} Wallet"
+msgstr "Create {coinLabel} Wallet"
+
+msgid "Created"
+msgstr "Created"
+
+msgid "Created by"
+msgstr "Created by"
+
+msgid "Created {cardDate}"
+msgstr "Created {cardDate}"
+
+msgid "Creating ETH multisig wallet. Please wait..."
+msgstr "Creating ETH multisig wallet. Please wait..."
+
+msgid "Creating Gift Card..."
+msgstr "Creating Gift Card..."
+
+msgid "Creating Wallet..."
+msgstr "지갑 만드는 중..."
+
+msgid "Creating transaction..."
+msgstr "Creating transaction..."
+
+msgid "Credit Card"
+msgstr "Credit Card"
+
+msgid "Crypto"
+msgstr "Crypto"
+
+msgid "Crypto Wallets & Keys"
+msgstr "Crypto Wallets & Keys"
+
+msgid "Current Cards"
+msgstr "Current Cards"
+
+msgid "Current fee value:"
+msgstr "현재 수수료 값:"
+
+msgid "Currently it has not been possible to find a path that allows the transaction between the selected pair of tokens: "
+msgstr ""
+
+msgid "Currently none of our partners accept the exchange of the selected pair: "
+msgstr ""
+
+msgid "Currently our partners does not support exchanges with the selected coin"
+msgstr ""
+
+msgid "Currently the \"Send Max\" feature is not supported for ETH swaps on the 1Inch exchange. Try entering the amount manually."
+msgstr ""
+
+msgid "Custom"
+msgstr "사용자 정의"
+
+msgid "Custom fee"
+msgstr "Custom fee"
+
+msgid "DETAILS"
+msgstr "DETAILS"
+
+msgid "DO THIS LATER"
+msgstr "나중에 수행"
+
+msgid "Dapp not responding. Try scanning a new QR code"
+msgstr "Dapp이 응답하지 않습니다. 새 QR 코드를 스캔해 보십시오."
+
+msgid "Dark Mode"
+msgstr "다크 모드"
+
+msgid "Date"
+msgstr "Date"
+
+msgid "Debit Card"
+msgstr "직불 카드"
+
+msgid "Debit Cards"
+msgstr "Debit Cards"
+
+msgid "Delete"
+msgstr "Delete"
+
+msgid "Delete Key"
+msgstr "Delete Key"
+
+msgid "Delete Payment Proposal"
+msgstr "Delete Payment Proposal"
+
+msgid "Delete Wallet"
+msgstr "Delete Wallet"
+
+msgid "Delete it and create a new one"
+msgstr "Delete it and create a new one"
+
+msgid "Deleting Wallet..."
+msgstr "Deleting Wallet..."
+
+msgid "Deleting payment proposal..."
+msgstr "Deleting payment proposal..."
+
+msgid "Deposit address"
+msgstr "Deposit address"
+
+msgid "Deposit pending"
+msgstr "입금보류중"
+
+msgid "Deposit success"
+msgstr "입금 성공"
+
+msgid "Deposit to"
+msgstr "Deposit to"
+
+msgid "Depositing any other crypto asset besides {coin} to this address may result in the total loss of your funds. BitPay is not responsible for any funds loss  due to the deposit of a different asset, wallet or network."
+msgstr "{coin} 이외의 다른 암호화 자산을 이 주소에 예금하면 총 자금의 손실이 발생할 수 있습니다. 비트페이는 다른 자산, 지갑 또는 네트워크의 예금으로 인한 펀드 손실에 대해 책임을 지지 않습니다."
+
+msgid "Depositing any other crypto asset besides {coin} to this address or doing it through any other network than ERC20 may result in the total loss of your funds. BitPay is not responsible for any funds loss  due to the deposit of a different asset, wallet or network."
+msgstr "{coin} 이외의 다른 암호화 자산을 이 주소에 예치하거나 ERC20 이외의 다른 네트워크를 통해 암호 자산을 수행하면 총액이 손실될 수 있습니다. 비트페이는 다른 자산, 지갑 또는 네트워크의 예금으로 인한 펀드 손실에 대해 책임을 지지 않습니다."
+
+msgid "Derivation Path"
+msgstr "Derivation Path"
+
+msgid "Derivation path"
+msgstr "Derivation path"
+
+msgid "Description"
+msgstr "설명"
+
+msgid "Designed for people who want to live life on crypto."
+msgstr "암호화폐로 삶을 살고자 하는 사람들을 위해 설계되었습니다."
+
+msgid "Designed for people who want to live life on crypto. View your balance, request a new PIN, and reload instantly all within the BitPay App."
+msgstr ""
+
+msgid "Destination Tag"
+msgstr "Destination Tag"
+
+msgid "Destination Tag (Payin Extra Id)"
+msgstr ""
+
+msgid "Details"
+msgstr "Details"
+
+msgid "Disable notifications"
+msgstr "Disable notifications"
+
+msgid "Disabled"
+msgstr "Disabled"
+
+msgid "Disconnect"
+msgstr "연결 종료"
+
+msgid "Disconnect BitPay ID"
+msgstr "Disconnect BitPay ID"
+
+msgid "Discount"
+msgstr "Discount"
+
+msgid "Discover a curated list of places you can spend your crypto. Purchase, manage & spend store credits instantly."
+msgstr ""
+
+msgid "Display Currency"
+msgstr "Display Currency"
+
+msgid "Do not include private key"
+msgstr "Do not include private key"
+
+msgid "Do you want to reset all settings to default value?"
+msgstr ""
+
+msgid "Doge Address"
+msgstr ""
+
+msgid "Don't lose your key!"
+msgstr "Don't lose your key!"
+
+msgid "Don't see your Key?"
+msgstr "Don't see your Key?"
+
+msgid "Don't see your language on Crowdin? Contact the Owner on Crowdin! We'd love to support your language."
+msgstr "Don't see your language on Crowdin? Contact the Owner on Crowdin! We'd love to support your language."
+
+msgid "Done"
+msgstr "Done"
+
+msgid "Download"
+msgstr "Download"
+
+msgid "Download logs"
+msgstr "Download logs"
+
+msgid "Due to AML/KYC procedure, exchange may be delayed."
+msgstr ""
+
+msgid "Due to high demand, miner fees are high. Fees are paid to miners who process transactions and are not paid to {{appName}}."
+msgstr ""
+
+msgid "Duplicate to BCH"
+msgstr "Duplicate to BCH"
+
+msgid "Duplicating wallet..."
+msgstr "Duplicating wallet..."
+
+msgid "ETH Multisig"
+msgstr ""
+
+msgid "ETH Multisig Wallet creation"
+msgstr ""
+
+msgid "ETH wallet is required"
+msgstr ""
+
+msgid "Each bitcoin wallet can generate billions of addresses from your 12-word recovery phrase. A new address is automatically generated and shown each time you receive a payment."
+msgstr "Each bitcoin wallet can generate billions of addresses from your 12-word recovery phrase. A new address is automatically generated and shown each time you receive a payment."
+
+msgid "Each copayer has their own recovery phrase. To recover funds stored in a Shared Wallet you will need the recovery phrase from each copayer."
+msgstr "Each copayer has their own recovery phrase. To recover funds stored in a Shared Wallet you will need the recovery phrase from each copayer."
+
+msgid "Easily deposit and withdraw funds."
+msgstr ""
+
+msgid "Easily swap hundreds of ERC-20 tokens through Decentralized Exchanges (DEXs)."
+msgstr ""
+
+msgid "Economy"
+msgstr "Economy"
+
+msgid "Edit"
+msgstr "Edit"
+
+msgid "Email"
+msgstr "Email"
+
+msgid "Email (optional)"
+msgstr "Email (optional)"
+
+msgid "Email address"
+msgstr "Email address"
+
+msgid "Empty addresses limit reached. New addresses cannot be generated."
+msgstr "Empty addresses limit reached. New addresses cannot be generated."
+
+msgid "Enable"
+msgstr ""
+
+msgid "Enable camera access in your device settings to get started."
+msgstr "Enable camera access in your device settings to get started."
+
+msgid "Enable desktop notifications"
+msgstr "Enable desktop notifications"
+
+msgid "Enable email notifications"
+msgstr "Enable email notifications"
+
+msgid "Enable push notifications"
+msgstr "Enable push notifications"
+
+msgid "Enable the camera to get started."
+msgstr "Enable the camera to get started."
+
+msgid "Enhanced Security"
+msgstr ""
+
+msgid "Enter 2-step verification"
+msgstr ""
+
+msgid "Enter Amount"
+msgstr "Enter Amount"
+
+msgid "Enter Two Factor for your BitPay account"
+msgstr "Enter Two Factor for your BitPay account"
+
+msgid "Enter a destination tag"
+msgstr "Enter a destination tag"
+
+msgid "Enter a new encrypt password"
+msgstr "Enter a new encrypt password"
+
+msgid "Enter a transaction memo"
+msgstr "Enter a transaction memo"
+
+msgid "Enter an alphanumeric passphrase to encrypt your wallet"
+msgstr ""
+
+msgid "Enter custom fee in {feeUnit}"
+msgstr "Enter custom fee in {feeUnit}"
+
+msgid "Enter email address"
+msgstr "Enter email address"
+
+msgid "Enter encrypt password"
+msgstr "Enter encrypt password"
+
+msgid "Enter your recovery phrase (usually 12-words) in the correct order. Separate each word with a single space only (no commas or any other punctuation). For backup phrases in non-English languages: Some words may include special symbols (ñ, è, っ, etc.), so be sure to spell all the words correctly."
+msgstr ""
+
+msgid "Enter {coinName} address"
+msgstr "Enter {coinName} address"
+
+msgid "Entry already exist"
+msgstr "Entry already exist"
+
+msgid "Entry does not exist"
+msgstr "Entry does not exist"
+
+msgid "Error"
+msgstr "Error"
+
+msgid "Error 500 - There is a temporary problem, please try again later."
+msgstr "Error 500 - There is a temporary problem, please try again later."
+
+msgid "Error adding new entry"
+msgstr "Error adding new entry"
+
+msgid "Error connecting to Coinbase"
+msgstr ""
+
+msgid "Error creating wallet"
+msgstr "Error creating wallet"
+
+msgid "Error deleting entry"
+msgstr "Error deleting entry"
+
+msgid "Error fetching this invoice"
+msgstr "Error fetching this invoice"
+
+msgid "Error getting SendMax information"
+msgstr "Error getting SendMax information"
+
+msgid "Error getting Speed Up fee"
+msgstr ""
+
+msgid "Error getting Speed Up information"
+msgstr ""
+
+msgid "Error getting address"
+msgstr ""
+
+msgid "Error getting fee rate"
+msgstr "Error getting fee rate"
+
+msgid "Error on Re-Import"
+msgstr ""
+
+msgid "Error pairing BitPay Account"
+msgstr "Error pairing BitPay Account"
+
+msgid "Error scanning funds:"
+msgstr "Error scanning funds:"
+
+msgid "Error sweeping wallet:"
+msgstr "Error sweeping wallet:"
+
+msgid "Error updating Debit Cards"
+msgstr "Error updating Debit Cards"
+
+msgid "Ethereum Address"
+msgstr "Ethereum Address"
+
+msgid "Ethereum wallet required"
+msgstr "Ethereum wallet required"
+
+msgid "Exceeded daily limit of $500 per user"
+msgstr "Exceeded daily limit of $500 per user"
+
+msgid "Exchange Fee"
+msgstr ""
+
+msgid "Exchange Rates"
+msgstr ""
+
+msgid "Exchange Transaction ID"
+msgstr ""
+
+msgid "Exchange address (Payin)"
+msgstr ""
+
+msgid "Exchange failed and coins were refunded to user's wallet."
+msgstr ""
+
+msgid "Exchange services provided by Changelly. By clicking “Accept”, I acknowledge and understand that my transaction may trigger AML/KYC verification according to Changelly AML/KYC"
+msgstr ""
+
+msgid "Exchanges"
+msgstr "Exchanges"
+
+msgid "Exchanging"
+msgstr ""
+
+msgid "Execution Failed"
+msgstr ""
+
+msgid "Expired"
+msgstr "Expired"
+
+msgid "Expires"
+msgstr "Expires"
+
+msgid "Export Key"
+msgstr "Export Key"
+
+msgid "Export Wallet"
+msgstr "Export Wallet"
+
+msgid "Export to file"
+msgstr "Export to file"
+
+msgid "Exporting via QR not supported for this wallet"
+msgstr "Exporting via QR not supported for this wallet"
+
+msgid "Extended Private Key"
+msgstr "Extended Private Key"
+
+msgid "Extended Public Keys"
+msgstr "Extended Public Keys"
+
+msgid "External Services"
+msgstr ""
+
+msgid "Extracting Wallet information..."
+msgstr "Extracting Wallet information..."
+
+msgid "Failed"
+msgstr "Failed"
+
+msgid "Failed to export"
+msgstr "Failed to export"
+
+msgid "Featured Currencies"
+msgstr "Featured Currencies"
+
+msgid "Fee"
+msgstr "수수료"
+
+msgid "Fee level is not defined"
+msgstr "Fee level is not defined"
+
+msgid "Fee rate"
+msgstr "Fee rate"
+
+msgid "Feedback"
+msgstr ""
+
+msgid "Feedback could not be submitted. Please try again later."
+msgstr "Feedback could not be submitted. Please try again later."
+
+msgid "Feedback!"
+msgstr "Feedback!"
+
+msgid "Fetching BitPay Account..."
+msgstr "Fetching BitPay Account..."
+
+msgid "Fetching BitPay Cards..."
+msgstr "Fetching BitPay Cards..."
+
+msgid "Fetching payment information..."
+msgstr "Fetching payment information..."
+
+msgid "Fetching payment options..."
+msgstr ""
+
+msgid "File/Text"
+msgstr "File/Text"
+
+msgid "Finished"
+msgstr ""
+
+msgid "First, lets ensure no one can easily access your crypto funds when you’re away from your device by adding biometric security."
+msgstr ""
+
+msgid "Flexibility"
+msgstr ""
+
+msgid "For BitPay invoices and gift cards the subtotal amount is the product or service amount plus network costs."
+msgstr ""
+
+msgid "For best security this should not match your BitPay ID password."
+msgstr ""
+
+msgid "Forgot your password?"
+msgstr ""
+
+msgid "Found something broken? Please report it as a bug. If you need immediate help with a problem you are having, then get help by contacting our support team."
+msgstr "Found something broken? Please report it as a bug. If you need immediate help with a problem you are having, then get help by contacting our support team."
+
+msgid "From"
+msgstr "From"
+
+msgid "From BitPay account"
+msgstr "From BitPay account"
+
+msgid "Function"
+msgstr ""
+
+msgid "Fund it. Spend it."
+msgstr "Fund it. Spend it."
+
+msgid "Fund it. Spend it. Live on crypto."
+msgstr ""
+
+msgid "Funds Will Not Be Accessible"
+msgstr "Funds Will Not Be Accessible"
+
+msgid "Funds are locked by pending spend proposals"
+msgstr "Funds are locked by pending spend proposals"
+
+msgid "Funds found"
+msgstr "Funds found"
+
+msgid "Funds to be added"
+msgstr "Funds to be added"
+
+msgid "Funds were added to debit card"
+msgstr "Funds were added to debit card"
+
+msgid "Funds will be transferred to"
+msgstr "Funds will be transferred to"
+
+msgid "GO BACK"
+msgstr ""
+
+msgid "GOT IT"
+msgstr "GOT IT"
+
+msgid "Gas"
+msgstr ""
+
+msgid "Gas Limit"
+msgstr ""
+
+msgid "Gas Price"
+msgstr ""
+
+msgid "Gas limit"
+msgstr ""
+
+msgid "Gas price"
+msgstr ""
+
+msgid "General"
+msgstr "General"
+
+msgid "Generate New Address"
+msgstr "Generate New Address"
+
+msgid "Generating .csv file..."
+msgstr "Generating .csv file..."
+
+msgid "Generating new address..."
+msgstr "Generating new address..."
+
+msgid "Get $10"
+msgstr ""
+
+msgid "Get Started"
+msgstr "Get Started"
+
+msgid "Get crypto from another wallet"
+msgstr ""
+
+msgid "Get help"
+msgstr "Get help"
+
+msgid "Get news and updates from BitPay"
+msgstr "Get news and updates from BitPay"
+
+msgid "Get on Chrome"
+msgstr ""
+
+msgid "Get started"
+msgstr "Get started"
+
+msgid "Get started by adding your first one."
+msgstr "Get started by adding your first one."
+
+msgid "Get the BitPay Card"
+msgstr ""
+
+msgid "Getting data from the exchange..."
+msgstr ""
+
+msgid "Getting fee levels..."
+msgstr "Getting fee levels..."
+
+msgid "Gift Card"
+msgstr "Gift Card"
+
+msgid "Gift Card Settings"
+msgstr "Gift Card Settings"
+
+msgid "Gift Cards"
+msgstr "Gift Cards"
+
+msgid "Gift card canceled"
+msgstr "Gift card canceled"
+
+msgid "Gift card purchases are temporarily unavailable. Please try again later."
+msgstr "Gift card purchases are temporarily unavailable. Please try again later."
+
+msgid "Give this site permission to access your token?"
+msgstr ""
+
+msgid "Go Back"
+msgstr "Go Back"
+
+msgid "Go back"
+msgstr "Go back"
+
+msgid "Go to Coinbase"
+msgstr ""
+
+msgid "Got it"
+msgstr ""
+
+msgid "Have you redeemed all of your {brand} Gift Cards? Archived gift cards will still be accessible in settings."
+msgstr "Have you redeemed all of your {brand} Gift Cards? Archived gift cards will still be accessible in settings."
+
+msgid "Have you redeemed the entire balance of this gift card?"
+msgstr "Have you redeemed the entire balance of this gift card?"
+
+msgid "Having problems with 1Inch?"
+msgstr ""
+
+msgid "Having problems with Changelly?"
+msgstr ""
+
+msgid "Having problems with Simplex?"
+msgstr "Having problems with Simplex?"
+
+msgid "Having problems with Wyre?"
+msgstr ""
+
+msgid "Help & Support"
+msgstr "Help & Support"
+
+msgid "Help & support"
+msgstr "Help & support"
+
+msgid "Help BitPay Improve"
+msgstr ""
+
+msgid "Help BitPay improve"
+msgstr ""
+
+msgid "Help and support information is available at the website"
+msgstr "Help and support information is available at the website"
+
+msgid "Help and support information is available at the website."
+msgstr "Help and support information is available at the website."
+
+msgid "Help us by answering 3 quick questions."
+msgstr ""
+
+msgid "Hidden"
+msgstr "Hidden"
+
+msgid "Hide"
+msgstr "Hide"
+
+msgid "Hide Balance"
+msgstr "Hide Balance"
+
+msgid "Hide Wallet"
+msgstr "Hide Wallet"
+
+msgid "Hide advanced options"
+msgstr "Hide advanced options"
+
+msgid "Hide discount?"
+msgstr "Hide discount?"
+
+msgid "High"
+msgstr ""
+
+msgid "Hold"
+msgstr ""
+
+msgid "Home"
+msgstr "Home"
+
+msgid "How can we improve?"
+msgstr ""
+
+msgid "How satisfied are you with using {{appName}}?"
+msgstr ""
+
+msgid "How to recover your funds if you lose this device?"
+msgstr ""
+
+msgid "However, unconfirmed funds are not allowed for spending with merchants, BitPay Card loads, or BitPay in-app gift card purchases."
+msgstr "However, unconfirmed funds are not allowed for spending with merchants, BitPay Card loads, or BitPay in-app gift card purchases."
+
+msgid "I UNDERSTAND"
+msgstr ""
+
+msgid "I Understand"
+msgstr ""
+
+msgid "I already have an account"
+msgstr ""
+
+msgid "I have read, understood, and agree with the Terms of Use."
+msgstr ""
+
+msgid "I love it!"
+msgstr ""
+
+msgid "I understand"
+msgstr "I understand"
+
+msgid "I understand that if this app is moved to another device or deleted, my crypto funds can only be recovered with my recovery phrase."
+msgstr ""
+
+msgid "I understand that my funds are held and controlled securely on this device, not by a company."
+msgstr ""
+
+msgid "I'M SURE"
+msgstr ""
+
+msgid "I'm disappointed"
+msgstr "I'm disappointed"
+
+msgid "I'm sure"
+msgstr "I'm sure"
+
+msgid "I've used this card"
+msgstr "I've used this card"
+
+msgid "If enabled, wallets will also try to spend unconfirmed funds."
+msgstr "If enabled, wallets will also try to spend unconfirmed funds."
+
+msgid "If enabled, your gift card purchases will be associated with your BitPay ID, allowing you to keep track of your gift card purchases even if this device is lost."
+msgstr ""
+
+msgid "If you delete the BitPay app or lose this device, you’ll need a recovery key to regain access to your funds."
+msgstr ""
+
+msgid "If you do not have the recovery phrase, you will not be able to regain access to your wallet."
+msgstr ""
+
+msgid "If you don't mind waiting longer for this transaction to confirm you can change to a lower miner fee level."
+msgstr ""
+
+msgid "If you have funds stored on a website then you should move them into a secure wallet... like this one!"
+msgstr "If you have funds stored on a website then you should move them into a secure wallet... like this one!"
+
+msgid "If you have successfully completed the entire payment process, remember that receiving crypto usually takes up to 1 hour."
+msgstr "If you have successfully completed the entire payment process, remember that receiving crypto usually takes up to 1 hour."
+
+msgid "If you have trouble, contact Coinbase support for direct assistance."
+msgstr ""
+
+msgid "If you need immediate help with a problem you are having, then get help by contacting our support team."
+msgstr "If you need immediate help with a problem you are having, then get help by contacting our support team."
+
+msgid "If you need to regain access to your wallet because you have forgotten or lost the encrypt password, you must restore the wallet using the 12 word recovery phrase."
+msgstr ""
+
+msgid "If you need to send to \"old\" addresses (like the one you just pasted), and you are SURE those are BCH addresses, you can \"translate\" them to the corresponding address in CashAddr format."
+msgstr "If you need to send to \"old\" addresses (like the one you just pasted), and you are SURE those are BCH addresses, you can \"translate\" them to the corresponding address in CashAddr format."
+
+msgid "If you would like to connect this card to"
+msgstr ""
+
+msgid "Import"
+msgstr "Import"
+
+msgid "Import Wallet"
+msgstr "Import Wallet"
+
+msgid "Import Words"
+msgstr "Import Words"
+
+msgid "Import existing wallet"
+msgstr "Import existing wallet"
+
+msgid "Import from backup"
+msgstr ""
+
+msgid "Important note: Keep in mind BitPay has suspended XRP as a payment method, this includes loads to the BitPay Card, BitPay invoices and in-app purchases"
+msgstr ""
+
+msgid "Importing Wallet..."
+msgstr "Importing Wallet..."
+
+msgid "In order to begin purchasing and receiving cryptocurrencies you will need to verify your key. This could take up to 3 minutes long to complete."
+msgstr ""
+
+msgid "In order to create a token wallet, an Ethereum (ETH) wallet is required. Please create an ETH wallet first."
+msgstr ""
+
+msgid "In order to create a token wallet, an Ethereum (ETH) wallet is required. Please create an ETH wallet first. Only one {{ params.token.name }} wallet is allowed per ETH wallet."
+msgstr ""
+
+msgid "In order to create a token wallet, an Ethereum (ETH) wallet is required. Please create an ETH wallet first. Only one {{ token.name }} wallet is allowed per ETH wallet."
+msgstr ""
+
+msgid "In order to create this multisig wallet, an Ethereum (ETH) wallet with enough funds is required."
+msgstr ""
+
+msgid "In order to finish the payment process you will be redirected to Simplex's page"
+msgstr ""
+
+msgid "In order to finish the payment process you will be redirected to Wyre's page"
+msgstr ""
+
+msgid "In order to finish the payment process you will be redirected to the exchange page"
+msgstr ""
+
+msgid "In order to protect your funds from being accessible to hackers and thieves, the Master Key to your wallet must be kept somewhere safe and remain a secret."
+msgstr ""
+
+msgid "In order to speed up the confirmation of your ETH transaction, the original transaction will be replaced by a new one that uses a higher miner fee."
+msgstr ""
+
+msgid "In order to verify your wallet recovery phrase, please type your password."
+msgstr "In order to verify your wallet recovery phrase, please type your password."
+
+msgid "Includes EMV chip and options to lock your card and control how you spend."
+msgstr ""
+
+msgid "Incomplete"
+msgstr "Incomplete"
+
+msgid "Incorrect PIN, try again."
+msgstr "올바르지 않은 PIN입니다, 다시 시도해주세요."
+
+msgid "Incorrect Recovery Phrase"
+msgstr ""
+
+msgid "Incorrect network address"
+msgstr "Incorrect network address"
+
+msgid "Information"
+msgstr "Information"
+
+msgid "Initializing Swap Crypto..."
+msgstr ""
+
+msgid "Instant Reloads*"
+msgstr ""
+
+msgid "Instantiation transaction ID"
+msgstr ""
+
+msgid "Instantly reload your card balance with no conversion fees. Powered by our competitive exchange rates."
+msgstr ""
+
+msgid "Instantly reload your card with no conversion fee!*"
+msgstr ""
+
+msgid "Insufficient funds"
+msgstr "Insufficient funds"
+
+msgid "Insufficient funds for fee"
+msgstr "Insufficient funds for fee"
+
+msgid "Insufficient funds for fee in your ETH linked wallet"
+msgstr ""
+
+msgid "Interaction with contract"
+msgstr ""
+
+msgid "Invalid"
+msgstr "Invalid"
+
+msgid "Invalid Email"
+msgstr "Invalid Email"
+
+msgid "Invalid URL"
+msgstr "유효하지 않은 URL"
+
+msgid "Invalid address"
+msgstr "Invalid address"
+
+msgid "Invalid data"
+msgstr "Invalid data"
+
+msgid "Invalid derivation path"
+msgstr "Invalid derivation path"
+
+msgid "Invalid derivation path for selected coin"
+msgstr "Invalid derivation path for selected coin"
+
+msgid "Invitation Code"
+msgstr "Invitation Code"
+
+msgid "Is this correct?"
+msgstr "Is this correct?"
+
+msgid "Is this email address correct?"
+msgstr "Is this email address correct?"
+
+msgid "It appears that you do not have any money to send."
+msgstr "It appears that you do not have any money to send."
+
+msgid "It could take a while to confirm transaction"
+msgstr ""
+
+msgid "It's a ghost town in here"
+msgstr "It's a ghost town in here"
+
+msgid "It's a good idea to avoid reusing addresses - this both protects your privacy and keeps your bitcoins secure against hypothetical attacks by quantum computers."
+msgstr "It's a good idea to avoid reusing addresses - this both protects your privacy and keeps your bitcoins secure against hypothetical attacks by quantum computers."
+
+msgid "It's ok for now"
+msgstr ""
+
+msgid "I’ll do this later"
+msgstr ""
+
+msgid "Join"
+msgstr "Join"
+
+msgid "Join Shared Wallet"
+msgstr "Join Shared Wallet"
+
+msgid "Join more Copayers"
+msgstr ""
+
+msgid "Join the waitlist and be first to experience the new card."
+msgstr ""
+
+msgid "Join the waitlist and be the first to experience our new card."
+msgstr ""
+
+msgid "Joining Wallet..."
+msgstr "지갑 합류 중..."
+
+msgid "Just a second, we're setting a few things up."
+msgstr ""
+
+msgid "Keep in mind fees are not charged by BitPay."
+msgstr ""
+
+msgid "Keep in mind that once the funds are received in your {{params.coin}} wallet, to move them you will need to have enough funds in your Ethereum linked wallet ("
+msgstr ""
+
+msgid "Keep in mind that once the funds are received in your {{token.name}} wallet, to move them you will need to have enough funds in your Ethereum linked wallet to pay the ETH miner fees."
+msgstr ""
+
+msgid "Keep in mind your encrypt password is not the 12-word recovery phrase"
+msgstr ""
+
+msgid "Key Name"
+msgstr "Key Name"
+
+msgid "Key Settings"
+msgstr "Key Settings"
+
+msgid "Key already associated with an existing wallet"
+msgstr "Key already associated with an existing wallet"
+
+msgid "Key verification required"
+msgstr ""
+
+msgid "Language"
+msgstr "Language"
+
+msgid "Last Month"
+msgstr "Last Month"
+
+msgid "Last day"
+msgstr "Last day"
+
+msgid "Last four digits"
+msgstr "Last four digits"
+
+msgid "Learn More"
+msgstr "Learn More"
+
+msgid "Learn about miner fees"
+msgstr ""
+
+msgid "Learn more"
+msgstr "Learn more"
+
+msgid "Learn more about testnet blockchain"
+msgstr "Learn more about testnet blockchain"
+
+msgid "Learn where you can spend your crypto today."
+msgstr "Learn where you can spend your crypto today."
+
+msgid "Legacy address types in Bitcoin Cash are OBSOLETE. Only use this feature if you are required to provide a legacy address to the sending party"
+msgstr ""
+
+msgid "Legacy wallets created before 9/15 can't support additional wallets being added."
+msgstr "Legacy wallets created before 9/15 can't support additional wallets being added."
+
+msgid "Let’s add some funds"
+msgstr ""
+
+msgid "Leverage multi-factor security"
+msgstr ""
+
+msgid "Leverage your crypto with an amazon.com gift card."
+msgstr "Leverage your crypto with an amazon.com gift card."
+
+msgid "Light Mode"
+msgstr ""
+
+msgid "Linked"
+msgstr "Linked"
+
+msgid "Linked Ethereum Wallet"
+msgstr "Linked Ethereum Wallet"
+
+msgid "Linked Wallet"
+msgstr ""
+
+msgid "Linked to"
+msgstr ""
+
+msgid "Linked to (Copayer 1)"
+msgstr ""
+
+msgid "Linked to wallet: {linkedEthWalletName}"
+msgstr "Linked to wallet: {linkedEthWalletName}"
+
+msgid "Litecoin Address"
+msgstr ""
+
+msgid "Live on crypto."
+msgstr "Live on crypto."
+
+msgid "Loading accounts..."
+msgstr ""
+
+msgid "Loading addresses..."
+msgstr "Loading addresses..."
+
+msgid "Loading transaction info..."
+msgstr "Loading transaction info..."
+
+msgid "Lock"
+msgstr "Lock"
+
+msgid "Lock App"
+msgstr "Lock App"
+
+msgid "Locked"
+msgstr "Locked"
+
+msgid "Locktime in effect. Please wait to create a new spend proposal"
+msgstr "Locktime in effect. Please wait to create a new spend proposal"
+
+msgid "Locktime in effect. Please wait to remove this spend proposal"
+msgstr "Locktime in effect. Please wait to remove this spend proposal"
+
+msgid "Log in or Sign Up"
+msgstr ""
+
+msgid "Log out"
+msgstr "Log out"
+
+msgid "Low"
+msgstr ""
+
+msgid "Low Fee"
+msgstr "Low Fee"
+
+msgid "Low amount inputs"
+msgstr "Low amount inputs"
+
+msgid "Low values increase chances that transaction will fail, high values increase chances of front running."
+msgstr ""
+
+msgid "Manage your Coinbase account, check balances, deposit and withdraw funds between wallets."
+msgstr ""
+
+msgid "Maximum Amount"
+msgstr ""
+
+msgid "Maybe a pincode instead?"
+msgstr ""
+
+msgid "Me"
+msgstr "Me"
+
+msgid "Memo"
+msgstr "Memo"
+
+msgid "Merchant Directory"
+msgstr "Merchant Directory"
+
+msgid "Merchant Message"
+msgstr "Merchant Message"
+
+msgid "Message"
+msgstr ""
+
+msgid "Method not supported"
+msgstr ""
+
+msgid "Miner Fee"
+msgstr "Miner Fee"
+
+msgid "Miner Fee Notice"
+msgstr "Miner Fee Notice"
+
+msgid "Miner fee"
+msgstr "Miner fee"
+
+msgid "Miner fee not required for payments with Coinbase accounts"
+msgstr ""
+
+msgid "Missing 2-step verification"
+msgstr ""
+
+msgid "Missing Credentials"
+msgstr ""
+
+msgid "Missing parameter"
+msgstr "Missing parameter"
+
+msgid "Missing private keys to sign"
+msgstr "Missing private keys to sign"
+
+msgid "Mmm..."
+msgstr "Mmm..."
+
+msgid "More"
+msgstr "More"
+
+msgid "Moving"
+msgstr "이동하는 중"
+
+msgid "Multi-user wallet require multiple devices to set up. It takes longer to complete but it's recommended security configuration for long term storage."
+msgstr ""
+
+msgid "Multiple Recipients"
+msgstr "Multiple Recipients"
+
+msgid "Multiple recipients"
+msgstr "Multiple recipients"
+
+msgid "Multiple recipients ({recipientsCount})"
+msgstr "Multiple recipients ({recipientsCount})"
+
+msgid "Multisig contract address not found."
+msgstr ""
+
+msgid "NO THANKS"
+msgstr ""
+
+msgid "Name"
+msgstr "Name"
+
+msgid "Name (at creation)"
+msgstr "Name (at creation)"
+
+msgid "Native Currency"
+msgstr ""
+
+msgid "Navigation"
+msgstr ""
+
+msgid "Needs Backup"
+msgstr "Needs Backup"
+
+msgid "Needs backup"
+msgstr "Needs backup"
+
+msgid "Network"
+msgstr "Network"
+
+msgid "Network Cost"
+msgstr "Network Cost"
+
+msgid "Network Fee Policies"
+msgstr ""
+
+msgid "Network Fee Policy"
+msgstr ""
+
+msgid "Network cost"
+msgstr "Network cost"
+
+msgid "Network error"
+msgstr "Network error"
+
+msgid "Never mind"
+msgstr ""
+
+msgid "New"
+msgstr ""
+
+msgid "New Key"
+msgstr "New Key"
+
+msgid "New Session Request"
+msgstr ""
+
+msgid "New contact"
+msgstr "New contact"
+
+msgid "New copayer"
+msgstr "New copayer"
+
+msgid "New payment proposal"
+msgstr "New payment proposal"
+
+msgid "New payment received"
+msgstr "New payment received"
+
+msgid "New wallet found"
+msgstr ""
+
+msgid "Next"
+msgstr "Next"
+
+msgid "No"
+msgstr "No"
+
+msgid "No Private Key"
+msgstr "No Private Key"
+
+msgid "No available inputs."
+msgstr ""
+
+msgid "No contacts yet"
+msgstr "No contacts yet"
+
+msgid "No entries for this log level."
+msgstr ""
+
+msgid "No funds found"
+msgstr "No funds found"
+
+msgid "No password"
+msgstr "No password"
+
+msgid "No pending requests"
+msgstr ""
+
+msgid "No private key"
+msgstr "No private key"
+
+msgid "No signing proposal: No private key"
+msgstr "No signing proposal: No private key"
+
+msgid "No thanks"
+msgstr ""
+
+msgid "No transactions"
+msgstr "No transactions"
+
+msgid "No wallet available"
+msgstr ""
+
+msgid "No wallet available to deposit"
+msgstr ""
+
+msgid "No wallet available to withdraw"
+msgstr ""
+
+msgid "No wallet found"
+msgstr "No wallet found"
+
+msgid "No wallets available"
+msgstr "No wallets available"
+
+msgid "No wallets available to receive funds"
+msgstr "No wallets available to receive funds"
+
+msgid "No wallets with funds"
+msgstr "No wallets with funds"
+
+msgid "Non BIP44 wallet"
+msgstr "Non BIP44 wallet"
+
+msgid "Nonce"
+msgstr ""
+
+msgid "Normal"
+msgstr "Normal"
+
+msgid "Not Supported"
+msgstr ""
+
+msgid "Not authorized"
+msgstr "Not authorized"
+
+msgid "Not enough confirmed funds"
+msgstr ""
+
+msgid "Not enough funds"
+msgstr "Not enough funds"
+
+msgid "Not enough funds for fee"
+msgstr "Not enough funds for fee"
+
+msgid "Not including the private key allows to check the wallet balance, transaction history, and create spend proposals from the export. However, does not allow to approve (sign) proposals, so funds will not be accessible from the export."
+msgstr "Not including the private key allows to check the wallet balance, transaction history, and create spend proposals from the export. However, does not allow to approve (sign) proposals, so funds will not be accessible from the export."
+
+msgid "Not right now"
+msgstr "Not right now"
+
+msgid "Not set"
+msgstr "Not set"
+
+msgid "Not valid bitcoin address"
+msgstr "Not valid bitcoin address"
+
+msgid "Notes"
+msgstr ""
+
+msgid "Notice"
+msgstr ""
+
+msgid "Notifications"
+msgstr "Notifications"
+
+msgid "Notifications Preferences"
+msgstr "Notifications Preferences"
+
+msgid "Notifications by email"
+msgstr "Notifications by email"
+
+msgid "Notify Me"
+msgstr ""
+
+msgid "Notify me if confirmed"
+msgstr "Notify me if confirmed"
+
+msgid "Now you can add ERC-20 tokens to keep track of all your digital assets in one place. In your wallet, tap + and ‘Add Token’ to add."
+msgstr ""
+
+msgid "OAuth Code"
+msgstr ""
+
+msgid "OK"
+msgstr "OK"
+
+msgid "OPEN IN BROWSER"
+msgstr "OPEN IN BROWSER"
+
+msgid "Off"
+msgstr "Off"
+
+msgid "Offers"
+msgstr ""
+
+msgid "Offers & promotions"
+msgstr "Offers & promotions"
+
+msgid "Ok"
+msgstr "Ok"
+
+msgid "On"
+msgstr "On"
+
+msgid "OneInch is not available at this moment. Please, try again later."
+msgstr ""
+
+msgid "Only a {name} phone number can be used for this purchase."
+msgstr ""
+
+msgid "Only available for already created keys"
+msgstr ""
+
+msgid "Only redeemable on Mercado Livre (Brazil)"
+msgstr "Only redeemable on Mercado Livre (Brazil)"
+
+msgid "Only redeemable on www.amazon.co.jp (Japan website)"
+msgstr "Only redeemable on www.amazon.co.jp (Japan website)"
+
+msgid "Only the payment methods supported to buy {coin} with {currency} will be shown."
+msgstr ""
+
+msgid "Open"
+msgstr "열기"
+
+msgid "Open Crowdin"
+msgstr "Crowdin 열기"
+
+msgid "Open GitHub"
+msgstr "GitHub 열기"
+
+msgid "Open GitHub Project"
+msgstr "GitHub 프로젝트 열기"
+
+msgid "Open Help Center"
+msgstr ""
+
+msgid "Open Translation Community"
+msgstr "번역 커뮤니티 열기"
+
+msgid "Open Wallet"
+msgstr ""
+
+msgid "Open settings"
+msgstr "Open settings"
+
+msgid "Or its equivalent in {{ fiatCurrency?.toUpperCase() }}."
+msgstr ""
+
+msgid "Or paste URL"
+msgstr ""
+
+msgid "Order Details"
+msgstr "Order Details"
+
+msgid "Order ID"
+msgstr "Order ID"
+
+msgid "Order Now"
+msgstr "Order Now"
+
+msgid "Order Summary"
+msgstr ""
+
+msgid "Other Supported Tokens"
+msgstr ""
+
+msgid "Ouch!"
+msgstr "Ouch!"
+
+msgid "PIN"
+msgstr "PIN"
+
+msgid "PRIMARY"
+msgstr ""
+
+msgid "Pair My BitPay Card"
+msgstr ""
+
+msgid "Part or the entirety of the funds in your wallet/s are unconfirmed"
+msgstr ""
+
+msgid "Passphrase"
+msgstr ""
+
+msgid "Passphrases do not match"
+msgstr ""
+
+msgid "Password"
+msgstr "비밀번호"
+
+msgid "Password Not Recoverable"
+msgstr "Password Not Recoverable"
+
+msgid "Password mismatch"
+msgstr "Password mismatch"
+
+msgid "Password required. Make sure to enter your password in advanced options"
+msgstr "비밀번호가 필요합니다. 고급 옵션에 비밀번호를 입력해주세요"
+
+msgid "Passwords do not match"
+msgstr "Passwords do not match"
+
+msgid "Paste from Clipboard"
+msgstr ""
+
+msgid "Paste the backup plain text code"
+msgstr "Paste the backup plain text code"
+
+msgid "Paste this code on {cardConfig.website}. This gift card cannot be recovered if your claim code is lost."
+msgstr "Paste this code on {cardConfig.website}. This gift card cannot be recovered if your claim code is lost."
+
+msgid "Payin was not sent within the indicated timeframe."
+msgstr ""
+
+msgid "Paying"
+msgstr "Paying"
+
+msgid "Paying with a Coinbase Account..."
+msgstr ""
+
+msgid "Payment Accepted"
+msgstr "지불 허용됨"
+
+msgid "Payment Error"
+msgstr ""
+
+msgid "Payment Expires"
+msgstr "Payment Expires"
+
+msgid "Payment ID"
+msgstr "Payment ID"
+
+msgid "Payment Method"
+msgstr ""
+
+msgid "Payment Proposal"
+msgstr "지불 제안"
+
+msgid "Payment Published"
+msgstr "Payment Published"
+
+msgid "Payment Rejected"
+msgstr "지불 거절됨"
+
+msgid "Payment Request"
+msgstr "Payment Request"
+
+msgid "Payment Request info"
+msgstr "Payment Request info"
+
+msgid "Payment Requests"
+msgstr "Payment Requests"
+
+msgid "Payment Sent"
+msgstr "지불 전송됨"
+
+msgid "Payment accepted, but not yet broadcasted"
+msgstr "지불이 허용되었으나, 아직 브로드캐스트되지 않았습니다"
+
+msgid "Payment method"
+msgstr ""
+
+msgid "Payment method updated"
+msgstr ""
+
+msgid "Payment proposal rejected"
+msgstr "Payment proposal rejected"
+
+msgid "Payment request"
+msgstr "지불 요청"
+
+msgid "Payment request approved"
+msgstr "Payment request approved"
+
+msgid "Payment request rejected"
+msgstr "Payment request rejected"
+
+msgid "Payment request sent"
+msgstr ""
+
+msgid "Payment was confirmed and is being exchanged."
+msgstr ""
+
+msgid "Pending"
+msgstr "보류 중"
+
+msgid "Pending Approve Request"
+msgstr ""
+
+msgid "Pending Call Request"
+msgstr ""
+
+msgid "Pending Proposals"
+msgstr "제안 보류 중"
+
+msgid "Pending Requests"
+msgstr ""
+
+msgid "Pending multisig wallet"
+msgstr ""
+
+msgid "Perfect!"
+msgstr ""
+
+msgid "Permanently delete all wallets using this key."
+msgstr "Permanently delete all wallets using this key."
+
+msgid "Permanently delete this wallet."
+msgstr "Permanently delete this wallet."
+
+msgid "Personal Wallet"
+msgstr "개인 지갑"
+
+msgid "Physical"
+msgstr ""
+
+msgid "Please connect a camera to get started."
+msgstr "시작하시려면 카메라를 연결해주세요."
+
+msgid "Please contact Changelly support:"
+msgstr ""
+
+msgid "Please enter the recovery phrase"
+msgstr "복원 문구를 입력해주세요"
+
+msgid "Please enter the wallet recovery phrase"
+msgstr "지갑 복원 문구를 입력해주세요"
+
+msgid "Please enter your PIN"
+msgstr "Please enter your PIN"
+
+msgid "Please make sure {{peerMetaName}} request is still waiting for confirmation, and that the amount is correct before proceeding to the confirmation step"
+msgstr ""
+
+msgid "Please provide your email address to receive payment notifications"
+msgstr "Please provide your email address to receive payment notifications"
+
+msgid "Please select the coin of the wallet to import:"
+msgstr "Please select the coin of the wallet to import:"
+
+msgid "Please upgrade the app to perform this action"
+msgstr "Please upgrade the app to perform this action"
+
+msgid "Please wait..."
+msgstr "Please wait..."
+
+msgid "Please, select your backup file"
+msgstr "백업 파일을 선택해주세요"
+
+msgid "Powered by"
+msgstr ""
+
+msgid "Pre-Auth Holds"
+msgstr "사전 인증 보류"
+
+msgid "Preparing addresses..."
+msgstr "주소 준비 중..."
+
+msgid "Preparing backup..."
+msgstr "백업 준비 중..."
+
+msgid "Previous"
+msgstr "Previous"
+
+msgid "Print"
+msgstr "Print"
+
+msgid "Print Card"
+msgstr "Print Card"
+
+msgid "Printed Gift Card Required"
+msgstr "Printed Gift Card Required"
+
+msgid "Priority"
+msgstr "우선 순위"
+
+msgid "Privacy Notice"
+msgstr ""
+
+msgid "Privacy Notice update"
+msgstr ""
+
+msgid "Privacy Policy"
+msgstr "Get a BitPay Card"
+
+msgid "Private Key"
+msgstr "개인 키"
+
+msgid "Private key encrypted. Enter password"
+msgstr "개인 키가 암호화되었습니다. 비밀번호를 입력해주세요"
+
+msgid "Private key is encrypted, cannot sign"
+msgstr "개인 키가 암호화되어, 서명할 수 없습니다"
+
+msgid "Processing order reservation..."
+msgstr ""
+
+msgid "Product updates"
+msgstr "Product updates"
+
+msgid "Proposal Created"
+msgstr "제안 생성됨"
+
+msgid "Proposal confirmed"
+msgstr ""
+
+msgid "Proposal created"
+msgstr "Proposal created"
+
+msgid "Protect your money"
+msgstr ""
+
+msgid "Provide the transaction id:"
+msgstr ""
+
+msgid "Provided by"
+msgstr ""
+
+msgid "Purchase Limit Reached"
+msgstr "Purchase Limit Reached"
+
+msgid "Purchased Brands"
+msgstr "Purchased Brands"
+
+msgid "Push notifications for {{appName}} are currently disabled. Enable them in the Settings app."
+msgstr "현재 {{appName}}에 대한 알림 받기가 비활성화되었습니다. 앱 설정에서 활성화하세요."
+
+msgid "Quick and easy setup"
+msgstr "Quick and easy setup"
+
+msgid "RBF transaction"
+msgstr ""
+
+msgid "READ MORE"
+msgstr ""
+
+msgid "Random"
+msgstr "Random"
+
+msgid "Re-Import Wallets"
+msgstr ""
+
+msgid "Read More"
+msgstr ""
+
+msgid "Read Only"
+msgstr ""
+
+msgid "Read Only Wallet"
+msgstr "Read Only Wallet"
+
+msgid "Read Only Wallets"
+msgstr "Read Only Wallets"
+
+msgid "Read Only wallets don't include the private key."
+msgstr "Read Only wallets don't include the private key."
+
+msgid "Read more"
+msgstr "Read more"
+
+msgid "Read more in our support page"
+msgstr "Read more in our support page"
+
+msgid "Read only wallet"
+msgstr "Read only wallet"
+
+msgid "Ready to use in millions of locations around the world. Pay with contactless, PIN or simply withdraw cash from any compatible ATM."
+msgstr ""
+
+msgid "Receipt Email"
+msgstr "Receipt Email"
+
+msgid "Receive"
+msgstr "Receive"
+
+msgid "Received"
+msgstr "수신함"
+
+msgid "Receiving"
+msgstr "수신 중"
+
+msgid "Receiving amount"
+msgstr ""
+
+msgid "Receiving funds will be temporarily disabled until you can verify your key has been stored away securely. You can always complete this later."
+msgstr ""
+
+msgid "Recent"
+msgstr "최근"
+
+msgid "Recipient"
+msgstr "수신자"
+
+msgid "Recipient {{ i + 1 }}"
+msgstr ""
+
+msgid "Reconnect Account"
+msgstr ""
+
+msgid "Reconnect to quickly withdraw and deposit funds."
+msgstr ""
+
+msgid "Recover old wallets"
+msgstr "Recover old wallets"
+
+msgid "Recover your wallet using your passphrase"
+msgstr "Recover your wallet using your passphrase"
+
+msgid "Recovery Key"
+msgstr ""
+
+msgid "Recovery Phrase"
+msgstr "Recovery Phrase"
+
+msgid "Redeem Now"
+msgstr "Redeem Now"
+
+msgid "Refer Friend"
+msgstr ""
+
+msgid "Refer a friend and get $10 loaded onto your BitPay card."
+msgstr ""
+
+msgid "Refund address"
+msgstr ""
+
+msgid "Reject"
+msgstr ""
+
+msgid "Reject Payment Proposal"
+msgstr "Reject Payment Proposal"
+
+msgid "Rejected"
+msgstr "거절됨"
+
+msgid "Rejecting payment proposal..."
+msgstr "Rejecting payment proposal..."
+
+msgid "Release information"
+msgstr "정보 공개"
+
+msgid "Reload your balance with no conversion fees* and spend."
+msgstr ""
+
+msgid "Remember there are no special requirements for the password (numbers, symbols, etc.)"
+msgstr ""
+
+msgid "Reminder"
+msgstr ""
+
+msgid "Remove"
+msgstr "제거"
+
+msgid "Removing Payment Request Data"
+msgstr "Removing Payment Request Data"
+
+msgid "Removing Transaction Data"
+msgstr ""
+
+msgid "Repeat the password"
+msgstr "비밀번호 반복"
+
+msgid "Report an Issue"
+msgstr "Report an Issue"
+
+msgid "Report an issue"
+msgstr "Report an issue"
+
+msgid "Report issue"
+msgstr "Report issue"
+
+msgid "Request Biometric Authentication"
+msgstr "Request Biometric Authentication"
+
+msgid "Request Encrypt Password"
+msgstr "Request Encrypt Password"
+
+msgid "Request Fingerprint"
+msgstr "지문 요청"
+
+msgid "Request Specific Amount"
+msgstr "Request Specific Amount"
+
+msgid "Request a Feature"
+msgstr "Request a Feature"
+
+msgid "Request a new feature"
+msgstr "Request a new feature"
+
+msgid "Request approval for transactions"
+msgstr ""
+
+msgid "Request feature"
+msgstr "Request feature"
+
+msgid "Required Confirmations - Total Copayers"
+msgstr ""
+
+msgid "Required number of signatures"
+msgstr "Required number of signatures"
+
+msgid "Requires invitation to join"
+msgstr "Requires invitation to join"
+
+msgid "Requires multiple devices (most secure)"
+msgstr "Requires multiple devices (most secure)"
+
+msgid "Reset All Settings"
+msgstr ""
+
+msgid "Restore from backup"
+msgstr ""
+
+msgid "Retrieving inputs information..."
+msgstr "Retrieving inputs information..."
+
+msgid "Retry camera"
+msgstr "Retry camera"
+
+msgid "Review Changelly policies"
+msgstr ""
+
+msgid "SEPA Bank Transfer"
+msgstr ""
+
+msgid "SEPA Bank Transfer purchases are not supported outside the European Union."
+msgstr ""
+
+msgid "SUBTOTAL"
+msgstr ""
+
+msgid "SUMMARY"
+msgstr "SUMMARY"
+
+msgid "Save"
+msgstr "저장"
+
+msgid "Scan"
+msgstr ""
+
+msgid "Scan QR Codes"
+msgstr "QR 코드 스캔"
+
+msgid "Scan addresses for funds"
+msgstr "자금용 주소 스캔"
+
+msgid "Scan again"
+msgstr "다시 스캔"
+
+msgid "Scanning Wallet funds..."
+msgstr "지갑  스캔 중..."
+
+msgid "Search Transactions"
+msgstr "Search Transactions"
+
+msgid "Search Wallets or Contacts"
+msgstr "Search Wallets or Contacts"
+
+msgid "Search a contact"
+msgstr "Search a contact"
+
+msgid "Search contact or enter address"
+msgstr "Search contact or enter address"
+
+msgid "Search country"
+msgstr ""
+
+msgid "Search currency"
+msgstr ""
+
+msgid "Search for a brand"
+msgstr ""
+
+msgid "Search for a country"
+msgstr ""
+
+msgid "Search tokens"
+msgstr ""
+
+msgid "Security"
+msgstr "보안"
+
+msgid "Select"
+msgstr "Select"
+
+msgid "Select Coin"
+msgstr ""
+
+msgid "Select Currencies"
+msgstr "Select Currencies"
+
+msgid "Select Currency"
+msgstr "Select Currency"
+
+msgid "Select Destination Coin"
+msgstr ""
+
+msgid "Select Destination Wallet"
+msgstr ""
+
+msgid "Select Key"
+msgstr "Select Key"
+
+msgid "Select Key to add ETH Wallet to"
+msgstr "Select Key to add ETH Wallet to"
+
+msgid "Select Payment Method"
+msgstr ""
+
+msgid "Select Source Wallet"
+msgstr ""
+
+msgid "Select Wallet"
+msgstr ""
+
+msgid "Select Your Country"
+msgstr ""
+
+msgid "Select a Country"
+msgstr ""
+
+msgid "Select a Destination"
+msgstr ""
+
+msgid "Select a Payment Method"
+msgstr ""
+
+msgid "Select a wallet"
+msgstr "지갑 선택"
+
+msgid "Select an Ethereum Linked Wallet"
+msgstr ""
+
+msgid "Select an Ethereum Wallet"
+msgstr "Select an Ethereum Wallet"
+
+msgid "Select destination wallet"
+msgstr ""
+
+msgid "Select inputs"
+msgstr ""
+
+msgid "Select inputs for transaction"
+msgstr ""
+
+msgid "Select recipient"
+msgstr "Select recipient"
+
+msgid "Select source wallet"
+msgstr ""
+
+msgid "Select wallet to deposit to"
+msgstr "Select wallet to deposit to"
+
+msgid "Selling"
+msgstr ""
+
+msgid "Selling Bitcoin..."
+msgstr "비트코인 판매 중..."
+
+msgid "Send"
+msgstr "전송"
+
+msgid "Send Feedback"
+msgstr "Send Feedback"
+
+msgid "Send Max"
+msgstr "Send Max"
+
+msgid "Send addresses by email"
+msgstr "이메일로 주소 전송"
+
+msgid "Send by email"
+msgstr "이메일로 전송"
+
+msgid "Send crypto to another wallet"
+msgstr ""
+
+msgid "Send from"
+msgstr "보낸 이:"
+
+msgid "Send max"
+msgstr "Send max"
+
+msgid "Send payment to this address"
+msgstr "이 주소로 지불 전송"
+
+msgid "Send to"
+msgstr "Send to"
+
+msgid "Send {{params?.coin}} to contact"
+msgstr "Send {{params?.coin}} to contact"
+
+msgid "Sending"
+msgstr "전송 중"
+
+msgid "Sending 2FA code..."
+msgstr "2FA 코드 전송 중..."
+
+msgid "Sending BTC to a Bitcoin Cash legacy address will result on permanent lost of funds. This feature is only for advanced users."
+msgstr ""
+
+msgid "Sending feedback..."
+msgstr "피드백 전송 중..."
+
+msgid "Sending from"
+msgstr "Sending from"
+
+msgid "Sending maximum amount"
+msgstr "최대 금액 전송 중"
+
+msgid "Sending to"
+msgstr "Sending to"
+
+msgid "Sending transaction..."
+msgstr "Sending transaction..."
+
+msgid "Sending {{amount}} {{unit}} from your {{name}} wallet"
+msgstr "Sending {{amount}} {{unit}} from your {{name}} wallet"
+
+msgid "Sensitive Data"
+msgstr "Sensitive Data"
+
+msgid "Sent"
+msgstr "전송됨"
+
+msgid "Sent to self"
+msgstr ""
+
+msgid "Sent to {walletName}"
+msgstr "Sent to {walletName}"
+
+msgid "Server response could not be verified"
+msgstr "서버 응답을 확인할 수 없습니다"
+
+msgid "Session Log"
+msgstr "세션 로그"
+
+msgid "Set up a password"
+msgstr "비밀번호 설정"
+
+msgid "Setting parameters..."
+msgstr ""
+
+msgid "Settings"
+msgstr "Settings"
+
+msgid "Share"
+msgstr "Share"
+
+msgid "Share Address"
+msgstr "Share Address"
+
+msgid "Share Claim Code"
+msgstr "Share Claim Code"
+
+msgid "Share logs"
+msgstr "Share logs"
+
+msgid "Share the love by inviting your friends."
+msgstr "공유를 위해 친구를 초대하세요."
+
+msgid "Share this QR code to receive {amount} in your wallet {name}."
+msgstr "Share this QR code to receive {amount} in your wallet {name}."
+
+msgid "Share this address with the devices joining this account."
+msgstr "Share this address with the devices joining this account."
+
+msgid "Share this invitation with the Copayers who join this wallet."
+msgstr ""
+
+msgid "Share this invitation with your copayers"
+msgstr "귀하의 코페이어와 이 초대를 공유하세요"
+
+msgid "Share with friends"
+msgstr ""
+
+msgid "Share {{appName}}"
+msgstr "Share {{appName}}"
+
+msgid "Shared Wallet"
+msgstr "Shared Wallet"
+
+msgid "Shop"
+msgstr "Shop"
+
+msgid "Shop at Amazon"
+msgstr "Shop at Amazon"
+
+msgid "Shop with Crypto"
+msgstr ""
+
+msgid "Show"
+msgstr "Show"
+
+msgid "Show \"Buy Crypto\""
+msgstr "Show \"Buy Crypto\""
+
+msgid "Show \"Swap Crypto\""
+msgstr ""
+
+msgid "Show Portfolio Value"
+msgstr "Show Portfolio Value"
+
+msgid "Show advanced options"
+msgstr "고급 옵션 표시"
+
+msgid "Show me the legacy address"
+msgstr ""
+
+msgid "Show on wallet tab"
+msgstr ""
+
+msgid "Sign Up"
+msgstr ""
+
+msgid "Sign Up for Coinbase"
+msgstr ""
+
+msgid "Sign Up for Coinbase &rarr;"
+msgstr ""
+
+msgid "Sign selected proposals"
+msgstr "Sign selected proposals"
+
+msgid "Signatures rejected by server"
+msgstr "서버에 의해 서명 거절됨"
+
+msgid "Signing transaction..."
+msgstr "Signing transaction..."
+
+msgid "Simple Wallet"
+msgstr "Simple Wallet"
+
+msgid "Single address"
+msgstr "Single address"
+
+msgid "Site URL"
+msgstr ""
+
+msgid "Skip"
+msgstr "건너뛰기"
+
+msgid "Slide to Approve"
+msgstr ""
+
+msgid "Slide to Complete Swap"
+msgstr ""
+
+msgid "Slide to accept"
+msgstr "Slide to accept"
+
+msgid "Slide to confirm"
+msgstr "Slide to confirm"
+
+msgid "Slide to deposit"
+msgstr ""
+
+msgid "Slide to pay"
+msgstr "Slide to pay"
+
+msgid "Slide to send"
+msgstr "Slide to send"
+
+msgid "Slide to speed up"
+msgstr ""
+
+msgid "Slide to withdraw"
+msgstr ""
+
+msgid "Slippage Tolerance"
+msgstr ""
+
+msgid "Slippage happens when traders have to settle for a different price than what they initially requested due to a movement in price between the time the order enters the market and the execution of a trade."
+msgstr ""
+
+msgid "Some inputs you want to speed up have no confirmations. Please wait until they are confirmed and try again."
+msgstr ""
+
+msgid "Someone asked you to create this wallet?"
+msgstr ""
+
+msgid "Someone asked you to join a multisig wallet?"
+msgstr ""
+
+msgid "Something exciting is arriving"
+msgstr ""
+
+msgid "Something goes wrong..."
+msgstr "Something goes wrong..."
+
+msgid "Something went wrong"
+msgstr ""
+
+msgid "Specified amount: "
+msgstr ""
+
+msgid "Specify Amount"
+msgstr ""
+
+msgid "Specify Recovery Phrase"
+msgstr "Specify Recovery Phrase"
+
+msgid "Specify derivation path"
+msgstr "Specify derivation path"
+
+msgid "Speed up successful"
+msgstr ""
+
+msgid "Speed up transaction"
+msgstr ""
+
+msgid "Spend and control your cryptocurrency by downloading the {{appName}} app."
+msgstr ""
+
+msgid "Spend crypto at your favorite places."
+msgstr ""
+
+msgid "Spend proposal is not accepted"
+msgstr "지출 제안이 허용되지 않았습니다"
+
+msgid "Spend proposal not found"
+msgstr "지출 제안을 찾을 수 없습니다"
+
+msgid "Spendable balance"
+msgstr "Spendable balance"
+
+msgid "Spender"
+msgstr ""
+
+msgid "Spender Contract Address"
+msgstr ""
+
+msgid "Spending this balance will need significant Bitcoin network fees"
+msgstr "이 잔액을 사용하려면 유효한 비트코인 네트워크 수수료가 필요합니다"
+
+msgid "Start"
+msgstr ""
+
+msgid "Status"
+msgstr "Status"
+
+msgid "Store this key separately"
+msgstr "Store this key separately"
+
+msgid "Submit a ticket"
+msgstr ""
+
+msgid "Subtotal"
+msgstr ""
+
+msgid "Successfully added {{params.name}}."
+msgstr ""
+
+msgid "Super Economy"
+msgstr "슈퍼 이코노미"
+
+msgid "Supported by"
+msgstr ""
+
+msgid "Swap"
+msgstr ""
+
+msgid "Swap Crypto"
+msgstr ""
+
+msgid "Swap Crypto Settings"
+msgstr ""
+
+msgid "Swap Tokens"
+msgstr ""
+
+msgid "Swap crypto for another"
+msgstr ""
+
+msgid "Sweep"
+msgstr "스윕"
+
+msgid "Sweep Completed"
+msgstr "Sweep Completed"
+
+msgid "Sweep paper wallet"
+msgstr "페이퍼 지갑 스윕"
+
+msgid "Sweeping Wallet..."
+msgstr "지갑 스윕 중..."
+
+msgid "Sync completed"
+msgstr ""
+
+msgid "Sync gift card purchases"
+msgstr ""
+
+msgid "Sync wallets across devices"
+msgstr ""
+
+msgid "Syncing Wallets..."
+msgstr ""
+
+msgid "System Default"
+msgstr ""
+
+msgid "THIS ACTION CANNOT BE REVERSED"
+msgstr "이 작업은 되돌릴 수 없습니다"
+
+msgid "TOTAL"
+msgstr "TOTAL"
+
+msgid "TOTAL TO RECEIVE"
+msgstr ""
+
+msgid "TRY AGAIN"
+msgstr ""
+
+msgid "Take control of your crypto"
+msgstr "Take control of your crypto"
+
+msgid "Take the survey"
+msgstr ""
+
+msgid "Tap and hold to show"
+msgstr "표시하시려면 길게 탭하세요"
+
+msgid "Tap each word in the correct order."
+msgstr "Tap each word in the correct order."
+
+msgid "Temporarily Unavailable"
+msgstr "Temporarily Unavailable"
+
+msgid "Terms of Use"
+msgstr "이용 약관"
+
+msgid "Terms of use"
+msgstr "Terms of use"
+
+msgid "Test Only - No Value"
+msgstr ""
+
+msgid "Testnet coins have no value and cannot be converted into \"actual\" coins. If you are purchasing cryptocurrency through a third party, and they have requested you to create this type of wallet, they are scamming you."
+msgstr ""
+
+msgid "Testnet is an alternative {coinName} block chain meant for testing. This allows application developers and testers to experiment without having to use real {coinName}. Testnet coins are different from actual {coinName}, and do not have any value. They cannot be converted into \"real\" coins and cannot be exchanged or sold as they have no value."
+msgstr ""
+
+msgid "Text"
+msgstr "문자"
+
+msgid "Thanks!"
+msgstr "감사합니다!"
+
+msgid "The \"Key\" to your funds"
+msgstr "The \"Key\" to your funds"
+
+msgid "The Gas Limit cannot be lower than"
+msgstr ""
+
+msgid "The Gas Price cannot be lower than 1 Gwei"
+msgstr ""
+
+msgid "The Gas Price cannot be lower than the required by the merchant"
+msgstr ""
+
+msgid "The XRP ledger requires that all wallets maintain a minimum balance of 20 XRP. This non-refundable 20 XRP will remain permanently locked in your wallet."
+msgstr "The XRP ledger requires that all wallets maintain a minimum balance of 20 XRP. This non-refundable 20 XRP will remain permanently locked in your wallet."
+
+msgid "The XRP ledger requires that all wallets maintain a minimum balance of 20 XRP. This non-refundable 20 XRP will remain permanently locked in your wallet. Please first deposit no less than 20 XRP to activate your wallet."
+msgstr "The XRP ledger requires that all wallets maintain a minimum balance of 20 XRP. This non-refundable 20 XRP will remain permanently locked in your wallet. Please first deposit no less than 20 XRP to activate your wallet."
+
+msgid "The amount entered is greater than the maximum allowed: {{params.maxAmount}} {{params.coin}}"
+msgstr ""
+
+msgid "The amount entered is lower than the minimum allowed: {{params.minAmount}} {{params.coin}}"
+msgstr ""
+
+msgid "The amount of {coinName} immediately spendable from this wallet."
+msgstr "The amount of {coinName} immediately spendable from this wallet."
+
+msgid "The amount of {coinName} stored in this wallet that is allocated as inputs to your pending transaction proposals. The amount is determined using unspent transaction outputs associated with this wallet and may be more than the actual amounts associated with your pending transaction proposals."
+msgstr "The amount of {coinName} stored in this wallet that is allocated as inputs to your pending transaction proposals. The amount is determined using unspent transaction outputs associated with this wallet and may be more than the actual amounts associated with your pending transaction proposals."
+
+msgid "The amount of {coinName} stored in this wallet with less than 1 blockchain confirmation."
+msgstr "The amount of {coinName} stored in this wallet with less than 1 blockchain confirmation."
+
+msgid "The amount on the transaction does not match the amount requested. This payment will not be accepted"
+msgstr "The amount on the transaction does not match the amount requested. This payment will not be accepted"
+
+msgid "The approval transaction must be confirmed before this token can be used in a swap. This should only take a moment."
+msgstr ""
+
+msgid "The data of this exchange will be deleted from your device. Make sure you don't need it"
+msgstr ""
+
+msgid "The data of this payment request will be deleted. Make sure you don't need it"
+msgstr "The data of this payment request will be deleted. Make sure you don't need it"
+
+msgid "The ethereum paired wallet you choose does not belong to this contract"
+msgstr ""
+
+msgid "The fastest, easiest way to turn your crypto into dollars for shopping. Load funds in the BitPay App and spend in minutes."
+msgstr ""
+
+msgid "The final crypto amount you receive when the transaction is complete may differ because it is based on Simplex's exchange rate."
+msgstr "The final crypto amount you receive when the transaction is complete may differ because it is based on Simplex's exchange rate."
+
+msgid "The final crypto amount you receive when the transaction is complete may differ because it is based on Wyre's exchange rate."
+msgstr ""
+
+msgid "The final crypto amount you receive when the transaction is complete may differ because it is based on the exchange rates of the providers."
+msgstr ""
+
+msgid "The higher the fee, the greater the incentive a miner has to include that transaction in a block. Current fees are determined based on network load and the selected policy."
+msgstr ""
+
+msgid "The information you are about to share/export may contain sensitive data such us wallet IDs, addresses, balances, etc. Please be sure you trust the person or entity with whom you are sharing this information."
+msgstr "The information you are about to share/export may contain sensitive data such us wallet IDs, addresses, balances, etc. Please be sure you trust the person or entity with whom you are sharing this information."
+
+msgid "The invoice is no available"
+msgstr "The invoice is no available"
+
+msgid "The maximum number of Copayers has already been reached"
+msgstr ""
+
+msgid "The payment was created but could not be completed. Please try again from home screen"
+msgstr "지불이 생성되었으나 완료되지 않았습니다. 홈 스크린에서 다시 시도해주세요"
+
+msgid "The payment was removed by creator"
+msgstr "생성자에 의해 지불이 제거되었습니다"
+
+msgid "The private key of this wallet is not available. The export allows to check the wallet balance, transaction history, and create spend proposals from the export. However, does not allow to approve (sign) proposals, so funds will not be accessible from the export."
+msgstr "The private key of this wallet is not available. The export allows to check the wallet balance, transaction history, and create spend proposals from the export. However, does not allow to approve (sign) proposals, so funds will not be accessible from the export."
+
+msgid "The purchase amount is limited to {maxAmount} {currency} per day. Please modify your amount."
+msgstr "The purchase amount is limited to {maxAmount} {currency} per day. Please modify your amount."
+
+msgid "The purchase amount must be at least {minAmount} {currency}. Please modify your amount."
+msgstr "The purchase amount must be at least {minAmount} {currency}. Please modify your amount."
+
+msgid "The recovery phrase is invalid"
+msgstr ""
+
+msgid "The recovery phrase you entered do not match the wallet you are trying to re-import"
+msgstr ""
+
+msgid "The request could not be understood by the server"
+msgstr "서버가 이해할 수 없는 요청입니다"
+
+msgid "The single address feature will force the wallet to only use one address rather than generating new addresses."
+msgstr "The single address feature will force the wallet to only use one address rather than generating new addresses."
+
+msgid "The spend proposal is not pending"
+msgstr "보류 중인 지출 제안이 아닙니다"
+
+msgid "The sum of the selected amounts must be at least:"
+msgstr ""
+
+msgid "The total amount is the subtotal amount plus transaction fees."
+msgstr ""
+
+msgid "The total amount of {coinName} stored in this wallet."
+msgstr "The total amount of {coinName} stored in this wallet."
+
+msgid "The transaction from {{walletName}} that you were waiting for has been confirmed."
+msgstr "The transaction from {{walletName}} that you were waiting for has been confirmed."
+
+msgid "The transaction history and every new incoming transaction are cached in the app. Clearing the cache cleans up the transaction history and synchronizes again from the server."
+msgstr "The transaction history and every new incoming transaction are cached in the app. Clearing the cache cleans up the transaction history and synchronizes again from the server."
+
+msgid "The transaction is taking longer than usual to confirm"
+msgstr ""
+
+msgid "The transaction you sent does not have any output to the address on the invoice"
+msgstr "The transaction you sent does not have any output to the address on the invoice"
+
+msgid "The wallet is already in the app"
+msgstr "The wallet is already in the app"
+
+msgid "The wallet won't be removed from this device. You can hide it whenever you need it."
+msgstr "The wallet won't be removed from this device. You can hide it whenever you need it."
+
+msgid "The wallet you are using does not match the network and/or the currency of the address provided"
+msgstr "The wallet you are using does not match the network and/or the currency of the address provided"
+
+msgid "Theme"
+msgstr ""
+
+msgid "Themes"
+msgstr ""
+
+msgid "There are no records of your wallet on our servers. If you are importing a BIP44 compatible wallet from a 3rd party you can continue to recreate it. If you wallet is not BIP44 compatible, you will not be able to access its funds."
+msgstr "There are no records of your wallet on our servers. If you are importing a BIP44 compatible wallet from a 3rd party you can continue to recreate it. If you wallet is not BIP44 compatible, you will not be able to access its funds."
+
+msgid "There are no wallets available that meet the requirements to operate with our supported exchanges"
+msgstr ""
+
+msgid "There are no wallets with enough funds to make the payment"
+msgstr ""
+
+msgid "There are some misunderstood outputs, please view on blockchain."
+msgstr ""
+
+msgid "There is a new version available"
+msgstr ""
+
+msgid "There is a temporary problem with the merchant requesting the payment. Please try later"
+msgstr ""
+
+msgid "There is an error in the form"
+msgstr "양식에 오류가 있습니다"
+
+msgid "There was a problem retrieving the address. Please, try again later."
+msgstr ""
+
+msgid "There was a problem retrieving the returnAddress. Please, try again later."
+msgstr ""
+
+msgid "There was a problem retrieving the withdrawalAddress. Please, try again later."
+msgstr ""
+
+msgid "There was an error with the payment process through Wyre."
+msgstr ""
+
+msgid "There was problem while trying to sign {{txpsFailed}} of your transactions proposals. Please, try again"
+msgstr "There was problem while trying to sign {{txpsFailed}} of your transactions proposals. Please, try again"
+
+msgid "There's obviously something we're doing wrong. How could we improve your experience?"
+msgstr "There's obviously something we're doing wrong. How could we improve your experience?"
+
+msgid "This amount must be at least:"
+msgstr ""
+
+msgid "This app is not available for your device."
+msgstr "This app is not available for your device."
+
+msgid "This bitcoin payment request has expired."
+msgstr "이 비트코인 지불 요청은 만료되었습니다."
+
+msgid "This feature duplicates a Bitcoin wallet on the Bitcoin Cash chain, enabling access to pre-fork coins. This should only be used if there are unclaimed funds before the Bitcoin Cash fork day on the wallet. The resulting wallet will use the same derivation path as the original BTC wallet."
+msgstr "This feature duplicates a Bitcoin wallet on the Bitcoin Cash chain, enabling access to pre-fork coins. This should only be used if there are unclaimed funds before the Bitcoin Cash fork day on the wallet. The resulting wallet will use the same derivation path as the original BTC wallet."
+
+msgid "This field is only for users who, in previous versions (it's not supported anymore), set a password to protect their recovery phrase. This field is not for your encrypt password."
+msgstr "This field is only for users who, in previous versions (it's not supported anymore), set a password to protect their recovery phrase. This field is not for your encrypt password."
+
+msgid "This field only accepts addresses supported by {appName} Wallet"
+msgstr "This field only accepts addresses supported by {appName} Wallet"
+
+msgid "This information is available at the website."
+msgstr "This information is available at the website."
+
+msgid "This invoice does not accept unconfirmed inputs."
+msgstr "This invoice does not accept unconfirmed inputs."
+
+msgid "This invoice is no longer accepting payments"
+msgstr "This invoice is no longer accepting payments"
+
+msgid "This invoice is priced in BTC, not BCH. Please try with a BTC wallet instead"
+msgstr "Specify derivation path"
+
+msgid "This is a new 12-word key that manages its own set of wallets. It is unrelated to any 12 word key you may have previously created. Store and manage it accordingly."
+msgstr "This is a new 12-word key that manages its own set of wallets. It is unrelated to any 12 word key you may have previously created. Store and manage it accordingly."
+
+msgid "This key contains {walletsLength} wallets"
+msgstr "This key contains {walletsLength} wallets"
+
+msgid "This password cannot be recovered. If this password is lost, funds can only be recovered by reimporting your 12-word recovery phrase."
+msgstr "This password cannot be recovered. If this password is lost, funds can only be recovered by reimporting your 12-word recovery phrase."
+
+msgid "This payment requires a miner fee of:"
+msgstr "This payment requires a miner fee of:"
+
+msgid "This recovery phrase was created with a password. To recover this wallet both the recovery phrase and password are needed."
+msgstr "This recovery phrase was created with a password. To recover this wallet both the recovery phrase and password are needed."
+
+msgid "This service is provided by a third party, and you are subject to their"
+msgstr "This service is provided by a third party, and you are subject to their"
+
+msgid "This transaction amount is too small compared to current Bitcoin network fees. Spending these funds will need a Bitcoin network fee cost comparable to the funds itself."
+msgstr "This transaction amount is too small compared to current Bitcoin network fees. Spending these funds will need a Bitcoin network fee cost comparable to the funds itself."
+
+msgid "This transaction could take a long time to confirm or could be dropped due to the low fees set by the sender."
+msgstr "This transaction could take a long time to confirm or could be dropped due to the low fees set by the sender."
+
+msgid "This transaction is taking longer than usual to confirm. You can try to speed it up by using a higher fee."
+msgstr ""
+
+msgid "This wallet is not registered at the given Bitcore Wallet Service (BWS). As an advice, you could delete the key, under settings and selecting the specific key, and then use the Backup to import the wallet again (under Home > Wallet Tab)."
+msgstr ""
+
+msgid "This will open Coinbase.com, where you can create an account."
+msgstr ""
+
+msgid "Time"
+msgstr "Time"
+
+msgid "Timeline"
+msgstr "타임라인"
+
+msgid "To"
+msgstr "수신:"
+
+msgid "To complete the swap, you will need to allow the exchange (\"1Inch\") to spend your {{ fromToken.symbol }}."
+msgstr ""
+
+msgid "To complete the swap, you will need to allow the exchange (\"{{ peerMeta?.name }}\") to spend your {{ request.tokenInfo?.symbol || request.tokenInfo?.name}}."
+msgstr ""
+
+msgid "To get started, you'll need to enter a valid address or select an existent contact or wallet."
+msgstr "To get started, you'll need to enter a valid address or select an existent contact or wallet."
+
+msgid "To {{reason}} you must first add your BitPay account - {{email}}"
+msgstr "To {{reason}} you must first add your BitPay account - {{email}}"
+
+msgid "Token"
+msgstr ""
+
+msgid "Token Added"
+msgstr ""
+
+msgid "Token Contract Address"
+msgstr ""
+
+msgid "Token Swap"
+msgstr ""
+
+msgid "Token Swap Spender Approval"
+msgstr ""
+
+msgid "Token address"
+msgstr ""
+
+msgid "Token name"
+msgstr ""
+
+msgid "Token precision"
+msgstr ""
+
+msgid "Token symbol"
+msgstr ""
+
+msgid "Tokens"
+msgstr ""
+
+msgid "Tokens added from this list cannot be used for payments on BitPay."
+msgstr ""
+
+msgid "Top up in progress..."
+msgstr "충전 중..."
+
+msgid "Top-up with this cryptocurrency is not enabled"
+msgstr "Top-up with this cryptocurrency is not enabled"
+
+msgid "Total"
+msgstr "합계"
+
+msgid "Total Locked Balance"
+msgstr "차단된 잔액 합계"
+
+msgid "Total cash value"
+msgstr "Total cash value"
+
+msgid "Total number of copayers"
+msgstr "Total number of copayers"
+
+msgid "Total selected inputs"
+msgstr ""
+
+msgid "Total selected inputs: "
+msgstr ""
+
+msgid "Total wallet inputs"
+msgstr "지갑 입금 합계"
+
+msgid "Transact"
+msgstr ""
+
+msgid "Transaction"
+msgstr "거래"
+
+msgid "Transaction History"
+msgstr "거래 기록"
+
+msgid "Transaction ID"
+msgstr "Transaction ID"
+
+msgid "Transaction already broadcasted"
+msgstr "이미 브로드캐스트된 거래입니다"
+
+msgid "Transaction confirmed"
+msgstr "Transaction confirmed"
+
+msgid "Transaction fee is below the current minimum threshold"
+msgstr "Transaction fee is below the current minimum threshold"
+
+msgid "Transaction fees are currently high"
+msgstr ""
+
+msgid "Transaction has failed. In most cases, the amount was less than the minimum."
+msgstr ""
+
+msgid "Transaction has not been created"
+msgstr "거래가 생성되지 않았습니다"
+
+msgid "Transaction initiated"
+msgstr "거래가 시작되었습니다"
+
+msgid "Transaction is waiting for an incoming payment."
+msgstr ""
+
+msgid "Transaction not available at this time"
+msgstr "현재 거래를 이용할 수 없습니다"
+
+msgid "Transaction speed"
+msgstr "Transaction speed"
+
+msgid "Transaction still unconfirmed"
+msgstr ""
+
+msgid "Transactions"
+msgstr "Transactions"
+
+msgid "Transactions without fee are not supported."
+msgstr "무수수료 거래는 지원되지 않습니다."
+
+msgid "Transfer from"
+msgstr ""
+
+msgid "Transfer from BitPay"
+msgstr ""
+
+msgid "Transfer to"
+msgstr ""
+
+msgid "Transfer to BitPay"
+msgstr ""
+
+msgid "Transfer to Multiple Recipients"
+msgstr "Transfer to Multiple Recipients"
+
+msgid "Translate address"
+msgstr "Translate address"
+
+msgid "Try \"create new wallet\" option instead"
+msgstr ""
+
+msgid "Try again"
+msgstr "Try again"
+
+msgid "Try again in {{expires}}"
+msgstr "{{expires}} 내에 다시 시도해주세요"
+
+msgid "Try entering any passwords you may have set in the past"
+msgstr ""
+
+msgid "Try it"
+msgstr ""
+
+msgid "Turn crypto into dollars using our BitPay Card."
+msgstr ""
+
+msgid "Two things you should know"
+msgstr ""
+
+msgid "Type the recovery phrase"
+msgstr ""
+
+msgid "Uh oh something went wrong! Please try again later."
+msgstr "Uh oh something went wrong! Please try again later."
+
+msgid "Unarchive Card"
+msgstr "Unarchive Card"
+
+msgid "Unconfirmed"
+msgstr "미확인됨"
+
+msgid "Unconfirmed inputs"
+msgstr ""
+
+msgid "Unlink account"
+msgstr "Unlink account"
+
+msgid "Unlink card"
+msgstr "Unlink card"
+
+msgid "Unlink the account will remove it and all associated cards from this device."
+msgstr "Unlink the account will remove it and all associated cards from this device."
+
+msgid "Unlink the card will remove it from this device."
+msgstr "Unlink the card will remove it from this device."
+
+msgid "Unlock App"
+msgstr "Unlock App"
+
+msgid "Unlock BitPay faster by setting up facial recognition."
+msgstr ""
+
+msgid "Unlock BitPay faster by setting up fingerprint authentication."
+msgstr ""
+
+msgid "Unsent transactions"
+msgstr "미전송 거래"
+
+msgid "Unsupported network"
+msgstr ""
+
+msgid "Unused addresses"
+msgstr "Unused addresses"
+
+msgid "Updating Gift Card..."
+msgstr "Updating Gift Card..."
+
+msgid "Updating Gift Cards..."
+msgstr "Updating Gift Cards..."
+
+msgid "Updating transaction history. Please stand by."
+msgstr "거래 기록 업데이트 중입니다. 기다려주세요."
+
+msgid "Urgent"
+msgstr "긴급"
+
+msgid "Use Basic QR Code"
+msgstr ""
+
+msgid "Use Max Amount"
+msgstr ""
+
+msgid "Use Min Amount"
+msgstr ""
+
+msgid "Use Unconfirmed Funds"
+msgstr "미확인  사용"
+
+msgid "Use WalletConnect to access your favorite dApps."
+msgstr ""
+
+msgid "Use default url"
+msgstr "Use default url"
+
+msgid "Use facial recognition to unlock?"
+msgstr ""
+
+msgid "Use fingerprint authentication to unlock?"
+msgstr ""
+
+msgid "Use multi-factor wallets to split payment authorization across up to 6 devices or trusted copayers for enhanced security."
+msgstr ""
+
+msgid "Used Exchanges"
+msgstr ""
+
+msgid "User Agreement"
+msgstr ""
+
+msgid "VERIFY NOW"
+msgstr ""
+
+msgid "Validating recovery phrase..."
+msgstr "복구 문구 확인 중..."
+
+msgid "Verification Required"
+msgstr ""
+
+msgid "Verify Your Phrase"
+msgstr "Verify Your Phrase"
+
+msgid "Verifying token approval data..."
+msgstr ""
+
+msgid "Version"
+msgstr "버전"
+
+msgid "View"
+msgstr "보기"
+
+msgid "View Address"
+msgstr ""
+
+msgid "View Confirmation Status"
+msgstr "View Confirmation Status"
+
+msgid "View Directory"
+msgstr "View Directory"
+
+msgid "View History"
+msgstr ""
+
+msgid "View Invoice"
+msgstr "View Invoice"
+
+msgid "View Offers"
+msgstr ""
+
+msgid "View Order Summary"
+msgstr ""
+
+msgid "View Privacy Notice"
+msgstr ""
+
+msgid "View Redemption Code"
+msgstr "View Redemption Code"
+
+msgid "View Transaction"
+msgstr ""
+
+msgid "View Wallet Terms of Use"
+msgstr "View Wallet Terms of Use"
+
+msgid "View all addresses"
+msgstr "View all addresses"
+
+msgid "View complete Terms of Use"
+msgstr "View complete Terms of Use"
+
+msgid "View details"
+msgstr ""
+
+msgid "View my recovery key"
+msgstr ""
+
+msgid "View on blockchain"
+msgstr "블록체인에서 보기"
+
+msgid "View your wallet balance and activity"
+msgstr ""
+
+msgid "Virtual"
+msgstr ""
+
+msgid "Visit 1Inch Help Center."
+msgstr ""
+
+msgid "Visit Help Center"
+msgstr ""
+
+msgid "WARNING: Key derivation is not working on this device/wallet?. Actions cannot be performed on this wallet?."
+msgstr "WARNING: Key derivation is not working on this device/wallet?. Actions cannot be performed on this wallet?."
+
+msgid "Waiting"
+msgstr "Waiting"
+
+msgid "Waiting for authorized copayers to join"
+msgstr "Waiting for authorized copayers to join"
+
+msgid "Wallet Addresses"
+msgstr "지갑 주소"
+
+msgid "Wallet Information"
+msgstr "지갑 정보"
+
+msgid "Wallet Inputs"
+msgstr "지갑 입금"
+
+msgid "Wallet Invitation"
+msgstr "Wallet Invitation"
+
+msgid "Wallet Name"
+msgstr "지갑 이름"
+
+msgid "Wallet Needs Backup"
+msgstr "Wallet Needs Backup"
+
+msgid "Wallet Recovery Phrase is invalid"
+msgstr "유효하지 않은 지갑 복원 목구입니다"
+
+msgid "Wallet Settings"
+msgstr "Wallet Settings"
+
+msgid "Wallet already exists"
+msgstr "이미 존재하는 지갑입니다"
+
+msgid "Wallet complete"
+msgstr "Wallet complete"
+
+msgid "Wallet incomplete and broken"
+msgstr "불완전한 지갑입니다"
+
+msgid "Wallet invitation"
+msgstr "Wallet invitation"
+
+msgid "Wallet is full"
+msgstr "지갑이 가득찼습니다"
+
+msgid "Wallet is locked"
+msgstr "지갑이 잠겨있습니다"
+
+msgid "Wallet is not complete"
+msgstr "지갑이 완료되지 않았습니다"
+
+msgid "Wallet key"
+msgstr "Wallet key"
+
+msgid "Wallet name"
+msgstr "Wallet name"
+
+msgid "Wallet needs backup"
+msgstr "지갑의 백업이 필요합니다"
+
+msgid "Wallet not found"
+msgstr "지갑을 찾을 수 없습니다"
+
+msgid "Wallet not registered"
+msgstr "Wallet not registered"
+
+msgid "Wallet not registered at the wallet service. Recreate it from \"Create Wallet\" using \"Advanced Options\" to set your recovery phrase"
+msgstr "지갑 서비스에 등록되지 않은 지갑입니다. 복원 문구를 설정하시려면 \"고급 옵션\"을 사용하여 \"지갑 생성\"에서 지갑을 재생성하세요"
+
+msgid "Wallet recovery phrase"
+msgstr "Wallet recovery phrase"
+
+msgid "Wallet recovery phrase not available"
+msgstr "이용 불가능한 지갑 복원 문구입니다"
+
+msgid "Wallet service not found"
+msgstr "지갑 서비스를 찾을 수 없습니다"
+
+msgid "WalletConnect is an open source protocol for connecting decentralized applications to mobile wallets with QR code scanning or deep linking."
+msgstr ""
+
+msgid "WalletConnect requires at least one ETH wallet with backup to work properly. Please, create a new ETH wallet and try again."
+msgstr ""
+
+msgid "Wallets"
+msgstr "Wallets"
+
+msgid "Warning"
+msgstr "Warning"
+
+msgid "Warning!"
+msgstr "경고!"
+
+msgid "We appreciate your review"
+msgstr "We appreciate your review"
+
+msgid "We are always looking for translation contributions! You can make corrections or help to make this app available in your native language by joining our community on Crowdin."
+msgstr "We are always looking for translation contributions! You can make corrections or help to make this app available in your native language by joining our community on Crowdin."
+
+msgid "We could not find one or more inputs for your transaction on the blockchain. Make sure you're not trying to use unconfirmed change"
+msgstr "We could not find one or more inputs for your transaction on the blockchain. Make sure you're not trying to use unconfirmed change"
+
+msgid "We couldn't find your wallet!"
+msgstr "We couldn't find your wallet!"
+
+msgid "We were unable to parse the transaction you sent. Please try again or contact your wallet provider"
+msgstr "We were unable to parse the transaction you sent. Please try again or contact your wallet provider"
+
+msgid "We were unable to parse your payment. Please try again or contact your wallet provider"
+msgstr "We were unable to parse your payment. Please try again or contact your wallet provider"
+
+msgid "We'll let you know as soon as the BitPay Card"
+msgstr ""
+
+msgid "We'll notify you as soon as the card is ready."
+msgstr ""
+
+msgid "We're always listening for ways we can improve your experience. Feel free to leave us 5 star review in the app store or share with your friends!"
+msgstr ""
+
+msgid "We're always listening for ways we can improve your experience. Feel free to leave us a review in the app store or request a new feature. Also, let us know if you experience any technical issues."
+msgstr "We're always listening for ways we can improve your experience. Feel free to leave us a review in the app store or request a new feature. Also, let us know if you experience any technical issues."
+
+msgid "We're always listening for ways we can improve your experience. Is there anything we could do to improve your experience?"
+msgstr "We're always listening for ways we can improve your experience. Is there anything we could do to improve your experience?"
+
+msgid "Websites and exchanges get hacked. BitPay allows you to privately store, manage, and use your crypto funds without having to trust a centralized bank or exchange."
+msgstr ""
+
+msgid "What could have happened?"
+msgstr ""
+
+msgid "What do you call this key?"
+msgstr "What do you call this key?"
+
+msgid "What do you call this wallet?"
+msgstr "이 지갑을 뭐라고 부르시겠습니까?"
+
+msgid "What is the status of my payment?"
+msgstr "What is the status of my payment?"
+
+msgid "What service fees am I paying?"
+msgstr "What service fees am I paying?"
+
+msgid "What's new"
+msgstr ""
+
+msgid "When this wallet was created, it was called \"{{walletName}}\". You can change the name displayed on this device below."
+msgstr "When this wallet was created, it was called \"{{walletName}}\". You can change the name displayed on this device below."
+
+msgid "When your transaction is confirmed, the multisig wallet will show up in the wallet list. You can check the transaction status in the wallet history."
+msgstr ""
+
+msgid "Where would you like to receive email notifications about payments?"
+msgstr "지불에 대한 이메일 알림을 어디로 받으시겠습니까?"
+
+msgid "Where would you like to receive your Amazon gift card purchase receipts?"
+msgstr "Where would you like to receive your Amazon gift card purchase receipts?"
+
+msgid "Which Ethereum wallet would you like this multisig wallet to use for transaction costs?"
+msgstr ""
+
+msgid "Which Ethereum wallet would you like this token to use for transaction costs?"
+msgstr "Which Ethereum wallet would you like this token to use for transaction costs?"
+
+msgid "Which Ethereum wallet would you like to use with WalletConnect?"
+msgstr ""
+
+msgid "Why is my transaction unconfirmed?"
+msgstr "Why is my transaction unconfirmed?"
+
+msgid "Why?"
+msgstr "왜냐구요?"
+
+msgid "Withdraw success"
+msgstr ""
+
+msgid "Without encrypting your wallet, a thief or another app on this device could potentially access your money."
+msgstr ""
+
+msgid "Without encryption, a thief or another application on this device may be able to access your funds."
+msgstr "Without encryption, a thief or another application on this device may be able to access your funds."
+
+msgid "Worldwide"
+msgstr ""
+
+msgid "Would you like to hide this gift card discount?"
+msgstr "Would you like to hide this gift card discount?"
+
+msgid "Write Down Recovery Phrase"
+msgstr "복원 분구를 기입하세요"
+
+msgid "Write a Review"
+msgstr "Write a Review"
+
+msgid "Write down each word."
+msgstr "각각의 단어를 입력하세요"
+
+msgid "Wrong password"
+msgstr "Wrong password"
+
+msgid "XRP Address"
+msgstr "XRP Address"
+
+msgid "XRP Locked Balance"
+msgstr "XRP Locked Balance"
+
+msgid "XRP Minimum Balance"
+msgstr "XRP Minimum Balance"
+
+msgid "YES"
+msgstr "YES"
+
+msgid "Yes"
+msgstr "네"
+
+msgid "Yes, please use my email address to send me exclusive email offers."
+msgstr ""
+
+msgid "You are about to join a shared wallet. This is an advanced feature, make sure you understand how multisig wallets work before putting funds in it. If a third party invited you to join, make sure you trust them, if you have purchased cryptocurrency they may be scamming you."
+msgstr ""
+
+msgid "You are creating a {m}-{n} wallet. And you need all {m} copayers addresses at creation time."
+msgstr ""
+
+msgid "You are saving {{tx.minerFee | satToUnit: tx.coin}}"
+msgstr ""
+
+msgid "You are trying to send more funds than you have available. Make sure you do not have funds locked by pending transaction proposals or enter a valid amount."
+msgstr ""
+
+msgid "You are trying to send more funds than you have available. Make sure you do not have funds locked by pending transaction proposals."
+msgstr "You are trying to send more funds than you have available. Make sure you do not have funds locked by pending transaction proposals."
+
+msgid "You are trying to send more funds than you have available. Make sure you do not have funds locked by pending transaction proposals. You can also try with a lower amount or send max."
+msgstr "You are trying to send more funds than you have available. Make sure you do not have funds locked by pending transaction proposals. You can also try with a lower amount or send max."
+
+msgid "You are using a different OAuthURL from original request or it has expired. Please try again."
+msgstr ""
+
+msgid "You can always reset your encrypt password on your key settings under the option"
+msgstr ""
+
+msgid "You can change the name displayed on this device below."
+msgstr "You can change the name displayed on this device below."
+
+msgid "You can continue to view your archived cards here if you need to access them."
+msgstr "You can continue to view your archived cards here if you need to access them."
+
+msgid "You can email support@coinbase.com for direct support, or you can view their help center."
+msgstr ""
+
+msgid "You can import this Key into other devices through the {appName} scanner"
+msgstr "You can import this Key into other devices through the {appName} scanner"
+
+msgid "You can make contributions by signing up on our Crowdin community translation website. We’re looking forward to hearing from you!"
+msgstr "저희의 Crowdin 커뮤니티 번역 웹사이트에 가입하여 기여하실 수 있습니다. 귀하의 소식을 기다리겠습니다!"
+
+msgid "You can now return to your browser."
+msgstr ""
+
+msgid "You can scan bitcoin addresses, payment requests, paper wallets, and more."
+msgstr "비트코인 주소, 지불 요청, 페이퍼 지갑 등을 스캔하실 수 있습니다."
+
+msgid "You can see the latest developments and contribute to this open source app by visiting our project on GitHub."
+msgstr "GitHub에서 저희의 프로젝트에 방문하여 이 오픈 소스 앱에 기여하시거나 최신 개발 사항을 확인하실 수 있습니다."
+
+msgid "You can still export it from \"Export Wallet\" option."
+msgstr "You can still export it from \"Export Wallet\" option."
+
+msgid "You can use your Mercado Livre gift cards on your Mercado Pago account for everyday expenses like utilities and metro rides."
+msgstr "You can use your Mercado Livre gift cards on your Mercado Pago account for everyday expenses like utilities and metro rides."
+
+msgid "You could sign the transaction later in your wallet details"
+msgstr "You could sign the transaction later in your wallet details"
+
+msgid "You didn't finish your card application."
+msgstr ""
+
+msgid "You do not have a {coin} wallet able to receive funds. If you decide to create it, remember it needs to be backed up."
+msgstr ""
+
+msgid "You do not have enough confirmed funds to make this payment. Please wait for your pending transactions to confirm."
+msgstr ""
+
+msgid "You do not have enough confirmed funds to make this payment. Wait for your pending transactions to confirm or enable \"Use unconfirmed funds\" in Advanced Settings."
+msgstr "You do not have enough confirmed funds to make this payment. Wait for your pending transactions to confirm or enable \"Use unconfirmed funds\" in Advanced Settings."
+
+msgid "You do not have enough funds in your ETH linked wallet to pay the fee for this Swap."
+msgstr ""
+
+msgid "You do not have enough funds to pay the fee for this Swap."
+msgstr ""
+
+msgid "You have entered the phrase without spaces"
+msgstr ""
+
+msgid "You have only entered {wordListLength} word, please follow the recommendations provided"
+msgstr ""
+
+msgid "You have only entered {wordListLength} words, please follow the recommendations provided"
+msgstr ""
+
+msgid "You must first select a wallet to deposit."
+msgstr ""
+
+msgid "You need a minimum of 20 XRP to send funds."
+msgstr "You need a minimum of 20 XRP to send funds."
+
+msgid "You reach the limit of twenty wallets from the same coin and network"
+msgstr "You reach the limit of twenty wallets from the same coin and network"
+
+msgid "You should not set a fee higher than {{maxFeeRecommended}} {{feeUnit}}."
+msgstr "You should not set a fee higher than {{maxFeeRecommended}} {{feeUnit}}."
+
+msgid "You're on the list!"
+msgstr ""
+
+msgid "Your BitPay Card is ready. Add funds to your card to start using it at stores."
+msgstr "Your BitPay Card is ready. Add funds to your card to start using it at stores."
+
+msgid "Your ETH linked wallet funds are locked by pending spend proposals"
+msgstr "Your ETH linked wallet funds are locked by pending spend proposals"
+
+msgid "Your Key is all that is needed to access your funds. Be sure to protect your key and store it only on secure devices. BitPay does not have access to your keys, so you alone are responsible for your keys. If you share key access with external services, you take responsibility for the risk of theft or breach."
+msgstr "Your Key is all that is needed to access your funds. Be sure to protect your key and store it only on secure devices. BitPay does not have access to your keys, so you alone are responsible for your keys. If you share key access with external services, you take responsibility for the risk of theft or breach."
+
+msgid "Your extended private keys are all that is needed to access your funds. Be sure to protect your private keys and store them only on secure devices. BitPay does not have access to your private keys, so you alone are responsible for your keys. If you share key access with external services, you take responsibility for the risk of theft or breach. Only advanced users should handle extended private keys directly."
+msgstr "Your extended private keys are all that is needed to access your funds. Be sure to protect your private keys and store them only on secure devices. BitPay does not have access to your private keys, so you alone are responsible for your keys. If you share key access with external services, you take responsibility for the risk of theft or breach. Only advanced users should handle extended private keys directly."
+
+msgid "Your fee is lower than recommended."
+msgstr "귀하의 수수료는 권장액보다 낮습니다."
+
+msgid "Your funds are in your custody"
+msgstr ""
+
+msgid "Your funds, on your device"
+msgstr "Your funds, on your device"
+
+msgid "Your key is already synced"
+msgstr ""
+
+msgid "Your linked ETH wallet does not have enough ETH for fee"
+msgstr "Your linked ETH wallet does not have enough ETH for fee"
+
+msgid "Your name"
+msgstr "귀하의 이름"
+
+msgid "Your recovery key is composed of 12 randomly selected words. Please carefully write down each word in the order it appears."
+msgstr ""
+
+msgid "Your request did not include a transaction. Please try again or contact your wallet provider"
+msgstr "Your request did not include a transaction. Please try again or contact your wallet provider"
+
+msgid "Your transaction was an in an invalid format, it must be a hexadecimal string. Contact your wallet provider"
+msgstr "Your transaction was an in an invalid format, it must be a hexadecimal string. Contact your wallet provider"
+
+msgid "Your wallet is testnet"
+msgstr ""
+
+msgid "Your wallet key will be encrypted. The encrypt password cannot be recovered. Be sure to write it down."
+msgstr "Your wallet key will be encrypted. The encrypt password cannot be recovered. Be sure to write it down."
+
+msgid "Your wallet master key is a phrase composed of 12 randomly selected words. If you ever lose or damage your device, you can re-gain access to your wallet as long as you have your 12 word master key."
+msgstr "Your wallet master key is a phrase composed of 12 randomly selected words. If you ever lose or damage your device, you can re-gain access to your wallet as long as you have your 12 word master key."
+
+msgid "Your wallet {{walletName}} is complete."
+msgstr "Your wallet {{walletName}} is complete."
+
+msgid "Your {walletType} wallet is backed up!"
+msgstr "Your {walletType} wallet is backed up!"
+
+msgid "[Balance Hidden]"
+msgstr "[숨겨진 잔액]"
+
+msgid "[Scanning Funds]"
+msgstr "[자금 스캔 중]"
+
+msgid "add your BitPay Visa card(s)"
+msgstr "귀하의 BitPay Visa 카드 추가"
+
+msgid "dummy"
+msgstr ""
+
+msgid "is not supported by BitPay. Please check the official WalletConnect documentation to see what the supported methods are."
+msgstr ""
+
+msgid "me"
+msgstr "나"
+
+msgid "of total amount"
+msgstr "of total amount"
+
+msgid "preparing..."
+msgstr "준비 중..."
+
+msgid "using your 12 words recovery phrase"
+msgstr ""
+
+msgid "wants to connect to your wallet"
+msgstr ""
+
+msgid "{appName} BCH wallets use the CashAddr format by default"
+msgstr "{appName} BCH wallets use the CashAddr format by default"
+
+msgid "{appName} cannot recover your funds for you if you lose your recovery key"
+msgstr ""
+
+msgid "{coinName} Address"
+msgstr "{coinName} Address"
+
+msgid "{coinName} Wallets"
+msgstr "{coinName} Wallets"
+
+msgid "{displayName} gift cards contain an additional activation fee of {fee} {currency}."
+msgstr "{displayName} gift cards contain an additional activation fee of {fee} {currency}."
+
+msgid "{displayName} requires you to present a printed gift card at redemption."
+msgstr "{displayName} requires you to present a printed gift card at redemption."
+
+msgid "{walletsGroupLength} Wallet"
+msgstr "{walletsGroupLength} Wallet"
+
+msgid "{walletsGroupLength} Wallets"
+msgstr "{walletsGroupLength} Wallets"
+
+msgid "{{ 'Privacy Policy' | translate}}"
+msgstr ""
+
+msgid "{{ getCoinName(coinFeePolicy.key) }} Network Fee Policy"
+msgstr ""
+
+msgid "{{ params.error ? 'Error' : 'Warning!' }}"
+msgstr ""
+
+msgid "{{ params.secondBtnText }}"
+msgstr ""
+
+msgid "{{ status.statusTitle }}"
+msgstr ""
+
+msgid "{{ swapTx.status | titlecase }}"
+msgstr ""
+
+msgid "{{appName}} depends on Bitcore Wallet Service (BWS) for blockchain information, networking and Copayer synchronization. The default configuration points to https://bws.bitpay.com (BitPay's public BWS instance)."
+msgstr "{{appName}} depends on Bitcore Wallet Service (BWS) for blockchain information, networking and Copayer synchronization. The default configuration points to https://bws.bitpay.com (BitPay's public BWS instance)."
+
+msgid "{{appName}} only supports Bitcoin Cash using new version numbers addresses."
+msgstr "{{appName}} only supports Bitcoin Cash using new version numbers addresses."
+
+msgid "{{existentWallets}} of your wallets already exist in {{nameCase}}"
+msgstr ""
+
+msgid "{{newWalletsCount}} wallets found"
+msgstr ""
+
+msgid "{{params.countryCode === 'US' ? 'U.S.' : params.countryCode}} Phone Required"
+msgstr ""
+
+msgid "{{params.name}} ({{params.isoCode}}) is no longer supported. Please select another alternative currency."
+msgstr ""
+
+msgid "{{peerMetaName}} ({{peerMetaUrl}}) is requesting to connect. This will disconnect your current session."
+msgstr ""
+
+msgid "{{txpsSuccess}} proposal signed"
+msgstr "{{txpsSuccess}} proposal signed"
+
+msgid "{{txpsSuccess}} proposals signed"
+msgstr "{{txpsSuccess}} proposals signed"
+
+msgid "{{updatingTxHistoryProgress}} transactions downloaded"
+msgstr "{{updatingTxHistoryProgress}} 거래 다운로드됨"
+

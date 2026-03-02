@@ -1,35 +1,39 @@
-<ion-header>
-  <ion-navbar>
-    <ion-title>{{title}}</ion-title>
-  </ion-navbar>
-</ion-header>
+<wide-header-page title="{{title}}">
+  <div page-content>
+    <ion-list class="bp-list">
+      <ion-item-divider (tap)="countReleaseHeaderTaps($event)">{{'Release information'| translate}}</ion-item-divider>
+      <button ion-item (click)="wipeBitPayAccounts()">
+        <ion-icon class="item-img icon-settings" name="ios-download-outline" item-start></ion-icon>
+        <span class="main-label" translate>Version</span>
+        <ion-note item-end>
+          v{{version}}
+        </ion-note>
+      </button>
 
-<ion-content>
-  <ion-list>
-    <ion-item-divider>{{'Release information'| translate}}</ion-item-divider>
-    <ion-item>
-      <ion-icon class="custom-icon" name="ios-download-outline" item-start></ion-icon>
-      {{'Version' | translate}}
-      <ion-note item-end>
-        v{{version}}
-      </ion-note>
-    </ion-item>
-    <ion-item class="commit-hash" (click)="openExternalLink()">
-      <ion-icon class="custom-icon" name="logo-github" item-start></ion-icon>
-      Commit hash
-      <ion-note item-end>
-        #{{commitHash}}
-      </ion-note>
-    </ion-item>
-    <ion-item-divider>&nbsp;</ion-item-divider>
-    <button ion-item (click)="openTermsOfUse()">
-      <ion-icon class="custom-icon" name="ios-list-box-outline" item-start></ion-icon>
-      {{'Terms of use' | translate }}
-    </button>
-    <button ion-item (click)="openSessionLog()">
-      <ion-icon class="custom-icon" name="ios-copy-outline" item-start></ion-icon>
-      {{ 'Session log' | translate }}
-    </button>
-  </ion-list>
+      <button ion-item>
+        <ion-icon class="item-img icon-settings" name="logo-github" item-start></ion-icon>
+        <span class="main-label">Commit Hash</span>
+        <ion-note item-end>
+          #{{commitHash}}
+        </ion-note>
+      </button>
 
-</ion-content>
+      <ion-item-divider class="item-without-title"></ion-item-divider>
+
+      <button ion-item (click)="openSendFeedbackPage()">
+        <ion-icon class="item-img icon-settings" item-start>
+          <img src="assets/img/settings-icons/icon-send-feedback.svg">
+        </ion-icon>
+        <span class="main-label" translate>Send Feedback</span>
+      </button>
+
+      <ion-item-divider class="item-without-title"></ion-item-divider>
+
+      <button ion-item (click)="openSessionLog()">
+        <ion-icon class="item-img icon-settings" name="ios-copy-outline" item-start></ion-icon>
+        <span class="main-label" translate>Session Log</span>
+      </button>
+
+    </ion-list>
+  </div>
+</wide-header-page>

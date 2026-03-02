@@ -1,0 +1,27 @@
+exchange-rates {
+  .average-container {
+    text-align: center;
+    height: 21px;
+    float: right;
+    &.negative-avg {
+      color: #cf2f32;
+      background-color: rgba(207, 47, 60, 0.1);
+      border-radius: 50vh;
+      padding-right: 1rem;
+      padding-left: 1rem;
+    }
+    &.possitive-avg {
+      color: #2fcfa4;
+      background-color: rgba(47, 207, 164, 0.1);
+      border-radius: 50vh;
+      padding-right: 1rem;
+      padding-left: 1rem;
+    }
+    .average {
+      font-size: 14px;
+      line-height: 19px;
+      height: 21px;
+      font-weight: 500;
+    }
+  }
+}

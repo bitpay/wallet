@@ -1,4 +1,3 @@
-
 // Ionicons Icon Font CSS
 // --------------------------
 // Ionicons CSS for Ionic's <ion-icon> element
@@ -6,15 +5,17 @@
 
 $ionicons-font-path: $font-path !default;
 
-@import "ionicons-icons";
-@import "ionicons-variables";
-
+@import 'ionicons-icons';
+@import 'ionicons-variables';
 
 @font-face {
-  font-family: "Ionicons";
-  src: url("#{$ionicons-font-path}/ionicons.woff2?v=#{$ionicons-version}") format("woff2"),
-    url("#{$ionicons-font-path}/ionicons.woff?v=#{$ionicons-version}") format("woff"),
-    url("#{$ionicons-font-path}/ionicons.ttf?v=#{$ionicons-version}") format("truetype");
+  font-family: 'Ionicons';
+  src: url('#{$ionicons-font-path}/ionicons.woff2?v=#{$ionicons-version}')
+      format('woff2'),
+    url('#{$ionicons-font-path}/ionicons.woff?v=#{$ionicons-version}')
+      format('woff'),
+    url('#{$ionicons-font-path}/ionicons.ttf?v=#{$ionicons-version}')
+      format('truetype');
   font-weight: normal;
   font-style: normal;
 }
@@ -22,7 +23,7 @@ $ionicons-font-path: $font-path !default;
 ion-icon {
   display: inline-block;
 
-  font-family: "Ionicons";
+  font-family: 'Ionicons';
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
   font-style: normal;
@@ -34,7 +35,7 @@ ion-icon {
   speak: none;
 
   @include rtl() {
-    &[aria-label^="arrow"]::before,
+    &[aria-label^='arrow']::before,
     &[flip-rtl]::before {
       transform: scaleX(-1);
     }

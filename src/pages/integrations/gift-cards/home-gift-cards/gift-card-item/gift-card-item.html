@@ -1,0 +1,13 @@
+<div class="card-item" [ngClass]="{ light: cardConfig?.logoBackgroundColor === '#ffffff' }">
+  <div class="card-container">
+    <div #card class="card" (click)="performAction('view')" tappable>
+      <img-loader class="logo" [src]="cardConfig?.logo"></img-loader>
+      <span class="ellipsis" item-end>
+        <div class="funds ellipsis" *ngIf="shouldShowTotalBalance()">
+          {{ totalBalance | formatCurrency: currency: 'minimal' }}
+        </div>
+      </span>
+    </div>
+  </div>
+  <div class="slit"></div>
+</div>

@@ -1,0 +1,55 @@
+<ion-header class="wide-header">
+  <ion-navbar>
+    <ion-title class="bp-title">
+      <div [reveal-at-scroll-pos]="expandableHeader.headerHeight" [scrollArea]="scrollArea">
+        <img width="110" [src]="themeProvider.currentAppTheme !== 'dark' ? 'assets/img/wyre/logo-wyre.svg' : 'assets/img/wyre/logo-wyre-dm.svg'" alt="Wyre" class="wyre-logo">
+      </div>
+    </ion-title>
+    <ng-content select="[right]"></ng-content>
+  </ion-navbar>
+</ion-header>
+
+<ion-content #scrollArea>
+  <div class="wrapper">
+    <expandable-header [scrollArea]="scrollArea" [fadeFactor]="5" [disableFade]="true" #expandableHeader>
+      <ion-toolbar class="wide-header__title">
+        <div>
+          <expandable-header-primary>
+            <img margin-left width="130" [src]="themeProvider.currentAppTheme !== 'dark' ? 'assets/img/wyre/logo-wyre.svg' : 'assets/img/wyre/logo-wyre-dm.svg'" alt="Wyre">
+          </expandable-header-primary>
+        </div>
+      </ion-toolbar>
+    </expandable-header>
+
+    <ion-list class="bp-list" *ngIf="wyrePaymentRequests && wyrePaymentRequests.length > 0">
+      <ion-item-divider>{{'Payment Requests' | translate}}
+        <ion-spinner item-end name="crescent" *ngIf="loading"></ion-spinner>
+      </ion-item-divider>
+      <button ion-item *ngFor="let paymentRequest of wyrePaymentRequests | orderBy : ['-created_on']" (click)="openWyreModal(paymentRequest)">
+        <ion-label>
+          <div class="ellipsis">{{paymentRequest.sourceAmount }} {{ paymentRequest.sourceCurrency }}</div>
+          <div class="status">
+            <span class="assertive" *ngIf="paymentRequest.status == 'failed'" translate>Payment request rejected</span>
+            <span class="balanced" *ngIf="paymentRequest.status == 'success'" translate>Payment request approved</span>
+            <span class="royal" *ngIf="paymentRequest.status == 'paymentRequestSent'" translate>Attempted payment request</span>
+          </div>
+        </ion-label>
+        <div item-content text-end>
+          <div class="text-bold">{{ paymentRequest.destAmount | number:'1.0-6'}} {{ paymentRequest.destCurrency }}</div>
+          <div class="date calm">{{paymentRequest.created_on | amTimeAgo}}</div>
+        </div>
+      </button>
+    </ion-list>
+  </div>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <div class="wyre-problems">
+      <span translate>Having problems with Wyre?</span>
+      <a (click)="openExternalLink('https://wyre-support.zendesk.com/hc/en-us/requests/new')" translate>
+        Visit Help Center
+      </a>
+    </div>
+  </ion-toolbar>
+</ion-footer>

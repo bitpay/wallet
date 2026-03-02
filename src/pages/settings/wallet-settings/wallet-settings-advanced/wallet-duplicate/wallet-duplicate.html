@@ -1,0 +1,25 @@
+<wide-header-page title="Duplicate Wallet">
+  <div page-content>
+    <div *ngIf="availableWallet">
+      <div class="explanation">
+        <span translate>
+          This feature duplicates a Bitcoin wallet on the Bitcoin Cash chain, enabling access to pre-fork coins. This should only be used if there are unclaimed funds before the Bitcoin Cash fork day on the wallet. The resulting wallet will use the same derivation path as the original BTC wallet.
+        </span>
+        <a (click)="openHelpExternalLink()" translate>
+          <span translate>Help &amp; support</span>
+        </a>
+      </div>
+    </div>
+
+    <div *ngIf="nonEligibleWallet">
+      <label-tip class="no-arrowhead" type="warn">
+        <span label-tip-title>{{nonEligibleWallet.excludeReason}}</span>
+        <div label-tip-body>{{nonEligibleWallet.body}}</div>
+      </label-tip>
+    </div>
+
+    <button ion-button class="button-standard" (click)="duplicate(availableWallet)" [disabled]="nonEligibleWallet">
+      {{'Duplicate to BCH' | translate}}
+    </button>
+  </div>
+</wide-header-page>

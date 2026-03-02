@@ -1,21 +1,5 @@
 page-wallet-export {
-  .qrCode {
-    text-align: center;
-    padding: 10px;
-    .aclass >img {
-      width: 220px;
-      border: 1px solid #e9e9e9;
-      border-radius: 4px;
-    }
-  }
-  .not-supported-message {
-    margin-top: 5rem;
-    text-align: center;
-  }
-  .warning {
-    background: color($colors, danger);
-    color: color($colors, light);
-    padding: 1rem;
-    border-radius: 10px;
+  .warning-message {
+    margin-top: 10px;
   }
 }

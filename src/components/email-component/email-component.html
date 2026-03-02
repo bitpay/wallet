@@ -1,0 +1,30 @@
+<action-sheet>
+  <div class="padding">
+    <div class="title">
+      <span translate>Contact Information</span>
+    </div>
+    <div class="sub-title">
+      <span translate>Please provide your email address to receive payment notifications</span>
+    </div>
+    <form [formGroup]="emailForm">
+      <ion-item class="form__form-item form__form__dark form--border-overwrite">
+        <ion-label floating>{{ 'Email address' | translate }}</ion-label>
+        <ion-input mode="md" formControlName="email" type="email"></ion-input>
+      </ion-item>
+
+      <ion-item class="form__form-item form__form-toggle" no-lines>
+        <ion-label (click)="openPolicy()" class="form__form-toggle__label">
+          {{'By giving my email address, I give explicit consent to BitPay to use it to contact me about payment issues.' | translate}}
+            <span class="form__form__link" translate> Privacy Notice</span>
+        </ion-label>
+        <ion-toggle formControlName="agreement" color="success"></ion-toggle>
+      </ion-item>
+    </form>
+  </div>
+
+  <div class="padding-bottom">
+    <button ion-button class="button-standard" [disabled]="emailForm.invalid" (click)="optionClicked()">
+      {{'Save' | translate}}
+    </button>
+  </div>
+</action-sheet>

@@ -2,73 +2,135 @@ import { Injectable } from '@angular/core';
 
 // Providers
 import { BwcProvider } from '../../providers/bwc/bwc';
+import { Logger } from '../../providers/logger/logger';
 
+export interface CoinNetwork {
+  coin: string;
+  network: string;
+}
 @Injectable()
 export class AddressProvider {
-  private bitcore: any;
-  private bitcoreCash: any;
-  private Bitcore: any;
+  private bitcore;
+  private bitcoreCash;
+  private bitcoreDoge;
+  private bitcoreLtc;
+  private core;
 
-  constructor(
-    private bwcProvider: BwcProvider,
-  ) {
+  constructor(private bwcProvider: BwcProvider, private logger: Logger) {
     this.bitcore = this.bwcProvider.getBitcore();
     this.bitcoreCash = this.bwcProvider.getBitcoreCash();
-    this.Bitcore = {
-      'btc': {
-        lib: this.bitcore,
-        translateTo: 'bch'
-      },
-      'bch': {
-        lib: this.bitcoreCash,
-        translateTo: 'btc'
-      }
-    };
+    this.bitcoreDoge = this.bwcProvider.getBitcoreDoge();
+    this.bitcoreLtc = this.bwcProvider.getBitcoreLtc();
+    this.core = this.bwcProvider.getCore();
   }
 
-  getCoin(address: string) {
+  public translateToCashAddress(addressToTranslate: string): string {
+    var addressObj = this.bitcore.Address(addressToTranslate).toObject();
+    const cashAdrr = this.bitcoreCash.Address.fromObject(
+      addressObj
+    ).toCashAddress();
+    this.logger.info(`converted: ${addressToTranslate} -> ${cashAdrr}`);
+    return cashAdrr;
+  }
+
+  public extractAddress(str: string): string {
+    const extractedAddress = str.replace(/^[a-z]+:/i, '').replace(/\?.*/, '');
+    return extractedAddress;
+  }
+
+  public getCoinAndNetwork(
+    str: string,
+    network: string = 'livenet'
+  ): CoinNetwork {
+    const address = this.extractAddress(str);
     try {
-      new this.Bitcore['btc'].lib.Address(address);
-      return 'btc';
+      network = this.bitcore.Address(address).network.name;
+      return { coin: 'btc', network };
     } catch (e) {
       try {
-        new this.Bitcore['bch'].lib.Address(address);
-        return 'bch';
+        network = this.bitcoreCash.Address(address).network.name;
+        return { coin: 'bch', network };
       } catch (e) {
-        return null;
+        try {
+          const isValidEthAddress = this.core.Validation.validateAddress(
+            'ETH',
+            network,
+            address
+          );
+          if (isValidEthAddress) {
+            return { coin: 'eth', network };
+          } else {
+            throw isValidEthAddress;
+          }
+        } catch (e) {
+          try {
+            const isValidXrpAddress = this.core.Validation.validateAddress(
+              'XRP',
+              network,
+              address
+            );
+            if (isValidXrpAddress) {
+              return { coin: 'xrp', network };
+            } else {
+              throw isValidXrpAddress;
+            }
+          } catch (e) {
+            try {
+              network = this.bitcoreDoge.Address(address).network.name;
+              return { coin: 'doge', network };
+            } catch (e) {
+              try {
+                network = this.bitcoreLtc.Address(address).network.name;
+                return { coin: 'ltc', network };
+              } catch (e) {
+                return null;
+              }
+            }
+          }
+        }
       }
     }
-  };
+  }
 
-  translateAddress(address: string) {
-    var origCoin = this.getCoin(address);
-    if (!origCoin) return;
+  public isValid(str: string): boolean {
+    if (!str) return false;
+    // Check if the input is a valid uri or address
+    const URI = this.bitcore.URI;
+    const Address = this.bitcore.Address;
+    const AddressCash = this.bitcoreCash.Address;
+    const URICash = this.bitcoreCash.URI;
+    const AddressDoge = this.bitcoreDoge.Address;
+    const URIDoge = this.bitcoreDoge.URI;
+    const AddressLtc = this.bitcoreLtc.Address;
+    const URILtc = this.bitcoreLtc.URI;
 
-    var origAddress = new this.Bitcore[origCoin].lib.Address(address);
-    var origObj = origAddress.toObject();
+    const { Validation } = this.core;
 
-    var resultCoin = this.Bitcore[origCoin].translateTo;
-    var resultAddress = this.Bitcore[resultCoin].lib.Address.fromObject(origObj);
-    return {
-      origCoin,
-      origAddress: address,
-      resultCoin,
-      resultAddress: resultAddress.toString()
-    };
-  };
+    // Bip21 uri
+    if (URI.isValid(str)) return true;
+    if (URICash.isValid(str)) return true;
+    if (URIDoge.isValid(str)) return true;
+    if (URILtc.isValid(str)) return true;
+    if (Validation.validateUri('ETH', str)) return true;
+    if (Validation.validateUri('XRP', str)) return true;
 
-  validateAddress(address: string) {
-    let Address = this.bitcore.Address;
-    let AddressCash = this.bitcoreCash.Address;
-    let isLivenet = Address.isValid(address, 'livenet');
-    let isTestnet = Address.isValid(address, 'testnet');
-    let isLivenetCash = AddressCash.isValid(address, 'livenet');
-    return {
-      address,
-      isValid: isLivenet || isTestnet || isLivenetCash,
-      network: isTestnet ? 'testnet' : 'livenet',
-      coin: this.getCoin(address),
-      translation: this.translateAddress(address),
-    };
+    // Regular Address: try Bitcoin and Bitcoin Cash
+    if (Address.isValid(str, 'livenet')) return true;
+    if (Address.isValid(str, 'testnet')) return true;
+    if (AddressCash.isValid(str, 'livenet')) return true;
+    if (AddressCash.isValid(str, 'testnet')) return true;
+    if (AddressDoge.isValid(str, 'livenet')) return true;
+    if (AddressDoge.isValid(str, 'testnet')) return true;
+    if (AddressLtc.isValid(str, 'livenet')) return true;
+    if (AddressLtc.isValid(str, 'testnet')) return true;
+    if (Validation.validateAddress('XRP', 'livenet', str)) return true;
+    if (Validation.validateAddress('ETH', 'livenet', str)) return true;
+
+    return false;
+  }
+
+  public getLegacyBchAddressFormat(addr: string): string {
+    const a = this.bitcoreCash.Address(addr).toObject();
+    return this.bitcore.Address.fromObject(a).toString();
   }
 }

@@ -1,7 +1,5 @@
 page-wallet-transaction-history {
-	button {
-    &.item {
-      color: color($colors, primary) !important;
-    }
+  .explanation {
+    padding: 16px;
   }
 }

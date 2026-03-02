@@ -1,0 +1,17 @@
+card-description {
+  > div > div > div {
+    margin: 20px 0;
+
+    ul {
+      padding-left: 30px;
+    }
+  }
+
+  .card-description {
+    &__promotion {
+      border-bottom: 1px solid #f3ecec;
+      margin-bottom: 25px;
+      padding-bottom: 10px;
+    }
+  }
+}

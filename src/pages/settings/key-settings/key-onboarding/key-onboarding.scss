@@ -1,0 +1,46 @@
+page-key-onboarding {
+  .key-onboarding-slides {
+    ion-slide {
+      background: linear-gradient(to bottom, #ffffff, #ebedf8 80%);
+      .img-container {
+        img {
+          width: 25%;
+          @media (max-height: 650px) and (max-width: 768px) {
+            width: 40%;
+          }
+          @media (min-height: 600px) and (min-width: 768px) {
+            width: 45%;
+          }
+          @media (max-height: 550px) and (max-width: 768px) {
+            width: 35%;
+          }
+          justify-content: center;
+          align-self: center;
+        }
+      }
+      .slide-info {
+        .info {
+          padding: 2rem;
+          .title {
+            align-items: center;
+            color: #060606;
+            font-weight: 500;
+            text-align: left;
+          }
+          .text {
+            font-size: 16px;
+            text-align: left;
+            color: rgb(46, 46, 46);
+            font-weight: 300;
+            padding-top: 15px;
+          }
+        }
+      }
+    }
+  }
+  .toolbar {
+    .toolbar-background {
+      background: #ebedf8;
+    }
+  }
+}

@@ -1,7 +1,11 @@
 import { Injectable } from '@angular/core';
 import { QRScanner } from '@ionic-native/qr-scanner';
+import { TranslateService } from '@ngx-translate/core';
 import { Events } from 'ionic-angular';
-import { Logger } from '../../providers/logger/logger';
+
+// Providers
+import { ErrorsProvider } from '../errors/errors';
+import { Logger } from '../logger/logger';
 import { PlatformProvider } from '../platform/platform';
 
 @Injectable()
@@ -10,31 +14,44 @@ export class ScanProvider {
   public scannerVisible: boolean;
   public lightEnabled: boolean;
   public frontCameraEnabled: boolean;
-  public isDesktop = !this.platform.isCordova;
-  public isAvailable: boolean = true;
-  public hasPermission: boolean = false;
-  public isDenied: boolean = false;
-  public isRestricted: boolean = false;
-  public canEnableLight: boolean = false;
-  public canChangeCamera: boolean = false;
-  public canOpenSettings: boolean = false;
-  public backCamera: boolean = true;
-  public initializeStarted: boolean = false;
-  public initializeCompleted: boolean = false;
+  public isDesktop: boolean;
+  public isAvailable: boolean;
+  public hasPermission: boolean;
+  public isDenied: boolean;
+  public isRestricted: boolean;
+  public canEnableLight: boolean;
+  public canChangeCamera: boolean;
+  public canOpenSettings: boolean;
+  public backCamera: boolean;
+  public initializeStarted: boolean;
+  public initializeCompleted: boolean;
 
   constructor(
     private qrScanner: QRScanner,
     private platform: PlatformProvider,
     private logger: Logger,
-    private events: Events
+    private events: Events,
+    private translate: TranslateService,
+    private errorsProvider: ErrorsProvider
   ) {
+    this.isDesktop = !this.platform.isCordova;
+    this.isAvailable = true;
+    this.hasPermission = false;
+    this.isDenied = false;
+    this.isRestricted = false;
+    this.canEnableLight = false;
+    this.canChangeCamera = false;
+    this.canOpenSettings = false;
+    this.backCamera = true;
+    this.initializeStarted = false;
+    this.initializeCompleted = false;
     this.scannerVisible = false;
     this.lightEnabled = false;
     this.frontCameraEnabled = false;
   }
 
   private checkCapabilities(status) {
-    this.logger.debug('scannerService is reviewing platform capabilities...');
+    this.logger.info('scannerService is reviewing platform capabilities...');
     // Permission can be assumed on the desktop builds
     this.hasPermission = this.isDesktop || status.authorized ? true : false;
     this.isDenied = status.denied ? true : false;
@@ -78,7 +95,7 @@ export class ScanProvider {
   /**
    * Immediately return known capabilities of the current platform.
    */
-  public getCapabilities(): any {
+  public getCapabilities() {
     return {
       isAvailable: this.isAvailable,
       hasPermission: this.hasPermission,
@@ -98,7 +115,7 @@ export class ScanProvider {
    * The `status` of QRScanner is returned to the callback.
    */
   public gentleInitialize(): Promise<any> {
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
       if (this.initializeStarted && !this.isDesktop) {
         this.qrScanner.getStatus().then(status => {
           this.completeInitialization(status);
@@ -139,17 +156,24 @@ export class ScanProvider {
   }
 
   public initialize(): Promise<any> {
-    return new Promise((resolve, reject) => {
-      this.logger.debug('Initializing scanner...');
+    return new Promise(resolve => {
+      this.logger.info('Initializing scanner...');
       this.qrScanner
         .prepare()
-        .then((status: any) => {
+        .then(status => {
           this.completeInitialization(status);
           return resolve();
         })
         .catch(err => {
           this.isAvailable = false;
           this.logger.error(err);
+          if (err && err.name === 'CAMERA_ACCESS_DENIED') {
+            const msg = this.translate.instant(
+              'Check the app camera permissions under your phone settings'
+            );
+            const title = this.translate.instant('Camera access denied');
+            this.errorsProvider.showDefaultError(msg, title);
+          }
           // does not return `status` if there is an error
           this.qrScanner.getStatus().then(status => {
             this.completeInitialization(status);
@@ -159,7 +183,7 @@ export class ScanProvider {
     });
   }
 
-  private completeInitialization(status: any): void {
+  private completeInitialization(status): void {
     this.checkCapabilities(status);
     this.initializeCompleted = true;
     this.events.publish('scannerServiceInitialized');
@@ -179,8 +203,8 @@ export class ScanProvider {
    * is complete.
    */
   public activate(): Promise<any> {
-    return new Promise((resolve, reject) => {
-      this.logger.debug('Activating scanner...');
+    return new Promise(resolve => {
+      this.logger.info('Activating scanner...');
       this.qrScanner.show().then(status => {
         this.initializeCompleted = true;
         this.checkCapabilities(status);
@@ -192,11 +216,10 @@ export class ScanProvider {
    * Start a new scan.
    */
   public scan(): Promise<any> {
-    return new Promise((resolve, reject) => {
-      this.logger.debug('Scanning...');
+    return new Promise(resolve => {
+      this.logger.info('Scanning...');
       let scanSub = this.qrScanner.scan().subscribe((text: string) => {
-        this.logger.debug('Scanned something', text);
-        this.qrScanner.hide(); // hide camera preview
+        this.logger.debug('Scan success');
         scanSub.unsubscribe(); // stop scanning
         return resolve(text);
       });
@@ -221,7 +244,7 @@ export class ScanProvider {
    */
 
   public deactivate(): void {
-    this.logger.debug('Deactivating scanner...');
+    this.logger.info('Deactivating scanner...');
     if (this.lightEnabled) {
       this.qrScanner.disableLight();
       this.lightEnabled = false;
@@ -254,23 +277,23 @@ export class ScanProvider {
       if (this.lightEnabled) {
         this.qrScanner
           .disableLight()
-          .then(resp => {
+          .then(() => {
             this.lightEnabled = false;
             return resolve(this.lightEnabled);
           })
           .catch(err => {
-            this.logger.warn('Error: ', err);
+            this.logger.error('Scan Provider Error (disableLight)', err);
             return reject(err);
           });
       } else {
         this.qrScanner
           .enableLight()
-          .then(resp => {
+          .then(() => {
             this.lightEnabled = true;
             return resolve(this.lightEnabled);
           })
           .catch(err => {
-            this.logger.warn('Error: ', err);
+            this.logger.error('Scan Provider Error (enableLight)', err);
             return reject(err);
           });
       }
@@ -290,23 +313,23 @@ export class ScanProvider {
       if (this.frontCameraEnabled) {
         this.qrScanner
           .useBackCamera()
-          .then(resp => {
+          .then(() => {
             this.frontCameraEnabled = false;
             return resolve(this.frontCameraEnabled);
           })
           .catch(err => {
-            this.logger.warn('Error: ', err);
+            this.logger.error('Scan Provider Error (useBackCamera)', err);
             return reject(err);
           });
       } else {
         this.qrScanner
           .useFrontCamera()
-          .then(resp => {
+          .then(() => {
             this.frontCameraEnabled = true;
             return resolve(this.frontCameraEnabled);
           })
           .catch(err => {
-            this.logger.warn('Error: ', err);
+            this.logger.error('Scan Provider Error (useFrontCamera)', err);
             return reject(err);
           });
       }
@@ -314,7 +337,7 @@ export class ScanProvider {
   }
 
   public openSettings(): void {
-    this.logger.debug('Attempting to open device settings...');
+    this.logger.info('Attempting to open device settings...');
     this.qrScanner.openSettings();
   }
 }

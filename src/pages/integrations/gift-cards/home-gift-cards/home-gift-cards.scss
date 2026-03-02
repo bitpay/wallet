@@ -1,0 +1,62 @@
+gift-cards {
+  action-card-v4 {
+    .home-gift-card-header {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 3rem 2rem;
+      background-color: #f0f2fc;
+      width: 100%;
+
+      .home-gift-card-image {
+        text-align: center;
+        img {
+          max-height: 160px;
+        }
+      }
+    }
+  }
+
+  .discount-wrapper {
+    margin-bottom: -12px;
+    margin-top: 14px;
+    .gift-card-featured-discount {
+      align-items: center;
+      background: #f6f7fc;
+      border-radius: 20px;
+      display: inline-flex;
+      color: #565d6d;
+      padding: 8px 17px;
+      text-align: left;
+      max-width: 100%;
+
+      img {
+        border-radius: 50%;
+        height: 23px;
+        width: 23px;
+        margin-right: 10px;
+      }
+    }
+  }
+
+  button.discount-item {
+    height: 75px;
+
+    img-loader {
+      flex-shrink: 0;
+      margin-left: 2px;
+
+      img {
+        $discount-img-dim: 40px;
+        height: $discount-img-dim;
+        border-radius: 50%;
+        margin-right: 13px;
+        width: $discount-img-dim;
+      }
+    }
+
+    .input-wrapper {
+      padding-right: 10px;
+    }
+  }
+}

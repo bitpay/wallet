@@ -1,0 +1,76 @@
+page-key-settings {
+  .subtitle-container {
+    display: flex;
+    justify-content: space-between;
+    padding-left: 20px;
+    .subtitle {
+      font-size: 16px;
+      padding: 0;
+      margin-top: 10px;
+      font-weight: 100;
+    }
+    .onboarding-modal {
+      font-size: 25px;
+      cursor: pointer;
+      color: color($colors, light-grey);
+      margin-right: 2rem;
+    }
+  }
+
+  .item-text {
+    font-size: 12.5px;
+  }
+
+  ion-item-divider.item.item-divider {
+    padding-left: 16px;
+  }
+
+  .settings-color-block {
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    float: left;
+    margin: 1rem;
+    background-color: color($colors, primary);
+  }
+
+  .item-without-title {
+    margin-top: 0;
+  }
+
+  .icon-wallet {
+    margin-right: 0px;
+  }
+
+  ion-icon.item-img {
+    min-width: 36px !important;
+  }
+
+  .bp-list {
+    ion-item-divider {
+      margin-top: 0px;
+      padding: 12.5px 0px 12.5px 20px;
+      background: #f8f8f9;
+      .reorder-option {
+        font-size: 1.4rem;
+        margin: 0 8px 0 !important;
+      }
+    }
+  }
+
+  .wallets-list {
+    padding: 7px 0 7px 22px !important;
+  }
+
+  .create-button {
+    background: white;
+    color: color($colors, primary);
+    margin-left: -12px;
+    text-align: center;
+  }
+
+  coin-icon[item-left] {
+    margin: 0px !important;
+  }
+}

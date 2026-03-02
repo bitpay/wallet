@@ -1,0 +1,59 @@
+page-custom-token {
+  .list-button {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    .item-title {
+      color: black;
+      font-size: 18px;
+      font-weight: 500;
+    }
+    ion-icon.item-icon {
+      margin-left: 3px;
+      img {
+        $icon-dimension: 40px;
+        height: $icon-dimension;
+        width: $icon-dimension;
+      }
+    }
+  }
+  .bp-list {
+    .list-subtitle {
+      padding-left: 20px;
+      padding-top: 15px;
+      font-size: 16px;
+    }
+  }
+  .linked-wallet {
+    height: 60px;
+    margin: 20px 0;
+    ion-icon {
+      width: 35px;
+    }
+    .item-inner {
+      border-bottom: 0px !important;
+    }
+  }
+  .send-header-wrapper {
+    padding: 1rem;
+    box-shadow: 1px 2px 8px rgba(0, 0, 0, 0.1);
+  }
+  .search-wrapper {
+    .item-inner {
+      align-items: center;
+      margin-left: 0rem !important;
+      border-bottom: 0px !important;
+      box-shadow: none !important;
+    }
+  }
+  .token-count {
+    color: color($colors, grey);
+    text-align: center;
+    font-size: 12px;
+    padding-top: 0.5rem;
+  }
+  .search-header {
+    .item-inner {
+      border-bottom: 0px !important;
+    }
+  }
+}

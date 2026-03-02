@@ -1,0 +1,111 @@
+<ion-header no-border class="wallet-details-header">
+  <ion-navbar>
+    <ion-title>
+      <div class="header-wallet-name" [reveal-at-scroll-pos]="expandableHeader.headerHeight" [scrollArea]="scrollArea">
+        {{data?.account?.name}}
+      </div>
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content #scrollArea [fixed-scroll-bg-color]="backgroundColor">
+  <ion-refresher (ionRefresh)="doRefresh($event)" pullMin="90" pullMax="160" [ngStyle]="{'background': backgroundColor}">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+  <div class="wrapper">
+    <expandable-header class="balance-card" [scrollArea]="scrollArea" #expandableHeader>
+      <expandable-header-primary class="balance-header">
+        <div class="wallet-name">
+          <ion-icon class="logo" item-start>
+            <img src="assets/img/coinbase/coinbase-icon.png" width="35">
+          </ion-icon>
+          {{data?.account?.name}}
+        </div>
+
+        <div class="balance-content">
+          <div class="balance-str">
+            {{data?.account?.balance.amount | number:'1.2-8' }}
+            <span class="balance-coin">
+              {{data?.account?.balance.currency}}
+            </span>
+          </div>
+          <div class="balance-alt-str" *ngIf="getNativeBalance()">
+            {{ getNativeBalance() | currency:' ':' ' }} {{ nativeCurrency }}
+          </div>
+        </div>
+      </expandable-header-primary>
+      <expandable-header-footer>
+        <div class="wallet-info">
+          <div class="left-buttons" *ngIf="data?.account?.primary">
+            <span class="square-border">
+              <span translate>PRIMARY</span>
+            </span>
+          </div>
+          <ion-spinner name="crescent" *ngIf="!data || !data?.txs"></ion-spinner>
+        </div>
+        <div class="action-buttons">
+          <button class="button-standard disable-hover" (click)="deposit()" [disabled]="!data?.account?.allow_deposits" ion-button>
+            Deposit
+          </button>
+          <button class="button-standard disable-hover" (click)="withdraw()" [disabled]="!data?.account?.allow_withdrawals || data?.account?.balance.amount <= 0" ion-button>
+            Withdraw
+          </button>
+        </div>
+      </expandable-header-footer>
+    </expandable-header>
+
+    <div class="history-wrapper">
+
+      <!-- Transactions -->
+
+      <div class="prompt-user activity-fix white-card" *ngIf="data && data.txs && data.txs.length == 0">
+        <div class="title-icon larger-icon">
+          <img src="assets/img/ghost-tongue-out.svg">
+        </div>
+        <div class="title-info">
+          <span translate>It's a ghost town in here</span>
+        </div>
+        <div class="subtitle-info">
+          <span translate>
+            If you have funds stored on a website then you should move them into a secure wallet... like this one!
+          </span>
+        </div>
+      </div>
+
+      <ion-list *ngIf="data && data.txs && data.txs.length > 0" class="tx-history">
+
+        <ion-item-divider sticky class="tx-history-header">
+          <span translate>Transactions</span>
+        </ion-item-divider>
+
+        <div class="item-wrapper" *ngFor="let tx of data.txs">
+          <button ion-item (click)="openTx(tx)">
+            <div class="tx-date" item-start>
+              <div class="tx-month">
+                {{ tx.created_at | date : 'MMM' }}
+              </div>
+              <div class="tx-day">
+                {{ tx.created_at | date : 'dd' }}
+              </div>
+            </div>
+
+            <div class="tx-description" *ngIf="tx.details">
+              {{ tx.details.title }}
+              <span class="tx-subtitle" *ngIf="tx.status != 'pending'">{{ tx.details.subtitle }}</span>
+              <span class="tx-subtitle" *ngIf="tx.status == 'pending'" translate>Pending</span>
+            </div>
+
+            <ion-note item-end text-end>
+              <div class="tx-amount">
+                {{ tx.amount.amount | number:'1.2-8' }} {{ tx.amount.currency }}
+              </div>
+              <div class="tx-alternative-amount">
+                <span>{{ tx.native_amount.amount }} {{ tx.native_amount.currency }}</span>
+              </div>
+            </ion-note>
+          </button>
+        </div>
+      </ion-list>
+    </div>
+  </div>
+</ion-content>

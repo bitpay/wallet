@@ -1,88 +1,65 @@
 <ion-header>
-  <ion-navbar>
-    <ion-title>{{'Amount' | translate}}</ion-title>
-    <ion-buttons end *ngIf="showSendMax">
-      <button (click)="showSendMaxMenu()" ion-button icon-only>
-        <ion-icon name="more"></ion-icon>
+  <ion-navbar [hideBackButton]="useAsModal">
+    <ion-buttons left *ngIf="useAsModal">
+      <button class="close-container disable-hover" (click)="closeModal()" ion-button>
+        <ion-icon ios="md-close" md="md-close"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-buttons right>
+      <button class="send-max" *ngIf="isSendMaxButtonShown()" (click)="sendMax()" clear wide-header-bar-button ion-button>
+        <span translate>Send max</span>
       </button>
     </ion-buttons>
   </ion-navbar>
 </ion-header>
 
-<ion-content no-bounce>
-  <ion-list *ngIf="showRecipient">
-    <ion-item-divider>
-      <span translate>Recipient</span>
-    </ion-item-divider>
-    <ion-item>
-      <ion-icon *ngIf="recipientType == 'wallet'" item-start>
-        <img *ngIf="network == 'testnet'" [ngStyle]="{'background-color': color}" src="assets/img/icon-wallet-testnet.svg" class="icon-wallet"
-        />
-        <img *ngIf="network != 'testnet'" [ngStyle]="{'background-color': color}" src="assets/img/icon-wallet.svg" class="icon-wallet"
-        />
-      </ion-icon>
-      <ion-icon *ngIf="recipientType == 'contact'" item-start>
-        <gravatar [name]="name" [height]="30" [width]="30" [email]="email"></gravatar>
-      </ion-icon>
-      <ion-icon *ngIf="!recipientType" item-start>
-        <img src="assets/img/contact-placeholder.svg" class="icon-contact">
-      </ion-icon>
-      <span>{{name || toAddress}}</span>
-    </ion-item>
-  </ion-list>
-  <div>
-    <div class="amount-pane">
-
-      <div *ngIf="shiftMin && shiftMax" class="shapeshift-values">
-        <div>Min: {{shiftMin}}</div>
-        <div>Max: {{shiftMax}}</div>
+<ion-content class="add-bottom-safe-area" no-bounce>
+  <div class="container">
+    <div class="amount-content" [ngClass]="{'amount-content-fixed': fromBuyCrypto}">
+      <div class="expression-container">
+        <span *ngIf="expression; else noExpression" class="ellipsis expression" [ngClass]="{'small-font': useSmallFontSize}">
+          <span *ngIf="isNumber(expression)">{{expression | number:'1.0-6'}}</span>
+          <span *ngIf="!isNumber(expression)">{{expression}}</span>
+        </span>
+        <ng-template #noExpression>
+          <span class="expression">
+            {{ '0' }}
+          </span>
+        </ng-template>
+        <span class="unit" [ngClass]="{'small-font': useSmallFontSize}" [hidden]="globalResult">{{unit}}</span>
       </div>
-
-      <div class="amount-content">
-        <div class="expression-container">
-          <span class="expression">{{expression || '0.00'}}</span>
-          <span class="unit-button" (click)="changeUnit()">{{unit}}</span>
-        </div>
-        <div class="amount" [hidden]="!globalResult">{{globalResult}} {{unit}}</div>
-        <div class="result" *ngIf="alternativeAmount">&asymp; {{alternativeAmount || '0.00'}} {{alternativeUnit}}</div>
-        <div class="result" *ngIf="!alternativeAmount">&nbsp;</div>
+      <div class="amount" [hidden]="!globalResult">{{globalResult}} {{unit}}</div>
+      <div class="result" *ngIf="(!fromBuyCrypto && wallet && wallet.coin && !currencyProvider.isCustomERCToken(wallet.coin)) || fromFooterMenu">&asymp;
+        <span *ngIf="fiatCode === alternativeUnit">{{alternativeAmount || '0.00'}}</span>
+        <span *ngIf="fiatCode !== alternativeUnit">{{alternativeAmount || '0'}}</span>
+        {{alternativeUnit}}
       </div>
     </div>
-    <div class="keypad">
-      <div class="operator-row">
-        <div class="col operator-send" [hidden]="!allowSend" (click)="finish()">
-          <ion-icon name="arrow-round-forward"></ion-icon>
+
+    <div class="amount-switcher-margin" [ngClass]="{'fix-modal-switcher': useAsModal}" *ngIf="(!fromBuyCrypto && !isCardTopUp && wallet && wallet.coin && !currencyProvider.isCustomERCToken(wallet.coin)) || fromFooterMenu">
+      <div class="amount-switcher">
+        <div class="switcher" (click)="changeUnit()" [hidden]="fixedUnit" tappable>
+          <img class="switcher__icon" src="assets/img/icon-swap.svg">
+          <div class="switcher__label">{{unit}}</div>
         </div>
       </div>
-      <div class="row">
-        <div class="col digit" (click)="pushDigit('7')">7</div>
-        <div class="col digit" (click)="pushDigit('8')">8</div>
-        <div class="col digit" (click)="pushDigit('9')">9</div>
-        <div class="col operator" (click)="pushOperator('/')">&#247;</div>
-      </div>
+    </div>
 
-      <div class="row">
-        <div class="col digit" (click)="pushDigit('4')">4</div>
-        <div class="col digit" (click)="pushDigit('5')">5</div>
-        <div class="col digit" (click)="pushDigit('6')">6</div>
-        <div class="col operator" (click)="pushOperator('x')">&#215;</div>
+    <form class="amount-switcher-margin" [ngClass]="{'fix-modal-switcher': useAsModal}" [formGroup]="quoteForm" *ngIf="this.quoteForm && fromBuyCrypto">
+      <div class="amount-switcher">
+        <ion-select class="switcher select-options" [selectOptions]="selectOptions" okText="{{okText}}" cancelText="{{cancelText}}" formControlName="altCurrency" (ionChange)="altCurrencyChange()">
+          <ion-option *ngFor="let fiatAltCurrency of altCurrenciesToShow" [value]="fiatAltCurrency">{{ fiatAltCurrency }}</ion-option>
+          <ion-option *ngFor="let fiatAltCurrency of altCurrenciesToShow2" [value]="fiatAltCurrency">{{ fiatAltCurrency }}</ion-option>
+        </ion-select>
       </div>
+    </form>
 
-      <div class="row">
-        <div class="col digit" (click)="pushDigit('1')">1</div>
-        <div class="col digit" (click)="pushDigit('2')">2</div>
-        <div class="col digit" (click)="pushDigit('3')">3</div>
-        <div class="col operator" (click)="pushOperator('+')">&#43;</div>
-      </div>
+    <div class="bottom-absolute">
+      <pin-pad (keystroke)="pushDigit($event)" type="amount" [integersOnly]="onlyIntegers"></pin-pad>
 
-      <div class="row">
-        <div class="col digit" (click)="pushDigit('.')">.</div>
-        <div class="col digit" (click)="pushDigit('0')">0</div>
-        <div class="col digit" (click)="removeDigit()">
-          <ion-icon name="backspace"></ion-icon>
-        </div>
-        <div class="col operator" (click)="pushOperator('-')">&#45;</div>
-      </div>
+      <button ion-button class="button-standard button-primary" [disabled]="!expression || !allowSend" (click)="finish()">
+        <span>{{'Continue' | translate}}</span>
+      </button>
     </div>
   </div>
 </ion-content>

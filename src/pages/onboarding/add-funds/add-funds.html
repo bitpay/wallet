@@ -1,0 +1,50 @@
+<wide-header-page title="{{ 'Let’s add some funds' | translate }}" hideBackButton="true">
+  <div page-content>
+    <ion-list no-lines>
+      <div class="option-container" (click)="goToCoinbase()" *ngIf="showCoinbase">
+        <ion-item>
+          <img src="assets/img/coinbase/coinbase-icon.png" class="coinbase-icon" />
+        </ion-item>
+        <div class="info">
+          <div class="title">
+            {{'Connect with Coinbase' | translate}}
+          </div>
+          <div class="note">
+            {{'Easily deposit and withdraw funds.' | translate}}
+          </div>
+        </div>
+      </div>
+      <div class="option-container" (click)="goToAmountPage()">
+        <ion-item>
+          <img src="assets/img/onboarding/all-coins.svg" />
+        </ion-item>
+        <div class="info">
+          <div class="title">
+            {{'Buy Crypto' | translate}}
+          </div>
+          <div class="note">
+            {{'Buy crypto with a credit card.' | translate}}
+          </div>
+        </div>
+      </div>
+      <div class="option-container" (click)="goToImportWallet()" *ngIf="needsBackup">
+        <ion-item>
+          <img src="assets/img/receive.svg" />
+        </ion-item>
+        <div class="info">
+          <div class="title">
+            {{'Restore from backup' | translate}}
+          </div>
+          <div class="note">
+            {{'Add funds from an existing wallet.' | translate}}
+          </div>
+        </div>
+      </div>
+    </ion-list>
+  </div>
+  <div footer-content>
+    <button ion-button color="primary" class="button-standard" (click)="close()">
+      {{"I’ll do this later" | translate}}
+    </button>
+  </div>
+</wide-header-page>

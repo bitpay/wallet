@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 21 21">
+  <g fill="none" fill-rule="evenodd" stroke="#4F6EF7" stroke-linecap="square" transform="translate(1 1)">
+    <path stroke-dasharray="2 2" d="M13.9090909,5 L19,5 L19,19 L5,19 L5,13.9090909"/>
+    <path stroke-dasharray="1" d="M0,0 L14,0 L14,14 L0,14 L0,0 Z"/>
+  </g>
+</svg>

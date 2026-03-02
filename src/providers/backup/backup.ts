@@ -4,99 +4,93 @@ import { Logger } from '../../providers/logger/logger';
 // Providers
 import { AppProvider } from '../../providers/app/app';
 import { BwcProvider } from '../../providers/bwc/bwc';
+import { DownloadProvider } from '../../providers/download/download';
 import { ProfileProvider } from '../../providers/profile/profile';
-
+import { ConfigProvider } from '../config/config';
+import { KeyProvider } from '../key/key';
 
 @Injectable()
 export class BackupProvider {
-
   constructor(
     private appProvider: AppProvider,
     private bwcProvider: BwcProvider,
+    private configProvider: ConfigProvider,
+    private downloadProvider: DownloadProvider,
     private logger: Logger,
-    private profileProvider: ProfileProvider
+    private profileProvider: ProfileProvider,
+    private keyProvider: KeyProvider
   ) {
-    this.logger.info('BackupProvider initialized.');
+    this.logger.debug('BackupProvider initialized');
   }
-  
-  public walletDownload(password, opts, walletId: string): Promise<any> {
+
+  public walletDownload(
+    walletId: string,
+    opts,
+    password?: string
+  ): Promise<any> {
     return new Promise((resolve, reject) => {
+      let config = this.configProvider.get();
+
       let wallet = this.profileProvider.getWallet(walletId);
-      let ew = this.walletExport(password, opts, walletId);
+      let ew = this.walletExport(walletId, opts, password);
       if (!ew) return reject('Could not create backup');
 
-      let walletName = (wallet.alias || '') + (wallet.alias ? '-' : '') + wallet.credentials.walletName;
-      if (opts.noSign) walletName = walletName + '-noSign'
-      let filename = walletName + '-' + this.appProvider.info.nameCase + 'backup.aes.json';
-      this._download(ew, filename).then(() => {
+      let walletName =
+        wallet.credentials.walletName || wallet.credentials.walletId;
+
+      let alias =
+        config.aliasFor && config.aliasFor[wallet.credentials.walletId];
+
+      if (alias) {
+        walletName = alias + ' [' + walletName + ']';
+      }
+
+      if (opts.noSign) walletName = walletName + '-noSign';
+      let filename =
+        walletName + '-' + this.appProvider.info.nameCase + 'backup.aes.json';
+      this.downloadProvider.download(ew, filename).then(() => {
         return resolve();
       });
-    })
-  }
-
-  public walletExport(password: string, opts: any, walletId: string): any {
-    if (!password) {
-      return null;
-    }
-    let wallet: any = this.profileProvider.getWallet(walletId);
-    try {
-      opts = opts ? opts : {};
-      let b = wallet.export(opts);
-      if (opts.addressBook) b = this.addMetadata(b, opts);
-
-      let e = this.bwcProvider.getSJCL().encrypt(password, b, {
-        iter: 10000
-      });
-      return e;
-    } catch (err) {
-      this.logger.debug('Error exporting wallet: ', err);
-      return null;
-    };
-  }
-
-  private addMetadata(b: any, opts: any): string {
-    b = JSON.parse(b);
-    if (opts.addressBook) b.addressBook = opts.addressBook;
-    return JSON.stringify(b);
-  }
-
-  private _download(ew: any, fileName: string): Promise<any> {
-    return new Promise((resolve, reject) => {
-      let a = document.createElement("a");
-      let blob = this.NewBlob(ew, 'text/plain;charset=utf-8');
-      let url = window.URL.createObjectURL(blob);
-
-      document.body.appendChild(a);
-
-      a.href = url;
-      a.download = fileName;
-      a.click();
-      window.URL.revokeObjectURL(url);
-
-      return resolve();
     });
   }
 
-  private NewBlob(data: any, datatype: string): any {
-    let out;
-    try {
-      out = new Blob([data], {
-        type: datatype
-      });
-      this.logger.debug("case 1");
-    } catch (e) {
-      if (e.name == "InvalidStateError") {
-        // InvalidStateError (tested on FF13 WinXP)
-        out = new Blob([data], {
-          type: datatype
-        });
-        this.logger.debug("case 2");
-      } else {
-        // We're screwed, blob constructor unsupported entirely
-        this.logger.debug("Error");
-      }
+  public walletExport(walletId: string, opts, password?: string) {
+    if (!password) {
+      return null;
     }
-    return out;
-  };
 
+    let wallet = this.profileProvider.getWallet(walletId);
+    try {
+      opts = opts ? opts : {};
+      let b: any = {};
+
+      b.credentials = JSON.parse(wallet.toString(opts));
+      if (b.credentials.keyId && opts.noSign) {
+        delete b.credentials.keyId;
+      }
+      if (wallet.canSign && !opts.noSign) {
+        const k = this.keyProvider.getKey(wallet.credentials.keyId).toObj();
+        if (opts.password) {
+          const k1 = this.keyProvider.get(
+            wallet.credentials.keyId,
+            opts.password
+          );
+          k.mnemonic = k1.mnemonic;
+          k.xPrivKey = k1.xPrivKey;
+          delete k.xPrivKeyEncrypted;
+          delete k.mnemonicEncrypted;
+        }
+        b.key = k;
+      }
+      if (opts.addressBook) b.addressBook = opts.addressBook;
+      b = JSON.stringify(b);
+
+      return this.bwcProvider.getSJCL().encrypt(password, b, {
+        iter: 10000
+      });
+    } catch (err) {
+      this.logger.error('Error exporting wallet: ', err);
+      return null;
+    }
+  }
 }

@@ -1,0 +1,44 @@
+@mixin center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin fix-ios-bg-scroll(
+  $bottom-color: $background-color,
+  $top-color: $toolbar-background
+) {
+  .scroll-content,
+  .fixed-content {
+    // This line prevents an ugly gap from appearing between the
+    // navbar and page content when the user overscrolls on iOS
+    background-image: linear-gradient(
+      to bottom,
+      $top-color,
+      $top-color 50%,
+      $bottom-color 50%,
+      $bottom-color 50%,
+      $bottom-color 50%
+    );
+  }
+}
+
+@mixin toolbar-button-color($button-color: #434d5a) {
+  .bar-button-default-ios,
+  .bar-button-default.bar-button-ios-default,
+  .bar-button-clear-ios-default {
+    color: $button-color !important;
+  }
+
+  .bar-button-default-md,
+  .bar-button-default.bar-button-md-default,
+  .bar-button-clear-md-default {
+    color: $button-color !important;
+  }
+
+  .bar-button-default-wp,
+  .bar-button-default.bar-button-wp-default,
+  .bar-button-clear-wp-default {
+    color: $button-color !important;
+  }
+}

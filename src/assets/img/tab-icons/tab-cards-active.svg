@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="26px" height="20px" viewBox="0 0 26 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 58 (84663) - https://sketch.com -->
+    <title>Icons/Card</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Artboard-Copy-68" transform="translate(-219.000000, -29.000000)">
+            <g id="Tabs/Wallets">
+                <g id="Card" transform="translate(191.000000, 1.000000)">
+                    <g id="Icons/Card" transform="translate(28.000000, 28.000000)">
+                        <g id="credit-card" transform="translate(-0.000000, 0.000000)">
+                            <path d="M24.3043478,0 C25.240913,0 26,0.7747343 26,1.73060529 L26,17.8829213 C26,18.8387923 25.240913,19.6135266 24.3043478,19.6135266 L1.69565217,19.6135266 C0.759086957,19.6135266 -1.0658141e-14,18.8387923 -1.0658141e-14,17.8829213 L-1.0658141e-14,1.73060529 C-1.0658141e-14,0.7747343 0.759086957,0 1.69565217,0 L24.3043478,0 Z M15.8888889,11.7681159 L3.37037037,11.7681159 L3.37037037,14.2198068 L15.8888889,14.2198068 L15.8888889,11.7681159 Z" id="Shape-2" fill="#4F6EF7"></path>
+                            <polygon id="Rectangle-path" fill="#434D5A" points="0 3.43236715 26 3.43236715 26 7.84541063 0 7.84541063"></polygon>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

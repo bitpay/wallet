@@ -1,0 +1,90 @@
+<wide-header-page title="{{ 'Sign Request' | translate }}">
+  <ion-buttons *ngIf="request && isSupportedMethod" right>
+    <button clear wide-header-bar-button (click)="rejectRequest(request)" ion-button>
+      <span translate>Reject</span>
+    </button>
+  </ion-buttons>
+
+  <div page-content class="wc-container">
+    
+    <label-tip type="warn" class="no-arrowhead" *ngIf="request && !isSupportedMethod">
+      <span label-tip-title translate>Method not supported</span>
+      <div label-tip-body>
+        <div translate>
+        <b>{{ request.method }}</b> is not supported by BitPay. Please check the official WalletConnect documentation to see what the supported methods are.
+        </div>
+        <br>
+        <a class="label-tip-link" (click)="openExternalLink('https://docs.walletconnect.org/json-rpc-api-methods/ethereum')" translate>Read More</a>
+      </div>
+    </label-tip>
+
+    <div *ngIf="request && isSupportedMethod">        
+      <ion-list class="bp-list">
+        <ion-item>
+          <ion-label>
+            <div class="main-label" translate>SUMMARY</div>
+          </ion-label>
+        </ion-item>
+        <div *ngFor="let param of request?.params; let i = index;">
+        
+          <div *ngIf="request.method === 'eth_signTypedData' || request.method === 'eth_sign' || request.method === 'eth_signTypedData_v1' || request.method === 'eth_signTypedData_v3' || request.method === 'eth_signTypedData_v4'">
+            <ion-item *ngIf="i === 0 && param" copy-to-clipboard="{{ param }}">
+              <ion-label>
+                <div class="summary-item">
+                  <span translate>Address</span>
+                </div>
+              </ion-label>
+              <ion-note item-end>
+                <div class="background-content">
+                  <span class="ellipsis">{{ param | shortenedAddress }}</span>
+                </div>
+              </ion-note>
+            </ion-item>
+
+            <div class="line-divider" *ngIf="i === 1 && param"></div>
+
+            <ion-item *ngIf="i === 1 && param">
+              <ion-label>
+                <div class="summary-item">
+                  <span translate>Message</span>
+                </div>
+              </ion-label>
+              <ion-textarea [attr.rows]=10 disabled [value]="param"></ion-textarea>
+            </ion-item>
+          </div>
+
+          <div *ngIf="request.method === 'personal_sign'">
+            <ion-item *ngIf="i === 0 && param">
+              <ion-label>
+                <div class="summary-item">
+                  <span translate>Message</span>
+                </div>
+              </ion-label>
+              <ion-textarea disabled [value]="param"></ion-textarea>
+            </ion-item>
+
+            <div class="line-divider" *ngIf="i === 1 && param"></div>
+
+            <ion-item *ngIf="i === 1 && param" copy-to-clipboard="{{ param }}">
+              <ion-label>
+                <div class="summary-item">
+                  <span translate>Address</span>
+                </div>
+              </ion-label>
+              <ion-note item-end>
+                  <span class="ellipsis">{{ param | shortenedAddress }}</span>
+              </ion-note>
+            </ion-item>
+          </div>
+        </div>
+      </ion-list>
+      <div class="btn-container">
+        <button  margin-top (click)="approveRequest(request)" ion-button class="button-standard" color="primary" [disabled]="!isSupportedMethod">
+          {{ 'Approve' | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+  
+
+</wide-header-page>

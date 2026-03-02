@@ -1,0 +1,24 @@
+<div class="confirm-sheet">
+  <div class="sheet-title">
+    <div class="title-icon">
+      <img *ngIf="type === 'success'" src="assets/img/green-check-circled.svg">
+      <img *ngIf="type === 'info'" src="assets/img/icon-info-blue.svg">
+      <img *ngIf="type === 'warning'" src="assets/img/icon-warning-circled.svg">
+      <img *ngIf="type === 'danger'" src="assets/img/icon-danger.svg">
+      <img *ngIf="type === 'love'" src="assets/img/icon-heart.svg">
+      <img *ngIf="type === 'safeguard'" src="assets/img/icon-safeguard.svg">
+    </div>
+    <ng-content select="[sheet-title-text]"></ng-content>
+  </div>
+  <div class="sheet-text">
+    <ng-content select="[sheet-text]"></ng-content>
+  </div>
+  <div class="sheet-btn-group">
+    <div class="sheet-btn" [ngClass]="{blue: type === 'info' || type === 'love', yellow: type === 'warning', red: type === 'danger'}" (click)="dismiss(true)">
+      <ng-content select="[sheet-button-text]"></ng-content>
+    </div>
+    <div class="sheet-second-btn" [ngClass]="{primary: type == 'danger'}" (click)="dismiss(false)">
+      <ng-content select="[sheet-second-button-text]"></ng-content>
+    </div>
+  </div>
+</div>

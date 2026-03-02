@@ -1,250 +1,269 @@
-<ion-header>
+<ion-header class="bp-header">
   <ion-navbar>
     <ion-title>
-      <img class="home-logo" src="assets/img/app/logo-negative.svg">
+      <div [reveal-at-scroll-pos]="expandableHeader.headerHeight" [scrollArea]="scrollArea">
+        {{ 'Home' | translate }}
+      </div>
     </ion-title>
+    <ion-buttons *ngIf="isCordova && !isCopay" end>
+      <button color="light" ion-button clear icon-only (click)="openBitPayIdPage()">
+        <div [reveal-at-scroll-pos]="expandableHeader.headerHeight" [scrollArea]="scrollArea">
+          <ion-icon *ngIf="!bitPayIdUserInfo">
+            <img src="assets/img/bitpay-card/icon-bitpay-user.svg" width="25">
+          </ion-icon>
+          <ion-icon *ngIf="bitPayIdUserInfo && !bitPayIdUserInfo?.givenName">
+            <img src="assets/img/bitpay-card/icon-bitpay.svg" width="25">
+          </ion-icon>
+          <ion-icon *ngIf="bitPayIdUserInfo && bitPayIdUserInfo?.givenName">
+            <span class="icon-bitpay-id icon-small">
+              {{accountInitials}}
+            </span>
+          </ion-icon>
+        </div>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
-
-<ion-content>
-  <ion-refresher (ionRefresh)="doRefresh($event)" *ngIf="!showReorderBtc && !showReorderBch">
+<ion-content #scrollArea>
+  <ion-refresher (ionRefresh)="doRefresh($event)" pullMin="90" pullMax="160" enabled="true">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
-  <div class="wrapper">
-    <div class="header-extend"></div>
-
-    <ion-card *ngIf="serverMessage">
-      <ion-item>
-        <div>{{serverMessage.title}}</div>
-        <div>{{serverMessage.body}}</div>
-        <div (click)="openServerMessageLink()">
-          <span translate>Learn more</span>
-        </div>
-      </ion-item>
-    </ion-card>
-
-    <ion-card *ngIf="newRelease">
-      <ion-icon>
-        <img src="assets/img/icon-update.svg" class="bg" />
-      </ion-icon>
-      <ion-card-header>
-        {{updateText}}
-      </ion-card-header>
-      <ion-card-content>
-        <button ion-button (click)="goToDownload()">
-          <span translate>Download</span>
-        </button>
-      </ion-card-content>
-    </ion-card>
-
-    <page-feedback-card *ngIf="showRateCard">
-    </page-feedback-card>
-
-    <ion-card *ngIf="homeTip">
-      <ion-card-header>
-        <ion-row>
-          <ion-col text-right (click)="hideHomeTip()">
-            <ion-icon name="md-close"></ion-icon>
-          </ion-col>
-        </ion-row>
-      </ion-card-header>
-      <ion-card-content class="check">
-        <ion-icon class="big-icon-svg check-icon">
-          <img src="assets/img/check-white.svg" class="bg green" />
-        </ion-icon>
-        <div class="title" translate>
-          Your bitcoin wallet is ready!
-        </div>
-        <div class="subtitle" translate>
-          On this screen you can see all your wallets, accounts, and assets.
-        </div>
-      </ion-card-content>
-    </ion-card>
-
-    <div class="card" *ngIf="txps && txps[0]">
-      <ion-item-divider (click)="openProposalsPage()">
-        <div class="title" item-start>
-          <span translate>Payment Proposals</span>
-        </div>
-        <div item-end>
-          <button ion-button clear icon-only color="grey">
-            <ion-badge *ngIf="txpsN>3" color="danger">{{txpsN}}</ion-badge>
-            <ion-icon ios="ios-arrow-dropright"></ion-icon>
-          </button>
-        </div>
-      </ion-item-divider>
-      <ion-list>
-        <page-txp *ngFor="let txp of txps" [tx]="txp" [addressbook]="addressbook"></page-txp>
-      </ion-list>
-    </div>
-
-    <div class="card" *ngIf="notifications && notifications[0] && recentTransactionsEnabled">
-      <ion-item-divider (click)="openActivityPage()">
-        <div class="title" item-start>
-          <span translate>Recent Transactions</span>
-        </div>
-        <div item-end>
-          <button ion-button clear icon-only color="grey">
-            <ion-badge *ngIf="notificationsN>3" color="danger">{{notificationsN}}</ion-badge>
-            <ion-icon ios="ios-arrow-dropright"></ion-icon>
-          </button>
-        </div>
-      </ion-item-divider>
-      <ion-list>
-        <page-wallet-activity *ngFor="let notification of notifications" (click)="openNotificationModal(notification)" [notification]="notification"></page-wallet-activity>
-      </ion-list>
-    </div>
-
-    <div *ngIf="!wallets || !wallets[0]" class="no-wallets">
-      <button ion-button clear (click)="goToAddView()">
-        <span translate>Create a new wallet</span>
-      </button>
-    </div>
-
-    <div class="card" *ngIf="walletsBtc && walletsBtc[0]">
-      <ion-item-divider>
-        <div class="title" item-start>
-          <img src="assets/img/icon-bitcoin.svg" alt="Bitcoin Wallets" width="18" />
-          <span translate>Bitcoin Wallets</span>
-        </div>
-        <div item-end *ngIf="!showReorderBtc">
-          <button ion-button clear icon-only color="grey" (click)="goToAddView()">
-            <ion-icon name="add"></ion-icon>
-          </button>
-          <button ion-button clear icon-only color="grey" (click)="reorderBtc()" *ngIf="walletsBtc.length > 1">
-            <ion-icon name="reorder"></ion-icon>
-          </button>
-        </div>
-        <div item-end *ngIf="showReorderBtc">
-          <button ion-button clear color="secondary" (click)="reorderBtc()" translate>
-            Done
-          </button>
-        </div>
-      </ion-item-divider>
-
-      <ion-list reorder="{{showReorderBtc}}" (ionItemReorder)="reorderWalletsBtc($event)">
-        <button ion-item *ngFor="let wallet of walletsBtc" (click)="goToWalletDetails(wallet)">
-          <ion-icon item-start>
-            <img *ngIf="wallet.network == 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet-testnet.svg" class="icon-wallet" />
-            <img *ngIf="wallet.network != 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet.svg" class="icon-wallet" />
+  <expandable-header [scrollArea]="scrollArea" [fadeFactor]="5" [disableFade]="true" #expandableHeader>
+    <ion-toolbar class="wide-header__title" (click)="toggleTestnet()" tappable>
+      <expandable-header-primary>
+        <button *ngIf="isCordova && !isCopay" class="bitpay-id-login" color="light" ion-button clear icon-only large (click)="openBitPayIdPage()">
+          <ion-icon *ngIf="!bitPayIdUserInfo">
+            <img src="assets/img/bitpay-card/icon-bitpay-user.svg" width="35">
           </ion-icon>
-          <div class="item-title">{{wallet.name}}</div>
-          <div class="item-subtitle">
-            <span class="wallet-warning" *ngIf="!wallet.isComplete()" translate>
-              Incomplete
-            </span>
-            <span class="wallet-warning" *ngIf="wallet.isComplete() && wallet.needsBackup" translate>
-              Needs backup
-            </span>
-            <span *ngIf="wallet.isComplete() && !wallet.needsBackup">
-              <span *ngIf="!wallet.balanceHidden && !wallet.scanning">
-                {{wallet.status && wallet.status.totalBalanceStr ? (wallet.status.totalBalanceStr) : ( wallet.cachedBalance ? wallet.cachedBalance + (wallet.cachedBalanceUpdatedOn ? ' &middot; ' + ( wallet.cachedBalanceUpdatedOn * 1000 | amTimeAgo) : '') : '')}}
-              </span>
-              <span *ngIf="wallet.scanning" translate>Scanning funds</span>
-              <span *ngIf="wallet.balanceHidden && !wallet.scanning">[
-                <span translate>Balance Hidden</span>]</span>
-              <span class="text-gray" *ngIf="wallet.credentials.m > 1">{{wallet.credentials.m}}-of-{{wallet.credentials.n}}</span>
-              <ion-icon *ngIf="!wallet.balanceHidden && wallet.status && (wallet.status.totalBalanceSat != wallet.status.spendableAmount)" ios="ios-timer-outline" md="md-timer"></ion-icon>
-              <span *ngIf="wallet.error" class="wallet-warning">{{wallet.error}}</span>
-            </span>
-          </div>
-        </button>
-      </ion-list>
-    </div>
-
-    <div class="card" *ngIf="walletsBch && walletsBch[0]">
-      <ion-item-divider>
-        <div class="title" item-start>
-          <img src="assets/img/bitcoin-cash-logo.svg" alt="Bitcoin Cash Wallets" width="22" />
-          <span translate>Bitcoin Cash Wallets</span>
-        </div>
-        <div item-end *ngIf="!showReorderBch">
-          <button ion-button clear icon-only color="grey" (click)="goToAddView('bch')">
-            <ion-icon name="add"></ion-icon>
-          </button>
-          <button ion-button clear icon-only color="grey" (click)="reorderBch()" *ngIf="walletsBch.length > 1">
-            <ion-icon name="reorder"></ion-icon>
-          </button>
-        </div>
-        <div item-end *ngIf="showReorderBch">
-          <button ion-button clear color="secondary" (click)="reorderBch()">
-            {{'Done' | translate}}
-          </button>
-        </div>
-      </ion-item-divider>
-
-      <ion-list reorder="{{showReorderBch}}" (ionItemReorder)="reorderWalletsBch($event)">
-        <button ion-item *ngFor="let wallet of walletsBch" (click)="goToWalletDetails(wallet)">
-          <ion-icon item-start>
-            <img *ngIf="wallet.network == 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet-testnet.svg" class="icon-wallet" />
-            <img *ngIf="wallet.network != 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet.svg" class="icon-wallet" />
+          <ion-icon *ngIf="bitPayIdUserInfo && !bitPayIdUserInfo?.givenName">
+            <img src="assets/img/bitpay-card/icon-bitpay.svg" width="35">
           </ion-icon>
-          <div class="item-title">{{wallet.name}}</div>
-          <div class="item-subtitle">
-            <span class="wallet-warning" *ngIf="!wallet.isComplete()" translate>
-              Incomplete
+          <ion-icon *ngIf="bitPayIdUserInfo && bitPayIdUserInfo?.givenName">
+            <span class="icon-bitpay-id">
+              {{accountInitials}}
             </span>
-            <span class="wallet-warning" *ngIf="wallet.isComplete() && wallet.needsBackup" translate>
-              Needs backup
-            </span>
-            <span *ngIf="wallet.isComplete() && !wallet.needsBackup">
-              <span *ngIf="!wallet.balanceHidden && !wallet.scanning">
-                {{wallet.status && wallet.status.totalBalanceStr ? (wallet.status.totalBalanceStr) : ( wallet.cachedBalance ? wallet.cachedBalance + (wallet.cachedBalanceUpdatedOn ? ' &middot; ' + ( wallet.cachedBalanceUpdatedOn * 1000 | amTimeAgo) : '') : '')}}
-              </span>
-              <span *ngIf="wallet.scanning" translate>Scanning funds</span>
-              <span *ngIf="wallet.balanceHidden && !wallet.scanning">[
-                <span translate>Balance Hidden</span>]</span>
-              <span *ngIf="wallet.credentials.m > 1">{{wallet.credentials.m}}-of-{{wallet.credentials.n}}</span>
-              <ion-icon *ngIf="!wallet.balanceHidden && wallet.status && (wallet.status.totalBalanceSat != wallet.status.spendableAmount)" name="timer"></ion-icon>
-              <span *ngIf="wallet.error" class="wallet-warning">{{wallet.error}}</span>
-            </span>
-          </div>
-        </button>
-      </ion-list>
-    </div>
-
-    <div class="card" *ngIf="showBitPayCard && bitpayCardItems && bitpayCardItems[0] && wallets &&wallets[0]">
-      <ion-item-divider>
-        <div class="title" item-start>
-          <span>BitPay Visa
-            <sup>&reg;</sup> Card</span>
-        </div>
-        <div item-end>
-          <button ion-button clear icon-only color="grey" (click)="goTo('BitPayCardIntroPage')">
-            <ion-icon name="add"></ion-icon>
-          </button>
-        </div>
-      </ion-item-divider>
-      <ion-list>
-        <button ion-item *ngFor="let card of bitpayCardItems" (click)="goToCard(card.id)">
-          <ion-icon item-start>
-            <img src="assets/img/icon-card.svg" class="icon-card" />
           </ion-icon>
-          <div class="item-title">BitPay Visa&reg; Card ({{card.lastFourDigits}})</div>
-          <div class="item-subtitle">{{card.balance ? (card.balance | currency:card.currencySymbol:2) : 'Add funds to get started'|translate}} {{card.updatedOn ? (' &middot; ' + (card.updatedOn * 1000 | amTimeAgo)) : ''}}</div>
         </button>
-      </ion-list>
-    </div>
-
-    <div class="card" *ngIf="homeIntegrations && homeIntegrations.length>0 && wallets &&wallets[0]">
-      <ion-item-divider (click)="hideHomeIntegrations = !hideHomeIntegrations">
-        <div class="title" item-start translate>Services</div>
-        <div item-end>
-          <button ion-button clear color="grey" icon-only>
-            <ion-icon *ngIf="hideHomeIntegrations" name="arrow-dropdown"></ion-icon>
-            <ion-icon *ngIf="!hideHomeIntegrations" name="arrow-dropup"></ion-icon>
-          </button>
+        <div class="test-mode"*ngIf="testModeEnabled">
+          <ion-badge>Test Mode</ion-badge>
         </div>
-      </ion-item-divider>
-      <ion-list *ngIf="!hideHomeIntegrations">
-        <button ion-item *ngFor="let service of homeIntegrations" (click)="goTo(service.page)">
-          <ion-icon item-start>
-            <img src="{{service.icon}}" class="icon-services" />
-          </ion-icon>
-          <span class="item-title">{{service.title || service.name}}</span>
-        </button>
-      </ion-list>
+        {{ 'Home' | translate }}
+      </expandable-header-primary>
+    </ion-toolbar>
+  </expandable-header>
 
+  <div class="message-background" *ngIf="accessDenied">
+    <div class="message-header no-dismissible"></div>
+    <div class="message-content">
+      <ion-row align-items-center>
+        <div class="message-icon"><img src="assets/img/icon-danger.svg" /></div>
+        <div class="message-title message-title-critical">
+          {{ 'Access denied' | translate }}
+        </div>
+      </ion-row>
+      <div class="message-body">
+        Unfortunately, your country/region has banned the use or acceptance of
+        cryptocurrencies as a valid form of payment and we are therefore unable
+        to service you.
+      </div>
+      <div>
+        <div class="line-divider"></div>
+        <span class="message-button" (click)="openCountryBannedLink()" translate>Learn more</span>
+      </div>
     </div>
   </div>
+
+  <div class="message-background" *ngIf="newReleaseAvailable">
+    <div class="message-header">
+      <ion-row justify-content-end>
+        <button float-right ion-button clear icon-only color="grey" (click)="dismissNewReleaseMessage()">
+          <ion-icon name="close"></ion-icon>
+        </button>
+      </ion-row>
+    </div>
+    <div class="message-content">
+      <ion-row align-items-center>
+        <div class="message-icon"><img src="assets/img/icon-update.svg" /></div>
+        <div class="message-title">
+          {{ 'There is a new version available' | translate }}
+        </div>
+      </ion-row>
+      <div class="message-body" translate>
+        An update to this app is available.
+      </div>
+    </div>
+  </div>
+
+  <div class="message-background" *ngIf="showSurveyCard">
+    <div class="message-header">
+      <ion-row justify-content-end>
+        <button float-right ion-button clear icon-only color="grey" (click)="dismissBitPaySurveyCard()">
+          <ion-icon name="close"></ion-icon>
+        </button>
+      </ion-row>
+    </div>
+    <div class="message-content">
+      <ion-row align-items-center>
+        <div class="message-icon"><img src="assets/img/icon-heart.svg" /></div>
+        <div class="message-title">
+          {{ 'Help BitPay Improve' | translate }}
+        </div>
+      </ion-row>
+      <div class="message-body">
+        {{ "You didn't finish your card application." | translate }} <br>
+        {{ 'Help us by answering 3 quick questions.' | translate }}
+      </div>
+      <div class="line-divider"></div>
+      <span class="message-button" (click)="openBitPaySurveyLink()" translate>Take the survey</span>
+    </div>
+  </div>
+
+  <div class="message-background" *ngIf="showServerMessage && serverMessages && serverMessages[0]">
+    <div class="message-header" [ngClass]="{'no-dismissible': !serverMessages[0].dismissible}">
+      <ion-row *ngIf="serverMessages[0].dismissible" justify-content-end>
+        <button float-right ion-button clear icon-only color="grey" (click)="dismissServerMessage(serverMessages[0])">
+          <ion-icon name="close"></ion-icon>
+        </button>
+      </ion-row>
+    </div>
+    <div class="message-content">
+      <ion-row align-items-center>
+        <div class="message-icon">
+          <img *ngIf="!serverMessages[0].category || serverMessages[0].category === 'info'" src="assets/img/icon-info-blue.svg" />
+          <img *ngIf="serverMessages[0].category === 'critical'" src="assets/img/icon-danger.svg" />
+        </div>
+        <div class="message-title" *ngIf="serverMessages[0].title" [ngClass]="{
+            'message-title-info': !serverMessages[0].category || serverMessages[0].category == 'info',
+            'message-title-critical': serverMessages[0].category == 'critical'
+          }">
+          {{ serverMessages[0].title }}
+        </div>
+      </ion-row>
+      <div class="message-body" *ngIf="serverMessages[0].body">
+        {{ serverMessages[0].body }}
+      </div>
+
+      <div *ngIf="serverMessages[0].link" (click)="openServerMessageLink(serverMessages[0].link)">
+        <div class="line-divider"></div>
+        <span class="message-button" *ngIf="serverMessages[0].linkText">{{ serverMessages[0].linkText }}</span>
+        <span class="message-button" translate *ngIf="!serverMessages[0].linkText">Learn more</span>
+      </div>
+    </div>
+  </div>
+
+  <page-feedback-card #showCard></page-feedback-card>
+
+  <div *ngIf="showTotalBalance" class="total-amount-container">
+    <div class="section-header" translate>Total cash value</div>
+    <div class="total-amount-value">
+      <span *ngIf="totalBalanceAlternative">
+        {{totalBalanceAlternative | number:'1.2-2'}} {{totalBalanceAlternativeIsoCode}}
+      </span>
+      <span *ngIf="fetchingStatus">
+        <ion-spinner></ion-spinner>
+      </span>
+    </div>
+    <div class="average-container">
+      <div *ngIf="totalBalanceChange || totalBalanceChange === 0" [ngClass]="totalBalanceChange >= 0 ? 'possitive-avg' : 'negative-avg'">
+        <span class="average"><span *ngIf="totalBalanceChange > 0">+</span>{{ totalBalanceChange | number: '1.2-2' }}%</span>
+      </div>
+      <span *ngIf="totalBalanceChange || totalBalanceChange === 0" class="date" translate>Last day</span>
+    </div>
+  </div>
+
+  <ion-list margin-bottom class="bp-list">
+    <button ion-item *ngIf="showShoppingOption" (click)="goToShop()">
+      <ion-label>
+        <div class="services-list-label" translate>Shop</div>
+      </ion-label>
+    </button>
+    <div *ngIf="showShoppingOption" class="line-divider"></div>
+    <button ion-item *ngIf="showBuyCryptoOption" (click)="goToAmountPage()">
+      <ion-label>
+        <div class="services-list-label" translate>Buy Crypto</div>
+      </ion-label>
+    </button>
+    <div class="line-divider" *ngIf="showBuyCryptoOption"></div>
+    <button ion-item *ngIf="showExchangeCryptoOption" (click)="checkSwapCryptoDisclaimer()">
+      <ion-label>
+        <div class="services-list-label" translate>Swap Crypto</div>
+      </ion-label>
+    </button>
+  </ion-list>
+
+  <ion-slides *ngIf="showAdvertisements && advertisements && advertisements[0] && !testingAdsEnabled" pager="true" (ionSlideDidChange)="slideChanged()">
+    <ion-slide *ngFor="let advertisement of advertisements">
+      <div class="message-background no-margin">
+        <div class="message-header" *ngIf="advertisement.dismissible">
+          <ion-row justify-content-end>
+            <button float-right ion-button clear icon-only color="grey" (click)="dismissAdvertisement(advertisement)">
+              <ion-icon name="close"></ion-icon>
+            </button>
+          </ion-row>
+        </div>
+        <div class="message-content">
+          <ion-row align-items-center>
+            <ion-col align-self-start col-4>
+              <div class="message-img">
+                <img [ngClass]="{'card-img': advertisement.imgSrc === 'assets/img/bitpay-card/bitpay-card-mc-angled-plain.svg'}" src="{{advertisement.imgSrc}}" />
+              </div>
+            </ion-col>
+            <ion-col col-8>
+              <div class="message-title message-title-adv" *ngIf="advertisement.title">
+                {{ advertisement.title }}
+              </div>
+              <div class="message-body message-body-adv" *ngIf="advertisement.body">
+                {{ advertisement.body }}
+              </div>
+            </ion-col>
+          </ion-row>
+          <div *ngIf="advertisement.link" (click)="goTo(advertisement.link, advertisement.linkParams)">
+            <div class="line-divider"></div>
+            <span class="message-button" *ngIf="advertisement.linkText">{{advertisement.linkText}}</span>
+          </div>
+        </div>
+      </div>
+    </ion-slide>
+  </ion-slides>
+
+  <ion-slides *ngIf="showAdvertisements && testingAds && testingAds[0] && testingAdsEnabled" pager="true" (ionSlideDidChange)="slideChanged()">
+    <ion-slide *ngFor="let advertisement of testingAds">
+      <div class="message-background no-margin">
+        <div class="message-header" *ngIf="advertisement.dismissible">
+          <ion-row justify-content-end>
+            <button float-right ion-button clear icon-only color="grey" (click)="dismissAdvertisement(advertisement)">
+              <ion-icon name="close"></ion-icon>
+            </button>
+          </ion-row>
+        </div>
+        <div class="message-content">
+          <ion-row align-items-center>
+            <ion-col align-self-start col-4>
+              <div class="message-img">
+                <img [ngClass]="{'card-img': advertisement.imgSrc === 'assets/img/bitpay-card/bitpay-card-visa.svg'}" src="{{advertisement.imgSrc}}" />
+              </div>
+            </ion-col>
+            <ion-col col-8>
+              <div class="message-title message-title-adv" *ngIf="advertisement.title">
+                {{ advertisement.title }}
+              </div>
+              <div class="message-body message-body-adv" *ngIf="advertisement.body">
+                {{ advertisement.body }}
+              </div>
+            </ion-col>
+          </ion-row>
+          <div *ngIf="advertisement.link" (click)="goTo(advertisement.link, advertisement.linkParams)">
+            <div class="line-divider"></div>
+            <span class="message-button" *ngIf="advertisement.linkText">{{advertisement.linkText}}</span>
+          </div>
+        </div>
+      </div>
+    </ion-slide>
+  </ion-slides>
+
+  <div class="section-header">
+    <div translate>Exchange Rates</div>
+    <div translate class="date-label">1D</div>
+  </div>
+  <exchange-rates #exchangeRates></exchange-rates>
 </ion-content>

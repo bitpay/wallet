@@ -1,0 +1,74 @@
+page-pin {
+  ion-header {
+    .toolbar-background {
+      background-color: color($colors, light);
+    }
+  }
+  ion-content {
+    background-color: color($colors, blank) !important;
+    .scroll-content {
+      display: flex;
+      flex-direction: column;
+      padding-top: 0 !important;
+    }
+  }
+  .pin-header {
+    position: relative;
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    @media (max-height: 600px) {
+      padding-bottom: 25px;
+    }
+    .close-button {
+      position: absolute;
+      right: 2rem;
+      top: 1rem;
+    }
+    .title {
+      color: #060606;
+      font-weight: 500;
+      font-size: 25px;
+      align-items: center;
+      text-align: center;
+      line-height: 34px;
+      margin-top: 20%;
+      @media (max-width: 350px) {
+        font-size: 17px;
+        line-height: 20px;
+      }
+    }
+    .icon-container {
+      $app-icon-radius: 42;
+      position: absolute;
+      text-align: center;
+      width: 100%;
+      border-radius: 50%;
+      line-height: 0;
+      bottom: $app-icon-radius * -1px;
+      .app-icon {
+        width: $app-icon-radius * 2px;
+        height: $app-icon-radius * 2px;
+      }
+    }
+  }
+  .content {
+    text-align: center;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background-color: color($colors, blank);
+    .code-wrapper {
+      display: flex;
+      flex-direction: column;
+      height: 65vh;
+      min-height: 400px;
+
+      @media (max-height: 500px) {
+        min-height: 340px;
+      }
+    }
+  }
+}

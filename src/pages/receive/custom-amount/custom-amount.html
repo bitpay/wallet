@@ -1,43 +1,39 @@
-<ion-header>
-
-  <ion-navbar>
-    <ion-title>{{'Custom Amount' | translate}}</ion-title>
-    <ion-buttons end>
-      <button *ngIf="showShareButton" ion-button icon-only (click)="shareAddress()">
-        <ion-icon ios="ios-share-outline" md="md-share"></ion-icon>
-      </button>
-    </ion-buttons>
-  </ion-navbar>
-
-</ion-header>
-<ion-content>
-  <div class="qr-container">
-    <ngx-qrcode *ngIf="address" copy-to-clipboard="{{ qrAddress }}" qrc-value="{{qrAddress}}" qrc-class="aclass" qrc-errorCorrectionLevel="M"></ngx-qrcode>
-  </div>
-  <ion-list>
-    <ion-item>
-      <ion-label>{{'Address' | translate}}</ion-label>
-      <ion-note class="address-note" item-end>
-        {{address}}
-      </ion-note>
-    </ion-item>
-    <ion-item>
-      <span translate>Amount</span>
-      <ion-note item-end>
-        {{amountUnitStr}} ({{altAmountStr}})
-      </ion-note>
-    </ion-item>
-    <ion-item ion-item>
-      <span translate>Receive in</span>
-      <ion-note class="wallet-label" item-end>
-        <ion-icon item-start>
-          <img *ngIf="wallet.network == 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet-testnet.svg"
-            class="icon-wallet" />
-          <img *ngIf="wallet.network != 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet.svg"
-            class="icon-wallet" />
+<wide-header-page title="{{ wallet.name }}">
+  <ion-buttons right>
+    <button clear wide-header-bar-button (click)="shareAddress()" *ngIf="showShareButton" ion-button>
+      <ion-icon ios="ios-share-outline" md="md-share" class="pointer"></ion-icon>
+    </button>
+  </ion-buttons>
+  <div page-content>
+    <div *ngIf="wallet" class="receive-content">
+      <div class="title-container">
+        <span class="title">{{'Payment Request' | translate}}</span>
+        <ion-icon (click)="showPaymentRequestInfo()">
+          <img src="assets/img/icon-info-blue.svg">
         </ion-icon>
-        <span class="wallet-name">{{wallet.name}}</span>
-      </ion-note>
-    </ion-item>
-  </ion-list>
-</ion-content>
+      </div>
+      <div class="addr-container">
+        <div class="text-address ellipsis">
+          <img class="copy-to-clip" copy-to-clipboard="{{ address }}" src="assets/img/paste-clipboard.svg" width="18" />
+          <div class="address-text ellipsis">
+            <span>{{ address }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="qr-card-amount">
+      <span>{{amountUnitStr}}</span>
+      <br>
+      <small>({{altAmountStr}})</small>
+    </div>
+    <div class="qr-container">
+      <bp-qr-code *ngIf="!useLegacyQrCode" class="card qr-card" copy-to-clipboard="{{ qrAddress }}" contents="{{ qrAddress }}" mask-x-to-y-ratio="1">
+        <img [ngClass]="{'testnet': wallet.network === 'testnet', 'background_xrp': wallet.coin === 'xrp'}" src="assets/img/currencies/{{ wallet.coin }}.svg" slot="icon" />
+      </bp-qr-code>
+      <div *ngIf="useLegacyQrCode" class="card qr-card" copy-to-clipboard="{{ qrAddress }}">
+        <ngx-qrcode hide-toast="true" qrc-value="{{ qrAddress }}" qrc-class="aclass" qrc-errorCorrectionLevel="M"></ngx-qrcode>
+      </div>
+    </div>
+  </div>
+</wide-header-page>

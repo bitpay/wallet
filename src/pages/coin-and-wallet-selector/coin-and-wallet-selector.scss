@@ -1,0 +1,52 @@
+page-coin-and-wallet-selector {
+  .back-arrow {
+    font-size: 28px;
+  }
+  .send-header-wrapper {
+    padding: 1rem;
+  }
+  .search-wrapper {
+    .backspace-icon {
+      z-index: 999;
+    }
+  }
+  .mb {
+    margin-bottom: 50px;
+  }
+  .bp-list {
+    .list-subtitle {
+      padding-left: 20px;
+      padding-top: 15px;
+      font-size: 16px;
+    }
+    .available-wallets {
+      &-container {
+        background-color: #f6f7fc;
+        cursor: pointer;
+        height: 36px;
+        white-space: nowrap;
+        border-radius: 18px;
+        display: flex;
+        align-items: center;
+      }
+      &-label {
+        line-height: 19px;
+        font-weight: 500;
+        font-size: 14px;
+        padding: 0rem 1.2rem;
+      }
+    }
+    .create-button {
+      background: white;
+      color: color($colors, primary);
+      margin-left: -12px;
+      text-align: center;
+    }
+    .token-count {
+      color: color($colors, grey);
+      text-align: center;
+      font-size: 12px;
+      padding-top: 0.5rem;
+    }
+  }
+}

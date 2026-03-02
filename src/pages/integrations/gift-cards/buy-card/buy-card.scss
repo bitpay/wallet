@@ -1,0 +1,74 @@
+@import './../gift-cards';
+
+buy-card-page {
+  .amount-box {
+    background-image: linear-gradient(-180deg, #ffffff 30%, #ebedf8 100%);
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    min-height: 180px;
+
+    img-loader.card-image {
+      display: inline-block;
+      margin-top: 22px;
+      position: relative;
+
+      .discount {
+        background: rgba(255, 255, 255, 0.17);
+        border-radius: 20px;
+        color: white;
+        font-weight: 500;
+        position: absolute;
+        right: 10px;
+        top: 10px;
+        padding: 5px 12px 4px 14px;
+      }
+
+      img {
+        box-shadow: 0 12px 47px rgba(0, 0, 0, 0.1);
+        height: 170px;
+        margin-top: -75px;
+        display: block;
+        position: static;
+        margin: 0 auto;
+      }
+    }
+
+    .discount-header {
+      background: white;
+      border-radius: 10px 10px 0 0;
+      font-weight: 500;
+      color: black;
+      padding: 16px 0;
+      border-bottom: 1px solid #f7f7f7;
+      display: flex;
+      justify-content: center;
+      font-weight: 600;
+
+      div {
+        text-align: left;
+        font-size: 15px;
+      }
+
+      img {
+        margin-right: 10px;
+      }
+    }
+  }
+
+  .buy-box {
+    font-size: 16px;
+    padding: 10px 35px 20px;
+
+    &__description {
+      text-align: left;
+      margin-bottom: 30px;
+    }
+  }
+
+  ion-footer {
+    ion-toolbar {
+      background: $color-primary;
+    }
+  }
+}

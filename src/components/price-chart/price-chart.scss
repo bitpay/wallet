@@ -1,0 +1,23 @@
+price-chart {
+  .container {
+    height: 35rem;
+
+    ion-spinner {
+      z-index: 99;
+      position: fixed;
+      top: 25%;
+      left: 50%;
+      margin-top: -1.4rem;
+      margin-left: -1.4rem;
+      * {
+        stroke: color($colors, primary);
+      }
+    }
+  }
+  .apexcharts-tooltip,
+  .apexcharts-xaxistooltip-bottom:before,
+  .apexcharts-xaxistooltip-bottom:after,
+  .apexcharts-xaxistooltip {
+    display: none;
+  }
+}

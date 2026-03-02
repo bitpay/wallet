@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="15px" height="15px" viewBox="0 0 15 15" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 62 (91390) - https://sketch.com -->
+    <title>Generic/Small/Add </title>
+    <desc>Created with Sketch.</desc>
+    <g id="Wallets" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" opacity="0.900000036">
+        <g id="Tab---Wallets-(1-key)" transform="translate(-36.000000, -298.000000)" fill="#434D5A">
+            <g id="Card/Item/Wallet-Copy-5" transform="translate(0.000000, 261.000000)">
+                <g id="Group-2" transform="translate(21.000000, 22.000000)">
+                    <g id="Generic/Small/Add-" transform="translate(15.000000, 15.000000)">
+                        <g id="e-add">
+                            <path d="M14.0625,6.5625 L8.4375,6.5625 L8.4375,0.9375 C8.4375,0.375 8.0625,0 7.5,0 C6.9375,0 6.5625,0.375 6.5625,0.9375 L6.5625,6.5625 L0.9375,6.5625 C0.375,6.5625 0,6.9375 0,7.5 C0,8.0625 0.375,8.4375 0.9375,8.4375 L6.5625,8.4375 L6.5625,14.0625 C6.5625,14.625 6.9375,15 7.5,15 C8.0625,15 8.4375,14.625 8.4375,14.0625 L8.4375,8.4375 L14.0625,8.4375 C14.625,8.4375 15,8.0625 15,7.5 C15,6.9375 14.625,6.5625 14.0625,6.5625 Z" id="Path"></path>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

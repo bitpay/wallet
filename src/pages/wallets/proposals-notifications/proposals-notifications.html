@@ -1,0 +1,50 @@
+<wide-header-page title="{{'Notifications' | translate}}" [hasSlideButton]="txpsToSign[0]">
+  <div page-content>
+    <ion-list class="content-list" *ngIf="allTxps && allTxps[0]">
+      <div *ngFor="let txpsByStatus of allTxps">
+        <ion-item-divider *ngIf="txpsByStatus.data && txpsByStatus.data[0]" class="item-divider-header">
+          <span class="ellipsis">{{txpsByStatus.title}}</span>
+        </ion-item-divider>
+        <div *ngFor="let txpsByWallet of txpsByStatus.data; let i = index">
+          <ion-item-divider *ngIf="i > 0" class="item-divider-header sm"></ion-item-divider>
+          <ion-item *ngIf="txpsByWallet.walletId && txpsByWallet.txps && txpsByWallet.txps[0] && txpsByWallet.txps[0].wallet" class="recipient">
+            <ion-icon class="item-img wallet" item-start>
+              <img [ngClass]="{ testnet: txpsByWallet.txps[0].wallet.network === 'testnet' }" src="assets/img/currencies/{{txpsByWallet.txps[0].wallet.coin}}.svg" class="icon-wallet" />
+            </ion-icon>
+            <ion-label>
+              <span class="ellipsis">{{txpsByWallet.txps[0].wallet.name}}</span>
+            </ion-label>
+            <ion-note *ngIf="txpsByStatus.type == 'pending' && txpsByWallet.canSign" item-end text-end>
+              <div class="select-all" *ngIf="txpsByWallet.multipleSignAvailable && !walletIdSelectedToSign">
+                <div class="multi-sign close" (click)="signMultipleProposals(txpsByWallet)">
+                  <ion-icon name="ios-list-outline"></ion-icon>
+                </div>
+              </div>
+              <div class="select-all" *ngIf="walletIdSelectedToSign && txpsByWallet.walletId == walletIdSelectedToSign">
+                <div class="multi-sign" (click)="selectAll(txpsByWallet)">
+                  <ion-icon name="ios-done-all"></ion-icon>
+                </div>
+                <div class="multi-sign close" (click)="signMultipleProposals(txpsByWallet)">
+                  <ion-icon name="ios-close"></ion-icon>
+                </div>
+              </div>
+            </ion-note>
+            <ion-note *ngIf="txpsByStatus.type != 'pending'" item-end text-end>
+              <div class="circle-status" [ngClass]="{'balanced': txpsByStatus.type == 'accepted', 'assertive': txpsByStatus.type == 'rejected'}"></div>
+            </ion-note>
+          </ion-item>
+          <div class="txp-container" *ngFor="let txp of txpsByWallet.txps">
+            <ion-checkbox mode="ios" (click)="txpSelectionChange(txp)" *ngIf="walletIdSelectedToSign && txp.walletId == walletIdSelectedToSign && txp.statusForUs === 'pending'" [checked]="txp.checked" [disabled]="txp.statusForUs == 'accepted' || txp.statusForUs == 'rejected'"></ion-checkbox>
+            <page-txp [ngClass]="{'with-checkbox': walletIdSelectedToSign && txp.walletId == walletIdSelectedToSign && txp.statusForUs === 'pending'}" [tx]="txp" [addressbook]="addressbook" [noOpenModal]="walletIdSelectedToSign && txp.walletId == walletIdSelectedToSign && txp.statusForUs === 'pending'"></page-txp>
+          </div>
+        </div>
+      </div>
+    </ion-list>
+  </div>
+</wide-header-page>
+<ion-footer>
+  <page-slide-to-accept #slideButton *ngIf="isCordova && txpsToSign[0]" [buttonText]="buttonText" (slideDone)="sign()"></page-slide-to-accept>
+  <ion-toolbar *ngIf="!isCordova && txpsToSign[0]">
+    <button ion-button full class="button-footer" (click)="sign()">{{buttonText}}</button>
+  </ion-toolbar>
+</ion-footer>

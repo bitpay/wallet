@@ -1,41 +1,58 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
-import { Logger } from '../../providers/logger/logger';
 
 // pages
-import { CreateWalletPage } from "./create-wallet/create-wallet";
-import { ImportWalletPage } from "./import-wallet/import-wallet";
-import { JoinWalletPage } from "./join-wallet/join-wallet";
+import { AddWalletPage } from '../add-wallet/add-wallet';
+import { ImportWalletPage } from '../add/import-wallet/import-wallet';
+import { SelectCurrencyPage } from '../add/select-currency/select-currency';
+
+// providers
+import { Logger } from '../../providers';
 
 @Component({
   selector: 'page-add',
   templateUrl: 'add.html'
 })
 export class AddPage {
-
-  private coin: string;
+  public keyId: string;
+  public isZeroState: boolean;
 
   constructor(
     private navCtrl: NavController,
-    private navParams: NavParams,
-    private logger: Logger
-  ) {
-    this.coin = this.navParams.data.coin ? this.navParams.data.coin : 'btc';
-  }
+    private logger: Logger,
+    private navParams: NavParams
+  ) {}
 
   ionViewDidLoad() {
-    this.logger.info('ionViewDidLoad AddPage');
+    this.logger.info('Loaded: AddPage');
+    this.keyId = this.navParams.data.keyId;
+    this.isZeroState = this.navParams.data.isZeroState;
   }
 
-  public goToCreateWallet(isShared: boolean): void {
-    this.navCtrl.push(CreateWalletPage, { isShared, coin: this.coin });
-  }
-
-  public goToJoinWallet(): void {
-    this.navCtrl.push(JoinWalletPage, { coin: this.coin });
+  public goToAddWalletPage(isShared?: boolean, isJoin?: boolean): void {
+    if (this.navParams.data.isMultipleSeed) {
+      this.navCtrl.push(AddWalletPage, {
+        isCreate: true,
+        isMultipleSeed: true,
+        isShared,
+        url: this.navParams.data.url
+      });
+    } else {
+      this.navCtrl.push(SelectCurrencyPage, {
+        isShared,
+        isJoin,
+        isZeroState: this.isZeroState && !isShared,
+        keyId: this.keyId,
+        url: this.navParams.data.url
+      });
+    }
   }
 
   public goToImportWallet(): void {
-    this.navCtrl.push(ImportWalletPage, { coin: this.coin });
+    this.navCtrl.push(ImportWalletPage);
+  }
+
+  public goBack(): void {
+    this.navCtrl.pop();
   }
 }

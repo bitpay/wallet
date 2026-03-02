@@ -1,0 +1,66 @@
+miner-fee-warning {
+  action-sheet {
+    .action-sheet-bottom {
+      border-radius: 0px;
+      display: grid;
+      padding-top: 3rem; // Fix iOS 10.3
+      padding-top: calc(4px + env(safe-area-inset-top));
+      .miner-fee {
+        height: 100%;
+        display: grid;
+        grid-template-rows: 70% 30%;
+        .miner-fee-info {
+          height: max-content;
+          display: grid;
+          grid-template-rows: 50% 50%;
+          justify-content: center;
+          align-self: center;
+          .img-container {
+            align-self: end;
+            justify-self: center;
+            img {
+              margin: auto;
+              max-height: 23rem;
+              @media (max-width: 350px) {
+                max-height: 10rem;
+              }
+            }
+          }
+          .info {
+            align-self: start;
+            display: grid;
+            grid-template-rows: max-content max-content;
+            height: 100%;
+            padding: 4rem;
+            .title {
+              color: #060606;
+              font-weight: 600;
+              align-items: center;
+              text-align: center;
+              line-height: 34px;
+              @media (max-width: 350px) {
+                font-size: 17px;
+                line-height: 20px;
+              }
+            }
+            .text {
+              font-size: 16px;
+              text-align: center;
+              color: rgb(46, 46, 46);
+              font-weight: 300;
+              padding-top: 15px;
+              line-height: 25px;
+              @media (max-width: 350px) {
+                font-size: 12px;
+                line-height: 15px;
+              }
+            }
+          }
+        }
+      }
+      .footer {
+        align-self: end;
+      }
+    }
+  }
+}

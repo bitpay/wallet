@@ -1,38 +1,46 @@
-<ion-header no-border>
-  <ion-navbar hideBackButton="true"></ion-navbar>
-</ion-header>
-<ion-content no-bounce>
-  <h3 *ngIf="resume" class="title" translate>Quick review!</h3>
-  <h3 *ngIf="!resume" class="title" translate>Almost done! Let's review.</h3>
-  <p translate class="top-description">Bitcoin is different &ndash; it cannot be safely held with a bank or web service.</p>
-  <ion-list class="checkbox-list" no-lines text-wrap>
-    <ion-item>
-      <ion-label>
-        {{'I understand that my funds are held securely on this device, not by a company' | translate}}.
-      </ion-label>
-      <ion-checkbox [(ngModel)]="accepted.first"></ion-checkbox>
-    </ion-item>
-    <ion-item>
-      <ion-label>
-        {{'I understand that if this app is moved to another device or deleted, my bitcoin can only be recovered with the backup phrase' | translate}}.
-      </ion-label>
-      <ion-checkbox [(ngModel)]="accepted.second"></ion-checkbox>
-    </ion-item>
-  </ion-list>
-</ion-content>
-<ion-footer>
-  <div class="checkbox-list">
-    <div *ngIf="accepted.first && accepted.second">
-      <ion-item no-lines text-wrap>
-        <ion-label>
-          {{'I have read, understood, and agree to the Terms of Use' | translate}}.
-        </ion-label>
-        <ion-checkbox [(ngModel)]="terms.accepted"></ion-checkbox>
-      </ion-item>
-      <a (click)="openDisclaimer()" translate>Terms of Use</a>
-    </div>
-    <button ion-button class="button-standard" [disabled]="!accepted.first || !accepted.second || !terms.accepted" (click)="confirm()">
-      {{'Confirm &amp; Finish' | translate}}
+<wide-header-page title="{{ 'Two things you should know' | translate }}" hideBackButton="true">
+  <div page-content class="disclaimer-wrapper">
+    <ion-list class="checkbox-list" no-lines>
+      <div class="term-container" (click)="acceptTerm('first')">
+        <ion-item>
+          <ion-checkbox [(ngModel)]="accepted.first"></ion-checkbox>
+        </ion-item>
+        <div class="term-title">
+          {{'Your funds are in your custody' | translate}}
+        </div>
+        <div class="term-note">
+          {{'I understand that my funds are held and controlled securely on this device, not by a company.' | translate}}
+        </div>
+      </div>
+      <div class="term-container" (click)="acceptTerm('second')" *ngIf="accepted.first">
+        <ion-item>
+          <ion-checkbox [(ngModel)]="accepted.second"></ion-checkbox>
+        </ion-item>
+        <div class="term-title">
+          {{'{appName} cannot recover your funds for you if you lose your recovery key' | translate:{appName: appName} }}
+        </div>
+        <div class="term-note">
+          {{'I understand that if this app is moved to another device or deleted, my crypto funds can only be recovered with my recovery phrase.' | translate}}
+        </div>
+      </div>
+    </ion-list>
+  </div>
+  <div footer-content *ngIf="accepted.first && accepted.second" class="disclaimer-footer">
+    <ion-list class="checkbox-list checkbox-list-terms" no-lines>
+      <div class="term-container bg-none" (click)="selectTerms()">
+        <ion-item>
+          <ion-checkbox [(ngModel)]="terms.accepted"></ion-checkbox>
+        </ion-item>
+        <div class="term-note">
+          {{'I have read, understood, and agree with the Terms of Use.' | translate}}
+        </div>
+      </div>
+    </ion-list>
+    <button ion-button clear color="primary" class="button-standard no-margin-bottom" (click)="openDisclaimer()">
+      {{'View complete Terms of Use' | translate}}
+    </button>
+    <button ion-button class="button-standard" (click)="confirm()" [disabled]="!accepted.first || !accepted.second || !terms.accepted">
+      {{'Confirm & Finish' | translate}}
     </button>
   </div>
-</ion-footer>
+</wide-header-page>

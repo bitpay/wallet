@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="260px" height="252px" viewBox="0 0 260 252" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>D9E2B4A8-AD31-44BC-98A2-1061A503DCE6</title>
+    <defs>
+        <linearGradient x1="50.0191058%" y1="12.7027027%" x2="50.0191058%" y2="84.4490644%" id="linearGradient-1">
+            <stop stop-color="#3753E3" offset="0%"></stop>
+            <stop stop-color="#474CF2" offset="47%"></stop>
+            <stop stop-color="#5447FF" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="-6319.33512%" y1="12.7000624%" x2="-6319.33512%" y2="84.4315111%" id="linearGradient-2">
+            <stop stop-color="#3753E3" offset="0%"></stop>
+            <stop stop-color="#474CF2" offset="47%"></stop>
+            <stop stop-color="#5447FF" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="-5108.10088%" y1="12.7000624%" x2="-5108.10088%" y2="84.4315111%" id="linearGradient-3">
+            <stop stop-color="#3753E3" offset="0%"></stop>
+            <stop stop-color="#474CF2" offset="47%"></stop>
+            <stop stop-color="#5447FF" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="-6315.62261%" y1="12.7208481%" x2="-6315.62261%" y2="84.4315111%" id="linearGradient-4">
+            <stop stop-color="#3753E3" offset="0%"></stop>
+            <stop stop-color="#474CF2" offset="47%"></stop>
+            <stop stop-color="#5447FF" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="-5106.80168%" y1="12.7208481%" x2="-5106.80168%" y2="84.4315111%" id="linearGradient-5">
+            <stop stop-color="#3753E3" offset="0%"></stop>
+            <stop stop-color="#474CF2" offset="47%"></stop>
+            <stop stop-color="#5447FF" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="Home" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="High-Network-fees" transform="translate(-77.000000, -87.000000)">
+            <g id="Group" transform="translate(77.000000, 87.000000)">
+                <polygon id="Path" fill="#0E1744" fill-rule="nonzero" points="97.7526066 145.851176 97.7526066 105.617647 130 124.801765 130 165.035294"></polygon>
+                <polygon id="Path" fill="url(#linearGradient-1)" fill-rule="nonzero" points="162.247393 145.851176 162.247393 105.617647 130 124.801765 130 165.035294"></polygon>
+                <polygon id="Path" fill="#5371EF" fill-rule="nonzero" points="97.7526066 105.605294 130 86.2111765 162.247393 105.605294 130 124.789412"></polygon>
+                <polygon id="Path" fill="#0E1744" fill-rule="nonzero" points="195.505213 59.6523529 195.505213 19.4064706 227.752607 38.5905882 227.752607 78.8364706"></polygon>
+                <polygon id="Path" fill="url(#linearGradient-2)" fill-rule="nonzero" points="260 59.6523529 260 19.4064706 227.752607 38.5905882 227.752607 78.8364706"></polygon>
+                <polygon id="Path" fill="#5371EF" fill-rule="nonzero" points="195.505213 19.3941176 227.752607 -7.10542736e-15 260 19.3941176 227.752607 38.5782353"></polygon>
+                <polygon id="Path" fill="#0E1744" fill-rule="nonzero" points="0.209478673 59.6523529 0.209478673 19.4064706 32.456872 38.5905882 32.456872 78.8364706"></polygon>
+                <polygon id="Path" fill="url(#linearGradient-3)" fill-rule="nonzero" points="64.7042654 59.6523529 64.7042654 19.4064706 32.456872 38.5905882 32.456872 78.8364706"></polygon>
+                <polygon id="Path" fill="#5371EF" fill-rule="nonzero" points="0.209478673 19.3941176 32.456872 -7.10542736e-15 64.7042654 19.3941176 32.456872 38.5782353"></polygon>
+                <polyline id="Path" fill="#0E1744" fill-rule="nonzero" points="227.543128 251.246471 195.295735 232.062353 195.295735 191.816471 227.543128 211.000588 227.543128 251.246471"></polyline>
+                <polyline id="Path" fill="url(#linearGradient-4)" fill-rule="nonzero" points="227.543128 251.246471 259.802844 232.062353 259.802844 191.816471 227.543128 211.000588 227.543128 251.246471"></polyline>
+                <polygon id="Path" fill="#5371EF" fill-rule="nonzero" points="195.295735 191.804118 227.543128 172.41 259.802844 191.804118 227.543128 211.000588"></polygon>
+                <polyline id="Path" fill="#0E1744" fill-rule="nonzero" points="32.2473934 251.246471 1.0658141e-14 232.062353 1.0658141e-14 191.816471 32.2473934 211.000588 32.2473934 251.246471"></polyline>
+                <polyline id="Path" fill="url(#linearGradient-5)" fill-rule="nonzero" points="32.2473934 251.246471 64.4947867 232.062353 64.4947867 191.816471 32.2473934 211.000588 32.2473934 251.246471"></polyline>
+                <polygon id="Path" fill="#5371EF" fill-rule="nonzero" points="2.13162821e-14 191.804118 32.2473934 172.41 64.4947867 191.804118 32.2473934 211.000588"></polygon>
+                <line x1="83.2123223" y1="212.235882" x2="177.416114" y2="212.235882" id="Path" stroke="#A2B1F3" stroke-width="7" stroke-linecap="round"></line>
+                <line x1="83.0028436" y1="39.4182353" x2="177.206635" y2="39.4182353" id="Path" stroke="#A2B1F3" stroke-width="7" stroke-linecap="round"></line>
+                <line x1="227.752607" y1="155.955882" x2="227.752607" y2="95.1547059" id="Path" stroke="#A2B1F3" stroke-width="7" stroke-linecap="round"></line>
+                <line x1="32.2473934" y1="156.091765" x2="32.2473934" y2="95.2905882" id="Path" stroke="#A2B1F3" stroke-width="7" stroke-linecap="round"></line>
+                <line x1="62.3260664" y1="177.635294" x2="94.092891" y2="158.908235" id="Path" stroke="#A2B1F3" stroke-width="7" stroke-linecap="round"></line>
+                <line x1="197.908057" y1="177.721765" x2="165.672986" y2="158.821765" id="Path" stroke="#A2B1F3" stroke-width="7" stroke-linecap="round"></line>
+                <line x1="165.907109" y1="92.3382353" x2="197.673934" y2="73.6235294" id="Path" stroke="#A2B1F3" stroke-width="7" stroke-linecap="round"></line>
+                <line x1="94.3270142" y1="92.4247059" x2="62.0919431" y2="73.5247059" id="Path" stroke="#A2B1F3" stroke-width="7" stroke-linecap="round"></line>
+            </g>
+        </g>
+    </g>
+</svg>

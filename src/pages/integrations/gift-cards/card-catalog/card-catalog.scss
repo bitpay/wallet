@@ -1,0 +1,162 @@
+card-catalog-page {
+  .wide-header__title.toolbar {
+    padding-bottom: 10px;
+    padding-top: 40px;
+  }
+
+  .wrapper {
+    height: 100vh;
+  }
+
+  ion-slides.curation {
+    ion-slide {
+      position: relative;
+      z-index: 1;
+      &.swiper-slide-active {
+        z-index: 2;
+      }
+
+      &:not(:first-child) {
+        .slide-zoom {
+          min-height: 261px;
+        }
+      }
+
+      &:not(:last-child) {
+        card-list-item {
+          button {
+            width: calc(100% - 23px);
+          }
+        }
+      }
+
+      card-list-item {
+        button {
+          width: calc(100% - 8px);
+        }
+      }
+    }
+  }
+
+  .category-header {
+    padding: 10px 20px;
+    padding-top: 15px;
+    font-weight: 600;
+    font-weight: 16px;
+
+    &__name {
+      color: #9ba3ae;
+      flex-grow: 1;
+    }
+
+    &__button {
+      color: #4f6ef7;
+    }
+
+    display: flex;
+  }
+
+  .category-item {
+    display: flex;
+    font-size: 16px;
+    padding-left: 21px;
+
+    ion-icon {
+      @include center;
+      margin-right: 18px;
+      transform: translateY(-1px);
+    }
+
+    &.item-block {
+      .item-inner {
+        padding-top: 15px;
+        padding-bottom: 15px;
+        border-bottom: 0;
+      }
+    }
+
+    &:after {
+      content: '';
+      height: 1px;
+      background: rgba(0, 0, 0, 0.05);
+      bottom: 0;
+      right: 0;
+      left: 0;
+      position: absolute;
+      margin: auto 20px;
+    }
+  }
+
+  .category-divider {
+    background-color: rgba(0, 0, 0, 0.05);
+    height: 1px;
+    width: 90%;
+    margin: 20px auto;
+  }
+
+  .settings-list {
+    position: relative;
+    z-index: 0;
+    padding-bottom: 50px;
+
+    ion-item-divider.item {
+      border-bottom: 0;
+      padding-bottom: 10px;
+      border-bottom: 0.55px solid #f4f4f4;
+    }
+  }
+
+  .no-results {
+    height: calc(100% - 270px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+
+    &.has-keyboard {
+      height: calc(100% - 600px);
+      min-height: 100px;
+    }
+
+    &__title {
+      font-size: 17px;
+      color: rgba(black, 0.5);
+      font-weight: 500;
+    }
+
+    &__subtitle {
+      font-size: 15px;
+      color: rgba(black, 0.3);
+      margin-top: 7px;
+    }
+  }
+
+  .discount {
+    &-prefix {
+      display: none;
+
+      @media (min-width: 350px) {
+        display: inline;
+      }
+    }
+
+    &-suffix {
+      display: inline;
+
+      @media (min-width: 350px) {
+        display: none;
+      }
+    }
+  }
+
+  ion-note.discount {
+    font-weight: 500;
+  }
+}
+
+.section-divider {
+  background-color: rgba(0, 0, 0, 0.05);
+  height: 1px;
+  width: 90%;
+  margin: 20px auto;
+}

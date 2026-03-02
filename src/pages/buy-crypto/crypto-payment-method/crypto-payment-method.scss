@@ -1,0 +1,26 @@
+page-crypto-payment-method {
+  ion-label {
+    img {
+      vertical-align: middle;
+      width: 55px;
+      max-height: 16px;
+    }
+  }
+  .bp-list {
+    .main-label {
+      font-size: 18px;
+    }
+    .secondary-label {
+      padding-top: 12px;
+      font-size: 12px;
+    }
+    ion-icon.item-img.icon {
+      &.icon-md.item-icon,
+      &.icon-ios.item-icon {
+        img {
+          width: 48px;
+        }
+      }
+    }
+  }
+}

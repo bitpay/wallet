@@ -1,0 +1,123 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title class="bp-title">
+      {{'Order Details' | translate}}
+    </ion-title>
+    <ion-buttons left>
+      <button class="close-container disable-hover" (click)="close()" ion-button>
+        <ion-icon ios="md-close" md="md-close"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content no-bounce>
+  <div class="header-modal" *ngIf="paymentRequest">
+    <div class="title-modal" translate>
+      Approximate receiving amount
+    </div>
+
+    <div class="subtitle-modal">
+      <img class="icon-service" src="assets/img/simplex/icon-simplex.png" alt="Simplex" width="40">
+      {{ paymentRequest.crypto_amount | number:'1.0-6'}}
+      <span class="amount-unit">{{ paymentRequest.coin }}</span>
+    </div>
+  </div>
+
+  <ion-list class="bp-list" *ngIf="paymentRequest">
+    <ion-item-divider></ion-item-divider>
+    <ion-item *ngIf="paymentRequest.fiat_base_amount">
+      {{'Approximate receiving fiat amount' | translate}}
+      <ion-note item-end>
+        <span>
+          {{ paymentRequest.fiat_base_amount }} {{ paymentRequest.fiat_total_amount_currency }}
+        </span>
+      </ion-note>
+    </ion-item>
+
+    <label-tip type="warn" header="no-header">
+      <div label-tip-body>
+        <div translate>The final crypto amount you receive when the transaction is complete may differ because it is based on Simplex's exchange rate.</div>
+      </div>
+    </label-tip>
+
+    <ion-item>
+      {{'Paying' | translate}}
+      <ion-note item-end>
+        <span *ngIf="!paymentRequest.fiat_total_amount">...</span>
+        <span *ngIf="paymentRequest.fiat_total_amount">
+          {{ paymentRequest.fiat_total_amount }} {{ paymentRequest.fiat_total_amount_currency }}
+        </span>
+      </ion-note>
+    </ion-item>
+
+    <ion-item>
+      {{'Created' | translate}}
+      <ion-note item-end>
+        <span *ngIf="!paymentRequest.created_on">...</span>
+        <span *ngIf="paymentRequest.created_on">
+          {{ paymentRequest.created_on | amDateFormat:'MM/DD/YYYY hh:mm a'}}
+        </span>
+      </ion-note>
+    </ion-item>
+
+    <ion-item *ngIf="paymentRequest.status == 'success' || paymentRequest.status == 'failed'">
+      {{'Status' | translate}}
+      <ion-note item-end>
+        <span class="assertive" *ngIf="paymentRequest.status == 'failed'" translate>Payment request rejected</span>
+        <span class="balanced" *ngIf="paymentRequest.status == 'success'" translate>Payment request approved</span>
+      </ion-note>
+    </ion-item>
+
+    <label-tip type="info" header="no-header" *ngIf="paymentRequest.status == 'paymentRequestSent' || paymentRequest.status == 'success'">
+      <div label-tip-body>
+        <span translate>If you have successfully completed the entire payment process, remember that receiving crypto usually takes up to 1 hour.</span>
+        <br>
+        <br>
+        <a class="pointer" (click)="openExternalLink('https://payment-status.simplex.com/#/')" translate>What is the status of my payment?</a>
+      </div>
+    </label-tip>
+
+    <ion-item>
+      {{'Deposit address' | translate}}
+      <div padding-top>
+        <ion-note text-wrap>
+          <span *ngIf="!paymentRequest.address">...</span>
+          <span *ngIf="paymentRequest.address" copy-to-clipboard="{{paymentRequest.address}}">
+            {{ paymentRequest.address }}
+          </span>
+        </ion-note>
+      </div>
+    </ion-item>
+
+    <ion-item>
+      {{'Payment ID' | translate}}
+      <div padding-top>
+        <ion-note text-wrap>
+          <span *ngIf="!paymentRequest.payment_id">...</span>
+          <span *ngIf="paymentRequest.payment_id" copy-to-clipboard="{{paymentRequest.payment_id}}">
+            {{ paymentRequest.payment_id }}
+          </span>
+        </ion-note>
+      </div>
+    </ion-item>
+
+    <ion-item class="no-border">
+      {{'Order ID' | translate}}
+      <div padding-top>
+        <ion-note text-wrap>
+          <span *ngIf="!paymentRequest.order_id">...</span>
+          <span *ngIf="paymentRequest.order_id" copy-to-clipboard="{{paymentRequest.order_id}}">
+            {{ paymentRequest.order_id }}
+          </span>
+        </ion-note>
+      </div>
+    </ion-item>
+
+    <ion-item-divider></ion-item-divider>
+    <button class="assertive" ion-item detail-none text-center (click)="remove()">
+      {{'Remove' | translate}}
+    </button>
+
+  </ion-list>
+</ion-content>

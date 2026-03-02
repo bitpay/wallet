@@ -1,0 +1,65 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title class="bp-title">Add Token</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+
+  <button class="linked-wallet" ion-item (click)="showPairedWalletSelector()" detail-none>
+    <ion-label>
+      <div class="summary-item">
+        <span translate>Linked to</span>
+      </div>
+    </ion-label>
+
+    <ion-note item-end>
+      <ion-row align-items-center class="wallet" *ngIf="pairedWallet">
+        <ion-col>
+          <coin-icon [coin]="pairedWallet.coin" [network]="pairedWallet.network"></coin-icon>
+        </ion-col>
+
+        <ion-col>
+          <span class="note-container ellipsis">{{pairedWallet.name}}</span>
+        </ion-col>
+      </ion-row>
+
+    </ion-note>
+  </button>
+
+  <ion-item class="search-header">
+    <button ion-button item-end clear (click)="addCustomTokenModal()">
+      {{'Add Custom Token' | translate }}
+    </button>
+  </ion-item>
+  
+<div class="send-header-wrapper">
+  <ion-item class="search-wrapper">
+      <ion-input placeholder="{{'Search tokens' | translate}}" [(ngModel)]="searchQuery" (ngModelChange)="updateSearchInput(searchQuery)"></ion-input>
+      <ion-icon *ngIf="searchQuery" item-end class="backspace-icon" name="backspace" (click)="cleanSearch()"></ion-icon>
+    </ion-item>
+  </div>
+  <ion-list class="settings-list bp-list">
+    <div *ngFor="let token of tokenSearchResults; let i = index">
+      <div class="list-subtitle" *ngIf="popularTokensPosition == i" translate>Popular Tokens</div>
+      <div class="list-subtitle" *ngIf="otherTokensPosition == i" translate>Other Tokens</div>
+      <button class="list-button" (click)="openConfirmModal(token)" ion-item>
+        <ion-icon *ngIf="currencyProvider.COIN[token.symbol | uppercase]" class="item-icon" item-start>
+          <img src="assets/img/currencies/{{token.symbol.toLowerCase()}}.svg" />
+        </ion-icon>
+        <ion-icon *ngIf="!currencyProvider.COIN[token.symbol | uppercase]" class="item-icon" item-start>
+          <img src="{{token.logoURI}}" (error)="currencyProvider.defaultLogoURI(img)" #img/>
+        </ion-icon>
+        <div class="item-title">{{ token.name }} ({{ token.symbol }})</div>
+      </button>
+    </div>
+    <div class="token-count" *ngIf="tokenListShowMore">
+      <span>{{filteredTokens.length - tokenSearchResults.length}} more</span>
+      &nbsp;
+      <ion-icon name="arrow-down"></ion-icon>
+    </div>
+  </ion-list>
+  <ion-infinite-scroll *ngIf="tokenListShowMore" (ionInfinite)="moreSearchResults($event)">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+</ion-content>

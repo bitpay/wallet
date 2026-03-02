@@ -1,4 +1,7 @@
 page-session-log {
+  .info-color {
+    color: color($colors, info);
+  }
   .log-entry {
     font-size: 12px;
     line-height: 18px;
@@ -10,21 +13,10 @@ page-session-log {
   .log-level {
     font-weight: bold;
   }
-  .energized {
-    color: color($colors, warning);
-  }
-  .dark {
-    color: color($colors, dark);
-  }
-  .positive {
-    color: color($colors, primary);
-  }
-  .assertive {
-    color: color($colors,danger);
-  }
   .filter-container {
-    padding: 20px;
+    padding: 0 20px;
     .labels {
+      color: black;
       display: flex;
       justify-content: space-between;
       .info-label {

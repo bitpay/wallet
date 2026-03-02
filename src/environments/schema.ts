@@ -3,10 +3,7 @@
  * the same way.
  */
 export interface EnvironmentSchema {
-  name: 'production' | 'development' | 'e2e';
+  name: 'production' | 'development';
   enableAnimations: boolean;
-  ratesAPI: {
-    btc: string;
-    bch: string;
-  };
+  activateScanner: boolean;
 }

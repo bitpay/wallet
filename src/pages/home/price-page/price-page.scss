@@ -1,0 +1,61 @@
+price-page {
+  .card-title {
+    font-weight: 700;
+  }
+  .total-amount-container {
+    margin: 3rem 0 1rem 3.7rem;
+    .section-header {
+      margin: 0;
+    }
+    .total-amount-value {
+      transition: opacity 350ms ease 0s;
+      color: #000000;
+      font-size: 28px;
+      line-height: 56px;
+      font-weight: 500;
+    }
+    .average-container {
+      text-align: center;
+      height: 21px;
+      width: 80px;
+    }
+    .negative-avg {
+      color: #cf2f32;
+      background-color: rgba(207, 47, 60, 0.1);
+      border-radius: 50vh;
+    }
+    .possitive-avg {
+      color: #2fcfa4;
+      background-color: rgba(47, 207, 164, 0.1);
+      border-radius: 50vh;
+    }
+    .average {
+      font-size: 14px;
+      line-height: 19px;
+      height: 21px;
+      font-weight: 500;
+    }
+    .percent {
+      margin-left: 0.3rem;
+      background-color: transparent;
+      transition: opacity 350ms ease 0s;
+      font-size: 20px;
+      line-height: 56px;
+      font-weight: 500;
+    }
+  }
+  .labels {
+    display: flex;
+    justify-content: space-evenly;
+    font-weight: 500;
+    padding: 1rem 2rem 1rem 2rem;
+    .active {
+      color: #4f6ef7;
+      background-color: rgba(79, 110, 247, 0.2);
+    }
+    .inactive {
+      background-color: transparent;
+      color: grey;
+    }
+  }
+}

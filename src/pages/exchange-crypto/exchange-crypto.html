@@ -1,0 +1,130 @@
+<wide-header-page title="{{'Swap Crypto' | translate}}">
+  <ion-buttons right *ngIf="changellySwapTxs?.length || oneInchSwapTxs?.length">
+    <button class="history-btn" clear wide-header-bar-button (click)="goToExchangeHistory()" ion-button>
+      <ion-icon>
+        <img src="assets/img/icon-history.svg" />
+      </ion-icon>
+    </button>
+  </ion-buttons>
+  <div page-content>
+    <ion-list class="bp-list">
+      <div class="exchange-container">
+        <div class="item-label card-title" translate>From</div>
+        <ion-row class="row-selector" align-items-center *ngIf="!fromWalletSelected" (click)="showFromWallets()">
+          <ion-col>
+            <button ion-button class="select-wallet-button">
+              <span>{{'Select Wallet' | translate}}</span>
+              <ion-icon *ngIf="!isOpenSelectorFrom" name="ios-arrow-down-outline"></ion-icon>
+              <ion-icon *ngIf="isOpenSelectorFrom" name="ios-arrow-up-outline"></ion-icon>
+            </button>
+          </ion-col>
+        </ion-row>
+  
+        <ion-row class="row-selector" align-items-center *ngIf="fromWalletSelected">
+          <ion-col>
+            <button ion-button class="select-wallet-button selected" (click)="showFromWallets()">
+              <ion-icon *ngIf="currencyProvider.COIN[fromWalletSelected.coin | uppercase]" class="item-img" item-start>
+                <img src="assets/img/currencies/{{fromWalletSelected.coin.toLowerCase()}}.svg" />
+              </ion-icon>
+              <ion-icon *ngIf="!currencyProvider.COIN[fromWalletSelected.coin | uppercase]" class="item-img" item-start>
+                <img [src]="currencyProvider.getLogoURI(fromWalletSelected.coin.toLowerCase())" (error)="currencyProvider.defaultLogoURI(img)" #img/>
+              </ion-icon>
+              <span class="note-container ellipsis">{{fromWalletSelected.name}}</span>
+              <ion-icon *ngIf="!isOpenSelectorFrom" name="ios-arrow-down-outline"></ion-icon>
+              <ion-icon *ngIf="isOpenSelectorFrom" name="ios-arrow-up-outline"></ion-icon>
+            </button>
+          </ion-col>
+
+          <ion-col col-5 class="amount">
+            <div class="amount-container" *ngIf="!amountFrom && !useSendMax" (click)="openAmountModal()">0.00</div>
+            <div class="amount-container" [ngClass]="getAmountConteinerClass(decimalPipe.transform(amountFrom, '1.0-8').length)" *ngIf="amountFrom && !useSendMax" (click)="openAmountModal()">{{amountFrom | number:'1.0-8'}}</div>
+            <div class="amount-container send-max" *ngIf="useSendMax" (click)="openAmountModal()" translate>Maximum Amount</div>
+          </ion-col>
+        </ion-row>
+      </div>
+
+      <label-tip *ngIf="showPendingApprove" type="info" [async]="true">
+        <div label-tip-title translate>Approval is confirming</div>
+        <div label-tip-body>
+          <div translate>The approval transaction must be confirmed before this token can be used in a swap. This should only take a moment.</div>
+          <a *ngIf="approveTxId" class="label-tip-link" (click)="viewOnBlockchain()" translate>View on blockchain</a>
+        </div>
+      </label-tip>
+
+      <div class="arrow-divider">
+        <img src="assets/img/exchange-crypto/down-arrow.svg" width="40">
+      </div>
+
+      <div class="exchange-container">
+        <div class="item-label card-title" translate>To</div>
+        <ion-row class="row-selector" align-items-center *ngIf="!toWalletSelected" (click)="showToWallets()">
+          <ion-col>
+            <button ion-button class="select-wallet-button" [disabled]="!fromWalletSelected">
+              <span>{{'Select Wallet' | translate}}</span>
+              <ion-icon *ngIf="!isOpenSelectorTo" name="ios-arrow-down-outline"></ion-icon>
+              <ion-icon *ngIf="isOpenSelectorTo" name="ios-arrow-up-outline"></ion-icon>
+            </button>
+          </ion-col>
+        </ion-row>
+  
+        <ion-row class="row-selector fix-padding" align-items-center *ngIf="toWalletSelected">
+          <ion-col>
+            <button ion-button class="select-wallet-button selected" (click)="showToWallets()">
+              <ion-icon *ngIf="(!toToken || !toToken.isCustomToken) && currencyProvider.COIN[toWalletSelected.coin | uppercase]" class="item-img" item-start>
+                <img src="assets/img/currencies/{{toWalletSelected.coin.toLowerCase()}}.svg" />
+              </ion-icon>
+              <ion-icon *ngIf="(!toToken || !toToken.isCustomToken) && !currencyProvider.COIN[toWalletSelected.coin | uppercase]" class="item-img" item-start>
+                <img [src]="currencyProvider.getLogoURI(toWalletSelected.coin.toLowerCase())" (error)="currencyProvider.defaultLogoURI(img)" #img/>
+              </ion-icon>
+              <ion-icon *ngIf="toToken && toToken.isCustomToken" class="item-img" item-start>
+                <img width="20" [src]="toToken.logoURI" (error)="currencyProvider.defaultLogoURI(img)" #img>
+              </ion-icon>
+              <span *ngIf="!toToken || !toToken.isCustomToken" class="note-container ellipsis">{{toWalletSelected.name}}</span>
+              <span *ngIf="toToken && toToken.isCustomToken" class="note-container ellipsis">{{toToken.name}}</span>
+              <ion-icon *ngIf="!isOpenSelectorTo && !toWalletSelectedByDefault" name="ios-arrow-down-outline"></ion-icon>
+              <ion-icon *ngIf="isOpenSelectorTo && !toWalletSelectedByDefault" name="ios-arrow-up-outline"></ion-icon>
+            </button>
+          </ion-col>
+  
+          <ion-col col-5 class="amount">
+            <ion-spinner name="crescent" *ngIf="loading && (toWalletSelected || toToken) && fromWalletSelected && amountFrom && !amountTo"></ion-spinner>
+            <div class="amount-container" *ngIf="!amountTo && !loading">0.00</div>
+            <div class="amount-container" [ngClass]="getAmountConteinerClass(decimalPipe.transform(amountTo, '1.0-6').length)" *ngIf="amountTo">{{amountTo | number:'1.0-6'}}</div>
+          </ion-col>
+        </ion-row>
+        <ion-row *ngIf="rate || (!rate && fromWalletSelected && toWalletSelected && amountTo && amountFrom > 0)" class="rate-container">
+          <div *ngIf="rate" class="rate">
+            <span>1 {{fromWalletSelected.coin.toUpperCase()}} ~ {{rate | number:'1.0-6'}} {{toToken ? toToken.symbol : toWalletSelected.coin.toUpperCase()}}</span>
+          </div>
+          <div *ngIf="!rate && fromWalletSelected && toWalletSelected && amountTo && amountFrom > 0" class="rate">
+            <span>1 {{fromWalletSelected.coin.toUpperCase()}} ~ {{(amountTo / amountFrom) | number:'1.0-6'}} {{toToken ? toToken.symbol : toWalletSelected.coin.toUpperCase()}}</span>
+          </div>
+        </ion-row>
+      </div>
+
+      <div *ngIf="exchangeToUse == '1inch'" class="item-label slippage-label" (click)="showSlippageInfo()">
+        <span translate>Slippage Tolerance</span>
+        <ion-icon name="md-help-circle"></ion-icon>
+      </div>
+      <div *ngIf="exchangeToUse == '1inch'" class="slippage-container">
+        <div *ngFor="let slippage of slippageValues" class="slippage-item" [ngClass]="{'selected': slippage.selected }" (click)=setSlippage(slippage.value)>{{ slippage.value }}%</div>
+      </div>
+    </ion-list>
+
+    <div class="bottom-buttons">
+      <button ion-button class="button-standard button-primary" *ngIf="showApproveButton" (click)="showExchangeApproveModal()">
+        <span>{{approveButtonText}}</span>
+      </button>
+
+      <button ion-button class="button-standard button-primary" (click)="goToExchangeCheckoutPage()" [disabled]="!canContinue()">
+        <span>{{'Continue' | translate}}</span>
+      </button>
+
+      <div class="partner">
+        <span *ngIf="exchangeToUse">{{'Powered by' | translate}}</span>
+        <img *ngIf="exchangeToUse == '1inch'" class="oneInch-img" src="assets/img/exchange-crypto/1inch-logo.svg" width="90">
+        <img *ngIf="exchangeToUse == 'changelly'" class="changelly-img" src="assets/img/exchange-crypto/changelly-vector-logo{{themeProvider.isDarkModeEnabled() ? '-dark' : ''}}.svg" width="120">
+      </div>
+    </div>
+  </div>
+</wide-header-page>

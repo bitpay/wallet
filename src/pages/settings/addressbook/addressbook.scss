@@ -1,10 +1,6 @@
 page-addressbook {
   .zero-state {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    margin-top: 30%;
     text-align: center;
     &-icon {
       display: inline-block;
@@ -25,22 +21,17 @@ page-addressbook {
     }
     &-description {
       font-size: 0.9em;
-      margin-top: 0;
-      margin-left: 2rem;
-      margin-right: 2rem;
-      margin-bottom: 120px;
-      opacity: .6;
-      max-width: 300px;
+      margin-bottom: 90px;
+      opacity: 0.6;
     }
   }
-  .contact {
-    ion-label {
-      display: flex;
-      align-items: center;
-      gravatar {
-        margin-right: 1.5rem;
-      }
+  .add-button {
+    font-size: 16px;
+    background: none;
+    color: black;
+    ion-icon {
+      vertical-align: text-bottom;
+      margin-left: 3px;
     }
   }
-
 }

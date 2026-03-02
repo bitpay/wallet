@@ -11,10 +11,13 @@ const templates = {
   'config-template.xml': '/',
   'ionic.config-template.json': '/',
   'manifest.ionic-template.json': 'src/',
-  '.desktop': 'desktop/',
-  'setup-win.iss': 'desktop/',
-  'build-macos.sh': 'desktop/'
+  'build-electron-template.js': 'electron/',
+  'afterPack-template.js': 'electron/'
 };
+
+if (process.env.NODE_ENV === 'dev') {
+  templates['index-dev-template.html'] = 'src/';
+}
 
 const jsonHeader = `{
   "//-": "Changes to this file will be overwritten.",
@@ -23,7 +26,7 @@ const jsonHeader = `{
 
 console.log(`Applying templates for: ${config.nameCase}`);
 
-Object.keys(templates).forEach(function(k) {
+Object.keys(templates).forEach(function (k) {
   const targetDir = templates[k];
   console.log(' #    ' + k + ' => ' + targetDir);
 
@@ -35,7 +38,7 @@ Object.keys(templates).forEach(function(k) {
     content = MakefileHeader + content;
   }
 
-  Object.keys(config).forEach(function(k) {
+  Object.keys(config).forEach(function (k) {
     if (k.indexOf('_') == 0) return;
 
     const r = new RegExp('\\*' + k.toUpperCase() + '\\*', 'g');
@@ -49,14 +52,32 @@ Object.keys(templates).forEach(function(k) {
     process.exit(1);
   }
 
-  if (k === 'config-template.xml') {
-    k = 'config.xml';
-  } else if (k === 'index-template.html') {
-    k = 'index.html';
-  } else if (k === 'ionic.config-template.json') {
-    k = 'ionic.config.json';
-  } else if (k === 'manifest.ionic-template.json') {
-    k = 'manifest.json';
+  switch (k) {
+    case 'config-template.xml': {
+      k = 'config.xml';
+      break;
+    }
+    case 'index-dev-template.html':
+    case 'index-template.html': {
+      k = 'index.html';
+      break;
+    }
+    case 'ionic.config-template.json': {
+      k = 'ionic.config.json';
+      break;
+    }
+    case 'manifest.ionic-template.json': {
+      k = 'manifest.json';
+      break;
+    }
+    case 'afterPack-template.js': {
+      k = 'afterPack.js';
+      break;
+    }
+    case 'build-electron-template.js': {
+      k = 'build-electron.js';
+      break;
+    }
   }
 
   if (!fs.existsSync('../' + targetDir)) {
@@ -66,7 +87,7 @@ Object.keys(templates).forEach(function(k) {
 });
 
 // Get latest commit hash
-const getCommitHash = function() {
+const getCommitHash = function () {
   //exec git command to get the hash of the current commit
   const hash = shell
     .exec('git rev-parse HEAD', {
@@ -115,15 +136,102 @@ function copyDir(from, to, noRemove) {
   fs.copySync(from, to);
 }
 
-// Push Notification
-fs.copySync(
-  configDir + '/GoogleService-Info.plist',
-  '../GoogleService-Info.plist'
-);
-fs.copySync(configDir + '/google-services.json', '../google-services.json');
+// Firebase configuration
+try {
+  const confName = configDir.toUpperCase();
+  const externalServices = confName + '_EXTERNAL_SERVICES';
+  console.log('Looking Firebase Config on ' + externalServices + '...');
+  let path = process.env[externalServices];
+  if (typeof path !== 'undefined') {
+    if (path.charAt(0) === '~') {
+      path = path.replace(/^\~/, process.env.HOME || process.env.USERPROFILE);
+    }
+    console.log('Found Firebase Path at: ' + path);
+    fs.copySync(
+      path + '/GoogleService-Info.plist',
+      '../GoogleService-Info.plist'
+    );
+    fs.copySync(path + '/google-services.json', '../google-services.json');
+    console.log('Copied Firebase Configuration.');
+  } else {
+    throw 'ENV variable not set for Firebase Config';
+  }
+} catch (err) {
+  console.log(err);
+}
+
+// XCode and Android build.json
+let buildJsonData;
+try {
+  const confName = configDir.toUpperCase();
+  const buildJson = confName + '_XCODE';
+  console.log('Looking for ' + buildJson + '...');
+  if (typeof process.env[buildJson] !== 'undefined') {
+    let location = process.env[buildJson];
+    if (location.charAt(0) === '~') {
+      location = location.replace(
+        /^\~/,
+        process.env.HOME || process.env.USERPROFILE
+      );
+    }
+    console.log('Found at: ' + location);
+    console.log('Copying ' + location + ' to assets.');
+    buildJsonData = fs.readFileSync(location, 'utf8');
+    fs.writeFileSync('../build.json', buildJsonData);
+  } else {
+    throw buildJson + ' environment variable not set.';
+  }
+} catch (err) {
+  console.log(err);
+  console.log('External services not configured.');
+}
+
+// Google Pay
+if (configDir == 'bitpay') {
+  let buildExtrasGradle;
+  try {
+    const googlePayPath = 'GOOGLEPAY_DIR';
+    console.log('Looking for ' + googlePayPath + '...');
+    if (typeof process.env[googlePayPath] !== 'undefined') {
+      let location = process.env[googlePayPath];
+      if (location.charAt(0) === '~') {
+        location = location.replace(
+          /^\~/,
+          process.env.HOME || process.env.USERPROFILE
+        );
+      }
+      console.log('Found at: ' + location);
+
+      let content = fs.readFileSync('build-extras-template.gradle', 'utf8');
+      content = content.replace('*GOOGLEPAY_DIR*', location);
+
+      console.log(
+        'Copying build-extras-template.gradle to ./build-extras.gradle'
+      );
+      fs.writeFileSync('../build-extras.gradle', content);
+      console.log('Google Pay is ready.');
+    } else {
+      fs.writeFileSync('../build-extras.gradle', '');
+      throw googlePayPath + ' environment variable not set.';
+    }
+  } catch (err) {
+    console.log(err);
+    console.log('Google Pay not configured.');
+  }
+}
+
+function copyDir(from, to, noRemove) {
+  console.log(`Copying dir '${from}' to '${to}'...`);
+  if (fs.existsSync(to) && !noRemove) fs.removeSync(to); // remove previous app directory
+  if (!fs.existsSync(from)) return; // nothing to do
+  fs.copySync(from, to);
+}
 
 copyDir(configDir + '/img', '../src/assets/img/app');
 copyDir(configDir + '/sass', '../src/theme', true);
+
+// Copy AppX Assets for Windows
+copyDir(`../resources/${config.name}/windows/appx`, '../build/appx', true);
 
 console.log(`Applying distribution-specific configuration to package.json...`);
 const package = require('../package.json');
@@ -132,12 +240,13 @@ package.name = config.packageName;
 package.description = config.description;
 package.version = config.version;
 package.title = config.userVisibleName;
-package.window.title = `${config.userVisibleName} – ${config.purposeLine}`;
 package.homepage = config.url;
 package.repository.url = config.gitHubRepoUrl;
 package.bugs.url = config.gitHubRepoBugs;
-package.cordova.plugins['cordova-plugin-customurlscheme'].SECOND_URL_SCHEME =
+package.cordova.plugins['cordova-plugin-customurlscheme-ng'].SECOND_URL_SCHEME =
   config.packageName;
+package.cordova.plugins['cordova-plugin-fcm-ng'].PAGE_LINK_DOMAIN =
+  config.dynamicLink;
 
 const stringifiedNpmStyle = JSON.stringify(package, null, 2) + '\n';
 fs.writeFileSync('../package.json', stringifiedNpmStyle);

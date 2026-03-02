@@ -1,0 +1,153 @@
+<wide-header-page title="{{'Token Swap Spender Approval' | translate}}" hideBackButton="true" [hasSlideButton]="isCordova">
+  <ion-buttons right>
+    <button clear wide-header-bar-button (click)="rejectApprove()" ion-button>
+      <span translate>Reject</span>
+    </button>
+  </ion-buttons>
+  <div page-content>
+    <ion-spinner name="crescent" *ngIf="loading"></ion-spinner>
+
+    <label-tip type="info" class="no-arrowhead">
+      <span label-tip-title translate>Give this site permission to access your token?</span>
+      <div label-tip-body>
+        <span translate>To complete the swap, you will need to allow the exchange ("1Inch") to spend your {{ fromToken.symbol }}.</span>
+        <br>
+        <span translate>By granting this permission, "1inch" will be able to withdraw your {{ fromToken.symbol }} and complete transactions for you.</span>
+      </div>
+    </label-tip>
+
+    <ion-list class="bp-list" *ngIf="!loading">
+      <ion-item class="sub-title">
+        <ion-label>
+          <div class="main-label">Details of the transaction</div>
+        </ion-label>
+      </ion-item>
+
+      <div class="line-divider"></div>
+
+      <ion-item ion-item>
+        <ion-label>
+          <div class="summary-item">
+            <span translate>Token</span>
+          </div>
+        </ion-label>
+
+        <ion-note item-end text-left>
+          <ion-row align-items-center class="wallet" *ngIf="fromWalletSelected">
+            <ion-col>
+              <coin-icon [coin]="fromWalletSelected.coin" [network]="fromWalletSelected.network"></coin-icon>
+            </ion-col>
+            <ion-col>
+              <span class="note-container ellipsis">{{fromWalletSelected.name}}</span>
+            </ion-col>
+          </ion-row>
+        </ion-note>
+      </ion-item>
+
+      <div class="line-divider"></div>
+
+      <ion-item *ngIf="siteUrl">
+        <ion-label>
+          <div class="summary-item">
+            <span>{{"Site URL" | translate}}</span>
+          </div>
+        </ion-label>
+        <ion-note item-end>
+          <div class="summary-item-detail">
+            <span>
+              {{ siteUrl }}
+            </span>
+          </div>
+        </ion-note>
+      </ion-item>
+
+      <div *ngIf="siteUrl" class="line-divider"></div>
+
+      <ion-item>
+        <ion-label>
+          <div class="summary-item">
+            <span>{{"Miner Fee" | translate}}</span>
+          </div>
+        </ion-label>
+        <ion-note item-end>
+          <div class="summary-item-detail">
+            <span *ngIf="ctxp">
+              {{ ctxp.fee | satToUnit: getChain(fromWalletSelected.coin) }}
+            </span>
+          </div>
+        </ion-note>
+      </ion-item>
+
+      <div *ngIf="fiatFee" class="amount-details">
+        <div class="secondary-note">
+          <span>
+            ~{{ fiatFee | number : '1.2-2' }} {{ alternativeIsoCode }}
+          </span>
+        </div>
+      </div>
+
+      <div class="line-divider"></div>
+
+      <ion-item>
+        <ion-label>
+          <div class="summary-item">
+            <span>{{"Token Contract Address" | translate}}</span>
+          </div>
+        </ion-label>
+      </ion-item>
+
+      <ion-item *ngIf="calldata" copy-to-clipboard="{{ calldata.to }}">
+        <div>{{ calldata.to }}</div>
+      </ion-item>
+
+      <div class="line-divider"></div>
+
+      <ion-item>
+        <ion-label>
+          <div class="summary-item">
+            <span>{{"Spender Contract Address" | translate}}</span><ion-icon *ngIf="spenderVerified" name="ios-checkmark-circle" class="check success" item-right></ion-icon>
+          </div>
+        </ion-label>
+      </ion-item>
+
+      <ion-item (click)="openExternalLink('https://etherscan.io/address/' + approveSpenderAddress)">
+        <div>{{ approveSpenderAddress }}</div>
+      </ion-item>
+
+      <label-tip *ngIf="!spenderVerified" type="warn">
+        <span label-tip-title translate>Are you sure you trust this contract?</span>
+        <div label-tip-body>
+          <div translate>We have not been able to verify the Spender Contract Address as a trusted one. Make sure you know this spender to give them access to your tokens.</div>
+        </div>
+      </label-tip>
+
+      <div class="line-divider"></div>
+
+      <ion-item>
+        <ion-label>
+          <div class="summary-item">
+            <span>{{"Function" | translate}}</span>
+          </div>
+        </ion-label>
+        <ion-note item-end>
+          <div class="summary-item-detail">
+            <span>
+              Approve
+            </span>
+          </div>
+        </ion-note>
+      </ion-item>
+
+      <ion-item *ngIf="calldata">
+        <div>{{ calldata.data }}</div>
+      </ion-item>
+    </ion-list>
+  </div>
+  <div footer-content>
+    <page-slide-to-accept #slideButton *ngIf="isCordova" buttonText="{{'Slide to Approve' | translate}}" [isDogecoin]="fromWalletSelected && fromWalletSelected.coin == 'doge'"  (slideDone)="makePayment()">
+    </page-slide-to-accept>
+    <ion-toolbar *ngIf="!isCordova">
+      <button ion-button full class="button-footer" (click)="makePayment()">{{'Approve' | translate}}</button>
+    </ion-toolbar>
+  </div>
+</wide-header-page>

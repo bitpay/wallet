@@ -1,0 +1,15 @@
+page-changelly-terms {
+  .bp-list {
+    ion-item {
+      cursor: pointer;
+    }
+  }
+  .partner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    img {
+      margin-left: 7px;
+    }
+  }
+}

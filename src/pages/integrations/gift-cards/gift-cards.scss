@@ -1,0 +1,42 @@
+$gift-card-page-background-color: white;
+$gift-card-page-padding: 30px;
+$gift-card-content-max-width: 315px;
+
+.gift-card-content {
+  .scroll-content > div.wrapper {
+    background-color: $gift-card-page-background-color;
+  }
+
+  .wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+    text-align: center;
+  }
+
+  .card-image {
+    img {
+      border-radius: 14px;
+      box-shadow: 0 4px 47px rgba(0, 0, 0, 0.1);
+    }
+  }
+
+  .header-extension {
+    height: 100px;
+    background: $toolbar-background;
+    margin: 0 -1 * $gift-card-page-padding;
+  }
+
+  .actions {
+    max-width: $gift-card-content-max-width;
+    margin-left: auto;
+    margin-right: auto;
+
+    button {
+      width: 100%;
+      margin-left: 0;
+      margin-right: 0;
+      max-width: $gift-card-content-max-width;
+    }
+  }
+}

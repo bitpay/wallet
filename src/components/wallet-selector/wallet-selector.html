@@ -1,0 +1,67 @@
+<action-sheet>
+  <div class="bp-header">
+    <div class="bp-header__title">{{ title }}</div>
+    <div *ngIf="fromWalletConnect" class="bp-header__subtitle" translate>Which Ethereum wallet would you like to use with WalletConnect?</div>
+  </div>
+  <div *ngIf="linkEthTokens && token">
+    <label-tip type="info" class="no-arrowhead">
+      <span label-tip-title translate>Which Ethereum wallet would you like this token to use for transaction costs?</span>
+      <div label-tip-body>
+        <span translate>Keep in mind that once the funds are received in your {{token.name}} wallet, to move them you will need to have enough funds in your Ethereum linked wallet to pay the ETH miner fees.</span>
+      </div>
+    </label-tip>
+  </div>
+  <div *ngIf="(walletsByKeys && walletsByKeys[0]) || coinbaseData; else noWallets">
+
+    <div *ngFor="let walletsByKey of walletsByKeys">
+      <ion-list no-lines class="bp-list">
+        <div class="key-divider">
+          <ion-icon>
+            <img src="assets/img/settings-icons/icon-key.svg" width="15">
+          </ion-icon>
+          <span>{{ walletsByKey[0].walletGroupName }}</span>
+        </div>
+        <div *ngFor="let wallet of walletsByKey" (click)="optionClicked(wallet)">
+          <wallet-item-content [wallet]="wallet" [context]="context"></wallet-item-content>
+        </div>
+      </ion-list>
+    </div>
+    <div *ngIf="coinbaseData && coinbaseData.availableAccounts && coinbaseData.availableAccounts.length">
+      <ion-list no-lines class="bp-list">
+        <div class="key-divider">
+          <ion-icon>
+            <img src="assets/img/coinbase/coinbase-icon.png" width="20" />
+          </ion-icon>
+          <span *ngIf="coinbaseData.user">{{ coinbaseData.user.name }}'s Coinbase Account</span>
+        </div>
+        <div *ngFor="let ac of coinbaseData.availableAccounts">
+          <ion-list no-lines class="bp-list">
+            <button ion-item detail-none (click)="optionClicked(ac.id, true)">
+              <coin-icon [coin]="ac.currency.code.toLowerCase()" [network]="livenet" item-left></coin-icon>
+              <ion-label>
+                {{ac.name}}
+              </ion-label>
+              <ion-note item-end>
+                <div class="main-note">{{ac.balance.amount | number:'1.2-8'}}</div>
+                <div class="secondary-note" *ngIf="ac.nativeCurrencyStr">
+                  {{ ac.nativeCurrencyStr }}
+                </div>
+              </ion-note>
+            </button>
+          </ion-list>
+        </div>
+      </ion-list>
+    </div>
+  </div>
+  <ng-template #noWallets>
+    <div *ngIf="!linkEthTokens" class="no-wallets">
+      {{'No wallets available' | translate}}
+    </div>
+    <div *ngIf="linkEthTokens">
+      <span translate>
+        In order to create a token wallet, an Ethereum (ETH) wallet is required. Please create an ETH wallet first. Only one {{ token.name }} wallet is allowed per ETH wallet.
+      </span>
+    </div>
+  </ng-template>
+  <ion-item-divider></ion-item-divider>
+</action-sheet>

@@ -1,0 +1,62 @@
+email-component,
+phone-sheet,
+phone-page {
+  .padding {
+    padding: 25px;
+  }
+
+  .padding-bottom {
+    padding-bottom: 25px;
+  }
+
+  .title {
+    color: black;
+    font-size: 23px;
+    font-weight: 700;
+    line-height: 33px;
+  }
+
+  .sub-title {
+    color: #565d6d;
+    font-size: 16px;
+    line-height: 25px;
+    padding: 25px 0px;
+  }
+
+  .form {
+    &--border-overwrite {
+      .item-inner {
+        border-bottom: 0.55px solid #c4c4c4 !important;
+      }
+    }
+
+    &__form {
+      &__link {
+        color: $color-primary;
+      }
+
+      button {
+        margin-top: 20px;
+      }
+    }
+
+    &__form-item {
+      padding-left: 0;
+    }
+
+    &__form-toggle {
+      padding: 2rem 0 2rem 0;
+      margin-top: 2.5rem;
+
+      .toggle-icon::before {
+        background-color: rgba(128, 128, 128, 0.2);
+      }
+
+      &__label {
+        color: #565d6d;
+        font-size: 14px;
+        line-height: 18px;
+      }
+    }
+  }
+}

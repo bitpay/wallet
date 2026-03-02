@@ -1,0 +1,17 @@
+<wide-header-page title="{{'Extended Private Key' | translate}}">
+  <div page-content>
+    <div class="container">
+      <h3 translate>Warning!</h3>
+      <div class="warning-message">
+        <p translate>
+          Your extended private keys are all that is needed to access your funds. Be sure to protect your private keys and store them only on secure devices. BitPay does not have access to your private keys, so you alone are responsible for your keys. If you share key access with external services, you take responsibility for the risk of theft or breach. Only advanced users should handle extended private keys directly.
+        </p>
+      </div>
+      <div *ngIf="!keysEncrypted">
+        <button ion-button class="button-standard" copy-to-clipboard="{{xPrivKey}}">
+          {{'Copy to clipboard' | translate}}
+        </button>
+      </div>
+    </div>
+  </div>
+</wide-header-page>

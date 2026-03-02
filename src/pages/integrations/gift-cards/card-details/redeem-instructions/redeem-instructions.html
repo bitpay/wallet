@@ -1,0 +1,8 @@
+<span [ngSwitch]="cardConfig.name">
+  <span *ngSwitchDefault>
+    <span *ngIf="cardConfig.redeemInstructions" markdown [data]="cardConfig.redeemInstructions" externalize-links></span>
+    <span *ngIf="!cardConfig.redeemInstructions">
+      {{'Paste this code on {cardConfig.website}. This gift card cannot be recovered if your claim code is lost.' |
+      translate:params }}</span>
+  </span>
+</span>

@@ -1,0 +1,20 @@
+<wide-header-page title="{{'Coin Selector' | translate}}">
+  <ion-buttons left>
+    <button class="close-container disable-hover" (click)="selectedCoin()" ion-button>
+      <ion-icon ios="md-close" md="md-close"></ion-icon>
+    </button>
+  </ion-buttons>
+  <div page-content>
+    <div class="description" *ngIf="description">{{ description }}</div>
+    <ion-list class="settings-list bp-list">
+      <div *ngFor="let coin of availableChains">
+        <button class="list-button" ion-item (click)="selectedCoin(coin)">
+          <ion-icon item-start>
+            <img src="assets/img/currencies/{{coin}}.svg" />
+          </ion-icon>
+          <div class="item-title">{{ getCoinName(coin) }} ({{ coin.toUpperCase() }})</div>
+        </button>
+      </div>
+    </ion-list>
+  </div>
+</wide-header-page>

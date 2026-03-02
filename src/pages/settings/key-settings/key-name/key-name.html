@@ -1,0 +1,21 @@
+<wide-header-page title="{{'Key Name' | translate}}">
+  <div page-content>
+    <ion-list class="settings-list bp-list">
+      <div class="settings-explanation">
+        <div class="settings-heading" translate>What do you call this key?</div>
+        <div class="settings-description">
+          {{description}}
+        </div>
+      </div>
+      <form [formGroup]="walletGroupNameForm">
+        <ion-item>
+          <ion-label stacked>{{'Name' | translate}}</ion-label>
+          <ion-input type="text" formControlName="walletGroupName" [value]="walletGroupNameForm.value.walletGroupName" required></ion-input>
+        </ion-item>
+        <button ion-button class="button-standard" (click)="save()" [disabled]="!walletGroupNameForm.valid">
+          {{'Save' | translate}}
+        </button>
+      </form>
+    </ion-list>
+  </div>
+</wide-header-page>

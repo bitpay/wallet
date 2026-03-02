@@ -1,0 +1,29 @@
+<wide-header-page title="{{ title }}">
+  <div page-content>
+    <div class="container">
+      <label-tip class="no-arrowhead" type="warn" margin-top>
+        <span label-tip-title>Mnemonic Recovery Warning</span>
+        <div label-tip-body>
+          <span>
+            It's recommended that you write down your recovery phrase and store it
+            securely so that your wallet can be recovered in the case your device
+            was lost or stolen.</span>
+        </div>
+      </label-tip>
+
+      <form class="form-container" [formGroup]="passwordForm" *ngIf="mnemonicEncrypted">
+        <ion-item>
+          <ion-label floating>Password</ion-label>
+          <ion-input type="password" formControlName="encryptPassword">
+            Enter Encrypt Password
+          </ion-input>
+        </ion-item>
+        <button class="decrypt-button" (click)="decryptMnemonic()">Enter</button>
+      </form>
+
+      <div class="mnemonic-phrase-container" *ngIf="!mnemonicEncrypted">
+        <div class="mnemonic-word-container">{{ mnemonicPhrase }}</div>
+      </div>
+    </div>
+  </div>
+</wide-header-page>

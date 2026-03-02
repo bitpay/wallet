@@ -1,0 +1,32 @@
+<wide-header-page title="{{ title }}">
+  <div page-content>
+    <ion-list class="bp-list">
+      <button ion-item *ngFor="let walletsGroup of walletsGroups; let i = index" (click)="goToAddPage(walletsGroup[0].keyId)">
+        <ion-icon class="item-img icon-settings" item-start>
+          <img src="assets/img/settings-icons/icon-key.svg" width="22">
+        </ion-icon>
+        <ion-label>
+          <div class="main-label" *ngIf="walletsGroup[0].canSign">{{profileProvider.getWalletGroup(walletsGroup[0].keyId).name}}</div>
+          <div class="main-label" *ngIf="!walletsGroup[0].canSign" translate>Read Only Wallets</div>
+        </ion-label>
+        <ion-note item-end>
+          {{walletsGroup.length}} Wallet<span *ngIf="walletsGroup.length > 1">s</span>
+        </ion-note>
+      </button>
+    </ion-list>
+
+    <label-tip *ngIf="walletsGroups && walletsGroups[0]" type="info" class="no-arrowhead">
+      <span label-tip-title translate>Don't see your Key?</span>
+      <div label-tip-body>
+        <span translate>
+          Legacy wallets created before 9/15 can't support additional wallets being added.
+        </span>
+      </div>
+    </label-tip>
+
+    <button ion-button class="button-standard button-secondary" (click)="goToAddPage()">
+      <span translate>Create New Key</span>
+    </button>
+
+  </div>
+</wide-header-page>

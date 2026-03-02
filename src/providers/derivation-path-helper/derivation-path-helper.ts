@@ -2,58 +2,131 @@ import { Injectable } from '@angular/core';
 
 @Injectable()
 export class DerivationPathHelperProvider {
-  public default: string;
+  public defaultBTC: string;
+  public defaultBCH: string;
+  public defaultETH: string;
+  public defaultXRP: string;
+  public defaultDOGE: string;
+  public defaultLTC: string;
   public defaultTestnet: string;
+  public defaultMultisigBTC: string;
+  public defaultMultisigBCH: string;
+  public defaultMultisigDOGE: string;
+  public defaultMultisigLTC: string;
 
   public constructor() {
-    this.default = "m/44'/0'/0'";
+    this.defaultBTC = "m/44'/0'/0'";
+    this.defaultBCH = "m/44'/145'/0'";
+    this.defaultETH = "m/44'/60'/0'";
+    this.defaultXRP = "m/44'/144'/0'";
+    this.defaultDOGE = "m/44'/3'/0'";
+    this.defaultLTC = "m/44'/2'/0'";
+    this.defaultMultisigBTC = "m/48'/0'/0'";
+    this.defaultMultisigBCH = "m/48'/145'/0'";
+    this.defaultMultisigDOGE = "m/48'/3'/0'";
+    this.defaultMultisigLTC = "m/48'/2'/0'";
     this.defaultTestnet = "m/44'/1'/0'";
   }
 
-  parse(str: string): any {
-    var arr = str.split('/');
-    var ret = {
-      derivationStrategy: '',
-      networkName: '',
-      account: 0
+  public parsePath(path: string) {
+    return {
+      purpose: path.split('/')[1],
+      coinCode: path.split('/')[2],
+      account: path.split('/')[3]
     };
+  }
 
-    if (arr[0] != 'm')
-      return false;
+  public getDerivationStrategy(path: string): string {
+    const purpose = this.parsePath(path).purpose;
+    let derivationStrategy: string;
 
-    switch (arr[1]) {
+    switch (purpose) {
       case "44'":
-        ret.derivationStrategy = 'BIP44';
+        derivationStrategy = 'BIP44';
         break;
       case "45'":
-        return {
-          derivationStrategy: 'BIP45',
-          networkName: 'livenet',
-          account: 0,
-        }
+        derivationStrategy = 'BIP45';
+        break;
       case "48'":
-        ret.derivationStrategy = 'BIP48';
+        derivationStrategy = 'BIP48';
         break;
-      default:
-        return false;
-    };
+    }
+    return derivationStrategy;
+  }
 
-    switch (arr[2]) {
-      case "0'":
-        ret.networkName = 'livenet';
+  public getNetworkName(path: string): string {
+    // BIP45
+    const purpose = this.parsePath(path).purpose;
+    if (purpose == "45'") return 'livenet';
+
+    const coinCode = this.parsePath(path).coinCode;
+    let networkName: string;
+
+    switch (coinCode) {
+      case "0'": // for BTC
+        networkName = 'livenet';
         break;
-      case "1'":
-        ret.networkName = 'testnet';
+      case "1'": // testnet for all coins
+        networkName = 'testnet';
         break;
-      default:
-        return false;
-    };
+      case "145'": // for BCH
+        networkName = 'livenet';
+        break;
+      case "60'": // for ETH
+        networkName = 'livenet';
+        break;
+      case "144'": // for XRP
+        networkName = 'livenet';
+        break;
+      case "3'": // for DOGE
+        networkName = 'livenet';
+        break;
+      case "2'": // for LTC
+        networkName = 'livenet';
+        break;
+    }
+    return networkName;
+  }
 
-    var match = arr[3].match(/(\d+)'/);
-    if (!match)
-      return false;
-    ret.account = +match[1]
+  public getAccount(path: string): number {
+    // BIP45
+    const purpose = this.parsePath(path).purpose;
+    if (purpose == "45'") return 0;
 
-    return ret;
-  };
+    const account = this.parsePath(path).account || '';
+    const match = account.match(/(\d+)'/);
+    if (!match) return undefined;
+    return +match[1];
+  }
+
+  public isValidDerivationPathCoin(path: string, coin: string): boolean {
+    let isValid: boolean;
+    const coinCode = this.parsePath(path).coinCode;
+
+    // BIP45
+    if (path == "m/45'") return true;
+
+    switch (coin) {
+      case 'btc':
+        isValid = ["0'", "1'"].indexOf(coinCode) > -1;
+        break;
+      case 'bch':
+        isValid = ["145'", "0'", "1'"].indexOf(coinCode) > -1;
+        break;
+      case 'eth':
+        isValid = ["60'", "0'", "1'"].indexOf(coinCode) > -1;
+        break;
+      case 'xrp':
+        isValid = ["144'", "0'", "1'"].indexOf(coinCode) > -1;
+        break;
+      case 'doge':
+        isValid = ["3'", "1'"].indexOf(coinCode) > -1;
+        break;
+      case 'ltc':
+        isValid = ["2'", "1'"].indexOf(coinCode) > -1;
+        break;
+    }
+
+    return isValid;
+  }
 }

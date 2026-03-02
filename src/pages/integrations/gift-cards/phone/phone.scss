@@ -1,0 +1,98 @@
+phone-page {
+  .no-thanks {
+    color: $color-primary;
+    text-align: center;
+    font-size: 17px;
+    font-weight: 600;
+    margin-top: 24px;
+  }
+
+  ion-content,
+  .fixed-content,
+  .scroll-content {
+    height: 100vh !important;
+  }
+
+  .padding {
+    padding: 20px;
+    padding-bottom: 0;
+  }
+
+  .padding-bottom {
+    padding-bottom: 25px;
+  }
+
+  .title {
+    color: black;
+    font-size: 23px;
+    font-weight: 700;
+    line-height: 33px;
+  }
+
+  .sub-title {
+    color: #565d6d;
+    font-size: 16px;
+    line-height: 25px;
+    padding: 25px 0px;
+    padding-top: 0;
+  }
+}
+
+.phone-input {
+  $border-color: #c7c7c7;
+  font-size: 16px;
+  font-weight: 500;
+
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid $border-color;
+  color: black;
+  margin-top: 12px;
+
+  &__flag-emoji {
+    font-size: 24px;
+    margin-right: 8px;
+  }
+
+  &__country-code {
+    padding-right: 14px;
+    border-right: 1px solid $border-color;
+    display: flex;
+    align-items: center;
+    padding-top: 4px;
+    padding-bottom: 7px;
+    margin-top: 3px;
+
+    img {
+      height: 7px;
+      width: 11px;
+      margin-left: 8px;
+      transform: translateY(1px);
+    }
+  }
+
+  input {
+    margin-top: 7px;
+    margin-bottom: 7px;
+    margin-left: 14px;
+    font-weight: 500;
+
+    $placeholder-font-weight: 400;
+
+    &::-webkit-input-placeholder {
+      font-weight: $placeholder-font-weight;
+    }
+
+    &:-moz-placeholder {
+      font-weight: $placeholder-font-weight;
+    }
+
+    &::-moz-placeholder {
+      font-weight: $placeholder-font-weight;
+    }
+
+    &:-ms-input-placeholder {
+      font-weight: $placeholder-font-weight;
+    }
+  }
+}

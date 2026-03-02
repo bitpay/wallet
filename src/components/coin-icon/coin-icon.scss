@@ -1,0 +1,64 @@
+coin-icon {
+  .item-md [item-left] {
+    margin: 0px 8px 0px 0px;
+  }
+  ion-icon.item-img.icon {
+    margin: 9px 15px 9px 0;
+    justify-content: center;
+    padding: 7px;
+    img {
+      width: 35px;
+    }
+    &.rectangle {
+      border-radius: 12px;
+      justify-content: center;
+    }
+    &.background {
+      &_btc {
+        background-color: #f7931a;
+      }
+      &_bch {
+        background-color: #2fcf6e;
+      }
+      &_eth {
+        background-color: #6b71d6;
+      }
+      &_xrp {
+        background-color: #000000;
+      }
+      &_usdc {
+        background-color: #2775ca;
+      }
+      &_pax {
+        background-color: #e6f3f9;
+      }
+      &_gusd {
+        background-color: #00ddfa;
+      }
+      &_busd {
+        background-color: #f3ba2d;
+      }
+      &_dai {
+        background-color: #ff9e2f;
+      }
+      &_wbtc {
+        background-color: #000000;
+      }
+      &_doge {
+        background-color: #d8c172;
+      }
+      &_ltc {
+        background-color: #a6a9aa;
+      }
+      &_shib {
+        background-color: #f00500;
+      }
+      &_default {
+        background-color: #e6f8e9;
+      }
+    }
+  }
+  .ion-logo-usd:before {
+    padding: 8px 11.5px;
+  }
+}

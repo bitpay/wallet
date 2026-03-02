@@ -1,0 +1,27 @@
+<ion-header no-border>
+  <ion-navbar [hideBackButton]="hideBackButton" transparent></ion-navbar>
+</ion-header>
+
+<ion-content no-bounce>
+  <div class="recovery-key">
+    <div class="recovery-key-info">
+      <div class="img-container">
+        <img src="assets/img/onboarding/backup-key.svg" />
+      </div>
+      <div class="info">
+        <h3 class="title" translate>How to recover your funds if you lose this device?</h3>
+        <div class="text" translate>If you delete the BitPay app or lose this device, you’ll need a recovery key to regain access to your funds.</div>
+      </div>
+    </div>
+  </div>
+</ion-content>
+<ion-footer no-border>
+  <ion-toolbar>
+    <button ion-button class="button-standard" [ngClass]="{'no-margin-bottom': !isKeyEncrypted}" (click)="goToBackupKey()">
+      {{'View my recovery key' | translate}}
+    </button>
+    <button *ngIf="!isKeyEncrypted" ion-button clear color="primary" class="button-standard" (click)="showInfoSheet()">
+      {{"I’ll do this later" | translate}}
+    </button>
+  </ion-toolbar>
+</ion-footer>

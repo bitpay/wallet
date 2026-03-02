@@ -1,0 +1,104 @@
+page-feature-education {
+  .onboarding-slides {
+    ion-slide {
+      &.swiper-slide {
+        overflow-y: scroll;
+      }
+      .slide-zoom {
+        height: 100%;
+        .slide-info {
+          height: 100%;
+          display: grid;
+          grid-template-rows: 1fr 1fr 30px;
+          justify-content: center;
+          .img-container {
+            align-self: end;
+            img {
+              margin: auto;
+              max-height: 23rem;
+              @media (max-width: 768px) {
+                max-height: 18rem;
+              }
+              @media (max-width: 350px) {
+                max-height: 14rem;
+              }
+            }
+            .tour-1 {
+              padding-left: 8rem;
+              @media (max-width: 350px) {
+                padding-left: 4rem;
+              }
+            }
+            .tour-2 {
+              padding-right: 8rem;
+              @media (max-width: 350px) {
+                padding-left: 4rem;
+              }
+            }
+          }
+          .info {
+            align-self: start;
+            display: grid;
+            grid-template-rows: max-content max-content;
+            height: 100%;
+            padding: 4rem;
+            .title {
+              color: #060606;
+              font-weight: 600;
+              align-items: center;
+              text-align: center;
+              line-height: 34px;
+              @media (max-width: 768px) {
+                font-size: 20px;
+                line-height: 20px;
+              }
+              @media (max-width: 350px) {
+                font-size: 17px;
+                line-height: 20px;
+              }
+            }
+            .text {
+              font-size: 16px;
+              text-align: center;
+              color: rgb(46, 46, 46);
+              font-weight: 300;
+              padding-top: 15px;
+              line-height: 25px;
+              @media (max-width: 768px) {
+                font-size: 14px;
+                line-height: 20px;
+              }
+              @media (max-width: 350px) {
+                font-size: 12px;
+                line-height: 15px;
+              }
+              .note {
+                font-size: 14px;
+                text-align: center;
+                color: color($colors, light-grey);
+                font-weight: 300;
+                padding-top: 15px;
+                line-height: 25px;
+                @media (max-width: 768px) {
+                  font-size: 11px;
+                  line-height: 20px;
+                }
+                @media (max-width: 350px) {
+                  font-size: 8px;
+                  line-height: 15px;
+                }
+              }
+            }
+          }
+        }
+      }
+      &.key-creation {
+        .slide-zoom {
+          .slide-info {
+            grid-template-rows: 1fr 1fr 160px;
+          }
+        }
+      }
+    }
+  }
+}

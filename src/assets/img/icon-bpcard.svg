@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="51px" height="51px" viewBox="0 0 51 51" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 62 (91390) - https://sketch.com -->
+    <title>icon-card</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <circle id="path-1" cx="25.5" cy="25.5" r="25.5"></circle>
+    </defs>
+    <g id="Home" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Component/Callout/BitPay-Card" transform="translate(-45.000000, -64.000000)">
+            <g id="Callout">
+                <g id="Group-4" transform="translate(24.000000, 34.000000)">
+                    <g id="BitPay/Large-(50px)/Card" transform="translate(21.000000, 30.000000)">
+                        <g id="Group-2-+-Shape-+-Shape-+-Shape-Mask">
+                            <mask id="mask-2" fill="white">
+                                <use xlink:href="#path-1"></use>
+                            </mask>
+                            <use id="Mask" fill="#DFE5FF" xlink:href="#path-1"></use>
+                            <g id="credit-card" mask="url(#mask-2)">
+                                <g transform="translate(12.466667, 11.333333)">
+                                    <path d="M39.1985507,30.6 L2.73478261,30.6 C1.22427101,30.6 0,29.3913 0,27.9 L0,2.7 C0,1.2087 1.22427101,0 2.73478261,0 L39.1985507,0 C40.7090623,0 41.9333333,1.2087 41.9333333,2.7 L41.9333333,27.9 C41.9333333,29.3913 40.7090623,30.6 39.1985507,30.6 Z" id="Path" fill="#4F6EF7"></path>
+                                    <rect id="Rectangle" fill="#223E49" x="0" y="5.66666667" width="41.9333333" height="6.8"></rect>
+                                    <rect id="Rectangle" fill="#A2B1F3" x="5.66666667" y="18.1333333" width="20.4" height="3.4"></rect>
+                                </g>
+                            </g>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

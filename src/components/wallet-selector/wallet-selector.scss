@@ -1,0 +1,42 @@
+wallet-selector {
+  padding-bottom: calc(env(safe-area-inset-bottom));
+  .error {
+    color: color($colors, danger);
+  }
+
+  .no-wallets {
+    text-align: center;
+    padding: 20px;
+    color: color($colors, danger);
+  }
+  .bp-header {
+    padding: 0 25px;
+
+    &__title {
+      font-weight: 500;
+      font-size: 20px;
+      margin: 32px 0 20px 0;
+      color: #000000;
+      > img {
+        vertical-align: sub;
+        margin-right: 5px;
+      }
+    }
+
+    &__subtitle {
+      font-size: 16px;
+      color: #000000;
+    }
+  }
+  .key-divider {
+    display: flex;
+    align-items: center;
+    padding: 20px 0;
+    margin: 1px 25px;
+    color: color($colors, grey);
+    border-bottom: 1px solid rgba(155, 163, 174, 0.2);
+    span {
+      margin-left: 10px;
+    }
+  }
+}

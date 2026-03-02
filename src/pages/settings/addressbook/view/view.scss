@@ -1,15 +1,8 @@
 page-addressbook-view {
   .contact-view-header {
-    position: relative;
-    height: 70px;
-    background-color: $toolbar-background;
-    padding-top: 20px;
-    margin-bottom: 50px;
-    text-align: center;
-    .gravatar {
-      border-radius: 3px;
-      display: inline-block;
-    }
+    margin: 20px auto;
+    width: 100px;
+    padding: 10px;
   }
   .btn-send {
     color: color($colors, primary);

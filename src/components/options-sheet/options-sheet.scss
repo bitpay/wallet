@@ -1,0 +1,24 @@
+options-sheet {
+  .bp-list {
+    .danger {
+      color: color($colors, danger);
+    }
+    .main-label {
+      font-weight: 400;
+    }
+    ion-icon.item-img.icon {
+      &.icon-md.item-icon,
+      &.icon-ios.item-icon {
+        padding: 14.5px;
+        font-size: 20px;
+        &.icon-settings {
+          opacity: 0.5;
+        }
+        img {
+          width: 20px;
+          height: 20px;
+        }
+      }
+    }
+  }
+}

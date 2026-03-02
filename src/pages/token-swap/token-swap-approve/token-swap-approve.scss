@@ -1,0 +1,72 @@
+page-token-swap-approve {
+  ion-spinner {
+    * {
+      stroke: color($colors, primary) !important;
+    }
+  }
+  .wallet {
+    display: flex;
+    align-items: center;
+    coin-icon {
+      ion-icon.item-img.icon {
+        padding: 5px;
+        margin: 0;
+        img {
+          width: 24px;
+        }
+      }
+    }
+  }
+  .amount {
+    text-align: end;
+  }
+  .divider {
+    height: 2px;
+    border-bottom: 1px solid color($colors, light);
+    margin: 4rem 1.8rem;
+    .arrow {
+      text-align: center;
+      img {
+        margin-top: -20px;
+      }
+    }
+  }
+  .bp-list {
+    ion-item {
+      cursor: pointer;
+    }
+    .item-label {
+      width: 92%;
+      margin: 0px auto;
+      color: #9ba3ae;
+      line-height: 18px;
+    }
+    .send-max-note {
+      margin-top: -5px;
+      margin-bottom: 10px;
+    }
+  }
+  .check {
+    font-size: 22px;
+    margin: 0px 0px 0px 5px !important;
+    &.success {
+      color: color($colors, success);
+    }
+    &.fail {
+      color: color($colors, danger);
+    }
+  }
+  .rate {
+    width: 100%;
+    color: color($colors, light-grey);
+    text-align: right;
+  }
+  .terms {
+    color: color($colors, primary);
+    &-checkbox {
+      color: #757575;
+      font-size: 11px;
+      font-weight: 300;
+    }
+  }
+}

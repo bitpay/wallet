@@ -1,0 +1,50 @@
+pin-pad {
+  width: 100%;
+  $short-screen: 600px;
+  .amount-delete {
+    margin-right: 10px;
+  }
+
+  .buttons-container {
+    text-align: center;
+    width: 100%;
+  }
+
+  .row {
+    font-size: 32px;
+    display: flex;
+    justify-content: space-around;
+    @media (max-height: $short-screen) {
+      font-size: 24px;
+    }
+
+    .col {
+      height: 9vh;
+      min-height: 58px;
+      @media (max-height: $short-screen) {
+        height: 7vh;
+        min-height: 38px;
+      }
+      cursor: pointer;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+
+      .letters {
+        color: #9b9b9b;
+        font-size: 10px;
+        letter-spacing: 2px;
+        margin-top: 4px;
+        height: 22px;
+      }
+
+      &.disabled {
+        cursor: default;
+        pointer-events: none;
+        opacity: 0;
+      }
+    }
+  }
+}

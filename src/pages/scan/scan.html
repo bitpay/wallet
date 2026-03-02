@@ -1,10 +1,22 @@
-<ion-header>
-  <ion-navbar class="navbar-transparent">
-    <ion-title>{{'Scan' | translate}}</ion-title>
+<ion-header no-border *ngIf="canGoBack">
+  <ion-navbar hideBackButton transparent>
+    <ion-buttons left>
+      <button class="close-container disable-hover" (click)="closeCam()" ion-button>
+        <ion-icon ios="md-close" md="md-close" color="light"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
-<ion-content class="back-transparent" no-bounce>
+<ion-content *ngIf="!isCordova">
+  <div class="not-supported">
+    <span>
+      Camera not supported
+    </span>
+  </div>
+</ion-content>
+
+<ion-content *ngIf="isCordova" class="back-transparent" no-bounce>
   <div class="page-scan-has-problems" *ngIf="(currentState == scannerStates.unauthorized || currentState == scannerStates.denied || currentState == scannerStates.unavailable)">
     <div class="header-container">
       <div>
@@ -44,6 +56,9 @@
     <div class="scanner-controls">
       <span *ngIf="canEnableLight" class="icon-flash" [ngClass]="{'active': lightActive}" (click)="toggleLight()"></span>
       <span *ngIf="canChangeCamera" class="icon-camera-toggle" [ngClass]="{'active': cameraToggleActive}" (click)="toggleCamera()"></span>
+    </div>
+    <div class="scanner-controls" *ngIf="fromWalletConnect">
+      <button ion-button clear class="url-btn" (click)="goToWalletConnectPage()">{{'Or paste URL' | translate}}</button>
     </div>
   </div>
 </ion-content>

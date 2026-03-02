@@ -1,25 +1,31 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { map } from 'rxjs/operators';
 import { AppProvider } from '../../providers/app/app';
+import { Logger } from '../../providers/logger/logger';
 
 @Injectable()
 export class ReleaseProvider {
-  private LATEST_RELEASE_URL: string;
+  private latestReleaseAPIUrl = 'https://bws.bitpay.com/bws/api/latest-version';
   private appVersion: string;
 
-  constructor(private http: HttpClient, private app: AppProvider) {
-    this.LATEST_RELEASE_URL =
-      'https://api.github.com/repos/bitpay/copay/releases/latest';
-    this.appVersion = this.app.info.version;
+  constructor(
+    private http: HttpClient,
+    private appProvider: AppProvider,
+    private logger: Logger
+  ) {
+    this.appVersion = this.appProvider.info.version;
+  }
+
+  public getLatestAppVersion() {
+    return new Promise(resolve => {
+      this.http.get(this.latestReleaseAPIUrl).subscribe(data => {
+        return resolve(data);
+      });
+    });
   }
 
   public getCurrentAppVersion() {
     return this.appVersion;
-  }
-
-  public getLatestAppVersion() {
-    return this.http.get(this.LATEST_RELEASE_URL).pipe(map(x => x['tag_name']));
   }
 
   private verifyTagFormat(tag: string) {
@@ -36,38 +42,26 @@ export class ReleaseProvider {
     };
   }
 
-  public checkForUpdates(latestVersion: string, currentVersion?: string): {
-    updateAvailable: boolean | null,
-      availableVersion: string | null,
-      error: string | null
-  } {
-    if (!currentVersion) currentVersion = this.appVersion;
-
-    let result = {
-      updateAvailable: null,
-      availableVersion: null,
-      error: null
-    };
-
-    if (!this.verifyTagFormat(currentVersion))
-      result.error =
-        'Cannot verify the format of version tag: ' + currentVersion;
-    if (!this.verifyTagFormat(latestVersion))
-      result.error =
-        'Cannot verify the format of latest release tag: ' + latestVersion;
-
-    let current: any = this.formatTagNumber(currentVersion);
-    let latest: any = this.formatTagNumber(latestVersion);
+  public newReleaseAvailable(latestVersion: string): boolean {
+    const currentVersion = this.getCurrentAppVersion();
 
     if (
-      latest.major < current.major ||
-      (latest.major == current.major && latest.minor <= current.minor)
-    )
-      return result;
-    else {
-      result.updateAvailable = true;
-      result.availableVersion = latestVersion;
-      return result;
+      !this.verifyTagFormat(latestVersion) ||
+      !this.verifyTagFormat(currentVersion)
+    ) {
+      this.logger.error(
+        `Cannot verify the format of version tag. latestVersion ${latestVersion} - currentVersion ${currentVersion}`
+      );
+      return false;
     }
+
+    let current = this.formatTagNumber(currentVersion);
+    let latest = this.formatTagNumber(latestVersion);
+
+    if (latest.major > current.major) {
+      this.logger.debug('Major version is available');
+      return true;
+    }
+    return false;
   }
 }

@@ -1,0 +1,41 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title class="bp-title">{{'Buy {displayName} Gift Card' | translate: { displayName: cardConfig?.displayName } }}
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content no-bounce class="gift-card-content">
+  <div class="wrapper">
+    <div class="amount-box">
+      <div>
+        <img-loader class="card-image" src="{{cardConfig?.cardImage}}">
+        </img-loader>
+      </div>
+      <amount-picker *ngIf="cardConfig" [currency]="cardConfig.currency"
+        [supportedAmounts]="cardConfig.supportedAmounts" (amountChange)="onAmountChange($event)"
+        (click)="onAmountClick()"></amount-picker>
+      <div class="discount-header" *ngIf="hasVisibleDiscount">
+        <img src="assets/img/tags-stack.svg">
+        <div>Save <gift-card-discount-text [cardConfig]="cardConfig" [discount]="cardConfig.discounts[0]"
+            [numberOnly]="true">
+          </gift-card-discount-text> off your purchase</div>
+      </div>
+      <div class="discount-header" *ngIf="!hasVisibleDiscount && hasPromotion">
+        {{cardConfig.promotions[0].shortDescription}}
+      </div>
+    </div>
+    <div class="buy-box">
+      <card-description class="buy-box__description" [cardConfig]="cardConfig"></card-description>
+    </div>
+  </div>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <button ion-button full class="button-footer" (click)="next()">
+      <ng-container *ngIf="cardConfig?.supportedAmounts">{{'Continue' | translate}}</ng-container>
+      <ng-container *ngIf="!cardConfig?.supportedAmounts">{{'Enter Amount' | translate}}</ng-container>
+    </button>
+  </ion-toolbar>
+</ion-footer>

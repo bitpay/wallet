@@ -1,18 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg width="20px" height="21px" viewBox="0 0 20 21" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: sketchtool 40.1 (33804) - http://www.bohemiancoding.com/sketch -->
-    <title>A3CC6A90-742E-4634-91DC-28F2146B6659</title>
-    <desc>Created with sketchtool.</desc>
-    <defs></defs>
-    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="Icons" transform="translate(-542.000000, -768.000000)" stroke="#9b9bab">
-            <g id="icons/list-items/sync" transform="translate(543.000000, 769.000000)">
-                <g id="Group" transform="translate(0.392391, 0.413043)">
-                    <path d="M6.28767826,13.3123913 C6.33555,14.6357826 7.36361522,15.6956522 8.6326087,15.6956522 C9.90160217,15.6956522 10.927313,14.6357826 10.9759696,13.3123913" id="Shape"></path>
-                    <path d="M17.2652174,15.6956522 C17.2652174,14.1566522 16.4561065,11.1521739 14.126087,9.91304348 L14.126087,5.7826087 C14.126087,2.58895652 11.6665783,0 8.6326087,0 C5.59863913,0 3.13913043,2.58895652 3.13913043,5.7826087 L3.13913043,9.91304348 C0.784782609,11.1777826 0,14.1566522 0,15.6956522" id="Shape"></path>
-                    <ellipse id="Oval" cx="8.6326087" cy="15.6956522" rx="8.6326087" ry="2.47826087"></ellipse>
-                </g>
-            </g>
+<svg width="20px" height="20px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 54.1 (76490) - https://sketchapp.com -->
+    <title>Wallet/Small/Notifications </title>
+    <desc>Created with Sketch.</desc>
+    <g id="Wallet/Small/Notifications-" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="alarm" transform="translate(1.000000, 0.000000)" fill="#9BA3AE">
+            <path d="M9.3908351,19.8253242 C8.72779447,20.0933408 7.99804853,20.0515993 7.36214008,19.7092827 C6.72623162,19.3669661 6.2362535,18.7521166 6,18 L11,18 C10.7324666,18.8516712 10.1416493,19.521853 9.3908351,19.8253242 Z M16.8770687,15.7093128 C17.0359948,15.9718184 17.0411664,16.2996182 16.8906003,16.5670091 C16.7400342,16.8344 16.4570981,16.9998832 16.150291,17 L0.849708969,17 C0.542901898,16.9998832 0.259965833,16.8344 0.109399735,16.5670091 C-0.0411663622,16.2996182 -0.035994775,15.9718184 0.122931321,15.7093128 C1.13129034,14.0423324 1.67569467,12.1359776 1.69974131,10.1877563 L1.69974131,6.80204061 C1.69974131,3.04537731 4.74432083,-2.30093361e-16 8.5,0 C12.2556792,2.30093361e-16 15.3002587,3.04537731 15.3002587,6.80204061 L15.3002587,10.1928579 C15.3251708,12.1393488 15.8695449,14.0438364 16.8770687,15.7093128 Z" id="Path-2"></path>
         </g>
     </g>
 </svg>

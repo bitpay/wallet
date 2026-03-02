@@ -1,0 +1,19 @@
+<ion-header>
+  <ion-navbar>
+    <ion-buttons right>
+      <button class="close-container disable-hover" (click)="close()" ion-button>
+        <ion-icon ios="md-close" md="md-close"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content text-center class="add-bottom-safe-area" no-bounce>
+  <ion-grid (click)="openInBrowser()">
+    <ion-row>
+      <ion-col>
+        <img [src]="advertising?.takeover_image">
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

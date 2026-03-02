@@ -1,0 +1,65 @@
+<ion-item>
+  <ion-label>
+    <div class="summary-item">
+      <span translate>Sending to</span>
+    </div>
+  </ion-label>
+  <ion-note item-end>
+    <div *ngIf="tx.misunderstoodOutputs" class="summary-item-detail">
+      <span translate>Multiple recipients</span>
+    </div>
+    <div class="payment-proposal-to" *ngIf="!tx.hasMultiplesOutputs && !tx.misunderstoodOutputs">
+      <div class="background-content" copy-to-clipboard="{{ tx.outputs[0].addressToShow ? tx.outputs[0].addressToShow : tx.outputs[0].address }}">
+        <img class="coin-img" *ngIf="tx.customData?.service != 'debitcard' && currencyProvider.COIN[tx.coin | uppercase]" src="assets/img/currencies/{{tx.coin}}.svg" [ngClass]="{'testnet': tx.network === 'testnet'}" alt="Coin" />
+        <img class="coin-img" *ngIf="tx.customData?.service != 'debitcard' && !currencyProvider.COIN[tx.coin | uppercase]" [src]="currencyProvider.getLogoURI(tx.coin)" (error)="currencyProvider.defaultLogoURI(img)" #img [ngClass]="{'testnet': tx.network === 'testnet'}" alt="Coin" />
+        <img *ngIf="tx.customData?.service == 'debitcard'" src="assets/img/icon-card.svg" class="debit-card">
+
+        <span *ngIf="!tx.outputs[0].contactName">{{ tx.customData?.toWalletName || ((tx.outputs[0].addressToShow ? tx.outputs[0].addressToShow : tx.outputs[0].address) | shortenedAddress)}}</span>
+        <span class="ellipsis" *ngIf="tx.outputs[0].contactName">{{ tx.outputs[0].contactName }}</span>
+      </div>
+    </div>
+
+    <ion-row align-items-center class="wallet" *ngIf="tx.hasMultiplesOutputs && !tx.misunderstoodOutputs" (click)="showMultiplesOutputs = !showMultiplesOutputs">
+      <ion-col>
+        <ion-icon item-start>
+          <img class="coin-img" src="assets/img/icon-{{tx.coin}}-small.svg" alt="Coin" />
+        </ion-icon>
+      </ion-col>
+      <ion-col>
+        <span class="note-container ellipsis" translate>Multiple recipients </span>
+      </ion-col>
+      <ion-col>
+        <span>({{tx.recipientCount}}):</span>
+      </ion-col>
+      <ion-col>
+        <button ion-button clear color="grey" icon-only item-end>
+          <ion-icon *ngIf="showMultiplesOutputs" name="ios-arrow-up-outline"></ion-icon>
+          <ion-icon *ngIf="!showMultiplesOutputs" name="ios-arrow-down-outline"></ion-icon>
+        </button>
+      </ion-col>
+    </ion-row>
+  </ion-note>
+
+</ion-item>
+
+<div *ngIf="tx.hasMultiplesOutputs && showMultiplesOutputs">
+  <ion-item *ngFor="let output of tx.outputs" copy-to-clipboard="{{output.toAddress ? output.toAddress : output.address}}">
+    <ion-note class="secondary-note" item-right text-end>
+      <span>{{output.contactName || output.addressToShow || output.toAddress || output.address}}</span>
+      <span>{{output.amountStr}}
+        <span *ngIf="output.alternativeAmountStr">({{output.alternativeAmountStr}})</span>
+      </span>
+      <p class="output-note" *ngIf="output.message">
+        <span class="ellipsis">{{output.message}}</span>
+      </p>
+    </ion-note>
+  </ion-item>
+</div>
+
+<ion-item *ngIf="tx.misunderstoodOutputs">
+<div>
+    <a class="misunderstood-msg" (click)="viewOnBlockchain()">
+      {{misunderstoodOutputsMsg}}
+    </a>
+</div>
+</ion-item>

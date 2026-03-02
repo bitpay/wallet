@@ -1,0 +1,35 @@
+wallet-mnemonic-recover {
+  .container {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+  }
+
+  .mnemonic-phrase-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+}
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.decrypt-button {
+  background-color: color($colors, success);
+  width: 200px;
+  height: 50px;
+  border-radius: 5px;
+  color: white;
+  margin: 10px;
+  font-size: 20px;
+}
+
+.mnemonic-word-container {
+  display: block;
+  text-align: center;
+  margin: 10px;
+}

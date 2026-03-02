@@ -1,0 +1,24 @@
+Manage your finances in one app with the secure, open source BitPay Wallet. Get up and running fast with blockchain security, store and send funds, buy gift cards from over 90 major brands, and turn crypto currency into dollars with the BitPay Visa® Card.
+
+With the BitPay Wallet, your private keys and your money remain in your control at all times. And you're using code that's 100% open source for community testing and audits.
+
+We built the following features into this version of the BitPay app that doesn't compromise on security or accessibility:
+
+Real time gift card purchasing from major brands including Amazon.com
+Support Bitcoin, Bitcoin Cash and Ethereum
+Support for ERC-20 stablecoin tokens, including USD Coin (USDC), Paxos Standard (PAX) and Gemini Dollar (GUSD)
+Multiple wallet creation and management in-app
+Integration for loading, managing, and spending the BitPay Visa® Card.
+Integration for buying and selling bitcoin.
+Intuitive multisignature security for personal or shared wallets
+Device-based security: all private keys are stored locally, not in the cloud
+Hierarchical deterministic (HD) address generation and wallet backups
+Payment protocol (BIP70-BIP73) support: easily-identifiable payment requests and verifiably secure payments
+Support for 150+ currency pricing options and unit denomination in BTC or bits
+Email and push notifications for payments and transfers
+Easy spending proposal flow for shared wallets and group payments
+Support for testnet wallets
+Customizable wallets name and order
+Multiple supported languages, including French, German, Chinese (Simplified), and Spanish
+
+This app is free and open source software. You can also view the code on GitHub at https://github.com/bitpay/copay.

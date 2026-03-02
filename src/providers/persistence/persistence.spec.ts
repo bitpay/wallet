@@ -1,4 +1,3 @@
-/* tslint:disable */
 import { File } from '@ionic-native/file';
 import { Logger } from '../../providers/logger/logger';
 import { PlatformProvider } from '../platform/platform';
@@ -8,10 +7,13 @@ class FileMock extends File {}
 
 describe('Persistence Provider', () => {
   let persistenceProvider: PersistenceProvider;
-  let logs: any[];
+  let logs;
 
   const loggerMock = {
     info: info => {
+      logs.push(info);
+    },
+    debug: info => {
       logs.push(info);
     }
   } as Logger;
@@ -45,35 +47,29 @@ describe('Persistence Provider', () => {
     let localStorageBackup;
 
     beforeEach(() => {
-      // remove window.localStorage
       localStorageBackup = window.localStorage;
-      console.log('before clearing', window.localStorage);
       Object.defineProperties(window, {
         localStorage: {
           value: null,
           writable: true
         }
       });
-      console.log('after clearing', window.localStorage);
     });
 
     afterEach(() => {
-      // restore window.localStorage
-      console.log('before restoring', window.localStorage);
       Object.defineProperties(window, {
         localStorage: {
           value: localStorageBackup,
           writable: false
         }
       });
-      console.log('after restoring', window.localStorage);
     });
 
     it('should throw an error if local storage is not available', () => {
       expect(() => {
         platformMock.isCordova = false;
         createAndLoad();
-      } ).toThrow(new Error('localstorage not available'));
+      }).toThrow(new Error('localstorage not available'));
     });
   });
 
@@ -86,7 +82,7 @@ describe('Persistence Provider', () => {
       expect(persistenceProvider.storage.constructor.name).toBe('LocalStorage');
     });
     it('should correctly perform a profile roundtrip', done => {
-      let p = { name: 'My profile' };
+      const p = { name: 'My profile' };
       persistenceProvider
         .storeNewProfile(p)
         .catch(err => expect(err).toBeNull)
@@ -101,7 +97,7 @@ describe('Persistence Provider', () => {
     });
 
     it('should fail to create a profile when one already exists', () => {
-      let p = { name: 'My profile' };
+      const p = { name: 'My profile' };
       persistenceProvider
         .storeNewProfile(p)
         .then(() => {
@@ -112,10 +108,10 @@ describe('Persistence Provider', () => {
         });
     });
 
-    it('should be able to delete a profile', (done) => {
-      let p = { name: 'My profile' };
+    it('should store profile', done => {
+      const p = { name: 'My profile' };
       persistenceProvider
-        .storeNewProfile(p)
+        .storeProfile(p)
         .catch(err => expect(err).toBeNull)
         .then(() => {
           return persistenceProvider.getProfile();
@@ -123,12 +119,40 @@ describe('Persistence Provider', () => {
         .then(profile => {
           expect(typeof profile).toEqual('object');
           expect(profile.name).toEqual('My profile');
-          return persistenceProvider.deleteProfile();
-        }).then(() => {
-          return persistenceProvider.getProfile();
-        }).then(profile => {
-          expect(profile).toBeNull();
-        }).then(done);
+        })
+        .then(done);
+    });
+
+    it('should set and get wallet order', done => {
+      const walletId: string = '647b39d8-a88c-42d5-8728-0ba898dcdd90';
+      const order: number = 1;
+      persistenceProvider
+        .setWalletOrder(walletId, order)
+        .catch(err => expect(err).toBeNull)
+        .then(() => {
+          return persistenceProvider.getWalletOrder(walletId);
+        })
+        .then(order => {
+          expect(typeof order).toEqual('number');
+        })
+        .then(done);
+    });
+
+    it('should remove wallet order', done => {
+      const walletId: string = '647b39d8-a88c-42d5-8728-0ba898dcdd90';
+      const order: number = 1;
+      persistenceProvider
+        .setWalletOrder(walletId, order)
+        .catch(err => expect(err).toBeNull)
+        .then(() => {
+          persistenceProvider.removeWalletOrder(walletId).then(() => {
+            return persistenceProvider.getWalletOrder(walletId);
+          });
+        })
+        .then(order => {
+          expect(typeof order).toEqual('undefined');
+        })
+        .then(done);
     });
   });
 });

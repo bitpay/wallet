@@ -1,0 +1,70 @@
+action-card-v4.card {
+  display: block;
+  padding: 0px;
+  border-radius: 14px;
+
+  .action-card {
+    &__content {
+      background: white;
+      padding: 15px 20px;
+    }
+
+    &__title {
+      color: #000000;
+      font-size: 20px;
+      font-weight: 500;
+      padding: 7px 0px 10px;
+    }
+
+    &__body {
+      font-size: 16px;
+      font-weight: 300;
+      line-height: 23px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      [action-card-body] {
+        margin-right: 8px;
+        min-width: 0;
+      }
+
+      .cta {
+        color: map-get($colors, primary);
+        background-color: rgba(79, 110, 247, 0.15);
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: 500;
+        line-height: 19px;
+        height: 36px;
+        white-space: nowrap;
+        border-radius: 18px;
+        display: flex;
+        align-items: center;
+
+        [action-card-button] {
+          padding: 0rem 1.2rem;
+        }
+      }
+    }
+
+    &__cta {
+      margin: 30px -20px 0;
+      position: relative;
+
+      &:before {
+        background: rgba(136, 154, 196, 0.1);
+        content: '';
+        display: block;
+        height: 1px;
+        transform: translateX(18px);
+        top: -20px;
+        width: calc(100% - 36px);
+      }
+
+      > div {
+        padding: 16px;
+      }
+    }
+  }
+}

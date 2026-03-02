@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="36px" height="36px" viewBox="0 0 36 36" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Button/Scan</title>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Group">
+            <rect id="Rectangle" fill="#EDF0FE" x="0" y="0" width="36" height="36" rx="18"></rect>
+            <path d="M25.5,20.5 L25.5,25.5 L20.5,25.5 L20.5,23.5 L23.5,23.5 L23.5,20.5 L25.5,20.5 Z M12.5,20.5 L12.5,23.5 L15.5,23.5 L15.5,25.5 L10.5,25.5 L10.5,20.5 L12.5,20.5 Z M28,18 L28,18.8333333 L8,18.8333333 L8,18 L28,18 Z M15.5,11.3333333 L15.5,13 L12.166,12.9993333 L12.1666667,16.3333333 L10.5,16.3333333 L10.5,11.3333333 L15.5,11.3333333 Z M25.5,11.3333333 L25.5,16.3333333 L23.5,16.3333333 L23.5,13.3333333 L20.5,13.3333333 L20.5,11.3333333 L25.5,11.3333333 Z" id="Rectangle-Copy-2" fill="#4F6EF7"></path>
+        </g>
+    </g>
+</svg>

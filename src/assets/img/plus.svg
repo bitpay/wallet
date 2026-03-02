@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="20px" height="20px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 54.1 (76490) - https://sketchapp.com -->
+    <title>Left-Controler</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Header/Activity-(Vaults)" transform="translate(-20.000000, -55.000000)" fill="#1A3B8B">
+            <g id="Left-Controler" transform="translate(0.000000, 23.000000)">
+                <g id="Generic/Small/Add-" transform="translate(20.000000, 32.000000)">
+                    <g id="e-add">
+                        <path d="M18.75,8.75 L11.25,8.75 L11.25,1.25 C11.25,0.5 10.75,0 10,0 C9.25,0 8.75,0.5 8.75,1.25 L8.75,8.75 L1.25,8.75 C0.5,8.75 0,9.25 0,10 C0,10.75 0.5,11.25 1.25,11.25 L8.75,11.25 L8.75,18.75 C8.75,19.5 9.25,20 10,20 C10.75,20 11.25,19.5 11.25,18.75 L11.25,11.25 L18.75,11.25 C19.5,11.25 20,10.75 20,10 C20,9.25 19.5,8.75 18.75,8.75 Z" id="Path"></path>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

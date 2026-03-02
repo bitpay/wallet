@@ -1,34 +1,118 @@
 page-bitpay-card-intro {
-  ion-content {
-    background: url(../assets/img/onboarding-welcome-bg.png), linear-gradient(to bottom, rgba(30, 49, 134, 1) 0%, rgba(17, 27, 73, 1) 100%);
-    background-position: top center;
-    background-size: contain;
-    background-repeat: no-repeat;
-    color: #fff;
-    .bitpayCard {
-      &-illustration {
-        display: flex;
-        justify-content: center;
-        padding: 2rem;
-        &-img {
-          width: 100%;
-          max-width: 400px;
+  .scroll-content {
+    margin-bottom: 0 !important;
+    padding-bottom: 140px;
+  }
+  ion-footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  ion-toolbar {
+    border-top-right-radius: 25px;
+    border-top-left-radius: 25px;
+    background-color: white;
+    animation: fadein 500ms;
+
+    box-shadow: 0 -5px 40px 0 rgba(0, 0, 0, 0.1);
+    .toolbar-content {
+      padding: 20px 0;
+    }
+  }
+  ion-header {
+    .info {
+      opacity: 0.22;
+    }
+  }
+
+  @keyframes fadein {
+    from {
+      transform: translateY(20px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  .bitpayCard {
+    &-header {
+      /*  TODO  border-radius: 0 0 65% 25%;*/
+      overflow: hidden;
+      text-align: center;
+      display: grid;
+      grid-template-columns: 1fr 1.5fr;
+      margin: 0 16px;
+      align-items: center;
+      &-title {
+        font-size: 25px;
+        font-weight: 700;
+        line-height: 34px;
+        text-align: start;
+      }
+      &-img {
+        height: 306px;
+        justify-self: end;
+        img {
+          margin-top: 38px;
+          /* TODO width: 232px; */
         }
       }
-      &-info:before {
-        font-size: 22px;
-        line-height: 22px;
-        margin-top: 6px;
+    }
+    &-content {
+      margin: 0 16px;
+      .title {
+        margin-top: 32px;
+        font-size: 16px;
+        font-weight: normal;
+        line-height: 25px;
+        color: #252525;
+      }
+      p {
+        color: #252525;
+        font-size: 16px;
+        line-height: 25px;
       }
     }
-    ion-slides {
-      max-height: 140px;
-      padding: 10px;
-      .slider-text {
-        text-align: center;
-        font-size: 1.5rem;
-        color: rgba(255, 255, 255, .7);
+    &-items-container {
+      margin-bottom: 45px;
+    }
+    &-item {
+      margin-top: 20px;
+      &-header {
+        display: flex;
+        align-items: center;
+        img {
+          height: 45px;
+          width: 45px;
+        }
       }
+      &-title {
+        font-size: 21px;
+        font-weight: bold;
+        line-height: 31px;
+        margin-left: 1.5rem;
+      }
+      p {
+        padding-left: 60px;
+        margin-top: 0px;
+      }
+    }
+    &__agreement {
+      margin: 20px 0 150px 0;
+      font-size: 11px;
+      color: #434d5a;
+    }
+    &__link-button {
+      cursor: pointer;
+      padding-left: 15px;
+      font-size: 16px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #4f6ef7;
+      height: 45px;
     }
   }
 }

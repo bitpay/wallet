@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="UTF-8">
+  <title>*USERVISIBLENAME*</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="format-detection" content="telephone=no">
+  <meta name="msapplication-tap-highlight" content="no">
+
+  <link rel="shortcut icon" href="assets/img/app/favicon.ico">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="*THEMECOLOR*">
+
+  <link href="build/main.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+  <!-- Workaround to prevent autofill -->
+  <div style="display: none;">
+    <input type="text" id="PreventTextAutocomplete" name="PreventTextAutocomplete" autocomplete="address-level4" />
+    <input type="password" id="PreventPasswordAutocomplete" name="PreventPasswordAutocomplete" autocomplete="address-level4" />
+  </div>
+
+  <!-- Ionic's root component and where the app will load -->
+  <ion-app></ion-app>
+
+  <!-- The polyfills js is generated during the build process -->
+  <script src="build/polyfills.js"></script>
+
+  <!-- cordova.js required for cordova apps -->
+  <script src="cordova.js"></script>
+
+  <!-- The vendor js is generated during the build process
+       It contains all of the dependencies in node_modules -->
+  <script src="build/vendor.js"></script>
+
+  <!-- The main bundle js is generated during the build process -->
+  <script src="build/main.js"></script>
+
+</body>
+
+</html>

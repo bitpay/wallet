@@ -1,0 +1,52 @@
+amount-picker {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 45px 0;
+
+  .amount-picker {
+    &__amount {
+      color: #1a3a8b;
+      font-size: 50px;
+      font-weight: 500;
+      margin: 0 20px;
+      min-width: 120px;
+
+      @media (max-width: 350px) {
+        font-size: 40px;
+      }
+    }
+
+    &__picker {
+      align-items: center;
+      display: flex;
+      justify-content: center;
+    }
+
+    &__button {
+      @include center;
+      border: 1px solid#1A3A8B;
+      border-radius: 50%;
+      height: 39px;
+      width: 39px;
+      transition: opacity 100ms ease;
+
+      &.hidden {
+        opacity: 0;
+        pointer-events: none;
+      }
+    }
+
+    &__values {
+      font-size: 15px;
+      margin-top: 20px;
+      max-width: calc(100% - 40px);
+
+      &__value {
+        white-space: nowrap;
+      }
+    }
+  }
+}

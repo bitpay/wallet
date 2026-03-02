@@ -1,0 +1,73 @@
+page-backup-key {
+  ion-content.content {
+    background: white;
+  }
+  .key-container {
+    height: 65vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    @media (max-height: 350px) {
+      align-items: baseline;
+    }
+    .word-container {
+      text-align: center;
+      .word-title {
+        font-size: 18px;
+        padding: 20px;
+        color: color($colors, dark);
+      }
+      .word {
+        background: color($colors, light);
+        margin: auto;
+        border-radius: 3px;
+        color: #192c3a;
+        text-align: center;
+        min-width: 220px;
+        min-height: 171px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        span {
+          padding: 2.5rem 4rem 2.5rem 4rem;
+          font-weight: bold;
+          font-size: 35px;
+          letter-spacing: 2.5px;
+          overflow: auto;
+          line-height: normal;
+          .button {
+            height: 3rem;
+            font-size: 14px;
+          }
+        }
+      }
+      .word-number {
+        margin-top: 1rem;
+        font-weight: bold;
+      }
+    }
+  }
+
+  .bottom-absolute {
+    display: flex;
+    justify-content: space-between;
+    padding: 0;
+    margin-bottom: 20px;
+    .button-left,
+    .button-right {
+      font-size: 1.8rem;
+      text-transform: uppercase;
+    }
+    .button-left {
+      color: color($colors, light-grey);
+      margin: 0rem 2.5rem 0rem 1rem;
+    }
+    .button-right {
+      color: color($colors, primary);
+      margin: 0rem 1rem 0rem 2.5rem;
+    }
+  }
+  .right-align {
+    justify-content: flex-end;
+  }
+}

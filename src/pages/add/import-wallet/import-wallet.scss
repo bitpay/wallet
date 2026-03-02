@@ -1,4 +1,7 @@
 page-import-wallet {
+  textarea {
+    height: 10vh;
+  }
   .assertive {
     color: color($colors, danger);
     ion-label {

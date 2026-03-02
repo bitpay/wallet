@@ -1,0 +1,16 @@
+create-new-wallet {
+  .zero-state-wallets {
+    background-color: #f0f2fc;
+    overflow: hidden;
+    width: 100%;
+    height: 226px;
+
+    .zero-state-image {
+      text-align: center;
+      img {
+        width: 270px;
+        margin-top: 25px;
+      }
+    }
+  }
+}

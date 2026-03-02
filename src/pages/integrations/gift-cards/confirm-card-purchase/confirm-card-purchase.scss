@@ -1,0 +1,98 @@
+confirm-card-purchase-page {
+  .wallets-list {
+    ion-label {
+      margin-bottom: 8px;
+    }
+  }
+
+  ion-item.item.confirm-header {
+    border: none;
+  }
+
+  .settings-list ion-item-divider {
+    padding-left: 16px;
+  }
+
+  .confirm-header {
+    ion-label {
+      display: flex;
+      align-items: center;
+    }
+
+    &__amount {
+      flex-grow: 1;
+    }
+
+    .card-list-item__icon {
+      flex-shrink: 0;
+
+      img {
+        border: 1px #9ba3ae solid;
+        border-radius: 50%;
+        height: 45px;
+        margin-top: 35px;
+        width: 45px;
+      }
+    }
+  }
+
+  .item-img {
+    &.info {
+      padding-left: 10px;
+    }
+  }
+
+  .gift-card-title {
+    display: block;
+    margin-bottom: 1.2rem;
+    margin-top: 1.2rem;
+    font-size: 18px;
+    font-weight: 500;
+
+    img {
+      width: 3.5rem;
+      margin-right: 1.5rem;
+      box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.3);
+      border-radius: $icon-border-radius;
+    }
+  }
+
+  .amount-label {
+    .amount {
+      font-size: 38px;
+      margin-bottom: 0.5rem;
+    }
+
+    .alternative {
+      font-size: 12px;
+      color: color($colors, grey);
+    }
+  }
+
+  .wallets-list {
+    .wallet {
+      display: flex;
+      align-items: center;
+      margin-top: 1rem;
+    }
+  }
+
+  .amazon-info {
+    * {
+      white-space: normal;
+      font-size: 12px;
+      line-height: 16px;
+    }
+  }
+
+  .last-item {
+    margin-left: auto !important;
+  }
+
+  .terms {
+    > p {
+      margin-left: 10px;
+      margin-right: 10px;
+    }
+  }
+}

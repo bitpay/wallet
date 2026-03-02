@@ -1,0 +1,31 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title class="bp-title">{{merchant.displayName}}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <div class="wrapper">
+    <div class="content">
+      <div class="cover"><img [src]="merchant.icon" /></div>
+      <div class="body">
+        <div class="body__title">{{merchant.displayName}}</div>
+        <div class="body__discount" *ngIf="merchant.discount"
+          [ngStyle]="{color: getDiscountTextColor(merchant, themeProvider.getCurrentAppTheme())}">
+          <gift-card-discount-text [merchant]="merchant" [discount]="merchant.discount"></gift-card-discount-text>
+        </div>
+        <div class="body__caption">{{merchant.caption}}</div>
+        <div class="section-divider"></div>
+        <div class="body__subtitle">Payment Instructions</div>
+        <div class="body__instructions">{{merchant.instructions}}</div>
+      </div>
+      <div class="footer">
+        <button ion-button class="button-standard button-primary" (click)="goToMerchant()">
+          <img src="assets/img/icon-chain-link.svg" />
+          <span *ngIf="!merchant.cta || !merchant.cta.displayText" [clamp]="1">Go to {{merchant.displayName}}</span>
+          <span *ngIf="merchant.cta && merchant.cta.displayText" [clamp]="1">{{merchant.cta.displayText}}</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</ion-content>

@@ -1,0 +1,25 @@
+<wide-header-page title="{{'Buy Crypto Settings' | translate}}">
+  <div page-content>
+    <ion-list class="bp-list top-padding">
+      <ion-item>
+        <ion-label>{{'Show "Buy Crypto"' | translate}}</ion-label>
+        <ion-toggle [(ngModel)]="showInHome" (ionChange)="showInHomeSwitch()"></ion-toggle>
+      </ion-item>
+      <div *ngIf="simplexPaymentRequests?.length || wyrePaymentRequests?.length">
+        <ion-item-divider>{{'Used Exchanges' | translate}}</ion-item-divider>
+        <ion-list class="bp-list">
+          <button *ngIf="simplexPaymentRequests?.length" ion-item (click)="goToSimplexPage()">
+            <ion-icon class="item-img" item-start>
+              <img [src]="themeProvider.currentAppTheme !== 'dark' ? 'assets/img/simplex/logo-simplex-color.svg' : 'assets/img/simplex/logo-simplex-dm.png'">
+            </ion-icon>
+          </button>
+          <button *ngIf="wyrePaymentRequests?.length" ion-item (click)="goToWyrePage()">
+            <ion-icon class="item-img" item-start>
+              <img [src]="themeProvider.currentAppTheme !== 'dark' ? 'assets/img/wyre/logo-wyre.svg' : 'assets/img/wyre/logo-wyre-dm.svg'">
+            </ion-icon>
+          </button>
+        </ion-list>
+      </div>
+    </ion-list>
+  </div>
+</wide-header-page>

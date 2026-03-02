@@ -1,0 +1,136 @@
+wallet-receive,
+page-choose-fee-level {
+  padding-bottom: calc(env(safe-area-inset-bottom));
+  .error {
+    color: color($colors, danger);
+  }
+  .title {
+    font-weight: 500;
+    > img {
+      vertical-align: sub;
+      margin-right: 5px;
+    }
+  }
+  .back-button {
+    background-color: $background-color;
+    display: inline-block;
+    width: 100%;
+    ion-icon {
+      padding: 1.5rem 20px 1.5rem 20px;
+      cursor: pointer;
+    }
+  }
+  .addr-header {
+    margin: 1rem 0;
+    padding: 0 15px;
+    .addr-title {
+      height: 30px;
+      width: 86px;
+      font-size: 23px;
+      font-weight: 500;
+      line-height: 30px;
+      color: black;
+    }
+
+    .addr-update {
+      height: 31px;
+      width: 32px;
+      background-color: #edf0fe;
+      border-radius: 50%;
+      margin-top: 0;
+      .spin-backwards {
+        animation: spin-backwards 0.5s ease-out 1;
+      }
+      @keyframes spin-backwards {
+        from {
+          transform: rotate(210deg);
+        }
+        to {
+          transform: rotate(-360deg);
+        }
+      }
+      .fade-in-out {
+        opacity: 0.1;
+      }
+      @keyframes bounce-down {
+        0% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(15%);
+        }
+        100% {
+          transform: translateY(0);
+        }
+      }
+      $spinner-height: 18px;
+      .spin-icon {
+        height: $spinner-height;
+      }
+      .spinner {
+        float: right;
+        padding-bottom: 0px;
+        border: 1px solid #d0d5ef;
+        border-top: 1px solid #5b7cea;
+        border-radius: 50%;
+        width: $spinner-height;
+        height: $spinner-height;
+        margin: 2px;
+      }
+      .spin-fast {
+        animation: spin-fast 0.3s linear infinite;
+      }
+      @keyframes spin-fast {
+        from {
+          transform: rotate(0deg);
+        }
+        to {
+          transform: rotate(360deg);
+        }
+      }
+    }
+  }
+  .addr-content {
+    margin: 0 15px 15px 15px;
+    .addr-container {
+      text-align: center;
+      font-size: 15px;
+      .text-address {
+        background-color: #f8f8f8;
+        color: color($colors, light-grey);
+        padding: 1.3rem 1rem;
+        border-radius: 6px;
+        position: relative;
+        .address-text {
+          width: 100%;
+          vertical-align: middle;
+          display: inline-block;
+          opacity: 1;
+          transition: opacity 500ms ease;
+          padding-left: 30px;
+          .address-placeholder {
+            font-size: 14px;
+            @media (max-height: 530px) {
+              font-size: 11.5px;
+            }
+          }
+        }
+        .copy-to-clip {
+          position: absolute;
+          left: 10px;
+          margin-top: 2px;
+        }
+      }
+    }
+  }
+  .blur {
+    filter: blur(10px);
+  }
+  .segment-button {
+    color: black;
+  }
+  .safe-area {
+    margin-bottom: calc(1.5rem + env(safe-area-inset-bottom));
+    margin-bottom: -webkit-calc(1.5rem + env(safe-area-inset-bottom));
+  }
+}

@@ -1,0 +1,233 @@
+page-exchange-crypto {
+  .history-btn {
+    height: 42px;
+  }
+  ion-spinner {
+    * {
+      stroke: color($colors, primary) !important;
+    }
+  }
+  .bp-list {
+    margin-top: 40px;
+    @media (max-height: 620px) {
+      margin-top: 20px;
+    }
+    @media (max-height: 580px) {
+      margin-top: 10px;
+    }
+    .row {
+      flex-wrap: nowrap;
+    }
+  }
+  .wallet {
+    display: flex;
+    align-items: center;
+    coin-icon {
+      ion-icon.item-img.icon {
+        padding: 5px;
+        img {
+          min-width: 24px;
+        }
+      }
+    }
+    .name-balance {
+      max-width: 300px;
+      @media (max-width: 480px) {
+        max-width: 220px;
+      }
+      @media (max-width: 380px) {
+        max-width: 120px;
+      }
+      .balance {
+        opacity: 0.5;
+      }
+    }
+  }
+  .amount {
+    text-align: end;
+    .amount-container {
+      font-weight: normal;
+      font-size: 26px;
+      color: #434d5a;
+      min-width: 10rem;
+      height: 4.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      cursor: pointer;
+      &.fix-font-size-8 {
+        font-size: 24px;
+        @media (max-width: 440px) {
+          font-size: 20px;
+        }
+      }
+      &.fix-font-size-10 {
+        font-size: 22px;
+        @media (max-width: 440px) {
+          font-size: 18px;
+        }
+      }
+      &.fix-font-size-12 {
+        font-size: 20px;
+        @media (max-width: 440px) {
+          font-size: 16px;
+        }
+      }
+      &.fix-font-size-14 {
+        font-size: 18px;
+        @media (max-width: 440px) {
+          font-size: 14px;
+        }
+      }
+      &.send-max {
+        font-size: 16px;
+      }
+    }
+  }
+  .arrow-divider {
+    height: 2px;
+    margin: 3rem 1.8rem;
+    text-align: center;
+    img {
+      margin-top: -20px;
+    }
+    @media (max-height: 620px) {
+      margin: 2.2rem 1.8rem;
+    }
+    @media (max-height: 580) {
+      margin: 1.8rem 1.8rem;
+    }
+  }
+  .bp-list {
+    ion-item {
+      cursor: pointer;
+    }
+    .item-label {
+      color: #434d5a;
+      line-height: 18px;
+      padding-left: 20px;
+      &.card-title {
+        margin: 0px auto;
+      }
+    }
+  }
+  .exchange-container {
+    border: 1px solid #eaeaea;
+    border-radius: 9px;
+    margin: 0px 15px;
+    padding-top: 14px;
+    ion-row.row-selector {
+      padding: 10px 6px;
+      &.fix-padding {
+        padding-bottom: 5px;
+      }
+    }
+    .select-wallet-button {
+      height: 40px;
+      padding: 0px 14px;
+      border-radius: 12px;
+      box-shadow: none;
+      font-weight: 400;
+      font-size: 16px;
+      background: color($colors, primary);
+      &.selected {
+        background: #f5f7f8;
+        color: #434d5a;
+        span {
+          font-weight: 500;
+          font-size: 16px;
+          line-height: 18px;
+        }
+      }
+      ion-icon {
+        &.item-img.icon {
+          margin: 0;
+          margin-right: 10px;
+          img {
+            width: 20px;
+            min-width: 20px;
+          }
+        }
+        &.ion-ios-arrow-down-outline,
+        &.ion-ios-arrow-up-outline {
+          margin-left: 10px;
+        }
+      }
+      .note-container {
+        max-width: 180px;
+        @media (max-width: 580px) {
+          max-width: 150px;
+        }
+        @media (max-width: 480px) {
+          max-width: 130px;
+        }
+        @media (max-width: 430px) {
+          max-width: 110px;
+        }
+        @media (max-width: 400px) {
+          max-width: 80px;
+        }
+        @media (max-width: 350px) {
+          max-width: 60px;
+        }
+      }
+    }
+  }
+  .rate-container {
+    justify-content: flex-end;
+    margin-right: 12px;
+    margin-bottom: 15px;
+    .rate {
+      color: color($colors, light-grey);
+    }
+  }
+  .partner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 1rem;
+    padding-bottom: 3rem;
+    .oneInch-img {
+      margin-right: -5px;
+    }
+    .changelly-img {
+      margin-left: 7px;
+    }
+  }
+  .slippage-label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    margin: 2rem auto 0 auto;
+    ion-icon {
+      font-size: 20px;
+      margin-left: 1rem;
+    }
+  }
+  .slippage-container {
+    display: flex;
+    padding: 1rem 1rem 1rem 1.5rem;
+    margin-bottom: 2rem;
+    .slippage-item {
+      border: 1px solid color($colors, light-grey);
+      min-width: 6rem;
+      margin: 0rem 0.4rem;
+      border-radius: 15px;
+      padding: 0rem 1rem;
+      font-size: 16px;
+      height: 31px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      &.selected {
+        background-color: color($colors, primary);
+        border: 1px solid color($colors, primary);
+        color: white;
+      }
+    }
+  }
+  .bottom-buttons {
+    margin-top: 3rem;
+  }
+}

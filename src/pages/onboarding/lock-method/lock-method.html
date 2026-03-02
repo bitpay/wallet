@@ -1,0 +1,38 @@
+<ion-header no-border>
+  <ion-navbar hideBackButton transparent></ion-navbar>
+</ion-header>
+
+<ion-content no-bounce>
+  <div class="lock-method" *ngIf="biometricMethod == 'faceId' && !pinMethodSelected">
+    <div class="lock-method-info">
+      <div class="img-container">
+        <img src="assets/img/onboarding/faceId.svg" />
+      </div>
+      <div class="info">
+        <h3 class="title" translate>Use facial recognition to unlock?</h3>
+        <div class="text" translate>Unlock BitPay faster by setting up facial recognition.</div>
+      </div>
+    </div>
+  </div>
+  <div class="lock-method" *ngIf="biometricMethod == 'fingerprint' && !pinMethodSelected">
+    <div class="lock-method-info">
+      <div class="img-container">
+        <img src="assets/img/onboarding/touchId.svg" />
+      </div>
+      <div class="info">
+        <h3 class="title" translate>Use fingerprint authentication to unlock?</h3>
+        <div class="text" translate>Unlock BitPay faster by setting up fingerprint authentication.</div>
+      </div>
+    </div>
+  </div>
+</ion-content>
+<ion-footer no-border *ngIf="biometricMethod && !pinMethodSelected">
+  <ion-toolbar>
+    <button ion-button class="button-standard no-margin-bottom" (click)="verifyBiometricLockMethod()">
+      {{'Continue' | translate}}
+    </button>
+    <button ion-button clear color="primary" class="button-standard" (click)="showInfoSheet('pincode-info')">
+      {{'No thanks' | translate}}
+    </button>
+  </ion-toolbar>
+</ion-footer>

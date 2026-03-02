@@ -1,0 +1,104 @@
+<action-sheet fromTop="true">
+  <ion-list class="bp-list" [ngSwitch]="sheetType">
+    <div *ngSwitchCase="'wallet-options'">
+      <button ion-item (click)="optionClicked('request-amount')" *ngIf="params.showRequest">
+        <ion-icon class="item-img icon-settings" item-start>
+          <img src="assets/img/specific-amount.svg">
+        </ion-icon>
+        <ion-label>
+          <span class="main-label" translate>Request Specific Amount</span>
+        </ion-label>
+      </button>
+
+      <button ion-item (click)="optionClicked('share-address')" *ngIf="params.showShare">
+        <ion-icon class="item-img icon-settings" item-start>
+          <img src="assets/img/icon-share.svg">
+        </ion-icon>
+        <ion-label>
+          <span class="main-label" translate>Share Address</span>
+        </ion-label>
+      </button>
+    </div>
+
+    <div *ngSwitchCase="'gift-card-options'">
+      <button ion-item (click)="optionClicked('archive')" *ngIf="!params.card.archived">
+        <ion-icon class="item-img icon-settings" item-start>
+          <img src="assets/img/notebook.svg">
+        </ion-icon>
+        <ion-label>
+          <span class="main-label" translate>Archive Card</span>
+        </ion-label>
+      </button>
+
+      <button ion-item (click)="optionClicked('unarchive')" *ngIf="params.card.archived">
+        <ion-icon class="item-img icon-settings" item-start>
+          <img src="assets/img/notebook.svg">
+        </ion-icon>
+        <ion-label>
+          <span class="main-label" translate>Unarchive Card</span>
+        </ion-label>
+      </button>
+
+      <button ion-item (click)="optionClicked('view-invoice')">
+        <ion-icon class="item-img icon-settings" item-start>
+          <img src="assets/img/invoice-icon.svg">
+        </ion-icon>
+        <ion-label>
+          <span class="main-label" translate>View Invoice</span>
+        </ion-label>
+      </button>
+
+      <button ion-item (click)="optionClicked('share-code')" *ngIf="params.showShare">
+        <ion-icon class="item-img icon-settings" item-start>
+          <img src="assets/img/icon-share.svg">
+        </ion-icon>
+        <ion-label>
+          <span class="main-label" translate>Share Claim Code</span>
+        </ion-label>
+      </button>
+
+      <button ion-item (click)="optionClicked('print-card')" *ngIf="!params.hidePrint">
+        <ion-icon class="item-img icon-settings" item-start>
+          <img src="assets/img/printer-p.svg">
+        </ion-icon>
+        <ion-label>
+          <span class="main-label" translate>Print Card</span>
+        </ion-label>
+      </button>
+    </div>
+
+    <div *ngSwitchCase="'address-book'">
+      <button ion-item (click)="optionClicked('send-to-contact')">
+        <ion-icon class="item-img icon-settings" name="send" item-start></ion-icon>
+        <ion-label>
+          <span class="main-label" translate>Send {{params?.coin}} to contact</span>
+        </ion-label>
+      </button>
+
+      <button ion-item (click)="optionClicked('delete-contact')">
+        <ion-icon class="item-img icon-settings" name="trash" item-start></ion-icon>
+        <ion-label>
+          <span class="main-label danger" translate>Delete</span>
+        </ion-label>
+      </button>
+    </div>
+
+    <div *ngSwitchCase="'send-options'">
+      <button ion-item *ngIf="params?.isMultiSend" (click)="optionClicked('multi-send')">
+        <ion-icon class="item-img icon-settings" name="people" item-start></ion-icon>
+        <ion-label>
+          <span class="main-label" translate>Transfer to Multiple Recipients</span>
+        </ion-label>
+      </button>
+
+      <button ion-item *ngIf="params?.isUtxoCoin" (click)="optionClicked('select-inputs')">
+        <ion-icon class="item-img icon-settings" item-start>
+          <img src="assets/img/tab-icons/ico-send.svg">
+        </ion-icon>
+        <ion-label>
+          <span class="main-label" translate>Select inputs for transaction</span>
+        </ion-label>
+      </button>
+    </div>
+  </ion-list>
+</action-sheet>

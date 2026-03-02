@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="14px" viewBox="0 0 16 14" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 50.2 (55047) - http://www.bohemiancoding.com/sketch -->
+    <title>swap-horizontal</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" opacity="0.5" stroke-linecap="round" stroke-linejoin="round">
+        <g id="Button/Change-currency" transform="translate(-11.000000, -43.000000)" stroke="#444444">
+            <g id="Header/Nav/Currency/USD">
+                <g id="Nav/Change-Currency">
+                    <g id="swap-horizontal" transform="translate(11.000000, 43.000000)">
+                        <polyline id="Shape" points="3.5 0.5 0.5 3.5 3.5 6.5"></polyline>
+                        <path d="M12.5,3.5 L0.5,3.5" id="Shape"></path>
+                        <polyline id="Shape" points="12.5 7.5 15.5 10.5 12.5 13.5"></polyline>
+                        <path d="M3.5,10.5 L15.5,10.5" id="Shape"></path>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

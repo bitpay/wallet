@@ -1,0 +1,90 @@
+page-crypto-order-summary {
+  .bp-list {
+    ion-item {
+      cursor: pointer;
+    }
+    .main-label,
+    .amount {
+      font-size: 26px;
+      font-family: Heebo;
+      font-weight: 300;
+      line-height: 24px;
+      color: #434d5a;
+    }
+    .item-label {
+      margin: 0px 18px;
+      color: #434d5a;
+      line-height: 18px;
+    }
+    .address-label {
+      margin-right: 9px;
+    }
+  }
+  .exchange-container {
+    border: 1px solid #eaeaea;
+    border-radius: 9px;
+    margin: 20px 15px;
+    padding: 14px 0px 4px 0px;
+    ion-row.row-selector {
+      padding: 10px 6px;
+      &.fix-padding {
+        padding-bottom: 5px;
+      }
+    }
+    .warn-msg {
+      color: color($colors, warning);
+    }
+    .select-wallet-button {
+      height: 40px;
+      padding: 0px 14px;
+      border-radius: 12px;
+      box-shadow: none;
+      font-weight: 400;
+      font-size: 16px;
+      background: color($colors, primary);
+      &.selected {
+        background: #f5f7f8;
+        color: #434d5a;
+        span {
+          font-weight: 500;
+          font-size: 16px;
+          line-height: 18px;
+        }
+      }
+      ion-icon {
+        &.item-img.icon {
+          margin: 0;
+          margin-right: 10px;
+          img {
+            width: 20px;
+            min-width: 20px;
+          }
+        }
+        &.ion-ios-arrow-down-outline,
+        &.ion-ios-arrow-up-outline {
+          margin-left: 10px;
+        }
+      }
+      .note-container {
+        max-width: 180px;
+        @media (max-width: 400px) {
+          max-width: 160px;
+        }
+      }
+    }
+    ion-note.note {
+      ion-icon.item-img.icon {
+        &.icon-md,
+        &.icon-ios {
+          margin: 0;
+          img {
+            width: 42px;
+            &.fix-payment-icon {
+              width: 52px;
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,28 @@
+<ion-header>
+  <ion-navbar transparent>
+    <ion-buttons right>
+      <button (click)="close(true)" ion-button color="primary" *ngIf="(action === 'pinSetUp' || action === 'lockSetUp') && isCordova">
+        {{'Cancel' | translate}}
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content no-bounce fullscreen>
+  <div class="pin-header">
+    <div class="title">
+      <div *ngIf="!disableButtons">
+        <span class="message" *ngIf="!confirmingPin && !incorrect" translate>Please enter your PIN</span>
+        <span class="message" *ngIf="confirmingPin && !incorrect" translate>Confirm your PIN</span>
+        <span class="message" *ngIf="incorrect" translate>Incorrect PIN, try again.</span>
+      </div>
+      <div *ngIf="disableButtons">
+        <span class="message" *ngIf="expires" translate>Try again in {{expires}}</span>
+      </div>
+    </div>
+  </div>
+  <div class="code-wrapper">
+    <pin-dots [pin]="currentPin" animate></pin-dots>
+    <pin-pad (keystroke)="newEntry($event)" type="pin"></pin-pad>
+  </div>
+</ion-content>

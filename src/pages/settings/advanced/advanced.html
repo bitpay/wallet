@@ -1,35 +1,50 @@
-<ion-header>
-  <ion-navbar>
-    <ion-title>{{'Advanced' | translate}}</ion-title>
-  </ion-navbar>
-</ion-header>
-
-<ion-content>
-  <ion-item-divider></ion-item-divider>
-  <div class="advanced">
-    <div class="advanced-toggle">
-      <ion-label>{{'Use Unconfirmed Funds' | translate}}</ion-label>
-      <ion-toggle [(ngModel)]="spendUnconfirmed" (ionChange)="spendUnconfirmedChange()"></ion-toggle>
-    </div>
-    <span translate>If enabled, wallets will also try to spend unconfirmed funds. This option may cause transaction delays.</span>
+<wide-header-page title="{{ 'Advanced' | translate }}">
+  <div page-content>
+    <ion-list class="settings-list bp-list">
+      <button ion-item (click)="resetAllSettings()">
+        <ion-label>{{ 'Reset All Settings' | translate }}</ion-label>
+      </button>
+      <ion-item class="with-label no-border">
+        <ion-label>{{ 'Use Unconfirmed Funds' | translate }}</ion-label>
+        <ion-toggle [(ngModel)]="spendUnconfirmed" (ionChange)="spendUnconfirmedChange()"></ion-toggle>
+      </ion-item>
+      <label-tip type="info" header="no-header">
+        <div label-tip-body>
+          <div translate>
+            If enabled, wallets will also try to spend unconfirmed funds.
+          </div>
+          <div *ngIf="!isCopay" translate>
+            However, unconfirmed funds are not allowed for spending with merchants, BitPay Card loads, or BitPay in-app gift card purchases.
+          </div>
+        </div>
+      </label-tip>
+      <ion-item class="with-label no-border">
+        <ion-label>{{ 'Customize nonce' | translate }}</ion-label>
+        <ion-toggle [(ngModel)]="showCustomizeNonce" (ionChange)="showCustomizeNonceChange()"></ion-toggle>
+      </ion-item>
+      <label-tip type="info" header="no-header">
+        <div label-tip-body>
+          <div translate>
+            If enabled, the transaction nonce could be changed on the confirm view. This is an advanced feature, use cautiously.
+          </div>
+        </div>
+      </label-tip>
+      <ion-item class="with-label no-border">
+        <ion-label>{{ 'Enable BTC Replace-By-Fee' | translate }}</ion-label>
+        <ion-toggle [(ngModel)]="showEnableRBF" (ionChange)="showEnableRBFChange()"></ion-toggle>
+      </ion-item>
+      <label-tip type="info" header="no-header">
+        <div label-tip-body>
+          <div translate>
+            If enabled, your transactions will be marked as non-final, and you will have the possibility, while they are unconfirmed, to replace them with transactions that pay higher fees. Note that some merchants do not accept non-final transactions until they are confirmed.
+          </div>
+        </div>
+      </label-tip>
+    </ion-list>
+    <ion-list class="settings-list bp-list">
+      <button ion-item *ngIf="oldProfileAvailable && wallets && wallets[0]" class="with-label no-border" (click)="openWalletRecoveryPage()" translate>
+        Recover old wallets
+      </button>
+    </ion-list>
   </div>
-  <ion-item-divider></ion-item-divider>
-  <div class="advanced">
-    <div class="advanced-toggle">
-      <ion-label>{{'Use Bitcoin Cash Copay Style Addresses' | translate}}</ion-label>
-      <ion-toggle [(ngModel)]="useLegacyAddress" (ionChange)="useLegacyAddressChange()"></ion-toggle>
-    </div>
-    <span translate>If enabled, Bitcoin Cash addresses will be shown using Copay style address, and not the new cashaddr format.</span>
-  </div>
-  <ion-item-divider></ion-item-divider>
-  <div class="advanced">
-    <div class="advanced-toggle">
-      <ion-label>{{'Recent Transaction Card' | translate}}</ion-label>
-      <ion-toggle [(ngModel)]="recentTransactionsEnabled" (ionChange)="recentTransactionsChange()"></ion-toggle>
-    </div>
-    <span translate>
-      If enabled, the Recent Transactions card - a list of transactions occuring across all wallets - will appear in the Home tab.
-    </span>
-  </div>
-  <ion-item-divider></ion-item-divider>
-</ion-content>
+</wide-header-page>

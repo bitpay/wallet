@@ -1,21 +1,24 @@
-import { HttpClient } from '@angular/common/http';
 import {
   HttpClientTestingModule,
   HttpTestingController
 } from '@angular/common/http/testing';
-import { async, inject, TestBed } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { AppProvider } from '../../providers/app/app';
+import { Logger } from '../../providers/logger/logger';
 import { ReleaseProvider } from './release';
 
 describe('Release Provider', () => {
-  let releaseService: ReleaseProvider;
+  let releaseProvider: ReleaseProvider;
+  let logger: Logger;
   let httpMock: HttpTestingController;
-  let currentAppVersion, latestAppVersion;
+  const currentAppVersion = 'v1.1.1';
+  const latestAppVersion = 'v2.2.2';
+  let loggerSpy;
 
   class AppProviderMock {
-    private info: any;
+    public info;
     constructor() {
-      this.info = { version: '1.1.1' };
+      this.info = { version: currentAppVersion };
     }
   }
 
@@ -24,13 +27,14 @@ describe('Release Provider', () => {
       imports: [HttpClientTestingModule],
       providers: [
         ReleaseProvider,
+        Logger,
         { provide: AppProvider, useClass: AppProviderMock }
       ]
     });
-    releaseService = TestBed.get(ReleaseProvider);
+    releaseProvider = TestBed.get(ReleaseProvider);
+    logger = TestBed.get(Logger);
+    loggerSpy = spyOn(logger, 'error');
     httpMock = TestBed.get(HttpTestingController);
-    currentAppVersion = '1.1.1';
-    latestAppVersion = '2.2.2';
   });
 
   afterEach(() => {
@@ -38,73 +42,63 @@ describe('Release Provider', () => {
   });
 
   it('should get successfully the current app version', () => {
-    // Should return the AppProviderMock object
-    const appVersion = releaseService.getCurrentAppVersion();
+    const appVersion = releaseProvider.getCurrentAppVersion();
 
     expect(appVersion).toBeDefined();
     expect(appVersion).toEqual(currentAppVersion);
   });
 
   it('should get successfully the latest app version', () => {
-    releaseService.getLatestAppVersion().subscribe(version => {
+    releaseProvider.getLatestAppVersion().then((data: { version: string }) => {
+      const version = data.version;
       expect(version).toBeDefined();
       expect(version).toEqual(latestAppVersion);
     });
 
-    const githubReq = httpMock.expectOne(
-      'https://api.github.com/repos/bitpay/copay/releases/latest'
+    const bwsReq = httpMock.expectOne(
+      'https://bws.bitpay.com/bws/api/latest-version'
     );
-    expect(githubReq.request.method).toEqual('GET');
-    githubReq.flush({ tag_name: latestAppVersion });
-  });
-
-  it('should use appVersion when no currentVersion is supplied', () => {
-    let result = releaseService.checkForUpdates(latestAppVersion);
-
-    expect(result.updateAvailable).toBeNull;
-    expect(result.availableVersion).toBeNull;
-    expect(result.error).toBeNull;
-  });
-
-  it('should check unsuccessfully the current app version format', () => {
-    const result = releaseService.checkForUpdates(latestAppVersion, 'V..3.3.3');
-
-    expect(result.updateAvailable).toBeNull;
-    expect(result.availableVersion).toBeNull;
-    expect(result.error).toBeDefined();
-    expect(result.error).toMatch('Cannot');
-    expect(result.error).toMatch('version tag');
+    expect(bwsReq.request.method).toEqual('GET');
+    bwsReq.flush({ version: latestAppVersion });
   });
 
   it('should check unsuccessfully the latest app version format', () => {
-    const result = releaseService.checkForUpdates(
-      'V..3.3.3',
-      currentAppVersion
+    const result = releaseProvider.newReleaseAvailable('V..3.3.3');
+    expect(result).toBeFalsy;
+    expect(loggerSpy).toHaveBeenCalledWith(
+      'Cannot verify the format of version tag. latestVersion V..3.3.3 - currentVersion v1.1.1'
     );
-
-    expect(result.updateAvailable).toBeNull;
-    expect(result.availableVersion).toBeNull;
-    expect(result.error).toBeDefined();
-    expect(result.error).toMatch('Cannot');
-    expect(result.error).toMatch('release tag');
   });
 
-  it('should compare the current and latest app version with the same value', () => {
-    const result = releaseService.checkForUpdates('1.1.1', '1.1.1');
-
-    expect(result.error).toBeNull;
-    expect(result.updateAvailable).toBeNull;
-    expect(result.availableVersion).toBeNull;
+  it('should check unsuccessfully the current app version format', () => {
+    spyOn(releaseProvider, 'getCurrentAppVersion').and.returnValue('V..1.1.1');
+    const result = releaseProvider.newReleaseAvailable(latestAppVersion);
+    expect(result).toBeFalsy;
+    expect(loggerSpy).toHaveBeenCalledWith(
+      'Cannot verify the format of version tag. latestVersion v2.2.2 - currentVersion V..1.1.1'
+    );
   });
 
   it('should be a new version available', () => {
-    const result = releaseService.checkForUpdates(
-      latestAppVersion,
-      currentAppVersion
-    );
+    const result = releaseProvider.newReleaseAvailable(latestAppVersion);
+    expect(result).toBeTruthy;
+  });
 
-    expect(result.error).toBeNull;
-    expect(result.updateAvailable).toBeTruthy;
-    expect(result.availableVersion).toEqual(latestAppVersion);
+  it('should be a new major version available', () => {
+    const majorAppVersion = '2.0.0';
+    const result = releaseProvider.newReleaseAvailable(majorAppVersion);
+    expect(result).toBeTruthy;
+  });
+
+  it('should be a new minor version available', () => {
+    const minorAppVersion = '1.2.0';
+    const result = releaseProvider.newReleaseAvailable(minorAppVersion);
+    expect(result).toBeFalsy;
+  });
+
+  it('should be a new patch version available', () => {
+    const patchAppVersion = '1.1.2';
+    const result = releaseProvider.newReleaseAvailable(patchAppVersion);
+    expect(result).toBeFalsy;
   });
 });

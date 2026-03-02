@@ -1,93 +1,52 @@
-<ion-header>
+<wide-header-page title="{{'Send to' | translate}}">
+  <ion-buttons right *ngIf="showOptions(wallet?.coin)">
+    <button wide-header-bar-button clear class="option-button" (click)="showMoreOptions()" ion-button icon-only>
+      <ion-icon name="ios-more" md="ios-more"></ion-icon>
+    </button>
+  </ion-buttons>
+  <div page-content>
+    <div class="prompt-user-fullscreen-container" *ngIf="shouldShowZeroState()">
+      <div>
+        <div class="prompt-user">
+          <div class="title-icon larger-icon">
+            <img *ngIf="wallet.coin !== 'doge'" src="assets/img/ghost-straight-face.svg">
+            <img *ngIf="wallet.coin === 'doge'" src="assets/img/sad-doge.svg">
+          </div>
+          <div class="title-info">
+            <span translate>Mmm...</span>
+          </div>
+          <div class="subtitle-info" *ngIf="wallet.coin !== 'xrp'; else minXrp">
+            <span translate>It appears that you do not have any money to send.</span>
+          </div>
+        </div>
 
-  <ion-navbar>
-    <ion-title>{{'Send' | translate}}</ion-title>
-  </ion-navbar>
-
-</ion-header>
-<ion-content no-bounce>
-  <div *ngIf="hasBtcWallets || hasBchWallets">
-    <div class="send-header-wrapper">
-      <span class="send-heading" translate>Recipient</span>
-      <ion-item class="search-wrapper">
-        <ion-icon item-start class="bitcoin-icon" name="search-btc"></ion-icon>
-        <ion-input placeholder="{{'Search or enter bitcoin address' | translate}}" [(ngModel)]="search" (ngModelChange)="findContact(search)"></ion-input>
-        <ion-icon item-end class="scan-icon" (click)="openScanner()">
-          <img src="assets/img/scan-ico.svg">
-        </ion-icon>
-      </ion-item>
+        <ng-template #minXrp>
+          <div class="subtitle-info">
+            <p translate>You need a minimum of 20 XRP to send funds.</p>
+          </div>
+        </ng-template>
+      </div>
     </div>
 
-    <div class="card" *ngIf="filteredContactsList && filteredContactsList[0]">
-      <ion-item-divider>
-        <span class="title" translate>Transfer to Contact</span>
-      </ion-item-divider>
-      <ion-list>
-        <button ion-item *ngFor="let item of filteredContactsList" (click)="goToAmount(item)">
-          <ion-icon item-start>
-            <gravatar [name]="item.name" [width]="35" [height]="35" [email]="item.email"></gravatar>
+    <div *ngIf="!shouldShowZeroState()">
+      <div class="send-header-wrapper">
+        <ion-item class="search-wrapper" [ngClass]="{'invalid': invalidAddress && search != ''}">
+          <ion-input placeholder="{{'Search contact or enter address' | translate}}" [(ngModel)]="search" (ngModelChange)="processInput()"></ion-input>
+          <ion-icon *ngIf="invalidAddress && search != ''" item-end class="backspace-icon" name="backspace" (click)="cleanSearch()"></ion-icon>
+          <ion-icon *ngIf="isCordova" item-end class="scan-icon" (click)="openScanner()">
+            <img src="assets/img/scan-ico.svg">
           </ion-icon>
-          <div class="item-title">{{item.name}}</div>
-        </button>
-        <button ion-item class="show-more" *ngIf="contactsShowMore" (click)="showMore()">
-          <span translate>Show all</span>
-        </button>
-      </ion-list>
-    </div>
+        </ion-item>
+      </div>
 
-    <div class="card" *ngIf="walletBtcList && walletBtcList[0]">
-      <ion-item-divider class="title">
-        <img src="assets/img/icon-bitcoin.svg" alt="Bitcoin Wallets" width="16" />
-        <span translate>Transfer to Bitcoin Wallet</span>
-      </ion-item-divider>
-
-      <ion-list>
-        <button ion-item *ngFor="let wallet of walletBtcList" (click)="goToAmount(wallet)">
-          <ion-icon item-start>
-            <img *ngIf="wallet.network == 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet-testnet.svg" class="icon-wallet" />
-            <img *ngIf="wallet.network != 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet.svg" class="icon-wallet" />
-          </ion-icon>
-          <span class="item-title">{{wallet.name}}</span>
-          <ion-note class="wallet-warning" *ngIf="!wallet.isComplete" item-end>
-            {{'Incomplete' | translate}}
-          </ion-note>
-          <ion-note class="wallet-warning" *ngIf="wallet.isComplete && wallet.needsBackup" item-end>
-            {{'Needs backup' | translate}}
-          </ion-note>
-          <ion-note *ngIf="wallet.m > 1 && wallet.isComplete && !wallet.needsBackup" item-end>
-            {{wallet.m}}-{{wallet.n}}
-          </ion-note>
+      <div text-center>
+        <button [disabled]="!validDataFromClipboard" ion-button item-end clear (click)="pasteFromClipboard()" translate>
+          Paste from Clipboard
         </button>
-      </ion-list>
-    </div>
+      </div>
 
-    <div class="card" *ngIf="walletBchList && walletBchList[0]">
-      <ion-item-divider class="title">
-        <img src="assets/img/bitcoin-cash-logo.svg" alt="Bitcoin Cash Wallets" width="22" />
-        <span translate>Transfer to Bitcoin Cash Wallet</span>
-      </ion-item-divider>
+      <page-transfer-to [wallet]="wallet" [searchInput]="search" [useAsModal]="false" [fromWalletDetails]="true" #transferTo></page-transfer-to>
 
-      <ion-list>
-        <button ion-item *ngFor="let wallet of walletBchList" (click)="goToAmount(wallet)">
-          <ion-icon item-start>
-            <img *ngIf="wallet.network == 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet-testnet.svg" class="icon-wallet" />
-            <img *ngIf="wallet.network != 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet.svg" class="icon-wallet" />
-          </ion-icon>
-          <span class="item-title">{{wallet.name}}</span>
-          <ion-note class="wallet-warning" *ngIf="!wallet.isComplete" item-end>
-            {{'Incomplete' | translate}}
-          </ion-note>
-          <ion-note class="wallet-warning" *ngIf="wallet.isComplete && wallet.needsBackup" item-end>
-            {{'Needs backup' | translate}}
-          </ion-note>
-          <ion-note *ngIf="wallet.m > 1 && wallet.isComplete && !wallet.needsBackup" item-end>
-            {{wallet.m}}-{{wallet.n}}
-          </ion-note>
-        </button>
-      </ion-list>
     </div>
   </div>
-  <div *ngIf="!hasBtcWallets && !hasBchWallets" class="no-wallet-message">
-    <span translate>To get started, you'll need to create a bitcoin wallet and get some bitcoin.</span>
-  </div>
-</ion-content>
+</wide-header-page>

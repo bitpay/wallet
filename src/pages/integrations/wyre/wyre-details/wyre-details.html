@@ -1,0 +1,138 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title class="bp-title">
+      {{'Order Details' | translate}}
+    </ion-title>
+    <ion-buttons left>
+      <button class="close-container disable-hover" (click)="close()" ion-button>
+        <ion-icon ios="md-close" md="md-close"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content no-bounce>
+  <div class="header-modal" *ngIf="paymentRequest">
+    <div class="title-modal" translate>
+      Approximate receiving amount
+    </div>
+
+    <div class="subtitle-modal">
+      <img class="icon-service" [src]="themeProvider.currentAppTheme !== 'dark' ? 'assets/img/wyre/logo-wyre.svg' : 'assets/img/wyre/logo-wyre-dm.svg'" alt="Wyre" width="40">
+      {{ paymentRequest.destAmount | number:'1.0-6'}}
+      <span class="amount-unit">{{ paymentRequest.destCurrency }}</span>
+    </div>
+  </div>
+
+  <ion-list class="bp-list" *ngIf="paymentRequest">
+    <ion-item-divider></ion-item-divider>
+    <ion-item *ngIf="paymentRequest.fiatBaseAmount">
+      {{'Approximate receiving fiat amount' | translate}}
+      <ion-note item-end>
+        <span>
+          {{ paymentRequest.fiatBaseAmount }} {{ paymentRequest.sourceCurrency }}
+        </span>
+      </ion-note>
+    </ion-item>
+
+    <label-tip type="warn" header="no-header">
+      <div label-tip-body>
+        <div translate>The final crypto amount you receive when the transaction is complete may differ because it is based on Wyre's exchange rate.</div>
+      </div>
+    </label-tip>
+
+    <ion-item>
+      {{'Paying' | translate}}
+      <ion-note item-end>
+        <span *ngIf="!paymentRequest.sourceAmount">...</span>
+        <span *ngIf="paymentRequest.sourceAmount">
+          {{ paymentRequest.sourceAmount }} {{ paymentRequest.sourceCurrency }}
+        </span>
+      </ion-note>
+    </ion-item>
+
+    <ion-item>
+      {{'Created' | translate}}
+      <ion-note item-end>
+        <span *ngIf="!paymentRequest.created_on">...</span>
+        <span *ngIf="paymentRequest.created_on">
+          {{ paymentRequest.created_on | amDateFormat:'MM/DD/YYYY hh:mm a'}}
+        </span>
+      </ion-note>
+    </ion-item>
+
+    <ion-item *ngIf="paymentRequest.status == 'success' || paymentRequest.status == 'failed'">
+      {{'Status' | translate}}
+      <ion-note item-end>
+        <span class="assertive" *ngIf="paymentRequest.status == 'failed'" translate>Payment request rejected</span>
+        <span *ngIf="paymentRequest.status == 'paymentRequestSent'" translate>Payment request sent</span>
+        <span class="balanced" *ngIf="paymentRequest.status == 'success'" translate>Payment request approved</span>
+      </ion-note>
+    </ion-item>
+
+    <ion-item>
+      {{'Deposit address' | translate}}
+      <div padding-top>
+        <ion-note text-wrap>
+          <span *ngIf="!paymentRequest.dest">...</span>
+          <span *ngIf="paymentRequest.dest" copy-to-clipboard="{{paymentRequest.dest}}">
+            {{ paymentRequest.dest }}
+          </span>
+        </ion-note>
+      </div>
+    </ion-item>
+
+    <ion-item *ngIf="paymentRequest.paymentMethodName">
+      {{'Payment method' | translate}}
+      <div padding-top>
+        <ion-note text-wrap>
+          <span copy-to-clipboard="{{paymentRequest.paymentMethodName}}">
+            {{ paymentRequest.paymentMethodName }}
+          </span>
+        </ion-note>
+      </div>
+    </ion-item>
+
+    <ion-item>
+      Transfer ID
+      <div padding-top>
+        <ion-note text-wrap>
+          <span *ngIf="!paymentRequest.transferId">...</span>
+          <span *ngIf="paymentRequest.transferId" copy-to-clipboard="{{paymentRequest.transferId}}">
+            {{ paymentRequest.transferId }}
+          </span>
+        </ion-note>
+      </div>
+    </ion-item>
+
+    <ion-item class="no-border">
+      {{'Order ID' | translate}}
+      <div padding-top>
+        <ion-note text-wrap>
+          <span *ngIf="!paymentRequest.orderId">...</span>
+          <span *ngIf="paymentRequest.orderId" copy-to-clipboard="{{paymentRequest.orderId}}">
+            {{ paymentRequest.orderId }}
+          </span>
+        </ion-note>
+      </div>
+    </ion-item>
+
+    <ion-item class="no-border">
+      Blockchain Network Tx
+      <div padding-top>
+        <ion-note text-wrap>
+          <span *ngIf="!paymentRequest.blockchainNetworkTx">...</span>
+          <span *ngIf="paymentRequest.blockchainNetworkTx" copy-to-clipboard="{{paymentRequest.blockchainNetworkTx}}">
+            {{ paymentRequest.blockchainNetworkTx }}
+          </span>
+        </ion-note>
+      </div>
+    </ion-item>
+
+    <ion-item-divider></ion-item-divider>
+    <button class="assertive" ion-item detail-none text-center (click)="remove()">
+      {{'Remove' | translate}}
+    </button>
+
+  </ion-list>
+</ion-content>

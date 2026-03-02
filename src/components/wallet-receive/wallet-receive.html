@@ -1,0 +1,69 @@
+<action-sheet>
+  <div *ngIf="wallet && wallet.isComplete() && !wallet.needsBackup && (!newAddressError || address)">
+    <ion-row class="addr-header" align-items-center>
+      <ion-col text-left>
+        <span class="addr-title" translate>
+          Address
+        </span>
+      </ion-col>
+      <div class="addr-buttons">
+        <button *ngIf="!(wallet?.cachedStatus && wallet?.cachedStatus.wallet && wallet?.cachedStatus.wallet.singleAddress)" ion-button clear icon-only color="primary" class="addr-update" (click)="setAddress(true)">
+          <span ion-text color="primary" translate>
+            <img *ngIf="!loading" class="spin-icon" [ngClass]="{'spin-backwards': playAnimation}" src="assets/img/right.svg" width="12" />
+            <div *ngIf="loading" [ngClass]="{'spin-fast': loading}" class="spinner"></div>
+          </span>
+        </button>
+      </div>
+    </ion-row>
+    <div *ngIf="wallet.coin === 'bch'" padding-bottom padding-left padding-right>
+      <ion-segment [(ngModel)]="bchAddrFormat" (ionChange)="setQrAddress($event)">
+        <ion-segment-button value="cashAddress">
+          Cash Address
+        </ion-segment-button>
+        <ion-segment-button value="legacy">
+          Legacy
+        </ion-segment-button>
+      </ion-segment>
+    </div>
+
+    <div class="addr-content" [ngClass]="{'blur': showingWarning || (bchAddrFormat === 'legacy' && !disclaimerAccepted)}">
+      <div class="addr-container">
+        <div class="text-address ellipsis">
+          <img *ngIf="address" class="copy-to-clip" copy-to-clipboard="{{ address }}" src="assets/img/paste-clipboard.svg" width="18" />
+          <div *ngIf="!address" [ngClass]="{'fade-in-out': playAnimation}" class="address-text">
+            <span class="address-placeholder" translate>Generating new address...</span>
+          </div>
+          <div *ngIf="address" [ngClass]="{'fade-in-out': playAnimation}" class="address-text ellipsis">
+            <span copy-to-clipboard="{{ address }}">{{ address }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="qr-container" *ngIf="wallet && wallet?.isComplete() && !wallet?.needsBackup" [ngClass]="{'blur': showingWarning || bchAddrFormat === 'legacy' && !disclaimerAccepted}">
+      <div class="prompt-user" *ngIf="newAddressError && !address">
+        <div class="title-icon larger-icon">
+          <img src="assets/img/ghost-straight-face.svg" />
+        </div>
+        <div class="title-info">
+          <span translate>Something goes wrong...</span>
+        </div>
+        <button ion-button class="button-standard" (click)="setAddress(true)">
+          {{'Generate New Address' | translate}}
+        </button>
+      </div>
+      <bp-qr-code *ngIf="address && !newAddressError  && !useLegacyQrCode" class="card qr-card" copy-to-clipboard="{{ address }}" contents="{{ address }}" mask-x-to-y-ratio="1">
+        <img *ngIf="wallet.coin && currencyProvider.COIN[wallet.coin | uppercase]" [ngClass]="{'testnet': wallet.network === 'testnet', 'background_xrp': wallet.coin === 'xrp'}" src="assets/img/currencies/{{ wallet.coin }}.svg" slot="icon" />
+        <img *ngIf="wallet.coin && !currencyProvider.COIN[wallet.coin | uppercase]" [src]="currencyProvider.getLogoURI(wallet.coin)" (error)="currencyProvider.defaultLogoURI(img)" #img slot="icon"/>
+      </bp-qr-code>
+      <div *ngIf="address && useLegacyQrCode" class="card qr-card" copy-to-clipboard="{{ address }}">
+        <ngx-qrcode hide-toast="true" qrc-value="{{ address }}" qrc-class="aclass" qrc-errorCorrectionLevel="M"></ngx-qrcode>
+      </div>
+    </div>
+    <div class="line-divider"></div>
+    <div text-center>
+      <button ion-button clear class="safe-area" (click)="dismiss()">
+        {{ 'CLOSE' | translate }}
+      </button>
+    </div>
+  </div>
+</action-sheet>

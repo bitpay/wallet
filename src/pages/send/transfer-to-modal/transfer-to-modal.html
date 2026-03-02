@@ -1,0 +1,6 @@
+<wide-header-page title="{{'Select recipient' | translate}}">
+  <div page-content>
+    <search-bar [scrollArea]="wideHeaderPage?.scrollArea" placeholder="{{'Search Wallets or Contacts' | translate}}" [(ngModel)]="search"></search-bar>
+    <page-transfer-to [wallet]="wallet" [searchInput]="search" [useAsModal]="true" [fromMultiSend]="fromMultiSend"  [fromSelectInputs]="fromSelectInputs"></page-transfer-to>
+  </div>
+</wide-header-page>

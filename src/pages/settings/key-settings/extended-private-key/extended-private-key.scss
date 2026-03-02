@@ -1,0 +1,12 @@
+page-extended-private-key {
+  .container {
+    h3 {
+      color: color($colors, danger);
+    }
+    text-align: center;
+    .warning-message {
+      line-height: 18px;
+      padding: 0 10px;
+    }
+  }
+}

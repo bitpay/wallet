@@ -1,0 +1,228 @@
+<ng-container [@.disabled]="isAndroid">
+  <ion-header>
+    <ion-navbar>
+      <ion-title class="bp-title">
+        <div [reveal-at-scroll-pos]="expandableHeader.headerHeight" [scrollArea]="scrollArea">
+          <img *ngIf="!title" src="assets/img/wallet-connect/wallet-connect.svg" width="32">
+          {{ title ? title : 'WalletConnect' }}
+        </div>
+      </ion-title>
+    </ion-navbar>
+  </ion-header>
+
+  <ion-content #scrollArea>
+    <expandable-header [scrollArea]="scrollArea" [fadeFactor]="5" [disableFade]="true" #expandableHeader>
+      <ion-toolbar class="wide-header__title">
+        <expandable-header-primary>
+          <img *ngIf="!title" src="assets/img/wallet-connect/wallet-connect.svg" width="32">
+          {{ title ? title : 'WalletConnect' }}
+        </expandable-header-primary>
+      </ion-toolbar>
+    </expandable-header>
+
+    <div class="wc-container">
+      <div *ngIf="!showDappInfo && !connected">
+        <div *ngIf="wallet" class="uri-header-wrapper">
+          <div class="wc-label">
+            WALLETCONNECT URI
+          </div>
+          <ion-item class="wc-wrapper">
+            <ion-input [(ngModel)]="uri"></ion-input>
+            <ion-icon *ngIf="isCordova" item-end class="scan-icon" (click)="openScanner()">
+              <img src="assets/img/scan-ico.svg">
+            </ion-icon>
+          </ion-item>
+        </div>
+
+        <div *ngIf="showWalletSelector">
+          <ion-list *ngIf="wallet" class="bp-list">
+            <ion-item class="sub-title">
+              <ion-label>
+                <div class="main-label">{{ 'Select a wallet' | translate }}</div>
+              </ion-label>
+            </ion-item>
+            <wallet-item-content [wallet]="wallet" (click)="showWallets()"></wallet-item-content>
+          </ion-list>
+
+          <label-tip *ngIf="!wallet" type="warn" class="no-arrowhead" margin-top>
+            <div label-tip-title>
+              <span translate>ETH wallet is required</span>
+            </div>
+            <div label-tip-body>
+              <span translate>WalletConnect requires at least one ETH wallet with backup to work properly. Please, create a new ETH wallet and try again.</span>
+            </div>
+          </label-tip>
+        </div>
+
+        <button ion-button full class="button-standard" [disabled]="!uri" (click)="initWalletConnect()">
+          {{'Connect' | translate}}
+        </button>
+      </div>
+
+      <div *ngIf="showDappInfo && !connected && !loading" class="dapp-info" @fadeUp>
+        <ion-item no-padding no-lines>
+          <ion-icon item-start>
+            <img class="wc-img" [src]="peerMeta?.icons[0]" (error)="setDefaultImgSrc(img)" #img>
+          </ion-icon>
+          <ion-label>
+            <div class="session-request-label">
+              {{sessionRequestLabel}}
+            </div>
+          </ion-label>
+        </ion-item>
+
+        <div class="url-container">
+        <span class="url-wrapper">
+          <span>{{peerMeta?.url}}</span>
+        </span>
+        </div>
+
+        <div *ngIf="showWalletSelector">
+          <ion-list *ngIf="wallet" class="bp-list">
+            <ion-item class="sub-title">
+              <ion-label>
+                <div class="main-label">{{ 'Select a wallet' | translate }}</div>
+              </ion-label>
+            </ion-item>
+            <wallet-item-content [wallet]="wallet" (click)="showWallets()"></wallet-item-content>
+          </ion-list>
+
+          <label-tip *ngIf="!wallet" type="warn" class="no-arrowhead" margin-top>
+            <div label-tip-title>
+              <span translate>ETH wallet is required</span>
+            </div>
+            <div label-tip-body>
+              <span translate>WalletConnect requires at least one ETH wallet with backup to work properly. Please, create a new ETH wallet and try again.</span>
+            </div>
+          </label-tip>
+        </div>
+
+        <ion-item no-lines no-padding no-margin class="wc-permission">
+          <ion-row>
+            <ion-icon >
+              <img class="wc-permission-img" src="assets/img/wallet-connect/wallet.svg">
+            </ion-icon>
+            <span class="wc-permission-label" translate>View your wallet balance and activity</span>
+          </ion-row>
+          <br>
+          <ion-row>
+            <ion-icon >
+              <img class="wc-permission-img" src="assets/img/wallet-connect/verified.svg">
+            </ion-icon>
+            <span  class="wc-permission-label" translate>Request approval for transactions</span>
+          </ion-row>
+        </ion-item>
+
+        <button ion-button full class="button-standard" [disabled]="!uri" (click)="approveSession()">
+          {{'Connect' | translate}}
+        </button>
+      </div>
+
+      <div *ngIf="connected && peerMeta" @fadeUp>
+        <ion-list class="bp-list">
+          <ion-item>
+            <ion-label>
+              <div class="main-label" translate>SUMMARY</div>
+            </ion-label>
+          </ion-item>
+
+          <div class="line-divider"></div>
+
+          <ion-item>
+            <ion-label>
+              <div class="summary-item">
+                <span translate>Connected to</span>
+              </div>
+            </ion-label>
+            <ion-note item-end class="peer-url">
+              <ion-row align-items-center justify-content-end>
+                <ion-col col-auto text-right>
+                  <ion-icon item-start>
+                    <img class="wc-img-sm" [src]="peerMeta?.icons[0]" (error)="setDefaultImgSrc(img)" #img width="20">
+                  </ion-icon>
+                </ion-col>
+                <ion-col>
+                  <span class="ellipsis">{{ peerMeta.url }}</span>
+                </ion-col>
+              </ion-row>
+            </ion-note>
+          </ion-item>
+
+          <div class="line-divider"></div>
+
+          <ion-item>
+            <ion-label>
+              <div class="summary-item">
+                <span translate>Linked Wallet</span>
+              </div>
+            </ion-label>
+            <ion-note item-end>
+              <ion-row align-items-center class="wallet">
+                <div class="background-content" copy-to-clipboard="{{ address }}">
+                  <img class="coin-img" src="assets/img/currencies/{{wallet.coin}}.svg" [ngClass]="{'testnet': wallet.network === 'testnet'}" alt="Coin" />
+                  <span class="linked-wallet">{{address | shortenedAddress}}</span>
+                </div>
+              </ion-row>
+            </ion-note>
+          </ion-item>
+
+          <div class="line-divider" *ngIf="peerMeta.description"></div>
+
+          <ion-item>
+            <div class="description" *ngIf="peerMeta.description">
+              {{ peerMeta.description }}
+            </div>
+          </ion-item>
+
+          <ion-item>
+            <ion-label>
+              <div class="summary-item" translate>Pending Requests</div>
+            </ion-label>
+          </ion-item>
+
+          <ion-item *ngIf="!requests || requests?.length === 0">
+            <ion-label>
+              {{'No pending requests' | translate}}
+            </ion-label>
+          </ion-item>
+
+          <div *ngFor="let request of requests; trackBy: trackByFn; let i = index;" @fadeIn>
+            <ion-list class="bp-list">
+              <button ion-item (click)="goToNextView(request, request.params)" detail-none>
+                <ion-icon class="item-img" item-start>
+                  <img [src]="peerMeta?.icons[0]" (error)="setDefaultImgSrc(img)" #img>
+                </ion-icon>
+                <ion-label>
+                  <div class="main-label">{{peerMeta?.name}}</div>
+                </ion-label>
+                <ion-note *ngIf="request.decodedData && request.decodedData.name === 'approve'; else notApprove" item-end>
+                  <div class="main-note">
+                    <span>{{ 'Approve' | translate }} {{ request.tokenInfo?.symbol || request.tokenInfo?.name}}</span>
+                    <ion-icon name="ios-arrow-forward-outline" color="light-grey"></ion-icon>
+                  </div>
+                </ion-note>
+                <ng-template #notApprove>
+                  <ion-note item-end>
+                    <div class="main-note">
+                      <span> {{ request.params[0].value | satToUnit: wallet.coin }}</span>
+                      <ion-icon name="ios-arrow-forward-outline" color="light-grey"></ion-icon>
+                    </div>
+                  </ion-note>
+               </ng-template>
+              </button>
+            </ion-list>
+          </div>
+        </ion-list>
+      </div>
+    </div>
+  </ion-content>
+
+  <ion-footer no-border>
+    <ion-toolbar>
+      <button *ngIf="connected && !exitingAnimationPatch" (click)="killSession()" ion-button class="button-standard" color="primary" outline margin-top @fadeOut>
+        {{'Disconnect' | translate }}
+      </button>
+    </ion-toolbar>
+  </ion-footer>
+
+</ng-container>

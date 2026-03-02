@@ -1,0 +1,14 @@
+<div class="action-card__header">
+  <ng-content select="[action-card-header]"></ng-content>
+</div>
+<div class="action-card__content">
+  <div class="action-card__title">
+    <ng-content select="[action-card-title]"></ng-content>
+  </div>
+  <div class="action-card__body">
+    <ng-content select="[action-card-body]"></ng-content>
+    <div class="cta">
+      <ng-content select="[action-card-button]"></ng-content>
+    </div>
+  </div>
+</div>

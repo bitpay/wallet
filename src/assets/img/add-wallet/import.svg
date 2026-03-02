@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="40px" height="40px" viewBox="0 0 40 40" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 54.1 (76490) - https://sketchapp.com -->
+    <title>Icons/Wallet/Blank</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <path d="M20,40 C31.045695,40 40,31.045695 40,20 C40,8.954305 31.045695,0 20,0 C8.954305,0 0,8.954305 0,20 C0,31.045695 8.954305,40 20,40 Z" id="path-1"></path>
+    </defs>
+    <g id="New-Wallet/Vault---Onboarding" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="New-Vault--" transform="translate(-29.000000, -304.000000)">
+            <g id="Group-2" transform="translate(0.000000, 263.000000)">
+                <g id="Group" transform="translate(29.000000, 37.000000)">
+                    <g id="Icons/Wallet/Blank" transform="translate(0.000000, 4.000000)">
+                        <g id="item-ico-backup">
+                            <mask id="mask-2" fill="white">
+                                <use xlink:href="#path-1"></use>
+                            </mask>
+                            <use id="Mask" fill="#4F6EF7" opacity="0.100000001" xlink:href="#path-1"></use>
+                        </g>
+                        <g id="move-layer-down" transform="translate(11.000000, 10.000000)" stroke="#204096" stroke-width="2">
+                            <path d="M8.5,0 L8.5,14" id="Path"></path>
+                            <polyline id="Path" stroke-linecap="square" points="14 9 8.5 14 3 9"></polyline>
+                            <path d="M18,18.5 L0,18.5" id="Path" stroke-linecap="square"></path>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

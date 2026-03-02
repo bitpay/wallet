@@ -1,0 +1,21 @@
+<div class="amount-picker__picker">
+  <div [ngClass]="{'hidden': !shouldShowButton(-1)}" class="amount-picker__button" (click)="changeAmount(-1)" tappable>
+    <img src="assets/img/icon-minus.svg">
+  </div>
+  <div class="amount-picker__amount">
+    <span *ngFor="let amount of supportedAmounts">
+      <span *ngIf="amount === getAmount()">{{amount | formatCurrency:currency:'minimal'}}</span>
+    </span>
+    <span *ngIf="!supportedAmounts">{{0 | formatCurrency:currency:0}}</span>
+  </div>
+  <div [ngClass]="{'hidden': !shouldShowButton(1)}" class="amount-picker__button" (click)="changeAmount(1)" tappable>
+    <img src="assets/img/icon-plus.svg">
+  </div>
+</div>
+<div class="amount-picker__values" *ngIf="supportedAmounts && supportedAmounts.length > 1">
+  <div>Purchase Amounts:</div>
+  <div><span class="amount-picker__values__value"
+      *ngFor="let amount of supportedAmounts; let last = last">{{amount | formatCurrency:currency:'minimal'}}<span
+        *ngIf="!last">,</span>
+    </span></div>
+</div>

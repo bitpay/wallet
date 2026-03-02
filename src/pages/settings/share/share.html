@@ -1,0 +1,32 @@
+<wide-header-page title="{{title}}">
+  <div page-content>
+    <div class="share-image-container">
+      <div>
+        <div class="share-the-love">
+          <img src="assets/img/ico-positive-feedback.svg" class="share-the-love-illustration" />
+        </div>
+        <div class="subtitle" translate>Share the love by inviting your friends.</div>
+      </div>
+    </div>
+    <div class="share-buttons">
+      <div class="share-buttons__action" (click)="shareFacebook()">
+        <ion-icon>
+          <img src="assets/img/social-icons/ico-social-facebook.svg" />
+        </ion-icon>
+        <div class="name">Facebook</div>
+      </div>
+      <div class="share-buttons__action" (click)="shareTwitter()">
+        <ion-icon>
+          <img src="assets/img/social-icons/ico-social-twitter.svg" />
+        </ion-icon>
+        <div class="name">Twitter</div>
+      </div>
+      <div class="share-buttons__action" (click)="shareWhatsapp()">
+        <ion-icon>
+          <img src="assets/img/social-icons/ico-social-whatsapp.svg" />
+        </ion-icon>
+        <div class="name">Whatsapp</div>
+      </div>
+    </div>
+  </div>
+</wide-header-page>

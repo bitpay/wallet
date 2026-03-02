@@ -1,0 +1,154 @@
+<ion-header class="wide-header" [ngClass]="{cordova: platformProvider.isCordova}">
+  <ion-navbar>
+    <ion-title>
+      <div [reveal-at-scroll-pos]="expandableHeader.headerHeight" [scrollArea]="scrollArea">
+        {{title}}
+      </div>
+    </ion-title>
+    <ng-content select="[right]"></ng-content>
+  </ion-navbar>
+</ion-header>
+<ion-content #scrollArea>
+  <div class="wrapper" [hidden]="platformProvider.isMacApp()">
+    <expandable-header [scrollArea]="scrollArea" [fadeFactor]="5" [disableFade]="true" #expandableHeader>
+      <ion-toolbar class="wide-header__title">
+        <expandable-header-primary> {{title}} </expandable-header-primary>
+      </ion-toolbar>
+    </expandable-header>
+
+    <search-bar *ngIf="!category || category === 'All'" [scrollArea]="scrollArea"
+      (search)="onSearch($event.target.value)" placeholder="{{ 'Search for a brand' | translate }}"></search-bar>
+
+    <div *ngIf="category && category !== 'All'" class="section-divider"></div>
+
+    <div *ngIf="!category">
+      <div *ngIf="!searchQuery">
+        <div *ngFor="let curation of curations; let i = index">
+          <div class="category-header">
+            <div class="category-header__name">{{curation.displayName}}</div>
+            <div *ngIf="!isCordova && curation.slides.length > 1" tappable class="category-header__button"
+              (click)="viewCategory(curation.displayName)">
+              See All
+            </div>
+          </div>
+          <ion-slides *ngIf="isCordova && curation.slides.length > 1;" [spaceBetween]="isCordova ? -40 : 0"
+            class="curation" [ngClass]="{desktop: !isCordova}" (ionSlideDidChange)="slideChanged(curation.slides, i)">
+            <ion-slide *ngFor="let slide of curation.slides">
+              <card-list-item *ngFor="let merchant of slide" (click)="viewMerchant(merchant)" [merchant]="merchant">
+              </card-list-item>
+            </ion-slide>
+          </ion-slides>
+          <div *ngIf="!isCordova || curation.slides.length === 1">
+            <card-list-item *ngFor="let merchant of curation.slides[0]" (click)="viewMerchant(merchant)"
+              [merchant]="merchant">
+            </card-list-item>
+          </div>
+          <div class="section-divider"></div>
+        </div>
+
+        <div class="category-header" *ngIf="categories">
+          <div class="category-header__name">Categories</div>
+          <div tappable class="category-header__button" (click)="viewCategory('All')">
+            See All Brands
+          </div>
+        </div>
+        <button *ngFor="let category of categories" ion-item class="category-item"
+          (click)="viewCategory(category.displayName)">
+          <ion-icon item-start> <img [src]="category.icon" /> </ion-icon>
+          {{category.displayName}}
+        </button>
+
+        <br />
+        <br />
+        <br />
+      </div>
+    </div>
+
+    <ion-list style="margin-bottom: 40px;" [virtualScroll]="visibleMerchants" [approxItemHeight]="'87px'"
+      [virtualTrackBy]="trackBy" [hidden]="searchQuery" *ngIf="category">
+      <button ion-item class="card-list-item" *virtualItem="let merchant" (click)="viewMerchant(merchant)">
+        <ion-icon item-start>
+          <img-loader *ngIf="!merchant || !merchant.hasDirectIntegration" class="card-list-item__icon"
+            [src]="merchant?.icon" [fallbackAsPlaceholder]="true" [fallbackUrl]="giftCardProvider.fallbackIcon">
+          </img-loader>
+          <div *ngIf="merchant && merchant.hasDirectIntegration" class="card-list-item__icon">
+            <img [src]="merchant.icon" />
+          </div>
+        </ion-icon>
+        <ion-label>
+          <div>
+            <div class="card-list-item__label ellipsis">
+              {{ merchant.displayName }}
+            </div>
+            <div *ngIf="getDiscount(merchant)">
+              <ion-note class="card-list-item__note discount ellipsis"
+                [ngStyle]="{ color: getDiscountTextColor(merchant, themeProvider.getCurrentAppTheme()) }">
+                <gift-card-discount-text [merchant]="merchant" [discount]="getDiscount(merchant)">
+                </gift-card-discount-text>
+              </ion-note>
+            </div>
+            <div *ngIf="!getDiscount(merchant)">
+              <ion-note class="card-list-item__note ellipsis" *ngIf="!merchant.giftCards.length">
+                {{ merchant.caption }}
+              </ion-note>
+              <ion-note class="card-list-item__note ellipsis"
+                *ngIf="merchant.giftCards[0] && !merchant.giftCards[0].supportedAmounts">
+                {{ merchant.giftCards[0].minAmount | formatCurrency:
+                  merchant.giftCards[0].currency:0 }} — {{
+                  merchant.giftCards[0].maxAmount | formatCurrency:
+                  merchant.giftCards[0].currency:0 }}
+              </ion-note>
+              <ion-note class="card-list-item__note ellipsis"
+                *ngIf="merchant.giftCards[0] && merchant.giftCards[0].supportedAmounts">
+                <span *ngFor="
+                      let amount of merchant.giftCards[0].supportedAmounts;
+                      let last = last
+                    ">
+                  {{ amount | formatCurrency:
+                    merchant.giftCards[0].currency:'minimal' }}<span *ngIf="!last">,</span>
+                </span>
+              </ion-note>
+            </div>
+          </div>
+        </ion-label>
+      </button>
+    </ion-list>
+
+    <div *ngIf="searchQuery && visibleMerchants.length">
+      <card-list-item *ngFor="let merchant of visibleMerchants" (click)="viewMerchant(merchant)" [merchant]="merchant">
+      </card-list-item>
+    </div>
+
+    <div class="no-results" [ngClass]="{'has-keyboard': platformProvider.isCordova}"
+      *ngIf="searchQuery && !visibleMerchants.length">
+      <div>
+        <div class="no-results__title">No Results</div>
+        <div class="no-results__subtitle">
+          Please try searching something else
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="wrapper" [hidden]="!platformProvider.isMacApp()">
+    <expandable-header [scrollArea]="scrollArea" [fadeFactor]="5" [disableFade]="true" #expandableHeader>
+      <ion-toolbar class="wide-header__title">
+        <expandable-header-primary> {{title}} </expandable-header-primary>
+      </ion-toolbar>
+    </expandable-header>
+
+    <action-card-v4 *ngIf="platformProvider.isMacApp()" (click)="launchExtension()" tappable>
+      <div action-card-header>
+        <div class="home-gift-card-header" style="padding: 0;">
+          <div class="home-gift-card-image" style="margin-bottom: -6px;">
+            <img src="assets/img/gift-cards/extension-banner.png" style="max-height: unset;" />
+          </div>
+        </div>
+      </div>
+      <div action-card-title translate>Shop with Crypto</div>
+      <div action-card-body [clamp]="2">
+        Spend crypto at 150+ major brands.
+      </div>
+      <div action-card-button translate>Get on Chrome</div>
+    </action-card-v4>
+  </div>
+</ion-content>

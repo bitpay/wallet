@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="20px" height="20px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 51 (57462) - http://www.bohemiancoding.com/sketch -->
+    <title>zoom-2</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" opacity="0.200000003" stroke-linecap="square">
+        <g id="Icons/Small-(20px)/Search-(White)" transform="translate(-1.000000, -1.000000)" stroke="#000000" stroke-width="2">
+            <g id="zoom-2" transform="translate(2.000000, 2.000000)">
+                <path d="M18,18 L13,13" id="Shape"></path>
+                <circle id="Oval" cx="7.5" cy="7.5" r="7.5"></circle>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -1,0 +1,26 @@
+<wide-header-page title="{{'Recovery Phrase' | translate}}">
+  <div page-content>
+    <div class="key-container" *ngIf="walletGroup.canSign && mnemonicWords && mnemonicWords[0]">
+      <div class="word-container">
+        <div class="word-title" translate>Write down each word.</div>
+        <div class="word">
+          <span>{{mnemonicWords[wordToShow]}}</span>
+        </div>
+        <div class="word-number">
+          {{wordToShow + 1}} / {{mnemonicWords.length}}
+        </div>
+      </div>
+    </div>
+    <div class="bottom-absolute" [ngClass]="{'right-align': wordToShow == 0}" *ngIf="walletGroup.canSign && mnemonicWords && mnemonicWords[0]">
+      <button *ngIf="wordToShow > 0" ion-button clear class="button-left" [disabled]="credentialsEncrypted" (click)="previousWord()">
+        {{'Previous' | translate}}
+      </button>
+      <button *ngIf="wordToShow < mnemonicWords.length - 1" ion-button clear class="button-right" [disabled]="credentialsEncrypted" (click)="nextWord()">
+        {{'Next' | translate}}
+      </button>
+      <button *ngIf="wordToShow == mnemonicWords.length - 1" ion-button clear class="button-right" [disabled]="credentialsEncrypted" (click)="goToBackupGame()">
+        {{'Continue' | translate}}
+      </button>
+    </div>
+  </div>
+</wide-header-page>

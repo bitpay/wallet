@@ -1,0 +1,47 @@
+<ion-header>
+  <ion-navbar> <ion-title> {{'BitPay ID' |translate}} </ion-title> </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-list class="bp-list">
+    <ion-item>
+      <ion-icon *ngIf="!userBasicInfo?.givenName" class="item-img icon-login" item-start>
+        <img src="assets/img/bitpay-card/icon-bitpay.svg" width="60">
+      </ion-icon>
+      <ion-icon *ngIf="userBasicInfo?.givenName" class="item-img icon-login" item-start>
+        <span class="icon-bitpay-id">
+          {{accountInitials}}
+        </span>
+      </ion-icon>
+
+      <ion-label>
+        <span class="main-label">
+          <span class="bitpay-name" *ngIf="!userBasicInfo?.givenName">
+            <span translate>BitPay Account</span>
+            <div class="bitpay-email">{{ userBasicInfo?.email }}</div>
+          </span>
+          <span class="bitpay-name" *ngIf="userBasicInfo?.givenName">
+            {{ userBasicInfo?.givenName }} {{ userBasicInfo?.familyName }}
+            <div class="bitpay-email">{{ userBasicInfo?.email }}</div>
+          </span>
+        </span>
+      </ion-label>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>{{'Sync gift card purchases' | translate}}</ion-label>
+      <ion-toggle
+        [(ngModel)]="bitpayIdSettings.syncGiftCardPurchases"
+        (ionChange)="onSettingsChange()"
+      ></ion-toggle>
+    </ion-item>
+    <label-tip type="info" header="no-header">
+      <div label-tip-body>
+        <span translate>If enabled, your gift card purchases will be associated with your BitPay ID, allowing you to keep track of your gift card purchases even if this device is lost.</span>
+      </div>
+    </label-tip>
+  </ion-list>
+  <button ion-button class="button-standard button-secondary bitpay-id__disconnect-button" (click)="disconnectBitPayID()">
+    {{'Disconnect' | translate}}
+  </button>
+</ion-content>

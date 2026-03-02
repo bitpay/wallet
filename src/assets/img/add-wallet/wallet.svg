@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="50px" height="50px" viewBox="0 0 50 50" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 54.1 (76490) - https://sketchapp.com -->
+    <title>Wallet/Large (50px)/wallet-acttion-solid</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <path d="M25,50 C38.8071187,50 50,38.8071187 50,25 C50,11.1928813 38.8071187,0 25,0 C11.1928813,0 0,11.1928813 0,25 C0,38.8071187 11.1928813,50 25,50 Z" id="path-1"></path>
+    </defs>
+    <g id="Wallet/Large-(50px)/wallet-acttion-solid" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="item-ico-backup">
+            <mask id="mask-2" fill="white">
+                <use xlink:href="#path-1"></use>
+            </mask>
+            <use id="Mask" fill="#4F6EF7" opacity="0.100000001" xlink:href="#path-1"></use>
+        </g>
+        <g id="Generic/Small/wallet-3" transform="translate(13.000000, 14.000000)" fill="#4F6EF7">
+            <g id="wallet-43">
+                <path d="M23,3.66666667 L4,3.66666667 L3,3.66666667 C2.449,3.66666667 2,3.25508333 2,2.75 C2,2.24491667 2.449,1.83333333 3,1.83333333 L18,1.83333333 L18,3.66666667 L20,3.66666667 L20,0.916666667 C20,0.410666667 19.552,0 19,0 L3,0 C1.343,0 0,1.23108333 0,2.75 L0,18.3333333 C0,20.35825 1.791,22 4,22 L22.1850962,22 C23,22 24,20.8990972 24,20.0909091 L24,4.58333333 C24,4.07733333 23.552,3.66666667 23,3.66666667 Z M18,15 C16.895,15 16,14.105 16,13 C16,11.895 16.895,11 18,11 C19.105,11 20,11.895 20,13 C20,14.105 19.105,15 18,15 Z" id="Shape"></path>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -1,42 +1,44 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>{{'Sweep paper wallet' | translate}}</ion-title>
+    <ion-title class="bp-title">{{'Sweep paper wallet' | translate}}</ion-title>
   </ion-navbar>
 </ion-header>
 
-<ion-content>
-  <div class="message" *ngIf="noMatchingWallet">
-    <span translate>No wallets available to receive funds</span>
-  </div>
-  <div *ngIf="!noMatchingWallet">
-    <h4 class="title">
-      <span translate>Funds found</span>:
-      <span *ngIf="balanceSat">{{balanceSat | satToUnit: wallet.coin}}</span>
-      <span *ngIf="!balanceSat">...</span>
-    </h4>
+<ion-content [ngClass]="{'add-padding-bottom': isCordova}" no-bounce>
+  <h4 class="title" *ngIf="balances && balances.length > 0">
+    <span translate>Funds found</span>:
+    <div *ngFor="let b of balances">
+      {{b.balance | satToUnit: b.coin}}
+    </div>
+  </h4>
+  <div *ngIf="selectedWallet">
     <ion-item-divider>{{'Funds will be transferred to' | translate}}</ion-item-divider>
-    <button ion-item *ngIf="wallet" detail-none (click)="showWallets()">
-      <ion-icon item-start>
-        <img src="assets/img/icon-wallet.svg" class="icon-wallet" />
-      </ion-icon>
-      <h2>{{wallet.name}}
-        <span *ngIf="wallet.credentials.m > 1">{{wallet.credentials.m}}-{{wallet.credentials.n}}</span>
-      </h2>
-      <span *ngIf="!wallet.balanceHidden"> {{wallet.status.totalBalanceStr}} </span>
-      <span *ngIf="wallet.balanceHidden" translate>[Balance Hidden]</span>
-      <span class="assertive" *ngIf="error">{{error}}</span>
-      <div item-end>
-        <button ion-button clear color="grey" icon-only>
-          <ion-icon *ngIf="!isOpenSelector" name="ios-arrow-down-outline"></ion-icon>
-          <ion-icon *ngIf="isOpenSelector" name="ios-arrow-up-outline"></ion-icon>
-        </button>
-      </div>
-    </button>
+    <ion-list class="bp-list">
+      <button ion-item detail-none (click)="showWallets()">
+        <ion-icon item-start>
+          <img class="icon-wallet" [ngClass]="{ testnet: selectedWallet.network === 'testnet' }" src="assets/img/currencies/{{selectedWallet.coin}}.svg" />
+        </ion-icon>
+        <h2>{{selectedWallet.name}}
+          <span *ngIf="selectedWallet.credentials.m > 1">{{selectedWallet.credentials.m}}-{{selectedWallet.credentials.n}}</span>
+        </h2>
+        <span *ngIf="!selectedWallet.balanceHidden"> {{selectedWallet.cachedStatus.totalBalanceStr}} </span>
+        <span *ngIf="selectedWallet.balanceHidden" translate>[Balance Hidden]</span>
+        <span class="assertive" *ngIf="error">{{error}}</span>
+        <div item-end>
+          <button ion-button clear color="grey" icon-only>
+            <ion-icon *ngIf="!isOpenSelector" name="ios-arrow-down-outline"></ion-icon>
+            <ion-icon *ngIf="isOpenSelector" name="ios-arrow-up-outline"></ion-icon>
+          </button>
+        </div>
+      </button>
+    </ion-list>
   </div>
 </ion-content>
 <ion-footer>
-  <page-slide-to-accept #slideButton *ngIf="isCordova" [disabled]="sending || balanceSat <= 0 || noMatchingWallet" buttonText="{{'Sweep' | translate}}" (slideDone)="sweepWallet()"></page-slide-to-accept>
-  <button *ngIf="!isCordova" ion-button block class="button-footer" (click)="sweepWallet()" [disabled]="sending || balanceSat <= 0 || noMatchingWallet">
-    {{'Sweep' | translate}}
-  </button>
+  <page-slide-to-accept #slideButton *ngIf="isCordova" [disabled]="balances.length == 0" buttonText="{{'Sweep' | translate}}" [isDogecoin]="selectedWallet && selectedWallet.coin == 'doge'" (slideDone)="sweepWallet()"></page-slide-to-accept>
+  <ion-toolbar *ngIf="!isCordova">
+    <button ion-button block class="button-footer" (click)="sweepWallet()" [disabled]="balances.length == 0">
+      {{'Sweep' | translate}}
+    </button>
+  </ion-toolbar>
 </ion-footer>

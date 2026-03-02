@@ -1,6 +1,11 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>{{'Import wallet' | translate}}</ion-title>
+    <ion-title class="bp-title">{{ title }}</ion-title>
+    <ion-buttons end>
+      <button ion-button (click)="import()" [disabled]="!importForm.valid">
+        <span translate>Import</span>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
@@ -16,26 +21,18 @@
     </ion-segment>
   </div>
 
-  <ion-card *ngIf="importErr" (click)="importErr = false">
-    <ion-item class="assertive">
-      <div translate>Could not access the wallet at the server. Please check:</div>
-      <ul>
-        <li translate>The password of the recovery phrase (if set)</li>
-        <li translate>The derivation path</li>
-        <li translate>The Wallet Service URL</li>
-      </ul>
-      <small>
-        <span translate>NOTE: To import a wallet from a 3rd party software, please go to Add Wallet &gt; Create Wallet, and specify the Recovery Phrase there.</span>
-      </small>
-    </ion-item>
-  </ion-card>
-
-  <form [formGroup]="importForm" (ngSubmit)="import()">
+  <form [formGroup]="importForm">
     <ion-item *ngIf="selectedTab == 'words'">
-      <ion-label stacked>{{'Type the recovery phrase (usually 12 words)' | translate}}</ion-label>
-      <ion-textarea formControlName="words" [value]="importForm.value.words"></ion-textarea>
-      <ion-icon *ngIf="!fromOnboarding" class="scanner-icon" name="qr-scanner" item-right (click)="openScanner()"></ion-icon>
+      <ion-label stacked>{{'Type the recovery phrase' | translate}}</ion-label>
+      <ion-textarea formControlName="words" [value]="importForm.value.words" autocapitalize="none">
+      </ion-textarea>
+      <ion-icon *ngIf="isCordova" class="scanner-icon" name="qr-scanner" item-right (click)="openScanner()"></ion-icon>
     </ion-item>
+
+
+    <label-tip *ngIf="selectedTab == 'words'" type="info" header="no-header" class="no-arrowhead">
+      <div label-tip-body translate>Enter your recovery phrase (usually 12-words) in the correct order. Separate each word with a single space only (no commas or any other punctuation). For backup phrases in non-English languages: Some words may include special symbols (ñ, è, っ, etc.), so be sure to spell all the words correctly. </div>
+    </label-tip>
 
     <div *ngIf="selectedTab == 'file'">
       <ion-item class="hide-validation" *ngIf="!isSafari && !isCordova">
@@ -47,59 +44,64 @@
       </ion-item>
 
       <ion-item *ngIf="isSafari || isCordova">
-        <ion-label stacked>{{'Paste the backup plain text code' | translate}}</ion-label>
-        <ion-textarea formControlName="backupText" rows="5" [value]="importForm.value.backupText"></ion-textarea>
+        <ion-label floating>{{'Paste the backup plain text code' | translate}}</ion-label>
+        <ion-textarea formControlName="backupText" rows="7" [value]="importForm.value.backupText"></ion-textarea>
       </ion-item>
 
       <ion-item>
-        <ion-label stacked>{{'Password' | translate}}</ion-label>
+        <ion-label floating>{{'Password' | translate}}</ion-label>
         <ion-input type="password" formControlName="filePassword"></ion-input>
       </ion-item>
     </div>
 
-    <ion-item *ngIf="selectedTab != 'file'">
-      <ion-label stacked>{{'Coin' | translate}}</ion-label>
-      <ion-select formControlName="coin" (ionChange)="testnetEnabled = false">
-        <ion-option value="btc">BTC</ion-option>
-        <ion-option value="bch">BCH</ion-option>
-      </ion-select>
-    </ion-item>
+    <button ion-button class="button-standard button-secondary" (click)="showAdvOpts = !showAdvOpts">
+      <span *ngIf="!showAdvOpts">{{'Show advanced options' | translate}}</span>
+      <span *ngIf="showAdvOpts">{{'Hide advanced options' | translate}}</span>
+    </button>
 
-    <ion-item-divider></ion-item-divider>
+    <div *ngIf="showAdvOpts" padding-bottom>
+      <ion-item>
+        <ion-label floating>Wallet Service URL</ion-label>
+        <ion-input type="text" formControlName="bwsURL"></ion-input>
+      </ion-item>
 
-    <ion-item (click)="toggleShowAdvOpts()">
-      <ion-label *ngIf="!showAdvOpts">{{'Show advanced options' | translate}}</ion-label>
-      <ion-label *ngIf="showAdvOpts">{{'Hide advanced options' | translate}}</ion-label>
-    </ion-item>
-
-    <div *ngIf="showAdvOpts">
       <div *ngIf="selectedTab == 'words'">
         <ion-item>
-          <ion-label stacked>{{'Password' | translate}}</ion-label>
-          <ion-input type="password" formControlName="mnemonicPassword"></ion-input>
+          <ion-label>{{'Specify derivation path' | translate}}</ion-label>
+          <ion-toggle formControlName="derivationPathEnabled" (ionChange)="changeDerivationPathValidators();"></ion-toggle>
         </ion-item>
 
-        <ion-item>
-          <ion-label stacked>{{'Derivation path' | translate}}</ion-label>
+        <ion-item *ngIf="importForm.value.derivationPathEnabled">
+          <ion-label floating>{{'Coin' | translate}}</ion-label>
+          <ion-select okText="{{okText}}" cancelText="{{cancelText}}" formControlName="coin" (ionChange)="setDerivationPath($event)">
+            <div *ngFor="let coin of availableCoins">
+              <ion-option value="{{coin}}"> {{ getCoinName(coin) }} ({{ coin.toUpperCase() }})</ion-option>
+            </div>
+          </ion-select>
+        </ion-item>
+
+        <ion-item *ngIf="importForm.value.derivationPathEnabled">
+          <ion-label floating>{{'Derivation path' | translate}}</ion-label>
           <ion-input type="text" formControlName="derivationPath" [value]="importForm.value.derivationPath"></ion-input>
         </ion-item>
 
-        <ion-item>
-          <ion-label>Testnet</ion-label>
-          <ion-toggle color="primary" formControlName="testnet" [(ngModel)]="testnetEnabled" (ionChange)="setDerivationPath()"></ion-toggle>
+        <ion-item *ngIf="importForm.value.derivationPathEnabled && importForm.value.derivationPath === this.derivationPathHelperProvider.defaultBTC">
+          <ion-label>{{'Shared Wallet' | translate}}</ion-label>
+          <ion-checkbox formControlName="isMultisig"></ion-checkbox>
         </ion-item>
+
+        <ion-item class="with-label">
+          <ion-label floating>{{'Password' | translate}}</ion-label>
+          <ion-input type="password" formControlName="passphrase"></ion-input>
+        </ion-item>
+
+        <label-tip type="info" header="no-header">
+          <div label-tip-body translate>
+            This field is only for users who, in previous versions (it's not supported anymore), set a password to protect their recovery phrase. This field is not for your encrypt password.
+          </div>
+        </label-tip>
       </div>
 
-      <ion-item>
-        <ion-label stacked>Wallet Service URL</ion-label>
-        <ion-input type="text" formControlName="bwsURL"></ion-input>
-      </ion-item>
     </div>
   </form>
 </ion-content>
-
-<ion-footer>
-  <button ion-button full class="button-footer" (click)="import()" [disabled]="!importForm.valid">
-    {{'Import wallet' | translate}}
-  </button>
-</ion-footer>

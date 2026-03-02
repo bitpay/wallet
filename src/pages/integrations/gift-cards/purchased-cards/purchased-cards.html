@@ -1,0 +1,18 @@
+<wide-header-page title="{{cardConfig?.displayName}}">
+  <ion-buttons right>
+    <button clear wide-header-bar-button (click)="archive()" ion-button>
+      {{'Archive' | translate}}
+    </button>
+  </ion-buttons>
+  <div page-content>
+    <ion-list class="bp-list">
+      <ion-item-divider *ngIf="currentGiftCards && currentGiftCards.length">{{'Current Cards' | translate}}
+        <button clear item-right ion-button class="settings-list bp-list__divider-button" (click)="addCard()">
+          <ion-icon ios="md-add" md="md-add"></ion-icon>
+        </button>
+      </ion-item-divider>
+      <card-list-item *ngFor="let card of currentGiftCards" [card]="card" (click)="goToCardDetails(card)" type="purchased"></card-list-item>
+      <ion-item-divider></ion-item-divider>
+    </ion-list>
+  </div>
+</wide-header-page>

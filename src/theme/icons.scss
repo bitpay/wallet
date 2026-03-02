@@ -1,0 +1,87 @@
+@import 'ionicons';
+
+@font-face {
+  font-family: 'icomoon';
+  src: url(../assets/fonts/icomoon/icomoon.eot?742bhq);
+  src: url(../assets/fonts/icomoon/icomoon.eot?742bhq#iefix)
+      format('embedded-opentype'),
+    url(../assets/fonts/icomoon/icomoon.ttf?742bhq) format('truetype'),
+    url(../assets/fonts/icomoon/icomoon.woff?742bhq) format('woff'),
+    url(../assets/fonts/icomoon/icomoon.svg?742bhq#icomoon) format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+[class^='icon-'],
+[class*=' icon-'],
+[class^='ion-ios-icon'],
+[class*='ion-ios-icon'],
+[class^='ion-md-icon'],
+[class*='ion-md-icon'] {
+  @extend .ion;
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'icomoon' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@mixin makeIcon($arg, $val, $size: 20px) {
+  .ion-ios-#{$arg}:before,
+  .ion-ios-#{$arg}-circle:before,
+  .ion-ios-#{$arg}-circle-outline:before,
+  .ion-ios-#{$arg}-outline:before,
+  .ion-md-#{$arg}:before,
+  .ion-md-#{$arg}-circle:before,
+  .ion-md-#{$arg}-circle-outline:before,
+  .ion-md-#{$arg}-outline:before {
+    content: $val;
+    font-size: $size;
+  }
+}
+
+.icon-scan:before {
+  content: '\e900';
+  color: #fff;
+}
+
+.icon-back:before {
+  content: '\e901';
+  color: #fff;
+}
+
+.icon-back-dark:before {
+  content: '\e905';
+  color: #464d5f;
+}
+
+.icon-tail-down:before {
+  content: '\e902';
+  color: #464d5f;
+}
+
+.icon-menu-left:before {
+  content: '\e903';
+  color: #464d5f;
+}
+
+.icon-tail-up:before {
+  content: '\e904';
+  color: #464d5f;
+}
+
+.tab-badge {
+  font-family: 'Roboto' !important;
+}
+
+@include makeIcon(tab-button-back, '\e905', 17px);
+@include makeIcon(tab-receive, '\e902');
+@include makeIcon(tab-activity, '\e903');
+@include makeIcon(tab-send, '\e904');

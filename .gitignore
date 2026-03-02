@@ -1,6 +1,5 @@
 # Specifies intentionally untracked files to ignore when using Git
 # http://git-scm.com/docs/gitignore
-externalServices.json
 *~
 *.sw[mnpcod]
 *.log
@@ -11,17 +10,30 @@ log.txt
 *.sublime-workspace
 npm-debug.log*
 
-# Ignore package-lock for now
-package-lock.json
+yarn.lock
+
+# iOS
+build.json
+
+# Android
+build-extras.gradle
 
 # Firebase
-/GoogleService-Info.plist
-/google-services.json
+GoogleService-Info.plist
+google-services.json
 
-## App
+# Desktop electron
+cache
+dist/*
+electron/afterPack.js
+electron/build-electron.js
+*-embedded.provisionprofile
+*-entitlements.mas.plist
 
-/desktop
+# Windows AppX Assets
+build
 
+## Ionic App
 /config.xml
 /ionic.config.json
 
@@ -29,11 +41,13 @@ src/theme/overrides.scss
 src/assets/appConfig.json
 src/assets/externalServices.json
 src/assets/img/app
-src/assets/i18n/crowdin_api_key.txt
-src/assets/i18n/po/*.mo
 src/index.html
 src/manifest.json
 src/environments/index.ts
+
+# Crowdin API key
+i18n/crowdin_api_key.txt
+src/assets/i18n/*.mo
 
 test/visual/latest
 test/visual/diffs

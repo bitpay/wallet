@@ -1,4 +1,4 @@
-page-finish{
+page-finish {
   .container {
     height: 100%;
     position: relative;
@@ -14,18 +14,45 @@ page-finish{
           padding: 3rem;
         }
         &-text {
-          font-size: 2.8rem;
           color: #ffffff;
+          font-weight: 500;
+          font-size: 25px;
+          align-items: center;
+          text-align: center;
+          line-height: 34px;
+          @media (max-width: 350px) {
+            font-size: 17px;
+            line-height: 20px;
+          }
+          &.bg-none {
+            color: #060606;
+          }
         }
         &-comment {
+          margin: auto;
           padding: 2rem;
-          font-size: 2rem;
+          font-size: 1.6rem;
           color: #ffffff;
+          opacity: 0.7;
+          max-width: 35rem;
         }
+      }
+      .success-img {
+        mask-image: url(../assets/img/backup/success.svg);
+        height: 19rem;
+        width: 50%;
+        background-color: color($colors, success);
+        mask-repeat: no-repeat;
+        mask-position: 50% 50%;
+        mask-size: 14rem;
+        margin: auto;
+        transform: translate(0, -10%);
       }
     }
     .footer {
       padding: 2rem;
+      padding-bottom: calc(2rem + env(safe-area-inset-bottom));
+      padding-bottom: -webkit-calc(2rem + env(safe-area-inset-bottom));
       margin: 0 1.75rem;
       border-top: 0.1rem solid rgba(255, 255, 255, 0.45);
       position: absolute;
@@ -40,13 +67,19 @@ page-finish{
       cursor: pointer;
     }
   }
+  .primary {
+    background-color: color($colors, secondary);
+  }
   .success {
-    background-color: #11D1A6;
+    background-color: #11d1a6;
   }
   .warning {
     background-color: color($colors, warning);
   }
   .danger {
     background-color: color($colors, danger);
+  }
+  .bg-none {
+    background-color: #ffffff;
   }
 }

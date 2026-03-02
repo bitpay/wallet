@@ -1,0 +1,45 @@
+page-simplex {
+  ion-title .toolbar-title {
+    color: white;
+  }
+  .wide-header__title.toolbar {
+    padding-bottom: 10px;
+    padding-top: 30px;
+  }
+  .wide-header__title {
+    color: white;
+    padding-left: 0;
+  }
+  .buy-crypto-button {
+    font-size: 16px;
+    background: none;
+    ion-icon {
+      vertical-align: text-bottom;
+      margin-left: 3px;
+    }
+  }
+  .simplex-problems {
+    padding: 20px;
+    text-align: center;
+    white-space: normal;
+    font-size: 12.5px;
+    color: color($colors, grey);
+  }
+  .status,
+  .date {
+    font-size: 12.5px;
+  }
+  .form-container {
+    text-align: left;
+    width: 100%;
+  }
+  ion-spinner {
+    * {
+      stroke: #0d172c !important;
+    }
+  }
+  .simplex-logo {
+    display: flex;
+    margin: 0 auto;
+  }
+}

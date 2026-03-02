@@ -1,196 +1,375 @@
-import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
-import { Logger } from '../../providers/logger/logger';
-
-// providers
-import { AddressBookProvider } from '../../providers/address-book/address-book';
-import { AddressProvider } from '../../providers/address/address';
-import { IncomingDataProvider } from '../../providers/incoming-data/incoming-data';
-import { PopupProvider } from '../../providers/popup/popup';
-import { ProfileProvider } from '../../providers/profile/profile';
-import { WalletProvider } from '../../providers/wallet/wallet';
-
-// pages
-import { AmountPage } from './amount/amount';
-
+import { Component, ViewChild } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
+import { Events, NavController, NavParams, Platform } from 'ionic-angular';
 import * as _ from 'lodash';
+import { Subscription } from 'rxjs';
+import { Observable } from 'rxjs/Observable';
+
+// Providers
+import { ActionSheetProvider } from '../../providers/action-sheet/action-sheet';
+import { AddressProvider } from '../../providers/address/address';
+import { AnalyticsProvider } from '../../providers/analytics/analytics';
+import { AppProvider } from '../../providers/app/app';
+import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
+import { ClipboardProvider } from '../../providers/clipboard/clipboard';
+import { CurrencyProvider } from '../../providers/currency/currency';
+import { ErrorsProvider } from '../../providers/errors/errors';
+import { IncomingDataProvider } from '../../providers/incoming-data/incoming-data';
+import { Logger } from '../../providers/logger/logger';
+import { OnGoingProcessProvider } from '../../providers/on-going-process/on-going-process';
+import { PayproProvider } from '../../providers/paypro/paypro';
+import { PlatformProvider } from '../../providers/platform/platform';
+
+// Pages
+import { CopayersPage } from '../add/copayers/copayers';
+import { ImportWalletPage } from '../add/import-wallet/import-wallet';
+import { JoinWalletPage } from '../add/join-wallet/join-wallet';
+import { BitPayCardIntroPage } from '../integrations/bitpay-card/bitpay-card-intro/bitpay-card-intro';
+import { CoinbasePage } from '../integrations/coinbase/coinbase';
+import { SelectInvoicePage } from '../integrations/invoice/select-invoice/select-invoice';
+import { SimplexPage } from '../integrations/simplex/simplex';
+import { PaperWalletPage } from '../paper-wallet/paper-wallet';
+import { ScanPage } from '../scan/scan';
+import { AmountPage } from '../send/amount/amount';
+import { ConfirmPage } from '../send/confirm/confirm';
+import { SelectInputsPage } from '../send/select-inputs/select-inputs';
+import { AddressbookAddPage } from '../settings/addressbook/add/add';
+import { WalletDetailsPage } from '../wallet-details/wallet-details';
+import { MultiSendPage } from './multi-send/multi-send';
 
 @Component({
   selector: 'page-send',
-  templateUrl: 'send.html',
+  templateUrl: 'send.html'
 })
 export class SendPage {
+  public wallet: any;
   public search: string = '';
-  public walletsBtc: any;
-  public walletsBch: any;
-  public walletBchList: any;
-  public walletBtcList: any;
-  public contactsList: object[] = [];
-  public filteredContactsList: object[] = [];
-  public hasBtcWallets: boolean;
-  public hasBchWallets: boolean;
-  public hasContacts: boolean;
-  public contactsShowMore: boolean;
-  private CONTACTS_SHOW_LIMIT: number = 10;
-  private currentContactsPage: number = 0;
+  public isCordova: boolean;
+  public invalidAddress: boolean;
+  public validDataFromClipboard;
+  private onResumeSubscription: Subscription;
+  private validDataTypeMap: string[] = [
+    'BitcoinAddress',
+    'BitcoinCashAddress',
+    'EthereumAddress',
+    'EthereumUri',
+    'RippleAddress',
+    'DogecoinAddress',
+    'LitecoinAddress',
+    'RippleUri',
+    'BitcoinUri',
+    'BitcoinCashUri',
+    'DogecoinUri',
+    'LitecoinUri',
+    'BitPayUri'
+  ];
+  private pageMap = {
+    AddressbookAddPage,
+    AmountPage,
+    BitPayCardIntroPage,
+    CoinbasePage,
+    ConfirmPage,
+    CopayersPage,
+    ImportWalletPage,
+    JoinWalletPage,
+    PaperWalletPage,
+    SimplexPage,
+    SelectInvoicePage,
+    WalletDetailsPage
+  };
 
   constructor(
+    private currencyProvider: CurrencyProvider,
     private navCtrl: NavController,
-    private profileProvider: ProfileProvider,
-    private walletProvider: WalletProvider,
-    private addressBookProvider: AddressBookProvider,
+    private navParams: NavParams,
+    private payproProvider: PayproProvider,
     private logger: Logger,
     private incomingDataProvider: IncomingDataProvider,
-    private popupProvider: PopupProvider,
-    private addressProvider: AddressProvider
-  ) { }
-
-  ionViewDidLoad() {
-    this.logger.info('ionViewDidLoad SendPage');
+    private addressProvider: AddressProvider,
+    private events: Events,
+    private actionSheetProvider: ActionSheetProvider,
+    private analyticsProvider: AnalyticsProvider,
+    private appProvider: AppProvider,
+    private translate: TranslateService,
+    private errorsProvider: ErrorsProvider,
+    private onGoingProcessProvider: OnGoingProcessProvider,
+    private bwcErrorProvider: BwcErrorProvider,
+    private plt: Platform,
+    private clipboardProvider: ClipboardProvider,
+    private platformProvider: PlatformProvider
+  ) {
+    this.wallet = this.navParams.data.wallet;
+    this.isCordova = this.platformProvider.isCordova;
+    this.events.subscribe('Local/AddressScan', this.updateAddressHandler);
+    this.events.subscribe('SendPageRedir', this.SendPageRedirEventHandler);
+    this.events.subscribe('Desktop/onFocus', () => {
+      this.setDataFromClipboard();
+    });
+    this.onResumeSubscription = this.plt.resume.subscribe(() => {
+      this.setDataFromClipboard();
+    });
   }
 
-  ionViewWillEnter() {
-    this.walletsBtc = this.profileProvider.getWallets({ coin: 'btc' });
-    this.walletsBch = this.profileProvider.getWallets({ coin: 'bch' });
-    this.hasBtcWallets = !(_.isEmpty(this.walletsBtc));
-    this.hasBchWallets = !(_.isEmpty(this.walletsBch));
-    this.updateBchWalletsList();
-    this.updateBtcWalletsList();
-    this.updateContactsList();
+  @ViewChild('transferTo')
+  transferTo;
+
+  ionViewDidLoad() {
+    this.logger.info('Loaded: SendPage');
   }
 
   ionViewDidEnter() {
-    this.search = '';
+    this.setDataFromClipboard();
   }
 
-  private updateBchWalletsList(): void {
-    this.walletBchList = [];
+  ngOnDestroy() {
+    this.events.unsubscribe('Local/AddressScan', this.updateAddressHandler);
+    this.events.unsubscribe('SendPageRedir', this.SendPageRedirEventHandler);
+    this.events.unsubscribe('Desktop/onFocus');
+    this.onResumeSubscription.unsubscribe();
+  }
 
-    if (!this.hasBchWallets) return;
+  private async setDataFromClipboard() {
+    this.validDataFromClipboard = await this.clipboardProvider.getValidData(
+      this.wallet.coin
+    );
+  }
 
-    _.each(this.walletsBch, (v: any) => {
-      this.walletBchList.push({
-        color: v.color,
-        name: v.name,
-        recipientType: 'wallet',
-        coin: v.coin,
-        network: v.network,
-        m: v.credentials.m,
-        n: v.credentials.n,
-        isComplete: v.isComplete(),
-        needsBackup: v.needsBackup,
-        getAddress: (): Promise<any> => {
-          return new Promise((resolve, reject) => {
-            this.walletProvider.getAddress(v, false).then((addr) => {
-              return resolve(addr);
-            }).catch((err) => {
-              return reject(err);
-            });
-          });
-        }
+  private SendPageRedirEventHandler: any = nextView => {
+    const currentIndex = this.navCtrl.getActive().index;
+    const currentView = this.navCtrl.getViews();
+    nextView.params.fromWalletDetails = true;
+    nextView.params.walletId = this.wallet.credentials.walletId;
+    this.navCtrl
+      .push(this.pageMap[nextView.name], nextView.params, { animate: false })
+      .then(() => {
+        if (currentView[currentIndex].name == 'ScanPage')
+          this.navCtrl.remove(currentIndex);
       });
-    });
-  }
+  };
 
-  private updateBtcWalletsList(): void {
-    this.walletBtcList = [];
+  private updateAddressHandler: any = data => {
+    this.search = data.value;
+    this.processInput();
+  };
 
-    if (!this.hasBtcWallets) return;
-
-    _.each(this.walletsBtc, (v: any) => {
-      this.walletBtcList.push({
-        color: v.color,
-        name: v.name,
-        recipientType: 'wallet',
-        coin: v.coin,
-        network: v.network,
-        m: v.credentials.m,
-        n: v.credentials.n,
-        isComplete: v.isComplete(),
-        needsBackup: v.needsBackup,
-        getAddress: (): Promise<any> => {
-          return new Promise((resolve, reject) => {
-            this.walletProvider.getAddress(v, false).then((addr) => {
-              return resolve(addr);
-            }).catch((err) => {
-              return reject(err);
-            });
-          });
-        }
-      });
-    });
-  }
-
-  private updateContactsList(): void {
-    this.addressBookProvider.list().then((ab: any) => {
-
-      this.hasContacts = _.isEmpty(ab) ? false : true;
-      if (!this.hasContacts) return;
-
-      this.contactsList = [];
-      _.each(ab, (v: any, k: string) => {
-        this.contactsList.push({
-          name: _.isObject(v) ? v.name : v,
-          address: k,
-          network: this.addressProvider.validateAddress(k).network,
-          email: _.isObject(v) ? v.email : null,
-          recipientType: 'contact',
-          coin: this.addressProvider.validateAddress(k).coin,
-          getAddress: (): Promise<any> => {
-            return new Promise((resolve, reject) => {
-              return resolve(k);
-            });
-          }
-        });
-      });
-      let shortContactsList = _.clone(this.contactsList.slice(0, (this.currentContactsPage + 1) * this.CONTACTS_SHOW_LIMIT));
-      this.filteredContactsList = _.clone(shortContactsList);
-      this.contactsShowMore = this.contactsList.length > shortContactsList.length;
-    });
-  }
-
-  public showMore(): void {
-    this.currentContactsPage++;
-    this.updateContactsList();
+  public shouldShowZeroState() {
+    return (
+      this.wallet &&
+      this.wallet.cachedStatus &&
+      !this.wallet.cachedStatus.totalBalanceSat
+    );
   }
 
   public openScanner(): void {
-    this.navCtrl.parent.select(2);
+    this.navCtrl.push(ScanPage, { fromSend: true }, { animate: false });
   }
 
-  public findContact(search: string): void {
-    if (this.incomingDataProvider.redir(search)) return;
-    if (search && search.trim() != '') {
-      let result = _.filter(this.contactsList, (item: any) => {
-        let val = item.name;
-        return _.includes(val.toLowerCase(), search.toLowerCase());
-      });
-      this.filteredContactsList = result;
+  public showOptions(coin: string) {
+    return (
+      (this.currencyProvider.isMultiSend(coin) ||
+        this.currencyProvider.isUtxoCoin(coin)) &&
+      !this.shouldShowZeroState()
+    );
+  }
+
+  private checkCoinAndNetwork(data, isPayPro?): boolean {
+    let isValid, addrData;
+    if (isPayPro) {
+      isValid =
+        data &&
+        data.chain == this.currencyProvider.getChain(this.wallet.coin) &&
+        data.network == this.wallet.network;
     } else {
-      this.updateContactsList();
+      addrData = this.addressProvider.getCoinAndNetwork(
+        data,
+        this.wallet.network
+      );
+      isValid =
+        this.currencyProvider.getChain(this.wallet.coin).toLowerCase() ==
+          addrData.coin && addrData.network == this.wallet.network;
+    }
+
+    if (isValid) {
+      this.invalidAddress = false;
+      return true;
+    } else {
+      this.invalidAddress = true;
+      let network = isPayPro ? data.network : addrData.network;
+
+      if (this.wallet.coin === 'bch' && this.wallet.network === network) {
+        const isLegacy = this.checkIfLegacy();
+        isLegacy ? this.showLegacyAddrMessage() : this.showErrorMessage();
+      } else {
+        this.showErrorMessage();
+      }
+    }
+
+    return false;
+  }
+
+  private redir() {
+    this.incomingDataProvider.redir(this.search, {
+      activePage: 'SendPage',
+      amount: this.navParams.data.amount,
+      coin: this.navParams.data.coin // TODO ???? what is this for ?
+    });
+    this.search = '';
+  }
+
+  private showErrorMessage() {
+    const msg = this.translate.instant(
+      'The wallet you are using does not match the network and/or the currency of the address provided'
+    );
+    const title = this.translate.instant('Error');
+    this.errorsProvider.showDefaultError(msg, title, () => {
+      this.search = '';
+    });
+  }
+
+  private showLegacyAddrMessage() {
+    const appName = this.appProvider.info.nameCase;
+    const infoSheet = this.actionSheetProvider.createInfoSheet(
+      'legacy-address-info',
+      { appName }
+    );
+    infoSheet.present();
+    infoSheet.onDidDismiss(option => {
+      if (option) {
+        const legacyAddr = this.search;
+        const cashAddr = this.addressProvider.translateToCashAddress(
+          legacyAddr
+        );
+        this.search = cashAddr;
+        this.processInput();
+      }
+    });
+  }
+
+  public cleanSearch() {
+    this.search = '';
+    this.invalidAddress = false;
+  }
+
+  public async processInput() {
+    if (this.search == '') this.invalidAddress = false;
+    const hasContacts = await this.checkIfContact();
+    if (!hasContacts) {
+      const parsedData = this.incomingDataProvider.parseData(this.search);
+      if (
+        (parsedData && parsedData.type == 'PayPro') ||
+        (parsedData && parsedData.type == 'InvoiceUri')
+      ) {
+        try {
+          const invoiceUrl = this.incomingDataProvider.getPayProUrl(
+            this.search
+          );
+          const payproOptions = await this.payproProvider.getPayProOptions(
+            invoiceUrl
+          );
+          const selected = payproOptions.paymentOptions.find(
+            option =>
+              option.selected &&
+              this.wallet.coin.toUpperCase() === option.currency
+          );
+          if (selected) {
+            const activePage = 'SendPage';
+            const isValid = this.checkCoinAndNetwork(selected, true);
+            if (isValid) {
+              this.incomingDataProvider.goToPayPro(
+                payproOptions.payProUrl,
+                this.wallet.coin,
+                undefined,
+                true,
+                activePage
+              );
+            }
+          } else {
+            this.redir();
+          }
+        } catch (err) {
+          this.onGoingProcessProvider.clear();
+          this.invalidAddress = true;
+          this.logger.warn(this.bwcErrorProvider.msg(err));
+          this.errorsProvider.showDefaultError(
+            this.bwcErrorProvider.msg(err),
+            this.translate.instant('Error')
+          );
+        }
+      } else if (
+        parsedData &&
+        _.indexOf(this.validDataTypeMap, parsedData.type) != -1
+      ) {
+        const isValid = this.checkCoinAndNetwork(this.search);
+        if (isValid) this.redir();
+      } else if (parsedData && parsedData.type == 'BitPayCard') {
+        // this.close();
+        this.incomingDataProvider.redir(this.search, {
+          activePage: 'SendPage'
+        });
+      } else if (parsedData && parsedData.type == 'PrivateKey') {
+        this.incomingDataProvider.redir(this.search, {
+          activePage: 'SendPage'
+        });
+      } else {
+        this.invalidAddress = true;
+      }
+    } else {
+      this.invalidAddress = false;
     }
   }
 
-  public goToAmount(item: any): void {
-    item.getAddress().then((addr: string) => {
-      if (!addr) {
-        // Error is already formated
-        this.popupProvider.ionicAlert('Error - no address');
-        return;
+  public async checkIfContact() {
+    await Observable.timer(50).toPromise();
+    return this.transferTo.hasContactsOrWallets;
+  }
+
+  private checkIfLegacy(): boolean {
+    return (
+      this.incomingDataProvider.isValidBitcoinCashLegacyAddress(this.search) ||
+      this.incomingDataProvider.isValidBitcoinCashUriWithLegacyAddress(
+        this.search
+      )
+    );
+  }
+
+  public showMoreOptions(): void {
+    const optionsSheet = this.actionSheetProvider.createOptionsSheet(
+      'send-options',
+      {
+        isUtxoCoin: this.currencyProvider.isUtxoCoin(this.wallet.coin),
+        isMultiSend: this.currencyProvider.isMultiSend(this.wallet.coin)
       }
-      this.logger.debug('Got address:' + addr + ' | ' + item.name);
-      this.navCtrl.push(AmountPage, {
-        recipientType: item.recipientType,
-        toAddress: addr,
-        name: item.name,
-        email: item.email,
-        color: item.color,
-        coin: item.coin,
-        network: item.network,
-      });
-      return;
-    }).catch((err: any) => {
-      this.logger.warn(err);
+    );
+    optionsSheet.present();
+
+    optionsSheet.onDidDismiss(option => {
+      if (option == 'multi-send')
+        this.navCtrl
+          .push(MultiSendPage, {
+            wallet: this.wallet
+          })
+          .then(() => {
+            this.analyticsProvider.logEvent('multi_send_clicked', {
+              coin: this.wallet.coin
+            });
+          });
+      if (option == 'select-inputs')
+        this.navCtrl
+          .push(SelectInputsPage, {
+            wallet: this.wallet
+          })
+          .then(() => {
+            this.analyticsProvider.logEvent('select_inputs_clicked', {
+              coin: this.wallet.coin
+            });
+          });
     });
-  };
+  }
+
+  public pasteFromClipboard() {
+    this.search = this.validDataFromClipboard || '';
+    this.validDataFromClipboard = null;
+    this.clipboardProvider.clear();
+    this.processInput();
+  }
 }

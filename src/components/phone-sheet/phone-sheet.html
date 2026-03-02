@@ -1,0 +1,24 @@
+<action-sheet>
+  <div class="padding">
+    <div class="title"><span translate>Select Your Country</span></div>
+    <search-bar
+      placeholder="{{ 'Search for a country' | translate }}"
+      (search)="onSearch($event.target.value)"
+    >
+    </search-bar>
+    <div class="countries">
+      <div
+        *ngFor="let country of countries"
+        class="country"
+        tappable
+        (click)="selectCountry(country)"
+      >
+        <div class="country__label">
+          <span class="country__label__emoji">{{country.emoji}}</span>
+          {{country.name}}
+        </div>
+        <div class="country__code">+{{country.phone}}</div>
+      </div>
+    </div>
+  </div>
+</action-sheet>

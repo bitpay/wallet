@@ -1,21 +1,32 @@
 page-wallet-settings {
   .assertive {
     color: color($colors, danger);
+
     ion-label {
       white-space: inherit;
     }
   }
+
   .item-text {
     font-size: 12.5px;
   }
-  .settings-color-block {
-    display: inline-block;
-    width: 15px;
-    height: 15px;
-    border-radius: 50%;
-    float: left; 
-    margin: 1rem;
-    box-shadow: 0px 0px 10px;
-    background-color: color($colors, primary);
-  }  
+
+  ion-item-divider.item.item-divider {
+    padding-left: 16px;
+  }
+  .bp-list {
+    ion-item-divider {
+      margin-top: 0px;
+      padding: 12.5px 0px 12.5px 20px;
+      background: #f8f8f9;
+      .reorder-option {
+        font-size: 1.4rem;
+        margin: 0 8px 0 !important;
+      }
+    }
+  }
+
+  .item-without-title {
+    margin-top: 0;
+  }
 }
